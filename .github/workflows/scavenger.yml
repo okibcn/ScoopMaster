@@ -81,12 +81,10 @@ jobs:
         Write-Host "PROCESS COMPLETED. $nJsons manifests extracted from $nZips downloaded buckets."
 
 
-    - name: "📝 Retain only the most recent manifest for each package"
+    - name: "🧹 Remove old duplicated manifests"
       run: |
         cd ..
         mkdir local -Force | Out-Null
-        Remove-Item local/* -Recurse -Force
-        Remove-Item ERROR_manifest.txt -Force
         $progress=0
         $oldpercent=0
         $nlocal=0
