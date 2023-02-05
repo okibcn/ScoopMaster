@@ -143,6 +143,7 @@ jobs:
 
         remove-item bucket -Recurse -Force
         move-item ../local bucket
+        move-item ../*.txt .
         echo "UPDATE=$(date -R -u)" >>$GITHUB_ENV
 
 
@@ -170,7 +171,7 @@ jobs:
       with:
         name: ${{ env.UPDATE }}
         path: |
-          ../*.txt
+          *.txt
 
     - name: "🎉 Publish a new release"
       uses: softprops/action-gh-release@v0.1.15
