@@ -1,23 +1,25 @@
-# Scoop Bucket Template
+# Scoop Master Bucket
 
-<!-- Uncomment the following line after replacing placeholders -->
-<!-- [![Tests](https://github.com/<username>/<bucketname>/actions/workflows/ci.yml/badge.svg)](https://github.com/<username>/<bucketname>/actions/workflows/ci.yml) [![Excavator](https://github.com/<username>/<bucketname>/actions/workflows/excavator.yml/badge.svg)](https://github.com/<username>/<bucketname>/actions/workflows/excavator.yml) -->
 
-Template bucket for [Scoop](https://scoop.sh), the Windows command-line installer.
+
+This is THE bucket to rule them all. It is a meta-bucket for **[Scoop](https://scoop.sh)**, the Windows command-line package manager. It takes the manifests from all the rest of known buckets and maintains a bucket with the most recent version of each known package.
+
+It takes the list of buckets in the **[Scoop Directory](https://rasa.github.io/scoop-directory)**.
 
 How do I install these manifests?
 ---------------------------------
 
-To add this bucket, run `scoop bucket add <bucketname> https://github.com/<username>/<bucketname>`. To install, do `scoop install <manifest>`.
+To add this bucket, run 
+```pwsh
+scoop bucket add .Scoop https://github.com/okibcn/ScoopMaster
+```
+To install any app in the bucket do 
+```
+scoop install <app_name>
+```
 
 How do I contribute new manifests?
 ----------------------------------
 
 To make a new manifest contribution, please read the [Contributing Guide](https://github.com/ScoopInstaller/.github/blob/main/.github/CONTRIBUTING.md).
 
-----
-
-#### To use this template
-
-- Modify the Readme.md and the bin/auto-pr.ps1 files accordingly.
-- Enable GitHub Actions for this repository.
