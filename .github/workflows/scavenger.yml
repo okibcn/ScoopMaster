@@ -41,22 +41,10 @@ jobs:
         ##           or https://github.com/mxschmitt/action-tmate
 
 
-    - name: "🔧 Install Toolchain OS Tools"
-      run: |
-        cd ..
-        $DLpage= iwr "https://www.7-zip.org/download.html"
-        $DLpage.RawContent -match "7z.+-x64.exe"
-        wget -q "https://www.7-zip.org/a/$($matches[0])"
-        wget -q "https://www.7-zip.org/a/7zr.exe"
-        ./7zr x $matches[0] -o7zdir
-        mv .\7zdir\7z.exe .
-        remove-item 7zr*,*x64.exe,7zdir -Recurse -Force
-
-
     - name: "🔧 Download manifests from known buckets"
       run: |
         cd ..
-        $scoopDBfile = "~\scoopdb.csv"
+        ## GET List of Buckets from Scoop-Directory website
         $scoopDBURL = "https://rasa.github.io/scoop-directory/by-apps.html"
         $ErrorActionPreference = 'SilentlyContinue'
 
@@ -68,9 +56,10 @@ jobs:
                 [void]$lBuckets.Add($matches[1])
             }
         }
-        
+        $lBuckets >> Known_Buckets.txt
+
         ## GET all JSONs from BUCKETS in ./jsons
-        $Jobs = 8
+        $Jobs = 6
         $progress=0
         $nbuckets=$lBuckets.Count
         Remove-Item zips,jsons,ERROR_Downloading.txt,ERROR_empty_buckets.txt -Force -Recurse
@@ -93,7 +82,7 @@ jobs:
                 if(-not (test-path "$zipfile")){
                     $ZIPURL >> ERROR_Downloading.txt
                     return}
-                ./7z.exe e -y "$zipfile" -o"jsons/$basename" */bucket/*.json */*.json | Out-Null
+                7z e -y "$zipfile" -o"jsons/$basename" */bucket/*.json */*.json | Out-Null
                 rm "$zipfile"
                 if(-not (test-path "jsons/$basename")){
                     $repoURL >> ERROR_empty_buckets.txt
@@ -106,8 +95,8 @@ jobs:
         }
         Wait-Job -State Running
         Get-Job -State Completed | Remove-Job
-        Remove-Item zips,7z.*,jsons/*/.*.json -Force -Recurse
-        $nJsons=(cmd /c dir /s /b /a-d jsons).count
+        Remove-Item zips,jsons/*/.*.json -Force -Recurse
+        $nJsons=(cmd.exe /c dir /s /b /a-d jsons).count
         Write-Host "PROCESS COMPLETED. $nJsons manifests extracted from $nbuckets buckets."
         if(Test-Path ERROR_downloading.txt){
             Write-Host "There where errors downloading the following files:"
@@ -119,7 +108,7 @@ jobs:
         }
 
 
-    - name: "📝 Retain last manifest for each package"
+    - name: "📝 Retain only the last manifest for each package"
       run: |
         cd ..
         mkdir local -Force | Out-Null
@@ -130,7 +119,7 @@ jobs:
         $hVersion = @{}
         $hDate = @{}
         $hBucket = @{}
-        $njsons=(cmd /c dir /s /b /a-d jsons).count
+        $njsons=(cmd.exe /c dir /s /b /a-d jsons).count
         Write-Host "Processing $njsons manifests...`n"
         gci jsons/*/*.json | ForEach-Object{
             # FOR EACH PACKETFILE IN BUCKET
@@ -162,9 +151,9 @@ jobs:
             Write-Progress -Activity "Processing " -Status "$percent% (Selected: $nlocal) processing: $name" -PercentComplete $percent
         }
         Remove-Item jsons -Force -Recurse
-        Write-Host "PROCESS COMPLETED. $nlocal different packages with the newst manifest out of a total of $nJsons manifests."
-        if(Test-Path ERROR_downloading.txt){
-            Write-Host "The followinf manifests have errors:"
+        Write-Host "PROCESS COMPLETED. $nlocal different packages with the most recent manifest out of a total of $nJsons manifests."
+        if(Test-Path ERROR_manifest.txt){
+            Write-Host "The following manifests have errors:"
             cat ./ERROR_manifest.txt
         }
       
