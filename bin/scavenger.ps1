@@ -13,8 +13,6 @@
 ## GET List of Buckets from Scoop-Directory website
 $scoopDBURL = "https://rasa.github.io/scoop-directory/by-apps.html"
 $ErrorActionPreference = 'SilentlyContinue'
-
-## CREATE BUCKETS LIST: $lBuckets
 $lBuckets = [System.Collections.ArrayList]@()
 $source = iwr $scoopDBURL
 $source.Content -split '\r?\n' | ForEach-Object -Process {
@@ -22,58 +20,27 @@ $source.Content -split '\r?\n' | ForEach-Object -Process {
         [void]$lBuckets.Add($matches[1])
     }
 }
-$lBuckets >> Known_Buckets.txt
+$lBuckets >> Bucket_list.txt
 
-## GET all JSONs from BUCKETS in ./jsons
-$Jobs = 6
-$progress=0
-$nbuckets=$lBuckets.Count
-Remove-Item zips,jsons,ERROR_Downloading.txt,ERROR_empty_buckets.txt -Force -Recurse
-mkdir zips  -Force | Out-Null
-mkdir jsons -Force | Out-Null
-Write-Host "Downloading and extracting manifests from $nbuckets buckets...`n"
-Foreach ($repo in $lBuckets){
-    Do{$running = (Get-Job -State Running | measure).count} 
-    Until ($running -le $Jobs)
-    Start-Job -Name $repo -ScriptBlock { 
-        $repoURL = $Using:repo 
-        if( -not ($repoURL -match 'https:\/\/github.com\/(.+)')){
-            $repoURL >> badrepos.txt
-            return}
-        $owner_repo=$matches[1]
-        $basename=$owner_repo.replace('/','~')
-        $ZIPURL = "$repoURL/archive/refs/heads/master.zip" 
-        $zipfile="./zips/$basename.zip"
-        wget -q $ZIPURL -O "$zipfile"
-        if(-not (test-path "$zipfile")){
-            $ZIPURL >> ERROR_Downloading.txt
-            return}
-        7z e -y "$zipfile" -o"jsons/$basename" */bucket/*.json */*.json | Out-Null
-        rm "$zipfile"
-        if(-not (test-path "jsons/$basename")){
-            $repoURL >> ERROR_empty_buckets.txt
-            return}
-    }  | Out-Null
-    Get-Job -State Completed | Remove-Job | Out-Null
-    $progress++
-    $percent = [math]::round(100 * $progress / $nbuckets)
-    Write-Output "$progress/$nbuckets  ( $percent% ):  $repo"
-    # Write-Progress -Activity "Processing " -Status "$percent% ($running) processing: $repo" -PercentComplete $percent
+## CREATE ZIP LIST for aria2c
+$lZips=$lBuckets | %{
+    if( -not ($_ -match 'https:\/\/github.com\/(.+)')){
+        $_ >> badrepos.txt
+        return}
+    $owner_repo=$matches[1].replace('/','~')
+    return "$_/archive/refs/heads/master.zip`n    out=$owner_repo.zip"
 }
-Wait-Job -State Running
-Get-Job -State Completed | Remove-Job
-Remove-Item zips,jsons/*/.*.json -Force -Recurse
+$lZips > zip_list.txt   
+
+# Download buckets
+aria2c --save-session aria2-out.txt -j 16 -i zip_list.txt -d zips
+$nZips=(cmd.exe /c dir /s /b /a-d zips).count
+# Extract manifests
+7z e -y zips/*.zip  -ojsons/* */bucket/*.json */*.json -x!.*.json
+# Cleanup manifests
+Remove-Item -Force -Recurse jsons/*/.*.json
 $nJsons=(cmd.exe /c dir /s /b /a-d jsons).count
-Write-Host "PROCESS COMPLETED. $nJsons manifests extracted from $nbuckets buckets."
-if(Test-Path ERROR_downloading.txt){
-    Write-Host "There where errors downloading the following files:"
-    cat ./ERROR_Downloading.txt
-}
-if(Test-Path ERROR_empty_buckets.txt){
-    Write-Host "The following buckets were empty:"
-    cat ./ERROR_empty_buckets.txt
-}
-
+Write-Host "PROCESS COMPLETED. $nJsons manifests extracted from $nZips downloaded buckets."
 
 ## PROCESS JSON FILES
 
@@ -93,7 +60,7 @@ gci jsons/*/*.json | ForEach-Object{
     $name=$_.BaseName
     try{$version=(Get-Content $_ | ConvertFrom-Json).version}
     catch{
-        $_.fullname >> ERROR_manifest.txt
+        $_.FullName >> ERROR_manifest.txt
         return
     }
     $date=$_.LastWriteTimeUtc
@@ -127,9 +94,6 @@ if(Test-Path ERROR_manifest.txt){
     Write-Host "The following manifests have errors:"
     cat ./ERROR_manifest.txt
 } 
-
-
-
 
 
 ## PROCESS PACKETS IN BUCKETS

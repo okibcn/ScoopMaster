@@ -168,6 +168,15 @@ jobs:
     #         Write-Host "The following manifests have errors:"
     #         cat ./ERROR_manifest.txt
     #     }
+    - name: "🐞 Debug session"
+      uses: mxschmitt/action-tmate@v3
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      if: github.event_name == 'workflow_dispatch' && github.event.inputs.debug_enabled == 'true'
+        ## More info at https://til.simonwillison.net/github-actions/debug-tmate
+        ##           or https://github.com/mxschmitt/action-tmate
+
+
       
 
     - name: "📦 Create Package"
