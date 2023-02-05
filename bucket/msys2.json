@@ -35,11 +35,6 @@
         ],
         [
             "msys2_shell.cmd",
-            "clang32",
-            "-clang32 -defterm -here -full-path -no-start"
-        ],
-        [
-            "msys2_shell.cmd",
             "clang64",
             "-clang64 -defterm -here -full-path -no-start"
         ],
@@ -63,10 +58,6 @@
             "MinGW64"
         ],
         [
-            "clang32.exe",
-            "Clang32"
-        ],
-        [
             "clang64.exe",
             "Clang64"
         ],
@@ -77,8 +68,9 @@
     ],
     "persist": "home",
     "checkver": {
-        "url": "https://github.com/msys2/msys2-installer/releases",
-        "regex": "/releases/tag/(?<version>(?<year>\\d{4})-(?<month>\\d{2})-(?<day>\\d{2}))"
+        "url": "https://api.github.com/repos/msys2/msys2-installer/tags",
+        "jsonpath": "$..name",
+        "regex": "(?<version>(?<year>\\d{4})-(?<month>\\d{2})-(?<day>\\d{2}))"
     },
     "autoupdate": {
         "architecture": {
