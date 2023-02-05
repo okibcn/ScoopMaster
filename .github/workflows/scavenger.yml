@@ -143,15 +143,12 @@ jobs:
 
         remove-item bucket -Recurse -Force
         move-item ../local bucket
-        # cp LICENSE README* -t WslCompact
-        # VERSION=$(cat WslCompact/WslCompact.psm1 |  grep -Po "^#.*v([\d\.\-]+)" |  grep -Po "([\d\.\-]+)")        
-        # zip "./WslCompact-v$VERSION.zip" WslCompact/*
-        # echo "VERSION=${VERSION}" >>$GITHUB_ENV
+        echo "UPDATE=$(date -R -u)" >>$GITHUB_ENV
 
 
     - name: Simple commit
       uses: zwaldowski/git-commit-action@v1
-
+      commit_message: ${{ env.UPDATE }} 
 
 
     - name: "🐞 Debug session"
@@ -164,7 +161,7 @@ jobs:
 
 
     - name: "👋 If no new sources are available, then we stop."
-      # if:  env.CANCEL == 'true'
+      if:  env.CANCEL == 'true'
       uses: andymckay/cancel-action@0.3
 
 
@@ -172,9 +169,9 @@ jobs:
       uses: actions/upload-artifact@v3
       if: github.event_name == 'workflow_dispatch' && github.event.inputs.release != 'yes'
       with:
-        name: ${{ env.VERSION }}
+        name: ${{ env.UPDATE }}
         path: |
-          *.zip
+          ../*.txt
 
     - name: "🎉 Publish a new release"
       uses: softprops/action-gh-release@v0.1.15
@@ -185,7 +182,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         tag_name: ${{ env.VERSION }}
-        files: ./*.zip
+        files: ../*.txt
 #         body: |
 #           ${{ env.BODY }}
    
