@@ -1,16 +1,19 @@
 {
     "version": "1.4.2",
-    "description": "An FLAC command line encoder/decoder and metadata editor.",
+    "description": "Free Lossless Audio Codec - command line tools",
     "homepage": "https://xiph.org/flac/",
-    "license": "GPL-2.0-or-later",
+    "license": {
+        "identifier": "BSD-3-Clause,GPL-3.0-or-later",
+        "url": "https://xiph.org/flac/license.html"
+    },
+    "url": "https://ftp.osuosl.org/pub/xiph/releases/flac/flac-1.4.2-win.zip",
+    "hash": "2066e8adad308ec8215e65544ec761c931e4ea9fd26725ec704b2107392b7e3b",
     "architecture": {
         "64bit": {
-            "url": "https://www.rarewares.org/files/lossless/flac-1.4.2-x64.zip",
-            "hash": "8f40d3585283c8c65991cdeb36a4d8d5a42a4656d3d8d5dc92e67f90e4a1e1b7"
+            "extract_dir": "flac-1.4.2-win\\win64"
         },
         "32bit": {
-            "url": "https://www.rarewares.org/files/lossless/flac-1.4.2-x86.zip",
-            "hash": "3f1925bc041c177e04c7d9131bcd409db9eef1a06ff00db8daffb90cd97e4929"
+            "extract_dir": "flac-1.4.2-win\\win32"
         }
     },
     "bin": [
@@ -18,16 +21,20 @@
         "metaflac.exe"
     ],
     "checkver": {
-        "url": "https://rarewares.org/lossless.php#flac-bundle",
-        "regex": "flac-([\\d.]+)-x86.zip"
+        "url": "https://ftp.osuosl.org/pub/xiph/releases/flac/?C=M;O=D",
+        "regex": ">flac-([\\d.]+)-win\\.zip"
     },
     "autoupdate": {
+        "url": "https://ftp.osuosl.org/pub/xiph/releases/flac/flac-$version-win.zip",
+        "hash": {
+            "url": "$baseurl/SHA256SUMS.txt"
+        },
         "architecture": {
             "64bit": {
-                "url": "https://www.rarewares.org/files/lossless/flac-$version-x64.zip"
+                "extract_dir": "flac-$version-win\\win64"
             },
             "32bit": {
-                "url": "https://www.rarewares.org/files/lossless/flac-$version-x86.zip"
+                "extract_dir": "flac-$version-win\\win32"
             }
         }
     }

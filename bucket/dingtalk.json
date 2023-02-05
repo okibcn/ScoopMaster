@@ -1,15 +1,31 @@
 {
-    "version": "7.0.0.1109109",
-    "description": "An all-in-one free communication and collaboration platform",
     "homepage": "https://www.dingtalk.com/",
+    "description": "An all-in-one free communication and collaboration platform",
     "license": {
         "identifier": "EULA",
         "url": "https://tms.dingtalk.com/markets/dingtalk/service-terms-zh"
     },
-    "notes": "We don't persist your DingTalk data, they are still storaged in '%APPDATA%\\DingTalk'.",
+    "version": "7.0.0.1109109",
     "url": "https://dtapp-pub.dingtalk.com/dingtalk-desktop/win_installer/Release/DingTalk_v7.0.0.1109109.exe#/dl.7z",
     "hash": "md5:dfa2b8016e278a1bf5952d1bfaebb378",
     "post_install": "Remove-Item \"$dir\\`$PLUGINSDIR\" -Recurse",
+    "installer": {
+        "script": [
+            "# handle runtime cache",
+            "Import-Module $(Join-Path $(Find-BucketDirectory -Root -Name apps) scripts/AppsUtils.psm1)",
+            "Mount-ExternalRuntimeData -Source \"$persist_dir\\appdata\" -Target \"$env:LOCALAPPDATA\\DingTalk_91\"",
+            "Mount-ExternalRuntimeData -Source \"$persist_dir\\appdata\" -Target \"$env:APPDATA\\DingTalk\"",
+            "Remove-Module -Name AppsUtils"
+        ]
+    },
+    "uninstaller": {
+        "script": [
+            "Import-Module $(Join-Path $(Find-BucketDirectory -Root -Name apps) scripts/AppsUtils.psm1)",
+            "Dismount-ExternalRuntimeData -Target \"$env:LOCALAPPDATA\\DingTalk_91\"",
+            "Dismount-ExternalRuntimeData -Target \"$env:APPDATA\\DingTalk\"",
+            "Remove-Module -Name AppsUtils"
+        ]
+    },
     "shortcuts": [
         [
             "DingtalkLauncher.exe",
@@ -26,5 +42,6 @@
             "url": "https://im.dingtalk.com/manifest/new/release_windows_vista_later_gray4.json",
             "jsonpath": "$.win.install.md5"
         }
-    }
+    },
+    "notes": "We don't persist your DingTalk data, they are still storaged in '%APPDATA%\\DingTalk'."
 }
