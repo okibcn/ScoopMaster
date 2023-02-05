@@ -19,14 +19,6 @@ on:
         options: 
           - true
           - false
-      release:
-        description: 'Type (yes) for release, (no) will generate an artifact (default: no)'
-        required: false
-        default: 'no'
-        type: choice
-        options: 
-          - yes
-          - no
 
 jobs:
   build:
@@ -38,13 +30,6 @@ jobs:
     steps:
     - name: "⏬ Checkout repository"
       uses: actions/checkout@v3
-
-
-
-    # - name: "🔧 Download manifests from known buckets"
-    #   run: |
-    #     cd ..
-    #     ./ScoopMaster/bin/scavenger.ps1
 
 
     - name: "🔍 Discover known buckets from Scoop-Directory website."
@@ -180,9 +165,9 @@ jobs:
       uses: andymckay/cancel-action@0.3
 
 
-    - name: "👍 Upload Artifact"
+    - name: "👍 Upload logs as Artifact"
       uses: actions/upload-artifact@v3
-      if: github.event_name == 'workflow_dispatch' && github.event.inputs.release != 'yes'
+      if: github.event_name == 'workflow_dispatch'
       with:
         name: Logs
         path: |
