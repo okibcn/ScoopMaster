@@ -32,18 +32,17 @@ $lZips=$lBuckets | %{
 }
 $lZips > zip_list.txt   
 
-# Download buckets
+# DOWNLOAD BUCKETS
 aria2c --save-session aria2-out.txt -j 16 -i zip_list.txt -d zips
 $nZips=(cmd.exe /c dir /s /b /a-d zips).count
-# Extract manifests
-7z e -y zips/*.zip  -ojsons/* */bucket/*.json */*.json -x!.*.json
-# Cleanup manifests
+# EXTRACT MANIFESTS
+7z e -y zips/*.zip  -ojsons/* */bucket/*.json */*.json
+# PREPARE OUTPUT
 Remove-Item -Force -Recurse jsons/*/.*.json
 $nJsons=(cmd.exe /c dir /s /b /a-d jsons).count
 Write-Host "PROCESS COMPLETED. $nJsons manifests extracted from $nZips downloaded buckets."
 
 ## PROCESS JSON FILES
-
 mkdir local -Force | Out-Null
 Remove-Item local/* -Recurse -Force
 Remove-Item ERROR_manifest.txt -Force
