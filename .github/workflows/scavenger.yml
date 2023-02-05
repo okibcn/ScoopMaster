@@ -6,8 +6,8 @@
 
 name: Scavenger
 on:
-#   schedule:
-#     - cron: '52 * * * *'
+  schedule:
+    - cron: '52 * * * *'
   # runs at minute 52 of each hour.
   workflow_dispatch:
     inputs:
@@ -146,9 +146,17 @@ jobs:
         move-item ../*.txt .
         echo "UPDATE=$(date -R -u)" >>$GITHUB_ENV
 
+    
+    - name: "⭐ Update repo"
+      run: |
+        git -C . init
+        git -C . add -A
+        git -C . config --local user.name "GitHub Actions"
+        git -C . config --local user.email actions@github.com
+        git -C . commit --no-verify -m "Updated on $(date -R -u)"
+        $sha=(git -C . rev-parse HEAD)
+        git push
 
-    # - name: Simple commit
-    #   uses: zwaldowski/git-commit-action@v1
 
 
     - name: "🐞 Debug session"
