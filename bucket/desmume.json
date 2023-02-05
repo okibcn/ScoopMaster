@@ -1,24 +1,34 @@
 {
-    "autoupdate": {
-        "url": "https://nightly.link/TASEmulators/desmume/workflows/build_win/master/desmume-win-x64.zip"
+    "version": "1033",
+    "description": "Nintendo DS emulator",
+    "homepage": "https://desmume.org",
+    "license": {
+        "url": "https://github.com/TASEmulators/desmume/blob/master/license.txt",
+        "identifier": "GPL-2.0"
     },
-    "bin": [
+    "architecture": {
+        "64bit": {
+            "url": "https://nightly.link/TASEmulators/desmume/actions/runs/4094773863/desmume-win-x64.zip",
+            "hash": "f9a180dbf8b803d3ed95451ab744d11421e711ea181bb146abd148616390b595",
+            "bin": [
+                [
+                    "DeSmuME-VS2019-x64-Release.exe",
+                    "DeSmuME"
+                ]
+            ]
+        }
+    },
+    "pre_install": [
+        "if (!(Test-Path \"$persist_dir\\desmume.ini\")) {",
+        "    New-Item \"$dir\\desmume.ini\" -Type File | Out-Null",
+        "}"
+    ],
+    "shortcuts": [
         [
             "DeSmuME-VS2019-x64-Release.exe",
             "DeSmuME"
         ]
     ],
-    "checkver": {
-        "regex": "([a-f0-9]{7})<",
-        "url": "https://github.com/TASEmulators/desmume/actions/workflows/build_win.yml?query=branch%3Amaster+is%3Asuccess"
-    },
-    "description": "Nintendo DS emulator",
-    "hash": "f9a180dbf8b803d3ed95451ab744d11421e711ea181bb146abd148616390b595",
-    "homepage": "https://desmume.org",
-    "license": {
-        "identifier": "GPL-2.0",
-        "url": "https://github.com/TASEmulators/desmume/blob/master/license.txt"
-    },
     "persist": [
         "AviFiles",
         "Battery",
@@ -32,17 +42,15 @@
         "StateSlots",
         "desmume.ini"
     ],
-    "pre_install": [
-        "if (!(Test-Path \"$persist_dir\\desmume.ini\")) {",
-        "    New-Item \"$dir\\desmume.ini\" -Type File | Out-Null",
-        "}"
-    ],
-    "shortcuts": [
-        [
-            "DeSmuME-VS2019-x64-Release.exe",
-            "DeSmuME"
-        ]
-    ],
-    "url": "https://nightly.link/TASEmulators/desmume/workflows/build_win/master/desmume-win-x64.zip",
-    "version": "628eb65"
+    "checkver": {
+        "url": "https://nightly.link/TASEmulators/desmume/workflows/build_win/master/desmume-win-x64",
+        "regex": "(?smi)runs/(?<run>\\d+)/desmume-win-x64\\.zip.*pipelines/[\\d]+/runs/([\\d]+)/"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://nightly.link/TASEmulators/desmume/actions/runs/$matchRun/desmume-win-x64.zip"
+            }
+        }
+    }
 }
