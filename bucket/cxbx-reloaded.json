@@ -1,10 +1,10 @@
 {
-    "version": "0b69563",
+    "version": "20221120123738-0b69563",
     "description": "Microsoft Xbox emulator",
     "homepage": "https://cxbx-reloaded.co.uk/",
     "license": {
-        "identifier": "GPL-2.0",
-        "url": "https://github.com/Cxbx-Reloaded/Cxbx-Reloaded/blob/master/COPYING"
+        "url": "https://github.com/Cxbx-Reloaded/Cxbx-Reloaded/blob/master/COPYING",
+        "identifier": "GPL-2.0"
     },
     "url": "https://github.com/Cxbx-Reloaded/Cxbx-Reloaded/releases/download/CI-0b69563/CxbxReloaded-Release-VS2022.zip",
     "hash": "eee0028df987ddca8de69a0bf8e027ca8e192e52cede6c83bdc3d24d649deb9b",
@@ -22,9 +22,16 @@
     ],
     "checkver": {
         "url": "https://github.com/Cxbx-Reloaded/Cxbx-Reloaded/releases.atom",
-        "regex": "CI-([a-f\\d]+)."
+        "script": [
+            "$xml = [xml]$page",
+            "$updated = ($xml.feed.entry | Sort-Object -Descending { $_.updated })[0].updated",
+            "$title = ($xml.feed.entry | Sort-Object -Descending { $_.updated })[0].title",
+            "Write-Output \"$updated $title\""
+        ],
+        "regex": "(?<year>\\d{4})-(?<month>\\d{2})-(?<day>\\d{2})T(?<hour>\\d{2}):(?<minute>\\d{2}):(?<second>\\d{2})Z CI-(?<commit>[a-f0-9]+)",
+        "replace": "${year}${month}${day}${hour}${minute}${second}-${commit}"
     },
     "autoupdate": {
-        "url": "https://github.com/Cxbx-Reloaded/Cxbx-Reloaded/releases/download/CI-$version/CxbxReloaded-Release-VS2022.zip"
+        "url": "https://github.com/Cxbx-Reloaded/Cxbx-Reloaded/releases/download/CI-$matchCommit/CxbxReloaded-Release-VS2022.zip"
     }
 }

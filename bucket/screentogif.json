@@ -6,6 +6,10 @@
     "suggest": {
         "FFmpeg": "ffmpeg"
     },
+    "notes": [
+        "You need the .NET Desktop Runtime 6.0.1 in order to run this application.",
+        "https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-desktop-6.0.1-windows-x64-installer"
+    ],
     "architecture": {
         "64bit": {
             "url": "https://github.com/NickeManarin/ScreenToGif/releases/download/2.37.1/ScreenToGif.2.37.1.Portable.x64.zip",
@@ -14,6 +18,10 @@
         "32bit": {
             "url": "https://github.com/NickeManarin/ScreenToGif/releases/download/2.37.1/ScreenToGif.2.37.1.Portable.x86.zip",
             "hash": "77c239b3f02b705623e954b903a39891cd5761e203e1b5ae232819078d13ac19"
+        },
+        "arm64": {
+            "url": "https://github.com/NickeManarin/ScreenToGif/releases/download/2.37.1/ScreenToGif.2.37.1.Portable.Arm64.zip",
+            "hash": "a900539cc734456cea29f2662bc425c1ffc08c3709a55544955dc060a304ef4f"
         }
     },
     "pre_install": [
@@ -22,7 +30,7 @@
         "        info \"[Portable Mode]: Copying existing settings file %AppData%\\ScreenToGif\\Settings.xaml...\"",
         "        Copy-Item \"$env:AppData\\ScreenToGif\\Settings.xaml\" \"$dir\"",
         "    } else {",
-        "        Set-Content \"$dir\\Settings.xaml\" '<ResourceDictionary></ResourceDictionary>' -Encoding ascii | Out-Null",
+        "        New-Item \"$dir\\Settings.xaml\" -ItemType File | Out-Null",
         "    }",
         "}"
     ],
@@ -44,6 +52,9 @@
             },
             "32bit": {
                 "url": "https://github.com/NickeManarin/ScreenToGif/releases/download/$version/ScreenToGif.$version.Portable.x86.zip"
+            },
+            "arm64": {
+                "url": "https://github.com/NickeManarin/ScreenToGif/releases/download/$version/ScreenToGif.$version.Portable.Arm64.zip"
             }
         }
     }
