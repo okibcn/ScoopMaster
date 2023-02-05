@@ -16,13 +16,15 @@
             "hash": "279dd1321af6ce4ef2459bed2e4388ff9a1585f0cbb37081cdce2cbdd172bcd6"
         }
     },
-    "pre_install": [
-        "$extdir = 'Chrome-bin\\109.0.5414.120\\WidevineCdm'",
-        "$dest = \"$dir\\$([System.IO.Path]::GetRandomFileName())\"",
-        "Expand-7zipArchive \"$dir\\chrome.7z\" $dest $extdir -Removal",
-        "Move-Item -LiteralPath \"$dest\\$extdir\" \"$dir\\WidevineCdm\" -Force",
-        "Remove-Item $dest -Force -Recurse"
-    ],
+    "installer": {
+        "script": [
+            "$extdir = \"Chrome-bin\\$version\\WidevineCdm\"",
+            "$dest = \"$dir\\$([System.IO.Path]::GetRandomFileName())\"",
+            "Expand-7zipArchive \"$dir\\chrome.7z\" $dest $extdir -Removal",
+            "Move-Item -LiteralPath \"$dest\\$extdir\" \"$dir\\WidevineCdm\" -Force",
+            "Remove-Item $dest -Force -Recurse"
+        ]
+    },
     "checkver": {
         "url": "https://scoopinstaller.github.io/UpdateTracker/googlechrome/chrome.min.xml",
         "regex": "(?sm)<stable32><version>(?<version>[\\d.]+)</version>.+release2/chrome/(?<32>[\\w-]+)_.+<stable64>.+release2/chrome/(?<64>[\\w-]+)_.+</stable64>"
@@ -43,13 +45,6 @@
                     "xpath": "/chromechecker/stable32[version='$version']/sha256"
                 }
             }
-        },
-        "pre_install": [
-            "$extdir = 'Chrome-bin\\$version\\WidevineCdm'",
-            "$dest = \"$dir\\$([System.IO.Path]::GetRandomFileName())\"",
-            "Expand-7zipArchive \"$dir\\chrome.7z\" $dest $extdir -Removal",
-            "Move-Item -LiteralPath \"$dest\\$extdir\" \"$dir\\WidevineCdm\" -Force",
-            "Remove-Item $dest -Force -Recurse"
-        ]
+        }
     }
 }
