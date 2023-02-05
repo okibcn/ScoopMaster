@@ -1,0 +1,212 @@
+# Copyright (c) 2023 okibcn
+# This is free software, licensed under the GNU General Public License v3.0
+# See /LICENSE for more information.
+# https://github.com/okibcn/ScoopMaster
+# Description: Scoop Meta-Bucket
+
+name: Scavenger
+on:
+#   schedule:
+#     - cron: '52 * * * *'
+  # runs at minute 52 of each hour.
+  workflow_dispatch:
+    inputs:
+      debug_enabled:
+        description: 'Run the build with tmate debugging enabled true/false (default: false)'
+        required: false
+        default: 'false'
+      release:
+        description: 'Type (yes) for release, (no) will generate an artifact (default: no)'
+        required: false
+        default: 'no'
+
+jobs:
+  build:
+    runs-on: windows-latest
+    # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+    - name: "⏬ Checkout repository"
+      uses: actions/checkout@v3
+
+
+    - name: "🐞 Debug session"
+      uses: mxschmitt/action-tmate@v3
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      if: github.event_name == 'workflow_dispatch' && github.event.inputs.debug_enabled == 'true'
+        ## More info at https://til.simonwillison.net/github-actions/debug-tmate
+        ##           or https://github.com/mxschmitt/action-tmate
+
+
+    - name: "🔧 Install Toolchain OS Tools"
+      run: |
+        cd ..
+        $DLpage= iwr "https://www.7-zip.org/download.html"
+        $DLpage.RawContent -match "7z.+-x64.exe"
+        wget -q "https://www.7-zip.org/a/$($matches[0])"
+        wget -q "https://www.7-zip.org/a/7zr.exe"
+        ./7zr x $matches[0] -o7zdir
+        mv .\7zdir\7z.exe .
+        remove-item 7zr*,*x64.exe,7zdir -Recurse -Force
+
+
+    - name: "🔧 Download manifests from known buckets"
+      run: |
+        cd ..
+        $scoopDBfile = "~\scoopdb.csv"
+        $scoopDBURL = "https://rasa.github.io/scoop-directory/by-apps.html"
+        $ErrorActionPreference = 'SilentlyContinue'
+
+        ## CREATE BUCKETS LIST: $lBuckets
+        $lBuckets = [System.Collections.ArrayList]@()
+        $source = iwr $scoopDBURL
+        $source.Content -split '\r?\n' | ForEach-Object -Process {
+            if ($_ -match '<h2.*(http[^\"]+)"'){
+                [void]$lBuckets.Add($matches[1])
+            }
+        }
+        
+        ## GET all JSONs from BUCKETS in ./jsons
+        $Jobs = 8
+        $progress=0
+        $nbuckets=$lBuckets.Count
+        Remove-Item zips,jsons,ERROR_Downloading.txt,ERROR_empty_buckets.txt -Force -Recurse
+        mkdir zips  -Force | Out-Null
+        mkdir jsons -Force | Out-Null
+        Write-Host "Downloading and extracting manifests from $nbuckets buckets...`n"
+        Foreach ($repo in $lBuckets){
+            Do{$running = (Get-Job -State Running | measure).count} 
+            Until ($running -le $Jobs)
+            Start-Job -Name $repo -ScriptBlock { 
+                $repoURL = $Using:repo 
+                if( -not ($repoURL -match 'https:\/\/github.com\/(.+)')){
+                    $repoURL >> badrepos.txt
+                    return}
+                $owner_repo=$matches[1]
+                $basename=$owner_repo.replace('/','~')
+                $ZIPURL = "$repoURL/archive/refs/heads/master.zip" 
+                $zipfile="./zips/$basename.zip"
+                wget -q $ZIPURL -O "$zipfile"
+                if(-not (test-path "$zipfile")){
+                    $ZIPURL >> ERROR_Downloading.txt
+                    return}
+                ./7z.exe e -y "$zipfile" -o"jsons/$basename" */bucket/*.json */*.json | Out-Null
+                rm "$zipfile"
+                if(-not (test-path "jsons/$basename")){
+                    $repoURL >> ERROR_empty_buckets.txt
+                    return}
+            }  | Out-Null
+            Get-Job -State Completed | Remove-Job | Out-Null
+            $progress++
+            $percent = [math]::round(100 * $progress / $nbuckets)
+            Write-Progress -Activity "Processing " -Status "$percent% ($running) processing: $repo" -PercentComplete $percent
+        }
+        Wait-Job -State Running
+        Get-Job -State Completed | Remove-Job
+        Remove-Item zips,7z.*,jsons/*/.*.json -Force -Recurse
+        $nJsons=(cmd /c dir /s /b /a-d jsons).count
+        Write-Host "PROCESS COMPLETED. $nJsons manifests extracted from $nbuckets buckets."
+        if(Test-Path ERROR_downloading.txt){
+            Write-Host "There where errors downloading the following files:"
+            cat ./ERROR_Downloading.txt
+        }
+        if(Test-Path ERROR_empty_buckets.txt){
+            Write-Host "The following buckets were empty:"
+            cat ./ERROR_empty_buckets.txt
+        }
+
+
+    - name: "📝 Retain last manifest for each package"
+      run: |
+        cd ..
+        mkdir local -Force | Out-Null
+        Remove-Item local/* -Recurse -Force
+        Remove-Item ERROR_manifest.txt -Force
+        $progress=0
+        $nlocal=0
+        $hVersion = @{}
+        $hDate = @{}
+        $hBucket = @{}
+        $njsons=(cmd /c dir /s /b /a-d jsons).count
+        Write-Host "Processing $njsons manifests...`n"
+        gci jsons/*/*.json | ForEach-Object{
+            # FOR EACH PACKETFILE IN BUCKET
+            $name=$_.BaseName
+            try{$version=(Get-Content $_ | ConvertFrom-Json).version}
+            catch{
+                $_.fullname >> ERROR_manifest.txt
+                return
+            }
+            $date=$_.LastWriteTimeUtc
+            if  (-NOT $hVersion.ContainsKey($name)){
+                # Package not in local repo.
+                Move-Item $_ ./local -Force
+                $hVersion.add($name,$version)
+                $hDate.add($name,$date)
+                $hBucket.add($name,$bucket)
+                $nlocal++
+            }elseif (($date -gt $hDate[$name])){
+                # Newer manifest
+                Move-Item $_ ./local -Force
+                $hVersion.Set_Item($name,$version)
+                $hDate.Set_Item($name,$date)
+                $hBucket.Set_Item($name,$bucket)
+            }else {
+                # older version or same version but older manifest
+            }
+            $progress++
+            $percent = [math]::round(100 * $progress / $njsons)
+            Write-Progress -Activity "Processing " -Status "$percent% (Selected: $nlocal) processing: $name" -PercentComplete $percent
+        }
+        Remove-Item jsons -Force -Recurse
+        Write-Host "PROCESS COMPLETED. $nlocal different packages with the newst manifest out of a total of $nJsons manifests."
+        if(Test-Path ERROR_downloading.txt){
+            Write-Host "The followinf manifests have errors:"
+            cat ./ERROR_manifest.txt
+        }
+      
+
+    - name: "📦 Create Package"
+      run: |
+        ############################
+        ##                          ##
+        ##      CREATE PACKAGE      ##
+        ##                          ##
+        ############################
+
+        remove-item bucket -rf
+        move-item ../local bucket
+        # cp LICENSE README* -t WslCompact
+        # VERSION=$(cat WslCompact/WslCompact.psm1 |  grep -Po "^#.*v([\d\.\-]+)" |  grep -Po "([\d\.\-]+)")        
+        # zip "./WslCompact-v$VERSION.zip" WslCompact/*
+        # echo "VERSION=${VERSION}" >>$GITHUB_ENV
+
+
+    - name: "👋 If no new sources are available, then we stop."
+      # if:  env.CANCEL == 'true'
+      uses: andymckay/cancel-action@0.3
+
+
+    - name: "👍 Upload Artifact"
+      uses: actions/upload-artifact@v3
+      if: github.event_name == 'workflow_dispatch' && github.event.inputs.release != 'yes'
+      with:
+        name: ${{ env.VERSION }}
+        path: |
+          *.zip
+
+    - name: "🎉 Publish a new release"
+      uses: softprops/action-gh-release@v0.1.15
+      # go to https://github.com/OWNER/REPO/settings/actions and
+      # in "**"Workflow Permissions" section give actions **Read and Write permissions**.
+      if: github.event_name != 'workflow_dispatch' || github.event.inputs.release == 'yes'
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ env.VERSION }}
+        files: ./*.zip
+#         body: |
+#           ${{ env.BODY }}
