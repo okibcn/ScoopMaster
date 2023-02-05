@@ -1,26 +1,13 @@
 {
-    "$schema": "https://ghproxy.com/https://raw.githubusercontent.com/ScoopInstaller/Scoop/master/schema.json",
     "version": "3.5.0",
-    "description": "A full-featured utility for managing Windows Subsystem for Linux (WSL).",
+    "description": "A full-featured utility for Windows Subsystem for Linux (WSL)",
     "homepage": "https://github.com/DDoSolitary/LxRunOffline",
-    "license": {
-        "identifier": "MIT",
-        "url": "https://github.com/DDoSolitary/LxRunOffline/blob/master/LICENSE"
-    },
-    "notes": "The right-click menu feature requires the shell extension DLL to be properly registered. You can run `regsvr32 LxRunOfflineShellExt.dll` as admin to register the DLL.",
-    "url": "https://ghproxy.com/https://github.com/DDoSolitary/LxRunOffline/releases/download/v3.5.0/LxRunOffline-v3.5.0-msvc.zip",
+    "license": "MIT",
+    "url": "https://github.com/DDoSolitary/LxRunOffline/releases/download/v3.5.0/LxRunOffline-v3.5.0-msvc.zip",
     "hash": "595f1a0da834d37d7fff68376d5bce52084385c9933ef25851aa2b89313092ec",
-    "uninstaller": {
-        "script": [
-            "if ($cmd -eq 'uninstall') {",
-            "  Invoke-ExternalCommand \"regsvr32\" -Args @('/u', '/s', \"$dir\\LxRunOfflineShellExt.dll\") -RunAs -Activity 'Unregistering \"LxRunOfflineShellExt.dll\", a UAC popup may appear...' -ContinueExitCodes @{ 5 = 'If you have not manually registered it before, just ignore this message.' } | Out-Null",
-            "  Start-Sleep -Seconds 3",
-            "}"
-        ]
-    },
     "bin": "LxRunOffline.exe",
     "checkver": "github",
     "autoupdate": {
-        "url": "https://ghproxy.com/https://github.com/DDoSolitary/LxRunOffline/releases/download/v$version/LxRunOffline-v$version-msvc.zip"
+        "url": "https://github.com/DDoSolitary/LxRunOffline/releases/download/v$version/LxRunOffline-v$version-msvc.zip"
     }
 }

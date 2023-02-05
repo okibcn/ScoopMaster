@@ -1,18 +1,25 @@
 {
+    "version": "22.2.904",
+    "description": "A fast, lightweight and extensible text editor for Windows. Useful for opening very large files.",
     "homepage": "https://www.emeditor.com/",
-    "description": "A fast, lightweight, yet extensible, easy-to-use text editor for Windows.",
-    "version": "19.0.0",
     "license": "Shareware",
     "architecture": {
         "64bit": {
-            "url": "https://emeditor.blob.core.windows.net/emed64_19.0.0_portable.zip",
-            "hash": "76d52bfa3d810222917547ea8d3179747cc19ec5782a2b461705fd54c1881eed"
+            "url": "https://emeditor.blob.core.windows.net/emed64_22.2.904_portable.zip",
+            "hash": "67c312ab17ccac9897811a5d6c784c94423e4149ad0cc8fcbefa2539384386a1"
         },
         "32bit": {
-            "url": "https://emeditor.blob.core.windows.net/emed32_19.0.0_portable.zip",
-            "hash": "861137174e050ff6c55b34364e30e4f1d5013f179dd1bc8c7ef6f22029a7fe6c"
+            "url": "https://emeditor.blob.core.windows.net/emed32_22.2.904_portable.zip",
+            "hash": "e21eabdcced4a730f15453b84b2c691a87c06c48d58796434de4f29ddd053202"
         }
     },
+    "pre_install": [
+        "$manifest.persist | ForEach-Object {",
+        "    if ([io.path]::GetExtension($_)) {",
+        "        if (!(Test-Path \"$persist_dir\\$_\")) { New-Item \"$dir\\$_\" | Out-Null }",
+        "    }",
+        "}"
+    ],
     "bin": "EmEditor.exe",
     "shortcuts": [
         [
@@ -21,24 +28,14 @@
         ]
     ],
     "persist": [
-        "AppData",
         "eeCommon.ini",
         "eeConfig.ini",
         "eeLM.ini",
-        "eePlugins.ini",
-        "eeUseIni.ini"
-    ],
-    "pre_install": [
-        "function CreateFile ($name) {",
-        "    if (!(Test-Path \"$persist_dir\\$name\")) {",
-        "        New-Item -Force -Path \"$persist_dir\" -Name $name -ItemType \"file\"",
-        "    }",
-        "}",
-        "'eeCommon.ini', 'eeConfig.ini', 'eeLM.ini','eePlugins.ini' | % {CreateFile $_}"
+        "eePlugins.ini"
     ],
     "checkver": {
-        "url": "https://www.emeditor.com/download/",
-        "regex": "Download latest version: v([\\d.]+)"
+        "url": "https://support.emeditor.com/en/downloads",
+        "regex": "v([\\d.]+)"
     },
     "autoupdate": {
         "architecture": {

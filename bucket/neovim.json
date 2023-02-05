@@ -17,22 +17,8 @@
     },
     "extract_dir": "nvim-win64",
     "bin": [
-        [
-            "bin\\nvim.exe",
-            "nvim"
-        ],
-        [
-            "bin\\nvim.exe",
-            "vim"
-        ],
-        [
-            "bin\\nvim.exe",
-            "vi"
-        ],
-        [
-            "bin\\nvim-qt.exe",
-            "nvim-qt.exe"
-        ]
+        "bin\\nvim.exe",
+        "bin\\nvim-qt.exe"
     ],
     "shortcuts": [
         [
@@ -42,7 +28,9 @@
     ],
     "checkver": {
         "url": "https://api.github.com/repos/neovim/neovim/releases/latest",
-        "regex": "NVIM v([\\d.]+)"
+        "jsonpath": "$.body",
+        "regex": "NVIM v(?<majorVersion>[\\w.-]+)\\.(?<minorVersion>[\\w.-]+)\\.(?<patchVersion>[\\w.-]+)",
+        "replace": "${majorVersion}.${minorVersion}.${patchVersion}"
     },
     "autoupdate": {
         "architecture": {
