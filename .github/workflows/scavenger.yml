@@ -39,7 +39,7 @@ jobs:
     #     ./ScoopMaster/bin/scavenger.ps1
 
 
-    - name: "⏬ Download known buckets"
+    - name: "⏬ Discover known buckets from Scoop-Directory website."
       run: |
         cd ..
         $scoopDBURL = "https://rasa.github.io/scoop-directory/by-apps.html"
@@ -51,8 +51,12 @@ jobs:
                 [void]$lBuckets.Add($matches[1])
             }
         }
-        $lBuckets >> Bucket_list.txt
+        $lBuckets > Bucket_list.txt
+        
 
+    - name: "⏬ Download known buckets"
+      run: |
+        $buckets=(cat .\Bucket_list.txt)
         ## CREATE INPUT FILE FOR ARIA2C
         $lZips=$lBuckets | %{
             if( -not ($_ -match 'https:\/\/github.com\/(.+)')){
@@ -65,8 +69,7 @@ jobs:
 
         # DOWNLOAD BUCKETS
         aria2c --save-session aria2-out.txt -j 16 -i download_list.txt -d zips
-        (cmd.exe /c dir /s /b /a-d zips) >> Zip_list.txt
-        $nZips = (cmd.exe /c dir /s /b /a-d zips).count
+        (cmd.exe /c dir /s /b /a-d zips) > Zip_list.txt
 
 
     - name: "📃 Extract manifests from downloaded buckets"
@@ -96,23 +99,16 @@ jobs:
         gci jsons/*/*.json | ForEach-Object{
             # FOR EACH PACKETFILE IN BUCKET
             $name=$_.BaseName
-            try{$version=(Get-Content $_ | ConvertFrom-Json).version}
-            catch{
-                $_.FullName >> ERROR_manifest.txt
-                return
-            }
             $date=$_.LastWriteTimeUtc
             if  (-NOT $hVersion.ContainsKey($name)){
                 # Package not in local repo.
                 Move-Item $_ ./local -Force
-                $hVersion.add($name,$version)
                 $hDate.add($name,$date)
                 $hBucket.add($name,$bucket)
                 $nlocal++
             }elseif (($date -gt $hDate[$name])){
                 # Newer manifest
                 Move-Item $_ ./local -Force
-                $hVersion.Set_Item($name,$version)
                 $hDate.Set_Item($name,$date)
                 $hBucket.Set_Item($name,$bucket)
             }else {
@@ -150,6 +146,11 @@ jobs:
         # echo "VERSION=${VERSION}" >>$GITHUB_ENV
 
 
+    - name: Simple commit
+      uses: zwaldowski/git-commit-action@v1
+
+
+
     - name: "🐞 Debug session"
       uses: mxschmitt/action-tmate@v3
       env:
@@ -184,3 +185,4 @@ jobs:
         files: ./*.zip
 #         body: |
 #           ${{ env.BODY }}
+   
