@@ -179,17 +179,3 @@ jobs:
         name: Logs
         path: |
           *.txt
-
-    - name: "🎉 Publish a new release"
-      uses: softprops/action-gh-release@v0.1.15
-      # go to https://github.com/OWNER/REPO/settings/actions and
-      # in "**"Workflow Permissions" section give actions **Read and Write permissions**.
-      if: github.event_name != 'workflow_dispatch' || github.event.inputs.release == 'yes'
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: ${{ env.VERSION }}
-        files: ../*.txt
-#         body: |
-#           ${{ env.BODY }}
-   
