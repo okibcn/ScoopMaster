@@ -52,12 +52,14 @@ jobs:
             }
         }
         $lBuckets > Bucket_list.txt
+        Write-Host "$($lBuckets.count) buckets found."
+
         
 
     - name: "⏬ Download known buckets"
       run: |
         cd ..
-        $buckets=(cat .\Bucket_list.txt)
+        $lBuckets=(cat .\Bucket_list.txt)
         ## CREATE INPUT FILE FOR ARIA2C
         $lZips=$lBuckets | %{
             if( -not ($_ -match 'https:\/\/github.com\/(.+)')){
