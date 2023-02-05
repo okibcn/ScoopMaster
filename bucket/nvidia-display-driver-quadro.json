@@ -1,0 +1,38 @@
+{
+    "version": "392.67",
+    "description": "NVIDIA display driver.",
+    "homepage": "https://www.nvidia.com/Download/index.aspx",
+    "license": "Freeware",
+    "notes": [
+        "This is only an installer for the NVIDIA display driver. Running `scoop uninstall nvidia-display-driver-np` will only unregister it from Scoop.",
+        "The NVIDIA display driver installer installs and enables the NVIDIA Display Container LS service, which is required for the NVIDIA Control Panel application but also contains telemetry components.",
+        "To disable this functionality and prevent it from being re-enabled on future updates, disable the service using the following commands:",
+        "$ Stop-Service NVDisplay.ContainerLocalSystem",
+        "$ Set-Service NVDisplay.ContainerLocalSystem -StartupType Disabled"
+    ],
+    "url": "https://ru.download.nvidia.com/Windows/Quadro_Certified/392.67/392.67-quadro-desktop-notebook-win10-64bit-international-whql.exe#/dl.7z",
+    "hash": "609929a849b9182f93571f140a35ef6ea10a7f19dbe02d329e719c6100924771",
+    "installer": {
+        "script": [
+            "$service_disabled = (Get-CimInstance win32_service -Filter \"name='NVDisplay.ContainerLocalSystem'\").StartMode -eq 'Disabled'",
+            "if ($service_disabled) {",
+            "    Start-Process -Wait -WindowStyle Hidden cmd \"/c call `\"$dir\\setup.exe`\" -s -noreboot && sc config NVDisplay.ContainerLocalSystem start= disabled && sc stop NVDisplay.ContainerLocalSystem\" -Verb RunAs",
+            "} else {",
+            "    Start-Process -Wait \"$dir\\setup.exe\" \"-s -noreboot\" -Verb RunAs",
+            "}",
+            "",
+            "Remove-Item -Recurse \"$dir\\*\""
+        ]
+    },
+    "checkver": {
+        "url": "https://www.nvidia.com/Download/processFind.aspx?psid=74&pfid=659&osid=57",
+        "regex": ">([\\d.]{6})<"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://ru.download.nvidia.com/Windows/Quadro_Certified/$version/$version-quadro-desktop-notebook-win10-64bit-international-whql.exe#/dl.7z"
+            }
+        }
+    }
+}

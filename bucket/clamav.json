@@ -1,0 +1,48 @@
+{
+    "homepage": "https://www.clamav.net/",
+    "version": "1.0.0",
+    "license": "GPL-2.0-or-later",
+    "architecture": {
+        "64bit": {
+            "url": "https://www.clamav.net/downloads/production/clamav-1.0.0.win.x64.zip",
+            "hash": "5f050e768620df27c61eb02df05ae9b277742acee9eab463587d2abd9acd8178",
+            "extract_dir": "clamav-1.0.0.win.x64"
+        },
+        "32bit": {
+            "url": "https://www.clamav.net/downloads/production/clamav-1.0.0.win.win32.zip",
+            "hash": "39fe6cd873d49828670f666d6968bbccca9056421c51224fdd3400f50b0d2455",
+            "extract_dir": "clamav-1.0.0.win.win32"
+        }
+    },
+    "pre_install": "'clamd', 'freshclam' | % { (Get-Content \"$dir\\conf_examples\\$_.conf.sample\") -replace '^\\s*Example\\b', '#$0' -replace '$', \"`n\" -join '' | Set-Content -NoNewline -Encoding Ascii \"$dir\\$_.conf\" }",
+    "persist": [
+        "database",
+        "clamd.conf",
+        "freshclam.conf"
+    ],
+    "bin": [
+        "clambc.exe",
+        "clamconf.exe",
+        "clamd.exe",
+        "clamdscan.exe",
+        "clamscan.exe",
+        "freshclam.exe",
+        "sigtool.exe"
+    ],
+    "checkver": {
+        "url": "https://www.clamav.net/downloads",
+        "re": "\\b/clamav-([\\d.]+).win.x64.zip\\b"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://www.clamav.net/downloads/production/clamav-$version.win.x64.zip",
+                "extract_dir": "clamav-$version.win.x64"
+            },
+            "32bit": {
+                "url": "https://www.clamav.net/downloads/production/clamav-$version.win.win32.zip",
+                "extract_dir": "clamav-$version.win.win32"
+            }
+        }
+    }
+}

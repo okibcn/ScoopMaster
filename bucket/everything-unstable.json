@@ -1,0 +1,38 @@
+{
+    "version": "1.5.0.1336a",
+    "description": "Locate files and folders by name instantly.",
+    "homepage": "https://www.voidtools.com",
+    "license": "MIT",
+    "architecture": {
+        "64bit": {
+            "url": "https://www.voidtools.com/Everything-1.5.0.1336a.x64.zip",
+            "hash": "12373992373734f4e0a3f6d9152520d83dea8a170cb70518922d44a90bd0fd55"
+        },
+        "32bit": {
+            "url": "https://www.voidtools.com/Everything-1.5.0.1336a.x86.zip",
+            "hash": "9aaf8a85f90e0de9ed3737089f40d4ba6bd4035b50a1e28278efa256ead95701"
+        }
+    },
+    "pre_install": [
+        "ensure \"$persist_dir\" | Out-Null",
+        "if (!(Test-Path \"$persist_dir\\Everything.ini\")) { Invoke-ExternalCommand \"$dir\\Everything.exe\" -Args @('-install-config null') | Out-Null }",
+        "Get-ChildItem \"$persist_dir\\*\" -Include 'Everything.db', 'Bookmarks.csv', 'Everything.ini' | Copy-Item -Destination \"$dir\" -ErrorAction SilentlyContinue"
+    ],
+    "uninstaller": {
+        "script": "Get-ChildItem \"$dir\\*\" -Include 'Everything.ini', 'Everything.db', 'Bookmarks.csv' | Copy-Item -Destination \"$persist_dir\" -ErrorAction SilentlyContinue -Force"
+    },
+    "checkver": {
+        "url": "https://www.voidtools.com/forum/viewtopic.php?t=9787",
+        "regex": "class=\"postlink\">Everything-(\\d+.*?a)\\.x64\\.zip<"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://www.voidtools.com/Everything-$version.x64.zip"
+            },
+            "32bit": {
+                "url": "https://www.voidtools.com/Everything-$version.x86.zip"
+            }
+        }
+    }
+}

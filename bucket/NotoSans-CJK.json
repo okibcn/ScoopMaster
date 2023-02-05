@@ -1,0 +1,42 @@
+{
+    "version": "2.004",
+    "license": "MIT",
+    "homepage": "https://github.com/epoweripione/terminal-custom",
+    "url": "https://github.com/epoweripione/fonts/releases/download/v0.1.0/NotoSansCJK-ttc-2.004.zip",
+    "hash": "4fd718e79fd0b31229aa123ee48c0ced14bcdb1bc9c93799328a23feefae9273",
+    "depends": "sudo",
+    "installer": {
+        "script": [
+            "if(!(is_admin)) { error \"Admin rights are required, please run 'sudo scoop install $app'\"; exit 1 }",
+            "Get-ChildItem \"$env:windir\\Fonts\" -Filter 'NotoSansCJK-*.ttc' | ForEach-Object {",
+            "  try {",
+            "    Remove-Item \"$env:windir\\Fonts\\$($_.Name)\" -Force -ErrorAction Stop",
+            "  } catch {",
+            "    Write-Warning \"Something failed, please try again later or after a reboot!`n$($error[0])\"",
+            "    exit 1",
+            "  }",
+            "}",
+            "Get-ChildItem \"$dir\" -Filter 'NotoSansCJK-*.ttc' | ForEach-Object {",
+            "    New-ItemProperty -Path 'HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts' -Name $_.Name.Replace($_.Extension, ' (TrueType)') -Value $_.Name -Force | Out-Null",
+            "    Copy-Item $_.FullName -destination \"$env:windir\\Fonts\"",
+            "}"
+        ]
+    },
+    "uninstaller": {
+        "script": [
+            "if(!(is_admin)) { error \"Admin rights are required, please run 'sudo scoop uninstall $app'\"; exit 1 }",
+            "Get-ChildItem \"$dir\" -Filter 'NotoSansCJK-*.ttc' | ForEach-Object {",
+            "    Remove-ItemProperty -Path 'HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts' -Name $_.Name.Replace($_.Extension, ' (TrueType)') -Force -ErrorAction SilentlyContinue",
+            "    Remove-Item \"$env:windir\\Fonts\\$($_.Name)\" -Force -ErrorAction SilentlyContinue",
+            "}",
+            "Write-Host \"The '$($app.Replace('-NF', ''))' Font family has been uninstalled and will not be present after restarting your computer.\" -Foreground Magenta"
+        ]
+    },
+    "checkver": {
+        "url": "https://github.com/epoweripione/fonts/blob/main/README.md",
+        "regex": "NotoSansCJK-ttc-([\\d.]+)\\.zip"
+    },
+    "autoupdate": {
+        "url": "https://github.com/epoweripione/fonts/releases/download/v0.1.0/NotoSansCJK-ttc-$version.zip"
+    }
+}

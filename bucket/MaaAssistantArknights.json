@@ -1,0 +1,33 @@
+{
+    "version": "4.10.5",
+    "homepage": "https://github.com/MaaAssistantArknights/MaaAssistantArknights",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/MaaAssistantArknights/MaaAssistantArknights/releases/download/v4.10.5/MAA-v4.10.5-win-x64.zip",
+            "hash": "c2d9ff566d2ca151180b85b9156817551f18d8652faa779b26c032e1514548db"
+        }
+    },
+    "shortcuts": [
+        [
+            "MAA.exe",
+            "MAA"
+        ]
+    ],
+    "pre_install": [
+        "$file='gui.json'",
+        "if (!(Test-Path \"$persist_dir\\$file\")) {",
+        "    New-Item \"$dir\\$file\" -Type File | Out-Null",
+        "}"
+    ],
+    "persist": "gui.json",
+    "checkver": {
+        "github": "https://github.com/MaaAssistantArknights/MaaAssistantArknights"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/MaaAssistantArknights/MaaAssistantArknights/releases/download/v$version/MAA-v$version-win-x64.zip"
+            }
+        }
+    }
+}

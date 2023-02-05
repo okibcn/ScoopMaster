@@ -1,0 +1,49 @@
+{
+    "version": "1.0.7",
+    "description": "Sandboxie Plus. Sandboxie is a sandbox-based isolation software for 32- and 64-bit Windows NT-based operating systems.",
+    "homepage": "https://sandboxie-plus.com/",
+    "license": "Opensource",
+    "changelog": "https://github.com/sandboxie-plus/Sandboxie/releases",
+    "notes": "",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/sandboxie-plus/Sandboxie/releases/download/1.0.7/Sandboxie-Plus-x64-v1.0.7.exe#/setup.exe",
+            "hash": "0dbbf8f850cf0b2a4558bbe5aedcf65988f81cb5c1f59e6db61969c559645caf"
+        },
+        "32bit": {
+            "url": "https://github.com/sandboxie-plus/Sandboxie/releases/download/1.0.7/Sandboxie-Plus-x86-v1.0.7.exe#/setup.exe",
+            "hash": "e1dd0fa1bc2304d8679013f7550bc2e2657ea3a3e0b3471d6200c9aee03db4fe"
+        }
+    },
+    "installer": {
+        "script": [
+            "&\"$dir\\setup.exe\" /VERYSILENT /PORTABLE=1 | Out-Null",
+            "if (Test-Path -Path \"$dir\\setup.exe\") { Remove-Item \"$dir\\setup.exe\" -Force }",
+            "if (!(Test-Path \"$persist_dir\\Sandbox\")) {",
+            "   ensure \"$dir\\Sandbox\" | Out-Null",
+            "}"
+        ]
+    },
+    "persist": "Sandbox",
+    "bin": "Sandboxie-Plus\\SandMan.exe",
+    "shortcuts": [
+        [
+            "Sandboxie-Plus\\SandMan.exe",
+            "Sandboxie Plus"
+        ]
+    ],
+    "checkver": {
+        "url": "https://sandboxie-plus.com/downloads/",
+        "regex": "Sandboxie-Plus-x64-v([\\d.]+).exe"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/sandboxie-plus/Sandboxie/releases/download/$version/Sandboxie-Plus-x64-v$version.exe#/setup.exe"
+            },
+            "32bit": {
+                "url": "https://github.com/sandboxie-plus/Sandboxie/releases/download/$version/Sandboxie-Plus-x86-v$version.exe#/setup.exe"
+            }
+        }
+    }
+}

@@ -1,0 +1,29 @@
+{
+    "version": "3.0.4",
+    "description": "All of your work in one place: Tasks, Docs, Chat, Goals, & more.",
+    "homepage": "https://www.clickup.com/",
+    "license": {
+        "identifier": "Proprietary",
+        "url": "https://clickup.com/terms"
+    },
+    "url": "https://desktop.clickup.com/windows/#dl.7z",
+    "hash": "F392A734746708E9AF21ADDC350980CCB914A863B7D2C768AE861B794653C67A",
+    "architecture": {
+        "64bit": {
+            "pre_install": "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\""
+        },
+        "32bit": {
+            "pre_install": "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-32.7z\" \"$dir\""
+        }
+    },
+    "post_install": [
+            "Remove-Item \"$dir\\`$PLUGINSDIR\" -Recurse",
+            "Rename-Item -Path \"$dir\\resources\\app-update.yml\" -NewName app-update.yml.backup"
+        ],
+    "shortcuts": [
+        [
+            "ClickUp.exe",
+            "ClickUp"
+        ]
+    ]
+}

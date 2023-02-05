@@ -1,0 +1,27 @@
+{
+    "version": "15265",
+    "description": "PDF and eBook reader",
+    "homepage": "https://www.sumatrapdfreader.org",
+    "license": "GPL-3.0-only,BSD-2-Clause",
+    "url": "https://www.sumatrapdfreader.org/dl/prerel/15265/SumatraPDF-prerel-64-install.exe",
+    "hash": "540922d179dd03dcf88af6e2f11dcc84900113e55a63f5955830f1848f411c2d",
+    "checkver": {
+        "url": "https://kjkpubsf.sfo2.digitaloceanspaces.com/software/sumatrapdf/sumatralatest.js",
+        "regex": "var sumLatestInstaller64\\s+=\\s+\"(?<url>https.*/prerel/(?<version>.*?)/SumatraPDF-prerel-64.install.exe)\";",
+        "replace": "${version}"
+    },
+    "autoupdate": {
+        "url": "$matchUrl"
+    },
+    "installer": {
+        "keep": false,
+        "script": [
+            "PUSHD \"$dir\"",
+            "&.\\\"$fname\" -x",
+            "Start-Sleep -Seconds 1",
+            "Remove-Item -Force \"$fname\"",
+            "POPD"
+        ]
+    },
+    "post_install": "Write-Output '[Policies]' 'CopySelection    = 1' 'DiskAccess       = 1' 'FullscreenAccess = 1' 'InternetAccess   = 0' 'LinkProtocols    = http,https' 'PrinterAccess    = 0' 'RegistryAccess   = 0' 'SafeFileTypes    =' 'SavePreferences  = 1' | Out-File \"$dir\\sumatrapdfrestrict.ini\""
+}

@@ -1,0 +1,41 @@
+{
+    "version": "2.0.23033",
+    "description": "Set of software components that allows the creation of user mode file systems.",
+    "homepage": "https://winfsp.dev/",
+    "license": "GPL-3.0-only",
+    "url": "https://github.com/winfsp/winfsp/releases/download/v2.0B2/winfsp-2.0.23033.msi#/setup.msi_",
+    "hash": "bf3595765ff179b6664600b0065cd77c89823a3803c55cbd35ee4e014141f16c",
+    "installer": {
+        "script": [
+            "$install = \"$dir\\install\"",
+            "New-Item -ItemType dir $install | Out-Null",
+            "Invoke-ExternalCommand msiexec.exe -ArgumentList @('/i', \"$dir\\setup.msi_\", 'ADDLOCAL=F.Developer,F.KernelDeveloper', \"/qn /norestart INSTALLLEVEL=1000 INSTALLDIR=$install\") -RunAs | Out-Null",
+            "if ($architecture -eq 'arm64') { $arch = '-a64' } else { $arch = \"-x$($architecture.Substring(0, 2))\" }",
+            "'fsptool', 'launchctl', 'launcher', 'memfs' | ForEach-Object { Get-ChildItem \"$install\\bin\\$_$arch.exe\" } | Rename-Item -NewName { $_.name -Replace $arch }"
+        ]
+    },
+    "pre_uninstall": [
+        "'sshfs*', 'ssh', 'explorer' | ForEach-Object { Stop-Process -Force -Name $_ -ErrorAction SilentlyContinue }",
+        "'WinFsp.Launcher', 'WinFsp', 'StorSvc' | ForEach-Object { sc.exe stop $_ | Out-Null }"
+    ],
+    "uninstaller": {
+        "script": [
+            "Invoke-ExternalCommand msiexec.exe -ArgumentList @('/x', \"$dir\\setup.msi_\", '/qn /norestart') -RunAs | Out-Null",
+            "sc.exe start StorSvc | Out-Null"
+        ]
+    },
+    "bin": [
+        "install\\bin\\fsptool.exe",
+        "install\\bin\\launchctl.exe",
+        "install\\bin\\launcher.exe",
+        "install\\bin\\memfs.exe"
+    ],
+    "checkver": {
+        "url": "https://api.github.com/repositories/59151203/releases",
+        "jsonpath": "$.[0].assets[0].browser_download_url",
+        "regex": "v(?<tag>[\\w.]+)/winfsp-([\\d.]+).msi"
+    },
+    "autoupdate": {
+        "url": "https://github.com/winfsp/winfsp/releases/download/v$matchTag/winfsp-$version.msi#/setup.msi_"
+    }
+}

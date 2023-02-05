@@ -1,0 +1,72 @@
+{
+    "$schema": "https://raw.githubusercontent.com/lukesampson/scoop/master/schema.json",
+    "version": "109.0.1",
+    "description": "Popular open source web browser with Japanese localization.",
+    "homepage": "https://www.mozilla.org/firefox/",
+    "license": "MPL-2.0",
+    "notes": [
+        "To set profile 'Scoop' as *DEFAULT*, or profiles/settings was lost after update:",
+        "  - Run 'Firefox Profile Manager', choose 'Scoop' then click 'Start Firefox'.",
+        "  - Visit 'about:profiles' page in Firefox to check *DEFAULT* profile.",
+        "For details: https://support.mozilla.org/en-US/kb/profile-manager-create-remove-switch-firefox-profiles"
+    ],
+    "architecture": {
+        "64bit": {
+            "url": "https://archive.mozilla.org/pub/firefox/releases/109.0.1/win64/ja/Firefox%20Setup%20109.0.1.exe#/dl.7z",
+            "hash": "sha512:8c4ead8f95ef590835fabaac2e4be68f2f1a987d83bb81a21852f13dbaf32964db5aa7b1481889d19f89efd86da87f24aeb52333c35f5f730546453ee163f033"
+        },
+        "32bit": {
+            "url": "https://archive.mozilla.org/pub/firefox/releases/109.0.1/win32/ja/Firefox%20Setup%20109.0.1.exe#/dl.7z",
+            "hash": "sha512:f4a5924460949c9ec895fbc71ea4632637e60364e33f10e7406f97e12e542ab0685944745dac07b77693384040ee101f709d9305526b93f71643cb477caa7363"
+        }
+    },
+    "extract_dir": "core",
+    "post_install": [
+        "$scoop_profile = Join-Path $persist_dir Profiles | Join-Path -ChildPath Scoop",
+        "ensure $scoop_profile | Out-Null",
+        "firefox -CreateProfile \"Scoop $scoop_profile\"",
+        "$Addition = Join-Path $persist_dir addition",
+        "if (Test-Path $Addition) {",
+        "  info 'Copying additional items...'",
+        "  Copy-Item -Path (Join-Path $Addition *) -Destination $dir -Force -Recurse -ErrorAction SilentlyContinue",
+        "}"
+    ],
+    "bin": "firefox.exe",
+    "shortcuts": [
+        [
+            "firefox.exe",
+            "Firefox"
+        ],
+        [
+            "firefox.exe",
+            "Firefox Profile Manager",
+            "-P"
+        ]
+    ],
+    "persist": [
+        "distribution",
+        "Profiles"
+    ],
+    "checkver": {
+        "url": "https://www.mozilla.org/en-US/firefox/notes/",
+        "regex": "<div class=\"c-release-version\">([\\d.]+)</div>"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://archive.mozilla.org/pub/firefox/releases/$version/win64/ja/Firefox%20Setup%20$version.exe#/dl.7z",
+                "hash": {
+                    "url": "https://archive.mozilla.org/pub/firefox/releases/$version/SHA512SUMS",
+                    "regex": "$sha512\\s+win64/ja/$basename"
+                }
+            },
+            "32bit": {
+                "url": "https://archive.mozilla.org/pub/firefox/releases/$version/win32/ja/Firefox%20Setup%20$version.exe#/dl.7z",
+                "hash": {
+                    "url": "https://archive.mozilla.org/pub/firefox/releases/$version/SHA512SUMS",
+                    "regex": "$sha512\\s+win32/ja/$basename"
+                }
+            }
+        }
+    }
+}

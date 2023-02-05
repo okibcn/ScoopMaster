@@ -1,0 +1,37 @@
+{
+    "$schema": "https://raw.githubusercontent.com/ScoopInstaller/Scoop/master/schema.json",
+    "version": "7.0.102",
+    "homepage": "https://www.microsoft.com/net/",
+    "description": ".NET is a free, cross-platform, open source developer platform for building many different types of applications.",
+    "license": "MIT",
+    "architecture": {
+        "64bit": {
+            "url": "https://dotnetcli.blob.core.windows.net/dotnet/Sdk/7.0.102/dotnet-sdk-7.0.102-win-x64.zip",
+            "hash": "sha512:841ca296ae1d4f6efed6516dec0594c44449129113e05351b3ca8a92b573ee5d333eaabb577169f5e32c12ee977f24ac0ee3d9a30fbb9a2b0b7c08b8dd414e85"
+        },
+        "32bit": {
+            "url": "https://dotnetcli.blob.core.windows.net/dotnet/Sdk/7.0.102/dotnet-sdk-7.0.102-win-x86.zip",
+            "hash": "sha512:96168b0f72ca15857082aa3b89342da709daac12251e02f2673e108ad0b47254d11a60a3457cee699ddaae6d486372c5e3bbf393077e1d27a0f635b099c03993"
+        }
+    },
+    "bin": "dotnet.exe",
+    "checkver": {
+        "url": "https://raw.githubusercontent.com/dotnet/core/master/release-notes/releases-index.json",
+        "jsonpath": "$..releases-index[0]",
+        "regex": "\"latest-release\": \"(?<shaver>[^\"]+)\",(?s:.)*?\"latest-sdk\": \"(?<version>[^\"]+)\",",
+        "replace": "${version}"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://dotnetcli.blob.core.windows.net/dotnet/Sdk/$version/dotnet-sdk-$version-win-x64.zip"
+            },
+            "32bit": {
+                "url": "https://dotnetcli.blob.core.windows.net/dotnet/Sdk/$version/dotnet-sdk-$version-win-x86.zip"
+            }
+        },
+        "hash": {
+            "url": "https://dotnetcli.blob.core.windows.net/dotnet/checksums/$matchShaver-sha.txt"
+        }
+    }
+}

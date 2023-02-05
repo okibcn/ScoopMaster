@@ -1,0 +1,47 @@
+{
+    "version": "27.1-20200930",
+    "description": "Clean and optimized build of Emacs for Windows x86-64 systems.",
+    "homepage": "https://github.com/m-parashar/emax64",
+    "license": {
+        "identifier": "GPL-3.0-or-later",
+        "url": "https://github.com/m-parashar/emax64/blob/master/LICENSE"
+    },
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/m-parashar/emax64/releases/download/20200930/emax64-27.1-stock.7z",
+            "hash": "5b77180cc93d697e7acbf3b90d8ad229907c078dade9de4e4d922cc441391b73",
+            "extract_dir": "emax64"
+        }
+    },
+    "bin": [
+        "bin\\runemacs.exe",
+        "bin\\emacs.exe",
+        "bin\\emacsclientw.exe",
+        "bin\\etags.exe",
+        "bin\\ctags.exe",
+        "bin\\ebrowse.exe"
+    ],
+    "shortcuts": [
+        [
+            "bin\\runemacs.exe",
+            "Emacs"
+        ],
+        [
+            "bin\\emacsclientw.exe",
+            "Emacs Client",
+            "-nca \"runemacs\""
+        ]
+    ],
+    "checkver": {
+        "github": "https://github.com/m-parashar/emax64",
+        "regex": "/(?<date>\\d+)/emax64-(?<version>[\\d.]+)-stock.7z",
+        "replace": "${version}-${date}"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/m-parashar/emax64/releases/download/$matchDate/emax64-$matchVersion-stock.7z"
+            }
+        }
+    }
+}

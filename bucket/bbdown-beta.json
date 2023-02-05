@@ -1,0 +1,41 @@
+{
+    "version": "20221216.e4e9c21",
+    "description": "A command line tool that supports bilibili video downloads, maintained by nilaoda.",
+    "homepage": "https://github.com/nilaoda/BBDown",
+    "license": {
+        "identifier": "MIT",
+        "url": "https://github.com/nilaoda/BBDown/raw/master/LICENSE"
+    },
+    "notes": [
+        "This software requires external programs for mixing:",
+        "- Normal video: ffmpeg, or mp4box",
+        "- Dolby Vision: ffmpeg5.0 or higher or the new mp4box."
+    ],
+    "depends": "aria2",
+    "suggest": {
+        "ffmpeg": [
+            "ffmpeg",
+            "ffmpeg-shared"
+        ],
+        "mp4box": "gpac"
+    },
+    "architecture": {
+        "64bit": {
+            "url": "https://nightly.link/nilaoda/BBDown/actions/runs/3711313318/BBDown_win-x64.zip",
+            "hash": "dce98d1150d8ad7e1b6d587f63e5f0a672e0812175e0a0c32e5326c0f8fa88f5"
+        }
+    },
+    "bin": "BBDown.exe",
+    "checkver": {
+        "url": "https://scoop-apps.vercel.app/nilaoda/BBDown",
+        "regex": "(?sm)/nilaoda/BBDown/actions/runs/(?<runid>\\d+).+datetime=\"(?<year>\\d+).(?<month>\\d+).(?<day>\\d+).*?commit/(?<sha>[0-9a-f]{7})",
+        "replace": "${year}${month}${day}.${sha}"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://nightly.link/nilaoda/BBDown/actions/runs/$matchRunid/BBDown_win-x64.zip"
+            }
+        }
+    }
+}

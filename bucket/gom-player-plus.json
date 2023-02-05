@@ -1,0 +1,55 @@
+{
+    "version": "2.3.83.5350",
+    "description": "an ad-free premium video player optimized for high-definition video playback such as UHD, 4K, etc. (paid version for gom-player; license needed)",
+    "homepage": "https://www.gomlab.com/gomplayerplus-media-player/",
+    "license": "Proprietary",
+    "architecture": {
+        "64bit": {
+            "url": "https://cdn2.gomlab.com/gretech/player64/new/GOMPlayerPlusGlobalSetup.exe#/dl.7z",
+            "hash": "001d1155bf4c8798d91e582aa2a44940e566eb8a661f30e6491ba4400260913c",
+            "bin": "GOM64.EXE",
+            "shortcuts": [
+                [
+                    "GOM64.EXE",
+                    "GOM Player Plus"
+                ]
+            ]
+        },
+        "32bit": {
+            "url": "https://cdn2.gomlab.com/gretech/player/plus/new/GOMPlayerPlusGlobalSetup.exe#/dl.7z",
+            "hash": "eed56fb14b1a42b3bcedb4f75d0f834aa0bcac141e3f4cb84d5951f3cbaab9a3",
+            "bin": "GOM.EXE",
+            "shortcuts": [
+                [
+                    "GOM.EXE",
+                    "GOM Player Plus"
+                ]
+            ]
+        }
+    },
+    "pre_install": [
+        "@(",
+        "    '$PLUGINSDIR',",
+        "    '$TEMP',",
+        "    'GOMMODULEUPDATE.EXE',",
+        "    'Uninstall.exe',",
+        "    'Uninstall.dat'",
+        ") | ForEach-Object {",
+        "    Remove-Item (Join-Path $dir $_) -Force -Recurse",
+        "}"
+    ],
+    "checkver": {
+        "url": "https://www.gomlab.com/ajax/update.gom?page=1&lang=eng&product=GOMPLAYERPLUS&update_lang=eng",
+        "regex": "<td><strong class=\"txt_point\">([0-9.]+)</strong></td>"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://cdn2.gomlab.com/gretech/player64/new/GOMPlayerPlusGlobalSetup.exe#/dl.7z"
+            },
+            "32bit": {
+                "url": "https://cdn2.gomlab.com/gretech/player/plus/new/GOMPlayerPlusGlobalSetup.exe#/dl.7z"
+            }
+        }
+    }
+}
