@@ -1,10 +1,14 @@
 {
     "version": "1.5.6",
-    "description": "哔哩下载姬（downkyi），B站视频下载工具，支持批量下载，支持4K，支持解除地区限制下载，提供工具箱（音视频提取、去水印等）",
+    "description": "哔哩下载姬 downkyi, B 站视频下载工具, 支持批量下载, 支持 4K, 支持解除地区限制下载, 提供工具箱(音视频提取、去水印等).",
     "homepage": "https://github.com/leiurayer/downkyi",
-    "license": "Apache-2.0",
+    "license": {
+        "identifier": "GPL-3.0-only",
+        "url": "https://github.com/leiurayer/downkyi/blob/main/LICENSE"
+    },
     "url": "https://github.com/leiurayer/downkyi/releases/download/v1.5.6/DownKyi-1.5.6.zip",
     "hash": "c20f69fa3762129a22603c8df07f4a32d45bd74ed5135a57ef61fdd57d1741dd",
+    "bin": "DownKyi.exe",
     "shortcuts": [
         [
             "DownKyi.exe",
@@ -17,10 +21,11 @@
         "aria"
     ],
     "checkver": {
-        "url": "https://github.com/leiurayer/downkyi/releases/latest",
-        "regex": "/releases/tag/v([^/]+?)\""
+        "url": "https://api.github.com/repos/leiurayer/downkyi/releases",
+        "jsonpath": "$[0].tag_name",
+        "regex": "(?<tag>v([\\w.-]+))"
     },
     "autoupdate": {
-        "url": "https://github.com/leiurayer/downkyi/releases/download/v$version/DownKyi-$version.zip"
+        "url": "https://github.com/leiurayer/downkyi/releases/download/$matchTag/DownKyi-$version.zip"
     }
 }
