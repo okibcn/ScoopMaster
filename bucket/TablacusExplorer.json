@@ -1,38 +1,26 @@
 {
+    "version": "22.9.5",
     "homepage": "https://tablacus.github.io/explorer_en.html",
     "license": "MIT",
-    "version": "23.1.12",
-    "url": "https://github.com/tablacus/TablacusExplorer/releases/download/23.1.12/te230112.zip",
-    "hash": "e5000accda8757b0edf1e1420fb737cc754ec56fab378e013341d67a0843ddc3",
-    "architecture": {
-        "64bit": {
-            "pre_install": [
-                "Rename-Item \"$dir\\TE64.exe\" \"$dir\\TE.exe\"",
-                "Remove-Item \"$dir\\TE32.exe\" -Force"
-            ]
-        },
-        "32bit": {
-            "pre_install": [
-                "Rename-Item \"$dir\\TE32.exe\" \"$dir\\TE.exe\"",
-                "Remove-Item \"$dir\\TE64.exe\" -Force"
-            ]
-        }
-    },
-    "bin": "TE.exe",
+    "persist": [
+        "addons",
+        "config",
+        "init",
+        "layout"
+    ],
+    "url": "https://github.com/tablacus/TablacusExplorer/releases/download/22.9.5/te220905.zip",
+    "hash": "07e3e303b046a7a680c50a6cc2f74ee5af47a400a5ad59619db7b3fc7b9ad3ee",
     "shortcuts": [
         [
-            "TE.exe",
-            "Tablacus Explorer"
+            "TE64.exe",
+            "TablacusExplorer"
         ]
     ],
-    "persist": [
-        "config",
-        "addons"
-    ],
     "checkver": {
-        "regex": "Version <span id=\"ver\">([\\d.]+)</span>[\\w\\W]*?te(?<cleanpadding>\\d+)\\.zip"
+        "url": "https://github.com/tablacus/TablacusExplorer/releases",
+        "regex": "/(?<version>[\\d.]+)/te(?<file>[\\d]+).zip"
     },
     "autoupdate": {
-        "url": "https://github.com/tablacus/TablacusExplorer/releases/download/$version/te$matchCleanpadding.zip"
+        "url": "https://github.com/tablacus/TablacusExplorer/releases/download/$version/te$matchFile.zip"
     }
 }
