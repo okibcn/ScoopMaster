@@ -1,8 +1,11 @@
 {
     "version": "1.14.0",
-    "description": "Frontend for emulators, game engines and media players.",
+    "description": "Frontend for emulators, game engines and media players",
     "homepage": "https://www.retroarch.com/",
-    "license": "GPL-3.0-only",
+    "license": {
+        "url": "https://github.com/libretro/RetroArch/blob/master/COPYING",
+        "identifier": "GPL-3.0"
+    },
     "architecture": {
         "64bit": {
             "url": "https://buildbot.libretro.com/stable/1.14.0/windows/x86_64/RetroArch.7z",
@@ -11,17 +14,21 @@
         },
         "32bit": {
             "url": "https://buildbot.libretro.com/stable/1.14.0/windows/x86/RetroArch.7z",
-            "hash": "db7c322ed886affcd9a699c8cfe3d6b57edb8366ddceb3493fe6d44b0a56859b",
+            "hash": "b8d0b7c3cde694eab578d0a7aac493f297d214869a6c4e72c8505e286ca8db7f",
             "extract_dir": "RetroArch-Win32"
         }
     },
     "pre_install": [
-        "if (!(Test-Path \"$persist_dir\\retroarch.cfg\")) { Move-Item \"$dir\\retroarch.default.cfg\" \"$dir\\retroarch.cfg\" }",
-        "'favorites', 'history' | ForEach-Object {",
-        "    if (!(Test-Path \"$persist_dir\\content_$_.lpl\")) { New-Item \"$dir\\content_$_.lpl\" | Out-Null }",
+        "if (!(Test-Path \"$persist_dir\\retroarch.cfg\")) {",
+        "    New-Item \"$dir\\retroarch.cfg\" -Type File | Out-Null",
         "}"
     ],
-    "bin": "retroarch.exe",
+    "bin": [
+        [
+            "retroarch.exe",
+            "retroarch"
+        ]
+    ],
     "shortcuts": [
         [
             "retroarch.exe",
@@ -32,23 +39,20 @@
         "assets\\wallpapers",
         "cores",
         "cheats",
-        "config",
+        "overlays",
         "playlists",
         "records",
         "recordings",
         "saves",
         "screenshots",
-        "shaders\\presets",
         "states",
         "system",
         "thumbnails",
-        "content_favorites.lpl",
-        "content_history.lpl",
         "retroarch.cfg"
     ],
     "checkver": {
         "url": "https://www.retroarch.com/?page=platforms",
-        "regex": "The current stable version is:\\s+([\\d.]+)</"
+        "regex": "The current stable version is: ([\\d.]+)"
     },
     "autoupdate": {
         "architecture": {
