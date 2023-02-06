@@ -1,13 +1,18 @@
 {
-    "version": "4.23.01r4584",
-    "description": "Notepad2 is a light-weight Scintilla-based text editor for Windows with syntax highlighting, code folding, auto-completion and API list for about 70 programming languages/documents, bundled with file browser plugin metapath and dark theme.",
     "homepage": "https://github.com/zufuliu/notepad2",
-    "license": "BSD-3-Clause",
-    "url": [
-        "https://github.com/zufuliu/notepad2/releases/download/v4.23.01r4584/Notepad2_zh-Hans_x64_v4.23.01r4584.zip",
-        "https://raw.githubusercontent.com/echoiron/echo-scoop/main/scripts/notepad2/replace-notepad.bat",
-        "https://raw.githubusercontent.com/echoiron/echo-scoop/main/scripts/notepad2/restore-notepad.bat"
-    ],
+    "description": "A modified version (fork) of Notepad2-mod.",
+    "version": "4.23.01r4584",
+    "license": "BSD 3-Clause",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/zufuliu/notepad2/releases/download/v4.23.01r4584/Notepad2_zh-Hans_x64_v4.23.01r4584.zip",
+            "hash": "dadb9a122afab828629fb28d66c87d8b6df5e7c3e958994f302fe0718792e515"
+        },
+        "32bit": {
+            "url": "https://github.com/zufuliu/notepad2/releases/download/v4.23.01r4584/Notepad2_zh-Hans_Win32_v4.23.01r4584.zip",
+            "hash": "a7af26ec1e2afe8fc9f6308d2a0c542486c776be89882c3858921ff1102b35e6"
+        }
+    },
     "bin": "Notepad2.exe",
     "shortcuts": [
         [
@@ -16,7 +21,22 @@
         ]
     ],
     "persist": [
-        "Notepad2.ini",
-        "metapath.ini"
-    ]
+        "metapath.ini",
+        "Notepad2 DarkTheme.ini",
+        "Notepad2.ini"
+    ],
+    "checkver": {
+        "url": "https://github.com/zufuliu/notepad2/releases/latest",
+        "regex": "<title>Release v([\\d.]+r[\\d.]+)"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/zufuliu/notepad2/releases/download/v$version/Notepad2_zh-Hans_x64_v$version.zip"
+            },
+            "32bit": {
+                "url": "https://github.com/zufuliu/notepad2/releases/download/v$version/Notepad2_zh-Hans_Win32_v$version.zip"
+            }
+        }
+    }
 }
