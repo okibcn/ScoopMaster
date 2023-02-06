@@ -1,60 +1,70 @@
 {
-    "version": "nightly",
-    "description": "Sony PlayStation emulator",
-    "homepage": "https://github.com/stenzek/duckstation/",
+    "homepage": "https://www.duckstation.org/",
+    "version": "nightly-2023-01-20",
+    "description": "Sony Playstation emulator",
     "license": {
-        "url": "https://github.com/stenzek/duckstation/blob/master/LICENSE",
-        "identifier": "GPL-3.0-only"
+        "identifier": "GPL-3.0-only",
+        "url": "https://github.com/stenzek/duckstation/blob/master/LICENSE"
     },
     "architecture": {
         "64bit": {
-            "url": "https://github.com/stenzek/duckstation/releases/download/latest/duckstation-windows-x64-release.zip",
+            "url": "https://github.com/stenzek/duckstation/releases/download/preview/duckstation-windows-x64-release.zip#/duckstation-x64-nightly-2023-01-20.zip",
+            "hash": "510c0f1346b542a5802e8b3b41a6b37da19d59f6a31eed8ba0a4a751af2e8a1a",
+            "bin": [
+                [
+                    "duckstation-qt-x64-ReleaseLTCG.exe",
+                    "duckstation"
+                ]
+            ],
             "shortcuts": [
                 [
                     "duckstation-qt-x64-ReleaseLTCG.exe",
-                    "DuckStation"
-                ]
-            ]
-        },
-        "arm64": {
-            "url": "https://github.com/stenzek/duckstation/releases/download/latest/duckstation-windows-arm64-release.zip",
-            "shortcuts": [
-                [
-                    "duckstation-qt-ARM64-ReleaseLTCG.exe",
-                    "DuckStation"
+                    "Playstation"
                 ]
             ]
         }
     },
-    "installer": {
-        "script": [
-            "if (!(Test-Path \"$persist_dir\")) {",
-            "   '[Main]', 'SettingsVersion = 3', '[AutoUpdater]', 'CheckAtStartup = false' | Set-Content \"$dir\\settings.ini\"",
-            "   New-item \"$dir\\portable.txt\" -ItemType File | Out-Null",
-            "}"
-        ]
-    },
+    "pre_install": [
+        "function create($path, $type, $content) {",
+        "   if (-not (Test-Path \"$path\")) {",
+        "       New-Item \"$path\" -ItemType $type -Value $content | Out-Null",
+        "       Write-Output \"Creating $path...\"",
+        "   }",
+        "}",
+        "$settings = \"$dir\\settings.ini\"",
+        "$portable = \"$dir\\portable.txt\"",
+        "create $settings File",
+        "create $portable File"
+    ],
     "persist": [
+        "portable.txt",
+        "settings.ini",
         "bios",
         "cache",
         "cheats",
         "covers",
-        "database\\chtdb.txt",
-        "database\\gamecontrollerdb.txt",
-        "database\\gamesettings.ini",
         "dump",
+        "gamesettings",
         "inputprofiles",
         "memcards",
         "savestates",
         "screenshots",
         "shaders",
-        "textures",
-        "portable.txt",
-        "settings.ini"
+        "textures"
     ],
-    "notes": [
-        "ATTENTION: Duckstation requires a PSX BIOS to function.",
-        "Place the BIOS file in $persist_dir\\bios",
-        "Learn more at: https://www.duckstation.org/wiki/BIOS"
-    ]
+    "checkver": {
+        "url": "https://api.github.com/repos/stenzek/duckstation/commits/master",
+        "jsonpath": {
+            "version": "$.commit.author.date"
+        },
+        "regex": "(\\d+)\\/(\\d+)\\/(\\d+)",
+        "replace": "nightly-${3}-${2}-${1}"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/stenzek/duckstation/releases/download/preview/duckstation-windows-x64-release.zip#/duckstation-x64-$version.zip"
+            }
+        }
+    }
 }

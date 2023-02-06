@@ -1,49 +1,34 @@
 {
-    "version": "5.0",
-    "description": "Nintendo GameCube and Wii emulator",
-    "homepage": "https://dolphin-emu.org/",
-    "license": {
-        "url": "https://github.com/dolphin-emu/dolphin/blob/master/COPYING",
-        "identifier": "GPL-2.0-or-later"
-    },
-    "suggest": {
-        "Microsoft Visual C++ Runtime 2019": "extras/vcredist2019"
-    },
+    "version": "22.12.2-1808",
+    "description": "Dolphin is KDE's file manager that lets you navigate and browse the contents of your hard drives, USB sticks, SD cards, and more. Creating, moving, or deleting files and folders is simple and fast.",
+    "homepage": "https://apps.kde.org/dolphin/",
+    "license": "LGPL-2.0-only",
     "architecture": {
         "64bit": {
-            "url": "https://dl-mirror.dolphin-emu.org/5.0/dolphin-x64-5.0.exe#/dl.7z",
-            "hash": "e1b3ae8fc890c6588e5656f77ef2747ae7ddfc90b6530b240c0c5b9d0ab3ce8c"
+            "url": "https://binary-factory.kde.org/view/Windows%2064-bit/job/Dolphin_Release_win64/1808/artifact/dolphin-22.12.2-1808-windows-cl-msvc2019-x86_64-dbg.7z",
+            "hash": "98187ec4be26a07af782e1728b0444c30170a0e3f0c35c41f6134c7b04f7c3c6"
         }
     },
-    "pre_install": [
-        "if (!(Test-Path \"$persist_dir\")) {",
-        "   New-item \"$persist_dir\" -ItemType Directory | Out-Null",
-        "   New-item \"$persist_dir\\User\" -ItemType Directory | Out-Null",
-        "   if (Test-Path \"$env:USERPROFILE\\Documents\\Dolphin Emulator\") {",
-        "       Write-host \"Migrating AppData...\" -ForegroundColor yellow",
-        "       Copy-Item -Path \"$env:USERPROFILE\\Documents\\Dolphin Emulator\\*\" -Destination \"$persist_dir\\User\" -Recurse",
-        "       Remove-Item -Path \"$env:USERPROFILE\\Documents\\Dolphin Emulator\" -Recurse",
-        "   }",
-        "}"
-    ],
-    "post_install": "Set-Content -Value $null -Path \"$dir\\portable.txt\"",
-    "bin": "Dolphin.exe",
+    "bin": "bin\\dolphin.exe",
     "shortcuts": [
         [
-            "Dolphin.exe",
+            "bin\\dolphin.exe",
             "Dolphin"
         ]
     ],
-    "persist": "User",
     "checkver": {
-        "url": "https://dolphin-emu.org/download/",
-        "regex": "https://dl-mirror.dolphin-emu.org/([\\d.]+)/dolphin-x64"
+        "url": "https://binary-factory.kde.org/view/Windows%2064-bit/job/Dolphin_Release_win64/lastSuccessfulBuild/artifact/",
+        "regex": "dolphin-([\\d.-]+)-windows-cl-msvc2019-x86_64.7z"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://dl-mirror.dolphin-emu.org/$version/dolphin-x64-$version.exe#/dl.7z"
+                "url": "https://binary-factory.kde.org/view/Windows%2064-bit/job/Dolphin_Release_win64/$preReleaseVersion/artifact/dolphin-$version-windows-cl-msvc2019-x86_64-dbg.7z"
             }
+        },
+        "hash": {
+            "url": "$url.sha256",
+            "regex": "$sha256"
         }
     }
 }

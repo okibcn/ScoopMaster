@@ -1,13 +1,22 @@
 {
-    "version": "1.0.0",
-    "description": "test",
-    "architecture": {
-        "64bit": {
-            "url": "https://ghproxy.com/https://github.com/cosmtrek/air/releases/download/v1.41.0/air_1.41.0_windows_amd64.tar.gz",
-            "hash": "344b03c3be2d930d8fefcac70ed5978b21bb9a4ba70d12f5735782a7885ef8ba"
-        }
+    "homepage": "https://weixin.qq.com/",
+    "description": "Free messaging and calling app.",
+    "version": "nightly",
+    "license": {
+        "identifier": "EULA",
+        "url": "https://weixin.qq.com/cgi-bin/readtemplate?lang=zh_CN&t=weixin_agreement&s=default"
     },
-    "pre_install": [
-        "echo "
-    ]
+    "url": "https://dldir1.qq.com/weixin/Windows/WeChatSetup.exe#/dl.7z",
+    "shortcuts": [
+        [
+            "wechat.exe",
+            "WeChat"
+        ]
+    ],
+    "post_install": [
+        "Remove-Item \"$dir\\`$PLUGINSDIR\" -Force -Recurse",
+        "Remove-Item \"$dir\\`$_15_\" -Force -Recurse",
+        "Remove-Item \"$dir\\`$R5\" -Force -Recurse"
+    ],
+    "notes": "We don't persist your WeChat data, they are still storaged in '%APPDATA%\\Tencent\\WeChat'."
 }

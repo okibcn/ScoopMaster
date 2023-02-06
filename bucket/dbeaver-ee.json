@@ -1,21 +1,17 @@
 {
-    "version": "22.0",
-    "description": "Database tool for developers, SQL programmers, database administrators and analysts, From: BluYous/ScoopBucket",
-    "homepage": "https://dbeaver.com/",
+    "version": "22.1.0",
+    "description": "Database tool for developers, SQL programmers, database administrators and analysts",
+    "homepage": "https://dbeaver.io",
     "license": "Apache-2.0",
     "suggest": {
-        "java": "java/oraclejdk"
+        "java": [
+            "java/oraclejdk",
+            "java/oraclejre8",
+            "java/openjdk11"
+        ]
     },
-    "architecture": {
-        "64bit": {
-            "url": "https://dbeaver.com/files/dbeaver-ee-latest-win32.win32.x86_64.zip",
-            "hash": "8770cc05ecac267cefe774d57581535f14b91a73920e9b88567b028407277199"
-        }
-    },
+    "url": "https://download.dbeaver.com/enterprise/22.1.0/dbeaver-ee-22.1.0-win32.win32.x86_64.zip",
     "extract_dir": "dbeaver",
-    "installer": {
-        "script": "& \"$bucketsdir\\BluYousScoopBucket\\scripts\\dbeaver-enterprise-portable.ps1\" $dir $bucketsdir"
-    },
     "bin": [
         "dbeaver.exe",
         "dbeaver-cli.exe"
@@ -23,18 +19,21 @@
     "shortcuts": [
         [
             "dbeaver.exe",
-            "DBeaver Enterprise"
+            "DBeaver"
         ]
     ],
     "checkver": {
-        "url": "https://dbeaver.com/download/enterprise/",
-        "regex": "DBeaver Enterprise Edition ([\\d.]+)"
+        "url": "https://dbeaver.io/download/",
+        "regex": "Enterprise Edition ([\\d.]+)"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
                 "url": "https://dbeaver.com/files/dbeaver-ee-latest-win32.win32.x86_64.zip"
             }
+        },
+        "hash": {
+            "url": "$baseurl/checksum/$basename.sha256"
         }
     }
 }

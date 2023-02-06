@@ -1,31 +1,32 @@
 {
+    "version": "nightly",
+    "description": "On-screen annotation software under Windows, forked from gInk",
     "homepage": "https://github.com/pubpub-zz/ppInk",
-    "version": "1.8.3",
-    "description": "ppInk is an on-screen annotation software under Windows, forked from gInk.",
-    "license": {
-        "identifier": "Freeware"
-    },
-    "extract_dir": "ppInk",
-    "url": "https://github.com/pubpub-zz/ppInk/releases/download/v1.8.3/ppInk.zip",
-    "depends": "",
-    "hash": "039beeb98c6867be5200b2f3eb1acd8cd1ca461296830e482dd2944ad8e3c7c5",
-    "bin": [
+    "license": "MIT",
+    "url": "https://github.com/pubpub-zz/ppInk/releases/download/pp1.2-RC2/ppink.zip",
+    "hash": "97597E7FC3153BD8D622304A5AE5DA0802D77B7C65882CC23641BE302449E168",
+    "extract_dir": "ppink",
+    "pre_install": [
+        "if (-not (Test-Path \"$persist_dir\\config.ini\")) {",
+        "    $cur = \"$persist_dir\\Snapshots\\\" -replace '\\\\', '/'",
+        "    $c = (Get-Content \"$dir\\config_defaut.ini\") -replace '^(Snapshot_Path =).*$', \"`$1 $cur\"",
+        "    Set-Content  \"$dir\\config.ini\" $c -Encoding Ascii -Force",
+        "}"
+    ],
+    "bin": "ppInk.exe",
+    "shortcuts": [
         [
             "ppInk.exe",
-            "ppink"
+            "ppInk"
         ]
     ],
     "persist": [
-        "pens.ini",
+        "Snapshots",
         "config.ini",
-        "hotkeys.ini"
+        "hotkeys.ini",
+        "pens.ini"
     ],
-    "notes": "Please run \"scoop uninstall ppink -p\" if error when startup, then re-install.",
-    "checkver": {
-        "url": "https://github.com/pubpub-zz/ppInk/releases/latest",
-        "re": "/pubpub-zz/ppInk/releases/tag/v(.*?)\""
-    },
+    "checkver": "github",
     "autoupdate": {
-        "url": "https://github.com/pubpub-zz/ppInk/releases/download/v$version/ppInk.zip"
     }
 }
