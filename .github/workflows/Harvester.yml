@@ -1,0 +1,269 @@
+# Copyright (c) 2023 okibcn
+# This is free software, licensed under the GNU General Public License v3.0
+# See /LICENSE for more information.
+# https://github.com/okibcn/ScoopMaster
+# Description: Scoop Meta-Bucket
+
+name: Harvester
+on:
+  # schedule:
+  #   - cron: '52 * * * *'
+  # runs at minute 52 of each hour.
+  workflow_dispatch:
+    inputs:
+      debug_enabled:
+        description: 'Run the build with tmate debugging enabled true/false (default: false)'
+        required: false
+        default: 'false'
+        type: choice
+        options: 
+          - "true"
+          - "false"
+
+jobs:
+  build:
+    runs-on: windows-latest
+    # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+    - name: "⏬ Checkout repository"
+      uses: actions/checkout@v3
+
+
+    - name: "🔍 Discover known buckets from Scoop-Directory website."
+      run: |
+        cd ..
+        $scoopDBURL = "https://rasa.github.io/scoop-directory/by-apps.html"
+        $ErrorActionPreference = 'SilentlyContinue'
+        $lBuckets = [System.Collections.ArrayList]@()
+        $source = iwr $scoopDBURL
+        $source.Content -split '\r?\n' | ForEach-Object -Process {
+            if ($_ -match '<h2.*(http[^\"]+)"'){
+                [void]$lBuckets.Add($matches[1])
+            }
+        }
+        $lBuckets > Bucket_list.txt
+        Write-Host "$($lBuckets.count) buckets found."
+
+        
+
+    - name: "⏬ Download known buckets"
+      run: |
+        cd ..
+        $lBuckets=(cat .\Bucket_list.txt)
+        ## CREATE INPUT FILE FOR ARIA2C
+        $lZips=$lBuckets | %{
+            if( -not ($_ -match 'https:\/\/github.com\/(.+)')){
+              $_ >> ERROR_badrepos.txt
+              return}
+            if(($_ -match 'okibcn\/ScoopMaster')){
+              return}
+            $owner_repo=$matches[1].replace('/','~')
+            return "$_/archive/refs/heads/master.zip`n    out=$owner_repo.zip"
+        }
+        $lZips > download_list.txt   
+
+        # DOWNLOAD BUCKETS
+        aria2c --save-session aria2-out.txt -j 16 -i download_list.txt -d zips
+        (cmd.exe /c dir /s /b /a-d zips) > Zip_list.txt
+
+
+    - name: "📃 Extract manifests from downloaded buckets"
+      run: |
+        cd ..
+        # EXTRACT MANIFESTS
+        7z e -y zips/*.zip -ojsons/* */bucket/*.json */*.json
+        # PREPARE OUTPUT
+        Remove-Item -Force -Recurse jsons/*/.*.json
+        $nJsons = (cmd.exe /c dir /s /b /a-d jsons).count
+        $nZips = (cat .\Zip_list.txt).count
+        Write-Host "PROCESS COMPLETED. $nJsons manifests extracted from $nZips downloaded buckets."
+
+
+    - name: "🧹 Indexing JSON Data"
+      run: |
+        function longV([string]$v) {
+            $numbers = [regex]::matches($v, '\d+')
+            if ($numbers.Count -eq 0) {
+                #doesn't contain numbers
+                return $v
+            }
+            $notnumbers = [regex]::matches($v, '([^\d]+)')
+            $longnumbers = @($numbers | % {
+                    $_.Value.PadLeft(10, '0')
+                })
+            $i = [int]0
+            if ($numbers[0].Index -eq 0) {
+                # starts with a number
+                ($longnumbers | % { $_ ; $notnumbers[$i].value ; $i++ }) -join ''
+            }
+            else {
+                ($notnumbers | % { $_.Value ; $longnumbers[$i] ; $i++ }) -join ''
+            }
+        }
+
+        # Returns 0 if both versions match, 1 if the firs one is higher,
+        # and -1 if the second is higher
+        function CompareV([string]$a, [string]$b) {
+            if ($a -eq $b) {
+                return 0
+            }
+            if ( $(longV $a) -gt $(longV $b)) {
+                return 1
+            }
+            return -1
+        }
+
+        cd ..
+        ## PROCESS JSON FILES
+        $FullDB = $null
+        $FullDB = New-Object system.data.datatable
+        $FullDB.Columns.Add("Name") | Out-Null
+        $FullDB.Columns.Add("Version") | Out-Null
+        $FullDB.Columns.Add("Date") | Out-Null
+        $FullDB.Columns.Add("Bucket") | Out-Null
+        $FullDB.Columns.Add("Description") | Out-Null
+
+        $files = gci jsons/*/*.json
+        $nJsons=$files.Count
+        $progress=0
+        foreach ( $file in $files ) {
+            $name = $file.BaseName
+            $bucket = $file.FullName.split('\')[-2].replace('~', "/")
+            $progress++
+            $percent = [math]::round(100 * $progress / $nJsons)
+            if ($percent -ne $oldpercent){
+              Write-Output "( $percent% )  $progress / $nJsons (indexed/total) Indexing bucket $bucket"
+              $oldpercent=$percent
+            }
+            $date = $file.LastWriteTimeUtc.ToString("yyyy-MM-ddTHH:mm:ssZ")
+            try{
+                $json = (cat $file) | ConvertFrom-Json
+                $version = $json.version
+                $description = "$($json.description)"
+            }catch{
+                $file.fullname >> ERROR_manifest.txt
+                continue
+            }
+            [void]$FullDB.Rows.Add($name, $version, $date, $bucket, $description) 
+        }
+        $DB = $FullDB | Sort-Object Name
+
+        $hash = $null
+        $hash = New-Object system.data.datatable
+        $hash.Columns.Add("Name") | Out-Null
+        $hash.Columns.Add("Version") | Out-Null
+        $hash.Columns.Add("FirstDate") | Out-Null
+        $hash.Columns.Add("FirstBucket") | Out-Null
+        $hash.Columns.Add("LastDate") | Out-Null
+        $hash.Columns.Add("LastBucket") | Out-Null
+        $hash.Columns.Add("Description") | Out-Null
+
+        $name = ""
+        $nhash = -1
+        $progress=0
+        foreach ( $row in $DB ) {
+            $progress++
+            $percent = [math]::round(100 * $progress / $nhash)
+            if ($percent -ne $oldpercent){
+              Write-Output "( $percent% )  $nhash / $progress / $nJsons (harvested/indexed/total) Last harvested app: $name.json"
+              $oldpercent=$percent
+            }
+            if ($row.name -ne $name) {
+                $name = $row.name
+                [void]$hash.Rows.Add($name, $row.version, $row.date, $row.bucket, $row.date, $row.bucket, $row.description) 
+                $nhash++
+                continue
+            }
+            switch ( CompareV $row.Version $hash.Rows[-1].Version ) {
+                -1 {    
+                    break   
+                }
+                1 {
+                    $hash.Rows[-1].Version = $row.Version
+                    $hash.Rows[-1].FirstDate = $row.Date
+                    $hash.Rows[-1].FirstBucket = $row.Bucket
+                    $hash.Rows[-1].LastDate = $row.Date
+                    $hash.Rows[-1].LastBucket = $row.Bucket
+                    $hash.Rows[-1].Description = $row.Description
+                }
+                0 {
+                    if ($row.date -gt $hash.Rows[-1].LastDate) {
+                        $hash.Rows[-1].LastDate = $row.Date
+                        $hash.Rows[-1].LastBucket = $row.Bucket
+                    }
+                    elseif ($row.date -lt $hash.Rows[-1].FirstDate) {
+                        $hash.Rows[-1].FirstDate = $row.Date
+                        $hash.Rows[-1].FirstBucket = $row.Bucket
+                    }
+                }
+            }
+        }
+        $hash = $hash | Sort-Object Name
+        $scoopDBfile = "./LastAppsDB.csv"
+        $hash | ConvertTo-csv > $scoopDBfile
+
+        mkdir local 
+        $progress=0
+        $nhash=$hash.rows.count
+        foreach ( $row in $hash ) {
+            [void]$FullDB.Rows.Add($row.Name, $row.Version, $row.FirstDate, "okibcn/ScoopMaster", $row.Description)
+            Copy-Item "jsons/$( $row.LastBucket.replace('/','~') )/$($row.Name).json" local | Out-Null
+            $progress++
+            $percent = [math]::round(100 * $progress / $nhash)
+            Write-Progress -Activity "Processing " -Status "$percent% ($progress/$nhash) processing: $($row.Name)" -PercentComplete $percent
+        }
+
+        $FullDB = $FullDB | Sort-Object Name,Date
+        $scoopDBfile = "./AllAppsDB.csv"
+        $FullDB | ConvertTo-csv > $scoopDBfile
+      
+
+    - name: "📦 Prepare repo update"
+      run: |
+        ############################
+        ##                          ##
+        ##      CREATE PACKAGE      ##
+        ##                          ##
+        ############################
+
+        remove-item bucket -Recurse -Force
+        move-item ../local bucket
+        move-item ../*.txt,../*.csv .
+        echo "UPDATE=$(date -R -u)" >>$GITHUB_ENV
+
+    
+    - name: "🐞 Debug session"
+      uses: mxschmitt/action-tmate@v3
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      if: github.event_name == 'workflow_dispatch' && github.event.inputs.debug_enabled == 'true'
+        ## More info at https://til.simonwillison.net/github-actions/debug-tmate
+        ##           or https://github.com/mxschmitt/action-tmate
+
+
+    - name: "⭐ Update repo"
+      run: |
+        git -C . init
+        git -C . add -A
+        git -C . config --local user.name "GitHub Actions"
+        git -C . config --local user.email actions@github.com
+        git -C . commit --no-verify -m "Updated on $(date -R -u)"
+        $sha=(git -C . rev-parse HEAD)
+        git push
+
+
+    - name: "👋 If no new sources are available, then we stop."
+      if:  env.CANCEL == 'true'
+      uses: andymckay/cancel-action@0.3
+
+
+    - name: "👍 Upload logs as Artifact"
+      uses: actions/upload-artifact@v3
+      if: github.event_name == 'workflow_dispatch'
+      with:
+        name: Logs
+        path: |
+          *.txt
