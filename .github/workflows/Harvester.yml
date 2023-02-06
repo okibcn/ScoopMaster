@@ -162,11 +162,11 @@ jobs:
         $hash.Columns.Add("Description") | Out-Null
 
         $name = ""
-        $nhash = -1
+        $nhash = 0
         $progress=0
         foreach ( $row in $DB ) {
             $progress++
-            $percent = [math]::round(100 * $progress / $nhash)
+            $percent = [math]::round(100 * $progress / $nJsons)
             if ($percent -ne $oldpercent){
               Write-Output "( $percent% )  $nhash / $progress / $nJsons (harvested/indexed/total) Last harvested app: $name.json"
               $oldpercent=$percent
