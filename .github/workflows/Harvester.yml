@@ -6,8 +6,8 @@
 
 name: Harvester
 on:
-  # schedule:
-  #   - cron: '52 * * * *'
+  schedule:
+    - cron: '52 * * * *'
   # runs at minute 52 of each hour.
   workflow_dispatch:
     inputs:
@@ -82,7 +82,7 @@ jobs:
         Write-Host "PROCESS COMPLETED. $nJsons manifests extracted from $nZips downloaded buckets."
 
 
-    - name: "🧹 Indexing JSON Data"
+    - name: "📝 Indexing JSON manifests"
       run: |
         function longV([string]$v) {
             $numbers = [regex]::matches($v, '\d+')
@@ -168,7 +168,7 @@ jobs:
             $progress++
             $percent = [math]::round(100 * $progress / $nJsons)
             if ($percent -ne $oldpercent){
-              Write-Output "( $percent% )  $nhash / $progress / $nJsons (harvested/indexed/total) Last harvested app: $name.json"
+              Write-Output "( $percent% )  $nhash / $progress / $nJsons (harvested/indexed/total) Last checked app: $name.json"
               $oldpercent=$percent
             }
             if ($row.name -ne $name) {
@@ -205,7 +205,8 @@ jobs:
         $scoopDBfile = "./LastAppsDB.csv"
         $hash | ConvertTo-csv > $scoopDBfile
 
-        mkdir local 
+
+        mkdir local | Out-Null
         $progress=0
         $nhash=$hash.rows.count
         foreach ( $row in $hash ) {
@@ -213,15 +214,17 @@ jobs:
             Copy-Item "jsons/$( $row.LastBucket.replace('/','~') )/$($row.Name).json" local | Out-Null
             $progress++
             $percent = [math]::round(100 * $progress / $nhash)
-            Write-Progress -Activity "Processing " -Status "$percent% ($progress/$nhash) processing: $($row.Name)" -PercentComplete $percent
+            if ($percent -ne $oldpercent){
+              Write-Output "( $percent% )  $progress / $nhash (hasvested/total) Last harvested app: $($row.Name).json"
+              $oldpercent=$percent
+            }
         }
-
         $FullDB = $FullDB | Sort-Object Name,Date
         $scoopDBfile = "./AllAppsDB.csv"
         $FullDB | ConvertTo-csv > $scoopDBfile
       
 
-    - name: "📦 Prepare repo update"
+    - name: "📦 Prepare new repo files"
       run: |
         ############################
         ##                          ##
