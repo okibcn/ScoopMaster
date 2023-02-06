@@ -247,7 +247,10 @@ jobs:
         remove-item bucket,*.csv -Recurse -Force
         move-item ../local bucket
         move-item ../*.csv .
+        7z AllAppsDB.7z AllAppsDB.csv
+        7z LastAppsDB.7z LastAppsDB.csv
         move-item ../*.txt .
+
         echo "UPDATE=$(date -R -u)" >>$GITHUB_ENV
 
     
@@ -276,13 +279,16 @@ jobs:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         tag: Databases
 
-    - name: Github Release create, update, and upload assets
+    - name: Release databases"
       uses: meeDamian/github-release@v2.0.3
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         tag: Databases
-        files: AllAppsDB.csv LastAppsDB.csv
-
+        files:
+          AllAppsDB.csv
+          LastAppsDB.csv
+          AllAppsDB.7z
+          LastAppsDB.7z
 
 
     - name: "👍 Upload detailed logs as Artifact"
