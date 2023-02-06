@@ -129,6 +129,10 @@ jobs:
         $files = gci jsons/*/*.json
         $nJsons=$files.Count
         $progress=0
+        Write-host"##"
+        Write-host"##   INDEXING JSON FILES..."
+        Write-host"##"  =================================
+        Write-host"##"
         foreach ( $file in $files ) {
             $name = $file.BaseName
             $bucket = $file.FullName.split('\')[-2].replace('~', "/")
@@ -164,6 +168,10 @@ jobs:
         $name = ""
         $nhash = 0
         $progress=0
+        Write-host"##"
+        Write-host"##   SEARCHING LATEST VERSIONS..."
+        Write-host"##"  =================================
+        Write-host"##"
         foreach ( $row in $DB ) {
             $progress++
             $percent = [math]::round(100 * $progress / $nJsons)
@@ -209,6 +217,10 @@ jobs:
         mkdir local | Out-Null
         $progress=0
         $nhash=$hash.rows.count
+        Write-host"##"
+        Write-host"##   GATHERING SELECTED MANIFESTS..."
+        Write-host"##"  =================================
+        Write-host"##"
         foreach ( $row in $hash ) {
             [void]$FullDB.Rows.Add($row.Name, $row.Version, $row.FirstDate, "okibcn/ScoopMaster", $row.Description)
             Copy-Item "jsons/$( $row.LastBucket.replace('/','~') )/$($row.Name).json" local | Out-Null
@@ -224,7 +236,7 @@ jobs:
         $FullDB | ConvertTo-csv > $scoopDBfile
       
 
-    - name: "📦 Prepare new repo files"
+    - name: "📦 Prepare updated repo"
       run: |
         ############################
         ##                          ##
@@ -232,7 +244,7 @@ jobs:
         ##                          ##
         ############################
 
-        remove-item bucket -Recurse -Force
+        remove-item bucket,*.csv -Recurse -Force
         move-item ../local bucket
         move-item ../*.csv .
         move-item ../*.txt .
