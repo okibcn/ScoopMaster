@@ -1,41 +1,22 @@
 {
     "version": "1.7.15",
-    "description": "A user friendly command line tool to access AliCloud OSS.",
+    "description": "ossutil是以命令行方式管理OSS数据的工具，提供方便、简洁、丰富的存储空间（Bucket）和文件（Object）管理命令，支持Windows、Linux、 Mac平台",
     "homepage": "https://github.com/aliyun/ossutil",
-    "license": "MIT",
-    "architecture": {
-        "64bit": {
-            "url": "https://gosspublic.alicdn.com/ossutil/1.7.15/ossutil64.zip",
-            "hash": "7b8fae3cc92141f51ddc726f46b03949a8c8f5c4c4aa9f45b47b91f46408a5f4",
-            "extract_dir": "ossutil64",
-            "bin": [
-                [
-                    "ossutil64.exe",
-                    "ossutil"
-                ]
-            ]
-        },
-        "32bit": {
-            "url": "https://gosspublic.alicdn.com/ossutil/1.7.15/ossutil32.zip",
-            "hash": "00d796f69fc52f27016764f4efebea60485c48a5ad5577cb40132da8b7418d2c",
-            "extract_dir": "ossutil32",
-            "bin": [
-                [
-                    "ossutil32.exe",
-                    "ossutil"
-                ]
-            ]
-        }
+    "license": "BSD-3-Clause",
+    "url": "https://gosspublic.alicdn.com/ossutil/1.7.15/ossutil-v1.7.15-windows-amd64.zip",
+    "pre_install": [
+        "$ExtractDir = \"ossutil-v$version-windows-amd64\"",
+        "Move-Item \"$dir\\$ExtractDir\\*\" \"$dir\\\"",
+        "Remove-Item \"$dir\\$ExtractDir\" -Force -Recurse",
+        "Remove-Item \"$dir\\ossutil.exe\" -Force -Recurse"
+    ],
+    "installer": {
+        "script": [
+            "Rename-Item \"$dir\\ossutil64.exe\" \"$dir\\ossutil.exe\""
+        ]
     },
-    "checkver": "github",
-    "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://gosspublic.alicdn.com/ossutil/$version/ossutil64.zip"
-            },
-            "32bit": {
-                "url": "https://gosspublic.alicdn.com/ossutil/$version/ossutil32.zip"
-            }
-        }
+    "bin": "ossutil.exe",
+    "ext": {
+        "url": "https://help.aliyun.com/document_detail/120075.html"
     }
 }

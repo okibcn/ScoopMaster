@@ -1,18 +1,9 @@
 {
     "version": "3.24.238.0",
-    "description": "An enhanced clipboard manager",
-    "homepage": "https://ditto-cp.sourceforge.io",
-    "license": "GPL-3.0-only",
-    "architecture": {
-        "64bit": {
-            "url": "https://github.com/sabrogden/Ditto/releases/download/3.24.238.0/DittoPortable_64bit_3_24_238_0.zip",
-            "hash": "d0f2399ef52df3af3013abe4ef93adc4602e2e8f10593e5ffcbf9a4a5c898dd0"
-        },
-        "32bit": {
-            "url": "https://github.com/sabrogden/Ditto/releases/download/3.24.238.0/DittoPortable_3_24_238_0.zip",
-            "hash": "3fe011b0ac474c4ec9f7149aa3c7267588547a05bf23474beb6621c58f3a3746"
-        }
-    },
+    "description": "An enhanced clipboard manager.",
+    "homepage": "https://ditto-cp.sourceforge.io/",
+    "license": "BSD-3-Clause",
+    "url": "https://github.com/sabrogden/Ditto/releases/download/3.24.238.0/DittoPortable_64bit_3_24_238_0.zip",
     "extract_dir": "Ditto",
     "pre_install": [
         "if (!(Test-Path \"$persist_dir\\Ditto.db\")) {",
@@ -31,28 +22,14 @@
         "    Set-Content \"$dir\\$file\" ($CONT -join \"`r`n\") -Encoding Ascii",
         "}"
     ],
-    "bin": "Ditto.exe",
+    "persist": [
+        "Ditto.db",
+        "Ditto.Settings"
+    ],
     "shortcuts": [
         [
             "Ditto.exe",
             "Ditto"
         ]
-    ],
-    "persist": [
-        "Ditto.db",
-        "Ditto.Settings"
-    ],
-    "checkver": {
-        "github": "https://github.com/sabrogden/Ditto"
-    },
-    "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://github.com/sabrogden/Ditto/releases/download/$version/DittoPortable_64bit_$underscoreVersion.zip"
-            },
-            "32bit": {
-                "url": "https://github.com/sabrogden/Ditto/releases/download/$version/DittoPortable_$underscoreVersion.zip"
-            }
-        }
-    }
+    ]
 }
