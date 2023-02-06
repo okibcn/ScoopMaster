@@ -6,8 +6,8 @@
 
 name: Scavenger
 on:
-  schedule:
-    - cron: '52 * * * *'
+  # schedule:
+  #   - cron: '52 * * * *'
   # runs at minute 52 of each hour.
   workflow_dispatch:
     inputs:
@@ -17,8 +17,8 @@ on:
         default: 'false'
         type: choice
         options: 
-          - true
-          - false
+          - "true"
+          - "false"
 
 jobs:
   build:
@@ -56,8 +56,10 @@ jobs:
         ## CREATE INPUT FILE FOR ARIA2C
         $lZips=$lBuckets | %{
             if( -not ($_ -match 'https:\/\/github.com\/(.+)')){
-                $_ >> badrepos.txt
-                return}
+              $_ >> ERROR_badrepos.txt
+              return}
+            if(($_ -match 'okibcn\/ScoopMaster')){
+              return}
             $owner_repo=$matches[1].replace('/','~')
             return "$_/archive/refs/heads/master.zip`n    out=$owner_repo.zip"
         }
@@ -72,9 +74,9 @@ jobs:
       run: |
         cd ..
         # EXTRACT MANIFESTS
-        7z e -y zips/*.zip  -ojsons/* */bucket/*.json */*.json
+        7z e -y zips/*.zip -ojsons/* */bucket/*.json */*.json
         # PREPARE OUTPUT
-        Remove-Item -Force -Recurse jsons/*/.*.json,jsons/okibcn~ScoopMaster
+        Remove-Item -Force -Recurse jsons/*/.*.json
         $nJsons = (cmd.exe /c dir /s /b /a-d jsons).count
         $nZips = (cat .\Zip_list.txt).count
         Write-Host "PROCESS COMPLETED. $nJsons manifests extracted from $nZips downloaded buckets."
@@ -82,6 +84,35 @@ jobs:
 
     - name: "🧹 Remove old duplicated manifests"
       run: |
+        function longV([string]$v){
+            $numbers = [regex]::matches($v, '\d+')
+            if ($numbers.Count -eq 0){   #doesn't contain numbers
+                return $v}
+            $notnumbers = [regex]::matches($v, '([^\d]+)')
+            $longnumbers = @($numbers | % {
+                $_.Value.PadLeft(10,'0')
+            })
+            $i=[int]0
+            if ($numbers[0].Index -eq 0){   # starts with a number
+                ($longnumbers | % { $_ ; $notnumbers[$i].value ; $i++}) -join ''
+            }else {
+                ($notnumbers | % { $_.Value ; $longnumbers[$i] ; $i++}) -join ''
+            }
+        }
+
+
+        # Returns 0 if both versions match, 1 if the firs one is higher,
+        # and -1 if the second is higher
+        function CompareV([string]$a,[string]$b){
+            if ($a -eq $b){
+                return 0
+            }
+            if ( $(longV $a) -gt $(longV $b)){
+                return 1
+            }
+            return -1
+        }
+
         cd ..
         mkdir local -Force | Out-Null
         $progress=0
@@ -92,34 +123,57 @@ jobs:
         $hBucket = @{}
         $njsons=(cmd.exe /c dir /s /b /a-d jsons).count
         Write-Host "Processing $njsons manifests...`n"
-        gci jsons/*/*.json | ForEach-Object{
-            # FOR EACH PACKETFILE IN BUCKET
-            $name=$_.BaseName
-            $date=$_.LastWriteTimeUtc
-            if  (-NOT $hDate.ContainsKey($name)){
-                # Package not in local repo.
-                Move-Item $_ ./local -Force
-                $hDate.add($name,$date)
-                $hBucket.add($name,$bucket)
-                $nlocal++
-            }elseif (($date -gt $hDate[$name])){
-                # Newer manifest
-                Move-Item $_ ./local -Force
-                $hDate.Set_Item($name,$date)
-                $hBucket.Set_Item($name,$bucket)
-            }else {
-                # older version or same version but older manifest
-            }
-            $progress++
-            $percent = [math]::round(100 * $progress / $njsons)
-            if ($percent -ne $oldpercent){
-                Write-Output "$progress/$njsons  ( $percent% )"
-                $oldpercent=$percent
-            }
-            # Write-Progress -Activity "Processing " -Status "$percent% (Selected: $nlocal) processing: $name" -PercentComplete $percent
+        $files=gci jsons/*/*.json
+        foreach( $file in $files ) {
+          # FOR EACH PACKETFILE IN BUCKET
+          $name=$file.BaseName
+          $bucket=$file.FullName.split('\')[-2].replace('~',"/")
+          $progress++
+          $percent = [math]::round(100 * $progress / $njsons)
+          if ($percent -ne $oldpercent){
+            Write-Output "( $percent% )  $nlocal / $progress / $njsons (selected/processed/total) Processing bucket $bucket"
+            $oldpercent=$percent
+          }
+          $errorCount=$error.Count
+          try{$version=(Get-Content $file | ConvertFrom-Json).version}
+          catch{
+            "$name.json in bucket http://github.com/$bucket" >> ERROR_manifest.txt
+            continue
+          }
+          if ($errorCount -ne $error.Count){
+            continue}
+          $date=$file.LastWriteTimeUtc
+          if  (-NOT $hVersion.ContainsKey($name)){
+              # New Manifest, Add to DB
+              Copy-Item $file ./local -Force
+              $hVersion.add($name,$version)
+              $hDate.add($name,$date)
+              $hBucket.add($name,$bucket)
+              $nlocal++
+              continue
+          }
+          switch(CompareV $version $hVersion[$name]){
+          -1  {
+                  break}
+          1  {
+                  # Higher Version, Update Manifest in DB
+                  Copy-Item $file ./local -Force
+                  $hVersion.Set_Item($name,$version)
+                  $hDate.Set_Item($name,$date)
+                  $hBucket.Set_Item($name,$bucket)
+                  break
+              }
+          0  {
+                  if (($date -gt $hDate[$name])){
+                      # Same Version, Higher Date Update Manifest in DB
+                      Copy-Item $file ./local -Force
+                      $hDate.Set_Item($name,$date)
+                      $hBucket.Set_Item($name,$bucket)
+                  }
+              }
+          }
         }
-        Remove-Item jsons -Force -Recurse
-        Write-Host "PROCESS COMPLETED. $nlocal different packages with the most recent manifest out of a total of $nJsons manifests."
+        Write-Host "PROCESS COMPLETED. $nlocal different packages with the most recent manifest out of a total of $njsons manifests."
         if(Test-Path ERROR_manifest.txt){
             Write-Host "The following manifests have errors:"
             cat ./ERROR_manifest.txt
