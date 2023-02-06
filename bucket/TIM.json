@@ -1,40 +1,26 @@
 {
-    "version": "3.4.5.22071",
-    "description": "Tencent TIM, lightweight alternative to QQ",
-    "homepage": "https://office.qq.com/",
-    "license": {
-        "identifier": "Unknown",
-        "url": "http://play.mobile.qq.com/yy/eim/help/serverinfo.html"
-    },
-    "url": "http://dldir1.qq.com/qqfile/qq/TIM3.4.5/TIM3.4.5.22071.exe#/dl.7z",
-    "hash": "e92a4705964f2f572e376aa6634e6d487fba2dd3060f0f1c1991ab86350934e6",
-    "pre_install": [
-        "if (Test-Path \"$env:AppData\\Tencent\\Tim\") {",
-        "    info '[Persistent data]: Copying user data...'",
-        "    ensure \"$dir\\User Data\" | Out-Null",
-        "    Copy-Item \"$env:AppData\\Tencent\\Tim\\*\" \"$dir\\User Data\\\" -Recurse -Force -ErrorAction 'SilentlyContinue'",
-        "    Remove-Item \"$env:AppData\\Tencent\\Tim\" -Recurse -Force -ErrorAction 'SilentlyContinue'",
-        "}",
-        "Move-Item \"$dir\\Files\\*\" \"$dir\\\"",
-    ],
-    "post_install": "Remove-Item \"$dir\\Application Data\", \"$dir\\Common\" -Recurse -Force -ErrorAction 'SilentlyContinue'",
-    "shortcuts": [
-        [
-            "Bin\\QQScLauncher.exe",
-            "Tim",
-            "--user-data-dir=\"$dir\\User Data\""
-        ]
-    ],
-    "persist": "User Data",
-    "checkver": {
-        "url": "https://im.qq.com/rainbow/TIMDownload/",
-        "regex": "\"pcLink\":\"https?://dldir1\\.qq\\.com/qqfile/qq(?<extra>.*)/TIM(?<main>\\d+\\.\\d+\\.\\d+)/TIM.*\\.(?<patch>\\d+)\\.exe",
-        "replace": "${main}.${patch}"
-    },
-    "autoupdate": {
-        "url": "http://dldir1.qq.com/qqfile/qq$matchExtra/TIM$matchMain/TIM$version.exe#/dl.7z",
-        "hash": {
-            "mode": "download"
-        }
-    }
+ "autoupdate": {
+  "hash": {
+   "regex": "$sha256",
+   "url": "$url.sha256"
+  },
+  "url": "https://scoop-zapps.ziiyc.com/d/TIM/TIM-$version.7z"
+ },
+ "checkver": {
+  "regex": "([\\d.]+)",
+  "url": "https://raw.githubusercontent.com/kkzzhizhou/scoop-zapps/master/versions/TIM.latest"
+ },
+ "description": "\u7eff\u8272\u7cbe\u7b80\u7248",
+ "extract_dir": "TIM",
+ "hash": "10e033cf7e55d8ba13480b5cb3f53156b1374569fda4572489f49e84255e9f17",
+ "homepage": "https://www.ghpym.com/pctim.html",
+ "license": "MIT",
+ "shortcuts": [
+  [
+   "Bin/TIM.exe",
+   "TIM"
+  ]
+ ],
+ "url": "https://scoop-zapps.ziiyc.com/d/TIM/TIM-3.3.9.22051.7z",
+ "version": "3.3.9.22051"
 }

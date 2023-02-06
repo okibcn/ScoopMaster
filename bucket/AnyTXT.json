@@ -1,24 +1,29 @@
 {
     "homepage": "https://anytxt.net/",
-    "version": "1.2.982.Win32_Win64",
-    "description": "A Desktop Search Tool with A Powerful Full-Text Search Engine. Free Google Desktop Search Alternative.",
-    "url": "https://down.sp-all.laifaxin.com/AnyTXT.Searcher.1.2.982.Win32_Win64.zip",
-    "hash": "076b161608adf5da32a2ff20be6f370d5646e14c9ccad0a9ab7815a80e02fc9f",
+    "description": "A local document search application",
+    "version": "1.2.270",
+    "license": "GPL-3.0-or-later",
+    "url": "https://sourceforge.net/projects/anytxt/files/AnyTXT.Searcher.1.2.270.exe",
+    "hash": "251a85b3bac687974f360d3796048c20ded3bf0bd69e0d1cfd1db23d013f89ed",
     "installer": {
-        "script": [
-            "Move-Item -Path $dir\\AnyTXT*.exe $dir\\setup.exe -Force",
-            "Start-Process -Wait \"$dir\\setup.exe\" \"/verysilent /norestart /DIR=`\"$dir`\"\" -Verb RunAs"
+        "args": [
+            "/silent",
+            "/dir=\"$dir\""
         ]
     },
     "uninstaller": {
-        "script": "Start-Process -Wait \"$dir\\unins000.exe\" \"/verysilent /norestart\" -Verb RunAs"
+        "file": "unins000.exe",
+        "args": "/silent"
     },
+    "bin": "ATGUI.exe",
     "checkver": {
         "url": "https://anytxt.net/download/",
-        "regex": "AnyTXT.Searcher.(.*).zip"
+        "regex": "AnyTXT Searcher ([\\d.]+) Installer.exe"
     },
     "autoupdate": {
-        "url": "https://down.sp-all.laifaxin.com/AnyTXT.Searcher.$version.zip"
-    },
-    "bin": "atgui.exe"
+        "url": "https://sourceforge.net/projects/anytxt/files/AnyTXT.Searcher.$version.exe",
+        "hash": {
+            "mode": "sourceforge"
+        }
+    }
 }
