@@ -1,20 +1,30 @@
 {
     "version": "4.6.3",
-    "description": "Charles is an HTTP proxy / HTTP monitor / Reverse Proxy. http层抓包工具",
+    "description": "An HTTP proxy / HTTP monitor / Reverse Proxy that enables a developer to view all of the HTTP and SSL / HTTPS traffic between their machine and the Internet.",
     "homepage": "https://www.charlesproxy.com/",
-    "url": "https://www.charlesproxy.com/assets/release/4.6.3/charles-proxy-4.6.3-win64.msi#/setup.msi_",
-    "hash": "efb8f5cda02bd6bc42860e7069ada57cd97c5d81e0965a718a419125e65c7f31",
-    "installer": {
-        "script": "Invoke-ExternalCommand msiexec -ArgumentList @('/i', \"$dir\\setup.msi_\", '/qn') -RunAs | Out-Null"
+    "license": "Proprietary",
+    "architecture": {
+        "64bit": {
+            "url": "https://www.charlesproxy.com/assets/release/4.6.3/charles-proxy-4.6.3-win64.msi",
+            "hash": "efb8f5cda02bd6bc42860e7069ada57cd97c5d81e0965a718a419125e65c7f31"
+        }
     },
-    "uninstaller": {
-        "script": "Invoke-ExternalCommand msiexec -ArgumentList @('/x', \"$dir\\setup.msi_\", '/qn') -RunAs | Out-Null"
-    },
+    "extract_dir": "PFiles\\Charles",
+    "shortcuts": [
+        [
+            "Charles.exe",
+            "Charles"
+        ]
+    ],
     "checkver": {
-        "url": "https://raw.githubusercontent.com/kkzzhizhou/scoop-zapps/master/versions/Charles.latest",
-        "regex": "([\\d.]+)"
+        "url": "https://www.charlesproxy.com/download/",
+        "regex": "Charles\\sis\\s([\\d.]+)\\."
     },
     "autoupdate": {
-        "url": "https://www.charlesproxy.com/assets/release/$version/charles-proxy-$version-win64.msi#/setup.msi_"
+        "architecture": {
+            "64bit": {
+                "url": "https://www.charlesproxy.com/assets/release/$version/charles-proxy-$version-win64.msi"
+            }
+        }
     }
 }
