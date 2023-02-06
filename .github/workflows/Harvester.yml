@@ -236,6 +236,15 @@ jobs:
         $FullDB | ConvertTo-csv > $scoopDBfile
       
 
+    - name: "🐞 Debug session"
+      uses: mxschmitt/action-tmate@v3
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      if: github.event_name == 'workflow_dispatch' && github.event.inputs.debug_enabled == 'true'
+        ## More info at https://til.simonwillison.net/github-actions/debug-tmate
+        ##           or https://github.com/mxschmitt/action-tmate
+
+
     - name: "📦 Prepare updated repo"
       run: |
         ############################
@@ -254,15 +263,6 @@ jobs:
         echo "UPDATE=$(date -R -u)" >>$GITHUB_ENV
 
     
-    - name: "🐞 Debug session"
-      uses: mxschmitt/action-tmate@v3
-      env:
-        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      if: github.event_name == 'workflow_dispatch' && github.event.inputs.debug_enabled == 'true'
-        ## More info at https://til.simonwillison.net/github-actions/debug-tmate
-        ##           or https://github.com/mxschmitt/action-tmate
-
-
     - name: "⭐ Update repo (Commit-n-Push)"
       run: |
         git -C . init
@@ -273,23 +273,12 @@ jobs:
         $sha=(git -C . rev-parse HEAD)
         git push
 
-    - name: "🧹 Delete current release assets"
-      uses: andreaswilli/delete-release-assets-action@v2.0.0
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        tag: Databases
-        deleteOnlyFromDrafts: false
-
-
-    - name: "🎉 Release current databases"
-      uses: softprops/action-gh-release@v0.1.15
-      # go to https://github.com/OWNER/REPO/settings/actions and
-      # in "**"Workflow Permissions" section give actions **Read and Write permissions**.
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: Databases
-        files: ./*DB.*
+    # - name: "🧹 Delete current release assets"
+    #   uses: andreaswilli/delete-release-assets-action@v2.0.0
+    #   with:
+    #     github_token: ${{ secrets.GITHUB_TOKEN }}
+    #     tag: Databases
+    #     deleteOnlyFromDrafts: false
 
 
     - name: "👍 Upload detailed logs as Artifact"
@@ -299,3 +288,14 @@ jobs:
         name: Logs
         path: |
           *.txt
+
+
+    - name: "🎉 Release updated databases"
+      uses: softprops/action-gh-release@v0.1.15
+      # go to https://github.com/OWNER/REPO/settings/actions and
+      # in "**"Workflow Permissions" section give actions **Read and Write permissions**.
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: Databases
+        files: ./*DB.*
