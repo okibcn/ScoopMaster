@@ -1,13 +1,13 @@
 {
-    "version": "1675603153",
+    "version": "109758",
     "description": "A complete, cross-platform solution to record, convert and stream audio and video.",
     "homepage": "https://ffmpeg.org",
     "license": "GPL-3.0-or-later",
     "architecture": {
         "64bit": {
-            "url": "https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-master-latest-win64-gpl.zip",
-            "hash": "98078abffa10545124cd4d21be448fe13d3b5a0faeab3783bb3e573cb7144023",
-            "extract_dir": "ffmpeg-master-latest-win64-gpl"
+            "url": "https://github.com/BtbN/FFmpeg-Builds/releases/download/autobuild-2023-02-05-12-39/ffmpeg-N-109758-gbdc76f467f-win64-gpl.zip",
+            "hash": "0baf623be20378da85d6c6a686961756499fd02296b1255bd12a7074b5f44d48",
+            "extract_dir": "ffmpeg-N-109758-gbdc76f467f-win64-gpl"
         }
     },
     "bin": [
@@ -16,13 +16,14 @@
         "bin\\ffprobe.exe"
     ],
     "checkver": {
-        "script": "try { Get-Date (Invoke-RestMethod https://api.github.com/repositories/292087234/releases/latest).published_at -UFormat %s } catch { '' }",
-        "regex": "\\A(\\d+)\\Z"
+        "url": "https://github.com/BtbN/FFmpeg-Builds/releases",
+        "regex": "/autobuild-(?<time>[\\d-]+)/ffmpeg-N-(?<version>\\d+)-g(?<hash>[a-z\\d]+)-win64-gpl\\.zip"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-master-latest-win64-gpl.zip"
+                "url": "https://github.com/BtbN/FFmpeg-Builds/releases/download/autobuild-$matchTime/ffmpeg-N-$version-g$matchHash-win64-gpl.zip",
+                "extract_dir": "ffmpeg-N-$version-g$matchHash-win64-gpl"
             }
         }
     }
