@@ -32,246 +32,246 @@ jobs:
       uses: actions/checkout@v3
 
 
-    - name: "🔍 Discover known buckets from Scoop-Directory website."
-      run: |
-        cd ..
-        $scoopDBURL = "https://rasa.github.io/scoop-directory/by-apps.html"
-        $ErrorActionPreference = 'SilentlyContinue'
-        $lBuckets = [System.Collections.ArrayList]@()
-        $source = iwr $scoopDBURL
-        $source.Content -split '\r?\n' | ForEach-Object -Process {
-            if ($_ -match '<h2.*(http[^\"]+)"'){
-                [void]$lBuckets.Add($matches[1])
-            }
-        }
-        $lBuckets > Bucket_list.txt
-        Write-Host "$($lBuckets.count) buckets found."
+    # - name: "🔍 Discover known buckets from Scoop-Directory website."
+    #   run: |
+    #     cd ..
+    #     $scoopDBURL = "https://rasa.github.io/scoop-directory/by-apps.html"
+    #     $ErrorActionPreference = 'SilentlyContinue'
+    #     $lBuckets = [System.Collections.ArrayList]@()
+    #     $source = iwr $scoopDBURL
+    #     $source.Content -split '\r?\n' | ForEach-Object -Process {
+    #         if ($_ -match '<h2.*(http[^\"]+)"'){
+    #             [void]$lBuckets.Add($matches[1])
+    #         }
+    #     }
+    #     $lBuckets > Bucket_list.txt
+    #     Write-Host "$($lBuckets.count) buckets found."
 
         
 
-    - name: "⏬ Download known buckets"
-      run: |
-        cd ..
-        $lBuckets=(cat .\Bucket_list.txt)
-        ## CREATE INPUT FILE FOR ARIA2C
-        $lZips=$lBuckets | %{
-            if( -not ($_ -match 'https:\/\/github.com\/(.+)')){
-              $_ >> ERROR_badrepos.txt
-              return}
-            if(($_ -match 'okibcn\/ScoopMaster')){
-              return}
-            $owner_repo=$matches[1].replace('/','~')
-            return "$_/archive/refs/heads/master.zip`n    out=$owner_repo.zip"
-        }
-        $lZips > download_list.txt   
+    # - name: "⏬ Download known buckets"
+    #   run: |
+    #     cd ..
+    #     $lBuckets=(cat .\Bucket_list.txt)
+    #     ## CREATE INPUT FILE FOR ARIA2C
+    #     $lZips=$lBuckets | %{
+    #         if( -not ($_ -match 'https:\/\/github.com\/(.+)')){
+    #           $_ >> ERROR_badrepos.txt
+    #           return}
+    #         if(($_ -match 'okibcn\/ScoopMaster')){
+    #           return}
+    #         $owner_repo=$matches[1].replace('/','~')
+    #         return "$_/archive/refs/heads/master.zip`n    out=$owner_repo.zip"
+    #     }
+    #     $lZips > download_list.txt   
 
-        # DOWNLOAD BUCKETS
-        aria2c --save-session aria2-out.txt -j 16 -i download_list.txt -d zips
-        (cmd.exe /c dir /s /b /a-d zips) > Zip_list.txt
-
-
-    - name: "📃 Extract manifests from downloaded buckets"
-      run: |
-        cd ..
-        # EXTRACT MANIFESTS
-        7z e -y zips/*.zip -ojsons/* */bucket/*.json */*.json
-        # PREPARE OUTPUT
-        Remove-Item -Force -Recurse jsons/*/.*.json
-        $nJsons = (cmd.exe /c dir /s /b /a-d jsons).count
-        $nZips = (cat .\Zip_list.txt).count
-        Write-Host "PROCESS COMPLETED. $nJsons manifests extracted from $nZips downloaded buckets."
+    #     # DOWNLOAD BUCKETS
+    #     aria2c --save-session aria2-out.txt -j 16 -i download_list.txt -d zips
+    #     (cmd.exe /c dir /s /b /a-d zips) > Zip_list.txt
 
 
-    - name: "📝 Indexing JSON manifests"
-      run: |
-        function longV([string]$v) {
-            $numbers = [regex]::matches($v, '\d+')
-            if ($numbers.Count -eq 0) {
-                #doesn't contain numbers
-                return $v
-            }
-            $notnumbers = [regex]::matches($v, '([^\d]+)')
-            $longnumbers = @($numbers | % {
-                    $_.Value.PadLeft(10, '0')
-                })
-            $i = [int]0
-            if ($numbers[0].Index -eq 0) {
-                # starts with a number
-                ($longnumbers | % { $_ ; $notnumbers[$i].value ; $i++ }) -join ''
-            }
-            else {
-                ($notnumbers | % { $_.Value ; $longnumbers[$i] ; $i++ }) -join ''
-            }
-        }
-
-        # Returns 0 if both versions match, 1 if the firs one is higher,
-        # and -1 if the second is higher
-        function CompareV([string]$a, [string]$b) {
-            if ($a -eq $b) {
-                return 0
-            }
-            if ( $(longV $a) -gt $(longV $b)) {
-                return 1
-            }
-            return -1
-        }
-
-        cd ..
-        ## PROCESS JSON FILES
-        $FullDB = $null
-        $FullDB = New-Object system.data.datatable
-        $FullDB.Columns.Add("Name") | Out-Null
-        $FullDB.Columns.Add("Version") | Out-Null
-        $FullDB.Columns.Add("Date") | Out-Null
-        $FullDB.Columns.Add("Bucket") | Out-Null
-        $FullDB.Columns.Add("Description") | Out-Null
-
-        $files = gci jsons/*/*.json
-        $nJsons=$files.Count
-        $progress=0
-        Write-host "##"
-        Write-host "##   INDEXING JSON FILES..."
-        Write-host "##   ================================="
-        Write-host "##"
-        foreach ( $file in $files ) {
-            $name = $file.BaseName
-            $bucket = $file.FullName.split('\')[-2].replace('~', "/")
-            $progress++
-            $percent = [math]::round(100 * $progress / $nJsons)
-            if ($percent -ne $oldpercent){
-              Write-Output "( $percent% )  $progress / $nJsons (indexed/total) Indexing bucket $bucket"
-              $oldpercent=$percent
-            }
-            $date = $file.LastWriteTimeUtc.ToString("yyyy-MM-ddTHH:mm:ssZ")
-            try{
-                $json = (cat $file) | ConvertFrom-Json
-                $version = $json.version
-                $description = "$($json.description)"
-            }catch{
-                $file.fullname >> ERROR_manifest.txt
-                continue
-            }
-            [void]$FullDB.Rows.Add($name, $version, $date, $bucket, $description) 
-        }
-        $DB = $FullDB | Sort-Object Name
-
-        $hash = $null
-        $hash = New-Object system.data.datatable
-        $hash.Columns.Add("Name") | Out-Null
-        $hash.Columns.Add("Version") | Out-Null
-        $hash.Columns.Add("FirstDate") | Out-Null
-        $hash.Columns.Add("FirstBucket") | Out-Null
-        $hash.Columns.Add("LastDate") | Out-Null
-        $hash.Columns.Add("LastBucket") | Out-Null
-        $hash.Columns.Add("Description") | Out-Null
-
-        $name = ""
-        $nhash = 0
-        $progress=0
-        Write-host "##"
-        Write-host "##   SEARCHING LATEST VERSIONS..."
-        Write-host "##   ================================="
-        Write-host "##"
-        foreach ( $row in $DB ) {
-            $progress++
-            $percent = [math]::round(100 * $progress / $nJsons)
-            if ($percent -ne $oldpercent){
-              Write-Output "( $percent% )  $nhash / $progress / $nJsons (harvested/indexed/total) Last checked app: $name.json"
-              $oldpercent=$percent
-            }
-            if ($row.name -ne $name) {
-                $name = $row.name
-                [void]$hash.Rows.Add($name, $row.version, $row.date, $row.bucket, $row.date, $row.bucket, $row.description) 
-                $nhash++
-                continue
-            }
-            switch ( CompareV $row.Version $hash.Rows[-1].Version ) {
-                -1 {    
-                    break   
-                }
-                1 {
-                    $hash.Rows[-1].Version = $row.Version
-                    $hash.Rows[-1].FirstDate = $row.Date
-                    $hash.Rows[-1].FirstBucket = $row.Bucket
-                    $hash.Rows[-1].LastDate = $row.Date
-                    $hash.Rows[-1].LastBucket = $row.Bucket
-                    $hash.Rows[-1].Description = $row.Description
-                }
-                0 {
-                    if ($row.date -gt $hash.Rows[-1].LastDate) {
-                        $hash.Rows[-1].LastDate = $row.Date
-                        $hash.Rows[-1].LastBucket = $row.Bucket
-                    }
-                    elseif ($row.date -lt $hash.Rows[-1].FirstDate) {
-                        $hash.Rows[-1].FirstDate = $row.Date
-                        $hash.Rows[-1].FirstBucket = $row.Bucket
-                    }
-                }
-            }
-        }
-        $hash = $hash | Sort-Object Name
-        $scoopDBfile = "./LastAppsDB.csv"
-        $hash | ConvertTo-csv > $scoopDBfile
+    # - name: "📃 Extract manifests from downloaded buckets"
+    #   run: |
+    #     cd ..
+    #     # EXTRACT MANIFESTS
+    #     7z e -y zips/*.zip -ojsons/* */bucket/*.json */*.json
+    #     # PREPARE OUTPUT
+    #     Remove-Item -Force -Recurse jsons/*/.*.json
+    #     $nJsons = (cmd.exe /c dir /s /b /a-d jsons).count
+    #     $nZips = (cat .\Zip_list.txt).count
+    #     Write-Host "PROCESS COMPLETED. $nJsons manifests extracted from $nZips downloaded buckets."
 
 
-        mkdir local | Out-Null
-        $progress=0
-        $nhash=$hash.rows.count
-        Write-host "##"
-        Write-host "##   GATHERING SELECTED MANIFESTS..."
-        Write-host "##   ================================="
-        Write-host "##"
-        foreach ( $row in $hash ) {
-            [void]$FullDB.Rows.Add($row.Name, $row.Version, $row.FirstDate, "okibcn/ScoopMaster", $row.Description)
-            Copy-Item "jsons/$( $row.LastBucket.replace('/','~') )/$($row.Name).json" local | Out-Null
-            $progress++
-            $percent = [math]::round(100 * $progress / $nhash)
-            if ($percent -ne $oldpercent){
-              Write-Output "( $percent% )  $progress / $nhash (hasvested/total) Last harvested app: $($row.Name).json"
-              $oldpercent=$percent
-            }
-        }
-        $FullDB = $FullDB | Sort-Object Name,Date
-        $scoopDBfile = "./AllAppsDB.csv"
-        $FullDB | ConvertTo-csv > $scoopDBfile
+    # - name: "📝 Indexing JSON manifests"
+    #   run: |
+    #     function longV([string]$v) {
+    #         $numbers = [regex]::matches($v, '\d+')
+    #         if ($numbers.Count -eq 0) {
+    #             #doesn't contain numbers
+    #             return $v
+    #         }
+    #         $notnumbers = [regex]::matches($v, '([^\d]+)')
+    #         $longnumbers = @($numbers | % {
+    #                 $_.Value.PadLeft(10, '0')
+    #             })
+    #         $i = [int]0
+    #         if ($numbers[0].Index -eq 0) {
+    #             # starts with a number
+    #             ($longnumbers | % { $_ ; $notnumbers[$i].value ; $i++ }) -join ''
+    #         }
+    #         else {
+    #             ($notnumbers | % { $_.Value ; $longnumbers[$i] ; $i++ }) -join ''
+    #         }
+    #     }
+
+    #     # Returns 0 if both versions match, 1 if the firs one is higher,
+    #     # and -1 if the second is higher
+    #     function CompareV([string]$a, [string]$b) {
+    #         if ($a -eq $b) {
+    #             return 0
+    #         }
+    #         if ( $(longV $a) -gt $(longV $b)) {
+    #             return 1
+    #         }
+    #         return -1
+    #     }
+
+    #     cd ..
+    #     ## PROCESS JSON FILES
+    #     $FullDB = $null
+    #     $FullDB = New-Object system.data.datatable
+    #     $FullDB.Columns.Add("Name") | Out-Null
+    #     $FullDB.Columns.Add("Version") | Out-Null
+    #     $FullDB.Columns.Add("Date") | Out-Null
+    #     $FullDB.Columns.Add("Bucket") | Out-Null
+    #     $FullDB.Columns.Add("Description") | Out-Null
+
+    #     $files = gci jsons/*/*.json
+    #     $nJsons=$files.Count
+    #     $progress=0
+    #     Write-host "##"
+    #     Write-host "##   INDEXING JSON FILES..."
+    #     Write-host "##   ================================="
+    #     Write-host "##"
+    #     foreach ( $file in $files ) {
+    #         $name = $file.BaseName
+    #         $bucket = $file.FullName.split('\')[-2].replace('~', "/")
+    #         $progress++
+    #         $percent = [math]::round(100 * $progress / $nJsons)
+    #         if ($percent -ne $oldpercent){
+    #           Write-Output "( $percent% )  $progress / $nJsons (indexed/total) Indexing bucket $bucket"
+    #           $oldpercent=$percent
+    #         }
+    #         $date = $file.LastWriteTimeUtc.ToString("yyyy-MM-ddTHH:mm:ssZ")
+    #         try{
+    #             $json = (cat $file) | ConvertFrom-Json
+    #             $version = $json.version
+    #             $description = "$($json.description)"
+    #         }catch{
+    #             $file.fullname >> ERROR_manifest.txt
+    #             continue
+    #         }
+    #         [void]$FullDB.Rows.Add($name, $version, $date, $bucket, $description) 
+    #     }
+    #     $DB = $FullDB | Sort-Object Name
+
+    #     $hash = $null
+    #     $hash = New-Object system.data.datatable
+    #     $hash.Columns.Add("Name") | Out-Null
+    #     $hash.Columns.Add("Version") | Out-Null
+    #     $hash.Columns.Add("FirstDate") | Out-Null
+    #     $hash.Columns.Add("FirstBucket") | Out-Null
+    #     $hash.Columns.Add("LastDate") | Out-Null
+    #     $hash.Columns.Add("LastBucket") | Out-Null
+    #     $hash.Columns.Add("Description") | Out-Null
+
+    #     $name = ""
+    #     $nhash = 0
+    #     $progress=0
+    #     Write-host "##"
+    #     Write-host "##   SEARCHING LATEST VERSIONS..."
+    #     Write-host "##   ================================="
+    #     Write-host "##"
+    #     foreach ( $row in $DB ) {
+    #         $progress++
+    #         $percent = [math]::round(100 * $progress / $nJsons)
+    #         if ($percent -ne $oldpercent){
+    #           Write-Output "( $percent% )  $nhash / $progress / $nJsons (harvested/indexed/total) Last checked app: $name.json"
+    #           $oldpercent=$percent
+    #         }
+    #         if ($row.name -ne $name) {
+    #             $name = $row.name
+    #             [void]$hash.Rows.Add($name, $row.version, $row.date, $row.bucket, $row.date, $row.bucket, $row.description) 
+    #             $nhash++
+    #             continue
+    #         }
+    #         switch ( CompareV $row.Version $hash.Rows[-1].Version ) {
+    #             -1 {    
+    #                 break   
+    #             }
+    #             1 {
+    #                 $hash.Rows[-1].Version = $row.Version
+    #                 $hash.Rows[-1].FirstDate = $row.Date
+    #                 $hash.Rows[-1].FirstBucket = $row.Bucket
+    #                 $hash.Rows[-1].LastDate = $row.Date
+    #                 $hash.Rows[-1].LastBucket = $row.Bucket
+    #                 $hash.Rows[-1].Description = $row.Description
+    #             }
+    #             0 {
+    #                 if ($row.date -gt $hash.Rows[-1].LastDate) {
+    #                     $hash.Rows[-1].LastDate = $row.Date
+    #                     $hash.Rows[-1].LastBucket = $row.Bucket
+    #                 }
+    #                 elseif ($row.date -lt $hash.Rows[-1].FirstDate) {
+    #                     $hash.Rows[-1].FirstDate = $row.Date
+    #                     $hash.Rows[-1].FirstBucket = $row.Bucket
+    #                 }
+    #             }
+    #         }
+    #     }
+    #     $hash = $hash | Sort-Object Name
+    #     $scoopDBfile = "./LastAppsDB.csv"
+    #     $hash | ConvertTo-csv > $scoopDBfile
+
+
+    #     mkdir local | Out-Null
+    #     $progress=0
+    #     $nhash=$hash.rows.count
+    #     Write-host "##"
+    #     Write-host "##   GATHERING SELECTED MANIFESTS..."
+    #     Write-host "##   ================================="
+    #     Write-host "##"
+    #     foreach ( $row in $hash ) {
+    #         [void]$FullDB.Rows.Add($row.Name, $row.Version, $row.FirstDate, "okibcn/ScoopMaster", $row.Description)
+    #         Copy-Item "jsons/$( $row.LastBucket.replace('/','~') )/$($row.Name).json" local | Out-Null
+    #         $progress++
+    #         $percent = [math]::round(100 * $progress / $nhash)
+    #         if ($percent -ne $oldpercent){
+    #           Write-Output "( $percent% )  $progress / $nhash (hasvested/total) Last harvested app: $($row.Name).json"
+    #           $oldpercent=$percent
+    #         }
+    #     }
+    #     $FullDB = $FullDB | Sort-Object Name,Date
+    #     $scoopDBfile = "./AllAppsDB.csv"
+    #     $FullDB | ConvertTo-csv > $scoopDBfile
       
 
-    - name: "📦 Prepare updated repo"
-      run: |
-        ############################
-        ##                          ##
-        ##      CREATE PACKAGE      ##
-        ##                          ##
-        ############################
+    # - name: "📦 Prepare updated repo"
+    #   run: |
+    #     ############################
+    #     ##                          ##
+    #     ##      CREATE PACKAGE      ##
+    #     ##                          ##
+    #     ############################
 
-        remove-item bucket,*.csv -Recurse -Force
-        move-item ../local bucket
-        move-item ../*.csv .
-        7z a AllAppsDB.7z AllAppsDB.csv
-        7z a LastAppsDB.7z LastAppsDB.csv
-        move-item ../*.txt .
+    #     remove-item bucket,*.csv -Recurse -Force
+    #     move-item ../local bucket
+    #     move-item ../*.csv .
+    #     7z a AllAppsDB.7z AllAppsDB.csv
+    #     7z a LastAppsDB.7z LastAppsDB.csv
+    #     move-item ../*.txt .
 
-        echo "UPDATE=$(date -R -u)" >>$GITHUB_ENV
+    #     echo "UPDATE=$(date -R -u)" >>$GITHUB_ENV
 
     
-    - name: "🐞 Debug session"
-      uses: mxschmitt/action-tmate@v3
-      env:
-        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      if: github.event_name == 'workflow_dispatch' && github.event.inputs.debug_enabled == 'true'
-        ## More info at https://til.simonwillison.net/github-actions/debug-tmate
-        ##           or https://github.com/mxschmitt/action-tmate
+    # - name: "🐞 Debug session"
+    #   uses: mxschmitt/action-tmate@v3
+    #   env:
+    #     GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #   if: github.event_name == 'workflow_dispatch' && github.event.inputs.debug_enabled == 'true'
+    #     ## More info at https://til.simonwillison.net/github-actions/debug-tmate
+    #     ##           or https://github.com/mxschmitt/action-tmate
 
 
-    - name: "⭐ Update repo (Commit-n-Push)"
-      run: |
-        git -C . init
-        git -C . add -A
-        git -C . config --local user.name "GitHub Actions"
-        git -C . config --local user.email actions@github.com
-        git -C . commit --no-verify -m "Updated on $(date -R -u)"
-        $sha=(git -C . rev-parse HEAD)
-        git push
+    # - name: "⭐ Update repo (Commit-n-Push)"
+    #   run: |
+    #     git -C . init
+    #     git -C . add -A
+    #     git -C . config --local user.name "GitHub Actions"
+    #     git -C . config --local user.email actions@github.com
+    #     git -C . commit --no-verify -m "Updated on $(date -R -u)"
+    #     $sha=(git -C . rev-parse HEAD)
+    #     git push
 
     - name: "🧹 Delete current release assets"
       uses: andreaswilli/delete-release-assets-action@v2.0.0
@@ -280,13 +280,15 @@ jobs:
         tag: Databases
 
 
-    - name: "🎉 Release updated databases"
-      uses: alexellis/upload-assets@0.4.0
-      # INFO: https://github.com/alexellis/upload-assets
+    - name: "🎉 Publish a new release"
+      uses: softprops/action-gh-release@v0.1.15
+      # go to https://github.com/OWNER/REPO/settings/actions and
+      # in "**"Workflow Permissions" section give actions **Read and Write permissions**.
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        asset_paths: '["./AllAppsDB.csv","./LastAppsDB.csv"]'
+        tag_name: Database
+        files: ./*DB.*
         # AllAppsDB.csv
         # LastAppsDB.csv
         # AllAppsDB.7z
