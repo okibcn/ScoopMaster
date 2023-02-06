@@ -247,8 +247,8 @@ jobs:
         remove-item bucket,*.csv -Recurse -Force
         move-item ../local bucket
         move-item ../*.csv .
-        7z AllAppsDB.7z AllAppsDB.csv
-        7z LastAppsDB.7z LastAppsDB.csv
+        7z a AllAppsDB.7z AllAppsDB.csv
+        7z a LastAppsDB.7z LastAppsDB.csv
         move-item ../*.txt .
 
         echo "UPDATE=$(date -R -u)" >>$GITHUB_ENV
@@ -286,7 +286,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        asset_paths: '["./*DB.*"]'
+        asset_paths: '["AllAppsDB.csv"]'
         # AllAppsDB.csv
         # LastAppsDB.csv
         # AllAppsDB.7z
