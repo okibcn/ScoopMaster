@@ -270,15 +270,24 @@ jobs:
         $sha=(git -C . rev-parse HEAD)
         git push
 
+    - name: "🧹 Delete current release assets"
+      uses: andreaswilli/delete-release-assets-action@<version>
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        tag: Databases
 
-    - name: "👋 If no new sources are available, then we stop."
-      if:  env.CANCEL == 'true'
-      uses: andymckay/cancel-action@0.3
+    - name: Github Release create, update, and upload assets
+      uses: meeDamian/github-release@v2.0.3
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        tag: Databases
+        files: AllAppsDB.csv LastAppsDB.csv
 
 
-    - name: "👍 Upload logs as Artifact"
+
+    - name: "👍 Upload detailed logs as Artifact"
       uses: actions/upload-artifact@v3
-      if: github.event_name == 'workflow_dispatch'
+      # if: github.event_name == 'workflow_dispatch'
       with:
         name: Logs
         path: |
