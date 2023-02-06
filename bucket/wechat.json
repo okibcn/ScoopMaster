@@ -1,17 +1,22 @@
 {
-    "version": "nightly",
+    "$schema": "https://ghproxy.com/https://raw.githubusercontent.com/ScoopInstaller/Scoop/master/schema.json",
+    "homepage": "https://pc.weixin.qq.com/",
     "description": "Free messaging and calling app.",
-    "homepage": "https://www.wechat.com/",
+    "version": "nightly",
     "license": {
-        "identifier": "WECHAT – TERMS OF SERVICE",
-        "url": "https://www.wechat.com/en/service_terms.html"
+        "identifier": "Proprietary",
+        "url": "https://weixin.qq.com/cgi-bin/readtemplate?lang=zh_CN&t=weixin_agreement&s=default"
     },
-    "url": "https://dldir1.qq.com/weixin/Windows/WeChatSetup.exe#dl.7z",
+    "url": "https://dldir1.qq.com/weixin/Windows/WeChatSetup.exe#/dl.7z",
     "shortcuts": [
         [
-            "WeChat.exe",
+            "wechat.exe",
             "WeChat"
         ]
     ],
-    "post_install": "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\`$R5\", \"$dir\\`$_15_\" -Force -Recurse"
+    "post_install": [
+        "Remove-Item \"$dir\\`$PLUGINSDIR\" -Force -Recurse",
+        "Remove-Item \"$dir\\`$_15_\" -Force -Recurse",
+        "Remove-Item \"$dir\\`$R5\" -Force -Recurse"
+    ]
 }
