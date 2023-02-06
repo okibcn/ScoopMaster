@@ -281,11 +281,12 @@ jobs:
 
 
     - name: "🎉 Release updated databases"
-      uses: meeDamian/github-release@v2.0.3
+      id: upload-release-asset 
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        tag: Databases
-        files: >
+        asset_path: |
           AllAppsDB.csv
           LastAppsDB.csv
           AllAppsDB.7z
