@@ -1,8 +1,14 @@
 {
     "version": "102.7.1",
-    "description": "A free email application that's easy to set up and customize.",
+    "description": "A free email application that’s easy to set up and customize.",
     "homepage": "https://www.thunderbird.net",
     "license": "MPL-2.0",
+    "notes": [
+        "To set profile 'Scoop' as *DEFAULT*, or profiles/settings was lost after update:",
+        "  - Run 'Thunderbird Profile Manager', choose 'Scoop' then click 'Start Thunderbird'.",
+        "  - Visit 'about:profiles' page in Thunderbird to check *DEFAULT* profile.",
+        "For details: https://support.mozilla.org/en-US/kb/profile-manager-create-and-remove-thunderbird-profiles"
+    ],
     "architecture": {
         "64bit": {
             "url": "https://archive.mozilla.org/pub/thunderbird/releases/102.7.1/win64/en-US/Thunderbird%20Setup%20102.7.1.exe#/dl.7z",
@@ -14,40 +20,30 @@
         }
     },
     "extract_dir": "core",
-    "bin": [
-        [
-            "thunderbird.exe",
-            "thunderbird",
-            "-profile \"$dir\\profile\""
-        ]
+    "post_install": [
+        "thunderbird -CreateProfile \"Scoop $persist_dir\\profile\"",
+        "$Addition = \"$persist_dir\\addition\"",
+        "if (Test-Path $Addition) {",
+        "  info 'Copying additional items...'",
+        "  Copy-Item -Path $Addition\\* -Destination $dir -Force -Recurse -ErrorAction SilentlyContinue",
+        "}"
     ],
+    "bin": "thunderbird.exe",
     "shortcuts": [
         [
             "thunderbird.exe",
-            "Thunderbird",
-            "-profile \"$dir\\profile\""
+            "Thunderbird"
+        ],
+        [
+            "thunderbird.exe",
+            "Thunderbird Profile Manager",
+            "-P"
         ]
     ],
-    "post_install": [
-        "$app = \"$dir\\thunderbird.exe\".Replace('\\', '\\\\')",
-        "$shim = \"$(shimdir)\\thunderbird.exe\".Replace('\\', '\\\\')",
-        "$scripts = join-path $bucketsdir $($ResolvedObject.Bucket) | join-path -ChildPath scripts/thunderbird",
-        "'install-associations', 'uninstall-associations' | ForEach-Object {",
-        "  if (Test-Path \"$scripts\\$_.reg\") {",
-        "    $content = Get-Content \"$scripts\\$_.reg\"",
-        "    $content = $content.Replace('$app', $app)",
-        "    $content = $content.Replace('$dir', $dir)",
-        "    $content = $content.Replace('$shim', $shim)",
-        "    if ($global) {",
-        "      $content = $content.Replace('HKEY_CURRENT_USER', 'HKEY_LOCAL_MACHINE')",
-        "    }",
-        "    $content | Set-Content -Path \"$dir\\$_.reg\"",
-        "  }",
-        "}",
-        "REG IMPORT \"$dir\\install-associations.reg\" *>&1 | Out-Null"
+    "persist": [
+        "distribution",
+        "profile"
     ],
-    "pre_uninstall": "REG IMPORT \"$dir\\uninstall-associations.reg\" *>&1 | Out-Null",
-    "persist": "profile",
     "checkver": {
         "url": "https://www.thunderbird.net/thunderbird/all/",
         "regex": "thunderbird/([\\d.]+)/"
