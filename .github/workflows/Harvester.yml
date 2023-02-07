@@ -173,7 +173,7 @@ jobs:
         $nApps = 0
         $progress=0
         Write-host "##"
-        Write-host "##   SEARCHING LATEST VERSIONS..."
+        Write-host "##   FINDING LATEST VERSIONS..."
         Write-host "##   ================================="
         Write-host "##"
         foreach ( $row in $DB ) {
@@ -222,12 +222,16 @@ jobs:
         $progress=0
         $nApps=$hash.rows.count
         Write-host "##"
-        Write-host "##   GATHERING SELECTED MANIFESTS..."
-        Write-host "##   ================================="
+        Write-host "##   GATHERING AND CHECKING SELECTED MANIFESTS..."
+        Write-host "##   ==============================================="
         Write-host "##"
         foreach ( $row in $hash ) {
             [void]$FullDB.Rows.Add($row.Name, $row.Version, $row.FirstDate, "okibcn/ScoopMaster", $row.Description)
-            Move-Item "jsons/$( $row.FirstBucket.replace('/','~') )/$($row.Name).json" local | Out-Null
+            if  ((cat -Raw $file) -match "\r\n$"){    # CRLF
+              Copy-Item $file local | Out-Null
+            }else{     # LF, converting to CRLF
+              (Get-Content $file -Raw).Replace("\n","\r\n") | Set-Content "local/$($row.Name).json" -Force
+            }
             $progress++
             $percent = [math]::round(100 * $progress / $nApps)
             if ($percent -ne $oldpercent){
