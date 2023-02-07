@@ -3,6 +3,7 @@
     "description": "Distributed version control system",
     "homepage": "https://gitforwindows.org",
     "license": "GPL-2.0-only",
+    "notes": "Set Git Credential Manager Core by running: \"git config --global credential.helper manager\"",
     "architecture": {
         "64bit": {
             "url": "https://github.com/git-for-windows/git/releases/download/v2.39.1.windows.1/PortableGit-2.39.1-64-bit.7z.exe#/dl.7z",
@@ -14,6 +15,8 @@
         }
     },
     "bin": [
+        "bin\\sh.exe",
+        "bin\\bash.exe",
         "cmd\\git.exe",
         "cmd\\gitk.exe",
         "cmd\\git-gui.exe",
@@ -32,12 +35,11 @@
             "Git GUI"
         ]
     ],
-    "post_install": "git config --system --unset credential.helper",
     "env_set": {
         "GIT_INSTALL_ROOT": "$dir"
     },
     "checkver": {
-        "url": "https://api.github.com/repos/git-for-windows/git/releases/latest",
+        "github": "https://github.com/git-for-windows/git",
         "regex": "v([\\w.]+)/PortableGit-(?<full>[\\w.]+)-64-bit"
     },
     "autoupdate": {
