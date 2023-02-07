@@ -15,12 +15,25 @@
             "extract_dir": "ProgramFilesFolder\\Mumble\\client"
         }
     },
-    "bin": "mumble.exe",
+    "pre_install": "Test-Persistence ('mumble.ini','mumble.sqlite')",
+    "uninstaller": {
+        "script": [
+            "ensure \"$persist_dir\" | Out-Null",
+            "Copy-Item \"$dir\\mumble.ini\" \"$persist_dir\" -ErrorAction SilentlyContinue -Force"
+        ]
+    },
     "shortcuts": [
         [
             "mumble.exe",
             "Mumble"
         ]
+    ],
+    "persist": [
+        "mumble.ini",
+        "mumble.sqlite",
+        "Overlay",
+        "Snapshots",
+        "Themes"
     ],
     "checkver": {
         "github": "https://github.com/mumble-voip/mumble"

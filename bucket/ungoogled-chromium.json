@@ -1,8 +1,9 @@
 {
     "version": "109.0.5414.120-1.1",
-    "description": "Google Chromium, sans integration with Google.",
+    "description": "Google Chromium, sans Google integration (downloads Widevine separately, password encryption disabled)",
     "homepage": "https://ungoogled-software.github.io/ungoogled-chromium-binaries/",
     "license": "BSD-3-Clause",
+    "depends": "scoop-alts/widevinecdm",
     "architecture": {
         "64bit": {
             "url": "https://github.com/ungoogled-software/ungoogled-chromium-windows/releases/download/109.0.5414.120-1.1/ungoogled-chromium_109.0.5414.120-1.1_windows_x64.zip",
@@ -18,14 +19,14 @@
         [
             "chrome.exe",
             "chromium",
-            "--user-data-dir=\"$dir\\User Data\""
+            "--user-data-dir=\"$dir\\User Data\" --disable-machine-id --disable-encryption --no-default-browser-check"
         ]
     ],
     "shortcuts": [
         [
             "chrome.exe",
             "Chromium",
-            "--user-data-dir=\"$dir\\User Data\""
+            "--user-data-dir=\"$dir\\User Data\" --disable-machine-id --disable-encryption --no-default-browser-check"
         ]
     ],
     "persist": "User Data",
@@ -33,6 +34,7 @@
         "github": "https://github.com/ungoogled-software/ungoogled-chromium-windows",
         "regex": "releases/tag/((?<main>[\\d.]+-\\d).(?<release>\\d))"
     },
+    "post_install": "New-Item -Path \"$dir\\WidevineCdm\" -Target \"$(versiondir 'widevinecdm' 'current' $global)\\WidevineCdm\" -ItemType Junction -Force | Out-Null",
     "autoupdate": {
         "architecture": {
             "64bit": {
