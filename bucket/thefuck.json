@@ -44,7 +44,7 @@
             "# Building thefuck wheel",
             "python -m build $dir --wheel --no-isolation",
             "# Installing thefuck",
-            "python -m installer $dir\\dist\\thefuck-3.32-py2.py3-none-any.whl"
+            "python -m installer $dir\\dist\\*.whl"
         ]
     },
 
@@ -60,26 +60,6 @@
     "checkver": "github",
     "autoupdate": {
         "url": "https://github.com/nvbn/thefuck/archive/refs/tags/$version.zip",
-        "extract_dir": "thefuck-$version",
-        "installer": {
-            "script": [
-                "# Creating a new powershell profile if it doesn't exist",
-                "if (!(Test-Path -Path $profile )) { New-Item -Type File -Path $profile -Force }",
-                "# Adding thefuck to the powershell profile",
-                "cp $profile \"$profile.bak\"",
-                "echo \"\" >> $profile",
-                "echo '# thefuck' >> $profile",
-                "echo '$env:PYTHONIOENCODING=\"utf-8\"' >> $profile",
-                "echo 'iex \"$(thefuck --alias fuck)\"' >> $profile",
-                "echo \"\" >> $profile",
-                "# Installing dependencies",
-                "python -m pip install --upgrade build installer setuptools wheel pyte psutil decorator win_unicode_console",
-                "python -m pip install -r $dir\\requirements.txt --no-warn-script-location ",
-                "# Building thefuck wheel",
-                "python -m build $dir --wheel --no-isolation",
-                "# Installing thefuck",
-                "python -m installer $dir\\dist\\thefuck-$version-py2.py3-none-any.whl"
-            ]
-        }
+        "extract_dir": "thefuck-$version"
     }
 }
