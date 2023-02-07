@@ -223,7 +223,7 @@ jobs:
         Write-host "##"
         foreach ( $row in $hash ) {
             [void]$FullDB.Rows.Add($row.Name, $row.Version, $row.FirstDate, "okibcn/ScoopMaster", $row.Description)
-            Copy-Item "jsons/$( $row.LastBucket.replace('/','~') )/$($row.Name).json" local | Out-Null
+            Move-Item "jsons/$( $row.FirstBucket.replace('/','~') )/$($row.Name).json" local | Out-Null
             $progress++
             $percent = [math]::round(100 * $progress / $nhash)
             if ($percent -ne $oldpercent){
@@ -262,7 +262,8 @@ jobs:
         7z a AllAppsDB.7z AllAppsDB.csv
         7z a LastAppsDB.7z LastAppsDB.csv
         move-item ../*.txt .
-        Write-Output "This release is constantly updated to maintain a downloadable database in CSV format of two datasets, The current metrics for these databases are:" > body.txt
+        Write-Output "This release is constantly updated. It contains csv databases of two datasets. The last snapshot timestamp for these databases is $($env:UPDATE).
+        Write-Output "The current metrics for these databases are:" > body.txt
         Write-Output "- **AllAppsDB** contains the data of **$($env:N_MANIFESTS)** manifests in **$($env:N_BUCKETS)** online buckets." >> body.txt
         Write-Output "- **LastAppsDB** contains highest version of each of the **$($env:N_APPS)** apps in Scoop, all of them contained in this bucket." >> body.txt
         Write-Output " " >> body.txt
@@ -306,4 +307,3 @@ jobs:
         tag_name: Databases
         body_path: body.txt
         files: ./*DB.*
-
