@@ -1,17 +1,44 @@
 {
-    "version": "1.0",
-    "description": "WListTool",
-    "homepage": "https://github.com/zzhaq/Toolbox/releases",
-    "license": "MIT",
-    "url": "https://github.com/zzhaq/Toolbox/releases/download/v3.6/WListTool_R_1.8.1.zip",
-    "extract_dir": "WListTool_R_1.8.1",
-    "bin": "WListTool.exe",
+    "version": "3.9.0",
+    "description": "Fast and friendly network scanner.",
+    "homepage": "http://angryip.org/",
+    "license": "GPL-2.0-or-later",
+    "notes": [
+        "If you have 64bit Windows but 32bit Java, you MUST reinstall 'ipscan' with the following option:",
+        "--arch 32bit"
+    ],
+    "suggest": {
+        "JRE": "java/adopt8-hotspot-jre"
+    },
+    "architecture": {
+        "64bit": {
+            "url": "https://ghproxy.com/github.com/angryip/ipscan/releases/download/3.9.0/ipscan-win64-3.9.0.exe#/ipscan.exe",
+            "hash": "4452bf743b91f801adca4d2faeb2333fc33f22a478251d6b910f204f0f06dd6c"
+        },
+        "32bit": {
+            "url": "https://ghproxy.com/github.com/angryip/ipscan/releases/download/3.9.0/ipscan-3.9.0-setup.exe#/dl.7z",
+            "hash": "cf89753f97f44100d17ddac620231af952e70cb3f4fc02f410d3573be06b332e",
+            "pre_install": "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\uninstall.exe\" -Force -Recurse"
+        }
+    },
+    "bin": "ipscan.exe",
     "shortcuts": [
         [
-            "WListTool.exe",
-            "WListTool"
+            "ipscan.exe",
+            "Angry IP Scanner"
         ]
-    ]
+    ],
+    "checkver": {
+        "github": "https://github.com/angryip/ipscan"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://ghproxy.com/github.com/angryip/ipscan/releases/download/$version/ipscan-win64-$version.exe#/ipscan.exe"
+            },
+            "32bit": {
+                "url": "https://ghproxy.com/github.com/angryip/ipscan/releases/download/$version/ipscan-$version-setup.exe#/dl.7z"
+            }
+        }
+    }
 }
-
-

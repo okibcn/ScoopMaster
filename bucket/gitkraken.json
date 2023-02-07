@@ -1,17 +1,63 @@
 {
-    "version": "1.0",
-    "description": "WListTool",
-    "homepage": "https://github.com/zzhaq/Toolbox/releases",
-    "license": "MIT",
-    "url": "https://github.com/zzhaq/Toolbox/releases/download/v3.6/WListTool_R_1.8.1.zip",
-    "extract_dir": "WListTool_R_1.8.1",
-    "bin": "WListTool.exe",
+    "architecture": {
+        "32bit": {
+            "hash": "sha1:e782df249df8eb7e560b5ed2d910963f96206c40",
+            "url": "https://release.gitkraken.com/win32/gitkraken-9.0.1-full.nupkg"
+        },
+        "64bit": {
+            "hash": "sha1:1a8fcc1d2ceffa912ff001df743824298eb7ecd3",
+            "url": "https://release.gitkraken.com/win64/gitkraken-9.0.1-full.nupkg"
+        }
+    },
+    "autoupdate": {
+        "architecture": {
+            "32bit": {
+                "url": "https://release.gitkraken.com/win32/gitkraken-$version-full.nupkg"
+            },
+            "64bit": {
+                "url": "https://release.gitkraken.com/win64/gitkraken-$version-full.nupkg"
+            }
+        },
+        "hash": {
+            "url": "$baseurl/RELEASES"
+        }
+    },
+    "bin": "gitkraken.exe",
+    "checkver": {
+        "regex": "gitkraken-([\\d.]+)-full\\.nupkg",
+        "reverse": true,
+        "url": "https://release.gitkraken.com/win64/RELEASES?id=gitkraken&localVersion=0&arch=amd64"
+    },
+    "description": "A Git client which helps you track and manage changes to your code.",
+    "extract_dir": "lib\\net45",
+    "homepage": "https://www.gitkraken.com/",
+    "license": {
+        "identifier": "Freeware",
+        "url": "https://www.gitkraken.com/eula"
+    },
+    "post_install": [
+        "'install-context', 'uninstall-context' | ForEach-Object {",
+        "    if (Test-Path \"$bucketsdir\\bodrick_scoop-bucket\\scripts\\gitkraken\\$_.reg\") {",
+        "        $gitkrakenPath = \"$dir\\gitkraken.exe\".Replace('\\', '\\\\')",
+        "        $content = (Get-Content \"$bucketsdir\\bodrick_scoop-bucket\\scripts\\gitkraken\\$_.reg\").Replace('$gitkraken', $gitkrakenPath)",
+        "        if ($global) { $content = $content.Replace('HKEY_CURRENT_USER', 'HKEY_LOCAL_MACHINE') }",
+        "        Set-Content \"$dir\\$_.reg\" $content -Encoding Ascii -Force",
+        "    }",
+        "}"
+    ],
+    "uninstaller": {
+        "script": [
+            "if ($cmd -eq 'uninstall') {",
+            "    reg import \"$dir\\uninstall-context.reg\"",
+            "}"
+        ]
+    },
+    "notes": "Add GitKraken as a context menu option by running: reg import \"$dir\\install-context.reg\"",
     "shortcuts": [
         [
-            "WListTool.exe",
-            "WListTool"
+            "gitkraken.exe",
+            "GitKraken"
         ]
-    ]
+    ],
+    "version": "9.0.1"
 }
-
-

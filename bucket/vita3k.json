@@ -1,17 +1,33 @@
 {
-    "version": "1.0",
-    "description": "WListTool",
-    "homepage": "https://github.com/zzhaq/Toolbox/releases",
-    "license": "MIT",
-    "url": "https://github.com/zzhaq/Toolbox/releases/download/v3.6/WListTool_R_1.8.1.zip",
-    "extract_dir": "WListTool_R_1.8.1",
-    "bin": "WListTool.exe",
+    "version": "nightly",
+    "description": "Sony PlayStation Vita emulator",
+    "homepage": "https://vita3k.org",
+    "license": {
+        "url": "https://github.com/Vita3K/Vita3K/blob/master/COPYING.txt",
+        "identifier": "GPL-2.0"
+    },
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/Vita3K/Vita3K/releases/download/continuous/windows-latest.zip"
+        }
+    },
+    "pre_install": [
+        "if (!(Test-Path \"$persist_dir\")) {",
+        "   New-item \"$persist_dir\" -ItemType Directory | Out-Null",
+        "   New-Item \"$persist_dir\\config.yml\" -Type File | Out-Null",
+        "}"
+    ],
+    "bin": "Vita3K.exe",
     "shortcuts": [
         [
-            "WListTool.exe",
-            "WListTool"
+            "Vita3K.exe",
+            "Vita3K"
         ]
+    ],
+    "persist": [
+        "data",
+        "lang",
+        "shaders-builtin",
+        "config.yml"
     ]
 }
-
-

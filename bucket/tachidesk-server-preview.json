@@ -1,17 +1,43 @@
 {
-    "version": "1.0",
-    "description": "WListTool",
-    "homepage": "https://github.com/zzhaq/Toolbox/releases",
-    "license": "MIT",
-    "url": "https://github.com/zzhaq/Toolbox/releases/download/v3.6/WListTool_R_1.8.1.zip",
-    "extract_dir": "WListTool_R_1.8.1",
-    "bin": "WListTool.exe",
-    "shortcuts": [
-        [
-            "WListTool.exe",
-            "WListTool"
-        ]
-    ]
+    "version": "0.6.6-r1188",
+    "description": "A manga reader compatible with Tachiyomi extensions and backups",
+    "homepage": "https://github.com/Suwayomi/Tachidesk-Server",
+    "license": {
+        "identifier": "MPL-2.0",
+        "url": "https://github.com/Suwayomi/Tachidesk-Server/blob/master/LICENSE"
+    },
+    "architecture": {
+        "64bit": {
+            "url": "https://ghproxy.com/github.com/Suwayomi/Tachidesk-Server-preview/releases/download/v0.6.6-r1188/Tachidesk-Server-v0.6.6-r1188-windows-x64.zip",
+            "hash": "9602fc452d2563d1a4b55219dff96ae413676f8b01464b17859a0f17dfccc571",
+            "extract_dir": "Tachidesk-Server-v0.6.6-r1188-windows-x64"
+        },
+        "32bit": {
+            "url": "https://ghproxy.com/github.com/Suwayomi/Tachidesk-Server-preview/releases/download/v0.6.6-r1188/Tachidesk-Server-v0.6.6-r1188-windows-x86.zip",
+            "hash": "9e29f22b83d4bc5f958123e419e38aaf6a6cae995d64b9b1112cbd90dc9125a6",
+            "extract_dir": "Tachidesk-Server-v0.6.6-r1188-windows-x86"
+        }
+    },
+    "pre_install": "Copy-Item \"$bucketsdir\\versions\\scripts\\tachidesk-server-preview\\tachidesk*.ps1\" -Destination \"$dir\"",
+    "bin": [
+        "tachidesk.ps1",
+        "tachidesk-electron.ps1",
+        "tachidesk-debug.ps1"
+    ],
+    "checkver": {
+        "github": "https://github.com/Suwayomi/Tachidesk-Server-preview",
+        "regex": "v([\\d.]+-r[\\d]+)"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://ghproxy.com/github.com/Suwayomi/Tachidesk-Server-preview/releases/download/v$version/Tachidesk-Server-v$version-windows-x64.zip",
+                "extract_dir": "Tachidesk-Server-v$version-windows-x64"
+            },
+            "32bit": {
+                "url": "https://ghproxy.com/github.com/Suwayomi/Tachidesk-Server-preview/releases/download/v$version/Tachidesk-Server-v$version-windows-x86.zip",
+                "extract_dir": "Tachidesk-Server-v$version-windows-x86"
+            }
+        }
+    }
 }
-
-

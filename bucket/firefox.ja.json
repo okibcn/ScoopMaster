@@ -1,17 +1,52 @@
 {
-    "version": "1.0",
-    "description": "WListTool",
-    "homepage": "https://github.com/zzhaq/Toolbox/releases",
-    "license": "MIT",
-    "url": "https://github.com/zzhaq/Toolbox/releases/download/v3.6/WListTool_R_1.8.1.zip",
-    "extract_dir": "WListTool_R_1.8.1",
-    "bin": "WListTool.exe",
+    "homepage": "https://www.mozilla.org/ja/firefox/new/",
+    "version": "109.0.1",
+    "architecture": {
+        "64bit": {
+            "url": "https://download.mozilla.org/?product=firefox-109.0.1-SSL&os=win64&lang=ja#/firefox-setup.exe",
+            "hash": "5d10e1baf85a57dfb15367ebf654bb159532df83780e9acafff334340246a8bd"
+        },
+        "32bit": {
+            "url": "https://download.mozilla.org/?product=firefox-109.0.1-SSL&os=win&lang=ja#/firefox-setup.exe",
+            "hash": "e69b280bf50535280fb1743de66283d8cc4dad0d0072cf7dd1daa59de85aa51b"
+        }
+    },
+    "bin": "firefox.exe",
     "shortcuts": [
         [
-            "WListTool.exe",
-            "WListTool"
+            "firefox.exe",
+            "Mozilla Firefox"
         ]
-    ]
+    ],
+    "pre_install": "echo \"[Install]`nInstallDirectoryPath=$dir`nQuickLaunchShortcut=false`nDesktopShortcut=false`nStartMenuShortcuts=false\" | sc \"$dir\\install.ini\"",
+    "installer": {
+        "file": "firefox-setup.exe",
+        "args": "/INI=$dir\\install.ini"
+    },
+    "uninstaller": {
+        "file": "uninstall\\helper.exe",
+        "args": "/S"
+    },
+    "checkver": {
+        "url": "https://www.mozilla.org/ja/firefox/notes/",
+        "re": "data-latest-firefox=\"([\\d.]+)\""
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://download.mozilla.org/?product=firefox-$version-SSL&os=win64&lang=ja#/firefox-setup.exe",
+                "hash": {
+                    "find": "([a-fA-F0-9]{64})\\s+(?:win64/ja/Firefox Setup ([\\d.]+).exe)",
+                    "url": "https://download-installer.cdn.mozilla.net/pub/firefox/releases/$version/SHA256SUMS"
+                }
+            },
+            "32bit": {
+                "url": "https://download.mozilla.org/?product=firefox-$version-SSL&os=win&lang=ja#/firefox-setup.exe",
+                "hash": {
+                    "find": "([a-fA-F0-9]{64})\\s+(?:win32/ja/Firefox Setup ([\\d.]+).exe)",
+                    "url": "https://download-installer.cdn.mozilla.net/pub/firefox/releases/$version/SHA256SUMS"
+                }
+            }
+        }
+    }
 }
-
-

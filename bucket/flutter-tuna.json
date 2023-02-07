@@ -1,17 +1,52 @@
 {
-    "version": "1.0",
-    "description": "WListTool",
-    "homepage": "https://github.com/zzhaq/Toolbox/releases",
-    "license": "MIT",
-    "url": "https://github.com/zzhaq/Toolbox/releases/download/v3.6/WListTool_R_1.8.1.zip",
-    "extract_dir": "WListTool_R_1.8.1",
-    "bin": "WListTool.exe",
-    "shortcuts": [
-        [
-            "WListTool.exe",
-            "WListTool"
+    "autoupdate": {
+        "hash": {
+            "jsonpath": "$.releases[?(@.archive =~ /.*flutter_windows_$matchHead$matchDelim$matchBuild-stable.zip/)].sha256",
+            "url": "https://mirrors.tuna.tsinghua.edu.cn/flutter/flutter_infra/releases/releases_windows.json"
+        },
+        "url": "https://mirrors.tuna.tsinghua.edu.cn/flutter/flutter_infra/releases/stable/windows/flutter_windows_$matchHead$matchDelim$matchBuild-stable.zip"
+    },
+    "bin": [
+        "bin\\flutter.bat",
+        "flutter-dev-setup.ps1"
+    ],
+    "checkver": {
+        "regex": "windows_(v?[\\d.]+)(?<delim>[-+]?)(?<build>[\\w.]*)-stable",
+        "replace": "$1${delim}${build}",
+        "url": "https://mirrors.tuna.tsinghua.edu.cn/flutter/flutter_infra/releases/releases_windows.json"
+    },
+    "depends": [
+        "android-sdk",
+        "java/temurin8-jdk"
+    ],
+    "description": "Google's mobile app SDK for crafting high-quality native interfaces on iOS and Android",
+    "env_add_path": "bin\\cache\\dart-sdk\\bin",
+    "env_set": {
+        "FLUTTER_STORAGE_BASE_URL": "https://mirrors.tuna.tsinghua.edu.cn/flutter",
+        "PUB_HOSTED_URL": "https://mirrors.tuna.tsinghua.edu.cn/dart-pub"
+    },
+    "extract_dir": "flutter",
+    "hash": [
+        "8712d43e0c4a9ca87887507ee72e68c7cf9da487eef9dd28c14556491fd82d7d",
+        "bbd8dd269dd70d97e0224025281e55b7e2e32364d5c47e082ca7f45e33d1a613"
+    ],
+    "homepage": "https://flutter.dev",
+    "license": "BSD-3-Clause",
+    "post_install": [
+        "flutter-dev-setup.ps1",
+        "Write-Host 'Some licenses need to be accepted before developing. It is recommended to do by running ''flutter doctor --android-licenses''.' -ForegroundColor Yellow",
+        "flutter doctor"
+    ],
+    "suggest": {
+        "Andoid Studio with Flutter Extension": "android-studio",
+        "Visual Studio Code with Flutter Extension": [
+            "vscode",
+            "vscode-portable"
         ]
-    ]
+    },
+    "url": [
+        "https://mirrors.tuna.tsinghua.edu.cn/flutter/flutter_infra/releases/stable/windows/flutter_windows_3.7.1-stable.zip",
+        "https://raw.githubusercontent.com/ScoopInstaller/Extras/master/scripts/flutter-dev-setup.ps1"
+    ],
+    "version": "3.7.1"
 }
-
-

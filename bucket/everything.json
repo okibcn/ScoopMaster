@@ -1,17 +1,89 @@
 {
-    "version": "1.0",
-    "description": "WListTool",
-    "homepage": "https://github.com/zzhaq/Toolbox/releases",
+    "version": "1.4.1.1022",
+    "description": "Locate files and folders by name instantly.",
+    "homepage": "https://www.voidtools.com",
     "license": "MIT",
-    "url": "https://github.com/zzhaq/Toolbox/releases/download/v3.6/WListTool_R_1.8.1.zip",
-    "extract_dir": "WListTool_R_1.8.1",
-    "bin": "WListTool.exe",
+    "notes": [
+        "To add Everything to right-click context menu, run:",
+        "reg import \"$dir\\install-context.reg\""
+    ],
+    "architecture": {
+        "64bit": {
+            "url": "https://www.voidtools.com/Everything-1.4.1.1022.x64.zip",
+            "hash": "c718bcd73d341e64c8cb47e97eb0c45d010fdcc45c2488d4a3a3c51acc775889"
+        },
+        "32bit": {
+            "url": "https://www.voidtools.com/Everything-1.4.1.1022.x86.zip",
+            "hash": "04661c7a2902e91878b8d714369cf5d7f7d52f79d4fb3fdfe8ce619641ab5793"
+        }
+    },
+    "pre_install": [
+        "ensure \"$persist_dir\" | Out-Null",
+        "if (!(Test-Path \"$persist_dir\\Everything.ini\")) { Start-Process -Wait \"$dir\\Everything.exe\" -Args @('-install-config null') }",
+        "Get-ChildItem \"$persist_dir\\*\" -Include 'Bookmarks.csv', 'Everything.db', 'Everything.ini', 'Filters.csv', 'Search History.csv' | Copy-Item -Destination \"$dir\" -ErrorAction SilentlyContinue"
+    ],
+    "post_install": [
+        "$app_path = \"$dir\\Everything.exe\".Replace('\\', '\\\\')",
+        "'install-context.reg', 'uninstall-context.reg' | ForEach-Object {",
+        "    if (Test-Path \"$bucketsdir\\extras\\scripts\\everything\\$_\") {",
+        "        $content = Get-Content \"$bucketsdir\\extras\\scripts\\everything\\$_\"",
+        "        $content = $content.Replace('$app_path', $app_path)",
+        "        if ($global) {",
+        "            $content = $content.Replace('HKEY_CURRENT_USER', 'HKEY_LOCAL_MACHINE')",
+        "        }",
+        "    }",
+        "    $content | Set-Content -Path \"$dir\\$_\" -Encoding ascii",
+        "}",
+        "if (($cmd -eq 'update') -and (Get-Service -Name 'Everything' -ErrorAction SilentlyContinue)) { start-process powershell -verb runAs -ArgumentList \"Start-Service -Name 'Everything' -ErrorAction SilentlyContinue\" }",
+        "$checkEverything = !(Get-Process -Name 'Everything' -ErrorAction SilentlyContinue)",
+        "if (($cmd -eq 'update') -and $checkEverything) { Start-Process -WindowStyle hidden \"Everything.exe\" }",
+        "echo \"Please Waiting for restart 'Everything.exe'.\""
+    ],
+    "pre_uninstall": [
+        "$checkEverythingService = $(Get-Service -Name 'Everything' -ErrorAction SilentlyContinue)",
+        "if($checkEverythingService) {",
+        "    if($checkEverythingService.Status -ne 'Stopped') {",
+        "        echo \"Waiting stop service 'Everything'\"",
+        "        start-process powershell -verb runAs -ArgumentList \"Stop-Service -Name 'Everything' -Force -ErrorAction SilentlyContinue\"",
+        "        Start-Sleep -Seconds 1;echo \"Finished.\"",
+        "        if ($(Get-Service -Name 'Everything' -ErrorAction SilentlyContinue).Status -ne 'Stopped') {",
+        "            Get-Service -Name 'Everything'",
+        "            error \"$app requires to remove service 'everything'\";break",
+        "        }",
+        "    }",
+        "    if ($cmd -eq 'uninstall') {",
+        "        echo \"Waiting remove service 'Everything'\"",
+        "        start-process powershell -verb runAs -ArgumentList \"sc.exe delete 'Everything'\"",
+        "        Start-Sleep -Seconds 1;echo \"Finished.\"",
+        "        if (Get-Service -Name 'Everything' -ErrorAction SilentlyContinue) {",
+        "            Get-Service -Name 'Everything'",
+        "            error \"$app requires to delete service 'everything'\";break",
+        "        }",
+        "        reg import \"$dir\\uninstall-context.reg\"",
+        "    }",
+        "}",
+        "Stop-Process -Name 'Everything' -Force -ErrorAction SilentlyContinue",
+        "Get-ChildItem \"$dir\\*\" -Include 'Bookmarks.csv', 'Everything.db', 'Everything.ini', 'Filters.csv', 'Search History.csv' | Copy-Item -Destination \"$persist_dir\" -ErrorAction SilentlyContinue -Force"
+    ],
+    "bin": "Everything.exe",
     "shortcuts": [
         [
-            "WListTool.exe",
-            "WListTool"
+            "Everything.exe",
+            "Everything"
         ]
-    ]
+    ],
+    "checkver": "Download Everything ([\\d.]+)",
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://www.voidtools.com/Everything-$version.x64.zip"
+            },
+            "32bit": {
+                "url": "https://www.voidtools.com/Everything-$version.x86.zip"
+            }
+        },
+        "hash": {
+            "url": "$baseurl/Everything-$version.sha256"
+        }
+    }
 }
-
-

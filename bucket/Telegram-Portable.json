@@ -1,17 +1,39 @@
 {
-    "version": "1.0",
-    "description": "WListTool",
-    "homepage": "https://github.com/zzhaq/Toolbox/releases",
-    "license": "MIT",
-    "url": "https://github.com/zzhaq/Toolbox/releases/download/v3.6/WListTool_R_1.8.1.zip",
-    "extract_dir": "WListTool_R_1.8.1",
-    "bin": "WListTool.exe",
+    "version": "4.6.1",
+    "description": "A messaging app with a focus on speed and security",
+    "homepage": "https://telegram.org",
+    "license": "GPL-3.0-only",
+    "architecture": {
+        "64bit": {
+            "url": "https://updates.tdesktop.com/tx64/tportable-x64.4.6.1.zip",
+            "hash": "124ceac310967b951c26a27a97055e4a9d46223159448089c031d939fd4a05e8"
+        },
+        "32bit": {
+            "url": "https://updates.tdesktop.com/tsetup/tportable.4.6.1.zip",
+            "hash": "d9438bbf2390d16bc13de749add447fc30a0199f59517e5df5b77333046d8a61"
+        }
+    },
+    "extract_dir": "Telegram",
+    "pre_install": "Set-Content \"$dir\\telegram.cmd\" '@start \"Telegram\" /D \"%~dp0\" \"%~dp0Telegram.exe\" %*' -Encoding Ascii",
+    "bin": "telegram.cmd",
     "shortcuts": [
         [
-            "WListTool.exe",
-            "WListTool"
+            "Telegram.exe",
+            "Telegram"
         ]
-    ]
+    ],
+    "persist": "tdata",
+    "checkver": {
+        "github": "https://github.com/telegramdesktop/tdesktop"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://updates.tdesktop.com/tx64/tportable-x64.$version.zip"
+            },
+            "32bit": {
+                "url": "https://updates.tdesktop.com/tsetup/tportable.$version.zip"
+            }
+        }
+    }
 }
-
-

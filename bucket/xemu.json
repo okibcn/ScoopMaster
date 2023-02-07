@@ -1,17 +1,43 @@
 {
-    "version": "1.0",
-    "description": "WListTool",
-    "homepage": "https://github.com/zzhaq/Toolbox/releases",
-    "license": "MIT",
-    "url": "https://github.com/zzhaq/Toolbox/releases/download/v3.6/WListTool_R_1.8.1.zip",
-    "extract_dir": "WListTool_R_1.8.1",
-    "bin": "WListTool.exe",
+    "version": "0.7.83",
+    "description": "Original Xbox Emulator",
+    "homepage": "https://xemu.app",
+    "license": {
+        "identifier": "GPL-2.0",
+        "url": "https://github.com/mborgerson/xemu/blob/master/LICENSE"
+    },
+    "architecture": {
+        "64bit": {
+            "url": "https://ghproxy.com/github.com/mborgerson/xemu/releases/download/v0.7.83/xemu-win-release.zip",
+            "hash": "0bfccd3c03d852e49ec9c8759c0a17be11ad07b2dadbab30d4b1a181589472c6"
+        }
+    },
+    "pre_install": [
+        "if (!(Test-Path \"$persist_dir\")) {",
+        "   New-item \"$persist_dir\" -ItemType Directory | Out-Null",
+        "   New-item \"$persist_dir\\bios\" -ItemType Directory | Out-Null",
+        "   New-item \"$persist_dir\\data\" -ItemType Directory | Out-Null",
+        "}"
+    ],
+    "bin": "xemu.exe",
     "shortcuts": [
         [
-            "WListTool.exe",
-            "WListTool"
+            "xemu.exe",
+            "Xemu"
         ]
-    ]
+    ],
+    "persist": [
+        "bios",
+        "data"
+    ],
+    "checkver": {
+        "github": "https://github.com/mborgerson/xemu"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://ghproxy.com/github.com/mborgerson/xemu/releases/download/v$version/xemu-win-release.zip"
+            }
+        }
+    }
 }
-
-

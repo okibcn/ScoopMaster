@@ -1,17 +1,27 @@
 {
-    "version": "1.0",
-    "description": "WListTool",
-    "homepage": "https://github.com/zzhaq/Toolbox/releases",
-    "license": "MIT",
-    "url": "https://github.com/zzhaq/Toolbox/releases/download/v3.6/WListTool_R_1.8.1.zip",
-    "extract_dir": "WListTool_R_1.8.1",
-    "bin": "WListTool.exe",
+    "version": "3.1.507.0",
+    "description": "Easily backup, restore and transfer video games save data",
+    "homepage": "https://www.gamesave-manager.com",
+    "license": "Freeware",
+    "url": "https://www.gamesave-manager.com/?s=download&guid=%7BA4008497-2928-4750-8B88-3587C94456A2%7D&a=dl#/dl.7z",
+    "hash": "md5:e398772aa29e31c5f76ad3a2173f94ce",
+    "pre_install": "if (!(Test-Path \"$dir\\settings\")) { New-Item \"$dir\\settings\" -Type directory | Out-Null }",
+    "persist": "settings",
+    "bin": "gs_mngr_3.exe",
     "shortcuts": [
         [
-            "WListTool.exe",
-            "WListTool"
+            "gs_mngr_3.exe",
+            "GameSave Manager"
         ]
-    ]
+    ],
+    "checkver": {
+        "regex": "(?sm)releasedetailsvalues\">\\s+([\\d\\.]+).*guid={(?<GUID>[\\w-]+)\\}\""
+    },
+    "autoupdate": {
+        "url": "https://www.gamesave-manager.com/?s=download&guid=%7B$matchGUID%7D&a=dl#/dl.7z",
+        "hash": {
+            "url": "https://www.gamesave-manager.com/?s=download&guid=%7B$matchGUID%7D",
+            "regex": "md5 checksum is <i>($md5)</i>"
+        }
+    }
 }
-
-

@@ -1,17 +1,33 @@
 {
-    "version": "1.0",
-    "description": "WListTool",
-    "homepage": "https://github.com/zzhaq/Toolbox/releases",
-    "license": "MIT",
-    "url": "https://github.com/zzhaq/Toolbox/releases/download/v3.6/WListTool_R_1.8.1.zip",
-    "extract_dir": "WListTool_R_1.8.1",
-    "bin": "WListTool.exe",
+    "version": "0.3.1",
+    "description": "A customizable, modern file manager powered by the web.",
+    "homepage": "https://xplorer.space/",
+    "license": "Apache-2.0",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/kimlimjustin/xplorer/releases/download/v0.3.1/Xplorer_0.3.1_x64.msi",
+            "hash": "fe7dcfb53ac8ecebf390e29d087424c8d40aa42ea225ec4fef121cbf7b557d99"
+        }
+    },
+    "pre_install": [
+        "Move-Item \"$dir\\PFiles\\Xplorer\\*\", \"$dir\\System64\\*\" $dir\\",
+        "Remove-Item \"$dir\\PFiles\\\", \"$dir\\System64\\\" -Force -Recurse"
+    ],
+    "bin": "Xplorer.exe",
     "shortcuts": [
         [
-            "WListTool.exe",
-            "WListTool"
+            "Xplorer.exe",
+            "Xplorer"
         ]
-    ]
+    ],
+    "checkver": {
+        "github": "https://github.com/kimlimjustin/xplorer"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/kimlimjustin/xplorer/releases/download/v$version/Xplorer_$version_x64.msi"
+            }
+        }
+    }
 }
-
-

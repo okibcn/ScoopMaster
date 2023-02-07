@@ -1,17 +1,35 @@
 {
-    "version": "1.0",
-    "description": "WListTool",
-    "homepage": "https://github.com/zzhaq/Toolbox/releases",
-    "license": "MIT",
-    "url": "https://github.com/zzhaq/Toolbox/releases/download/v3.6/WListTool_R_1.8.1.zip",
-    "extract_dir": "WListTool_R_1.8.1",
-    "bin": "WListTool.exe",
+    "autoupdate": {
+        "url": "https://github.com/microsoft/accessibility-insights-windows/releases/download/v$version/AccessibilityInsights.msi"
+    },
+    "bin": [
+        [
+            "AccessibilityInsights.exe",
+            "AccessibilityInsights Canary"
+        ]
+    ],
+    "checkver": {
+        "jsonpath": "$[0].tag_name",
+        "regex": "v([\\w.-]+)",
+        "url": "https://api.github.com/repos/microsoft/accessibility-insights-windows/releases"
+    },
+    "description": "Accessibility Insights for Windows is the project for Accessibility tools on the Windows platform(Canary Edition).",
+    "hash": "4d8a61e0e0a05fd2cfbf1f993e56e62169c0f01f3da6de52901e76d23f8ff300",
+    "homepage": "https://accessibilityinsights.io/",
+    "license": {
+        "identifier": "MIT",
+        "url": "https://github.com/microsoft/accessibility-insights-windows/blob/main/license.txt"
+    },
+    "pre_install": [
+        "Move-Item \"$dir\\AccessibilityInsights\\1.*\\*\" \"$dir\" -Force",
+        "Remove-Item \"$dir\\AccessibilityInsights\" -Recurse -Force"
+    ],
     "shortcuts": [
         [
-            "WListTool.exe",
-            "WListTool"
+            "AccessibilityInsights.exe",
+            "Accessibility Insights for Windows(Canary Edition)"
         ]
-    ]
+    ],
+    "url": "https://github.com/microsoft/accessibility-insights-windows/releases/download/v1.1.2227.01/AccessibilityInsights.msi",
+    "version": "1.1.2227.01"
 }
-
-

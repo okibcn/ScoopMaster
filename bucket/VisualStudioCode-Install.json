@@ -1,17 +1,64 @@
 {
-    "version": "1.0",
-    "description": "WListTool",
-    "homepage": "https://github.com/zzhaq/Toolbox/releases",
-    "license": "MIT",
-    "url": "https://github.com/zzhaq/Toolbox/releases/download/v3.6/WListTool_R_1.8.1.zip",
-    "extract_dir": "WListTool_R_1.8.1",
-    "bin": "WListTool.exe",
-    "shortcuts": [
-        [
-            "WListTool.exe",
-            "WListTool"
+    "##": "Download url https://code.visualstudio.com/download#",
+    "version": "1.75.0",
+    "description": "Visual Studio Code. is a lightweight but powerful source code editor.",
+    "homepage": "https://code.visualstudio.com/",
+    "license": {
+        "identifier": "Freeware",
+        "url": "https://code.visualstudio.com/License/"
+    },
+    "changelog": "https://code.visualstudio.com/updates/v1_75",
+    "architecture": {
+        "64bit": {
+            "url": "https://code.visualstudio.com/sha/download?build=stable&os=win32-x64#/setup.exe",
+            "hash": "40ce7d71717db3a24108b7e6d492e628d68d999c07cc6da52bfc75e656372d08"
+        },
+        "32bit": {
+            "url": "https://code.visualstudio.com/sha/download?build=stable&os=win32#/setup.exe",
+            "hash": "deba56cb0b1c2295dc80bd8a97dc5ccfce7aebc8c54300788e61770fb38fd73e"
+        }
+    },
+    "pre_download": "Assert-Administrator",
+    "pre_install": [
+        "$processname = \"Code\"",
+        "$process = Get-Process $processname -ErrorAction SilentlyContinue",
+        "if ($process) {",
+        "   $process.CloseMainWindow()",
+        "   Start-Sleep -Seconds 5",
+        "   if (!$process.HasExited) {",
+        "       Start-Sleep -Seconds 25",
+        "       $process | Stop-Process -Force",
+        "   }",
+        "}"
+    ],
+    "installer": {
+        "script": [
+            "$programname = \"Microsoft Visual Studio Code\"",
+            "$ProgramFiles = [Environment]::GetFolderPath(\"ProgramFiles\")",
+            "$filepath = \"$ProgramFiles\\Microsoft VS Code\\Code.exe\"",
+            "if(((Test-Path -Path $filepath -PathType Leaf) -eq $false) -or ((Get-Command $filepath).Version -lt [System.Version]\"$version\"))",
+            "{",
+            "   &\"$dir\\setup.exe\" /VERYSILENT /MERGETASKS=!runcode,!desktopicon,!quicklaunchicon,addcontextmenufiles,addcontextmenufolders,associatewithfiles,addtopath | Out-Null",
+            "   if(((Test-Path -Path $filepath -PathType Leaf) -eq $false) -or ((Get-Command $filepath).Version -lt [System.Version]\"$version\"))",
+            "   {",
+            "       exit 1",
+            "   }",
+            "}",
+            "if (Test-Path -Path \"$dir\\setup.exe\") { Remove-Item \"$dir\\setup.exe\" -Force }"
         ]
-    ]
+    },
+    "checkver": {
+        "github": "https://github.com/microsoft/vscode"
+    },
+    "autoupdate": {
+        "changelog": "https://code.visualstudio.com/updates/v$majorVersion_$minorVersion",
+        "architecture": {
+            "64bit": {
+                "url": "https://code.visualstudio.com/sha/download?build=stable&os=win32-x64#/setup.exe"
+            },
+            "32bit": {
+                "url": "https://code.visualstudio.com/sha/download?build=stable&os=win32#/setup.exe"
+            }
+        }
+    }
 }
-
-

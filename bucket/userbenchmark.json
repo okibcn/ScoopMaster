@@ -1,17 +1,25 @@
 {
-    "version": "1.0",
-    "description": "WListTool",
-    "homepage": "https://github.com/zzhaq/Toolbox/releases",
-    "license": "MIT",
-    "url": "https://github.com/zzhaq/Toolbox/releases/download/v3.6/WListTool_R_1.8.1.zip",
-    "extract_dir": "WListTool_R_1.8.1",
-    "bin": "WListTool.exe",
+    "version": "3.4.4.0",
+    "description": "UserBenchmark - Speed test your PC in less than a minute.",
+    "homepage": "https://www.userbenchmark.com/",
+    "license": "Unknown",
+    "url": "https://www.userbenchmark.com/resources/download/UserBenchmark.zip",
+    "hash": "b143b5d6e4c4dd20a795ca75380884cd90088c052a72b7d64fe73ee0036d146a",
+    "extract_dir": "UserBenchmark",
+    "pre_install": "ensure \"$persist_dir\" | Out-Null; Copy-Item \"$persist_dir\\User\\*\" \"$dir\\User\" -Recurse -ErrorAction 'SilentlyContinue'",
+    "bin": "UserBenchmark.exe",
     "shortcuts": [
         [
-            "WListTool.exe",
-            "WListTool"
+            "UserBenchmark.exe",
+            "UserBenchmark"
         ]
-    ]
+    ],
+    "pre_uninstall": "Copy-Item \"$dir\\User\" \"$persist_dir\\User\" -Recurse -ErrorAction 'SilentlyContinue'",
+    "checkver": {
+        "url": "https://www.filehorse.com/download-userbenchmark/",
+        "regex": "<p>UserBenchmark\\s([\\d.]+)"
+    },
+    "autoupdate": {
+        "url": "https://www.userbenchmark.com/resources/download/UserBenchmark.zip"
+    }
 }
-
-

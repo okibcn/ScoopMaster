@@ -1,17 +1,36 @@
 {
-    "version": "1.0",
-    "description": "WListTool",
-    "homepage": "https://github.com/zzhaq/Toolbox/releases",
+    "version": "1.15.2",
+    "description": "A monitor brightness controller based on DDC/CI",
+    "homepage": "https://github.com/xanderfrangos/twinkle-tray",
     "license": "MIT",
-    "url": "https://github.com/zzhaq/Toolbox/releases/download/v3.6/WListTool_R_1.8.1.zip",
-    "extract_dir": "WListTool_R_1.8.1",
-    "bin": "WListTool.exe",
+    "architecture": {
+        "64bit": {
+            "url": "https://ghproxy.com/github.com/xanderfrangos/twinkle-tray/releases/download/v1.15.2/Twinkle.Tray.v1.15.2.exe#/dl.7z",
+            "hash": "fe2b43bbdb71363c037208cc53f72bd66e1c4e515cc22147ccecace953a4f77e"
+        }
+    },
+    "pre_install": [
+        "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\"",
+        "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\Uninst*\" -Force -Recurse"
+    ],
+    "bin": [
+        [
+            "Twinkle Tray.exe",
+            "twinkle-tray"
+        ]
+    ],
     "shortcuts": [
         [
-            "WListTool.exe",
-            "WListTool"
+            "Twinkle Tray.exe",
+            "Twinkle Tray"
         ]
-    ]
+    ],
+    "checkver": "github",
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://ghproxy.com/github.com/xanderfrangos/twinkle-tray/releases/download/v$version/Twinkle.Tray.v$version.exe#/dl.7z"
+            }
+        }
+    }
 }
-
-

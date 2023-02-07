@@ -1,17 +1,23 @@
 {
-    "version": "1.0",
-    "description": "WListTool",
-    "homepage": "https://github.com/zzhaq/Toolbox/releases",
-    "license": "MIT",
-    "url": "https://github.com/zzhaq/Toolbox/releases/download/v3.6/WListTool_R_1.8.1.zip",
-    "extract_dir": "WListTool_R_1.8.1",
-    "bin": "WListTool.exe",
+    "homepage": "https://www.microsoft.com/store/apps/9p32mwbh6cns",
+    "description": "SUSE Linux Enterprise Server 12 on WSL",
+    "license": "Proprietary",
+    "version": "12",
+    "url": "https://aka.ms/wsl-sles-12",
     "shortcuts": [
         [
-            "WListTool.exe",
-            "WListTool"
+            "SLES-12.exe",
+            "SLES 12"
         ]
-    ]
+    ],
+    "installer": {
+        "script": [
+            "Get-Item \"$dir\\wsl-sles-12\" | Rename-Item -NewName \"sles.zip\"",
+            "Expand-Archive -Path \"$dir\\sles.zip\" -DestinationPath \"$dir\"",
+            "Remove-Item \"$dir\\sles.zip\""
+        ]
+    },
+    "uninstaller": {
+        "script": "wslconfig /u SLES-12"
+    }
 }
-
-

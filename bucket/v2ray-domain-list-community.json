@@ -1,17 +1,32 @@
 {
-    "version": "1.0",
-    "description": "WListTool",
-    "homepage": "https://github.com/zzhaq/Toolbox/releases",
+    "version": "20230204071506",
+    "description": "Geosite and domain data for V2Ray (official)",
+    "homepage": "https://github.com/v2fly/domain-list-community",
     "license": "MIT",
-    "url": "https://github.com/zzhaq/Toolbox/releases/download/v3.6/WListTool_R_1.8.1.zip",
-    "extract_dir": "WListTool_R_1.8.1",
-    "bin": "WListTool.exe",
-    "shortcuts": [
-        [
-            "WListTool.exe",
-            "WListTool"
+    "depends": "v2ray",
+    "url": "https://github.com/v2fly/domain-list-community/releases/download/20230204071506/dlc.dat",
+    "hash": "c8a1c2f180dc7845bab673c173e30fb33b29746b60c10214def541293c4ed7dd",
+    "installer": {
+        "script": [
+            "if (-not (Test-Path \"$persist_dir\\v2ray-domain-list-community\")) {",
+            "    Copy-Item \"$(appdir v2ray $global)\\current\\geosite.dat\" -Destination \"$dir\\geosite.dat.bak\"",
+            "}",
+            "function LinkFile([String] $file, [String] $source = $file) {",
+            "    Write-Host \"Creating hardlink for $file\"",
+            "    New-Item -Force -ItemType HardLink -Path \"$(appdir v2ray $global)\\current\" -Name $file -Target \"$dir\\$source\" | Out-Null",
+            "}",
+            "LinkFile 'geosite.dat' 'dlc.dat'"
         ]
-    ]
+    },
+    "uninstaller": {
+        "script": "Copy-Item \"$dir\\geosite.dat.bak\" -Destination \"$(appdir v2ray $global)\\current\\geosite.dat\" -Force"
+    },
+    "persist": "geosite.dat.bak",
+    "checkver": "github",
+    "autoupdate": {
+        "url": "https://github.com/v2fly/domain-list-community/releases/download/$version/dlc.dat",
+        "hash": {
+            "url": "$url.sha256sum"
+        }
+    }
 }
-
-

@@ -1,17 +1,37 @@
 {
-    "version": "1.0",
-    "description": "WListTool",
-    "homepage": "https://github.com/zzhaq/Toolbox/releases",
-    "license": "MIT",
-    "url": "https://github.com/zzhaq/Toolbox/releases/download/v3.6/WListTool_R_1.8.1.zip",
-    "extract_dir": "WListTool_R_1.8.1",
-    "bin": "WListTool.exe",
+    "version": "1.5.1",
+    "description": "Create backups of profiles from Mozilla software.",
+    "homepage": "http://mozbackup.jasnapaka.com",
+    "license": "Freeware",
+    "url": "http://mozbackup.jasnapaka.com/files/1.5.1/MozBackup-1.5.1-EN.zip",
+    "hash": "md5:f60407f0cc23cb683bec7fb2c67c6b05",
+    "extract_dir": "MozBackup-1.5.1-EN",
+    "pre_install": [
+        "if (!(Test-Path \"$persist_dir\\backup.ini\")) {",
+        "    $c = (Get-Content \"$dir\\backup.ini\") -replace '^(backupdir=)$', \"`$1$persist_dir\\backups\"",
+        "    Set-Content \"$dir\\backup.ini\" $c -Encoding Ascii -Force",
+        "}"
+    ],
+    "bin": "MozBackup.exe",
     "shortcuts": [
         [
-            "WListTool.exe",
-            "WListTool"
+            "MozBackup.exe",
+            "MozBackup"
         ]
-    ]
+    ],
+    "persist": [
+        "backups",
+        "backup.ini"
+    ],
+    "checkver": {
+        "url": "http://mozbackup.jasnapaka.com/changelog.txt",
+        "regex": "\\(MozBackup\\s+([\\d.]+)\\)"
+    },
+    "autoupdate": {
+        "url": "http://mozbackup.jasnapaka.com/files/$version/MozBackup-$version-EN.zip",
+        "hash": {
+            "url": "$baseurl/MD5SUM"
+        },
+        "extract_dir": "MozBackup-$version-EN"
+    }
 }
-
-

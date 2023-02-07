@@ -1,17 +1,37 @@
 {
-    "version": "1.0",
-    "description": "WListTool",
-    "homepage": "https://github.com/zzhaq/Toolbox/releases",
+    "version": "2023-02-07",
+    "description": "A Flash Player emulator written in Rust",
+    "homepage": "https://ruffle.rs/",
     "license": "MIT",
-    "url": "https://github.com/zzhaq/Toolbox/releases/download/v3.6/WListTool_R_1.8.1.zip",
-    "extract_dir": "WListTool_R_1.8.1",
-    "bin": "WListTool.exe",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/ruffle-rs/ruffle/releases/download/nightly-2023-02-07/ruffle-nightly-2023_02_07-windows-x86_64.zip",
+            "hash": "6d83f7b7e40c5cb835396ed61ce39bf4336f0a4a63d5692c8c5ce720e25e2ebe"
+        },
+        "32bit": {
+            "url": "https://github.com/ruffle-rs/ruffle/releases/download/nightly-2023-02-07/ruffle-nightly-2023_02_07-windows-x86_32.zip",
+            "hash": "0dae87abd5ac49b49ad2bed05b7c6004955cf12d420a033722a6fba0315c18bb"
+        }
+    },
+    "bin": "ruffle.exe",
     "shortcuts": [
         [
-            "WListTool.exe",
-            "WListTool"
+            "ruffle.exe",
+            "Ruffle"
         ]
-    ]
+    ],
+    "checkver": {
+        "url": "https://github.com/ruffle-rs/ruffle/releases",
+        "regex": "tree/nightly-([\\d-]+)"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/ruffle-rs/ruffle/releases/download/nightly-$version/ruffle-nightly-$underscoreVersion-windows-x86_64.zip"
+            },
+            "32bit": {
+                "url": "https://github.com/ruffle-rs/ruffle/releases/download/nightly-$version/ruffle-nightly-$underscoreVersion-windows-x86_32.zip"
+            }
+        }
+    }
 }
-
-

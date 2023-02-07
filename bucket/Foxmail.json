@@ -1,17 +1,39 @@
 {
-    "version": "1.0",
-    "description": "WListTool",
-    "homepage": "https://github.com/zzhaq/Toolbox/releases",
-    "license": "MIT",
-    "url": "https://github.com/zzhaq/Toolbox/releases/download/v3.6/WListTool_R_1.8.1.zip",
-    "extract_dir": "WListTool_R_1.8.1",
-    "bin": "WListTool.exe",
+    "homepage": "https://www.foxmail.com/",
+    "license": "Proprietary",
+    "description": "Foxmail like you've never seen it before.",
+    "version": "7.2.25.213",
+    "url": "https://www.foxmail.com/win/download#/dl.7z",
+    "hash": "a2ed6b995a29bde883e3f0542ed9a358310130d5117384a0023b1cd19598696a",
+    "pre_install": [
+        "$file = 'FMStorage.list'",
+        "if (!(Test-Path \"$persist_dir\\$file\")) {",
+        "    Write-Host 'File' $file 'does not exists. Creating.' -f Yellow",
+        "    $CONT = @('')",
+        "    Set-Content \"$dir\\$file\" ($CONT -join \"`r`n\") -Encoding Ascii",
+        "}"
+    ],
+    "post_install": "Remove-Item \"$dir\\`$PLUGINSDIR\" -Recurse",
+    "persist": [
+        "Storage",
+        "Global",
+        "FMStorage.list"
+    ],
+    "checkver": {
+        "script": [
+            "$dl_url = 'https://www.foxmail.com/win/download'",
+            "$header = Invoke-WebRequest -Method Head -Uri $dl_url",
+            "$header.BaseResponse.RequestMessage.RequestUri.OriginalString"
+        ],
+        "regex": "FoxmailSetup_([\\d.]+).exe"
+    },
+    "autoupdate": {
+        "url": "https://www.foxmail.com/win/download#/dl.7z"
+    },
     "shortcuts": [
         [
-            "WListTool.exe",
-            "WListTool"
+            "Foxmail.exe",
+            "Foxmail"
         ]
     ]
 }
-
-

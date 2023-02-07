@@ -1,17 +1,33 @@
 {
-    "version": "1.0",
-    "description": "WListTool",
-    "homepage": "https://github.com/zzhaq/Toolbox/releases",
+    "version": "1.10.3",
+    "description": "Cast media from Plex Mobile and Web apps to MPV. (Unofficial)",
+    "homepage": "https://github.com/iwalton3/plex-mpv-shim",
     "license": "MIT",
-    "url": "https://github.com/zzhaq/Toolbox/releases/download/v3.6/WListTool_R_1.8.1.zip",
-    "extract_dir": "WListTool_R_1.8.1",
-    "bin": "WListTool.exe",
+    "architecture": {
+        "64bit": {
+            "url": "https://ghproxy.com/github.com/iwalton3/plex-mpv-shim/releases/download/v1.10.3/plex-mpv-shim_1.10.3_installer.exe",
+            "hash": "506e787e3dfe43a812eee79362ceae3a3587b239822612df59a67c1e838ee94f"
+        }
+    },
+    "innosetup": true,
+    "pre_uninstall": [
+        "$exe_path = (Resolve-Path \"$dir\\..\\current\\run.exe\").ToString().Replace('\\', '\\\\')",
+        "WMIC Process Where \"ExecutablePath='$exe_path'\" Call Terminate | Out-Null"
+    ],
     "shortcuts": [
         [
-            "WListTool.exe",
-            "WListTool"
+            "run.exe",
+            "Plex MPV Shim"
         ]
-    ]
+    ],
+    "checkver": {
+        "github": "https://github.com/iwalton3/plex-mpv-shim"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://ghproxy.com/github.com/iwalton3/plex-mpv-shim/releases/download/v$version/plex-mpv-shim_$version_installer.exe"
+            }
+        }
+    }
 }
-
-

@@ -1,17 +1,37 @@
 {
-    "version": "1.0",
-    "description": "WListTool",
-    "homepage": "https://github.com/zzhaq/Toolbox/releases",
+    "version": "6.5.3",
+    "description": "Visualizer for deep learning and machine learning models",
+    "homepage": "https://netron.app/",
     "license": "MIT",
-    "url": "https://github.com/zzhaq/Toolbox/releases/download/v3.6/WListTool_R_1.8.1.zip",
-    "extract_dir": "WListTool_R_1.8.1",
-    "bin": "WListTool.exe",
+    "architecture": {
+        "64bit": {
+            "url": "https://ghproxy.com/github.com/lutzroeder/netron/releases/download/v6.5.3/Netron-Setup-6.5.3.exe#/dl.7z",
+            "hash": "sha512:46b7fdff3c9da68074067c15adbcd9126b135a474872af0ea9b1fb520a6a0b1df95f36c3f3d12357ce903c6648d5646b07d1728a738867f22f7304e306ca39d3",
+            "pre_install": [
+                "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\"",
+                "Remove-Item \"$dir\\`$*\" -Force -Recurse"
+            ]
+        }
+    },
+    "bin": "Netron.exe",
     "shortcuts": [
         [
-            "WListTool.exe",
-            "WListTool"
+            "Netron.exe",
+            "Netron"
         ]
-    ]
+    ],
+    "checkver": {
+        "github": "https://github.com/lutzroeder/netron"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://ghproxy.com/github.com/lutzroeder/netron/releases/download/v$version/Netron-Setup-$version.exe#/dl.7z",
+                "hash": {
+                    "url": "$baseurl/latest.yml",
+                    "regex": "sha512:\\s+$base64"
+                }
+            }
+        }
+    }
 }
-
-

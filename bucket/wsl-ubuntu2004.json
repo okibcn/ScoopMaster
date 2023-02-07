@@ -1,17 +1,44 @@
 {
-    "version": "1.0",
-    "description": "WListTool",
-    "homepage": "https://github.com/zzhaq/Toolbox/releases",
-    "license": "MIT",
-    "url": "https://github.com/zzhaq/Toolbox/releases/download/v3.6/WListTool_R_1.8.1.zip",
-    "extract_dir": "WListTool_R_1.8.1",
-    "bin": "WListTool.exe",
+    "homepage": "https://www.microsoft.com/store/apps/9n6svws3rx71",
+    "description": "Ubuntu 20.04 LTS on WSL",
+    "license": "Proprietary",
+    "version": "20.04",
+    "url": "https://aka.ms/wslubuntu2004",
+    "architecture": {
+        "64bit": {
+            "installer": {
+                "script": [
+                    "Get-Item \"$dir\\wslubuntu2004\" | Rename-Item -NewName \"ubuntu2004.zip\"",
+                    "Expand-Archive -Path \"$dir\\ubuntu2004.zip\" -DestinationPath \"$dir\"",
+                    "Remove-Item \"$dir\\ubuntu2004.zip\"",
+                    "Get-Item \"$dir\\*x64.appx\" | Rename-Item -NewName \"ubuntu2004.zip\"",
+                    "Expand-Archive -Force -Path \"$dir\\ubuntu2004.zip\" -DestinationPath \"$dir\"",
+                    "Remove-Item \"$dir\\ubuntu2004.zip\"",
+                    "Get-Item \"$dir\\*.appx\" | Remove-Item"
+                ]
+            }
+        },
+        "arm64": {
+            "installer": {
+                "script": [
+                    "Get-Item \"$dir\\wslubuntu2004\" | Rename-Item -NewName \"ubuntu2004.zip\"",
+                    "Expand-Archive -Path \"$dir\\ubuntu2004.zip\" -DestinationPath \"$dir\"",
+                    "Remove-Item \"$dir\\ubuntu2004.zip\"",
+                    "Get-Item \"$dir\\*ARM64.appx\" | Rename-Item -NewName \"ubuntu2004.zip\"",
+                    "Expand-Archive -Force -Path \"$dir\\ubuntu2004.zip\" -DestinationPath \"$dir\"",
+                    "Remove-Item \"$dir\\ubuntu2004.zip\"",
+                    "Get-Item \"$dir\\*.appx\" | Remove-Item"
+                ]
+            }
+        }
+    },
     "shortcuts": [
         [
-            "WListTool.exe",
-            "WListTool"
+            "ubuntu.exe",
+            "Ubuntu 20.04 LTS"
         ]
-    ]
+    ],
+    "uninstaller": {
+        "script": "wslconfig /u Ubuntu-20.04"
+    }
 }
-
-

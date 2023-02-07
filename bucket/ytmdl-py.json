@@ -1,17 +1,32 @@
 {
-    "version": "1.0",
-    "description": "WListTool",
-    "homepage": "https://github.com/zzhaq/Toolbox/releases",
+    "version": "2022.12.25",
+    "homepage": "https://github.com/deepjyoti30/ytmdl",
+    "description": "Downloads songs from YouTube with metadata. DOES NOT YET SUPPORT WINDOWS; THIS WILL NOT WORK.",
     "license": "MIT",
-    "url": "https://github.com/zzhaq/Toolbox/releases/download/v3.6/WListTool_R_1.8.1.zip",
-    "extract_dir": "WListTool_R_1.8.1",
-    "bin": "WListTool.exe",
-    "shortcuts": [
-        [
-            "WListTool.exe",
-            "WListTool"
+    "depends": [
+        "python-bucket-utils",
+        "pytube-py",
+        "youtube-dl-py"
+    ],
+    "url": "https://github.com/deepjyoti30/ytmdl/archive/2022.12.25.zip",
+    "hash": "b22186aaaafe3142bfe4fc4ac642992476d3feeb282b30d9c32bad02da3e0bea",
+    "extract_dir": "ytmdl-2022.12.25",
+    "installer": {
+        "script": [
+            "if ($global) { install-python-package --global --quiet --dir $dir }",
+            "else { install-python-package --quiet --dir $dir }",
+            "if ($LASTEXITCODE) { exit 1 }"
         ]
-    ]
+    },
+    "uninstaller": {
+        "script": [
+            "if ($global) { uninstall-python-package $app --global --dir $dir }",
+            "else { uninstall-python-package $app --dir $dir }"
+        ]
+    },
+    "checkver": "github",
+    "autoupdate": {
+        "url": "https://github.com/deepjyoti30/ytmdl/archive/$version.zip",
+        "extract_dir": "ytmdl-$version"
+    }
 }
-
-

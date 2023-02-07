@@ -1,17 +1,40 @@
 {
-    "version": "1.0",
-    "description": "WListTool",
-    "homepage": "https://github.com/zzhaq/Toolbox/releases",
-    "license": "MIT",
-    "url": "https://github.com/zzhaq/Toolbox/releases/download/v3.6/WListTool_R_1.8.1.zip",
-    "extract_dir": "WListTool_R_1.8.1",
-    "bin": "WListTool.exe",
+    "version": "1.63.2.3496-dcd49879",
+    "description": "Official Plex client",
+    "homepage": "https://www.plex.tv/apps-devices/#modal-devices-plex-for-windows",
+    "license": {
+        "identifier": "Proprietary",
+        "url": "https://www.plex.tv/media-server-downloads/?platform=windows#remodal-terms"
+    },
+    "suggest": {
+        "vcredist": "vcredist2019"
+    },
+    "architecture": {
+        "64bit": {
+            "url": "https://downloads.plex.tv/plex-desktop/1.63.2.3496-dcd49879/windows/Plex-1.63.2.3496-dcd49879-x86_64.exe#/dl.7z",
+            "hash": "sha1:e14407b968a1f1d6d14fd7eb189c3eaa6a7eba2c"
+        }
+    },
+    "pre_install": "Remove-Item \"$dir\\`$*\", \"$dir\\Uninst*\", \"$dir\\vc_red*\" -Recurse",
     "shortcuts": [
         [
-            "WListTool.exe",
-            "WListTool"
+            "Plex.exe",
+            "Plex for Windows"
         ]
-    ]
+    ],
+    "checkver": {
+        "url": "https://plex.tv/pms/downloads/6.json",
+        "jsonpath": "$.computer.Windows.version"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://downloads.plex.tv/plex-desktop/$version/windows/Plex-$version-x86_64.exe#/dl.7z",
+                "hash": {
+                    "url": "https://plex.tv/pms/downloads/6.json",
+                    "jsonpath": "$.computer.Windows.releases[?(@.build == 'windows-x86_64')].checksum"
+                }
+            }
+        }
+    }
 }
-
-

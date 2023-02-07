@@ -1,17 +1,29 @@
 {
-    "version": "1.0",
-    "description": "WListTool",
-    "homepage": "https://github.com/zzhaq/Toolbox/releases",
-    "license": "MIT",
-    "url": "https://github.com/zzhaq/Toolbox/releases/download/v3.6/WListTool_R_1.8.1.zip",
-    "extract_dir": "WListTool_R_1.8.1",
-    "bin": "WListTool.exe",
+    "version": "nightly",
+    "description": "Official launcher for Minecraft, a sandbox voxel game",
+    "homepage": "https://www.minecraft.net/",
+    "license": {
+        "identifier": "Proprietary",
+        "url": "https://account.mojang.com/terms"
+    },
+    "notes": "This is only the launcher; a premium account is required to play Minecraft.",
+    "url": "https://launcher.mojang.com/download/Minecraft.exe",
+    "post_install": [
+        "Copy-Item -ErrorAction Ignore -Recurse -Force \"$persist_dir\\game\" -Destination $dir",
+        "Copy-Item -ErrorAction Ignore -Recurse -Force \"$persist_dir\\runtime\" -Destination $dir"
+    ],
+    "bin": "Minecraft.exe",
     "shortcuts": [
         [
-            "WListTool.exe",
-            "WListTool"
+            "Minecraft.exe",
+            "Minecraft"
         ]
-    ]
+    ],
+    "uninstaller": {
+        "script": [
+            "Remove-Item -ErrorAction Ignore -Recurse -Force \"$persist_dir\\Settings\"",
+            "Copy-Item -ErrorAction Ignore -Recurse -Force \"$dir\\game\" -Destination $persist_dir",
+            "Copy-Item -ErrorAction Ignore -Recurse -Force \"$dir\\runtime\" -Destination $persist_dir"
+        ]
+    }
 }
-
-

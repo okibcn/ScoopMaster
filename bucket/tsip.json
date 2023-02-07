@@ -1,17 +1,37 @@
 {
-    "version": "1.0",
-    "description": "WListTool",
-    "homepage": "https://github.com/zzhaq/Toolbox/releases",
-    "license": "MIT",
-    "url": "https://github.com/zzhaq/Toolbox/releases/download/v3.6/WListTool_R_1.8.1.zip",
-    "extract_dir": "WListTool_R_1.8.1",
-    "bin": "WListTool.exe",
+    "version": "0.2.11",
+    "description": "SIP softphone software",
+    "license": "BSD-3-Clause",
+    "homepage": "http://tomeko.net/software/SIPclient/",
+    "url": "https://ghproxy.com/github.com/tomek-o/tSIP/releases/download/v0.2.11/tSIP_0_2_11_bin.zip",
+    "hash": "23fa6f2819d97309edbfb6fdaae5b929f75486d1991f0b40c7d4d7776369507f",
+    "extract_dir": "tSIP_0_2_11_bin",
+    "pre_install": [
+        "'tSIP.json', 'tSIP.log', 'tSIP_buttons.json', 'tSIP_history.json' | ForEach-Object {",
+        "    if (!(Test-Path \"$persist_dir\\$_\")) { New-Item \"$dir\\$_\" -ItemType File | Out-Null }",
+        "}"
+    ],
     "shortcuts": [
         [
-            "WListTool.exe",
-            "WListTool"
+            "tSIP.exe",
+            "tSIP"
         ]
-    ]
+    ],
+    "persist": [
+        "certificates",
+        "modules",
+        "phone",
+        "recordings",
+        "tSIP.json",
+        "tSIP.log",
+        "tSIP_buttons.json",
+        "tSIP_history.json"
+    ],
+    "checkver": {
+        "github": "https://github.com/tomek-o/tSIP"
+    },
+    "autoupdate": {
+        "url": "https://ghproxy.com/github.com/tomek-o/tSIP/releases/download/v$version/tSIP_$underscoreVersion_bin.zip",
+        "extract_dir": "tSIP_$underscoreVersion_bin"
+    }
 }
-
-
