@@ -282,7 +282,7 @@ jobs:
                 continue
             }
             $hFile = (Get-FileHash -Algorithm SHA1 $file).Hash
-            $hcandidate = (Get-FileHash -Algorithm SHA1 $candidate).Hash
+            $hCandidate = (Get-FileHash -Algorithm SHA1 $candidate).Hash
             if ($hCandidate -eq $hFile) {
                 Remove-Item $candidate
                 continue
@@ -290,7 +290,7 @@ jobs:
             Move-Item $candidate $file -Force
             $lUpdated += $file
         }
-        $lNew = (gci local/*).BaseName
+        $lNew = (gci ../local/*).BaseName
         move-item ../local/* bucket -Force
 
         $lDeleted > AppsLeavingScoop.txt
