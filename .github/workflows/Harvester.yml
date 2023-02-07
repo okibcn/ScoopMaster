@@ -264,17 +264,16 @@ jobs:
         ##                          ##
         ############################
 
-
-        # git rm --cached -r .
-        # git reset --hard
+        aria2c https://github.com/okibcn/ScoopMaster/archive/refs/heads/master.zip -o ..\ScoopMaster.zip
+        7z e ../ScoopMaster.zip */bucket/* -o../bucket
 
         $lDeleted = $lUpdated = $lNew = @()
-        $current = gci bucket/*.json
         $progress = 0
         Write-host "##"
         Write-host "##   CHECKING MODIFIED APPS..."
         Write-host "##   ================================="
         Write-host "##"
+        $current = gci bucket/*.json
         foreach ($file in $current) {
             $progress++
             $percent = [math]::round(100 * $progress / $env:N_APPS)
@@ -289,14 +288,14 @@ jobs:
                 $lDeleted += $file.BaseName
                 continue
             }
-            $hFile = (Get-FileHash -Algorithm SHA1 $file).Hash
+            $hFile = (Get-FileHash -Algorithm SHA1 "../bucket/$($file.Name)").Hash
             $hCandidate = (Get-FileHash -Algorithm SHA1 $candidate).Hash
-            if ($hCandidate -eq $hFile) {
-                Remove-Item $candidate
-                continue
+            if ($hCandidate -ne $hFile) {
+                Move-Item $candidate $file -Force
+                $lUpdated += $file
             }
-            Move-Item $candidate $file -Force
-            $lUpdated += $file
+            Remove-Item $candidate
+            continue
         }
         $lNew = (gci ../local/*).BaseName
         move-item ../local/* bucket -Force
