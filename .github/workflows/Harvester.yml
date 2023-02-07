@@ -64,7 +64,7 @@ jobs:
             return "$_/archive/refs/heads/master.zip`n    out=$owner_repo.zip"
         }
         $lZips > download_list.txt   
-        echo "UPDATE=$(Get-Date -format 'yyyy-MM-ddTHH:mm:ssZ')" >>$GITHUB_ENV
+        echo "UPDATE=$(Get-Date -format 'yyyy-MM-ddTHH:mm:ssZ')" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
         # DOWNLOAD BUCKETS
         aria2c --save-session aria2-out.txt -j 16 -i download_list.txt -d zips
         (cmd.exe /c dir /s /b /a-d zips) > Zip_list.txt
@@ -234,9 +234,9 @@ jobs:
         $FullDB = $FullDB | Sort-Object Name,Date
         $scoopDBfile = "./AllAppsDB.csv"
         $FullDB | ConvertTo-csv > $scoopDBfile
-        echo "N_BUCKETS=$((cat .\Zip_list.txt).count)" >>$GITHUB_ENV
-        echo "N_MANIFESTS=$nJsons" >>$GITHUB_ENV
-        echo "N_APPS=$nhash" >>$GITHUB_ENV
+        echo "N_BUCKETS=$((cat .\Zip_list.txt).count)" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+        echo "N_MANIFESTS=$nJsons" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+        echo "N_APPS=$nhash" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
       
 
     - name: "🐞 Debug session"
