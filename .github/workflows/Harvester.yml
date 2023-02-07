@@ -16,7 +16,7 @@ on:
         required: false
         default: 'false'
         type: choice
-        options: 
+        options:
           - "true"
           - "false"
 
@@ -47,7 +47,7 @@ jobs:
         $lBuckets > Bucket_list.txt
         Write-Host "$($lBuckets.count) buckets found."
 
-        
+
 
     - name: "⏬ Download known buckets"
       run: |
@@ -64,7 +64,7 @@ jobs:
             $owner_repo=$matches[1].replace('/','~')
             return "$_/archive/refs/heads/master.zip`n    out=$owner_repo.zip"
         }
-        $lZips > download_list.txt   
+        $lZips > download_list.txt
         echo "UPDATE=$(Get-Date -format 'yyyy-MM-ddTHH:mm:ssZ')" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
 
         # DOWNLOAD BUCKETS
@@ -155,7 +155,7 @@ jobs:
                 $file.fullname >> ERROR_manifest.txt
                 continue
             }
-            [void]$FullDB.Rows.Add($name, $version, $date, $bucket, $description) 
+            [void]$FullDB.Rows.Add($name, $version, $date, $bucket, $description)
         }
         $DB = $FullDB | Sort-Object Name
 
@@ -185,13 +185,13 @@ jobs:
             }
             if ($row.name -ne $name) {
                 $name = $row.name
-                [void]$hash.Rows.Add($name, $row.version, $row.date, $row.bucket, $row.date, $row.bucket, $row.description) 
+                [void]$hash.Rows.Add($name, $row.version, $row.date, $row.bucket, $row.date, $row.bucket, $row.description)
                 $nApps++
                 continue
             }
             switch ( CompareV $row.Version $hash.Rows[-1].Version ) {
-                -1 {    
-                    break   
+                -1 {
+                    break
                 }
                 1 {
                     $hash.Rows[-1].Version = $row.Version
@@ -240,7 +240,7 @@ jobs:
         $FullDB | ConvertTo-csv > $scoopDBfile
         echo "N_MANIFESTS=$nManifests" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
         echo "N_APPS=$nApps" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
-      
+
 
     - name: "🐞 Debug session"
       uses: mxschmitt/action-tmate@v3
@@ -274,7 +274,7 @@ jobs:
               Write-Output "( $percent% )  $progress / $env:N_APPS (reviewed/total) Last checked app: $($file.BaseName)"
               $oldpercent=$percent
             }
-            
+
             $candidate = "../local/$($file.Name)"
             if (-not (test-path $candidate)) {
                 Remove-Item $file
@@ -291,7 +291,7 @@ jobs:
             $lUpdated += $file
         }
         $lNew = (gci local/*).BaseName
-        move-item local/* ScoopMaster/bucket -Force
+        move-item ../local/* bucket -Force
 
         $lDeleted > AppsLeavingScoop.txt
         $lUpdated > AppsUpdated.txt
@@ -309,12 +309,20 @@ jobs:
         Write-Output " " >> body.txt
         Write-Output "These databases can be used for fast online data retrieval, for instance by CLI scoop search utilities such as `ss` (ScoopSearch)" >> body.txt
         Write-Output " " >> body.txt
-        Write-Output "The current snapshot timestamp for these databases is $($env:UPDATE). In the last 30 minutes" >> body.txt
+        Write-Output "The current snapshot timestamp for these databases is $($env:UPDATE). In the last 30 minutes:" >> body.txt
         Write-Output "- $($lNew) apps were added to Scoop." >> body.txt
         Write-Output "- $($lUpdated) apps were updated." >> body.txt
         Write-Output "- $($lDeleted) apps left Scoop." >> body.txt
- 
-    
+
+        Write-Output "- **AllAppsDB** contains the data of **$($env:N_MANIFESTS)** manifests in **$($env:N_BUCKETS)** online buckets."
+        Write-Output "- **LastAppsDB** contains highest version of each of the **$($env:N_APPS)** apps in Scoop, all of them contained in this bucket."
+        Write-Output " "
+        Write-Output "The current snapshot timestamp for these databases is $($env:UPDATE). In the last 30 minutes:"
+        Write-Output "- $($lNew) apps were added to Scoop."
+        Write-Output "- $($lUpdated) apps were updated."
+        Write-Output "- $($lDeleted) apps left Scoop."
+
+
     - name: "⭐ Update repo (Commit-n-Push)"
       run: |
         git -C . init
