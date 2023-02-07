@@ -262,7 +262,7 @@ jobs:
 
         $lDeleted = $lUpdated = $lNew = @()
         $current = gci bucket/*.json
-        progress=0
+        $progress = 0
         Write-host "##"
         Write-host "##   CHECKING MODIFIED APPS..."
         Write-host "##   ================================="
@@ -271,7 +271,7 @@ jobs:
             $progress++
             $percent = [math]::round(100 * $progress / $env:N_APPS)
             if ($percent -ne $oldpercent){
-              Write-Output "( $percent% )  $progress / $env:N_APPS (reviewed/total) Last reviewed app: $($file.BaseName)"
+              Write-Output "( $percent% )  $progress / $env:N_APPS (reviewed/total) Last checked app: $($file.BaseName)"
               $oldpercent=$percent
             }
             
