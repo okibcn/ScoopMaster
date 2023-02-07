@@ -227,12 +227,12 @@ jobs:
         Write-host "##"
         foreach ( $row in $hash ) {
             [void]$FullDB.Rows.Add($row.Name, $row.Version, $row.FirstDate, "okibcn/ScoopMaster", $row.Description)
-            $file="jsons/$( $row.FirstBucket.replace('/','~') )/$($row.Name).json"
-            if  ((cat -Raw $file) -match "\r\n$"){    # CRLF
+            # $file="jsons/$( $row.FirstBucket.replace('/','~') )/$($row.Name).json"
+            # if  ((cat -Raw $file) -match "\r\n$"){    # CRLF
               Copy-Item $file local | Out-Null
-            }else{     # LF, converting to CRLF
-              (Get-Content $file -Raw).Replace("\n","\r\n") | Set-Content "local/$($row.Name).json" -Force
-            }
+            # }else{     # LF, converting to CRLF
+            #   (Get-Content $file -Raw).Replace("\n","\r\n") | Set-Content "local/$($row.Name).json" -Force
+            # }
             $progress++
             $percent = [math]::round(100 * $progress / $nApps)
             if ($percent -ne $oldpercent){
