@@ -326,10 +326,11 @@ jobs:
 
     - name: "⭐ Update repo (Commit-n-Push)"
       run: |
-        git config --global core.autocrlf false
+        # git -C . init
+        git -C . config --local core.autocrlf false
+        git -C . config --global core.safecrlf false
         git -C . config --local user.name "GitHub Actions"
         git -C . config --local user.email actions@github.com
-        git -C . init
         git -C . add -A
         git -C . commit --no-verify -m "Update timestamp $($env:UPDATE)"
         $sha=(git -C . rev-parse HEAD)
