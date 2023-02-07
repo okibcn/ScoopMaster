@@ -228,11 +228,8 @@ jobs:
         foreach ( $row in $hash ) {
             [void]$FullDB.Rows.Add($row.Name, $row.Version, $row.FirstDate, "okibcn/ScoopMaster", $row.Description)
             $file="jsons/$( $row.FirstBucket.replace('/','~') )/$($row.Name).json"
-            # if  ((cat -Raw $file) -match "\r\n$"){    # CRLF
-              Copy-Item $file local | Out-Null
-            # }else{     # LF, converting to CRLF
-            #   (Get-Content $file -Raw).Replace("\n","\r\n") | Set-Content "local/$($row.Name).json" -Force
-            # }
+            Get-Content $file > "local/$($row.Name).json"
+            # Copy-Item $file local | Out-Null
             $progress++
             $percent = [math]::round(100 * $progress / $nApps)
             if ($percent -ne $oldpercent){
@@ -264,10 +261,10 @@ jobs:
         ##                          ##
         ############################
 
-        cd ..
-        aria2c https://github.com/okibcn/ScoopMaster/archive/refs/heads/master.zip -o ScoopMaster.zip
-        7z e ScoopMaster.zip */bucket/* -obucket
-        cd ScoopMaster
+        # cd ..
+        # aria2c https://github.com/okibcn/ScoopMaster/archive/refs/heads/master.zip -o ScoopMaster.zip
+        # 7z e ScoopMaster.zip */bucket/* -obucket
+        # cd ScoopMaster
 
         $lDeleted = $lUpdated = $lNew = @()
         $progress = 0
@@ -290,7 +287,8 @@ jobs:
                 $lDeleted += $file.BaseName
                 continue
             }
-            $hFile = (Get-FileHash -Algorithm SHA1 "../bucket/$($file.Name)").Hash
+            # $hFile = (Get-FileHash -Algorithm SHA1 "../bucket/$($file.Name)").Hash
+            $hFile = (Get-FileHash -Algorithm SHA1 $file).Hash
             $hCandidate = (Get-FileHash -Algorithm SHA1 $candidate).Hash
             if ($hCandidate -ne $hFile) {
                 Move-Item $candidate $file -Force
