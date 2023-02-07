@@ -1,91 +1,51 @@
 {
     "version": "2.26.3",
-    "description": "SDL (Simple DirectMedia Layer) is a cross-platform development library designed to provide low level access to audio, keyboard, mouse, joystick, and graphics hardware via OpenGL and Direct3D.",
+    "description": "Simple DirectMedia Layer is a cross-platform development library designed to provide low level access to audio, keyboard, mouse, joystick, and graphics hardware via OpenGL and Direct3D.",
     "homepage": "https://www.libsdl.org",
-    "license": "Zlib",
-    "url": [
-        "https://github.com/libsdl-org/SDL/releases/download/release-2.26.3/SDL2-devel-2.26.3-VC.zip",
-        "https://github.com/libsdl-org/SDL/releases/download/release-2.26.3/SDL2-2.26.3.zip"
-    ],
-    "hash": [
-        "3b561bfcd7676d42f2b84ebde12d7433d176035ed28335c4fb9e554ef2764ec5",
-        "3e46df1eb1be30448cf7c7f3fc0991980f0ef867c2412ab7bc925b631e5dc09c"
-    ],
+    "license": {
+        "identifier": "Zlib",
+        "url": "https://www.libsdl.org/license.php"
+    },
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/libsdl-org/SDL/releases/download/release-2.26.3/SDL2-2.26.3-win32-x64.zip",
+            "hash": "e5d1bc7bf065ede2b290d86335c81bd1c781a40f18d94e0f5b90ec4dec9c3c0e"
+        },
+        "32bit": {
+            "url": "https://github.com/libsdl-org/SDL/releases/download/release-2.26.3/SDL2-2.26.3-win32-x86.zip",
+            "hash": "87d2ad643c90a53c2a498bf558d5827c704845ca70f176100496e3bc86cf471e"
+        }
+    },
     "installer": {
         "script": [
-            "# organize files",
-            "mkdir -f \"$dir\\lib\\pkgconfig\" > $null",
-            "mkdir -f \"$dir\\include\\SDL2\" > $null",
-            "# make arch consistent with scoop naming",
-            "mv \"$dir\\SDL2-$version\\lib\\x86\" \"$dir\\SDL2-$version\\lib\\32bit\"",
-            "mv \"$dir\\SDL2-$version\\lib\\x64\" \"$dir\\SDL2-$version\\lib\\64bit\"",
-            "# only install the requested architecture",
-            "mv \"$dir\\SDL2-$version\\lib\\$architecture\\*\" \"$dir\\lib\"",
-            "",
-            "$srcdir = \"$dir\\SDL2-$version\\\"",
-            "mv \"$srcdir\\include\\*.h\"  \"$dir\\include\\SDL2\"",
-            "rm \"$dir\\include\\*.h.*\"",
-            "$pcin = \"$srcdir\\sdl2.pc.in\"",
-            "$pcout = \"$dir\\lib\\pkgconfig\\sdl2.pc\"",
-            "Set-Content $pcout ((gc $pcin) `",
-            "    -replace \"@prefix@\",\"\" `",
-            "    -replace \"@exec_prefix@\",\"`${prefix}\" `",
-            "    -replace \"@libdir@\",\"`${exec_prefix}/lib\" `",
-            "    -replace \"@includedir@\",\"`${prefix}/include\" `",
-            "    -replace \"@SDL_VERSION@\",\"$version\" `",
-            "    -replace \"@SDL_RLD_FLAGS@\",\"\" `",
-            "    -replace \"@SDL_LIBS@\",\"-lSDL2\" `",
-            "    -replace \"@SDL_STATIC_LIBS@\",\"-lSDL2\" `",
-            "    -replace \"@SDL_CFLAGS@\",\"\" `",
-            "    -replace \"@PKGCONFIG_LIBS_PRIV@\",\"\" `",
-            ")",
-            "",
-            "rm -r \"$srcdir\"",
-            "",
-            "$cmdir = if (get_config NO_JUNCTIONS) { $dir } else { \"$(appdir $app $global)\\current\" }",
-            "$pcdir = \"$cmdir\\lib\\pkgconfig\"",
-            "# future sessions",
-            "$null, $currpath = strip_path (env 'PKG_CONFIG_PATH' $global) $pcdir",
-            "env 'PKG_CONFIG_PATH' $global \"$pcdir;$currpath\"",
-            "$null, $currpath = strip_path (env 'CMAKE_PREFIX_PATH' $global) $cmdir",
-            "env 'CMAKE_PREFIX_PATH' $global \"$cmdir;$currpath\"",
-            "# this session",
-            "$null, $env:PKG_CONFIG_PATH = strip_path $env:PKG_CONFIG_PATH $pcdir",
-            "$env:PKG_CONFIG_PATH = \"$pcdir;$env:PKG_CONFIG_PATH\"",
-            "$null, $env:CMAKE_PREFIX_PATH = strip_path $env:CMAKE_PREFIX_PATH $cmdir",
-            "$env:CMAKE_PREFIX_PATH = \"$cmdir;$env:CMAKE_PREFIX_PATH\""
+            "If (!($global)) { If(is_admin) {error \"Please run the installation command without elevated privilages if you want to install locally\"; exit 1} }",
+            "$currentdir = (Get-Item -Path \".\\\").FullName",
+            "Set-Location $dir",
+            "regsvr32 /s sdl2.dll",
+            "Set-Location $currentdir"
         ]
     },
     "uninstaller": {
         "script": [
-            "$cmdir = if (get_config NO_JUNCTIONS) { $dir } else { \"$(appdir $app $global)\\current\" }",
-            "$pcdir = \"$cmdir\\lib\\pkgconfig\"",
-            "# future sessions",
-            "$was_in_path, $newpath = strip_path (env 'PKG_CONFIG_PATH' $global) $pcdir",
-            "if($was_in_path) {",
-            "    write-host \"Removing $(friendly_path $pcdir) from your path.\"",
-            "    env 'PKG_CONFIG_PATH' $global $newpath",
-            "}",
-            "$was_in_path, $newpath = strip_path (env 'CMAKE_PREFIX_PATH' $global) $cmdir",
-            "if($was_in_path) {",
-            "    write-host \"Removing $(friendly_path $cmdir) from your path.\"",
-            "    env 'CMAKE_PREFIX_PATH' $global $newpath",
-            "}",
-            "# current session",
-            "$was_in_path, $newpath = strip_path $env:PKG_CONFIG_PATH $pcdir",
-            "if($was_in_path) { $env:PKG_CONFIG_PATH = $newpath }",
-            "$was_in_path, $newpath = strip_path $env:CMAKE_PREFIX_PATH $cmdir",
-            "if($was_in_path) { $env:CMAKE_PREFIX_PATH = $newpath }"
+            "If (!($global)) { If(is_admin) {error \"Please run the uninstallation command without elevated privilages if you want to uninstall locally\"; exit 1} }",
+            "$currentdir = (Get-Item -Path \".\\\").FullName",
+            "Set-Location $dir",
+            "regsvr32 /u /s sdl2.dll",
+            "Set-Location $currentdir"
         ]
     },
     "checkver": {
-        "github": "https://github.com/libsdl-org/SDL",
-        "regex": "tag/release-([\\d.]+)"
+        "url": "https://api.github.com/repos/libsdl-org/SDL/releases/latest",
+        "jsonpath": "$.name"
     },
     "autoupdate": {
-        "url": [
-            "https://github.com/libsdl-org/SDL/releases/download/release-$version/SDL2-devel-$version-VC.zip",
-            "https://github.com/libsdl-org/SDL/releases/download/release-$version/SDL2-$version.zip"
-        ]
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/libsdl-org/SDL/releases/download/release-$version/SDL2-$version-win32-x64.zip"
+            },
+            "32bit": {
+                "url": "https://github.com/libsdl-org/SDL/releases/download/release-$version/SDL2-$version-win32-x86.zip"
+            }
+        }
     }
 }
