@@ -1,68 +1,17 @@
 {
-    "version": "102.7.1",
-    "description": "A free email application that's easy to set up and customize.",
-    "homepage": "https://www.thunderbird.net",
-    "license": "MPL-2.0",
-    "architecture": {
-        "64bit": {
-            "url": "https://archive.mozilla.org/pub/thunderbird/releases/102.7.1/win64/pl/Thunderbird%20Setup%20102.7.1.exe#/dl.7z",
-            "hash": "sha512:cd0df0b8d1e23f4543025a730adf7196d95f0c9664f39db9d9c5f0551507678d40db040b643b2870565c78578d8c531098fc48a27c7492b8d03b81d37fe0a2f9"
-        },
-        "32bit": {
-            "url": "https://archive.mozilla.org/pub/thunderbird/releases/102.7.1/win32/pl/Thunderbird%20Setup%20102.7.1.exe#/dl.7z",
-            "hash": "sha512:c42f6162a7c7656eeecde53decf6b1813cf2d712549644769234bc8f80290f28dc93fc681931b01756ed78f4012c2ee8a2ad25069d79619abeb8feef5a4030b6"
-        }
-    },
-    "notes": [
-        "To set profile 'Scoop' as *DEFAULT*, or profiles/settings was lost after update:",
-        "  - Run 'Thunderbird Profile Manager', choose 'Scoop' then click 'Start Thunderbird'.",
-        "  - Visit 'about:profiles' page in Thunderbird to check *DEFAULT* profile.",
-        "For details: https://support.mozilla.org/en-US/kb/profile-manager-create-and-remove-thunderbird-profiles"
-    ],
-    "extract_dir": "core",
-    "post_install": [
-        "~\\scoop\\apps\\thunderbird-polish\\current\\thunderbird.exe -CreateProfile \"Scoop $persist_dir\\profile\"",
-        "$Addition = \"$persist_dir\\addition\"",
-        "if (Test-Path $Addition) {",
-        "  info 'Copying additional items...'",
-        "  Copy-Item -Path $Addition\\* -Destination $dir -Force -Recurse -ErrorAction SilentlyContinue",
-        "}"
-    ],
+    "version": "1.0",
+    "description": "WListTool",
+    "homepage": "https://github.com/zzhaq/Toolbox/releases",
+    "license": "MIT",
+    "url": "https://github.com/zzhaq/Toolbox/releases/download/v3.6/WListTool_R_1.8.1.zip",
+    "extract_dir": "WListTool_R_1.8.1",
+    "bin": "WListTool.exe",
     "shortcuts": [
         [
-            "thunderbird.exe",
-            "Thunderbird"
-        ],
-        [
-            "thunderbird.exe",
-            "Thunderbird Profile Manager",
-            "-P"
+            "WListTool.exe",
+            "WListTool"
         ]
-    ],
-    "persist": [
-        "distribution",
-        "profile"
-    ],
-    "checkver": {
-        "url": "https://www.thunderbird.net/thunderbird/all/",
-        "regex": "thunderbird-([\\d.]+)-SSL.*lang=pl"
-    },
-    "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://archive.mozilla.org/pub/thunderbird/releases/$version/win64/pl/Thunderbird%20Setup%20$version.exe#/dl.7z",
-                "hash": {
-                    "url": "https://archive.mozilla.org/pub/thunderbird/releases/$version/SHA512SUMS",
-                    "regex": "$sha512\\s+win64/pl/$basename"
-                }
-            },
-            "32bit": {
-                "url": "https://archive.mozilla.org/pub/thunderbird/releases/$version/win32/pl/Thunderbird%20Setup%20$version.exe#/dl.7z",
-                "hash": {
-                    "url": "https://archive.mozilla.org/pub/thunderbird/releases/$version/SHA512SUMS",
-                    "regex": "$sha512\\s+win32/pl/$basename"
-                }
-            }
-        }
-    }
+    ]
 }
+
+

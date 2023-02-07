@@ -1,57 +1,17 @@
 {
-    "architecture": {
-        "32bit": {
-            "hash": "c22a8c7e937431a59117725bdc2315b681cbd4eb37fcc3565303715a0e7fcbf0",
-            "url": "https://nightly.link/HMBSbige/ShadowsocksR-Windows/actions/runs/4068777541/ShadowsocksR-Win32.zip"
-        },
-        "64bit": {
-            "hash": "72648ae13c98cad6ac4c97ce8d5050266c02bc93c3bf8fd1460ff541edbf81b0",
-            "url": "https://nightly.link/HMBSbige/ShadowsocksR-Windows/actions/runs/4068777541/ShadowsocksR-Win64.zip"
-        }
-    },
-    "autoupdate": {
-        "architecture": {
-            "32bit": {
-                "url": "https://nightly.link/HMBSbige/ShadowsocksR-Windows/actions/runs/$matchRunid/ShadowsocksR-Win32.zip"
-            },
-            "64bit": {
-                "url": "https://nightly.link/HMBSbige/ShadowsocksR-Windows/actions/runs/$matchRunid/ShadowsocksR-Win64.zip"
-            }
-        }
-    },
-    "bin": "ShadowsocksR.exe",
-    "checkver": {
-        "regex": "(?sm)HMBSbige/ShadowsocksR-Windows/actions/runs/(?<runid>\\d+).+datetime=\"(?<year>\\d+).(?<month>\\d+).(?<day>\\d+).*?commit/(?<sha>[0-9a-f]{7})",
-        "replace": "${year}${month}${day}.${sha}",
-        "url": "https://scoop-apps.vercel.app/HMBSbige/ShadowsocksR-Windows"
-    },
-    "description": "ShadowsocksR for Windows(with dotnet runtime), maintained by @HMBSbige.",
-    "homepage": "https://github.com/HMBSbige/ShadowsocksR-Windows",
-    "license": {
-        "identifier": "AGPL-3.0-only",
-        "url": "https://github.com/HMBSbige/ShadowsocksR-Windows/raw/master/LICENSE"
-    },
-    "persist": "temp",
-    "pre_install": [
-        "@('gui-config.json', 'pac.txt', 'transfer_log.json', 'user-rule.txt') | ForEach-Object {",
-        "    if (Test-Path \"$persist_dir\\$_\") { Copy-Item \"$persist_dir\\$_\" \"$dir\\\" | Out-Null }",
-        "}"
-    ],
+    "version": "1.0",
+    "description": "WListTool",
+    "homepage": "https://github.com/zzhaq/Toolbox/releases",
+    "license": "MIT",
+    "url": "https://github.com/zzhaq/Toolbox/releases/download/v3.6/WListTool_R_1.8.1.zip",
+    "extract_dir": "WListTool_R_1.8.1",
+    "bin": "WListTool.exe",
     "shortcuts": [
         [
-            "ShadowsocksR.exe",
-            "ShadowsocksR"
+            "WListTool.exe",
+            "WListTool"
         ]
-    ],
-    "uninstaller": {
-        "script": [
-            "@('gui-config.json', 'pac.txt', 'transfer_log.json', 'user-rule.txt') | ForEach-Object {",
-            "    if (Test-Path \"$dir\\$_\") {",
-            "        ensure \"$persist_dir\" | Out-Null",
-            "        Copy-Item \"$dir\\$_\" \"$persist_dir\\\" | Out-Null",
-            "    }",
-            "}"
-        ]
-    },
-    "version": "20230201.d13814f"
+    ]
 }
+
+

@@ -1,98 +1,17 @@
 {
-    "version": "5.2.1-10-g96627e7",
-    "description": "A command-line utility that pipes video streams from various services into a video player.",
-    "homepage": "https://streamlink.github.io/",
-    "license": "BSD-2-Clause",
-    "notes": "You will find your config file here: '$dir\\config'. To customise it, read the docs here: https://streamlink.github.io/cli/config.html#syntax",
-    "suggest": {
-        "FFmpeg": [
-            "ffmpeg",
-            "ffmpeg-nightly"
-        ],
-        "mpv": [
-            "extras/mpv",
-            "extras/mpv-git"
-        ]
-    },
-    "architecture": {
-        "64bit": {
-            "url": [
-                "https://nightly.link/streamlink/windows-builds/workflows/nightly/master/streamlink-5.2.1-10-g96627e7-py311-x86_64.zip.zip",
-                "https://raw.githubusercontent.com/2bc4/streamlink-ttvlol/master/twitch.py"
-            ],
-            "hash": [
-                "2a3f8b4da480d2dca959f8286244c41fb821e215393d4fcbace6cd1483afd159",
-                "00ef874d097ea45ff98576dd522f86e61033eea0c28417fdc9e8887116aef1ea"
-            ]
-        },
-        "32bit": {
-            "url": [
-                "https://nightly.link/streamlink/windows-builds/workflows/nightly/master/streamlink-5.2.1-10-g96627e7-py311-x86.zip.zip",
-                "https://raw.githubusercontent.com/2bc4/streamlink-ttvlol/master/twitch.py"
-            ],
-            "hash": [
-                "728754d7e07e48430a1fb75a2110179cf16c8502feee23561ee9098fc6452c82",
-                "00ef874d097ea45ff98576dd522f86e61033eea0c28417fdc9e8887116aef1ea"
-            ]
-        }
-    },
-    "pre_install": [
-        "Expand-7zipArchive \"$dir\\streamlink-$version-py311-x86*.zip\" \"$dir\" -Removal",
-        "$python = try { ((py.exe -0p)[0] | Select-String \\S+\\Z).Matches.Value } catch { $null }",
-        "$paths = 'bin', 'pkgs'",
-        "if ($python -and ($ver = [System.Version]((py.exe -V) -replace '[^\\d.]')) -lt [System.Version]'3.12.0' -and $ver -ge [System.Version]'3.11.0') {",
-        "New-Item -ItemType SymbolicLink -Path \"$dir\\Python\" -Target ($python | Split-Path) | Out-Null",
-        "} else { $paths += 'Python' }",
-        "$paths | ForEach-Object { Move-Item \"$dir\\streamlink-$version-py311-x86*\\$_\" \"$dir\" }",
-        "Remove-Item -Recurse \"$dir\\streamlink-$version-py311-x86*\"",
-        "Move-Item -Force \"$dir\\twitch.py\" \"$dir\\pkgs\\streamlink\\plugins\"",
-        "if (!(Test-Path \"$persist_dir\\config\")) {",
-        "    if (Test-Path \"$env:APPDATA\\streamlink\\config\") {",
-        "        info 'Copying existing ''config'' from ''%APPDATA%\\streamlink\\config'''",
-        "        Copy-Item \"$env:APPDATA\\streamlink\\config\" \"$dir\\config\"",
-        "    } else {",
-        "        New-Item \"$dir\\config\" | Out-Null",
-        "    }",
-        "}"
-    ],
-    "bin": [
+    "version": "1.0",
+    "description": "WListTool",
+    "homepage": "https://github.com/zzhaq/Toolbox/releases",
+    "license": "MIT",
+    "url": "https://github.com/zzhaq/Toolbox/releases/download/v3.6/WListTool_R_1.8.1.zip",
+    "extract_dir": "WListTool_R_1.8.1",
+    "bin": "WListTool.exe",
+    "shortcuts": [
         [
-            "bin\\streamlink.exe",
-            "streamlink",
-            "--config \"$dir\\config\""
-        ],
-        "bin\\streamlinkw.exe"
-    ],
-    "persist": "config",
-    "checkver": {
-        "script": [
-            "try {",
-            "    (Invoke-RestMethod https://api.github.com/repositories/472790314/actions/artifacts).artifacts[0].name -Match 'streamlink-([\\w.-]+)-py' | Out-Null",
-            "    $verSplit = $matches[1].split('-')",
-            "    if ($verSplit.Length -eq 3 -and $verSplit[2][0] -eq 'g') { $build = 'nightly' }",
-            "    else { $build = 'main' }",
-            "    $build, $matches[1] -join ' '",
-            "}",
-            "catch {",
-            "    ''",
-            "}"
-        ],
-        "regex": "\\A(?<build>\\S+) (\\S+)\\Z"
-    },
-    "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": [
-                    "https://nightly.link/streamlink/windows-builds/workflows/$matchBuild/master/streamlink-$version-py311-x86_64.zip.zip",
-                    "https://raw.githubusercontent.com/2bc4/streamlink-ttvlol/master/twitch.py"
-                ]
-            },
-            "32bit": {
-                "url": [
-                    "https://nightly.link/streamlink/windows-builds/workflows/$matchBuild/master/streamlink-$version-py311-x86.zip.zip",
-                    "https://raw.githubusercontent.com/2bc4/streamlink-ttvlol/master/twitch.py"
-                ]
-            }
-        }
-    }
+            "WListTool.exe",
+            "WListTool"
+        ]
+    ]
 }
+
+

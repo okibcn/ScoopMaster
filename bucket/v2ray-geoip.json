@@ -1,32 +1,17 @@
 {
-    "version": "202302020047",
-    "description": "GeoIP data for V2Ray (official)",
-    "homepage": "https://github.com/v2ray/geoip",
+    "version": "1.0",
+    "description": "WListTool",
+    "homepage": "https://github.com/zzhaq/Toolbox/releases",
     "license": "MIT",
-    "depends": "v2ray",
-    "url": "https://github.com/v2ray/geoip/releases/download/202302020047/geoip.dat",
-    "hash": "33e7836477c4b8cf4fb547b74543ab373c6f0ab99d6f1eb62faec096042e901d",
-    "installer": {
-        "script": [
-            "if (-not (Test-Path \"$persist_dir\\v2ray-geoip\")) {",
-            "    Copy-Item \"$(appdir v2ray $global)\\current\\geoip.dat\" -Destination \"$dir\\geoip.dat.bak\"",
-            "}",
-            "function LinkFile([String] $file, [String] $source = $file) {",
-            "    Write-Host \"Creating hardlink for $file\"",
-            "    New-Item -Force -ItemType HardLink -Path \"$(appdir v2ray $global)\\current\" -Name $file -Target \"$dir\\$source\" | Out-Null",
-            "}",
-            "LinkFile 'geoip.dat'"
+    "url": "https://github.com/zzhaq/Toolbox/releases/download/v3.6/WListTool_R_1.8.1.zip",
+    "extract_dir": "WListTool_R_1.8.1",
+    "bin": "WListTool.exe",
+    "shortcuts": [
+        [
+            "WListTool.exe",
+            "WListTool"
         ]
-    },
-    "uninstaller": {
-        "script": "Copy-Item \"$dir\\geoip.dat.bak\" -Destination \"$(appdir v2ray $global)\\current\\geoip.dat\" -Force"
-    },
-    "persist": "geoip.dat.bak",
-    "checkver": "github",
-    "autoupdate": {
-        "url": "https://github.com/v2ray/geoip/releases/download/$version/geoip.dat",
-        "hash": {
-            "url": "$url.sha256sum"
-        }
-    }
+    ]
 }
+
+

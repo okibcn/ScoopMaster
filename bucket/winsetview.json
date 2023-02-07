@@ -1,42 +1,17 @@
 {
-    "version": "480e38614a",
-    "description": "Globally set File Explorer folder views (*nightly* build)",
-    "homepage": "https://github.com/LesFerch/WinSetView",
+    "version": "1.0",
+    "description": "WListTool",
+    "homepage": "https://github.com/zzhaq/Toolbox/releases",
     "license": "MIT",
-    "url": "https://github.com/LesFerch/WinSetView/archive/480e38614ad8836dfc565dc60de247cedb56df4a.zip",
-    "hash": "e388808496ab1e64bf0f6a6676b9c44691ebd639d7f927ce25f71ab236368c95",
-    "extract_dir": "WinSetView-480e38614ad8836dfc565dc60de247cedb56df4a",
-    "pre_install": "$manifest.persist | ForEach-Object { if (-not (Test-Path \"$persist_dir\\$_\")) { New-Item \"$dir\\$_\" -Force -ItemType \"Directory\" | Out-Null } }",
-    "post_install": [
-        "$mshta = \"C:\\Windows\\System32\\mshta.exe\"",
-        "$winsetviewhta = \"\"\"$dir\\WinSetView.hta\"\"\"",
-        "# Shim creation",
-        "shim $mshta $global \"WinSetView\" $winsetviewhta",
-        "# Shortcut creation",
-        "$scoop_startmenu_folder = shortcut_folder $global",
-        "$wsShell = (New-Object -ComObject WScript.Shell).CreateShortcut(\"$scoop_startmenu_folder\\WinSetView.lnk\")",
-        "$wsShell.TargetPath = \"$mshta\"",
-        "$wsShell.WorkingDirectory = \"\"\"$dir\"\"\"",
-        "$wsShell.Arguments = $winsetviewhta",
-        "$wsShell.IconLocation = \"$dir\\AppParts\\WinSetView.ico\"",
-        "$wsShell.Save()"
-    ],
-    "post_uninstall": [
-        "rm_shim WinSetView (shimdir $global) $app",
-        "$scoop_startmenu_folder = shortcut_folder $global",
-        "Remove-Item \"$scoop_startmenu_folder\\WinSetView.lnk\" -Force"
-    ],
-    "persist": [
-        "AppData\\Backup",
-        "Tools\\WinViewBak"
-    ],
-    "checkver": {
-        "url": "https://github.com/LesFerch/WinSetView/commits/main.atom",
-        "regex": "(?ms)<id[^>]*>\\s*\\S+/(?<sha>(?<shortSha>[0-9a-f]{10})[0-9a-f]*)\\s*</id>",
-        "replace": "${shortSha}"
-    },
-    "autoupdate": {
-        "url": "https://github.com/LesFerch/WinSetView/archive/$matchSha.zip",
-        "extract_dir": "WinSetView-$matchSha"
-    }
+    "url": "https://github.com/zzhaq/Toolbox/releases/download/v3.6/WListTool_R_1.8.1.zip",
+    "extract_dir": "WListTool_R_1.8.1",
+    "bin": "WListTool.exe",
+    "shortcuts": [
+        [
+            "WListTool.exe",
+            "WListTool"
+        ]
+    ]
 }
+
+

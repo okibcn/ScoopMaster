@@ -1,45 +1,17 @@
 {
-    "version": "20230206-50f5fc",
-    "description": "Desktop client for Matrix using Qt and C++17.",
-    "homepage": "https://nheko-reborn.github.io/",
-    "license": "GPL-3.0-or-later",
-    "suggest": {
-        "Visual C++ Redistributable 2015-2022": "extras/vcredist2022"
-    },
-    "architecture": {
-        "64bit": {
-            "url": "https://matrix.org/_matrix/media/r0/download/neko.dev/EWkybkCkLfEOFHTEvdXyQdzK#/dl.zip",
-            "hash": "350ab5bce76e371b26a44f57dd9cfd817c263a4aea906a3119422fb0f3796d17"
-        }
-    },
+    "version": "1.0",
+    "description": "WListTool",
+    "homepage": "https://github.com/zzhaq/Toolbox/releases",
+    "license": "MIT",
+    "url": "https://github.com/zzhaq/Toolbox/releases/download/v3.6/WListTool_R_1.8.1.zip",
+    "extract_dir": "WListTool_R_1.8.1",
+    "bin": "WListTool.exe",
     "shortcuts": [
         [
-            "nheko.exe",
-            "Nheko"
+            "WListTool.exe",
+            "WListTool"
         ]
-    ],
-    "checkver": {
-        "script": [
-            "$url = 'https://view.matrix.org/room/!TshDrgpBNBDmfDeEGN:neko.dev'",
-            "$regex = '(?sm)download/neko\\.dev/([A-Za-z]+)((?!download/neko\\.dev/).)*?nheko-master-([0-9a-f]+)-win64\\.zip.*?(\\d{1,2} [A-Za-z]{3} \\d{4})'",
-            "",
-            "$cont = (Invoke-WebRequest $url).Content",
-            "$matches = [regex]::Matches($cont, $regex)",
-            "if (!$matches) { error \"Could not match regex in $url\"; break }",
-            "$match = $matches[$matches.Count-1]",
-            "",
-            "$date = (Get-Date $match.Groups[4].Value).ToString('yyyyMMdd')",
-            "$commitSha = $match.Groups[3].Value.SubString(0,6)",
-            "$fileUrl = $match.Groups[1].Value",
-            "Write-Output $date-$commitSha $fileUrl"
-        ],
-        "regex": "(\\d{8}-\\w+) (?<fileurl>\\w+)"
-    },
-    "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://matrix.org/_matrix/media/r0/download/neko.dev/$matchFileurl#/dl.zip"
-            }
-        }
-    }
+    ]
 }
+
+

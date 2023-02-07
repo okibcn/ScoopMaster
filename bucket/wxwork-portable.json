@@ -1,46 +1,17 @@
 {
-    "version": "4.0.6.6516",
-    "description": "WeChat Work is an efficient enterprise-grade office management platform developed by Tencent Inc.",
-    "homepage": "https://work.weixin.qq.com/",
-    "license": {
-        "identifier": "Proprietary",
-        "url": "https://work.weixin.qq.com/nl/eula"
-    },
-    "url": "https://dldir1.qq.com/wework/work_weixin/WeCom_4.0.6.6516.exe#/dl.7z",
-    "hash": "8658d3f5a86480ff010ba00b71523b90b3fbb38f891488512c06ec22b0f12290",
-    "pre_install": [
-        "info '[Portable Mode]: Copying user data...'",
-        "if (Test-Path \"$persist_dir\\User Data\\*\") {",
-        "    Copy-Item \"$persist_dir\\User Data\\*\" \"$env:AppData\\Tencent\\WXWork\\\" -Recurse -Force | Out-Null",
-        "}"
-    ],
-    "post_install": "@('$PLUGINSDIR', '[NSIS].nsi', 'Uninstall.exe') | ForEach-Object { Remove-Item \"dir\\$_\" -Force -ErrorAction SilentlyContinue }",
-    "uninstaller": {
-        "script": [
-            "info '[Portable Mode]: Backing up user data...'",
-            "if (Test-Path \"$env:AppData\\Tencent\\WXWork\\*\") {",
-            "    Copy-Item \"$env:AppData\\Tencent\\WXWork\\*\" \"$persist_dir\\User Data\\\" -Recurse -Force | Out-Null",
-            "}"
-        ]
-    },
-    "bin": [
-        [
-            "WXWork.exe",
-            "wxwork"
-        ]
-    ],
+    "version": "1.0",
+    "description": "WListTool",
+    "homepage": "https://github.com/zzhaq/Toolbox/releases",
+    "license": "MIT",
+    "url": "https://github.com/zzhaq/Toolbox/releases/download/v3.6/WListTool_R_1.8.1.zip",
+    "extract_dir": "WListTool_R_1.8.1",
+    "bin": "WListTool.exe",
     "shortcuts": [
         [
-            "WXWork.exe",
-            "Tencent\\WXWork"
+            "WListTool.exe",
+            "WListTool"
         ]
-    ],
-    "checkver": {
-        "url": "https://github.com/Ryanjiena/MetaVersion/raw/main/header",
-        "jsonpath": "$[?(@.name == 'wxwork')].redirect",
-        "regex": "WeCom_([\\d.]+)\\.exe"
-    },
-    "autoupdate": {
-        "url": "https://dldir1.qq.com/wework/work_weixin/WeCom_$version.exe#/dl.7z"
-    }
+    ]
 }
+
+

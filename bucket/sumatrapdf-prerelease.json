@@ -1,27 +1,17 @@
 {
-    "version": "15272",
-    "description": "PDF and eBook reader",
-    "homepage": "https://www.sumatrapdfreader.org",
-    "license": "GPL-3.0-only,BSD-2-Clause",
-    "url": "https://www.sumatrapdfreader.org/dl/prerel/15272/SumatraPDF-prerel-64-install.exe",
-    "hash": "0e85c3810bb7cb5263783b679bf1fcb1db5be202dc1b3a510ff6c8fef2453a86",
-    "checkver": {
-        "url": "https://kjkpubsf.sfo2.digitaloceanspaces.com/software/sumatrapdf/sumatralatest.js",
-        "regex": "var sumLatestInstaller64\\s+=\\s+\"(?<url>https.*/prerel/(?<version>.*?)/SumatraPDF-prerel-64.install.exe)\";",
-        "replace": "${version}"
-    },
-    "autoupdate": {
-        "url": "$matchUrl"
-    },
-    "installer": {
-        "keep": false,
-        "script": [
-            "PUSHD \"$dir\"",
-            "&.\\\"$fname\" -x",
-            "Start-Sleep -Seconds 1",
-            "Remove-Item -Force \"$fname\"",
-            "POPD"
+    "version": "1.0",
+    "description": "WListTool",
+    "homepage": "https://github.com/zzhaq/Toolbox/releases",
+    "license": "MIT",
+    "url": "https://github.com/zzhaq/Toolbox/releases/download/v3.6/WListTool_R_1.8.1.zip",
+    "extract_dir": "WListTool_R_1.8.1",
+    "bin": "WListTool.exe",
+    "shortcuts": [
+        [
+            "WListTool.exe",
+            "WListTool"
         ]
-    },
-    "post_install": "Write-Output '[Policies]' 'CopySelection    = 1' 'DiskAccess       = 1' 'FullscreenAccess = 1' 'InternetAccess   = 0' 'LinkProtocols    = http,https' 'PrinterAccess    = 0' 'RegistryAccess   = 0' 'SafeFileTypes    =' 'SavePreferences  = 1' | Out-File \"$dir\\sumatrapdfrestrict.ini\""
+    ]
 }
+
+
