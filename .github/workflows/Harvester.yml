@@ -53,6 +53,7 @@ jobs:
       run: |
         cd ..
         $lBuckets=(cat .\Bucket_list.txt)
+
         ## CREATE INPUT FILE FOR ARIA2C
         $lZips=$lBuckets | %{
             if( -not ($_ -match 'https:\/\/github.com\/(.+)')){
@@ -65,9 +66,12 @@ jobs:
         }
         $lZips > download_list.txt   
         echo "UPDATE=$(Get-Date -format 'yyyy-MM-ddTHH:mm:ssZ')" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+
         # DOWNLOAD BUCKETS
         aria2c --save-session aria2-out.txt -j 16 -i download_list.txt -d zips
         (cmd.exe /c dir /s /b /a-d zips) > Zip_list.txt
+        echo "N_BUCKETS=$((cat .\Zip_list.txt).count)" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+
 
 
     - name: "📃 Extract manifests from downloaded buckets"
@@ -77,9 +81,9 @@ jobs:
         7z e -y zips/*.zip -ojsons/* */bucket/*.json */*.json
         # PREPARE OUTPUT
         Remove-Item -Force -Recurse jsons/*/.*.json
-        $nJsons = (cmd.exe /c dir /s /b /a-d jsons).count
+        $nManifests = (cmd.exe /c dir /s /b /a-d jsons).count
         $nZips = (cat .\Zip_list.txt).count
-        Write-Host "PROCESS COMPLETED. $nJsons manifests extracted from $nZips downloaded buckets."
+        Write-Host "PROCESS COMPLETED. $nManifests manifests extracted from $nZips downloaded buckets."
 
 
     - name: "📝 Indexing JSON manifests"
@@ -127,7 +131,7 @@ jobs:
         $FullDB.Columns.Add("Description") | Out-Null
 
         $files = gci jsons/*/*.json
-        $nJsons=$files.Count
+        $nManifests=$files.Count
         $progress=0
         Write-host "##"
         Write-host "##   INDEXING JSON FILES..."
@@ -137,9 +141,9 @@ jobs:
             $name = $file.BaseName
             $bucket = $file.FullName.split('\')[-2].replace('~', "/")
             $progress++
-            $percent = [math]::round(100 * $progress / $nJsons)
+            $percent = [math]::round(100 * $progress / $nManifests)
             if ($percent -ne $oldpercent){
-              Write-Output "( $percent% )  $progress / $nJsons (indexed/total) Indexing bucket $bucket"
+              Write-Output "( $percent% )  $progress / $nManifests (indexed/total) Indexing bucket $bucket"
               $oldpercent=$percent
             }
             $date = $file.LastWriteTimeUtc.ToString("yyyy-MM-ddTHH:mm:ssZ")
@@ -166,7 +170,7 @@ jobs:
         $hash.Columns.Add("Description") | Out-Null
 
         $name = ""
-        $nhash = 0
+        $nApps = 0
         $progress=0
         Write-host "##"
         Write-host "##   SEARCHING LATEST VERSIONS..."
@@ -174,15 +178,15 @@ jobs:
         Write-host "##"
         foreach ( $row in $DB ) {
             $progress++
-            $percent = [math]::round(100 * $progress / $nJsons)
+            $percent = [math]::round(100 * $progress / $nManifests)
             if ($percent -ne $oldpercent){
-              Write-Output "( $percent% )  $nhash / $progress / $nJsons (harvested/indexed/total) Last checked app: $name.json"
+              Write-Output "( $percent% )  $nApps / $progress / $nManifests (harvested/indexed/total) Last checked app: $name.json"
               $oldpercent=$percent
             }
             if ($row.name -ne $name) {
                 $name = $row.name
                 [void]$hash.Rows.Add($name, $row.version, $row.date, $row.bucket, $row.date, $row.bucket, $row.description) 
-                $nhash++
+                $nApps++
                 continue
             }
             switch ( CompareV $row.Version $hash.Rows[-1].Version ) {
@@ -216,7 +220,7 @@ jobs:
 
         mkdir local | Out-Null
         $progress=0
-        $nhash=$hash.rows.count
+        $nApps=$hash.rows.count
         Write-host "##"
         Write-host "##   GATHERING SELECTED MANIFESTS..."
         Write-host "##   ================================="
@@ -225,18 +229,17 @@ jobs:
             [void]$FullDB.Rows.Add($row.Name, $row.Version, $row.FirstDate, "okibcn/ScoopMaster", $row.Description)
             Move-Item "jsons/$( $row.FirstBucket.replace('/','~') )/$($row.Name).json" local | Out-Null
             $progress++
-            $percent = [math]::round(100 * $progress / $nhash)
+            $percent = [math]::round(100 * $progress / $nApps)
             if ($percent -ne $oldpercent){
-              Write-Output "( $percent% )  $progress / $nhash (hasvested/total) Last harvested app: $($row.Name).json"
+              Write-Output "( $percent% )  $progress / $nApps (hasvested/total) Last harvested app: $($row.Name).json"
               $oldpercent=$percent
             }
         }
         $FullDB = $FullDB | Sort-Object Name,Date
         $scoopDBfile = "./AllAppsDB.csv"
         $FullDB | ConvertTo-csv > $scoopDBfile
-        echo "N_BUCKETS=$((cat .\Zip_list.txt).count)" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
-        echo "N_MANIFESTS=$nJsons" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
-        echo "N_APPS=$nhash" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+        echo "N_MANIFESTS=$nManifests" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+        echo "N_APPS=$nApps" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
       
 
     - name: "🐞 Debug session"
@@ -252,23 +255,65 @@ jobs:
       run: |
         ############################
         ##                          ##
-        ##      CREATE PACKAGE      ##
+        ##     PREPARE PACKAGE      ##
         ##                          ##
         ############################
 
-        remove-item bucket,*.csv -Recurse -Force
-        move-item ../local bucket
+
+        $lDeleted = $lUpdated = $lNew = @()
+        $current = gci bucket/*.json
+        progress=0
+        Write-host "##"
+        Write-host "##   CHECKING MODIFIED APPS..."
+        Write-host "##   ================================="
+        Write-host "##"
+        foreach ($file in $current) {
+            $progress++
+            $percent = [math]::round(100 * $progress / $env:N_APPS)
+            if ($percent -ne $oldpercent){
+              Write-Output "( $percent% )  $progress / $env:N_APPS (reviewed/total) Last reviewed app: $($file.BaseName)"
+              $oldpercent=$percent
+            }
+            
+            $candidate = "../local/$($file.Name)"
+            if (-not (test-path $candidate)) {
+                Remove-Item $file
+                $lDeleted += $file.BaseName
+                continue
+            }
+            $hFile = (Get-FileHash -Algorithm SHA1 $file).Hash
+            $hcandidate = (Get-FileHash -Algorithm SHA1 $candidate).Hash
+            if ($hCandidate -eq $hFile) {
+                Remove-Item $candidate
+                continue
+            }
+            Move-Item $candidate $file -Force
+            $lUpdated += $file
+        }
+        $lNew = (gci local/*).BaseName
+        move-item local/* ScoopMaster/bucket -Force
+
+        $lDeleted > AppsLeavingScoop.txt
+        $lUpdated > AppsUpdated.txt
+        $lNew > AppsNew.txt
+
         move-item ../*.csv .
         7z a AllAppsDB.7z AllAppsDB.csv
         7z a LastAppsDB.7z LastAppsDB.csv
+
         move-item ../*.txt .
-        Write-Output "This release is constantly updated. It contains csv databases of two datasets. The last snapshot timestamp for these databases is $($env:UPDATE).
-        Write-Output "The current metrics for these databases are:" > body.txt
+        Write-Output "This release is constantly being updated. It contains two two datasets in two csv databases."
+        Write-Output "The current content and metrics for these databases are:" > body.txt
         Write-Output "- **AllAppsDB** contains the data of **$($env:N_MANIFESTS)** manifests in **$($env:N_BUCKETS)** online buckets." >> body.txt
         Write-Output "- **LastAppsDB** contains highest version of each of the **$($env:N_APPS)** apps in Scoop, all of them contained in this bucket." >> body.txt
         Write-Output " " >> body.txt
         Write-Output "These databases can be used for fast online data retrieval, for instance by CLI scoop search utilities such as `ss` (ScoopSearch)" >> body.txt
-
+        Write-Output " " >> body.txt
+        Write-Output "The current snapshot timestamp for these databases is $($env:UPDATE). In the last 30 minutes" >> body.txt
+        Write-Output "- $($lNew) apps were added to Scoop." >> body.txt
+        Write-Output "- $($lUpdated) apps were updated." >> body.txt
+        Write-Output "- $($lDeleted) apps left Scoop." >> body.txt
+ 
     
     - name: "⭐ Update repo (Commit-n-Push)"
       run: |
