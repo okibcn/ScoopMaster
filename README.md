@@ -26,7 +26,7 @@ The system uses the platform in two ways:
 
 </br>
 
-**ScoopMaster** provides manifests for every app in any known Scoop bucket, updated every 30 minutes to ensure fresh app versions. This way you only need one bucket in your Scoop bucket list as it takes the manifests from all the rest of known buckets and maintains a bucket with the most recent version of each known package.
+**ScoopMaster** provides manifests for every app in any known Scoop bucket, updated every 30 minutes to ensure fresh app versions. This way you only need one bucket in your Scoop bucket list. It takes the manifests from all the known buckets and maintains a bucket with the most recent version of each known package just for you.
 
 </br>
 
