@@ -314,7 +314,7 @@ jobs:
 
         move-item ../*.txt .
         Write-Output "These databases are updated every 30 minutes. The current content and metrics for these databases are:" > body.txt
-        Write-Output "- **AllAppsDB** contains info of **$($env:N_MANIFESTS)** manifests in **$($env:N_BUCKETS)** online buckets." >> body.txt
+        Write-Output "- **AllAppsDB** contains info of **$([int]($env:N_MANIFESTS) + [int]($env:N_APPS) )** manifests in **$($env:N_BUCKETS)** online buckets." >> body.txt
         Write-Output "- **LastAppsDB** contains highest version of each of the **$($env:N_APPS)** apps in Scoop, all of them contained in this bucket." >> body.txt
         Write-Output " " >> body.txt
         Write-Output "These databases can be used for fast online data retrieval, for instance by CLI scoop search utilities such as `ss` (ScoopSearch)" >> body.txt
@@ -326,7 +326,7 @@ jobs:
 
         Write-Output " "
         Write-Output " "
-        Write-Output "- AllAppsDB contains the data of **$($env:N_MANIFESTS)** manifests in $($env:N_BUCKETS) online buckets."
+        Write-Output "- AllAppsDB contains the data of **$([int]($env:N_MANIFESTS) + [int]($env:N_APPS) )** manifests in $($env:N_BUCKETS) online buckets."
         Write-Output "- LastAppsDB contains highest version of each of the $($env:N_APPS) apps in Scoop, all of them contained in this bucket."
         Write-Output " "
         Write-Output "The current snapshot timestamp for these databases is $($env:UPDATE). In the last 30 minutes:"
