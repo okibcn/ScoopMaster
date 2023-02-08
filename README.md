@@ -61,6 +61,13 @@ To remove the bucket just type:
 scoop bucket rm .SM
 ```
 
+If you want all your local apps to be updated to the latest version provided by ScoopMaster, just change the update source for that app. You can do it for all of them by copy-n-paste this in PowerShell:
+```pwsh
+gci ~/scoop/apps/*/current/install.json | % { 
+    (gc $_) -Replace '(bucket":\s+")[^"]+',"`$1.SM" |Set-Content $_ }
+scoop update *
+```
+
 </br>
 
 ## - Database installation
