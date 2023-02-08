@@ -308,9 +308,9 @@ jobs:
         7z a AllAppsDB.7z AllAppsDB.csv
         7z a LastAppsDB.7z LastAppsDB.csv
 
-        (gc .\README.md) -Replace ("\d+(\*\*\smanifests)","$($env:N_MANIFESTS)`$1")
-        (gc .\README.md) -Replace ("\d+(\*\*\sbuckets)","$($env:N_BUCKETS)`$1")
-        (gc .\README.md) -Replace ("\d+(\*\*\sapps)","$($env:N_APPS)`$1")
+        (gc .\README.md) -Replace ("\d+(\*\*\smanifests)","$($env:N_MANIFESTS)`$1") | Set-Content README.md
+        (gc .\README.md) -Replace ("\d+(\*\*\sbuckets)","$($env:N_BUCKETS)`$1") | Set-Content README.md
+        (gc .\README.md) -Replace ("\d+(\*\*\sapps)","$($env:N_APPS)`$1") | Set-Content README.md
 
         move-item ../*.txt .
         Write-Output "These databases are updated every 30 minutes. The current content and metrics for these databases are:" > body.txt
