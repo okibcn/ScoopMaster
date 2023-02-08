@@ -18,11 +18,10 @@
     },
     "installer": {
         "script": [
-            "$extdir = \"Chrome-bin\\$version\\WidevineCdm\"",
-            "$dest = \"$dir\\$([System.IO.Path]::GetRandomFileName())\"",
-            "Expand-7zipArchive \"$dir\\chrome.7z\" $dest $extdir -Removal",
-            "Move-Item -LiteralPath \"$dest\\$extdir\" \"$dir\\WidevineCdm\" -Force",
-            "Remove-Item $dest -Force -Recurse"
+            "$dest = \"$dir\\WidevineCdm\"",
+            "$rootextdir = 'Chrome-bin'",
+            "Expand-7zipArchive \"$dir\\chrome.7z\" $dest -ExtractDir \"$rootextdir\\$version\\WidevineCdm\" -Removal",
+            "Remove-Item \"$dest\\$rootextdir\" -Force -Recurse"
         ]
     },
     "checkver": {
