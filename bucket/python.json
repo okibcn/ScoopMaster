@@ -13,7 +13,7 @@
             ],
             "hash": [
                 "md5:4331ca54d9eacdbe6e97d6ea63526e57",
-                "c2611c8010979a47cdeea1af17d5061d8df40c5356fd8c2f3ba9492d516a99d1",
+                "27c2d7e74442f356d54d29000379afd55078fb4ede00455fc012f81745e4bcac",
                 "d9309423b693ed63aea6b1fbfc0c34f16842cdca22a1b3edef283b87567a53b9"
             ]
         },
@@ -24,8 +24,8 @@
                 "https://raw.githubusercontent.com/ScoopInstaller/Main/master/scripts/python/uninstall-pep-514.reg"
             ],
             "hash": [
-                "md5:2123016702bbb45688baedc3695852f4",
-                "c2611c8010979a47cdeea1af17d5061d8df40c5356fd8c2f3ba9492d516a99d1",
+                "d2a7427eb13c3bd3d219c2b43c78cd5626920e53359f8e09e59fb845ad1dc908",
+                "27c2d7e74442f356d54d29000379afd55078fb4ede00455fc012f81745e4bcac",
                 "d9309423b693ed63aea6b1fbfc0c34f16842cdca22a1b3edef283b87567a53b9"
             ]
         }
@@ -36,7 +36,7 @@
         "if ($architecture -eq '32bit') { $bit = '32' }",
         "'install-pep-514.reg', 'uninstall-pep-514.reg' | ForEach-Object {",
         "    $py_version = ($version -split '\\.')[0..1] -join '.'",
-        "    $content = Get-Content \"$dir\\$_\"",
+        "    $content = Get-Content \"$bucketsdir\\main\\scripts\\python\\$_\"",
         "    $content = $content.Replace('$py_root', $py_root)",
         "    $content = $content.Replace('$py_version', $py_version)",
         "    $content = $content.Replace('$py_fullversion', $version)",
@@ -54,16 +54,22 @@
             "@('path.msi', 'pip.msi') | ForEach-Object {",
             "    Remove-Item \"$dir\\_tmp\\AttachedContainer\\$_\"",
             "}",
-            "(Get-ChildItem \"$dir\\_tmp\\AttachedContainer\\*.msi\").FullName | ForEach-Object { Expand-MsiArchive $_ \"$dir\" }",
+            "(Get-ChildItem \"$dir\\_tmp\\AttachedContainer\\*.msi\").FullName | ForEach-Object {",
+            "    # appendpath.msi does not contain any file, which causes 'msiexec /a' to fail",
+            "    if($((Get-Item $_).Basename) -eq 'appendpath') { return }",
+            "    Expand-MsiArchive $_ \"$dir\" ",
+            "}",
             "Remove-Item \"$dir\\_tmp\", \"$dir\\setup.exe\" -Force -Recurse",
-            "& \"$dir\\python.exe\" -E -s -m ensurepip -U --default-pip | Out-Null",
-            "Write-Output \"`e[0m\" # Reset ansi to prevent color leak from installer",
             "if ($global) {",
             "    $pathext = (env 'PATHEXT' $true) -replace ';.PYW?', ''",
             "    env 'PATHEXT' $true \"$pathext;.PY;.PYW\"",
             "}"
         ]
     },
+    "post_install": [
+        "python -E -s -m ensurepip -U --default-pip | Out-Null",
+        "Write-Output \"$([char]0x1b)[0m\" # Reset ansi to prevent color leak from installer"
+    ],
     "uninstaller": {
         "script": [
             "if ($global) {",
@@ -73,6 +79,8 @@
         ]
     },
     "bin": [
+        "python.exe",
+        "pythonw.exe",
         [
             "python.exe",
             "python3"
