@@ -1,39 +1,33 @@
 {
     "homepage": "https://github.com/xtaci/kcptun",
-    "description": "A Stable & Secure Tunnel based on KCP with N:M multiplexing and FEC.",
     "version": "20230207",
     "license": "MIT",
     "architecture": {
         "64bit": {
             "url": "https://github.com/xtaci/kcptun/releases/download/v20230207/kcptun-windows-amd64-20230207.tar.gz",
-            "hash": "sha1:db2108fe7c450f842e43fdb126daa05d3315268e",
-            "bin": [
-                [
-                    "client_windows_amd64.exe",
-                    "kcptun-client"
-                ],
-                [
-                    "server_windows_amd64.exe",
-                    "kcptun-server"
-                ]
+            "hash": "42537b7c1d2d3bec81963db8f9ddf0aea9e68c3299779a334388694b6a7643ab",
+            "pre_install": [
+                "Rename-Item \"$dir\\server_windows_amd64.exe\" kcptun-server.exe",
+                "Rename-Item \"$dir\\client_windows_amd64.exe\" kcptun-client.exe"
             ]
         },
         "32bit": {
             "url": "https://github.com/xtaci/kcptun/releases/download/v20230207/kcptun-windows-386-20230207.tar.gz",
-            "hash": "sha1:c23af27e515eba2d05aa5b700fb47ff3711dd909",
-            "bin": [
-                [
-                    "client_windows_386.exe",
-                    "kcptun-client"
-                ],
-                [
-                    "server_windows_386.exe",
-                    "kcptun-server"
-                ]
+            "hash": "cade56edc2fde1f356a5924e74203ae1e10d488889eadd8992f8acddad0738fe",
+            "pre_install": [
+                "Rename-Item \"$dir\\server_windows_386.exe\" kcptun-server.exe",
+                "Rename-Item \"$dir\\client_windows_386.exe\" kcptun-client.exe"
             ]
         }
     },
-    "checkver": "github",
+    "bin": [
+        "kcptun-server.exe",
+        "kcptun-client.exe"
+    ],
+    "checkver": {
+        "url": "https://github.com/xtaci/kcptun/releases",
+        "regex": "/xtaci/kcptun/releases/tag/(?:v|V)?([\\d.]+)"
+    },
     "autoupdate": {
         "architecture": {
             "64bit": {
@@ -42,9 +36,6 @@
             "32bit": {
                 "url": "https://github.com/xtaci/kcptun/releases/download/v$version/kcptun-windows-386-$version.tar.gz"
             }
-        },
-        "hash": {
-            "url": "https://github.com/xtaci/kcptun/releases"
         }
     }
 }
