@@ -1,15 +1,16 @@
 {
     "version": "109.0.5414.120-1.1",
-    "description": "Google Chromium, sans integration with Google.",
+    "description": "Google Chromium, sans Google integration (downloads Widevine separately, password encryption disabled)",
     "homepage": "https://ungoogled-software.github.io/ungoogled-chromium-binaries/",
     "license": "BSD-3-Clause",
+    "depends": "scoop-alts/widevinecdm",
     "architecture": {
         "64bit": {
-            "url": "https://ghproxy.com/github.com/ungoogled-software/ungoogled-chromium-windows/releases/download/109.0.5414.120-1.1/ungoogled-chromium_109.0.5414.120-1.1_windows_x64.zip",
+            "url": "https://github.com/ungoogled-software/ungoogled-chromium-windows/releases/download/109.0.5414.120-1.1/ungoogled-chromium_109.0.5414.120-1.1_windows_x64.zip",
             "hash": "655b53273ef0b35fa2db5d224af8039131e254296e51a8618f26088ae5e57cba"
         },
         "32bit": {
-            "url": "https://ghproxy.com/github.com/ungoogled-software/ungoogled-chromium-windows/releases/download/109.0.5414.120-1.1/ungoogled-chromium_109.0.5414.120-1.1_windows_x86.zip",
+            "url": "https://github.com/ungoogled-software/ungoogled-chromium-windows/releases/download/109.0.5414.120-1.1/ungoogled-chromium_109.0.5414.120-1.1_windows_x86.zip",
             "hash": "d5bb0bd7f5ed4f72d37a9af250e18d0b9e474cc78559d111db3f0ed691b2725e"
         }
     },
@@ -18,14 +19,14 @@
         [
             "chrome.exe",
             "chromium",
-            "--user-data-dir=\"$dir\\User Data\""
+            "--user-data-dir=\"$dir\\User Data\" --disable-machine-id --disable-encryption --no-default-browser-check"
         ]
     ],
     "shortcuts": [
         [
             "chrome.exe",
             "Chromium",
-            "--user-data-dir=\"$dir\\User Data\""
+            "--user-data-dir=\"$dir\\User Data\" --disable-machine-id --disable-encryption --no-default-browser-check"
         ]
     ],
     "persist": "User Data",
@@ -33,17 +34,18 @@
         "github": "https://github.com/ungoogled-software/ungoogled-chromium-windows",
         "regex": "releases/tag/((?<main>[\\d.]+-\\d).(?<release>\\d))"
     },
+    "post_install": "New-Item -Path \"$dir\\WidevineCdm\" -Target \"$(versiondir 'widevinecdm' 'current' $global)\\WidevineCdm\" -ItemType Junction -Force | Out-Null",
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://ghproxy.com/github.com/ungoogled-software/ungoogled-chromium-windows/releases/download/$version/ungoogled-chromium_$version_windows_x64.zip",
+                "url": "https://github.com/ungoogled-software/ungoogled-chromium-windows/releases/download/$version/ungoogled-chromium_$version_windows_x64.zip",
                 "hash": {
                     "url": "https://ungoogled-software.github.io/ungoogled-chromium-binaries/releases/windows/64bit/$matchMain",
                     "xpath": "//ul/li/a[contains(text(), \"$basename\")]/../ul/li[contains(text(), \"SHA256:\")]/code"
                 }
             },
             "32bit": {
-                "url": "https://ghproxy.com/github.com/ungoogled-software/ungoogled-chromium-windows/releases/download/$version/ungoogled-chromium_$version_windows_x86.zip",
+                "url": "https://github.com/ungoogled-software/ungoogled-chromium-windows/releases/download/$version/ungoogled-chromium_$version_windows_x86.zip",
                 "hash": {
                     "url": "https://ungoogled-software.github.io/ungoogled-chromium-binaries/releases/windows/32bit/$matchMain",
                     "xpath": "//ul/li/a[contains(text(), \"$basename\")]/../ul/li[contains(text(), \"SHA256:\")]/code"
