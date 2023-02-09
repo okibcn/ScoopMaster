@@ -1,7 +1,7 @@
 {
     "version": "1.2.2",
-    "description": "An anti-rookit(ARK) tool",
-    "homepage": "https://openark.blackint3.com",
+    "description": "OpenArk is an open source anti-rookit(ARK) tool for Windows.",
+    "homepage": "https://openark.blackint3.com/",
     "license": "LGPL-2.1-only",
     "architecture": {
         "64bit": {
@@ -18,6 +18,15 @@
             "OpenArk.exe",
             "OpenArk"
         ]
+    ],
+    "pre_install": "if (!(Test-Path \"$persist_dir/openark.ini\")) { Set-Content \"$dir/openark.ini\" -Value $null }",
+    "uninstaller": {
+        "script": "Copy-Item \"$dir\\openark.ini\" \"$persist_dir\" -ErrorAction SilentlyContinue -Force"
+    },
+    "persist": [
+        "console",
+        "files",
+        "openark.ini"
     ],
     "checkver": {
         "github": "https://github.com/BlackINT3/OpenArk"
