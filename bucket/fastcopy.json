@@ -15,9 +15,18 @@
         "Remove-Item \"$dir\\$fname\", \"$dir\\FastCopy$version*\", \"$dir\\setup.exe\"",
         "",
         "if (!(Test-Path \"$persist_dir\\FastCopy.log\")) { New-Item \"$dir\\FastCopy.log\" | Out-Null }",
-        "if (Test-Path \"$persist_dir\\scoop_backup.ini\") { Copy-Item -Path \"$persist_dir\\scoop_backup.ini\" -Destination \"$dir\\FastCopy2.ini\" -Force | Out-Null }"
+        "if (!(Test-Path \"$persist_dir\\FastCopy2.ini\")) {",
+        "   Set-Content \"$dir\\FastCopy2.ini\" '[main]' -Encoding ASCII",
+        "}"
     ],
-    "pre_uninstall": "Copy-Item -Path \"$dir\\FastCopy2.ini\" -Destination \"$persist_dir\\scoop_backup.ini\" -Force | Out-Null",
+    "pre_uninstall": [
+        "'FastEx64.dll', 'FastExt1.dll' | ForEach-Object {",
+        "    Invoke-ExternalCommand regsvr32 -ArgumentList @('/u', \"$dir\\$_\", '/s') | Out-Null",
+        "}",
+        "# restart explorer to avoid 'file in use' error",
+        "Stop-Process -Name 'explorer'; Start-Sleep -Seconds 2",
+        "if (!(Get-Process 'explorer' -ErrorAction SilentlyContinue)) { explorer }"
+    ],
     "bin": [
         "FastCopy.exe",
         "FcHash.exe",
@@ -35,7 +44,8 @@
     ],
     "persist": [
         "Log",
-        "FastCopy.log"
+        "FastCopy.log",
+        "FastCopy2.ini"
     ],
     "checkver": "FastCopy ver ([\\d.]+)",
     "autoupdate": {
