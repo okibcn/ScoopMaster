@@ -1,19 +1,38 @@
 {
-    "version": "24.00.0700",
-    "description": "XYplorer is a file manager for Windows. It features tabbed browsing, a powerful file search, a versatile preview, a highly customizable interface, optional dual pane, and a large array of unique ways to efficiently automate frequently recurring tasks. It’s fast, light, and portable.",
-    "homepage": "https://www.xyplorer.com/",
-    "license": "BSD-3-Clause",
-    "url": "https://xmod-my.sharepoint.cn/:u:/g/personal/admin_xmod_partner_onmschina_cn/EejMt8BESfFKtUBlmBeCNp8BNJ4bA0pnuS6y-LWVeEUl0Q?download=1#/dl.7z",
-    "persist": [
-        "Data"
+    "version": "24.00.0701",
+    "description": "Portable Dual Pane Multi-Tabbed File manager for Windows",
+    "homepage": "https://www.xyplorer.com",
+    "license": {
+        "identifier": "Shareware",
+        "url": "https://www.xyplorer.com/company.php#legal"
+    },
+    "url": "https://www.xyplorer.com/download/xyplorer_24.00.0701_beta_noinstall.zip",
+    "hash": "2ed050aacf2431c850ed3650f0a3830e864cd5521cd98c54053dac30aa9abcf6",
+    "pre_install": [
+        "if (!(Test-Path \"$persist_dir\\lic.ini\")) { New-Item \"$dir\\lic.ini\" | Out-Null }",
+        "if (!(Test-Path \"$persist_dir\\startup.ini\")) { New-Item \"$dir\\startup.ini\" | Out-Null }",
+        "if (!(Test-Path \"$persist_dir\\admin.ini\")) { New-Item \"$dir\\admin.ini\" | Out-Null }"
     ],
+    "bin": "XYplorer.exe",
     "shortcuts": [
         [
             "XYplorer.exe",
             "XYplorer"
         ]
     ],
-    "ext": {
-        "url": "https://meeting.tencent.com/download/"
+    "persist": [
+        "Data",
+        "AC",
+        "startup.ini",
+        "admin.ini",
+        "lic.ini"
+    ],
+    "checkver": {
+        "url": "http://www.xyplorer.com/xyfc/viewtopic.php?f=1&t=4&sd=d",
+        "regex": "2. .a href=\"https://www.xyplorer.com/download/xyplorer_([\\d.]+)(.+?_noinstall).zip"
+    },
+    "autoupdate": {
+        "note": "Check update log at http://www.xyplorer.com/xyfc/viewtopic.php?f=1&t=4&sd=d",
+        "url": "https://www.xyplorer.com/download/xyplorer_$version$match2.zip"
     }
 }
