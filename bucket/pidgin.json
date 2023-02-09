@@ -1,52 +1,33 @@
 {
-    "homepage": "https://pidgin.im/",
     "version": "2.14.12",
-    "description": "Pidgin is a chat program which lets you log into accounts on multiple chat networks simultaneously.",
-    "url": "https://kumisystems.dl.sourceforge.net/project/pidgin/Pidgin/2.14.12/pidgin-2.14.12-win32-bin.zip",
-    "hash": "0867048ba7cc6db1719f411e0411ce95c23703591103679677e16af76475ff80",
-    "depends": [
-        "gtk-runtime",
-        "gsudo"
-    ],
-    "installer": {
-        "script": [
-            "[void](Rename-Item $dir\\pidgin-$version-win32bin $dir\\client)",
-            "$spellcheckDir = \"$dir\\client\\spellcheck\\share\\enchant\\myspell\"",
-            "$purpleDir = \"$dir\\.purple\"",
-            "[void](New-Item -Type Directory $spellcheckDir)",
-            "[void](New-Item -Type Directory $purpleDir)",
-            "[void](Rename-Item $dir\\client\\pidgin.exe $dir\\client\\pidgin-portable.exe)",
-            "[void](Remove-Item $dir\\client\\plugins\\perl -Recurse)",
-            "[void](Remove-Item $dir\\client\\plugins\\perl.dll)",
-            "$localeList = Get-ChildItem $dir\\client\\locale -Directory -Name",
-            "$localeList | ForEach-Object -Begin {$i = 1} {\"$i.) $_\" ; $i += 1 }",
-            "$selectedLocale = Read-Host -Prompt 'Select a locale (input a number)'",
-            "$locale = $localeList[$selectedLocale - 1]",
-            "[void](Remove-Item $dir\\client\\locale\\* -Exclude $locale -Recurse)"
-        ]
-    },
-    "post_install": "[void](sudo New-Item -Type SymbolicLink -Path $dir\\GTK -Target $env:SCOOP\\apps\\gtk-runtime\\current)",
-    "notes": [
-        "Before starting for the first time, grab a dictonary from http://extensions.openoffice.org/en/search?f%5B0%5D=field_project_tags%3A157",
-        "or download English dictionaries straight from https://sourceforge.net/projects/aoo-extensions/files/17102/50/dict-en-20200101.oxt",
-        "then exctract the dic and aff files to $env:SCOOP/apps/pidgin/current/client/spellcheck/share/enchant/myspell/"
-    ],
-    "bin": "client/pidgin-portable.exe",
+    "description": "Chat program which lets you log into accounts on multiple chat networks simultaneously",
+    "homepage": "https://pidgin.im/",
+    "license": "GPL-2.0-or-later",
+    "url": "https://sourceforge.net/projects/pidgin/files/Pidgin/2.14.12/pidgin-2.14.12-offline.exe#/dl.7z",
+    "hash": "36803ca9ff708df4c07d3de7bc8a8ec6f510e37d350082840302aa7938a7ed9b",
+    "bin": "pidgin.exe",
     "shortcuts": [
         [
-            "client/pidgin-portable.exe",
+            "pidgin.exe",
             "Pidgin"
         ]
     ],
-    "persist": [
-        ".purple",
-        "client/spellcheck/share"
-    ],
-    "checkver": {
-        "url": "https://pidgin.im/install/",
-        "regex": "download is for the source code of Pidgin ([\\d.]+\\d)."
+    "env_set": {
+        "PURPLEHOME": "$dir"
     },
+    "pre_install": [
+        "if (!(Test-Path \"$persist_dir\\.purple\") -and (Test-Path \"$env:Appdata\\.purple\")) {",
+        "    Write-Host -F yellow \"Copying old '$env:Appdata\\.purple' to '$persist_dir\\.purple'\"",
+        "    Copy-Item \"$env:Appdata\\.purple\" \"$persist_dir\\.purple\" -Recurse -Force",
+        "}"
+    ],
+    "installer": {
+        "script": "Expand-7zipArchive -Path \"$dir\\`$PLUGINSDIR\\gtk.zip\" -DestinationPath \"$dir\""
+    },
+    "post_install": "Remove-Item -Force -Recurse \"$dir\\`$PLUGINSDIR\"",
+    "persist": ".purple",
+    "checkver": "Download ([\\d.]+)",
     "autoupdate": {
-        "url": "https://kumisystems.dl.sourceforge.net/project/pidgin/Pidgin/$version/pidgin-$version-win32-bin.zip"
+        "url": "https://sourceforge.net/projects/pidgin/files/Pidgin/$version/pidgin-$version-offline.exe#/dl.7z"
     }
 }
