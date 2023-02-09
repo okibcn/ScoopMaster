@@ -65,6 +65,7 @@ If you want all your local apps to be updated to the latest version provided by 
 ```pwsh
 gci ~/scoop/apps/*/current/install.json | % { 
     (gc $_) -Replace '(?<=bucket":\s+")[^"]+',".SM" |Set-Content $_ }
+scoop update
 scoop update *
 ```
 
