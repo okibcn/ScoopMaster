@@ -1,52 +1,72 @@
 {
-    "$schema": "https://ghproxy.com/https://raw.githubusercontent.com/ScoopInstaller/Scoop/master/schema.json",
     "version": "3.11.2",
     "description": "A programming language that lets you work quickly and integrate systems more effectively.",
     "homepage": "https://www.python.org/",
-    "license": {
-        "identifier": "Python-2.0",
-        "url": "https://docs.python.org/3/license.html#terms-and-conditions-for-accessing-or-otherwise-using-python"
-    },
+    "license": "Python-2.0",
+    "notes": "Allow applications and third-party installers to find python by running: \"$dir\\install-pep-514.reg\"",
     "architecture": {
         "64bit": {
-            "url": [
-                "https://www.python.org/ftp/python/3.11.2/python-3.11.2-amd64.exe#/setup.exe",
-                "https://ghproxy.com/https://raw.githubusercontent.com/lewis-yeung/scoop-bucket/main/scripts/python/pyreg.py"
-            ],
-            "hash": [
-                "md5:4331ca54d9eacdbe6e97d6ea63526e57",
-                "c4ff47f4a843b015ec77f2ea3ebb017b077f59fac33a760a9eb2ba4c413215b4"
-            ]
-        },
-        "32bit": {
-            "url": [
-                "https://www.python.org/ftp/python/3.11.2/python-3.11.2.exe#/setup.exe",
-                "https://ghproxy.com/https://raw.githubusercontent.com/lewis-yeung/scoop-bucket/main/scripts/python/pyreg.py"
-            ],
-            "hash": [
-                "md5:2123016702bbb45688baedc3695852f4",
-                "c4ff47f4a843b015ec77f2ea3ebb017b077f59fac33a760a9eb2ba4c413215b4"
-            ]
+            "url": "https://www.python.org/ftp/python/3.11.2/python-3.11.2-amd64.exe#/setup.exe",
+            "hash": "ebffd8b4b09a27238423cffc17ed9d5f25f0bafaf1ca133791fc3ec5e3f31f63"
         }
     },
-    "depends": "gsudo",
+    "pre_install": [
+        "$py_root = \"$dir\".Replace('\\', '\\\\')",
+        "$bit = '64'",
+        "if ($architecture -eq '32bit') { $bit = '32' }",
+        "'install-pep-514.reg', 'uninstall-pep-514.reg' | ForEach-Object {",
+        "    $py_version = ($version -split '\\.')[0..1] -join '.'",
+        "    $content = Get-Content \"$bucketsdir\\main\\scripts\\python\\$_\"",
+        "    $content = $content.Replace('$py_root', $py_root)",
+        "    $content = $content.Replace('$py_version', $py_version)",
+        "    $content = $content.Replace('$py_fullversion', $version)",
+        "    $content = $content.Replace('$py_cleanVersion', $version -replace '\\.')",
+        "    $content = $content.Replace('$py_arch', \"$bit\")",
+        "    if ($global) {",
+        "       $content = $content.Replace('HKEY_CURRENT_USER', 'HKEY_LOCAL_MACHINE')",
+        "    }",
+        "    Set-Content \"$dir\\$_\" $content -Encoding Ascii",
+        "}"
+    ],
     "installer": {
         "script": [
             "Expand-DarkArchive \"$dir\\setup.exe\" \"$dir\\_tmp\"",
-            "@('path.msi', 'pip.msi') | ForEach-Object { Remove-Item \"$dir\\_tmp\\AttachedContainer\\$_\" }",
-            "(Get-ChildItem \"$dir\\_tmp\\AttachedContainer\\*.msi\").FullName | ForEach-Object { Expand-MsiArchive $_ \"$dir\" }",
+            "@('path.msi', 'pip.msi') | ForEach-Object {",
+            "    Remove-Item \"$dir\\_tmp\\AttachedContainer\\$_\"",
+            "}",
+            "(Get-ChildItem \"$dir\\_tmp\\AttachedContainer\\*.msi\").FullName | ForEach-Object {",
+            "    # appendpath.msi does not contain any file, which causes 'msiexec /a' to fail",
+            "    if($((Get-Item $_).Basename) -eq 'appendpath') { return }",
+            "    Expand-MsiArchive $_ \"$dir\" ",
+            "}",
             "Remove-Item \"$dir\\_tmp\", \"$dir\\setup.exe\" -Force -Recurse",
-            "Invoke-ExternalCommand \"gsudo.exe\" -Args @(\"$dir\\python.exe\", \"$dir\\pyreg.py\", '-w') | Out-Null"
+            "if ($global) {",
+            "    $pathext = (env 'PATHEXT' $true) -replace ';.PYW?', ''",
+            "    env 'PATHEXT' $true \"$pathext;.PY;.PYW\"",
+            "}"
         ]
     },
+    "post_install": [
+        "python -E -s -m ensurepip -U --default-pip | Out-Null",
+        "Write-Output \"`e[0m\" # Reset ansi to prevent color leak from installer"
+    ],
     "uninstaller": {
-        "script": "if ($cmd -eq 'uninstall') { Invoke-ExternalCommand \"gsudo.exe\" -Args @(\"$dir\\python.exe\", \"$dir\\pyreg.py\", '-r') | Out-Null }"
+        "script": [
+            "if ($global) {",
+            "    $pathext = (env 'PATHEXT' $true) -replace ';.PYW?', ''",
+            "    env 'PATHEXT' $true \"$pathext\"",
+            "}"
+        ]
     },
-    "post_install": "& \"$dir\\python.exe\" -E -s -m ensurepip -U --default-pip | Out-Null",
     "bin": [
         [
             "python.exe",
             "python3"
+        ],
+        "Lib\\idlelib\\idle.bat",
+        [
+            "Lib\\idlelib\\idle.bat",
+            "idle3"
         ]
     ],
     "env_add_path": [
@@ -65,9 +85,6 @@
         "architecture": {
             "64bit": {
                 "url": "https://www.python.org/ftp/python/$version/python-$version-amd64.exe#/setup.exe"
-            },
-            "32bit": {
-                "url": "https://www.python.org/ftp/python/$version/python-$version.exe#/setup.exe"
             }
         },
         "hash": {
