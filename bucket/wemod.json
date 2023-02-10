@@ -9,16 +9,16 @@
     },
     "url": "https://storage-cdn.wemod.com/app/releases/stable/WeMod-8.3.16.exe#/dl.7z",
     "hash": "sha256:1890E8FD6A10C114586EB0984A997ED4AFF4A3072FED4E73D63B0D2C80F6C207",
+    "pre_install": [
+        "$nupkg=(Get-ChildItem $dir\\*full.nupkg).Name",
+        "Get-ChildItem \"$dir\" -Exclude \"$nupkg\" | Remove-Item -ErrorAction SilentlyContinue -Force -Recurse",
+        "Expand-7zipArchive \"$dir\\$nupkg\" -ExtractDir 'lib\\net45' -Removal"
+    ],
     "shortcuts": [
         [
             "WeMod.exe",
             "WeMod"
         ]
-    ],
-    "pre_install": [
-        "$nupkg=(Get-ChildItem $dir\\*full.nupkg).Name",
-        "Get-ChildItem \"$dir\" -Exclude \"$nupkg\" | Remove-Item -ErrorAction SilentlyContinue -Force -Recurse",
-        "Expand-7zipArchive \"$dir\\$nupkg\" -ExtractDir 'lib\\net45' -Removal"
     ],
     "post_uninstall": "If ($cmd -eq 'uninstall') { Remove-Item ${env:APPDATA}\\wemod\\* -Force -Recurse }",
     "autoupdate": {
