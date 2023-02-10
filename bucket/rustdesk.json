@@ -1,51 +1,21 @@
 {
+    "homepage": "https://rustdesk.com/",
+    "description": "The Best Open Source Remote Desktop Client Software",
+    "license": "GPL-3.0-only",
     "version": "1.1.9",
-    "description": "Yet another remote desktop software",
-    "homepage": "https://rustdesk.com",
-    "license": "GNU General Public License v3.0",
-    "url": "https://github.com/rustdesk/rustdesk/releases/download/1.1.9/rustdesk-1.1.9-windows_x64.zip",
-    "hash": "65dbecfa900136db317efd0ade95821f18164bbdfdf325d297d6f6714740bffe",
-    "installer": {
-        "script": [
-            "Move-Item $dir\\rust* $dir\\RustDesk.exe",
-            "# handle runtime cache",
-            "if (!(Test-Path $persist_dir)) {",
-            "    New-Item $persist_dir -Type Directory -Force | Out-Null",
-            "}",
-            "$runtimeCache = \"$env:APPDATA\\RustDesk\"",
-            "$runtimeCachePersist = \"$persist_dir\\appdata\"",
-            "if (Test-Path $runtimeCachePersist) {",
-            "    Remove-Item $runtimeCache -Force -Recurse -ErrorAction SilentlyContinue",
-            "    New-Item -Type Junction -Path $runtimeCache -Target $runtimeCachePersist | Out-Null",
-            "} else {",
-            "    if (Test-Path $runtimeCache) {",
-            "        Move-Item $runtimeCache $runtimeCachePersist -Force",
-            "        New-Item -Type Junction -Path $runtimeCache -Target $runtimeCachePersist | Out-Null",
-            "    }",
-            "}"
-        ]
-    },
-    "uninstaller": {
-        "script": [
-            "$runtimeCache = \"$env:APPDATA\\RustDesk\"",
-            "$runtimeCachePersist = \"$persist_dir\\appdata\"",
-            "if (!(Test-Path $runtimeCachePersist)) {",
-            "    Move-Item $runtimeCache $runtimeCachePersist -Force",
-            "} else {",
-            "    Remove-Item $runtimeCache -Force -Recurse -ErrorAction SilentlyContinue",
-            "}"
-        ]
-    },
+    "url": "https://github.com/rustdesk/rustdesk/releases/download/1.1.9/rustdesk-1.1.9-windows_x64-portable.zip#/rustdesk.exe",
+    "hash": "8ee06672b033b832d2257ae408e1f8c29ddf445655479e5bb3d3d39488a99a0a",
+    "bin": "rustdesk.exe",
     "shortcuts": [
         [
-            "RustDesk.exe",
-            "RustDesk"
+            "rustdesk.exe",
+            "rustdesk"
         ]
     ],
     "checkver": {
-        "github": "https://github.com/rustdesk/rustdesk"
+        "github": "https://github.com/rustdesk/rustdesk/"
     },
     "autoupdate": {
-        "url": "https://github.com/rustdesk/rustdesk/releases/download/$version/rustdesk-$version-windows_x64.zip"
+        "url": "https://github.com/rustdesk/rustdesk/releases/download/$version/rustdesk-$version-windows_x64-portable.zip#/rustdesk.exe"
     }
 }
