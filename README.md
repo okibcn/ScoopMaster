@@ -37,7 +37,7 @@ The system uses the platform in two ways:
 **ScoopMaster** also provides a **[database](https://github.com/okibcn/ScoopMaster/releases/tag/Databases)** with updated data of every known app manifest in internet. This way search engines such as **[SS (Scoop Super Search)](https://github.com/okibcn/ss)** can use it to provide ultra-fast — less than 500 milliseconds — and accurate search results, even better than the official [scoop.sh](https://scoop.sh) directory.
 
 </br>
-<img width="1118" alt="image" src="https://user-images.githubusercontent.com/22417711/217725165-d248dfc4-9577-40e7-bd48-9950c4df634b.png">
+<img width="1107" alt="image" src="https://user-images.githubusercontent.com/22417711/217981368-9fd7f08d-048b-4e70-b2ab-7eca9a965ea1.png">
 
 ____
 **INSTALLATION**
