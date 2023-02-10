@@ -1,8 +1,30 @@
 {
-    "homepage": "https://github.com/Molunerfinn/PicGo",
-    "description": "一个用于快速上传图片并获取图片 URL 链接的工具",
-    "version": "2.3.1",
+    "homepage": "https://molunerfinn.com/PicGo/",
+    "description": "Image uploader/manager",
     "license": "MIT",
+    "version": "2.3.1",
+    "architecture": {
+        "32bit": {
+            "url": "https://github.com/Molunerfinn/PicGo/releases/download/v2.3.1/PicGo-Setup-2.3.1-ia32.exe/#dl.7z",
+            "hash": "sha512:1c30451afbff7f62e02f2f328edeee72cfa5837f04e2e2d44fe0110b3e87d10bc30c0ff64ac9ddffb09fbf9e20200eb6ecad6c138411615bc69c2181718864c4",
+            "installer": {
+                "script": [
+                    "Expand-7ZipArchive \"$dir\\`$PLUGINSDIR\\app-32.7z\" \"$dir\" -Removal",
+                    "Remove-Item \"$dir\\`$PLUGINSDIR\" -Force -Recurse"
+                ]
+            }
+        },
+        "64bit": {
+            "url": "https://github.com/Molunerfinn/PicGo/releases/download/v2.3.1/PicGo-Setup-2.3.1-x64.exe/#dl.7z",
+            "hash": "sha512:1c30451afbff7f62e02f2f328edeee72cfa5837f04e2e2d44fe0110b3e87d10bc30c0ff64ac9ddffb09fbf9e20200eb6ecad6c138411615bc69c2181718864c4",
+            "installer": {
+                "script": [
+                    "Expand-7ZipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\" -Removal",
+                    "Remove-Item \"$dir\\`$PLUGINSDIR\"  -Force -Recurse"
+                ]
+            }
+        }
+    },
     "bin": "PicGo.exe",
     "shortcuts": [
         [
@@ -10,39 +32,25 @@
             "PicGo"
         ]
     ],
-    "architecture": {
-        "64bit": {
-            "url": "https://github.com/Molunerfinn/PicGo/releases/download/v2.3.1/picgo-setup-2.3.1-x64.exe#/dl.7z",
-            "hash": "sha512:1c30451afbff7f62e02f2f328edeee72cfa5837f04e2e2d44fe0110b3e87d10bc30c0ff64ac9ddffb09fbf9e20200eb6ecad6c138411615bc69c2181718864c4"
-        },
-        "32bit": {
-            "url": "https://github.com/Molunerfinn/PicGo/releases/download/v2.3.1/picgo-setup-2.3.1-ia32.exe#/dl.7z",
-            "hash": "8d9a7a070e3de0a9ef733fefdac3942545b4ef97dc205411692a38862fdd9b85"
-        }
+    "checkver": {
+        "github": "https://github.com/Molunerfinn/PicGo"
     },
-    "installer": {
-        "script": [
-            "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\"",
-            "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\Uninst*\" -Force -Recurse"
-        ]
-    },
-    "checkver": "github",
     "autoupdate": {
         "architecture": {
-            "64bit": {
-                "url": "https://github.com/Molunerfinn/PicGo/releases/download/v$version/picgo-setup-$version-x64.exe#/dl.7z",
+            "32bit": {
+                "url": "https://github.com/Molunerfinn/PicGo/releases/download/v$version/PicGo-Setup-$version-ia32.exe/#dl.7z",
                 "hash": {
-                    "url": "https://github.com/Molunerfinn/PicGo/releases/download/v$version/latest.yml",
-                    "mode": "extract",
-                    "regex": "(?sm)exe.*sha512: $base64"
+                    "url": "$baseurl/latest.yml",
+                    "regex": "sha512:\\s+$base64"
                 }
             },
-            "32bit": {
-                "url": "https://github.com/Molunerfinn/PicGo/releases/download/v$version/picgo-setup-$version-ia32.exe#/dl.7z"
+            "64bit": {
+                "url": "https://github.com/Molunerfinn/PicGo/releases/download/v$version/PicGo-Setup-$version-x64.exe/#dl.7z",
+                "hash": {
+                    "url": "$baseurl/latest.yml",
+                    "regex": "sha512:\\s+$base64"
+                }
             }
         }
-    },
-    "others": {
-        "url": "https://molunerfinn.com/PicGo"
     }
 }

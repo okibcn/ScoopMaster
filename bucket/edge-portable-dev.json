@@ -1,21 +1,43 @@
 {
-    "version": "111.0.1660.7",
-    "description": "The chromium based Microsoft Edge browser (Dev Channel)",
-    "homepage": "https://www.microsoft.com/en-us/edge",
-    "license": "Freeware",
     "architecture": {
-        "64bit": {
-            "url": "https://dorado-api.deno.dev/edge?arch=64&channel=dev&dl#/MicrosoftEdge-111.0.1660.7-x64.7z",
-            "hash": "3f5c5b43a0b78d9cc00916f361873dda22659583517a7f5cea28b7ad9ca8e02b"
-        },
         "32bit": {
-            "url": "https://dorado-api.deno.dev/edge?arch=86&channel=dev&dl#/MicrosoftEdge-111.0.1660.7-x86.7z",
-            "hash": "c9d98e49d01309c756bb4bb3718119eaf388d05803efa0b10aa514b380689ad2"
+            "hash": "ec672de075a71d2760745769bab1095b6035a0a5a17c1f0d4da648511ecaad0e",
+            "url": "https://dorado-api.deno.dev/edge?arch=86&channel=dev&dl#/MicrosoftEdge-111.0.1660.9-x86.7z"
+        },
+        "64bit": {
+            "hash": "82d48151fb2b487ba7c4e3d44fb5486c8fdbf7c9dac35aa817e18a29ebfaffa8",
+            "url": "https://dorado-api.deno.dev/edge?arch=64&channel=dev&dl#/MicrosoftEdge-111.0.1660.9-x64.7z"
         }
     },
+    "autoupdate": {
+        "architecture": {
+            "32bit": {
+                "hash": {
+                    "jsonpath": "$.Hashes.Sha256",
+                    "url": "https://dorado-api.deno.dev/edge?arch=86&channel=dev"
+                },
+                "url": "https://dorado-api.deno.dev/edge?arch=86&channel=dev&dl#/MicrosoftEdge-$version-x86.7z"
+            },
+            "64bit": {
+                "hash": {
+                    "jsonpath": "$.Hashes.Sha256",
+                    "url": "https://dorado-api.deno.dev/edge?arch=64&channel=dev"
+                },
+                "url": "https://dorado-api.deno.dev/edge?arch=64&channel=dev&dl#/MicrosoftEdge-$version-x64.7z"
+            }
+        }
+    },
+    "checkver": {
+        "jsonpath": "$[?(@.Product == 'Dev')].Releases[?(@.Platform == 'Windows' && @.Architecture == 'x64')].ProductVersion",
+        "url": "https://edgeupdates.microsoft.com/api/products"
+    },
+    "description": "The chromium based Microsoft Edge browser (Dev Channel)",
+    "homepage": "https://www.microsoft.com/en-us/edge",
     "installer": {
         "script": "Expand-7zipArchive -Path \"$dir\\MSEDGE.7z\" -ExtractDir \"Chrome-bin\\$version\" -Removal"
     },
+    "license": "Freeware",
+    "persist": "User Data",
     "shortcuts": [
         [
             "msedge.exe",
@@ -23,27 +45,5 @@
             "--user-data-dir=\"$dir\\User Data\""
         ]
     ],
-    "persist": "User Data",
-    "checkver": {
-        "url": "https://edgeupdates.microsoft.com/api/products",
-        "jsonpath": "$[?(@.Product == 'Dev')].Releases[?(@.Platform == 'Windows' && @.Architecture == 'x64')].ProductVersion"
-    },
-    "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://dorado-api.deno.dev/edge?arch=64&channel=dev&dl#/MicrosoftEdge-$version-x64.7z",
-                "hash": {
-                    "url": "https://dorado-api.deno.dev/edge?arch=64&channel=dev",
-                    "jsonpath": "$.Hashes.Sha256"
-                }
-            },
-            "32bit": {
-                "url": "https://dorado-api.deno.dev/edge?arch=86&channel=dev&dl#/MicrosoftEdge-$version-x86.7z",
-                "hash": {
-                    "url": "https://dorado-api.deno.dev/edge?arch=86&channel=dev",
-                    "jsonpath": "$.Hashes.Sha256"
-                }
-            }
-        }
-    }
+    "version": "111.0.1660.9"
 }
