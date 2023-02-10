@@ -45,14 +45,10 @@
     "installer": {
         "script": [
             "Expand-DarkArchive \"$dir\\setup.exe\" \"$dir\\_tmp\"",
-            "@('path.msi', 'pip.msi') | ForEach-Object {",
+            "@('path.msi', 'pip.msi', 'appendpath.msi') | ForEach-Object {",
             "    Remove-Item \"$dir\\_tmp\\AttachedContainer\\$_\"",
             "}",
-            "(Get-ChildItem \"$dir\\_tmp\\AttachedContainer\\*.msi\").FullName | ForEach-Object {",
-            "    # appendpath.msi does not contain any file, which causes 'msiexec /a' to fail",
-            "    if($((Get-Item $_).Basename) -eq 'appendpath') { return }",
-            "    Expand-MsiArchive $_ \"$dir\" ",
-            "}",
+            "(Get-ChildItem \"$dir\\_tmp\\AttachedContainer\\*.msi\").FullName | ForEach-Object { Expand-MsiArchive $_ \"$dir\" }",
             "Remove-Item \"$dir\\_tmp\", \"$dir\\setup.exe\" -Force -Recurse",
             "if ($global) {",
             "    $pathext = (env 'PATHEXT' $true) -replace ';.PYW?', ''",
@@ -86,10 +82,6 @@
     "env_add_path": [
         "Scripts",
         "."
-    ],
-    "persist": [
-        "Scripts",
-        "Lib\\site-packages"
     ],
     "checkver": {
         "url": "https://www.python.org/downloads/windows/",

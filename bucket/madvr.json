@@ -3,40 +3,29 @@
     "description": "High quality DirectShow video renderer",
     "homepage": "http://madvr.com",
     "license": "Freeware",
-    "depends": "gsudo",
+    "notes": "Please do not move or delete this app manually!",
     "url": "https://www.videohelp.com/download/madVR09217.zip",
     "hash": "87e088f7b5de20d0a9065c73015d7fb7c225870380dd3169c70171b77e74bb97",
+    "depends": "sudo",
     "pre_install": [
-        "if (-not (Test-Path \"$persist_dir\\settings.bin\")) { New-Item \"$dir\\settings.bin\" | Out-Null }",
-        "(Get-Content \"$dir\\install.bat\") -replace '@pause >nul' | Out-File \"$dir\\install.bat\" -Encoding Ascii -Force",
-        "(Get-Content \"$dir\\uninstall.bat\") -replace '@pause >nul' | Out-File \"$dir\\uninstall.bat\" -Encoding Ascii -Force"
+        "if (-not (Test-Path \"$persist_dir\\settings.bin\")) {",
+        "    New-Item -Path \"$dir\\settings.bin\" -ErrorAction SilentlyContinue | Out-Null",
+        "}",
+        "",
+        "Get-ChildItem -Path $dir -Filter *install*.bat | ForEach-Object {",
+        "    $content = (Get-Content -Path $_).Replace(\"@pause >NUL\", \"\")",
+        "    $content = $content -replace \"@echo.*\", \"\"",
+        "    $content = (, \"@echo off\") + $content",
+        "    Set-Content -Path $_ -Value $content",
+        "}"
     ],
     "installer": {
-        "script": [
-            "if (!(is_admin)) { error \"$app requires admin rights to $cmd\"; break }",
-            "sudo \"$dir\\install.bat\""
-        ]
+        "script": "sudo \"$dir\\install.bat\""
     },
     "uninstaller": {
-        "script": [
-            "if (!(is_admin)) { error \"$app requires admin rights to $cmd\"; break }",
-            "sudo \"$dir\\uninstall.bat\""
-        ]
+        "script": "sudo \"$dir\\uninstall.bat\""
     },
-    "shortcuts": [
-        [
-            "madTPG.exe",
-            "madTPG"
-        ],
-        [
-            "madLevelsTweaker.exe",
-            "NVidia & Intel RGB Levels Tweaker"
-        ],
-        [
-            "madHcCtrl.exe",
-            "mad Home Cinema Control"
-        ]
-    ],
+    "shortcuts": [["madHcCtrl.exe", "mad Home Cinema Control"]],
     "persist": "settings.bin",
     "checkver": "latest release v([\\d.]+):",
     "autoupdate": {
