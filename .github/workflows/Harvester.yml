@@ -161,12 +161,12 @@ jobs:
                 continue
             }
             try{
-                $homepage = $json.homepage
+                $homepage = if ($json.homepage -ne "") {$json.homepage} else {"Not provided"}
             }catch{
                 $file.fullname >> ERROR_manifest.txt
                 $homepage = "Not provided"
             }
-            [void]$FullDB.Rows.Add($name, $version, $date, $bucket, $description,$homepage)
+            [void]$FullDB.Rows.Add($name, $version, $date, $bucket, $description, $homepage)
         }
         $DB = $FullDB | Sort-Object Name
 
@@ -212,7 +212,7 @@ jobs:
                     $hash.Rows[-1].LastDate = $row.Date
                     $hash.Rows[-1].LastBucket = $row.Bucket
                     $hash.Rows[-1].Description = $row.Description
-                    $hash.Rows[-1].Description = $row.Homepage
+                    $hash.Rows[-1].Homepage = $row.Homepage
                 }
                 0 {
                     if ($row.date -gt $hash.Rows[-1].LastDate) {
@@ -239,7 +239,7 @@ jobs:
         Write-host "##   ============================================================="
         Write-host "##"
         foreach ( $row in $hash ) {
-            [void]$FullDB.Rows.Add($row.Name, $row.Version, $row.FirstDate, "okibcn/ScoopMaster", $row.Description)
+            [void]$FullDB.Rows.Add($row.Name, $row.Version, $row.FirstDate, "okibcn/ScoopMaster", $row.Description, $row.Homepage)
             $file="jsons/$( $row.FirstBucket.replace('/','~') )/$($row.Name).json"
             Get-Content $file > "local/$($row.Name).json"
             # Copy-Item $file local | Out-Null
