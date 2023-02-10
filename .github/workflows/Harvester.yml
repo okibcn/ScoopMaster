@@ -161,10 +161,10 @@ jobs:
                 continue
             }
             try{
-                $homepage = if ($json.homepage -ne "") {$json.homepage} else {"Not provided"}
+                $homepage = $json.homepage
             }catch{
                 $file.fullname >> ERROR_manifest.txt
-                $homepage = "Not provided"
+                $homepage = ""
             }
             [void]$FullDB.Rows.Add($name, $version, $date, $bucket, $description, $homepage)
         }
