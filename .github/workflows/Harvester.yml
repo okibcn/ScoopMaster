@@ -45,8 +45,12 @@ jobs:
             }
         }
         $lBuckets > Bucket_list.txt
+        $oldBuckets=gc ScoopMaster/ActiveBuckets
+        $oldDeprecated=gc ScoopMaster/DeprecatedBuckets
+        $lDeprecated = ($oldBuckets+$oldDeprecated) | ? { -not ($lBuckets -match "$_") }
+        $lDeprecated | Sort-Object | Get-Unique | Set-Content ScoopMaster/DeprecatedBuckets
+        $lBuckets | Sort-Object | Get-Unique | Set-Content ScoopMaster/ActiveBuckets
         Write-Host "$($lBuckets.count) buckets found."
-        gc .\Bucket_list.txt | Sort-Object | Get-Unique | Set-Content ScoopMaster/Buckets
 
 
     - name: "⏬ Download known buckets"
