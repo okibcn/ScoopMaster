@@ -1,8 +1,12 @@
 {
-    "homepage": "https://www.voidtools.com",
-    "description": "Locate files and folders by name instantly.",
-    "license": "MIT",
     "version": "1.4.1.1022",
+    "description": "Locate files and folders by name instantly.",
+    "homepage": "https://www.voidtools.com",
+    "license": "MIT",
+    "notes": [
+        "添加 Everything 到资源管理器右键菜单：",
+        "[选项] / [集成到资源管理器右键菜单]"
+    ],
     "architecture": {
         "64bit": {
             "url": "https://www.voidtools.com/Everything-1.4.1.1022.x64.zip",
@@ -13,37 +17,36 @@
             "hash": "04661c7a2902e91878b8d714369cf5d7f7d52f79d4fb3fdfe8ce619641ab5793"
         }
     },
-    "installer": {
-        "script": "& \"$dir\\Everything.exe\" -install-service"
-    },
+    "persist": [
+        "Logs",
+        "Bookmarks.csv",
+        "Everything.ini",
+        "Filters.csv",
+        "Run History.csv",
+        "Search History.csv"
+    ],
     "pre_install": [
         "ensure \"$persist_dir\" | Out-Null",
-        "if (!(Test-Path \"$persist_dir\\Everything.ini\")) { & \"$dir\\Everything.exe\" -install-config null }",
-        "Get-ChildItem \"$persist_dir\\*\" -Include 'Everything.ini', 'Bookmarks.csv', 'Filters.csv', 'Run History.csv', 'Search History.csv', 'debug.log', 'Errorlog.txt', 'Logs', 'HTTP Server' | Copy-Item -Destination \"$dir\" -ErrorAction SilentlyContinue"
+        "'Bookmarks.csv', 'Everything.ini', 'Filters.csv', 'Run History.csv', 'Search History.csv' | ForEach-Object {",
+        "  if (!(Test-Path \"$persist_dir\\$_\")) {",
+        "    Add-Content \"$dir\\$_\" $null",
+        "  }",
+        "}"
     ],
-    "uninstaller": {
-        "script": [
-            "& \"$dir\\Everything.exe\" -uninstall-service",
-            "Get-ChildItem \"$dir\\*\" -Include 'Everything.ini', 'Bookmarks.csv', 'Filters.csv', 'Run History.csv', 'Search History.csv', 'debug.log', 'Errorlog.txt', 'Logs', 'HTTP Server'| Copy-Item -Destination \"$persist_dir\" -ErrorAction SilentlyContinue -Force"
-        ]
-    },
+    "pre_uninstall": [
+        "Stop-Process -Name 'everything' -ErrorAction SilentlyContinue",
+        "if (Get-Service 'Everything' -ErrorAction SilentlyContinue) {",
+        "    if (!(is_admin)) { error 'Admin rights are required to stop Everything service'; break }",
+        "    Stop-Service -Name 'Everything' -Force -ErrorAction SilentlyContinue | Out-Null",
+        "    if ($cmd -eq 'uninstall') { sc.exe delete 'Everything' }",
+        "}"
+    ],
     "bin": "Everything.exe",
     "shortcuts": [
         [
             "Everything.exe",
             "Everything"
         ]
-    ],
-    "persist": [
-        "Everything.ini",
-        "Bookmarks.csv",
-        "Filters.csv",
-        "Run History.csv",
-        "Search History.csv",
-        "debug.log",
-        "Errorlog.txt",
-        "Logs",
-        "HTTP Server"
     ],
     "checkver": "Download Everything ([\\d.]+)",
     "autoupdate": {

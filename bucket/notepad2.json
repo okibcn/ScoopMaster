@@ -1,8 +1,12 @@
 {
-    "homepage": "https://github.com/zufuliu/notepad2",
-    "description": "A modified version (fork) of Notepad2-mod.",
     "version": "4.23.01r4584",
-    "license": "BSD 3-Clause",
+    "description": "Notepad2-zufuliu is a light-weight Scintilla-based text editor for Windows with syntax highlighting, code folding, auto-completion and API list for about 80 programming languages/documents, bundled with file browser plugin metapath.",
+    "homepage": "https://github.com/zufuliu/notepad2",
+    "license": {
+        "identifier": "BSD-3-Clause",
+        "url": "https://github.com/zufuliu/notepad2/blob/main/License.txt"
+    },
+    "notes": "If you find any bugs or have any suggestions feel free to write proposals/issues or provide patches/pull requests.",
     "architecture": {
         "64bit": {
             "url": "https://github.com/zufuliu/notepad2/releases/download/v4.23.01r4584/Notepad2_zh-Hans_x64_v4.23.01r4584.zip",
@@ -21,21 +25,20 @@
         ]
     ],
     "persist": [
-        "metapath.ini",
-        "Notepad2 DarkTheme.ini",
-        "Notepad2.ini"
+        "Notepad2.ini",
+        "metapath.ini"
     ],
     "checkver": {
-        "url": "https://github.com/zufuliu/notepad2/releases/latest",
-        "regex": "<title>Release v([\\d.]+r[\\d.]+)"
+        "url": "https://api.github.com/repos/zufuliu/notepad2/releases/latest",
+        "regex": "download/v([\\d.r]+)/Notepad2_zh-Hans_Win32_v(?<tag>[\\d.r]+)\\.zip"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://github.com/zufuliu/notepad2/releases/download/v$version/Notepad2_zh-Hans_x64_v$version.zip"
+                "url": "https://github.com/zufuliu/notepad2/releases/download/v$version/Notepad2_zh-Hans_x64_v$matchTag.zip"
             },
             "32bit": {
-                "url": "https://github.com/zufuliu/notepad2/releases/download/v$version/Notepad2_zh-Hans_Win32_v$version.zip"
+                "url": "https://github.com/zufuliu/notepad2/releases/download/v$version/Notepad2_zh-Hans_Win32_v$matchTag.zip"
             }
         }
     }
