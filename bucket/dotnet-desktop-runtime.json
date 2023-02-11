@@ -1,10 +1,8 @@
 {
-    "version": "6.0.13",
-    "description": "The dotnet desktop runtime enables you to run dotnet desktop applications. This release includes the .NET Core Runtime, you do not need to install it separately.",
     "homepage": "https://dotnet.microsoft.com/",
+    "description": "The dotnet desktop runtime enables you to run dotnet desktop applications. This release includes the .NET Core Runtime, you do not need to install it separately.",
+    "version": "6.0.13",
     "license": "MIT",
-    "notes": "This package only contains the .NET Core runtime, install 'dotnet-sdk' instead if you need .NET Core SDK",
-    "depends": "dark",
     "architecture": {
         "64bit": {
             "url": "https://dotnetcli.blob.core.windows.net/dotnet/WindowsDesktop/6.0.13/windowsdesktop-runtime-6.0.13-win-x64.exe",
@@ -15,6 +13,7 @@
             "hash": "sha512:4b4458212b159f37a9f369d6034a6a59796513582a4114c309337cb1989a0e3acb6a9bb67ac5cf0553d8473fef46777e3bf2f37cefae20d29888044333acba27"
         }
     },
+    "depends": "dark",
     "installer": {
         "script": [
             "Expand-DarkArchive \"$dir\\$fname\" \"$dir\\extracted\" -Removal",
@@ -29,7 +28,7 @@
     },
     "checkver": {
         "url": "https://dotnetcli.blob.core.windows.net/dotnet/release-metadata/releases-index.json",
-        "regex": "(?s)([\\d.]+)[^\\d]*?(?<sdkversion>[\\d.]+)[^\\d]*?(?:current|lts)"
+        "regex": "(?s)(?<version>[\\d.]+)[^\\d]*?(?<sdkversion>[\\d.]+)[^\\d]*?(?:current|lts)"
     },
     "autoupdate": {
         "architecture": {
@@ -44,5 +43,6 @@
             "url": "https://dotnetcli.blob.core.windows.net/dotnet/checksums/$version-sha.txt",
             "mode": "extract"
         }
-    }
+    },
+    "notes": "This package only contains the .NET Core runtime, install 'dotnet-sdk' instead if you need .NET Core SDK"
 }
