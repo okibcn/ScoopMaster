@@ -8,7 +8,14 @@
 
 </br>
 
+And don't miss **[SS (Scoop Super Search)](https://github.com/okibcn/ss)**, the associated CLI search utility.
+
+</br>
+
+<img width="1162" alt="image" src="https://user-images.githubusercontent.com/22417711/218010286-09080055-dd27-4f10-bc7d-5d05f504e34c.png">
+
 ____
+
 **FEATURES**
 --------
 </br>
@@ -37,7 +44,7 @@ The system uses the platform in two ways:
 **ScoopMaster** also provides a **[database](https://github.com/okibcn/ScoopMaster/releases/tag/Databases)** with updated data of every known app manifest in internet. This way search engines such as **[SS (Scoop Super Search)](https://github.com/okibcn/ss)** can use it to provide ultra-fast — less than 500 milliseconds — and accurate search results, even better than the official [scoop.sh](https://scoop.sh) directory.
 
 </br>
-<img width="1107" alt="image" src="https://user-images.githubusercontent.com/22417711/217981368-9fd7f08d-048b-4e70-b2ab-7eca9a965ea1.png">
+
 
 ____
 **INSTALLATION**
