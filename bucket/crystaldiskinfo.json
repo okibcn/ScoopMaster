@@ -1,0 +1,43 @@
+{
+    "$schema": "https://ghproxy.com/https://raw.githubusercontent.com/ScoopInstaller/Scoop/master/schema.json",
+    "version": "8.17.14",
+    "description": "A HDD/SSD utility software which supports a part of USB, Intel RAID and NVMe.",
+    "homepage": "https://crystalmark.info/en/software/crystaldiskinfo/",
+    "license": "MIT",
+    "url": "https://free.nchc.org.tw/osdn/crystaldiskinfo/78192/CrystalDiskInfo8_17_14.zip",
+    "hash": "17f046a7da3e7c0e6d7686d3890b023de8f4fac722bb61a702af0d8ab29ff18a",
+    "architecture": {
+        "64bit": {
+            "shortcuts": [
+                [
+                    "DiskInfo64.exe",
+                    "CrystalDiskInfo"
+                ]
+            ]
+        },
+        "32bit": {
+            "shortcuts": [
+                [
+                    "DiskInfo32.exe",
+                    "CrystalDiskInfo"
+                ]
+            ]
+        }
+    },
+    "pre_install": "if (!(Test-Path \"$persist_dir\\DiskInfo.ini\")) { New-Item \"$dir\\DiskInfo.ini\" | Out-Null }",
+    "persist": [
+        "Smart",
+        "DiskInfo.ini"
+    ],
+    "checkver": {
+        "url": "https://osdn.net/projects/crystaldiskinfo/",
+        "regex": "releases/(?<release>\\d+)\">CrystalDiskInfo\\s+([\\w.]+)<"
+    },
+    "autoupdate": {
+        "url": "https://free.nchc.org.tw/osdn/crystaldiskinfo/$matchRelease/CrystalDiskInfo$underscoreVersion.zip",
+        "hash": {
+            "url": "https://osdn.net/projects/crystaldiskinfo/downloads/$matchRelease/CrystalDiskInfo$underscoreVersion.zip/",
+            "regex": "<dd>$sha256</dd>"
+        }
+    }
+}

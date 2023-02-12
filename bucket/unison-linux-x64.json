@@ -1,0 +1,25 @@
+{
+    "version": "2.52.1+ocaml-4.14.0",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/bcpierce00/unison/releases/download/v2.52.1/unison-v2.52.1+ocaml-4.14.0+x86_64.linux.tar.gz",
+            "hash": "6f905e2afabdc5fc6ad5cedadd0b9224eb9d14daf150a901dd5da14aa560ba04"
+        }
+    },
+    "description": "A file-synchronization tool.",
+    "homepage": "https://www.cis.upenn.edu/~bcpierce/unison",
+    "license": "GPL-3.0-only",
+    "checkver": {
+        "url": "https://github.com/bcpierce00/unison/releases/latest",
+        "regex": ">(?<filenamedl>unison-v(?<versionall>(?<versionpart>(\\d+\\.)+\\d+)\\+(?<ocamver>ocaml-(\\d+\\.)+\\d+))\\+x86_64.*linux\\.tar\\.gz)<",
+        "replace": "${versionall}",
+        "reverse": true
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/bcpierce00/unison/releases/download/v$matchVersionpart/$matchFilenamedl"
+            }
+        }
+    }
+}

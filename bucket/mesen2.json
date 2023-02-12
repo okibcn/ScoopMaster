@@ -1,0 +1,40 @@
+{
+    "version": "2.0.0-preview1",
+    "description": "Multi-system emulator (NES, SNES, GB, PCE)",
+    "homepage": "https://www.mesen.ca",
+    "license": {
+        "identifier": "GPL-3.0",
+        "url": "https://github.com/SourMesen/Mesen2/blob/master/LICENSE"
+    },
+    "url": "https://github.com/SourMesen/Mesen2/releases/download/2.0.0-preview1/Mesen-2.0.0-preview1-Windows.zip",
+    "pre_install": [
+        "if(!(Test-Path(\"$persist_dir\\FdsBios.bin\"))) { New-Item \"$dir\\FdsBios.bin\" | Out-Null }",
+        "if (!(Test-Path \"$persist_dir\\settings.xml\")) { New-Item -ItemType File \"$dir\\settings.xml\" | Out-Null }"
+    ],
+    "bin": "Mesen.exe",
+    "shortcuts": [
+        [
+            "Mesen.exe",
+            "Mesen2"
+        ]
+    ],
+    "persist": [
+        "settings.xml",
+        "FdsBios.bin",
+        "Avi",
+        "GoogleDrive",
+        "HdPacks",
+        "Movies",
+        "RecentGames",
+        "SaveStates",
+        "Saves",
+        "Screenshots",
+        "Wave"
+    ],
+    "checkver": {
+        "github": "https://github.com/SourMesen/Mesen2/"
+    },
+    "autoupdate": {
+        "url": "https://github.com/SourMesen/Mesen2/releases/download/$version/Mesen-$version-Windows.zip"
+    }
+}

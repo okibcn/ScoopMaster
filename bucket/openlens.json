@@ -1,0 +1,34 @@
+{
+    "version": "6.3.0",
+    "description": "build of the open source portion of Lens",
+    "homepage": "https://github.com/mherwig/OpenLens",
+    "license": "Freeware",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/mherwig/OpenLens/releases/download/v6.3.0/OpenLens-6.3.0.exe#/dl.7z",
+            "hash": "95412d1be33483818a5dcc343869a715d055d40ee2a861681894aa1552aea598",
+            "pre_install": [
+                "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\"",
+                "Remove-Item \"$dir\\`$*\", \"$dir\\Uninstall*\" -Force -Recurse"
+            ],
+            "shortcuts": [
+                [
+                    "OpenLens.exe",
+                    "OpenLens"
+                ]
+            ]
+        }
+    },
+    "checkver": "github",
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/mherwig/OpenLens/releases/download/v$version/OpenLens-$version.exe#/dl.7z",
+                "hash": {
+                    "url": "$url.sha256",
+                    "regex": "$sha256"
+                }
+            }
+        }
+    }
+}

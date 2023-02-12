@@ -1,0 +1,38 @@
+{
+    "version": "31812",
+    "description": "General-purpose parametric 3D CAD modeler and a building information modeling software with finite-element-method support. Weekly development build.",
+    "homepage": "https://www.freecadweb.org",
+    "license": "GPL-3.0-or-later",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/FreeCAD/FreeCAD-Bundle/releases/download/weekly-builds/FreeCAD_weekly-builds-31812-2023-02-09-conda-Windows-x86_64-py310.7z",
+            "extract_dir": "FreeCAD_weekly-builds-31812-Win-Conda-x86_64.7z",
+            "hash": "1f18f627afb5a2bad87f532ec92d1e3c6da94f93785ccea273fce52c47eddbcd"
+        }
+    },
+    "bin": [
+        [
+            "bin\\freecadcmd.exe",
+            "FreeCADCmd_Weekly"
+        ]
+    ],
+    "shortcuts": [
+        [
+            "bin\\freecad.exe",
+            "FreeCAD Weekly"
+        ]
+    ],
+    "checkver": {
+        "url": "https://api.github.com/repos/FreeCAD/FreeCAD-Bundle/releases",
+        "regex": "weekly-builds/FreeCAD_weekly-builds-(?<version>\\d+)-(?<date>\\d{4}-\\d{2}-\\d{2})-conda-Windows-x86_64-py310.7z",
+        "replace": "${version}"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/FreeCAD/FreeCAD-Bundle/releases/download/weekly-builds/FreeCAD_weekly-builds-$version-$matchDate-conda-Windows-x86_64-py310.7z",
+                "extract_dir": "FreeCAD_weekly-builds-$version-Win-Conda-x86_64.7z"
+            }
+        }
+    }
+}

@@ -1,0 +1,33 @@
+{
+    "homepage": "https://github.com/transmission-remote-gui/transgui",
+    "description": "A feature rich cross platform Transmission BitTorrent client. Faster and has more functionality than the built-in web GUI.",
+    "version": "5.18.0",
+    "license": "GPL-2.0-or-later",
+    "url": "https://github.com/transmission-remote-gui/transgui/releases/download/v5.15.4/transgui-5.15.4-setup.exe",
+    "url": "https://github.com/transmission-remote-gui/transgui/releases/download/v5.18.0/transgui-5.18.0-setup.exe",
+
+    "hash": "07CC99294C83D2AE429033ABBDB99642F5271984966616FB2C319F087448C936",
+    "innosetup": true,
+    "bin": "transgui.exe",
+    "pre_install": "if(!(Test-Path \"$persist_dir\\transgui.ini\")) { New-Item \"$dir\\transgui.ini\" -Type File | Out-Null }",
+    "persist": "transgui.ini",
+    "shortcuts": [
+        [
+            "transgui.exe",
+            "Transmission Remote GUI"
+        ]
+    ],
+    "checkver": {
+        "url": "https://github.com/transmission-remote-gui/transgui/releases/tag/v5.18.0",
+        "re": "v([\\d\\.]+)/transgui-([\\d\\.]+)-setup"
+    },
+    "autoupdate": {
+        "url": "https://github.com/transmission-remote-gui/transgui/releases/download/v$version/transgui-$match2-setup.exe"
+    },
+    "suggest": {
+        "transmission": [
+            "transmission-cli",
+            "extras/transmission"
+        ]
+    }
+}

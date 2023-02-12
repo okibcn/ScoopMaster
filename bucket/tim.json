@@ -1,0 +1,16 @@
+{
+    "version": "latest",
+    "description": "tencent TIM, lightweight alternative to QQ",
+    "homepage": "https://office.qq.com/",
+    "url": "https://dldir1.qq.com/qqfile/qq/PCTIM/TIM3.3.8/TIM3.3.8.22043.exe#/TimSetup.exe",
+    "installer": {
+        "script": [
+            "Start-Process -Wait -WindowStyle Hidden cmd \"/c call `\"$dir\\TimSetup.exe`\" -s\" -Verb RunAs",
+            "Remove-Item \"$dir\\TimSetup.exe\""
+        ]
+    },
+    "post_install": "Copy-Item -Path \"C:\\Program Files (x86)\\Tencent\\TIM\\TIMUninst.exe\" \"$dir\\TIMUninst.exe\"",
+    "uninstaller": {
+        "script": "Start-Process -Wait -WindowStyle Hidden cmd \"/c call `\"$dir\\TIMUninst.exe`\" -s\" -Verb RunAs"
+    }
+}

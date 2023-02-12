@@ -1,0 +1,41 @@
+{
+    "version": "528.49",
+    "license": "Proprietary",
+    "description": "This package simply installs the latest Nvidia Geforce Game Ready Driver.",
+    "homepage": "http://www.nvidia.com/Download/index.aspx?lang=en-us",
+    "architecture": {
+        "64bit": {
+            "url": "https://us.download.nvidia.com/Windows/528.49/528.49-desktop-win10-win11-64bit-international-dch-whql.exe",
+            "hash": "1e0bf1d65232ea742850ec6f4929a0ab514c5d38c7bc3bb77f52fdb20eed7a1e",
+            "installer": {
+                "script": "Start-Process $dir\\$fname -ArgumentList \"-s -noreboot\" -wait; Remove-Item $dir\\$fname"
+            },
+            "uninstaller": {
+                "script": "Write-Warning 'Uninstall is currently not implemented. See https://github.com/scowalt/scoop-apps/issues/4'"
+            }
+        }
+    },
+    "post_install": [
+        "$null, $null2, $bucket = Get-Manifest($app)",
+        "$bucketdir = Find-BucketDirectory($bucket)",
+        "$bucketdir = $bucketdir.Trim()",
+        "& \"$bucketdir\\scripts\\track.ps1\" install $app $version"
+    ],
+    "post_uninstall": [
+        "$null, $null2, $bucket = Get-Manifest($app)",
+        "$bucketdir = Find-BucketDirectory($bucket)",
+        "$bucketdir = $bucketdir.Trim()",
+        "& \"$bucketdir\\scripts\\track.ps1\" uninstall $app $version"
+    ],
+    "checkver": {
+        "url": "https://gfwsl.geforce.com/services_toolkit/services/com/nvidia/services/AjaxDriverService.php?func=DriverManualLookup&psid=98&osID=57&languageCode=1033&beta=0&isWHQL=1&dltype=-1&dch=1&upCRD=0&sort1=0&numberOfResults=1",
+        "regex": "\"Version\"\\s?:\\s?\"(?<version>[\\d.]+)\".*\"DownloadURL\"\\s?:\\s?\"https://us.download.nvidia.com/(?<path>[^\"]*)\""
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://us.download.nvidia.com/$matchPath"
+            }
+        }
+    }
+}

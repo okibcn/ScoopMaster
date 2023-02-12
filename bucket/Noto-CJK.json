@@ -1,0 +1,47 @@
+{
+    "version": "2.004",
+    "license": "OFL-1.1",
+    "homepage": "https://github.com/googlefonts/noto-cjk",
+    "url": "https://mirrors.tuna.tsinghua.edu.cn/github-release/googlefonts/noto-cjk/LatestRelease/03_NotoSansCJK-OTC.zip",
+    "hash": "c5e1a3289a6b72adfbc17364cfa1e308a4bbd557968f3761f14ba9545058efa6",
+    "depends": "sudo",
+    "installer": {
+        "script": [
+            "if(!(is_admin)) { error \"Admin rights are required, please run 'sudo scoop install $app'\"; exit 1 }",
+            "Get-ChildItem \"$env:windir\\Fonts\" -Filter 'Noto*CJK-*.ttc' | ForEach-Object {",
+            "  try {",
+            "    Remove-Item \"$env:windir\\Fonts\\$($_.Name)\" -Force -ErrorAction Stop",
+            "  } catch {",
+            "    Write-Warning \"Something failed, please try again later or after a reboot!`n$($error[0])\"",
+            "    exit 1",
+            "  }",
+            "}",
+            "# Invoke-ExternalCommand 7z -ArgumentList('e', \"$dir\\noto-cjk.tar.gz\", \"-o$dir\") | Out-Null",
+            "# Get-ChildItem \"$dir\" -Filter '*.tar' | Rename-Item -NewName \"$dir\\noto-cjk.tar\" | Out-Null",
+            "# Invoke-ExternalCommand 7z -ArgumentList('e', \"$dir\\noto-cjk.tar\", \"-o$dir\", 'Noto*CJK-*.ttc', '-r') | Out-Null",
+            "# Remove-Item \"$dir\\noto-cjk.tar\"",
+            "# Remove-Item \"$dir\\noto-cjk.tar.gz\"",
+            "Get-ChildItem \"$dir\" -Recurse -Filter 'Noto*CJK-*.ttc' | ForEach-Object {",
+            "  New-ItemProperty -Path 'HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts' -Name $_.Name.Replace($_.Extension, ' (TrueType)') -Value $_.Name -Force | Out-Null",
+            "  Copy-Item $_.FullName -destination \"$env:windir\\Fonts\"",
+            "}"
+        ]
+    },
+    "uninstaller": {
+        "script": [
+            "if(!(is_admin)) { error \"Admin rights are required, please run 'sudo scoop uninstall $app'\"; exit 1 }",
+            "Get-ChildItem \"$dir\" -Filter 'Noto*CJK-*.ttc' | ForEach-Object {",
+            "  Remove-ItemProperty -Path 'HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts' -Name $_.Name.Replace($_.Extension, ' (TrueType)') -Force -ErrorAction SilentlyContinue",
+            "  Remove-Item \"$env:windir\\Fonts\\$($_.Name)\" -Force -ErrorAction SilentlyContinue",
+            "}",
+            "Write-Host \"The 'Noto-CJK' Font family has been uninstalled and will not be present after restarting your computer.\" -Foreground Magenta"
+        ]
+    },
+    "checkver": {
+        "url": "https://mirrors.tuna.tsinghua.edu.cn/github-release/googlefonts/noto-cjk/",
+        "regex": "Noto Sans CJK Version ([\\d.]+)"
+    },
+    "autoupdate": {
+        "url": "https://mirrors.tuna.tsinghua.edu.cn/github-release/googlefonts/noto-cjk/LatestRelease/03_NotoSansCJK-OTC.zip"
+    }
+}

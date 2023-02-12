@@ -1,0 +1,31 @@
+{
+    "##": ":HTTPie",
+    "version": "3.2.1",
+    "description": "Modern, user-friendly command-line HTTP client",
+    "homepage": "https://github.com/httpie/httpie",
+    "license": "BSD-3-Clause",
+    "url": "https://files.pythonhosted.org/packages/e9/38/e94dac67b61f4dab49c1d26dd47e0b13be8c69c8c1c4fad5a4a87de1d647/httpie-3.2.1.tar.gz",
+    "hash": "c9c0032ca3a8d62492b7231b2dd83d94becf3b71baf8a4bbcd9ed1038537e3ec",
+    "extract_dir": "httpie-3.2.1",
+    "bin": [
+        "venv\\scripts\\http.exe",
+        "venv\\scripts\\https.exe",
+        "venv\\scripts\\httpie.exe"
+    ],
+    "pre_install": [
+        "$bpath = if ($app.LocalPath) { $app.LocalPath.Directory.Parent.FullName } else { \"$bucketsdir\\$bucket\" }",
+        "& (Join-Path \"$bpath\" \"scripts\\Install-WithVirtualEnv.ps1\")"
+    ],
+    "checkver": {
+        "url": "https://pypi.org/project/httpie/",
+        "regex": "(?sm)https:\\/\\/files\\.pythonhosted\\.org\\/(?<path>[\\w\\-\\/\\.]+\\.tar\\.gz).+?(?<version>[\\d\\.]+[b\\d]*)\\.tar\\.gz"
+    },
+    "autoupdate": {
+        "url": "https://files.pythonhosted.org/$matchPath",
+        "hash": {
+            "url": "https://pypi.org/project/httpie/",
+            "regex": "(?sm)Hashes for $basename.*?$sha256"
+        },
+        "extract_dir": "httpie-$version"
+    }
+}

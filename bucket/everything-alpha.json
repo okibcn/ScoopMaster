@@ -1,0 +1,56 @@
+{
+    "version": "1.5.0.1337a",
+    "description": "Locate files and folders by name instantly.",
+    "homepage": "https://www.voidtools.com",
+    "license": "MIT",
+    "architecture": {
+        "64bit": {
+            "url": "https://www.voidtools.com/Everything-1.5.0.1337a.x64.zip",
+            "hash": "64888c26271bb128de4c498ce9e807ace5afa2b581381127edb4803b114d2254"
+        },
+        "32bit": {
+            "url": "https://www.voidtools.com/Everything-1.5.0.1337a.x86.zip",
+            "hash": "080f4be371367eba9c60a06b51ebad432309c71f1dfa478ed7958f3e9080e0c3"
+        }
+    },
+    "pre_install": [
+        "ensure \"$persist_dir\" | Out-Null",
+        "if (Test-Path \"$dir\\Everything64.exe\") { Rename-Item \"$dir\\Everything64.exe\" 'Everything.exe' }",
+        "if (Test-Path \"$dir\\Everything86.exe\") { Rename-Item \"$dir\\Everything86.exe\" 'Everything.exe' }",
+        "if (!(Test-Path \"$persist_dir\\Everything-1.5a.ini\")) { Invoke-ExternalCommand \"$dir\\Everything.exe\" -Args @('-install-config null') | Out-Null }",
+        "Get-ChildItem \"$persist_dir\\*\" -Include 'Everything-1.5a.ini', 'Everything-1.5a.db', 'Plugins-1.5a.ini', 'Bookmarks-1.5a.csv', 'Run History-1.5a.csv', 'Search History-1.5a.csv' | Copy-Item -Destination \"$dir\" -ErrorAction SilentlyContinue",
+        "Copy-Item \"$bucketsdir\\extras\\scripts\\everything\\uninstall-context.reg\" \"$dir\\\"",
+        "$app_path = \"$dir\\Everything.exe\".Replace('\\', '\\\\')",
+        "$reg_content = Get-Content \"$bucketsdir\\extras\\scripts\\everything\\install-context.reg\"",
+        "$reg_content = $reg_content.replace('$app_path', $app_path)",
+        "Set-Content \"$dir\\install-context.reg\" $reg_content -Encoding ASCII"
+    ],
+    "post_install": "reg import \"$dir\\install-context.reg\"",
+    "uninstaller": {
+        "script": [
+            "Get-ChildItem \"$dir\\*\" -Include 'Everything-1.5a.ini', 'Everything-1.5a.db', 'Plugins-1.5a.ini', 'Bookmarks-1.5a.csv', 'Run History-1.5a.csv', 'Search History-1.5a.csv' | Copy-Item -Destination \"$persist_dir\" -ErrorAction SilentlyContinue -Force",
+            "reg import \"$dir\\uninstall-context.reg\""
+        ]
+    },
+    "bin": "Everything.exe",
+    "shortcuts": [
+        [
+            "Everything.exe",
+            "Everything"
+        ]
+    ],
+    "checkver": {
+        "url": "https://www.voidtools.com/forum/viewtopic.php?f=12&t=9787",
+        "regex": "Everything-([\\d.]+a)\\.x86"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://www.voidtools.com/Everything-$version.x64.zip"
+            },
+            "32bit": {
+                "url": "https://www.voidtools.com/Everything-$version.x86.zip"
+            }
+        }
+    }
+}

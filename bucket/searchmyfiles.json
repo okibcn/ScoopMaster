@@ -1,0 +1,50 @@
+{
+    "homepage": "https://www.nirsoft.net",
+    "description": "Alternative to Search For Files And Folders module of Windows and also duplicate files search",
+    "version": "3.23",
+    "license": "Freeware",
+    "architecture": {
+        "64bit": {
+            "url": "https://www.nirsoft.net/utils/searchmyfiles-x64.zip",
+            "hash": "ebe9220d7fe319d61552ab30eae9dee0d18e264b4a5ae172884c34a66c69ad57"
+        },
+        "32bit": {
+            "url": "https://www.nirsoft.net/utils/searchmyfiles.zip",
+            "hash": "2450b31656beb3599e96f652e9e9b787dc3eff1fa91342840368d0e468b87be0"
+        }
+    },
+    "bin": "SearchMyFiles.exe",
+    "shortcuts": [
+        [
+            "SearchMyFiles.exe",
+            "SearchMyFiles"
+        ]
+    ],
+    "persist": [
+        "SearchMyFiles_lng.ini",
+        "SearchMyFiles.cfg"
+    ],
+    "pre_install": [
+        "function CreateFile ($name) {",
+        "    if (!(Test-Path \"$persist_dir\\$name\")) {",
+        "        New-Item -Force -Path \"$persist_dir\" -Name $name -ItemType \"file\"",
+        "    }",
+        "}",
+        "'SearchMyFiles_lng.ini', 'SearchMyFiles.cfg' | % {CreateFile $_}"
+    ],
+    "notes": "Please download the languages file from nirsoft.net",
+    "checkver": {
+        "url": "https://www.nirsoft.net/pad/searchmyfiles.xml",
+        "xpath": "/XML_DIZ_INFO/Program_Info/Program_Version"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://www.nirsoft.net/utils/searchmyfiles-x64.zip"
+            },
+            "32bit": {
+                "url": "https://www.nirsoft.net/utils/searchmyfiles.zip"
+            }
+        }
+    }
+}

@@ -1,0 +1,51 @@
+{
+    "version": "2.26.3",
+    "description": "Simple DirectMedia Layer is a cross-platform development library designed to provide low level access to audio, keyboard, mouse, joystick, and graphics hardware via OpenGL and Direct3D.",
+    "homepage": "https://www.libsdl.org",
+    "license": {
+        "identifier": "Zlib",
+        "url": "https://www.libsdl.org/license.php"
+    },
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/libsdl-org/SDL/releases/download/release-2.26.3/SDL2-2.26.3-win32-x64.zip",
+            "hash": "e5d1bc7bf065ede2b290d86335c81bd1c781a40f18d94e0f5b90ec4dec9c3c0e"
+        },
+        "32bit": {
+            "url": "https://github.com/libsdl-org/SDL/releases/download/release-2.26.3/SDL2-2.26.3-win32-x86.zip",
+            "hash": "87d2ad643c90a53c2a498bf558d5827c704845ca70f176100496e3bc86cf471e"
+        }
+    },
+    "installer": {
+        "script": [
+            "If (!($global)) { If(is_admin) {error \"Please run the installation command without elevated privilages if you want to install locally\"; exit 1} }",
+            "$currentdir = (Get-Item -Path \".\\\").FullName",
+            "Set-Location $dir",
+            "regsvr32 /s sdl2.dll",
+            "Set-Location $currentdir"
+        ]
+    },
+    "uninstaller": {
+        "script": [
+            "If (!($global)) { If(is_admin) {error \"Please run the uninstallation command without elevated privilages if you want to uninstall locally\"; exit 1} }",
+            "$currentdir = (Get-Item -Path \".\\\").FullName",
+            "Set-Location $dir",
+            "regsvr32 /u /s sdl2.dll",
+            "Set-Location $currentdir"
+        ]
+    },
+    "checkver": {
+        "url": "https://api.github.com/repos/libsdl-org/SDL/releases/latest",
+        "jsonpath": "$.name"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/libsdl-org/SDL/releases/download/release-$version/SDL2-$version-win32-x64.zip"
+            },
+            "32bit": {
+                "url": "https://github.com/libsdl-org/SDL/releases/download/release-$version/SDL2-$version-win32-x86.zip"
+            }
+        }
+    }
+}

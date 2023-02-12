@@ -1,0 +1,41 @@
+{
+    "version": "4153609826",
+    "description": "Chat client for https://twitch.tv",
+    "homepage": "https://github.com/Chatterino/chatterino2",
+    "license": "MIT",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/Chatterino/chatterino2/releases/download/nightly-build/chatterino-windows-x86-64.zip",
+            "hash": "16f3225e34e2bed5619f7a8f72ea6dc1ccdc1a965e23c73c5e018a6f7d5d1075",
+            "extract_dir": "Chatterino2",
+            "pre_install": [
+                "Get-ChildItem \"$dir\\chatterino.exe\" | Rename-Item -NewName { $_.name -Replace 'o', 'o-portable' }",
+                "$modes = \"$dir\\modes\"",
+                "\"'portable' >$(if (Test-Path $modes) { '>' }) $modes\" | Invoke-Expression"
+            ]
+        }
+    },
+    "persist": [
+        "Logs",
+        "Misc",
+        "Settings"
+    ],
+    "shortcuts": [
+        [
+            "chatterino-portable.exe",
+            "Chatterino-portable"
+        ]
+    ],
+    "bin": "chatterino-portable.exe",
+    "checkver": {
+        "url": "https://api.github.com/repositories/77624593/actions/workflows/build.yml/runs?branch=master&status=success",
+        "jsonpath": "$.workflow_runs[0].id"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/Chatterino/chatterino2/releases/download/nightly-build/chatterino-windows-x86-64.zip"
+            }
+        }
+    }
+}

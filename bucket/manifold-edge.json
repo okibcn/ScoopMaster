@@ -1,0 +1,41 @@
+{
+    "version": "9.0.179.1",
+    "description": "Manifold 9 is powerful parallel GIS, ETL, data science and DBMS tool",
+    "homepage": "http://manifold.net/",
+    "license": "Proprietary",
+    "suggest": {
+        "Microsoft Visual C++ Redistributable 2022": "extras/vcredist2022"
+    },
+    "url": "https://manifold.net/updates/working/manifold-9.0.179.1.zip",
+    "hash": "05c97659856f67a719a2c98eaf27510de34eb6f39430dd7a2e83d25a50c11d9e",
+    "extract_dir": "manifold-9.0.179.1",
+    "bin": "manifold.exe",
+    "shortcuts": [
+        [
+            "manifold.exe",
+            "Manifold 9"
+        ]
+    ],
+    "persist": [
+        "extras\\logfiles",
+        "extras\\Addins"
+    ],
+    "post_install": [
+        "if (!(Test-Path \"$persist_dir\\extras\\logfiles\")) { New-Item -ItemType Directory \"$dir\\extras\\logfiles\" | Out-Null }",
+        "if (!(Test-Path \"$persist_dir\\extras\\logfiles\\manifold.loghere\")) { New-Item \"$dir\\extras\\logfiles\\manifold.loghere\" | Out-Null }"
+    ],
+    "checkver": {
+        "url": "https://manifold.net/updates/download_9.shtml",
+        "regex": "href=\"https://manifold.net/updates/working/manifold-([\\d.\\-r]+).zip\">Release 9 Edge</a>",
+        "replace": "$1"
+    },
+    "autoupdate": {
+        "url": "https://manifold.net/updates/working/manifold-$version.zip",
+        "extract_dir": "manifold-$version",
+        "hash": {
+            "url": "https://manifold.net/updates/download_9.shtml",
+            "regex": "manifold-$version.zip.+ $sha256"
+        },
+        "note": "Note after autoupdate"
+    }
+}

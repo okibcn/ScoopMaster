@@ -1,0 +1,52 @@
+{
+    "homepage": "https://www.centbrowser.com",
+    "description": "The Most Feature Rich Chromium",
+    "notes": "This extracts app contents from the exe installer.",
+    "version": "5.0.1002.295",
+    "architecture": {
+        "64bit": {
+            "url": "http://static.centbrowser.com/win_stable/5.0.1002.295/centbrowser_5.0.1002.295_x64.exe#/dl.7z",
+            "hash": "0ef3a5426d88610461a0c6bb94139bb6c67f5ba53a0e5e616b99c1677e87b009"
+        },
+        "32bit": {
+            "url": "http://static.centbrowser.com/win_stable/5.0.1002.295/centbrowser_5.0.1002.295.exe#/dl.7z",
+            "hash": "cfd8c7df975f2bb729e73ed8408caaf9b2594950396b09c6feb0841c2f3ed0eb"
+        }
+    },
+    "installer": {
+        "script": [
+            "$output = 7z x $dir\\chrome.7z \"-o$dir\"",
+            "rm $dir\\chrome.7z",
+            "Move-Item -Path \"$dir\\Chrome-bin\\chrome.exe\" -Destination \"$dir\\chrome.exe\"",
+            "Get-ChildItem -Path \"$dir\\Chrome-bin\\$version\" | Copy-Item -Destination \"$dir\" -Recurse -Container",
+            "Get-ChildItem -Path \"$dir\\Chrome-bin\\*\" -Recurse -Force | Remove-Item -Recurse -Force",
+            "Remove-Item -Path \"$dir\\Chrome-bin\" -Recurse -Force"
+        ]
+    },
+    "bin": [
+        [
+            "chrome.exe",
+            "centbrowser"
+        ]
+    ],
+    "shortcuts": [
+        [
+            "chrome.exe",
+            "CentBrowser"
+        ]
+    ],
+    "checkver": {
+        "url": "https://www.centbrowser.com/history.html",
+        "regex": "<p\\s*id=\"([\\d\\.]+)\">v[\\d\\.]+\\s*<i>\\[[\\d\\-]+\\]<\\/i><\\/p>"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "http://static.centbrowser.com/win_stable/$version/centbrowser_$version_x64.exe#/dl.7z"
+            },
+            "32bit": {
+                "url": "http://static.centbrowser.com/win_stable/$version/centbrowser_$version.exe#/dl.7z"
+            }
+        }
+    }
+}

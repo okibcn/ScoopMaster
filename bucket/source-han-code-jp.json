@@ -1,0 +1,26 @@
+{
+    "homepage": "https://github.com/adobe-fonts/source-han-code-jp",
+    "license": "OFL-1.1",
+    "version": "2.012",
+    "url": "https://github.com/adobe-fonts/source-han-code-jp/archive/2.012R.zip",
+    "hash": "bedc74973220f1ce4bb16e1fa64a46604c3164bf95b62fa48c8a046dd468d6ef",
+    "extract_dir": "source-han-code-jp-2.012R",
+    "installer": {
+        "script": [
+            "Get-ChildItem $dir\\OTF -filter '*.otf' | ForEach-Object {",
+            "   $fontdir = \"$env:LocalAppData\\Microsoft\\Windows\\Fonts\"",
+            "   New-ItemProperty -Path 'HKCU:\\Software\\Microsoft\\Windows NT\\CurrentVersion\\Fonts' -Name $_.Name.Replace($_.Extension, ' (TrueType)') -Value \"$fontdir\\$($_.Name)\" -Force | Out-Null",
+            "   Copy-Item $_.Fullname -destination \"$fontdir\"",
+            "}"
+        ]
+    },
+    "uninstaller": {
+        "script": [
+            "Get-ChildItem $dir\\OTF -filter '*.otf' | ForEach-Object {",
+            "   $fontdir = \"$env:LocalAppData\\Microsoft\\Windows\\Fonts\"",
+            "   Remove-ItemProperty -Path 'HKCU:\\Software\\Microsoft\\Windows NT\\CurrentVersion\\Fonts' -Name $_.Name.Replace($_.Extension, ' (TrueType)') -Force -ErrorAction SilentlyContinue",
+            "   Remove-Item \"$fontdir\\$($_.Name)\" -Force -ErrorAction SilentlyContinue",
+            "}"
+        ]
+    }
+}

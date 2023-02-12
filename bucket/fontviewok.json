@@ -1,0 +1,51 @@
+{
+    "version": "8.12",
+    "description": "The Font-View-OK, creates a quick visual overview of fonts.",
+    "homepage": "http://www.softwareok.com/?seite=Freeware/FontViewOK",
+    "license": {
+        "identifier": "Freeware",
+        "url": "http://www.softwareok.com/?seite=Freeware/FontViewOK/Eula"
+    },
+    "architecture": {
+        "64bit": {
+            "url": "http://www.softwareok.com/Download/FontViewOK_Portable_x64.zip",
+            "hash": "1dd5cc9dabd2481e4bee3316a87ea6f92cc3018b9ea72c341c28c85665918f71",
+            "shortcuts": [
+                [
+                    "FontViewOK_x64_p.exe",
+                    "FontViewOK"
+                ]
+            ]
+        },
+        "32bit": {
+            "url": "http://www.softwareok.com/Download/FontViewOK_Portable.zip",
+            "hash": "c58ffa6245c04db85b4ec6d937976c493c87f6ca1523f5b804af01d26029e52b",
+            "shortcuts": [
+                [
+                    "FontViewOK_p.exe",
+                    "FontViewOK"
+                ]
+            ]
+        }
+    },
+    "pre_install": "if (-not (Test-Path \"$persist_dir\\FontViewOK.ini\")) { New-Item \"$dir\\FontViewOK.ini\" | Out-Null }",
+    "persist": "FontViewOK.ini",
+    "checkver": {
+        "url": "http://www.softwareok.com/?seite=Freeware/FontViewOK/History",
+        "regex": "version ([\\d.]+)"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "http://www.softwareok.com/Download/FontViewOK_Portable_x64.zip"
+            },
+            "32bit": {
+                "url": "http://www.softwareok.com/Download/FontViewOK_Portable.zip"
+            }
+        },
+        "hash": {
+            "url": "https://www.softwareok.com/?Download=FontViewOK",
+            "regex": "$basename.*?$sha256<"
+        }
+    }
+}

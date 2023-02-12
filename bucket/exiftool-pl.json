@@ -1,0 +1,26 @@
+{
+    "version": "12.56",
+    "description": "Read, Write and Edit Meta Information!",
+    "license": "Freeware",
+    "homepage": "https://exiftool.org/index.html",
+    "suggest": {
+        "perl": "main/perl"
+    },
+    "url": "https://exiftool.org/Image-ExifTool-12.56.tar.gz",
+    "hash": "md5:c92326c8e4b15db5ed90b706009f8366",
+    "extract_dir": "Image-ExifTool-12.56",
+    "post_install": "(Get-Content $dir\\..\\..\\..\\shims\\exiftool.cmd) -replace 'C:.*bash\\.exe','perl' | Set-Content $dir\\..\\..\\..\\shims\\exiftool.cmd",
+    "bin": "exiftool",
+    "checkver": {
+        "url": "https://exiftool.org/ver.txt",
+        "re": "([\\d.]+)"
+    },
+    "autoupdate": {
+        "url": "https://exiftool.org/Image-ExifTool-$version.tar.gz",
+        "hash": {
+            "url": "$baseurl/checksums.txt",
+            "regex": "MD5\\s*\\($basename\\)\\s*=\\s*$md5"
+        },
+        "extract_dir": "Image-ExifTool-$version"
+    }
+}

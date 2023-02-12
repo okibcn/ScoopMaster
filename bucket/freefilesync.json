@@ -1,0 +1,33 @@
+{
+    "homepage": "https://freefilesync.org/",
+    "version": "12.0",
+        "license": {
+        "identifier": "GPL-3.0-only"
+    },
+	"description": "FreeFileSync is a folder comparison and synchronization software that creates and manages backup copies of all your important files.",
+	"url": "https://freefilesync.org/download/FreeFileSync_12.0_Windows_Setup.exe",
+	"hash": "CFAD69E262120E82ED17695B86E2BBE00C1142A9FDB37819A91937CE1361446B",
+	"innosetup": true,	
+	"pre_install":[
+			"New-Item \"$dir\\Install.dat\" -ItemType File ",
+			"[byte[]]$myHeader = 0x5a, 0x8e, 0xc3, 0xf8, 0x2d, 0x48, 0x6f, 0x6e, 0xfc, 0x30, 0x30, 0x9b, 0x4d, 0xe6, 0x4b, 0x7f, 0xbe, 0x63, 0xfc, 0xae, 0x5b, 0x00, 0x23, 0xe1, 0xdd, 0x92, 0x59, 0x1e, 0x69, 0x49",
+			"Set-Content -Path \"$dir\\Install.dat\" -Value $myHeader -Encoding Byte"	
+	], 
+    "bin": ["FreeFileSync.exe", "RealTimeSync.exe"  ],
+    "shortcuts": [
+        [
+            "FreeFileSync.exe",
+            "FreeFileSync"
+        ],
+		[
+			"RealTimeSync.exe",
+			"RealTimeSync"		
+		]
+    ],
+    "checkver": { 
+		"regex" : "FreeFileSync_(\\d+\\.\\d+)_Windows_Setup.exe",
+		"url" : "https://freefilesync.org/download.php"		
+	},
+	"notes":  "You will see an error the first time you run the app. Close the app, and then re-open it."
+
+}

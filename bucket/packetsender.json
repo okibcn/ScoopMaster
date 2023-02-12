@@ -1,0 +1,35 @@
+{
+    "homepage": "https://github.com/dannagle/PacketSender",
+    "version": "8.1.1",
+    "license": "GNU GPL v2.0",
+    "description": "Packet Sender is an open source utility to allow sending and receiving TCP, UDP, and SSL (encrypted TCP) packets.",
+    "url": "https://github.com/dannagle/PacketSender/releases/download/v8.1.1/PacketSenderPortable_v8.1.1.zip",
+    "hash": "28ab5b5b8685f0bac83472c6b0247fe2c320f819554d5dad5241b68cfbcbcb55",
+    "extract_dir": "PacketSenderPortable",
+    "shortcuts": [
+        [
+            "PacketSender.exe",
+            "PacketSender"
+        ]
+    ],
+    "uninstaller": {
+        "script": [
+            "if ((Get-Item \"$dir\\ps_settings.ini\").LinkType -ne 'HardLink') { Copy-Item \"$dir\\ps_settings.ini\" \"$persist_dir\" -Force | Out-Null }",
+            "if ((Get-Item \"$dir\\packets.ini\").LinkType -ne 'HardLink') { Copy-Item \"$dir\\packets.ini\" \"$persist_dir\" -Force | Out-Null }",
+            "if ((Get-Item \"$dir\\ps.pem\").LinkType -ne 'HardLink') { Copy-Item \"$dir\\ps.pem\" \"$persist_dir\" -Force | Out-Null }",
+            "if ((Get-Item \"$dir\\key.pem\").LinkType -ne 'HardLink') { Copy-Item \"$dir\\key.pem\" \"$persist_dir\" -Force | Out-Null }"
+        ]
+    },
+    "persist": [
+        "ps_settings.ini",
+        "packets.ini",
+        "ps.pem",
+        "key.pem"
+    ],
+    "checkver": {
+        "github": "https://github.com/dannagle/PacketSender"
+    },
+    "autoupdate": {
+        "url": "https://github.com/dannagle/PacketSender/releases/download/v$version/PacketSenderPortable_v$version.zip"
+    }
+}

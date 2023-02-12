@@ -1,0 +1,37 @@
+{
+    "homepage": "http://www.fceux.com",
+    "version": "2.6.4",
+    "license": "GPL-2.0",
+    "url": "https://downloads.sourceforge.net/project/fceultra/Binaries/2.6.4/fceux-2.6.4-win32.zip?r=scoop",
+    "hash": "md5:d915e8a607417d35164b63e213f5ce3d",
+    "shortcuts": [
+        [
+            "fceux.exe",
+            "FCEUX"
+        ]
+    ],
+    "pre_install": [
+        "if (!(Test-Path \"$persist_dir\\fceux.cfg\")) {",
+        "    New-Item \"$dir\\fceux.cfg\" -Type File | Out-Null",
+        "}"
+    ],
+    "persist": [
+        "cheats",
+        "fcs",
+        "movies",
+        "sav",
+        "snaps",
+        "fceux.cfg"
+    ],
+    "checkver": {
+        "url": "https://sourceforge.net/projects/fceultra/rss?path=/Binaries/",
+        "re": "Binaries/([\\d.]+)/fceux-[\\d.]+-win[\\d]{2}\\.zip"
+    },
+    "autoupdate": {
+        "url": "https://downloads.sourceforge.net/project/fceultra/Binaries/$version/fceux-$version-win32.zip?r=scoop",
+        "hash": {
+            "url": "https://sourceforge.net/projects/fceultra/rss?path=/Binaries/",
+            "find": "/(?:$basename)/download\" filesize=\"(?<size>[\\d]+)\"><media:hash algo=\"md5\">([a-fA-F0-9]{32})</media:hash>"
+        }
+    }
+}

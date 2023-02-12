@@ -1,0 +1,22 @@
+{
+    "homepage": "https://www.bitvise.com/ssh-client",
+    "license": {
+        "identifier": "Freeware",
+        "url": "https://www.bitvise.com/ssh-client-license"
+    },
+    "version": "9.25",
+    "url": "https://dl.bitvise.com/BvSshClient-Inst.exe",
+    "hash": "1c1348b76d73bb680772186747fdf0747cf154eb4c6710becd8e4486e260cedc",
+    "installer": {
+        "script": [
+            "Invoke-ExternalCommand \"$dir\\BvSshClient-Inst.exe\" -ArgumentList @('-acceptEULA') -RunAs | Out-Null",
+            "Remove-Item \"$dir\\BvSshClient-Inst.exe\""
+        ]
+    },
+    "uninstaller": {
+        "script": [
+            "$pg_x86 = (Get-Item Env:programfiles`(x86`)).Value",
+            "Invoke-ExternalCommand \"$pg_x86\\Bitvise SSH Client\\uninst.exe\" -ArgumentList @('-unat', '\"Bitvise SSH Client\"') -RunAs | Out-Null"
+        ]
+    }
+}

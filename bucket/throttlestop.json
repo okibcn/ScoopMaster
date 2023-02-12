@@ -1,0 +1,32 @@
+{
+    "homepage": "https://www.techpowerup.com/download/techpowerup-throttlestop/",
+    "description": "ThrottleStop is a small application designed to monitor for and correct the three main types of CPU throttling that are being used on many laptop computers.",
+    "license": "Freeware",
+    "version": "9.5",
+    "url": "http://nl1-dl.techpowerup.com/files/ThrottleStop_9.5.zip",
+    "hash": "1dc8034425b375814aac50a50e6c2215b74de0682f0b63a6e3e21c52d776ce90",
+    "installer": {
+        "script": [
+            "$FILE = 'ThrottleStop.ini'",
+            "if (-not (Test-Path \"$persist_dir\\$FILE\")) {",
+            "    Write-Host 'No' $FILE 'exists. Creating.' -f Yellow",
+            "    New-Item -Type File -Name $FILE -Path $dir",
+            "}"
+        ]
+    },
+    "persist": "ThrottleStop.ini",
+    "bin": "ThrottleStop.exe",
+    "shortcuts": [
+        [
+            "ThrottleStop.exe",
+            "ThrottleStop"
+        ]
+    ],
+    "checkver": {
+        "url": "https://www.techpowerup.com/download/techpowerup-throttlestop/",
+        "re": "ThrottleStop [\\. ]*(([\\d]+\\.*)+)"
+    },
+    "autoupdate": {
+        "url": "http://nl1-dl.techpowerup.com/files/ThrottleStop_$version.zip"
+    }
+}

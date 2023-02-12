@@ -1,0 +1,43 @@
+{
+    "version": "4.16.3.5",
+    "license": "MIT",
+    "description": "Crew Chief is a team radio engineer, originally developed by Mr Belowski. It also has a spotter with a choice of voices.",
+    "homepage": "https://thecrewchief.org/",
+    "architecture": {
+        "64bit": {
+            "url": "https://thecrewchief.org/downloads/CrewChiefV4.msi",
+            "hash": "926c47f4e4861d20010b67c9beb38f999ebcd898122f4710c84a20e027b00342"
+        }
+    },
+    "post_install": [
+        "$null, $null2, $bucket = Get-Manifest($app)",
+        "$bucketdir = Find-BucketDirectory($bucket)",
+        "$bucketdir = $bucketdir.Trim()",
+        "& \"$bucketdir\\scripts\\track.ps1\" install $app $version"
+    ],
+    "post_uninstall": [
+        "$null, $null2, $bucket = Get-Manifest($app)",
+        "$bucketdir = Find-BucketDirectory($bucket)",
+        "$bucketdir = $bucketdir.Trim()",
+        "& \"$bucketdir\\scripts\\track.ps1\" uninstall $app $version"
+    ],
+    "extract_dir": "Britton IT Ltd/CrewChiefV4",
+    "bin": "CrewChiefV4.exe",
+    "shortcuts": [
+        [
+            "CrewChiefV4.exe",
+            "CrewChiefV4"
+        ]
+    ],
+    "checkver": {
+        "url": "https://thecrewchief.org/downloads/change_log_for_auto_updated.html",
+        "regex": "Version ([\\d.]+)"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://thecrewchief.org/downloads/CrewChiefV4.msi"
+            }
+        }
+    }
+}

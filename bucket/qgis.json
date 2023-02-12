@@ -1,0 +1,132 @@
+{
+    "version": "3.26.3-1",
+    "homepage": "https://qgis.org/",
+    "description": "A Free and Open Source Geographic Information System",
+    "license": "GPL-2.0-only",
+    "url": "https://qgis.org/downloads/QGIS-OSGeo4W-3.26.3-1.msi",
+    "hash": "cabacaf3fc159c0324a3c0414e12b9600644d2b373149a80c88fab3bd88f983c",
+    "extract_dir": "QGIS 3.26.3",
+    "post_install": [
+        "Invoke-ExternalCommand \"$dir\\bin\\qgis.bat\" -ArgumentList @('--postinstall')",
+        "((Get-Content -path \"$dir\\apps\\qgis\\python\\plugins\\sagaprovider\\SagaAlgorithmProvider.py.tmpl\" -Raw) -replace '@saga@','\"2.3.\"') | Set-Content -Path \"$dir\\apps\\qgis\\python\\plugins\\sagaprovider\\SagaAlgorithmProvider.py\""
+    ],
+    "post_uninstall": "Remove-Item $env:APPDATA\\Microsoft\\Windows\\Start Menu\\Programs\\QGIS3.lnk",
+    "bin": [
+        [
+            "apps\\Python39\\python.exe",
+            "gdal_calc",
+            "$dir\\apps\\Python39\\Lib\\site-packages\\osgeo_utils\\gdal_calc.py"
+        ],
+        [
+            "apps\\Python39\\python.exe",
+            "gdal_edit",
+            "$dir\\apps\\Python39\\Lib\\site-packages\\osgeo_utils\\gdal_edit.py"
+        ],
+        [
+            "apps\\Python39\\python.exe",
+            "gdal_fillnodata",
+            "$dir\\apps\\Python39\\Lib\\site-packages\\osgeo_utils\\gdal_fillnodata.py"
+        ],
+        [
+            "apps\\Python39\\python.exe",
+            "gdal_merge",
+            "$dir\\apps\\Python39\\Lib\\site-packages\\osgeo_utils\\gdal_merge.py"
+        ],
+        [
+            "apps\\Python39\\python.exe",
+            "gdal_pansharpen",
+            "$dir\\apps\\Python39\\Lib\\site-packages\\osgeo_utils\\gdal_pansharpen.py"
+        ],
+        [
+            "apps\\Python39\\python.exe",
+            "gdal_polygonize",
+            "$dir\\apps\\Python39\\Lib\\site-packages\\osgeo_utils\\gdal_polygonize.py"
+        ],
+        [
+            "apps\\Python39\\python.exe",
+            "gdal_proximity",
+            "$dir\\apps\\Python39\\Lib\\site-packages\\osgeo_utils\\gdal_proximity.py"
+        ],
+        [
+            "apps\\Python39\\python.exe",
+            "gdal_retile",
+            "$dir\\apps\\Python39\\Lib\\site-packages\\osgeo_utils\\gdal_retile.py"
+        ],
+        [
+            "apps\\Python39\\python.exe",
+            "gdal_sieve",
+            "$dir\\apps\\Python39\\Lib\\site-packages\\osgeo_utils\\gdal_sieve.py"
+        ],
+        [
+            "apps\\Python39\\python.exe",
+            "gdal2tiles",
+            "$dir\\apps\\Python39\\Lib\\site-packages\\osgeo_utils\\gdal2tiles.py"
+        ],
+        [
+            "apps\\Python39\\python.exe",
+            "gdal2xyz",
+            "$dir\\apps\\Python39\\Lib\\site-packages\\osgeo_utils\\gdal2xyz.py"
+        ],
+        [
+            "apps\\Python39\\python.exe",
+            "gdalattachpct",
+            "$dir\\apps\\Python39\\Lib\\site-packages\\osgeo_utils\\gdalattachpct.py"
+        ],
+        [
+            "apps\\Python39\\python.exe",
+            "gdalcompare",
+            "$dir\\apps\\Python39\\Lib\\site-packages\\osgeo_utils\\gdalcompare.py"
+        ],
+        [
+            "apps\\Python39\\python.exe",
+            "gdalmove",
+            "$dir\\apps\\Python39\\Lib\\site-packages\\osgeo_utils\\gdalmove.py"
+        ],
+        [
+            "apps\\Python39\\python.exe",
+            "ogrmerge",
+            "$dir\\apps\\Python39\\Lib\\site-packages\\osgeo_utils\\ogrmerge.py"
+        ],
+        [
+            "apps\\Python39\\python.exe",
+            "pct2rgb",
+            "$dir\\apps\\Python39\\Lib\\site-packages\\osgeo_utils\\pct2rgb.py"
+        ],
+        [
+            "apps\\Python39\\python.exe",
+            "rgb2pct",
+            "$dir\\apps\\Python39\\Lib\\site-packages\\osgeo_utils\\rgb2pct.py"
+        ]
+    ],
+    "shortcuts": [
+        [
+            "bin\\qgis-bin.exe",
+            "QGIS Desktop 3.26.3",
+            "",
+            "apps\\qgis\\icons\\qgis.ico"
+        ]
+    ],
+    "env_add_path": [
+        "bin",
+        "apps\\qgis\\bin"
+    ],
+    "checkver": {
+        "url": "https://download.qgis.org/downloads/?C=M;O=D",
+        "regex": "QGIS-OSGeo4W-(3\\.26\\.[\\d-]+).msi"
+    },
+    "autoupdate": {
+        "url": "https://qgis.org/downloads/QGIS-OSGeo4W-$version.msi",
+        "hash": {
+            "url": "$baseurl/QGIS-OSGeo4W-$version.sha256sum"
+        },
+        "extract_dir": "QGIS $matchHead",
+        "shortcuts": [
+            [
+                "bin\\qgis-bin.exe",
+                "QGIS Desktop $matchHead",
+                "",
+                "apps\\qgis\\icons\\qgis.ico"
+            ]
+        ]
+    }
+}

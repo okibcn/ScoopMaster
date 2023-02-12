@@ -1,0 +1,49 @@
+{
+    "homepage": "https://www.princexml.com/download/",
+    "version": "15",
+    "description": "Convert HTML to PDF.  Beautiful printing with simple CSS.",
+    "checkver": {
+        "url": "https://www.princexml.com/download/",
+        "re": ">Download Prince (.*?)<"
+    },
+    "architecture": {
+        "64bit": {
+            "url": "https://www.princexml.com/download/prince-15-win64-setup.exe#/prince.ex_",
+            "hash": "675f2f749f77626bbeaf3dbab9411ce805c0e5ea8a7fd80645d22e1bea749602"
+        },
+        "32bit": {
+            "url": "https://www.princexml.com/download/prince-15-win32-setup.exe#/prince.ex_",
+            "hash": "ef077bc6294f0724531c63839b11c56e67ea5d30a8329987e04d6fe9031b6887"
+        }
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://www.princexml.com/download/prince-$version-win64-setup.exe#/prince.ex_"
+            },
+            "32bit": {
+                "url": "https://www.princexml.com/download/prince-$version-win32-setup.exe#/prince.ex_"
+            }
+        }
+    },
+    "installer": {
+        "keep": "false",
+        "script": [
+            "Move-Item -Path \"$dir\\prince.ex_\" -Destination \"$dir\\prince.exe\"",
+            "&\"$dir\\prince.exe\" /s /x /b\"$dir\" /v\"\"/qn\"\"",
+            "Start-Sleep -Seconds 1",
+            "lessmsi x \"$dir\\Prince.msi\" \"$dir\\\" | Out-Null",
+            "Get-ChildItem \"$dir\\SourceDir\\program files\\Prince\" | Move-Item -Destination \"$dir\"",
+            "Remove-Item \"$dir\\prince.exe\"",
+            "Remove-Item \"$dir\\Prince.msi\"",
+            "Remove-Item -Recurse -Force \"$dir\\SourceDir\""
+        ]
+    },
+    "bin": "engine\\bin\\prince.exe",
+    "shortcuts": [
+        [
+            "prince-gui.exe",
+            "Prince XML"
+        ]
+    ]
+}

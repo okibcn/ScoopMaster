@@ -1,0 +1,33 @@
+{
+    "homepage": "https://rime.im/",
+    "license": "GPL-3.0-or-later",
+    "version": "0.14.3.97p1",
+    "url": "https://github.com/fxliang/weasel/releases/download/0.14.3_dev_0.97p1/weasel-0.14.3.97p1-installer.exe#/dl.7z",
+    "hash": "c863ed70fb6a016ca7c00782ecedd156ecf669d5d63da95afb4f951d3e399a7d",
+    "installer": {
+        "script": [
+            "New-Item -Path \"HKCU:\\Software\\Rime\" | Out-Null",
+            "New-Item -Path \"HKCU:\\Software\\Rime\\Weasel\" | Out-Null",
+            "New-Item -Path \"HKCU:\\Software\\Rime\\Weasel\\Updates\" | Out-Null",
+            "New-ItemProperty -Path \"HKCU:\\Software\\Rime\\Weasel\\Updates\" -Name CheckForUpdates -Value \"0\" | Out-Null",
+            "Start-Process -Wait \"$dir\\WeaselSetup.exe\" \"/s\"",
+            "Start-Process \"$dir\\WeaselServer.exe\""
+        ]
+    },
+    "post_install": [
+        "Remove-Item \"$dir\\`$PLUGINSDIR\" -Force -Recurse"
+    ],
+    
+    "uninstaller": {
+        "script": [
+            "Start-Process -Wait \"$dir\\WeaselServer.exe\"  \"/quit\"",
+            "Start-Process -Wait \"$dir\\WeaselSetup.exe\" \"/u\""
+        ]
+    },
+    "checkver": {
+        "url": "https://github.com/fxliang/weasel"
+    },
+    "autoupdate": {
+        "url": "https://github.com/fxliang/weasel/releases/download/$matchHead/weasel-$version-installer.exe#/dl.7z"
+    }
+}

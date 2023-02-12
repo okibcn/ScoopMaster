@@ -1,0 +1,53 @@
+{
+    "version": "1.7.1",
+    "description": "An instant messaging client for the XMPP protocol which uses the GTK toolkit",
+    "homepage": "https://gajim.org/",
+    "license": "GPL-3.0-only",
+    "architecture": {
+        "64bit": {
+            "url": "https://gajim.org/downloads/1.7/Gajim-Portable-1.7.1-64bit.exe#/dl.7z",
+            "hash": "68f7f5c97040946d48b2a693101b3f239e30065c5c4daade7fcb9da474bdebef"
+        }
+    },
+    "bin": [
+        [
+            "bin\\Gajim.exe",
+            "gajim",
+            "-c $dir\\UserData"
+        ]
+    ],
+    "shortcuts": [
+        [
+            "bin\\Gajim.exe",
+            "Gajim",
+            "-c $dir\\UserData"
+        ],
+        [
+            "bin\\Gajim-Debug.exe",
+            "Gajim (Debug)",
+            "-c $dir\\UserData"
+        ]
+    ],
+    "post_install": [
+        "Remove-Item \"$dir\\`$PLUGINSDIR\" -Recurse",
+        "if (!(Test-Path \"$dir\\UserData\\*\") -and (Test-Path \"$env:APPDATA\\Gajim\")) {",
+        "    info '[Portable Mode]: Copying user data...'",
+        "    Copy-Item \"$env:APPDATA\\Gajim\\*\" \"$dir\\UserData\" -Recurse",
+        "}"
+    ],
+    "checkver": {
+        "url": "https://gajim.org/download/",
+        "regex": "<span class=\"label label-primary\">([\\d.]+)</span>"
+    },
+    "persist": [
+        "UserData",
+        "var\\cache"
+    ],
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://gajim.org/downloads/$majorVersion.$minorVersion/Gajim-Portable-$version-64bit.exe#/dl.7z"
+            }
+        }
+    }
+}
