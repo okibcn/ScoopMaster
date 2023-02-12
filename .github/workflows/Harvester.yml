@@ -47,10 +47,11 @@ jobs:
         $oldActive=gc ScoopMaster/ActiveBuckets
         $oldDeprecated=gc ScoopMaster/DeprecatedBuckets
         $lDeprecated = ($oldActive+$oldDeprecated) | ? { -not ("$lActive" -match "$_") }
+        Write-Host "$(($lActive.count)+($lDeprecated.count)) buckets found."
         $lActive | Sort-Object | Get-Unique | Set-Content ScoopMaster/ActiveBuckets
         $lDeprecated | Sort-Object | Get-Unique | Set-Content ScoopMaster/DeprecatedBuckets
-        Write-Host "$(($lActive.count)+($lDeprecated.count)) buckets found."
-        ($lActive+$lDeprecated) | Sort-Object | Get-Unique | Set-Content .\Bucket_list.txt
+        # ($lActive+$lDeprecated) | Sort-Object | Get-Unique | Set-Content Bucket_list.txt
+        ($lActive) | Sort-Object | Get-Unique | Set-Content Bucket_list.txt
 
 
     - name: "⏬ Download Active buckets"
