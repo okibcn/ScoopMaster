@@ -258,15 +258,6 @@ jobs:
         echo "N_APPS=$nApps" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
 
 
-    - name: "🐞 Debug session"
-      uses: mxschmitt/action-tmate@v3
-      env:
-        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      if: github.event_name == 'workflow_dispatch' && github.event.inputs.debug_enabled == 'true'
-        ## More info at https://til.simonwillison.net/github-actions/debug-tmate
-        ##           or https://github.com/mxschmitt/action-tmate
-
-
     - name: "📦 Prepare updated repo"
       run: |
         ############################
@@ -347,6 +338,15 @@ jobs:
         Write-Output "- $($lNew.count) apps were added to Scoop."
         Write-Output "- $($lUpdated.count) apps were updated."
         Write-Output "- $($lDeleted.count) apps left Scoop."
+
+
+    - name: "🐞 Debug session"
+      uses: mxschmitt/action-tmate@v3
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      if: github.event_name == 'workflow_dispatch' && github.event.inputs.debug_enabled == 'true'
+        ## More info at https://til.simonwillison.net/github-actions/debug-tmate
+        ##           or https://github.com/mxschmitt/action-tmate
 
 
     - name: "⭐ Update repo (Commit-n-Push)"
