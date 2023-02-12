@@ -37,26 +37,26 @@ jobs:
         cd ..
         $scoopDBURL = "https://rasa.github.io/scoop-directory/by-apps.html"
         $ErrorActionPreference = 'SilentlyContinue'
-        $lBuckets = [System.Collections.ArrayList]@()
+        $lActive = [System.Collections.ArrayList]@()
         $source = iwr $scoopDBURL
         $source.Content -split '\r?\n' | ForEach-Object -Process {
             if ($_ -match '<h2.*(http[^\"]+)"'){
-                [void]$lBuckets.Add($matches[1])
+                [void]$lActive.Add($matches[1])
             }
         }
-        $lBuckets > Bucket_list.txt
-        $oldBuckets=gc ScoopMaster/ActiveBuckets
+        $oldActive=gc ScoopMaster/ActiveBuckets
         $oldDeprecated=gc ScoopMaster/DeprecatedBuckets
-        $lDeprecated = ($oldBuckets+$oldDeprecated) | ? { -not ($lBuckets -match "$_") }
-        $lBuckets | Sort-Object | Get-Unique | Set-Content ScoopMaster/ActiveBuckets
+        $lDeprecated = ($oldActive+$oldDeprecated) | ? { -not ("$lActive" -match "$_") }
+        $lActive | Sort-Object | Get-Unique | Set-Content ScoopMaster/ActiveBuckets
         $lDeprecated | Sort-Object | Get-Unique | Set-Content ScoopMaster/DeprecatedBuckets
-        Write-Host "$($lBuckets.count) buckets found."
+        Write-Host "$(($lActive.count)+($lDeprecated.count)) buckets found."
+        ($ldActive+$lDeprecated) | Sort-Object | Get-Unique | Set-Content .\Bucket_list.txt
 
 
     - name: "⏬ Download Active buckets"
       run: |
         cd ..
-        $lBuckets=(cat .\Bucket_list.txt)
+        $lBuckets=(gc .\Bucket_list.txt)
 
         ## CREATE INPUT FILE FOR ARIA2C
         $lZips=$lBuckets | %{
