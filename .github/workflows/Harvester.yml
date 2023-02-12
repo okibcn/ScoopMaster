@@ -12,18 +12,23 @@ on:
   workflow_dispatch:
     inputs:
       debug_enabled:
-        description: 'Run the build with tmate debugging enabled true/false (default: false)'
+        description: 'Debug session enabled'
         required: false
-        default: 'false'
+        default: false
+        type: boolean  
+      release:
+        description: 'Delivery Channel'
+        required: false
+        default: 'Artifact'
         type: choice
         options:
-          - "true"
-          - "false"      
+          - "Artifact"
+          - "Release"        
 
 jobs:
   build:
     runs-on: windows-latest
-    # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
+    # Use PowerShell Core shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
     defaults:
       run:
         shell: pwsh
@@ -51,7 +56,6 @@ jobs:
         $lActive | Sort-Object | Get-Unique | Set-Content ScoopMaster/ActiveBuckets
         $lDeprecated | Sort-Object | Get-Unique | Set-Content ScoopMaster/DeprecatedBuckets
         ($lActive+$lDeprecated) | Sort-Object | Get-Unique | Set-Content Bucket_list.txt
-        # ($lActive) | Sort-Object | Get-Unique | Set-Content Bucket_list.txt
 
 
     - name: "⏬ Download Active buckets"
@@ -309,6 +313,8 @@ jobs:
         $lUpdated > AppsUpdated.txt
         $lNew > AppsNew.txt
 
+        7z a ScoopMaster.7z *
+
         move-item ../*.csv .
         7z a AllAppsDB.7z AllAppsDB.csv
         7z a LastAppsDB.7z LastAppsDB.csv
@@ -344,7 +350,7 @@ jobs:
       uses: mxschmitt/action-tmate@v3
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      if: github.event.inputs.debug_enabled == 'true'
+      if: fromJSON(github.event.inputs.debug_enabled)
         ## More info at https://til.simonwillison.net/github-actions/debug-tmate
         ##           or https://github.com/mxschmitt/action-tmate
 
@@ -362,9 +368,20 @@ jobs:
         git push
 
 
-    - name: "👍 Upload detailed logs as Artifact"
+    - name: "👍 Full Upload as Artifact"
       uses: actions/upload-artifact@v3
       # if: github.event_name == 'workflow_dispatch'
+      if: github.event.inputs.release == 'Artifact'
+      with:
+        name: Logs
+        path: |
+          *.7z
+
+
+    - name: "👍 Standard Upload logs as Artifact"
+      uses: actions/upload-artifact@v3
+      # if: github.event_name == 'workflow_dispatch'
+      if: github.event_name != 'workflow_dispatch' || github.event.inputs.release == 'Release'
       with:
         name: Logs
         path: |
@@ -375,6 +392,7 @@ jobs:
       uses: softprops/action-gh-release@v0.1.15
       # go to https://github.com/OWNER/REPO/settings/actions and
       # in "**"Workflow Permissions" section give actions **Read and Write permissions**.
+      if: github.event_name != 'workflow_dispatch' || github.event.inputs.release == 'Release'
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
