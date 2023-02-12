@@ -1,10 +1,23 @@
 {
-    "homepage": "https://github.com/Rem0o/FanControl.Releases",
-    "description": "A focused, highly customizable fan controlling software for Windows.",
-    "version": "145",
-    "license": "null",
-    "url": "https://raw.githubusercontent.com/Rem0o/FanControl.Releases/master/FanControl.zip",
-    "hash": "b9c4b5ee56999405bcbf4c7cdd80bdf7df635cdeebec8fd78bae0422b23c63ae",
+    "version": "146",
+    "homepage": "https://getfancontrol.com/",
+    "description": "A highly customizable fan controlling software for the Windows OS.",
+    "license": "Freeware",
+    "suggest": {
+        ".NET Runtime": "extras/windowsdesktop-runtime"
+    },
+    "notes": "Make sure to install both the 64bit & 32bit versions of Microsoft .NET Desktop Runtime before running the application.",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/Rem0o/FanControl.Releases/releases/download/V146/FanControl_net_4_8.zip",
+            "hash": "3aa245fa4c63747f2fbfe367b1d723b1ab19caa87d791764df679ac3dc318d20"
+        }
+    },
+    "pre_install": [
+        "'userConfig.json', 'CACHE' | ForEach-Object {",
+        "    if (!(Test-Path \"$persist_dir\\$_\")) { New-Item \"$dir\\$_\" | Out-Null }",
+        "}"
+    ],
     "bin": "FanControl.exe",
     "shortcuts": [
         [
@@ -13,20 +26,20 @@
         ]
     ],
     "persist": [
-        "FanControl.exe.config",
+        "userConfig.json",
+        "CACHE",
         "Plugins"
     ],
-    "installer": {
-        "script": "if (Test-Path \"$persist_dir\\userConfig.json\") { Copy-Item \"$persist_dir\\userConfig.json\" \"$dir\" -Force }"
-    },
-    "uninstaller": {
-        "script": "Copy-Item \"$dir\\userConfig.json\" \"$persist_dir\" -Force"
-    },
     "checkver": {
-        "url": "https://raw.githubusercontent.com/Rem0o/FanControl.Releases/master/version.json",
-        "jp": "$.Number"
+        "url": "https://api.github.com/repos/Rem0o/FanControl.Releases/releases/latest",
+        "jsonpath": "$.assets..browser_download_url",
+        "regex": "/V([\\d.]+)/FanControl_net_(?<Release>[\\d?_|.]+)\\.zip"
     },
     "autoupdate": {
-        "url": "https://raw.githubusercontent.com/Rem0o/FanControl.Releases/master/FanControl.zip"
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/Rem0o/FanControl.Releases/releases/download/V$version/FanControl_net_$matchRelease.zip"
+            }
+        }
     }
 }
