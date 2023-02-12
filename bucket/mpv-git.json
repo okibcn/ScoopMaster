@@ -1,6 +1,6 @@
 {
     "version": "20230212",
-    "description": "Video player based on MPlayer(2) (qwerty12's *modified* nightly builds - AVX2 required)",
+    "description": "Video player based on MPlayer/mplayer2 (builds by shinchiro)",
     "homepage": "https://mpv.io",
     "license": "LGPL-2.1-or-later,GPL-2.0-or-later",
     "notes": [
@@ -12,10 +12,15 @@
     },
     "architecture": {
         "64bit": {
-            "url": "https://github.com/qwerty12/mpv-winbuild/releases/download/2023-02-12/mpv-x86_64-v3-20230212-git-a40958c.7z",
-            "hash": "0a0a3224d3e3fd74a9b9ca3502e39c1b5223d4a1d4f9ee1fadc3ed84a463c0b8"
+            "url": "https://downloads.sourceforge.net/project/mpv-player-windows/64bit/mpv-x86_64-20230212-git-a40958c.7z",
+            "hash": "sha1:f8dd907fdafc3ca9697facc72684b4058757d430"
+        },
+        "32bit": {
+            "url": "https://downloads.sourceforge.net/project/mpv-player-windows/32bit/mpv-i686-20230212-git-a40958c.7z",
+            "hash": "sha1:dde71a9a643c24b3eef9055a6ce6578976d575c4"
         }
     },
+    "pre_install": "Remove-Item \"$dir\\updater.bat\"",
     "env_add_path": ".",
     "shortcuts": [
         [
@@ -25,14 +30,16 @@
     ],
     "persist": "portable_config",
     "checkver": {
-        "url": "https://api.github.com/repos/qwerty12/mpv-winbuild/releases/latest",
-        "jsonpath": "$.assets",
-        "regex": "/(?<date>[\\d-]+)/mpv-x86_64-v3-(\\d+)-git-(?<commit>[\\da-f]+)\\.7z"
+        "sourceforge": "mpv-player-windows/64bit",
+        "regex": "mpv-x86_64-(\\d+)-git-(?<commit>[\\da-f]+)\\.7z"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://github.com/qwerty12/mpv-winbuild/releases/download/$matchDate/mpv-x86_64-v3-$version-git-$matchCommit.7z"
+                "url": "https://downloads.sourceforge.net/project/mpv-player-windows/64bit/mpv-x86_64-$version-git-$matchCommit.7z"
+            },
+            "32bit": {
+                "url": "https://downloads.sourceforge.net/project/mpv-player-windows/32bit/mpv-i686-$version-git-$matchCommit.7z"
             }
         }
     }
