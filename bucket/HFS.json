@@ -1,16 +1,10 @@
 {
-    "homepage": "http://www.rejetto.com/hfs/",
-    "description": "HFS is a free, one single executable file Http File Server software. Manifest forked from https://github.com/chawyehsu/dorado/blob/master/bucket/hfs.json and added persistence for config files",
-    "license": "GPL-2.0-only",
-    "version": "2.3m",
-    "url": "https://downloads.sourceforge.net/project/hfs/HFS/2.3m/hfs2.3m.zip",
-    "hash": "sha1:adec3861661cba9d04c214223aaa078b4f4d35dd",
-    "pre_install": [
-        "if (!(Test-Path \"$persist_dir\\hfs.ini\")) { New-Item \"$dir\\hfs.ini\" | Out-Null }",
-        "if (!(Test-Path \"$persist_dir\\HFS.vfs\")) { New-Item \"$dir\\HFS.vfs\" | Out-Null }",
-        "if (!(Test-Path \"$persist_dir\\hfs.ips.txt\")) { New-Item \"$dir\\hfs.ips.txt\" | Out-Null }"
-    ],
-    "bin": "hfs.exe",
+    "version": "0.31.0",
+    "description": "HFS is a file server offering a virtual file system (vfs). You can easily share a single file instead of the whole folder, or you can rename it, but without touching the real file, just virtually.",
+    "homepage": "https://github.com/rejetto/hfs",
+    "license": "GPL-3.0-only",
+    "url": "https://github.com/rejetto/hfs/releases/download/v0.31.0/hfs-windows.zip",
+    "hash": "e89eaf37a2b9ab0a68ce68ec8a873b3779aa9b5ad7c62bb1dda7a30622fa2fd1",
     "shortcuts": [
         [
             "hfs.exe",
@@ -18,15 +12,16 @@
         ]
     ],
     "persist": [
-        "hfs.ini",
-        "HFS.vfs",
-        "hfs.ips.txt"
+        "logs",
+        "config.yaml"
     ],
-    "checkver": {
-        "url": "http://www.rejetto.com/hfs/?f=dl",
-        "regex": "(?sm)Latest version: <b>([\\w\\d.]+)"
-    },
+    "pre_install": [
+        "ensure \"$persist_dir\" | Out-Null",
+        "if (!(Test-Path \"$persist_dir\\config.yaml\")) { Invoke-ExternalCommand Add-Content \"$dir\\config.yaml\" $null | Out-Null}"
+    ],
+    "checkver": "github",
     "autoupdate": {
-        "url": "https://downloads.sourceforge.net/project/hfs/HFS/$version/hfs$version.zip"
+        "url": "https://github.com/rejetto/hfs/releases/download/v$version/hfs-windows.zip",
+        "hash": "8c2d98deaab4bfea648d306cf2f5147dcb18b828308241a45cce0ac47795cffa"
     }
 }
