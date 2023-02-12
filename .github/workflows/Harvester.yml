@@ -19,14 +19,6 @@ on:
         options:
           - "true"
           - "false"      
-      release:
-        description: 'Release the database?'
-        required: false
-        default: 'false'
-        type: choice
-        options:
-          - "true"
-          - "false"
 
 jobs:
   build:
@@ -358,15 +350,14 @@ jobs:
 
 
     - name: "⭐ Update repo (Commit-n-Push)"
-      if: github.event.inputs.release == 'true'
       run: |
         git config --global core.autocrlf false
         git config --global core.safecrlf false
         git -C . init
         git -C . config --local user.name "GitHub Actions"
         git -C . config --local user.email actions@github.com
-        # git -C . add -A
-        git -C . commit --no-verify -am "Update timestamp $($env:UPDATE)"
+        git -C . add -A
+        git -C . commit --no-verify -m "Update timestamp $($env:UPDATE)"
         $sha=(git -C . rev-parse HEAD)
         git push
 
@@ -378,11 +369,9 @@ jobs:
         name: Logs
         path: |
           *.txt
-          *.7z
 
 
     - name: "🎉 Release updated databases"
-      if: github.event.inputs.release == 'true'
       uses: softprops/action-gh-release@v0.1.15
       # go to https://github.com/OWNER/REPO/settings/actions and
       # in "**"Workflow Permissions" section give actions **Read and Write permissions**.
