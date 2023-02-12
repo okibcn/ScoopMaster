@@ -18,6 +18,14 @@ on:
         type: choice
         options:
           - "true"
+          - "false"      
+      release:
+        description: 'Release the database?'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+          - "true"
           - "false"
 
 jobs:
@@ -344,12 +352,13 @@ jobs:
       uses: mxschmitt/action-tmate@v3
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      if: github.event_name == 'workflow_dispatch' && github.event.inputs.debug_enabled == 'true'
+      if: github.event.inputs.debug_enabled == 'true'
         ## More info at https://til.simonwillison.net/github-actions/debug-tmate
         ##           or https://github.com/mxschmitt/action-tmate
 
 
     - name: "⭐ Update repo (Commit-n-Push)"
+      if: github.event.inputs.release == 'true'
       run: |
         git config --global core.autocrlf false
         git config --global core.safecrlf false
@@ -361,13 +370,6 @@ jobs:
         $sha=(git -C . rev-parse HEAD)
         git push
 
-    # - name: "🧹 Delete current release assets"
-    #   uses: andreaswilli/delete-release-assets-action@v2.0.0
-    #   with:
-    #     github_token: ${{ secrets.GITHUB_TOKEN }}
-    #     tag: Databases
-    #     deleteOnlyFromDrafts: false
-
 
     - name: "👍 Upload detailed logs as Artifact"
       uses: actions/upload-artifact@v3
@@ -376,9 +378,11 @@ jobs:
         name: Logs
         path: |
           *.txt
+          *.7z
 
 
     - name: "🎉 Release updated databases"
+      if: github.event.inputs.release == 'true'
       uses: softprops/action-gh-release@v0.1.15
       # go to https://github.com/OWNER/REPO/settings/actions and
       # in "**"Workflow Permissions" section give actions **Read and Write permissions**.
