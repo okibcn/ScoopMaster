@@ -1,29 +1,33 @@
 {
-    "homepage": "https://github.com/huanghongxun/HMCL",
-    "description": " A Minecraft Launcher which is multi-functional, cross-platform and popular",
-    "license": "GPL-3.0-only",
     "version": "3.5.3.229",
-    "url": "https://github.com/huanghongxun/HMCL/releases/download/v3.5.3.229/HMCL-3.5.3.229.exe#/HMCL.exe",
-    "hash": "sha1:f2d2b757a9b86f3839ee6993f44e54a2ea340040",
-    "suggest": {
-        "JDK": "java/openjdk"
-    },
+    "description": "HMCL 是一个免费、开源的 Minecraft 启动器，允许玩家方便快捷地安装、管理、运行游戏。",
+    "homepage": "https://github.com/huanghongxun/HMCL",
+    "license": "GPL-3.0",
+    "url": "https://github.com/huanghongxun/HMCL/releases/download/v3.5.3.229/HMCL-3.5.3.229.exe",
+    "hash": "7f6161bdf3e27920754e4e3814241694a55515ddc21394ff9f907d93089fdfd8",
+    "bin": "HMCL.exe",
+    "pre_install": "Rename-Item \"$dir\\HMCL-$version.exe\" -NewName \"$dir\\HMCL.exe\"",
+    "post_install": [
+        "if (Test-Path \"$persist_dir\\hmcl.json\") {",
+        "    Copy-Item -Path \"$persist_dir\\hmcl.json\" -Destination \"$dir\\hmcl.json\"",
+        "}"
+    ],
     "shortcuts": [
         [
             "HMCL.exe",
             "HMCL"
         ]
     ],
-    "pre_install": "if (!(Test-Path \"$persist_dir\\hmcl.json\" )) { Add-Content -Force -Path \"$dir\\hmcl.json\" -Value \"{}\" } ",
-    "persist": [
-        ".minecraft",
-        "hmcl.json"
+    "persist": ".minecraft",
+    "pre_uninstall": [
+        "if (Test-Path \"$dir\\hmcl.json\") {",
+        "Copy-Item -Path \"$dir\\hmcl.json\" -Destination \"$persist_dir\\hmcl.json\"",
+        "}"
     ],
-    "checkver": "github",
+    "checkver": {
+        "github": "https://github.com/huanghongxun/HMCL"
+    },
     "autoupdate": {
-        "url": "https://github.com/huanghongxun/HMCL/releases/download/v$version/HMCL-$version.exe#/HMCL.exe",
-        "hash": {
-            "url": "https://github.com/huanghongxun/HMCL/releases/download/v3.5.2.218/HMCL-3.5.2.218.exe.sha1"
-        }
+        "url": "https://github.com/huanghongxun/HMCL/releases/download/v$version/HMCL-$version.exe"
     }
 }
