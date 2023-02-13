@@ -10,11 +10,18 @@
         }
     },
     "extract_dir": "Library\\bin",
-    "bin": "micromamba.exe",
+    "bin": [
+        "micromamba.exe",
+        [
+            "micromamba.exe",
+            "umamba"
+        ]
+    ],
     "env_set": {
-        "MAMBA_EXE": "$dir\\micromamba.exe"
+        "MAMBA_ROOT_PREFIX": "$dir\\mamba"
     },
     "post_install": "Remove-Item \"$dir\\Library\" -Force",
+    "persist": "mamba",
     "checkver": {
         "url": "https://api.anaconda.org/release/conda-forge/micromamba/latest",
         "regex": "win-64/micromamba-([\\d.-]+).tar.bz2"
