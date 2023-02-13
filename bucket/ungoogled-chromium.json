@@ -1,15 +1,19 @@
 {
     "version": "110.0.5481.78-1.1",
-    "description": "Google Chromium, sans integration with Google.",
+    "description": "Chromium, sans Google integration (downloads Widevine & cert. revocation lists separately, stored passwords/profile not encrypted)",
     "homepage": "https://ungoogled-software.github.io/ungoogled-chromium-binaries/",
     "license": "BSD-3-Clause",
+    "depends": [
+        "scoop-alts/widevinecdm",
+        "scoop-alts/chromium-crlset"
+    ],
     "architecture": {
         "64bit": {
-            "url": "https://ghproxy.com/github.com/ungoogled-software/ungoogled-chromium-windows/releases/download/110.0.5481.78-1.1/ungoogled-chromium_110.0.5481.78-1.1_windows_x64.zip",
+            "url": "https://github.com/ungoogled-software/ungoogled-chromium-windows/releases/download/110.0.5481.78-1.1/ungoogled-chromium_110.0.5481.78-1.1_windows_x64.zip",
             "hash": "db24020429644b07cc87bdfa4dc14c57e3aa5d2035f481833b7c8b9f8875f0fa"
         },
         "32bit": {
-            "url": "https://ghproxy.com/github.com/ungoogled-software/ungoogled-chromium-windows/releases/download/110.0.5481.78-1.1/ungoogled-chromium_110.0.5481.78-1.1_windows_x86.zip",
+            "url": "https://github.com/ungoogled-software/ungoogled-chromium-windows/releases/download/110.0.5481.78-1.1/ungoogled-chromium_110.0.5481.78-1.1_windows_x86.zip",
             "hash": "d146f6d24cec112d940668bd96c5ed790c506e00c00ab393cc9cebe26186141c"
         }
     },
@@ -18,32 +22,55 @@
         [
             "chrome.exe",
             "chromium",
-            "--user-data-dir=\"$dir\\User Data\""
+            "--user-data-dir=\"$dir\\User Data\" --disable-machine-id --disable-encryption --no-default-browser-check"
         ]
     ],
     "shortcuts": [
         [
             "chrome.exe",
             "Chromium",
-            "--user-data-dir=\"$dir\\User Data\""
+            "--user-data-dir=\"$dir\\User Data\" --disable-machine-id --disable-encryption --no-default-browser-check"
         ]
     ],
-    "persist": "User Data",
+    "persist": [
+        "User Data",
+        "Dictionaries",
+        "hyphen-data",
+        "initial_preferences"
+    ],
     "checkver": {
         "github": "https://github.com/ungoogled-software/ungoogled-chromium-windows",
         "regex": "releases/tag/((?<main>[\\d.]+-\\d).(?<release>\\d))"
     },
+    "pre_install": [
+        "if (-not (Test-Path \"$persist_dir\\initial_preferences\")) { New-Item \"$dir\\initial_preferences\" -Force -ItemType File | Out-Null }",
+        "$manifest.persist | ForEach-Object {",
+        "    $dest = \"$dir\\$_\"",
+        "    if ((-not (Test-Path \"$persist_dir\\$_\")) -and (-not (Test-Path $dest -PathType Leaf))) {",
+        "       New-Item $dest -Force -ItemType Directory | Out-Null",
+        "    }",
+        "}"
+    ],
+    "post_install": [
+        "$componentPackage = @{",
+        "    'WidevineCdm' = 'widevinecdm'",
+        "    'CertificateRevocation' = 'chromium-crlset'",
+        "}",
+        "$componentPackage.GetEnumerator() | ForEach-Object {",
+        "    New-Item -Path \"$dir\\$($_.Key)\" -Target \"$(versiondir $_.Value 'current' $global)\\$($_.Key)\" -ItemType Junction -Force | Out-Null",
+        "}"
+    ],
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://ghproxy.com/github.com/ungoogled-software/ungoogled-chromium-windows/releases/download/$version/ungoogled-chromium_$version_windows_x64.zip",
+                "url": "https://github.com/ungoogled-software/ungoogled-chromium-windows/releases/download/$version/ungoogled-chromium_$version_windows_x64.zip",
                 "hash": {
                     "url": "https://ungoogled-software.github.io/ungoogled-chromium-binaries/releases/windows/64bit/$matchMain",
                     "xpath": "//ul/li/a[contains(text(), \"$basename\")]/../ul/li[contains(text(), \"SHA256:\")]/code"
                 }
             },
             "32bit": {
-                "url": "https://ghproxy.com/github.com/ungoogled-software/ungoogled-chromium-windows/releases/download/$version/ungoogled-chromium_$version_windows_x86.zip",
+                "url": "https://github.com/ungoogled-software/ungoogled-chromium-windows/releases/download/$version/ungoogled-chromium_$version_windows_x86.zip",
                 "hash": {
                     "url": "https://ungoogled-software.github.io/ungoogled-chromium-binaries/releases/windows/32bit/$matchMain",
                     "xpath": "//ul/li/a[contains(text(), \"$basename\")]/../ul/li[contains(text(), \"SHA256:\")]/code"

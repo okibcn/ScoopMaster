@@ -1,27 +1,25 @@
 {
-    "$schema": "https://ghproxy.com/https://raw.githubusercontent.com/ScoopInstaller/Scoop/master/schema.json",
+    "##": "The installer is made with InnoSetup, but encrypted with a password.",
     "version": "1.40.0.0",
-    "description": "The ultimate all-in-one app for tuning Windows 11/10/8/7.",
+    "description": "Tweaks and hidden settings for power-users for Windows 7/8/8.1/10/11",
     "homepage": "https://winaerotweaker.com/",
     "license": {
         "identifier": "Freeware",
-        "url": "https://winaerotweaker.com/#eula"
+        "url": "https://winaero.com/comment.php?comment.news.1836"
     },
     "url": "https://winaerotweaker.com/download/winaerotweaker.zip",
     "hash": "137a628d2ca222ba42fcfb3696fefe93012a13eccd4f4408e7ffdac33cd7d56f",
     "pre_install": [
-        "Remove-Item \"$dir\\SilentSetup.cmd\" -ErrorAction SilentlyContinue",
+        "Remove-Item \"$dir\\SilentSetup.cmd\" -ErrorAction 'SilentlyContinue'",
         "Get-ChildItem \"$dir\" '*setup.exe' | Rename-Item -NewName 'setup.exe'"
     ],
     "installer": {
-        "file": "setup.exe",
-        "args": [
-            "/SP-",
-            "/VERYSILENT",
-            "/PORTABLE",
-            "/DIR=\"$dir\""
+        "script":[
+            "Start-Process -Wait \"$dir\\setup.exe\" -ArgumentList @('/SP-', '/VERYSILENT', '/PORTABLE', \"/DIR=`\"$dir`\"\")",
+            "Remove-Item \"$dir\\setup.exe\""
         ]
     },
+    "bin": "WinaeroTweaker.exe",
     "shortcuts": [
         [
             "WinaeroTweaker.exe",
