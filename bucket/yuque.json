@@ -1,23 +1,18 @@
 {
-    "homepage": "https://www.yuque.com/",
-    "description": "Professional note and document repositories",
+    "##": "语雀, checkver|https://www.yuque.com/api/docs/changelog?book_id=1840275|$.data.content|Yuque-([\\d.]+).exe",
     "version": "2.3.11.1002",
+    "description": "[语雀] - 一款文档与知识管理工具。语雀使用了\"结构化知识库管理\"，形式上类似书籍的目录",
     "license": {
         "identifier": "EULA",
         "url": "https://www.yuque.com/terms"
     },
-    "architecture": {
-        "64bit": {
-            "url": "https://app.nlark.com/yuque-desktop/2.3.11.1002/Yuque-2.3.11.1002.exe#/dl.7z",
-            "hash": "fb5f0f3397cff74f5e8ee9cd9256d867d32f8494f4930b2d9c8d9e4db7f296e9",
-            "installer": {
-                "script": [
-                    "Expand-7zipArchive \"$dir\\`$PLUGINSDIR/app-64.7z\" \"$dir\" -Removal",
-                    "Remove-Item \"$dir\\`$PLUGINSDIR\" -Recurse"
-                ]
-            }
-        }
+    "homepage": "https://www.yuque.com",
+    "url": "https://app.nlark.com/yuque-desktop/2.3.11.1002/Yuque-2.3.11.1002.exe#/dl.7z",
+    "hash": "fb5f0f3397cff74f5e8ee9cd9256d867d32f8494f4930b2d9c8d9e4db7f296e9",
+    "installer": {
+        "script": "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" $dir"
     },
+    "post_install": "Remove-Item \"$dir\\`$PLUGINSDIR\" -Force -Recurse",
     "shortcuts": [
         [
             "语雀.exe",
@@ -25,15 +20,10 @@
         ]
     ],
     "checkver": {
-        "url": "https://www.yuque.com/download",
-        "regex": "Yuque-([\\d.]+).exe"
+        "url": "https://www.yuque.com/install/desktop",
+        "regex": "desktopDownloadVersion%22%3A%22([\\d.]+)%22"
     },
     "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://app.nlark.com/yuque-desktop/$version/Yuque-$version.exe#/dl.7z"
-            }
-        }
-    },
-    "notes": "Your Yuque data are not persisted by Scoop and still storaged in '%APPDATA%\\yuque-desktop'."
+        "url": "https://app.nlark.com/yuque-desktop/$version/Yuque-$version.exe#/dl.7z"
+    }
 }
