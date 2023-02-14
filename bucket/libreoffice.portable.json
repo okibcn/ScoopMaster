@@ -40,10 +40,15 @@
     ],
     "persist": "Data",
     "checkver": {
-        "url": "https://www.libreoffice.org/download/portable-versions/",
-        "regex": "LibreOffice (?<version>(\\d+(\\.\\d+)+)) Portable MultilingualAll"
+        "script": [
+            "$resp = Invoke-WebRequest -UseBasicParsing -Uri 'https://www.libreoffice.org/download/portable-versions/'",
+            "$download_url = ($resp.Links.href -match 'MultilingualAll.paf.exe')[0]",
+            "$version = ($download_url -split '_' -match '^\\d+(\\.\\d+)+$')[0]",
+            "Write-Output $version $download_url"
+        ],
+        "regex": "(?<version>[\\d.]+)\\s(?<url>.+)"
     },
     "autoupdate": {
-        "url": "https://download.documentfoundation.org/libreoffice/portable/$version/LibreOfficePortable_$version_MultilingualAll.paf.exe#/dl.7z"
+        "url": "$matchUrl#/dl.7z"
     }
 }
