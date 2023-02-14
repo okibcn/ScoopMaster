@@ -6,15 +6,13 @@
     "architecture": {
         "64bit": {
             "url": "https://nightly.link/dnSpyEx/dnSpy/workflows/build/master/dnSpy-net-win64.zip#/dl.7z",
-            "hash": "84d0d197aba34c3d676ddbce5311d6fbeb83703ac8f38261265e123b414409a3"
+            "hash": "e16fc3fa781de2c9be83ac634ecc159f583e8565ecced98b231c5ef3704a7518"
         },
         "32bit": {
             "url": "https://nightly.link/dnSpyEx/dnSpy/workflows/build/master/dnSpy-net-win32.zip#/dl.7z",
-            "hash": "7835876a0ca64b43411da0963e0c14e2081fb6fca6471e3a41100e16d43c1e29"
+            "hash": "ba1cd7a2d222fb500c82ad8b5ce47d6926378f607a9f7005d67a24423de212a4"
         }
     },
-    "pre_install": "Expand-7zipArchive \"$dir\\dnSpy-net-win*.zip\" \"$dir\"",
-    "post_install": "Remove-Item \"$dir\\dnSpy-net-win*.zip\" -Force",
     "bin": [
         [
             "dnSpy.Console.exe",
@@ -33,7 +31,7 @@
     ],
     "checkver": {
         "url": "https://github.com/dnSpyEx/dnSpy/actions/workflows/build.yml?query=branch%3Amaster+is%3Asuccess",
-        "regex": "<a class=\"Link--primary css-truncate css-truncate-target\" .*? aria-label=\"Run (?<runCount>[\\d]+) of.* href=\".*/runs/(?<runId>[\\d]+)\">[\\S\\s]+?<time-ago datetime=\"(?<buildDate>[\\d-]+?)T",
+        "regex": "<a class=\"Link--primary css-truncate css-truncate-target\" .*? aria-label=\"Run (?<runCount>[\\d]+) of.*? href=\".*?/runs/(?<runId>[\\d]+?)\">[\\S\\s]+? datetime=\"(?<buildDate>\\d{4}-\\d{2}-\\d{2})T",
         "replace": "${buildDate}-run${runCount}-id${runId}"
     },
     "autoupdate": {
