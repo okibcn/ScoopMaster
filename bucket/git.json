@@ -1,35 +1,44 @@
 {
-    "$schema": "https://ghproxy.com/https://raw.githubusercontent.com/ScoopInstaller/Scoop/master/schema.json",
     "version": "2.39.1.windows.1",
-    "description": "The Windows port of Git, a free and open source distributed version control system.",
-    "homepage": "https://gitforwindows.org/",
-    "license": {
-        "identifier": "GPL-2.0-only",
-        "url": "https://github.com/git-for-windows/git/blob/main/COPYING"
-    },
+    "description": "Distributed version control system",
+    "homepage": "https://gitforwindows.org",
+    "license": "GPL-2.0-only",
+    "notes": "Set Git Credential Manager Core by running: \"git config --global credential.helper manager-core\"",
     "architecture": {
         "64bit": {
-            "url": "https://ghproxy.com/https://github.com/git-for-windows/git/releases/download/v2.39.1.windows.1/PortableGit-2.39.1-64-bit.7z.exe#/dl.7z",
+            "url": "https://github.com/git-for-windows/git/releases/download/v2.39.1.windows.1/PortableGit-2.39.1-64-bit.7z.exe#/dl.7z",
             "hash": "b898306a44084b5fa13b9a52e06408d97234389d07ae41d9409bdf58cad3d227"
-        },
-        "32bit": {
-            "url": "https://ghproxy.com/https://github.com/git-for-windows/git/releases/download/v2.39.1.windows.1/PortableGit-2.39.1-32-bit.7z.exe#/dl.7z",
-            "hash": "2cb1a83f30f0c2948c97d3dc683c8b058c808f89b51bfb813de67253d17caa15"
         }
     },
-    "env_add_path": "bin",
-    "persist": "etc\\gitconfig",
+    "bin": [
+        "cmd\\git.exe",
+        "cmd\\gitk.exe",
+        "cmd\\git-gui.exe",
+        "usr\\bin\\tig.exe",
+        "git-bash.exe"
+    ],
+    "shortcuts": [
+        [
+            "git-bash.exe",
+            "Git Bash",
+            "--cd-to-home"
+        ],
+        [
+            "cmd\\git-gui.exe",
+            "Git GUI"
+        ]
+    ],
+    "env_set": {
+        "GIT_INSTALL_ROOT": "$dir"
+    },
     "checkver": {
         "github": "https://github.com/git-for-windows/git",
-        "regex": "v([\\w.]+)/PortableGit-(?<full>[\\w.]+)-"
+        "regex": "v([\\w.]+)/PortableGit-(?<full>[\\w.]+)-64-bit"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://ghproxy.com/https://github.com/git-for-windows/git/releases/download/v$version/PortableGit-$matchFull-64-bit.7z.exe#/dl.7z"
-            },
-            "32bit": {
-                "url": "https://ghproxy.com/https://github.com/git-for-windows/git/releases/download/v$version/PortableGit-$matchFull-32-bit.7z.exe#/dl.7z"
+                "url": "https://github.com/git-for-windows/git/releases/download/v$version/PortableGit-$matchFull-64-bit.7z.exe#/dl.7z"
             }
         },
         "hash": {
