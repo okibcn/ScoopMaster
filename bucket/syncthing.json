@@ -9,6 +9,11 @@
             "url": "https://github.com/syncthing/syncthing/releases/download/v1.23.1/syncthing-windows-amd64-v1.23.1.zip",
             "hash": "aec001f848491d4c058d2fbe5dd1ffdf0fdffe55e706a8494ac80cb97586aff1",
             "extract_dir": "syncthing-windows-amd64-v1.23.1"
+        },
+        "32bit": {
+            "url": "https://github.com/syncthing/syncthing/releases/download/v1.23.1/syncthing-windows-386-v1.23.1.zip",
+            "hash": "4dd04919fe3ca2d30277efd32f479ac17278c1afc4321bf2a6e229b61a663b0f",
+            "extract_dir": "syncthing-windows-386-v1.23.1"
         }
     },
     "pre_install": [
@@ -18,20 +23,12 @@
         "    Copy-Item \"$env:LOCALAPPDATA\\Syncthing\\*\" \"$dir\\config\" -Exclude 'LOCK' -Recurse -Force",
         "}"
     ],
-    "post_install": [
-        "info \"更新 SyncTrayzor 的 sything.\"",
-        "if (Test-Path \"$scoopdir\\persist\\SyncTrayzor\\data\\syncthing.exe.old\") {",
-        "  Remove-Item \"$scoopdir\\persist\\SyncTrayzor\\data\\syncthing.exe.old\" -Force",
-        "}",
-        "if (Test-Path \"$scoopdir\\apps\\SyncTrayzor\\current\\syncthing.exe.old\") {",
-        "  Remove-Item \"$scoopdir\\apps\\SyncTrayzor\\current\\syncthing.exe.old\" -Force",
-        "}",
-        "if (Test-Path \"$scoopdir\\apps\\SyncTrayzor\") {",
-        "  Rename-Item \"$scoopdir\\persist\\SyncTrayzor\\data\\syncthing.exe\" \"$scoopdir\\persist\\SyncTrayzor\\data\\syncthing.exe.old\" -Force",
-        "  Rename-Item \"$scoopdir\\apps\\SyncTrayzor\\current\\syncthing.exe\" \"$scoopdir\\apps\\SyncTrayzor\\current\\syncthing.exe.old\" -Force",
-        "  Copy-Item \"$dir\\syncthing.exe\" \"$scoopdir\\persist\\SyncTrayzor\\data\\syncthing.exe\" -Force",
-        "  Copy-Item \"$dir\\syncthing.exe\" \"$scoopdir\\apps\\SyncTrayzor\\current\\syncthing.exe\" -Force",
-        "}"
+    "bin": [
+        [
+            "syncthing.exe",
+            "syncthing",
+            "-home \"$dir\\config\""
+        ]
     ],
     "persist": "config",
     "checkver": {
@@ -42,6 +39,10 @@
             "64bit": {
                 "url": "https://github.com/syncthing/syncthing/releases/download/v$version/syncthing-windows-amd64-v$version.zip",
                 "extract_dir": "syncthing-windows-amd64-v$version"
+            },
+            "32bit": {
+                "url": "https://github.com/syncthing/syncthing/releases/download/v$version/syncthing-windows-386-v$version.zip",
+                "extract_dir": "syncthing-windows-386-v$version"
             }
         },
         "hash": {
