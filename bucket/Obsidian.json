@@ -1,20 +1,24 @@
 {
     "version": "1.1.9",
-    "description": "Powerful knowledge base that works on top of a local folder of plain text Markdown files.",
-    "homepage": "https://obsidian.md",
+    "description": "Obsidian is a powerful knowledge base that works on top of a local folder of plain text Markdown files.",
+    "homepage": "https://obsidian.md/",
     "license": {
-        "identifier": "Proprietary",
+        "identifier": "EULA",
         "url": "https://obsidian.md/eula"
     },
+    "notes": "We don't persist your Obsidian data, they are still storaged in \"$env:APPDATA\\obsidian\".",
     "architecture": {
         "64bit": {
             "url": "https://github.com/obsidianmd/obsidian-releases/releases/download/v1.1.9/Obsidian.1.1.9.exe#/dl.7z",
-            "hash": "8759af1eb38bd975c52dcf31f4ce185b3adcef0baf1a4677b51065ea9eb1e7d4",
-            "pre_install": [
-                "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\"",
-                "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\Uninstall*\" -Force -Recurse"
-            ]
+            "hash": "8759af1eb38bd975c52dcf31f4ce185b3adcef0baf1a4677b51065ea9eb1e7d4"
         }
+    },
+    "installer": {
+        "script": [
+            "Expand-7zipArchive -Path (Join-Path $dir '$PLUGINSDIR\\app-64.7z') -DestinationPath $dir",
+            "Remove-Item -Path (Join-Path $dir '$PLUGINSDIR') -Recurse",
+            "Remove-Item \"$dir\\Uninstall Obsidian.exe\""
+        ]
     },
     "shortcuts": [
         [
@@ -23,8 +27,7 @@
         ]
     ],
     "checkver": {
-        "url": "https://obsidian.md/",
-        "regex": "Version ([\\d.]+)"
+        "github": "https://github.com/obsidianmd/obsidian-releases"
     },
     "autoupdate": {
         "architecture": {
