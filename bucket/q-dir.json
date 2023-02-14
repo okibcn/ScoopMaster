@@ -1,61 +1,63 @@
 {
-    "homepage": "http://www.softwareok.com/?seite=Freeware/Q-Dir",
-    "version": "11.17",
-    "description": "Q-Dir is a great alternative file manager for Windows with a amazing Quadro-View technique. ",
+    "version": "11.19",
+    "description": "A quad window file manager based on Windows File Explorer",
+    "homepage": "https://www.softwareok.com/?seite=Freeware/Q-Dir",
     "license": {
-        "identifier": "Freeware"
+        "identifier": "Freeware",
+        "url": "https://www.softwareok.com/?seite=Freeware/Q-Dir/Eula"
     },
-    "extract_dir": "Q-Dir",
     "architecture": {
         "64bit": {
             "url": "https://www.softwareok.com/Download/Q-Dir_Portable_x64.zip",
-            "hash": "b5dc6d1099ecc0529cd77723cbbb80dfda6ac1094e4e5a6e4403f676f0fd3ecc",
-            "installer": {
-                "script": [
-                    "mv \"$dir/Q-Dir_x64.exe\" \"$dir/Q-Dir.exe\"",
-                    "New-Item -Path $dir\\start.qdr -ItemType File -Force | Out-Null"
+            "hash": "dab362c6d9fefef420171113f6b969de7f4f304e03af343a807e9062465d321f",
+            "bin": [
+                [
+                    "Q-Dir_x64.exe",
+                    "Q-Dir"
                 ]
-            }
+            ],
+            "shortcuts": [
+                [
+                    "Q-Dir_x64.exe",
+                    "Q-Dir"
+                ]
+            ]
         },
         "32bit": {
             "url": "https://www.softwareok.com/Download/Q-Dir_Portable.zip",
-            "hash": "7a3830c127373a5c856adb1b96d0449b8bec43a3e4f29000d189e03273d1425b",
-            "installer": {
-                "script": "New-Item -Path $dir\\start.qdr -ItemType File"
-            }
+            "hash": "93b33957f9b97d3b3d6ade366602a71029c98842d372c80edb9bf2405e8ef5ef",
+            "bin": "Q-Dir.exe",
+            "shortcuts": [
+                [
+                    "Q-Dir.exe",
+                    "Q-Dir"
+                ]
+            ]
         }
     },
+    "extract_dir": "Q-Dir",
+    "pre_install": "if (!(Test-Path \"$persist_dir\\start.qdr\")) { New-Item \"$dir\\start.qdr\" | Out-Null }",
     "persist": [
         "Favoriten",
         "start.qdr",
         "Q-Dir.ini"
     ],
-    "bin": "Q-Dir.exe",
-    "shortcuts": [
-        [
-            "Q-Dir.exe",
-            "Q-Dir"
-        ]
-    ],
-    "checkver": "Q-Dir ([^\\ ]+)",
+    "checkver": {
+        "url": "https://www.softwareok.com/?seite=Microsoft/Q-Dir/History",
+        "regex": "version ([\\d.]+)"
+    },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://www.softwareok.com/Download/Q-Dir_Portable_x64.zip",
-                "hash": {
-                    "mode": "extract",
-                    "url": "https://www.softwareok.com/?Download=Q-Dir",
-                    "find": "Q-Dir_Portable_x64\\.zip<div id=[\\w\\d]{5} align=right><a href=\"https://www\\.virustotal\\.com/de/file/($sha256)"
-                }
+                "url": "https://www.softwareok.com/Download/Q-Dir_Portable_x64.zip"
             },
             "32bit": {
-                "url": "https://www.softwareok.com/Download/Q-Dir_Portable.zip",
-                "hash": {
-                    "mode": "extract",
-                    "url": "https://www.softwareok.com/?Download=Q-Dir",
-                    "find": "Q-Dir_Portable\\.zip<div id=[\\w\\d]{5} align=right><a href=\"https://www\\.virustotal\\.com/de/file/($sha256)"
-                }
+                "url": "https://www.softwareok.com/Download/Q-Dir_Portable.zip"
             }
+        },
+        "hash": {
+            "url": "https://www.softwareok.com/?Download=Q-Dir",
+            "regex": "$basename.*?$sha256<"
         }
     }
 }
