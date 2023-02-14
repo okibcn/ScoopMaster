@@ -41,6 +41,14 @@
         "POSH_THEMES_PATH": "$dir\\themes"
     },
     "bin": "oh-my-posh.exe",
+    "post_install": [
+        "$persist_themes=\"$persist_dir\\themes\\*\"",
+        "$themes=\"$env:POSH_THEMES_PATH\"",
+        "if (Test-Path $persist_themes) {",
+        "Write-Host \"Copy persistent themes\"",
+        "Copy-Item -Path $persist_themes -Destination $themes -Recurse",
+        "}"
+    ],
     "checkver": {
         "github": "https://github.com/JanDeDobbeleer/oh-my-posh"
     },
