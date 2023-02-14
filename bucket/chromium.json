@@ -1,11 +1,20 @@
 {
-    "version": "110.0.5481.84",
+    "##": "Check chromium.woolyss.com for different versions of Chromium releases.",
+    "version": "110.0.5481.97-r839",
     "description": "Browser aiming for safer, faster, and more stable way for all users to experience the web.",
     "homepage": "https://www.chromium.org",
     "license": "BSD-3-Clause",
-    "url": "https://github.com/macchrome/winchrome/releases/download/v110.5481.84-M110.0.5481.84-r1084008-Win64/ungoogled-chromium-110.0.5481.84-1_Win64.7z",
-    "hash": "sha1:68676cdc1887c74c2a0579e0161488951f44f09b",
-    "extract_dir": "ungoogled-chromium-110.0.5481.84-1_Win64",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/Hibbiki/chromium-win64/releases/download/v110.0.5481.97-r839/chrome.sync.7z",
+            "hash": "sha1:5559a0413492aca7b3112aac90a8369fcb09dd5b"
+        },
+        "32bit": {
+            "url": "https://github.com/Hibbiki/chromium-win32/releases/download/v110.0.5481.97-r839/chrome.sync.7z",
+            "hash": "sha1:0914ccdc66e8ebd58cbad511584bd23a8aea02e8"
+        }
+    },
+    "extract_dir": "Chrome-bin",
     "bin": [
         [
             "chrome.exe",
@@ -28,15 +37,25 @@
     ],
     "persist": "User Data",
     "checkver": {
-        "github": "https://github.com/macchrome/winchrome",
-        "regex": "v(?<semver>[\\d.]+)-M([\\d.]+)-r(?<build>\\d+)-Win64"
+        "url": "https://github.com/Hibbiki/chromium-win64/releases/latest",
+        "regex": ">v([\\d.\\-r]+)</h1>"
     },
     "autoupdate": {
-        "url": "https://github.com/macchrome/winchrome/releases/download/v$matchSemver-M$version-r$matchBuild-Win64/ungoogled-chromium-$version-1_Win64.7z",
-        "extract_dir": "ungoogled-chromium-$version-1_Win64",
-        "hash": {
-            "url": "https://github.com/macchrome/winchrome/releases/v$matchSemver-M$version-r$matchBuild-Win64",
-            "regex": "(?s)$basename.*?$sha1"
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/Hibbiki/chromium-win64/releases/download/v$version/chrome.sync.7z",
+                "hash": {
+                    "url": "https://github.com/Hibbiki/chromium-win64/releases/latest",
+                    "regex": "$sha1 \\.\\./out/x64/chrome.sync.7z"
+                }
+            },
+            "32bit": {
+                "url": "https://github.com/Hibbiki/chromium-win32/releases/download/v$version/chrome.sync.7z",
+                "hash": {
+                    "url": "https://github.com/Hibbiki/chromium-win32/releases/latest",
+                    "regex": "$sha1 \\.\\./out/x86/chrome.sync.7z"
+                }
+            }
         }
     }
 }
