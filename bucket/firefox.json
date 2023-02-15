@@ -21,11 +21,12 @@
     },
     "extract_dir": "core",
     "post_install": [
-        "firefox -CreateProfile \"Scoop $persist_dir\\profile\"",
+        "firefox -CreateProfile \"Priv $persist_dir\\profiles\\priv\"",
+        "firefox -CreateProfile \"Work $persist_dir\\profiles\\work\"",
         "$Addition = \"$persist_dir\\addition\"",
         "if (Test-Path $Addition) {",
-        "  info 'Copying additional items...'",
-        "  Copy-Item -Path $Addition\\* -Destination $dir -Force -Recurse -ErrorAction SilentlyContinue",
+        "    info 'Copying additional items...'",
+        "    Copy-Item -Path $Addition\\* -Destination $dir -Force -Recurse -ErrorAction SilentlyContinue",
         "}"
     ],
     "bin": "firefox.exe",
@@ -38,11 +39,21 @@
             "firefox.exe",
             "Firefox Profile Manager",
             "-P"
+        ],
+        [
+            "firefox.exe",
+            "Firefox Priv",
+            "-P Priv"
+        ],
+        [
+            "firefox.exe",
+            "Firefox Work",
+            "-P Work"
         ]
     ],
     "persist": [
         "distribution",
-        "profile"
+        "profiles"
     ],
     "checkver": {
         "url": "https://www.mozilla.org/en-US/firefox/notes/",
