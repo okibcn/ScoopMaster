@@ -13,11 +13,7 @@
             "hash": "2dd9b6345f7f5182ec184843111a867cfa25d72c4744496514fd740e4af29272"
         }
     },
-    "pre_install": [
-        "if (!(Test-Path \"$persist_dir\")) { mkdir \"$persist_dir\" | Out-Null }",
-        "Add-Content \"$persist_dir\\portable_settings.txt\" $null;",
-        "Add-Content \"$persist_dir\\tab.ini\" $null;"
-    ],
+    "pre_install": "if (!(Test-Path \"$persist_dir\\portable_settings.txt\")) { New-Item \"$dir\\portable_settings.txt\" | Out-Null }",
     "bin": "heidisql.exe",
     "shortcuts": [
         [
@@ -25,12 +21,7 @@
             "HeidiSQL"
         ]
     ],
-    "persist": [
-        "Backups",
-        "Snippets",
-        "portable_settings.txt",
-        "tabs.ini"
-    ],
+    "persist": "data",
     "checkver": {
         "url": "https://www.heidisql.com/download.php",
         "regex": "Download HeidiSQL ([\\d.]+)"
