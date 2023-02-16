@@ -8,22 +8,32 @@
         "64bit": {
             "url": [
                 "https://github.com/notepad-plus-plus/notepad-plus-plus/releases/download/v8.4.9/npp.8.4.9.portable.x64.zip",
-                "https://raw.githubusercontent.com/asoluter/Scoop-Asoluter/main/scripts/notepadplusplus/install-context.reg",
-                "https://raw.githubusercontent.com/asoluter/Scoop-Asoluter/main/scripts/notepadplusplus/uninstall-context.reg"
+                "https://raw.githubusercontent.com/ScoopInstaller/Extras/master/scripts/notepadplusplus/install-context.reg",
+                "https://raw.githubusercontent.com/ScoopInstaller/Extras/master/scripts/notepadplusplus/uninstall-context.reg"
             ],
             "hash": [
                 "a4354a2a8ab1a504bf870bae4469174d80af9dced6534c256a0f5cf7451b1a41",
-                "f26c2ae2b18ed76ae67ada468102be3eeec5ba9410355939d7aca056de7bfff2",
-                "7a6d400e013e51662ac0420acd9a2d65b28a42e60e7b61bd92a7df23a0f1beac"
+                "2957865501223f2167a7da51196157a1138c8ad09819ad536beef5b97b19cf13",
+                "601a517c9be3b341e46692035130d094ed1613f55e78cb61d86dff774947d0e0"
+            ]
+        },
+        "32bit": {
+            "url": [
+                "https://github.com/notepad-plus-plus/notepad-plus-plus/releases/download/v8.4.9/npp.8.4.9.portable.zip",
+                "https://raw.githubusercontent.com/ScoopInstaller/Extras/master/scripts/notepadplusplus/install-context.reg",
+                "https://raw.githubusercontent.com/ScoopInstaller/Extras/master/scripts/notepadplusplus/uninstall-context.reg"
+            ],
+            "hash": [
+                "c8092e411897f0f623696b64a16d92c2772743c12782e5a1c6698af86a065d5f",
+                "2957865501223f2167a7da51196157a1138c8ad09819ad536beef5b97b19cf13",
+                "601a517c9be3b341e46692035130d094ed1613f55e78cb61d86dff774947d0e0"
             ]
         }
     },
     "pre_install": [
-        "if (!(Test-Path \"$persist_dir\\session.xml\")) { New-Item \"$dir\\session.xml\" -ItemType File -Force | Out-Null }",
-        "if (!(Test-Path \"$persist_dir\\userDefineLang.xml\")) { New-Item \"$dir\\userDefineLang.xml\" -ItemType File -Force | Out-Null }",
-        "if (!(Test-Path \"$persist_dir\\nativeLang.xml\")) { New-Item \"$dir\\nativeLang.xml\" -ItemType File -Force | Out-Null }"
-    ],
-    "post_install": [
+        "if (!(Test-Path \"$persist_dir\\session.xml\")) { New-Item \"$dir\\session.xml\" -Force | Out-Null }",
+        "if (!(Test-Path \"$persist_dir\\userDefineLang.xml\")) { New-Item \"$dir\\userDefineLang.xml\" -Force | Out-Null }",
+        "if (!(Test-Path \"$persist_dir\\nativeLang.xml\")) { New-Item \"$dir\\nativeLang.xml\" -Force | Out-Null }",
         "$file = \"$dir\\install-context.reg\"",
         "if (Test-Path $file) {",
         "    $nppPath = \"$dir\\notepad++.exe\".Replace('\\', '\\\\')",
@@ -62,6 +72,9 @@
         "architecture": {
             "64bit": {
                 "url": "https://github.com/notepad-plus-plus/notepad-plus-plus/releases/download/v$version/npp.$version.portable.x64.zip"
+            },
+            "32bit": {
+                "url": "https://github.com/notepad-plus-plus/notepad-plus-plus/releases/download/v$version/npp.$version.portable.zip"
             }
         },
         "hash": {
