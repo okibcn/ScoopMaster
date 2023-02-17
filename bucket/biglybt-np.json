@@ -1,5 +1,4 @@
 {
-    "##": "We install to $dir\\install instead of just $dir because for some reason, Scoop has trouble removing $dir upon uninstallation.",
     "version": "3.3.0.0",
     "homepage": "https://www.biglybt.com/",
     "description": "BitTorrent client.",
@@ -7,7 +6,7 @@
     "architecture": {
         "64bit": {
             "url": "https://github.com/BiglySoftware/BiglyBT/releases/download/v3.3.0.0/Github_BiglyBT_Installer64.exe#/setup.exe",
-            "hash": "dd970be281ab81536049de1532b43aaef1a9f9c9ce662aedb6a884700e0e6e7c"
+            "hash": "1c9560ed6729b6c0ca65bbb4e9ea8d26567d32874e8d2dea34d47642d5614485"
         },
         "32bit": {
             "url": "https://github.com/BiglySoftware/BiglyBT/releases/download/v3.3.0.0/Github_BiglyBT_Installer32.exe#/setup.exe",
@@ -15,7 +14,12 @@
         }
     },
     "installer": {
-        "script": "Start-Process -Wait \"$dir\\setup.exe\" -ArgumentList @('-q', \"-dir `\"$dir\\install`\"\") | Out-Null"
+        "args": [
+            "-q",
+            "-dir \"$dir\\install\""
+        ],
+        "##": "For some reason, Scoop fails to remove the installer once installation is complete.",
+        "keep": true
     },
     "post_install": [
         "Remove-Item \"$dir\\setup.exe\"",
@@ -26,6 +30,7 @@
         "file": "install\\uninstall.exe",
         "args": "-q"
     },
+    "##": "We install to $dir\\install instead of just $dir because for some reason, Scoop has trouble removing $dir upon uninstallation.",
     "bin": "install\\BiglyBT.exe",
     "shortcuts": [
         [
