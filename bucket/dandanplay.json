@@ -1,36 +1,43 @@
 {
-    "homepage": "http://www.dandanplay.com/",
-    "description": "A local video player with danmu.",
-    "version": "12.8.0",
+    "homepage": "https://www.dandanplay.com/",
+    "description": "A free to use bangumi player with danmaku support",
+    "version": "13.0.0",
     "license": "Unknown",
     "architecture": {
         "64bit": {
-            "url": "https://dandan.sakurateam.top/dandanplay-x64_12.8.0.zip",
-            "hash": "82a8a62670bdcd6b2902fc4c521a671f7374c9f032bcc0adc70b879663bb2a4b",
+            "url": "https://dandan.sakurateam.top/dandanplay-x64_13.0.0.zip",
+            "hash": "47af56a1e4a18f80cee5234fb5dea3a97afcce885ce7928b4df96c46ce5ba7fc",
             "extract_dir": "dandanplay-x64"
         }
     },
-    "persist": [
-        "Cache",
-        "Config",
-        "Log"
+    "pre_install": [
+        "if (!(Test-Path \"$persist_dir\\Config\")) {",
+        "    New-Item -Path \"$persist_dir\\Config\" -ItemType Directory | Out-Null",
+        "}",
+        "# Disable auto update",
+        "if (!(Test-Path \"$persist_dir\\Config\\ConnectionSettings.xml\")) {",
+        "    New-Item -Force -Path \"$persist_dir\\Config\\ConnectionSettings.xml\" -ItemType File -Value '<?xml version=\"1.0\"?><ConnectionSettings><EnableAutoUpdate>false</EnableAutoUpdate><NotifyOnUpdateDownloaded>false</NotifyOnUpdateDownloaded></ConnectionSettings>' | Out-Null",
+        "}",
+        "# Disable  tracking",
+        "if (!(Test-Path \"$persist_dir\\Config\\UserSettings.xml\")) {",
+        "    New-Item -Force -Path \"$persist_dir\\Config\\UserSettings.xml\" -ItemType File -Value '<?xml version=\"1.0\"?><UserSettings><EnableTelemetry>false</EnableTelemetry></UserSettings>' | Out-Null",
+        "}"
     ],
     "shortcuts": [
         [
             "dandanplay.exe",
-            "DandanPlay"
+            "弹弹play"
         ]
     ],
-    "notes": "[Break Change] Developer remove x86 package from version 11.2.0",
+    "persist": [
+        "Config",
+        "Log",
+        "Cache"
+    ],
     "checkver": {
-        "url": "http://www.dandanplay.com/",
-        "regex": "dandanplay-x64_([\\d\\.]+)\\.zip"
+        "regex": "dandanplay-x64_([\\d.]+).zip"
     },
     "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://dandan.sakurateam.top/dandanplay-x64_$version.zip"
-            }
-        }
+        "url": "https://dandan.sakurateam.top/dandanplay-x64_$version.zip"
     }
 }
