@@ -1,50 +1,64 @@
 {
+    "$schema": "https://ghproxy.com/https://raw.githubusercontent.com/ScoopInstaller/Scoop/master/schema.json",
     "version": "14.5.0",
-    "description": "A prompt theme engine for any shell",
-    "homepage": "https://ohmyposh.dev",
-    "license": "MIT",
-    "notes": "Refer to 'https://ohmyposh.dev/docs/installation/prompt' for shell specific configurations.",
-    "suggest": {
-        "PowerShell": "pwsh"
+    "description": "A prompt theme engine for any shell.",
+    "homepage": "https://ohmyposh.dev/",
+    "license": {
+        "identifier": "MIT",
+        "url": "https://github.com/JanDeDobbeleer/oh-my-posh/blob/main/COPYING"
     },
+    "notes": [
+        "- Thanks for installing Oh My Posh.",
+        "- Have a look at https://ohmyposh.dev/docs/installation/customize for detailed instructions for your shell.",
+        "- Sample themes can be found in `$dir\\themes`."
+    ],
     "architecture": {
         "64bit": {
             "url": [
-                "https://github.com/JanDeDobbeleer/oh-my-posh/releases/download/v14.5.0/themes.zip",
-                "https://github.com/JanDeDobbeleer/oh-my-posh/releases/download/v14.5.0/posh-windows-amd64.exe#/oh-my-posh.exe"
+                "https://ghproxy.com/https://github.com/JanDeDobbeleer/oh-my-posh/releases/download/v14.5.0/posh-windows-amd64.exe",
+                "https://ghproxy.com/https://github.com/JanDeDobbeleer/oh-my-posh/releases/download/v14.5.0/themes.zip"
             ],
             "hash": [
-                "0ad285de19cb82a5ed9272cc4455ae64599278f335e8f79ea93c996734214950",
-                "40d8bd5bea3549f7b01ce533e5d5e2ca972c84a75f0acba2cb48dc880949b6b8"
+                "40d8bd5bea3549f7b01ce533e5d5e2ca972c84a75f0acba2cb48dc880949b6b8",
+                "0ad285de19cb82a5ed9272cc4455ae64599278f335e8f79ea93c996734214950"
             ]
         },
         "32bit": {
             "url": [
-                "https://github.com/JanDeDobbeleer/oh-my-posh/releases/download/v14.5.0/themes.zip",
-                "https://github.com/JanDeDobbeleer/oh-my-posh/releases/download/v14.5.0/posh-windows-386.exe#/oh-my-posh.exe"
+                "https://ghproxy.com/https://github.com/JanDeDobbeleer/oh-my-posh/releases/download/v14.5.0/posh-windows-386.exe",
+                "https://ghproxy.com/https://github.com/JanDeDobbeleer/oh-my-posh/releases/download/v14.5.0/themes.zip"
             ],
             "hash": [
-                "0ad285de19cb82a5ed9272cc4455ae64599278f335e8f79ea93c996734214950",
-                "02bb4505f89676b5b86a13639adacaa3b98d3c678576375f8b64c12d796ac275"
+                "02bb4505f89676b5b86a13639adacaa3b98d3c678576375f8b64c12d796ac275",
+                "0ad285de19cb82a5ed9272cc4455ae64599278f335e8f79ea93c996734214950"
             ]
         },
         "arm64": {
             "url": [
-                "https://github.com/JanDeDobbeleer/oh-my-posh/releases/download/v14.5.0/themes.zip",
-                "https://github.com/JanDeDobbeleer/oh-my-posh/releases/download/v14.5.0/posh-windows-arm64.exe#/oh-my-posh.exe"
+                "https://ghproxy.com/https://github.com/JanDeDobbeleer/oh-my-posh/releases/download/v14.5.0/posh-windows-arm64.exe",
+                "https://ghproxy.com/https://github.com/JanDeDobbeleer/oh-my-posh/releases/download/v14.5.0/themes.zip"
             ],
             "hash": [
-                "0ad285de19cb82a5ed9272cc4455ae64599278f335e8f79ea93c996734214950",
-                "5539fadaccd0e41f0b5bd6758163d75e498ef1f0086d9538cef778d9697c1cf7"
+                "5539fadaccd0e41f0b5bd6758163d75e498ef1f0086d9538cef778d9697c1cf7",
+                "0ad285de19cb82a5ed9272cc4455ae64599278f335e8f79ea93c996734214950"
             ]
         }
     },
     "extract_to": "themes",
+    "installer": {
+        "script": [
+            "New-Item -ItemType Directory -Path \"$dir\\bin\" -Force | Out-Null",
+            "$(if ($architecture -eq '64bit') {",
+            "  \"posh-windows-amd64.exe\"",
+            "} else {",
+            "  \"posh-windows-386.exe\"",
+            "}) | ForEach-Object { Move-Item -Path \"$dir\\$_\" -Destination \"$dir\\bin\\oh-my-posh.exe\" -Force }"
+        ]
+    },
+    "env_add_path": "bin",
     "env_set": {
         "POSH_THEMES_PATH": "$dir\\themes"
     },
-    "bin": "oh-my-posh.exe",
-    "persist": "themes",
     "checkver": {
         "github": "https://github.com/JanDeDobbeleer/oh-my-posh"
     },
@@ -52,20 +66,20 @@
         "architecture": {
             "64bit": {
                 "url": [
-                    "https://github.com/JanDeDobbeleer/oh-my-posh/releases/download/v$version/themes.zip",
-                    "https://github.com/JanDeDobbeleer/oh-my-posh/releases/download/v$version/posh-windows-amd64.exe#/oh-my-posh.exe"
+                    "https://ghproxy.com/https://github.com/JanDeDobbeleer/oh-my-posh/releases/download/v$version/posh-windows-amd64.exe",
+                    "https://ghproxy.com/https://github.com/JanDeDobbeleer/oh-my-posh/releases/download/v$version/themes.zip"
                 ]
             },
             "32bit": {
                 "url": [
-                    "https://github.com/JanDeDobbeleer/oh-my-posh/releases/download/v$version/themes.zip",
-                    "https://github.com/JanDeDobbeleer/oh-my-posh/releases/download/v$version/posh-windows-386.exe#/oh-my-posh.exe"
+                    "https://ghproxy.com/https://github.com/JanDeDobbeleer/oh-my-posh/releases/download/v$version/posh-windows-386.exe",
+                    "https://ghproxy.com/https://github.com/JanDeDobbeleer/oh-my-posh/releases/download/v$version/themes.zip"
                 ]
             },
             "arm64": {
                 "url": [
-                    "https://github.com/JanDeDobbeleer/oh-my-posh/releases/download/v$version/themes.zip",
-                    "https://github.com/JanDeDobbeleer/oh-my-posh/releases/download/v$version/posh-windows-arm64.exe#/oh-my-posh.exe"
+                    "https://ghproxy.com/https://github.com/JanDeDobbeleer/oh-my-posh/releases/download/v$version/posh-windows-arm64.exe",
+                    "https://ghproxy.com/https://github.com/JanDeDobbeleer/oh-my-posh/releases/download/v$version/themes.zip"
                 ]
             }
         },
