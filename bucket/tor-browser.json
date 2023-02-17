@@ -6,12 +6,8 @@
     "license": "GPL-3.0-or-later",
     "architecture": {
         "64bit": {
-            "url": "https://ghproxy.com/github.com/TheTorProject/gettorbrowser/releases/download/win64-12.0.3/torbrowser-install-win64-12.0.3_ALL.exe",
+            "url": "https://dist.torproject.org/torbrowser/12.0.3/torbrowser-install-win64-12.0.3_ALL.exe",
             "hash": "94c66cde8a8f6744971553deba450b3e2bf2ad17f0d3129853591a050801a58c"
-        },
-        "32bit": {
-            "url": "https://ghproxy.com/github.com/TheTorProject/gettorbrowser/releases/download/win32-12.0.3/torbrowser-install-12.0.3_ALL.exe",
-            "hash": "8cf1dafe65efe4a9a732191ab5fa962ae75513694cc802b462abf0ae40f64a3a"
         }
     },
     "installer": {
@@ -19,13 +15,15 @@
             "Start-Process \"$dir\\$fname\" \"/S /D=$dir\" -PassThru -NoNewWindow | Wait-Process",
             "movedir \"$dir\\Browser\" \"$dir\" | Out-Null",
             "Remove-Item \"$dir\\$fname\", \"$dir\\*.lnk\" -Force",
+            "# Persisting profile breaks Tor-Launcher and makes it fallback to config files in Tor folder: move them there",
+            "movedir \"$dir\\TorBrowser\\Data\\Tor\" \"$dir\\TorBrowser\\Tor\" | Out-Null",
             "# Update extensions in persisted profile",
             "movedir \"$dir\\TorBrowser\\Data\\Browser\\profile.default\" \"$persist_dir\\TorBrowser\\Data\\Browser\\profile.default\" | Out-Null"
         ]
     },
     "persist": [
         "TorBrowser\\Data\\Browser\\profile.default",
-        "TorBrowser\\Data\\Tor"
+        "TorBrowser\\Tor\\torrc"
     ],
     "bin": [
         [
@@ -46,10 +44,7 @@
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://ghproxy.com/github.com/TheTorProject/gettorbrowser/releases/download/win64-$version/torbrowser-install-win64-$version_ALL.exe"
-            },
-            "32bit": {
-                "url": "https://ghproxy.com/github.com/TheTorProject/gettorbrowser/releases/download/win32-$version/torbrowser-install-$version_ALL.exe"
+                "url": "https://dist.torproject.org/torbrowser/$version/torbrowser-install-win64-$version_ALL.exe"
             }
         },
         "hash": {
