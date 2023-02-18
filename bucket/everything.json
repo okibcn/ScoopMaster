@@ -1,8 +1,12 @@
 {
-    "homepage": "https://www.voidtools.com",
-    "description": "Locate files and folders by name instantly.",
-    "license": "MIT",
     "version": "1.4.1.1022",
+    "description": "Locate files and folders by name instantly.",
+    "homepage": "https://www.voidtools.com",
+    "license": "MIT",
+    "notes": [
+        "To add Everything to right-click context menu, run:",
+        "reg import \"$dir\\install-context.reg\""
+    ],
     "architecture": {
         "64bit": {
             "url": "https://www.voidtools.com/Everything-1.4.1.1022.x64.zip",
@@ -13,37 +17,60 @@
             "hash": "04661c7a2902e91878b8d714369cf5d7f7d52f79d4fb3fdfe8ce619641ab5793"
         }
     },
-    "installer": {
-        "script": "& \"$dir\\Everything.exe\" -install-service"
-    },
     "pre_install": [
         "ensure \"$persist_dir\" | Out-Null",
-        "if (!(Test-Path \"$persist_dir\\Everything.ini\")) { & \"$dir\\Everything.exe\" -install-config null }",
-        "Get-ChildItem \"$persist_dir\\*\" -Include 'Everything.ini', 'Bookmarks.csv', 'Filters.csv', 'Run History.csv', 'Search History.csv', 'debug.log', 'Errorlog.txt', 'Logs', 'HTTP Server' | Copy-Item -Destination \"$dir\" -ErrorAction SilentlyContinue"
+        "if (!(Test-Path \"$persist_dir\\Everything.ini\")) { Start-Process -Wait \"$dir\\Everything.exe\" -Args @('-install-config null') }",
+        "Get-ChildItem \"$persist_dir\\*\" -Include 'Bookmarks.csv', 'Everything.db', 'Everything.ini', 'Filters.csv', 'Search History.csv' | Copy-Item -Destination \"$dir\" -ErrorAction SilentlyContinue"
     ],
-    "uninstaller": {
-        "script": [
-            "& \"$dir\\Everything.exe\" -uninstall-service",
-            "Get-ChildItem \"$dir\\*\" -Include 'Everything.ini', 'Bookmarks.csv', 'Filters.csv', 'Run History.csv', 'Search History.csv', 'debug.log', 'Errorlog.txt', 'Logs', 'HTTP Server'| Copy-Item -Destination \"$persist_dir\" -ErrorAction SilentlyContinue -Force"
-        ]
-    },
+    "post_install": [
+        "$app_path = \"$dir\\Everything.exe\".Replace('\\', '\\\\')",
+        "'install-context.reg', 'uninstall-context.reg' | ForEach-Object {",
+        "    if (Test-Path \"$bucketsdir\\extras\\scripts\\everything\\$_\") {",
+        "        $content = Get-Content \"$bucketsdir\\extras\\scripts\\everything\\$_\"",
+        "        $content = $content.Replace('$app_path', $app_path)",
+        "        if ($global) {",
+        "            $content = $content.Replace('HKEY_CURRENT_USER', 'HKEY_LOCAL_MACHINE')",
+        "        }",
+        "    }",
+        "    $content | Set-Content -Path \"$dir\\$_\" -Encoding ascii",
+        "}",
+        "if (($cmd -eq 'update') -and (Get-Service -Name 'Everything' -ErrorAction SilentlyContinue)) { start-process powershell -verb runAs -ArgumentList \"Start-Service -Name 'Everything' -ErrorAction SilentlyContinue\" }",
+        "$checkEverything = !(Get-Process -Name 'Everything' -ErrorAction SilentlyContinue)",
+        "if (($cmd -eq 'update') -and $checkEverything) { Start-Process -WindowStyle hidden \"Everything.exe\" }",
+        "echo \"Please Waiting for restart 'Everything.exe'.\""
+    ],
+    "pre_uninstall": [
+        "$checkEverythingService = $(Get-Service -Name 'Everything' -ErrorAction SilentlyContinue)",
+        "if($checkEverythingService) {",
+        "    if($checkEverythingService.Status -ne 'Stopped') {",
+        "        echo \"Waiting stop service 'Everything'\"",
+        "        start-process powershell -verb runAs -ArgumentList \"Stop-Service -Name 'Everything' -Force -ErrorAction SilentlyContinue\"",
+        "        Start-Sleep -Seconds 1;echo \"Finished.\"",
+        "        if ($(Get-Service -Name 'Everything' -ErrorAction SilentlyContinue).Status -ne 'Stopped') {",
+        "            Get-Service -Name 'Everything'",
+        "            error \"$app requires to remove service 'everything'\";break",
+        "        }",
+        "    }",
+        "    if ($cmd -eq 'uninstall') {",
+        "        echo \"Waiting remove service 'Everything'\"",
+        "        start-process powershell -verb runAs -ArgumentList \"sc.exe delete 'Everything'\"",
+        "        Start-Sleep -Seconds 1;echo \"Finished.\"",
+        "        if (Get-Service -Name 'Everything' -ErrorAction SilentlyContinue) {",
+        "            Get-Service -Name 'Everything'",
+        "            error \"$app requires to delete service 'everything'\";break",
+        "        }",
+        "        reg import \"$dir\\uninstall-context.reg\"",
+        "    }",
+        "}",
+        "Stop-Process -Name 'Everything' -Force -ErrorAction SilentlyContinue",
+        "Get-ChildItem \"$dir\\*\" -Include 'Bookmarks.csv', 'Everything.db', 'Everything.ini', 'Filters.csv', 'Search History.csv' | Copy-Item -Destination \"$persist_dir\" -ErrorAction SilentlyContinue -Force"
+    ],
     "bin": "Everything.exe",
     "shortcuts": [
         [
             "Everything.exe",
             "Everything"
         ]
-    ],
-    "persist": [
-        "Everything.ini",
-        "Bookmarks.csv",
-        "Filters.csv",
-        "Run History.csv",
-        "Search History.csv",
-        "debug.log",
-        "Errorlog.txt",
-        "Logs",
-        "HTTP Server"
     ],
     "checkver": "Download Everything ([\\d.]+)",
     "autoupdate": {
