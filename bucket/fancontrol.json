@@ -1,11 +1,16 @@
 {
-    "homepage": "https://github.com/Rem0o/FanControl.Releases",
-    "description": "A focused, highly customizable fan controlling software for Windows.",
     "version": "146",
-    "license": "null",
+    "description": "A highly customizable fan controlling software for the Windows OS.",
+    "homepage": "https://getfancontrol.com/",
+    "license": "Freeware",
     "url": "https://raw.githubusercontent.com/Rem0o/FanControl.Releases/master/FanControl.zip",
     "hash": "c961564b68a8466f989e07327e328ce055bad728ad4eba2072b2ddba8068c196",
-    "bin": "FanControl.exe",
+    "pre_install": [
+        "if (!(Test-Path \"$persist_dir\\Configurations\")) {",
+        "   New-Item \"$persist_dir\\Configurations\" -ItemType Directory -Force | Out-Null",
+        "}",
+        "Get-Process -Name \"FanControl\" -ErrorAction SilentlyContinue | Stop-Process -Force"
+    ],
     "shortcuts": [
         [
             "FanControl.exe",
@@ -13,18 +18,12 @@
         ]
     ],
     "persist": [
-        "FanControl.exe.config",
-        "Plugins"
+        "plugins",
+        "Configurations"
     ],
-    "installer": {
-        "script": "if (Test-Path \"$persist_dir\\userConfig.json\") { Copy-Item \"$persist_dir\\userConfig.json\" \"$dir\" -Force }"
-    },
-    "uninstaller": {
-        "script": "Copy-Item \"$dir\\userConfig.json\" \"$persist_dir\" -Force"
-    },
     "checkver": {
         "url": "https://raw.githubusercontent.com/Rem0o/FanControl.Releases/master/version.json",
-        "jp": "$.Number"
+        "jsonpath": "$.Number"
     },
     "autoupdate": {
         "url": "https://raw.githubusercontent.com/Rem0o/FanControl.Releases/master/FanControl.zip"
