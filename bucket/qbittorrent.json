@@ -4,16 +4,16 @@
     "homepage": "https://www.qbittorrent.org/",
     "license": {
         "identifier": "GPL-2.0-only",
-        "url": "https://raw.githubusercontent.com/qbittorrent/qBittorrent/master/COPYING"
+        "url": "https://github.com/qbittorrent/qBittorrent/blob/master/COPYING"
     },
     "architecture": {
         "64bit": {
-            "url": "https://downloads.sourceforge.net/project/qbittorrent/qbittorrent-win32/qbittorrent-4.5.1/qbittorrent_4.5.1_x64_setup.exe#/dl.7z",
-            "hash": "c196a5a9bedb926fde629a7075cbf9a0b7d36f54088d8a699dd541a4f4af5a13"
+            "url": "https://downloads.sourceforge.net/project/qbittorrent/qbittorrent-win32/qbittorrent-4.5.1/qbittorrent_4.5.1_lt20_qt6_x64_setup.exe#/dl.7z",
+            "hash": "361112289443aadc42606e565c17466f19d5807511173b74af80af6bc7a345c9"
         }
     },
     "pre_install": [
-        "Remove-Item \"$dir\\`$PLUGINSDIR\" -Force -Recurse",
+        "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\uninst.exe\" -Force -Recurse",
         "if ((!(Test-Path \"$persist_dir\\profile\")) -and ((Test-Path \"$persist_dir\\..\\qbittorrent-portable\\profile\") -or (Test-Path \"$env:APPDATA\\qBittorrent\"))) {",
         "    Write-Host \"Scoop is migrating qbittorrent to use portable mode by default.\" -ForegroundColor Yellow",
         "    Write-Host \"For details, see: https://github.com/ScoopInstaller/Extras/issues/5845\" -ForegroundColor Yellow",
@@ -35,6 +35,7 @@
         "    }",
         "}"
     ],
+    "bin": "qbittorrent.exe",
     "shortcuts": [
         [
             "qbittorrent.exe",
@@ -49,10 +50,10 @@
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://downloads.sourceforge.net/project/qbittorrent/qbittorrent-win32/qbittorrent-$version/qbittorrent_$version_x64_setup.exe#/dl.7z",
+                "url": "https://downloads.sourceforge.net/project/qbittorrent/qbittorrent-win32/qbittorrent-$version/qbittorrent_$version_lt20_qt6_x64_setup.exe#/dl.7z",
                 "hash": {
                     "url": "https://www.qbittorrent.org/download.php",
-                    "regex": "64-bit.*\\s+.*<code>$checksum</code>"
+                    "regex": "64-bit installer \\(lt20 qt6\\).*\\s+.*<code>$checksum</code>"
                 }
             }
         }
