@@ -1,19 +1,23 @@
 {
-    "version": "3.7.2",
-    "description": "The automated Usenet download tool",
+    "version": "4.0.0Alpha1",
+    "description": "The automated Usenet download tool (Beta/RC if available)",
     "homepage": "https://sabnzbd.org",
     "license": "GPL-2.0-or-later",
+    "suggest": {
+        "unrar (or systemwide WinRAR install)": "main/unrar",
+        "MultiPar (possibly newer)": "versions/multipar-beta"
+    },
     "architecture": {
         "64bit": {
-            "url": "https://ghproxy.com/github.com/sabnzbd/sabnzbd/releases/download/3.7.2/SABnzbd-3.7.2-win64-bin.zip",
-            "hash": "3d2fabc52efc494c82e4ec7ff2277a15c2163f06fa537fb7a4522714bb729f1c"
+            "url": "https://github.com/sabnzbd/sabnzbd/releases/download/4.0.0Alpha1/SABnzbd-4.0.0Alpha1-win64-bin.zip",
+            "hash": "2df3afa42bd868a76a4f0e140ad7c774f25b4a0020063ddca98a6818de98e559"
         },
         "32bit": {
-            "url": "https://ghproxy.com/github.com/sabnzbd/sabnzbd/releases/download/3.7.2/SABnzbd-3.7.2-win32-bin.zip",
-            "hash": "0dbdb70d213f7036d28982bb79254cd24d8b3da3c96606dbdcb3f81908eed63d"
+            "url": "https://github.com/sabnzbd/sabnzbd/releases/download/4.0.0Alpha1/SABnzbd-4.0.0Alpha1-win32-bin.zip",
+            "hash": "682db170c525928adcf010a9a023bf18b6037c4f79139f08d9fd3f41a12dc82f"
         }
     },
-    "extract_dir": "SABnzbd-3.7.2",
+    "extract_dir": "SABnzbd-4.0.0Alpha1",
     "bin": [
         "SABnzbd-console.exe",
         [
@@ -27,16 +31,26 @@
             "SABnzbd"
         ]
     ],
+    "post_install": [
+        "if ($architecture -eq '64bit' -and $global) {",
+        "$multipar = $(appdir multipar-beta $global)",
+        "$unrar = $(appdir unrar $global)",
+        "if (!(Test-Path \"$unrar\")) { $unrar = \"$env:ProgramFiles\\WinRAR\\UnRAR.exe\" } else { $unrar = \"$unrar\\current\\UnRAR.exe\" }",
+        "if (Test-Path \"$unrar\") { New-Item -Path \"$dir\\win\\unrar\\x64\\UnRAR.exe\" -Force -ItemType SymbolicLink -Value \"$unrar\" | Out-Null }",
+        "if (Test-Path \"$multipar\") { New-Item -Path \"$dir\\win\\multipar\\par2j64.exe\" -Force -ItemType SymbolicLink -Value \"$multipar\\current\\par2j64.exe\" | Out-Null }",
+        "}"
+    ],
     "checkver": {
-        "github": "https://github.com/sabnzbd/sabnzbd"
+        "url": "https://api.github.com/repos/sabnzbd/sabnzbd/releases?per_page=1",
+        "jsonpath": "$[0].tag_name"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://ghproxy.com/github.com/sabnzbd/sabnzbd/releases/download/$version/SABnzbd-$version-win64-bin.zip"
+                "url": "https://github.com/sabnzbd/sabnzbd/releases/download/$version/SABnzbd-$version-win64-bin.zip"
             },
             "32bit": {
-                "url": "https://ghproxy.com/github.com/sabnzbd/sabnzbd/releases/download/$version/SABnzbd-$version-win32-bin.zip"
+                "url": "https://github.com/sabnzbd/sabnzbd/releases/download/$version/SABnzbd-$version-win32-bin.zip"
             }
         },
         "extract_dir": "SABnzbd-$version"
