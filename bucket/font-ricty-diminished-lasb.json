@@ -1,0 +1,36 @@
+{
+    "version": "4.1.1.230208",
+    "description": "Japanese font based on Inconsolata and Circle M+(LASB version)",
+    "homepage": "https://www.structure.kais.kyoto-u.ac.jp/lab/photo.html",
+    "license": "OFL-1.1-no-RFN",
+    "url": "https://www.structure.kais.kyoto-u.ac.jp/lab/RictyDiminished-LASB-4.1.1.230208.zip",
+    "hash": "e2670cde9a5ce7a8f13b1728e96a77228ff83bea0def6d9a68c303fb4371c1c7",
+    "depends": [
+        "sudo",
+        "unoun/scoop-helper"
+    ],
+    "pre_install": "if ((Test-Path $(appdir font-ricty-diminished))) { error 'Uninstall font-ricty-diminished'; exit 1 }",
+    "installer": {
+        "script": [
+            "$helper = \"$(appdir scoop-helper)\\current\\scoop-font-helper.ps1\"",
+            "if (!(Test-Path $helper)) { error 'File not found'; exit 1 }",
+            ". $helper",
+            "Install-Font($dir)"
+        ]
+    },
+    "uninstaller": {
+        "script": [
+            "$helper = \"$(appdir scoop-helper)\\current\\scoop-font-helper.ps1\"",
+            "if (!(Test-Path $helper)) { error 'File not found'; exit 1 }",
+            ". $helper",
+            "Uninstall-Font($dir)"
+        ]
+    },
+    "checkver": {
+        "url": "https://www.structure.kais.kyoto-u.ac.jp/lab/materials.html",
+        "regex": "<p><a href=\"RictyDiminished-LASB-([\\d.]+)\\.zip\""
+    },
+    "autoupdate": {
+        "url": "https://www.structure.kais.kyoto-u.ac.jp/lab/RictyDiminished-LASB-$version.zip"
+    }
+}
