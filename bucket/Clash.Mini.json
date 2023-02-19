@@ -1,0 +1,52 @@
+{
+    "version": "v0.2.1",
+    "description": "A simple GUI for Clash.",
+    "license": "GNUv3",
+    "homepage": "https://github.com/MetaCubeX/Clash.Mini",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/MetaCubeX/Clash.Mini/releases/download/v0.2.1/Clash.Mini_v0.2.1_x64.zip",
+            "hash": "86f9707de315f6ec6d0a28851798e9fa119a1dae948e65656b361b2c3da6b070"
+        },
+        "32bit": {
+            "url": "https://github.com/MetaCubeX/Clash.Mini/releases/download/v0.2.1/Clash.Mini_v0.2.1_x86.zip",
+            "hash": "a699159d3034d0451dc87ce737a90c4a688230e6000dfa4790583ff283c5875f"
+        }
+    },
+    "bin": "Clash.Mini.exe",
+    "shortcuts": [
+        [
+            "Clash.Mini.exe",
+            "Clash.Mini"
+        ]
+    ],
+    "persist": [
+        ".cm",
+        ".core",
+        "log",
+        "rules.d",
+        "proxy.d",
+        "cache.db"
+    ],
+    "pre_install": [
+        "if (!(Test-Path \"$persist_dir\\cache.db\")) {",
+        "    New-Item -Path \"$dir\\cache.db\" -ItemType File | Out-Null",
+        "}",
+        "$exe_path = (Get-ChildItem -Path \"$original_dir\\*\" -Include \"*.exe\" -File)[0].FullName",
+        "Rename-Item -Path \"${exe_path}\" -NewName \"Clash.Mini.exe\" -Force"
+    ],
+    "checkver": {
+        "url": "https://api.github.com/repos/MetaCubeX/Clash.Mini/releases/latest",
+        "jsonpath": "$.tag_name"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/MetaCubeX/Clash.Mini/releases/download/$version/Clash.Mini_$version_x64.zip"
+            },
+            "32bit": {
+                "url": "https://github.com/MetaCubeX/Clash.Mini/releases/download/$version/Clash.Mini_$version_x86.zip"
+            }
+        }
+    }
+}
