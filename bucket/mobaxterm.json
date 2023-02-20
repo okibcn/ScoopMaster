@@ -6,8 +6,14 @@
         "identifier": "Freeware",
         "url": "https://mobaxterm.mobatek.net/license.html"
     },
-    "url": "https://download.mobatek.net/2302023012231703/MobaXterm_Portable_v23.0.zip",
-    "hash": "5e788b97f5fc9f35f6721700d1ffc4bf38a54c51f0e510a29fa95f4a4362f157",
+    "url": [
+        "https://download.mobatek.net/2302023012231703/MobaXterm_Portable_v23.0.zip",
+        "https://raw.githubusercontent.com/caoli5288/scoop-bucket/master/scripts/mobaxterm/MobaXterm-Keygen.py"
+    ],
+    "hash": [
+        "5e788b97f5fc9f35f6721700d1ffc4bf38a54c51f0e510a29fa95f4a4362f157",
+        "be1d05c93841963e184cc459e87c24b39af08fd96abcd2af980cbc588aa844cc"
+    ],
     "pre_install": [
         "    # Rename executable",
         "Get-ChildItem \"$dir\" 'mobaxterm*.exe' | Select-Object -First 1 | Rename-Item -NewName 'MobaXterm.exe'",
@@ -18,6 +24,11 @@
         "    }",
         "}",
         "@('MobaXterm backup.zip', 'MobaXterm.ini') | ForEach-Object { PersistsFile $_ }"
+    ],
+    "post_install": [
+        "cd $dir",
+        "python3 MobaXterm-Keygen.py Custom $version",
+        "rm MobaXterm-Keygen.py"
     ],
     "bin": "MobaXterm.exe",
     "shortcuts": [
@@ -35,6 +46,9 @@
         "regex": "//download.mobatek.net/(?<random>[\\d]+)/MobaXterm_Portable_v([\\d.]+)\\.zip"
     },
     "autoupdate": {
-        "url": "https://download.mobatek.net/$matchRandom/MobaXterm_Portable_v$version.zip"
+        "url": [
+            "https://download.mobatek.net/$matchRandom/MobaXterm_Portable_v$version.zip",
+            "https://raw.githubusercontent.com/caoli5288/scoop-bucket/master/scripts/mobaxterm/MobaXterm-Keygen.py"
+        ]
     }
 }
