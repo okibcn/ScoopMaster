@@ -1,37 +1,28 @@
 {
     "version": "5.7",
-    "description": "Color picker and color editor",
+    "description": "Free portable offline colour picker and colour editor for web designers and digital artists",
     "homepage": "https://annystudio.com/software/colorpicker/",
-    "license": {
-        "identifier": "Freeware",
-        "url": "https://annystudio.com/info/#tnc"
-    },
+    "license": "Proprietary",
     "architecture": {
         "64bit": {
             "url": "https://annystudio.com/jcpicker.exe",
-            "hash": "de8ab82a0ca7b664626af78dda088646002889cfa54971a5699f8921efb6a222"
+            "hash": "77b028f48674f45fa0f36da075012e33a46df3c1e58d162a387d8aef814045b5"
         },
         "32bit": {
             "url": "https://annystudio.com/jcpicker_32bit.exe#/jcpicker.exe",
-            "hash": "e0aeff1441ed34d611217c80011adc0949b226829aebabd3eadf95a0cd9ca933"
+            "hash": "33d50af034de14fd09b01be464f6a12665b809435d3ec4b28eee388b91732a09"
         }
     },
-    "pre_install": [
-        "'ini', 'txt' | ForEach-Object {",
-        "    if (!(Test-Path \"$persist_dir\\jcpicker.$_\")) { New-Item \"$dir\\jcpicker.$_\" | Out-Null }",
-        "}"
-    ],
+    "pre_install": "if(!(Test-Path \"$persist_dir\\jcpicker.ini\")) { New-Item \"$dir\\jcpicker.ini\" | Out-Null }",
+    "bin": "jcpicker.exe",
     "shortcuts": [
         [
             "jcpicker.exe",
             "Just Color Picker"
         ]
     ],
-    "persist": [
-        "jcpicker.ini",
-        "jcpicker.txt"
-    ],
-    "checkver": "Latest version:</b> ([\\d.]+)",
+    "persist": "jcpicker.ini",
+    "checkver": "Just Color Picker ([\\d.]+) for Windows",
     "autoupdate": {
         "architecture": {
             "64bit": {
