@@ -4,6 +4,7 @@
     "homepage": "http://aka.ms/mm",
     "license": "Public Domain",
     "url": "https://github.com/truong2d/mm/releases/download/2.2.1/MouseWithoutBordersSetup.msi",
+    "##" : "Error :( Mouse without Borders is not installed yet, please run Setup.exe first!",
     "hash": "6698dc23f33fea1330e383b9ca5b1699fae6418a8d89e48dc119cb76654f53b1",
     "extract_dir": "Microsoft Garage\\Mouse without Borders",
     "bin": "MouseWithoutBorders.exe",
@@ -18,5 +19,16 @@
     },
     "autoupdate": {
         "url": "https://github.com/truong2d/mm/releases/download/$version/MouseWithoutBordersSetup.msi"
-    }
+    },
+    "depends": ["gsudo"],
+    "post_install" : [
+      "gsudo sc create MouseWithoutBordersSvc binPath=$dir\\MouseWithoutBordersSvc.exe",
+      "gsudo sc start MouseWithoutBordersSvc"
+    ],
+    "pre_uninstall" : [
+      "gsudo sc stop MouseWithoutBordersSvc"
+    ],
+    "post_uninstall": [
+      "gsudo sc delete MouseWithoutBordersSvc"
+    ]
 }
