@@ -5,11 +5,11 @@
     "license": "GPL-3.0-or-later",
     "architecture": {
         "64bit": {
-            "url": "https://ghproxy.com/github.com/Slackadays/Clipboard/releases/download/0.3.2/clipboard-windows-amd64.zip",
+            "url": "https://github.com/Slackadays/Clipboard/releases/download/0.3.2/clipboard-windows-amd64.zip",
             "hash": "8d96bb4631e3961be3016d809928b0141be83fbe2469abd1181258ff71f66c94"
         },
         "arm64": {
-            "url": "https://ghproxy.com/github.com/Slackadays/Clipboard/releases/download/0.3.2/clipboard-windows-arm64.zip",
+            "url": "https://github.com/Slackadays/Clipboard/releases/download/0.3.2/clipboard-windows-arm64.zip",
             "hash": "3e3178c6161bb0ec624ddb05abdf49d3e7d467a8b21be2303789bccbdb8929c6"
         }
     },
@@ -21,14 +21,30 @@
             "cb"
         ]
     ],
+    "env_set": {
+        "TMPDIR": "$persist_dir",
+        "CLIPBOARD_TMPDIR": "$persist_dir",
+        "CLIPBOARD_PERSISTDIR": "$persist_dir"
+    },
+    "pre_install": [
+        "foreach ($emptyFile in $manifest.persist) { ",
+        "   if (!(Test-Path \"$persist_dir\\$emptyFile\")) {",
+        "       New-Item \"$dir\\$emptyFile\" -ItemType Directory | Out-Null",
+        "   }",
+        "}"
+    ],
+    "persist": [
+        ".clipboard",
+        "Clipboard"
+    ],
     "checkver": "github",
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://ghproxy.com/github.com/Slackadays/Clipboard/releases/download/$version/clipboard-windows-amd64.zip"
+                "url": "https://github.com/Slackadays/Clipboard/releases/download/$version/clipboard-windows-amd64.zip"
             },
             "arm64": {
-                "url": "https://ghproxy.com/github.com/Slackadays/Clipboard/releases/download/$version/clipboard-windows-arm64.zip"
+                "url": "https://github.com/Slackadays/Clipboard/releases/download/$version/clipboard-windows-arm64.zip"
             }
         }
     }
