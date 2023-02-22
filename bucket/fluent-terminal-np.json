@@ -3,32 +3,32 @@
     "description": "Terminal emulator based on UWP and web technologies.",
     "homepage": "https://github.com/felixse/FluentTerminal",
     "license": "GPL-3.0-only",
-    "url": "https://ghproxy.com/github.com/felixse/FluentTerminal/releases/download/0.7.7.0/FluentTerminal.Package_0.7.7.0.zip",
+    "url": "https://github.com/felixse/FluentTerminal/releases/download/0.7.7.0/FluentTerminal.Package_0.7.7.0.zip",
     "hash": "799cc25c0f8a67a36d00187a2a06e0fd1505e0b63e48286d8619296629d79a44",
     "installer": {
         "script": [
             "if (!(is_admin)) {",
             "    error \"Administrator rights are required to install $app.\"",
-            "    break",
+            "    exit 1",
             "}",
             "",
             "reg add 'HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\AppModelUnlock' /t REG_DWORD /f /v AllowAllTrustedApps /d 1 | Out-Null",
             "",
             "$dependencies = @()",
             "",
-            "$ProgressPreference = 'SilentlyContinue'",
             "if (Test-Path \"$dir\\Dependencies\") {",
+            "    $dependencies += Get-ChildItem \"$dir\\Dependencies\\*.appx\" | Where-Object { $_.Mode -NotMatch 'd' }",
             "    if ($architecture -eq '32bit') { $dependencies += Get-ChildItem \"$dir\\Dependencies\\x86\\*.appx\" | Where-Object { $_.Mode -NotMatch 'd' } }",
             "    elseif ($architecture -eq '64bit') { $dependencies += Get-ChildItem \"$dir\\Dependencies\\x64\\*.appx\" | Where-Object { $_.Mode -NotMatch 'd' } }",
             "    elseif ($architecture -eq 'arm64') { $dependencies += Get-ChildItem \"$dir\\Dependencies\\arm\\*.appx\" | Where-Object { $_.Mode -NotMatch 'd' } }",
             "}",
             "",
-            "$bundle = Get-ChildItem \"$dir\\*.msixbundle\" | Where-Object { $_.Mode -NotMatch 'd' }",
+            "$bundle = Get-ChildItem \"$dir\\*.appxbundle\" | Where-Object { $_.Mode -NotMatch 'd' }",
             "if ($dependencies.FullName.Count -gt 0) { Add-AppxPackage -Path $bundle.FullName -DependencyPath $dependencies.FullName -ForceApplicationShutdown -ForceUpdateFromAnyVersion | Out-Null }",
             "else { Add-AppxPackage -Path $bundle.FullName -ForceApplicationShutdown -ForceUpdateFromAnyVersion | Out-Null }",
             "",
-            "Invoke-WebRequest https://ghproxy.com/raw.githubusercontent.com/felixse/FluentTerminal/master/Explorer%20Context%20Menu%20Integration/Install.bat -OutFile \"$dir\\InstallContextMenu.bat\" -UseBasicParsing",
-            "Invoke-WebRequest https://ghproxy.com/raw.githubusercontent.com/felixse/FluentTerminal/master/Explorer%20Context%20Menu%20Integration/Uninstall.bat -OutFile \"$dir\\UninstallContextMenu.bat\" -UseBasicParsing",
+            "Invoke-WebRequest https://raw.githubusercontent.com/felixse/FluentTerminal/master/Explorer%20Context%20Menu%20Integration/Install.bat -OutFile \"$dir\\InstallContextMenu.bat\" -UseBasicParsing",
+            "Invoke-WebRequest https://raw.githubusercontent.com/felixse/FluentTerminal/master/Explorer%20Context%20Menu%20Integration/Uninstall.bat -OutFile \"$dir\\UninstallContextMenu.bat\" -UseBasicParsing",
             "cmd /c \"$dir\\InstallContextMenu.bat > nul 2> nul\""
         ]
     },
@@ -41,7 +41,7 @@
         "script": [
             "if (!(is_admin)) {",
             "    error \"Administrator rights are required to uninstall $app.\"",
-            "    break",
+            "    exit 1",
             "}",
             "",
             "Stop-Process -ErrorAction Ignore -Name FluentTerminal.App",
@@ -54,7 +54,6 @@
             "Copy-Item -Recurse -Force \"$env:LOCALAPPDATA\\Packages\\$($package.PackageFamilyName)\\Settings\" -Destination $persist_dir",
             "",
             "cmd /c \"$dir\\UninstallContextMenu.bat > nul 2> nul\"",
-            "$ProgressPreference = 'SilentlyContinue'",
             "Remove-AppxPackage $package"
         ]
     },
@@ -63,6 +62,6 @@
         "github": "https://github.com/felixse/FluentTerminal"
     },
     "autoupdate": {
-        "url": "https://ghproxy.com/github.com/felixse/FluentTerminal/releases/download/$version/FluentTerminal.Package_$version.zip"
+        "url": "https://github.com/felixse/FluentTerminal/releases/download/$version/FluentTerminal.Package_$version.zip"
     }
 }
