@@ -1,9 +1,9 @@
 {
     "version": "2.004",
-    "license": "MIT",
-    "homepage": "https://github.com/epoweripione/terminal-custom",
-    "url": "https://github.com/epoweripione/fonts/releases/download/v0.1.0/NotoSansCJK-ttc-2.004.zip",
-    "hash": "4fd718e79fd0b31229aa123ee48c0ced14bcdb1bc9c93799328a23feefae9273",
+    "license": "OFL-1.1",
+    "homepage": "https://github.com/googlefonts/noto-cjk",
+    "url": "https://mirrors.tuna.tsinghua.edu.cn/github-release/googlefonts/noto-cjk/LatestRelease/03_NotoSansCJK-OTC.zip",
+    "hash": "528f4e1b25ff3badb0321b38d015d954c4c0de926c7830ef50e4a1948f6a3eed",
     "depends": "sudo",
     "installer": {
         "script": [
@@ -16,7 +16,7 @@
             "    exit 1",
             "  }",
             "}",
-            "Get-ChildItem \"$dir\" -Filter 'NotoSansCJK-*.ttc' | ForEach-Object {",
+            "Get-ChildItem \"$dir\" -Filter 'NotoSansCJK-*.ttc' -Recurse | ForEach-Object {",
             "    New-ItemProperty -Path 'HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts' -Name $_.Name.Replace($_.Extension, ' (TrueType)') -Value $_.Name -Force | Out-Null",
             "    Copy-Item $_.FullName -destination \"$env:windir\\Fonts\"",
             "}"
@@ -33,10 +33,10 @@
         ]
     },
     "checkver": {
-        "url": "https://github.com/epoweripione/fonts/blob/main/README.md",
-        "regex": "NotoSansCJK-ttc-([\\d.]+)\\.zip"
+        "url": "https://mirrors.tuna.tsinghua.edu.cn/github-release/googlefonts/noto-cjk/",
+        "regex": "Noto Sans CJK Version ([\\d.]+)"
     },
     "autoupdate": {
-        "url": "https://github.com/epoweripione/fonts/releases/download/v0.1.0/NotoSansCJK-ttc-$version.zip"
+        "url": "https://mirrors.tuna.tsinghua.edu.cn/github-release/googlefonts/noto-cjk/LatestRelease/03_NotoSansCJK-OTC.zip"
     }
 }
