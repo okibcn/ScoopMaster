@@ -3,34 +3,55 @@
     "description": "The ultimate automation scripting language for Windows.",
     "homepage": "https://www.autohotkey.com/",
     "license": "GPL-2.0-or-later",
-    "url": "https://github.com/Lexikos/AutoHotkey_L/releases/download/v2.0.2/AutoHotkey_2.0.2_setup.exe#/dl.7z",
-    "hash": "9c8b1aecaf1bdded80bec98ec5ab5b9b9754cbce9439dd9eacc7d1774d1438f8",
+    "notes": [
+        "Install specific version of interpreter(Default: Latest 1.x):",
+        "  - 'autohotkey /script $dir\\UX\\install-version.ahk [version]'",
+        "Uninstall Sub-versions of Interpreter:",
+        "  - 'autohotkey /script $dir\\UX\\ui-uninstall.ahk'",
+        "See also: https://github.com/ScoopInstaller/Extras/issues/10066"
+    ],
+    "url": "https://www.autohotkey.com/download/2.0/AutoHotkey_2.0.2.zip",
+    "hash": "8f28c38a0b2af6ac96c4a7e1a2c0f296b2410f845d9aca8487843a1edac4271d",
+    "extract_to": "installer",
+    "installer": {
+        "script": [
+            "$args = @('/script', \"$dir\\installer\\UX\\install.ahk\", '/to', $dir, '/user', '/silent')",
+            "if ($global) { $args = @('/script', \"$dir\\installer\\UX\\install.ahk\", '/to', $dir, '/silent') }",
+            "Start-Process -Wait \"$dir\\installer\\AutoHotkey32.exe\" -ArgumentList $args"
+        ]
+    },
+    "post_install": "Remove-Item \"$dir\\installer\" -Force -Recurse",
     "architecture": {
         "64bit": {
             "bin": [
-                "autohotkeyu64.exe",
                 [
-                    "autohotkeyu64.exe",
+                    "UX\\AutohotkeyUX.exe",
                     "autohotkey"
                 ],
-                "compiler\\ahk2exe.exe"
+                [
+                    "v2\\AutoHotkey32.exe",
+                    "autohotkey32"
+                ]
             ]
         },
         "32bit": {
             "bin": [
-                "autohotkeyu32.exe",
-                [
-                    "autohotkeyu32.exe",
-                    "autohotkey"
-                ],
-                "compiler\\ahk2exe.exe"
+                "UX\\AutohotkeyUX.exe",
+                "autohotkey"
             ]
         }
     },
+    "uninstaller": {
+        "script": "Start-Process -Wait \"$dir\\UX\\AutoHotkeyUX.exe\" -ArgumentList @('/script', \"$dir\\UX\\install.ahk\", '/uninstall', '/silent')"
+    },
     "checkver": {
-        "github": "https://github.com/lexikos/autohotkey_l"
+        "url": "https://www.autohotkey.com/download/2.0/version.txt",
+        "regex": "([\\d.]+)"
     },
     "autoupdate": {
-        "url": "https://github.com/Lexikos/AutoHotkey_L/releases/download/v$version/AutoHotkey_$version_setup.exe#/dl.7z"
+        "url": "https://www.autohotkey.com/download/2.0/AutoHotkey_$version.zip",
+        "hash": {
+            "url": "$url.sha256"
+        }
     }
 }
