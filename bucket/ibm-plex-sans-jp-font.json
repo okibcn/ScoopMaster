@@ -1,0 +1,18 @@
+{
+    "version": "v6.0.2",
+    "description": "IBM Plex Sans JP",
+    "homepage": "https://github.com/IBM/plex",
+    "license": "SIL Open Font License 1.1",
+    "url": "https://github.com/IBM/plex/releases/download/v6.0.2/OpenType.zip",
+    "pre_install": [
+        "#Access denied error running: Remove-Item \"$env:windir/fonts/IBMPlexSansJP*.otf\" -recurse"
+    ],
+    "post_install": [
+        "$fonts = (New-Object -ComObject Shell.Application).Namespace(0x14)",
+        "dir \"$dir/OpenType/IBM-Plex-Sans-JP/hinted/*.otf\" | %{ $fonts.CopyHere($_.fullname) }"
+    ],
+    "checkver": "github",
+    "autoupdate": {
+        "url": "https://github.com/IBM/plex/releases/download/$version/OpenType.zip"
+    }
+}

@@ -1,0 +1,17 @@
+{
+    "version": "latest",
+    "description": "Roboto type family. ",
+    "homepage": "https://fonts.google.com/specimen/Roboto",
+    "license": "Apache License Version 2.0",
+    "url": "https://fonts.google.com/download?family=Roboto#/dl.7z",
+    "pre_install": [
+        "#Access denied error running: Remove-Item \"$env:windir/fonts/Roboto-*.ttf\" -recurse"
+    ],
+    "post_install": [
+        "$fonts = (New-Object -ComObject Shell.Application).Namespace(0x14)",
+        "dir \"$dir/*.ttf\" | %{ $fonts.CopyHere($_.fullname) }"
+    ],
+    "autoupdate": {
+        "url": "https://fonts.google.com/download?family=Roboto#/dl.7z"
+    }
+}
