@@ -1,16 +1,14 @@
 {
-    "homepage": "https://getwebcatalog.com/",
-    "description": "Run Web Apps like Real Apps",
-    "version": "41.4.0",
-    "license": "MPL-2.0",
-    "url": "https://github.com/quanglam2807/webcatalog/releases/download/v41.4.0/webcatalog-setup-41.4.0.exe#/dl.7z",
-    "hash": "44adc83c165e3818df4f169b1306287706e5d582e25a44411298cb84398aa222",
+    "version": "45.0.0",
+    "description": "Transform websites into desktop apps with WebCatalog, and access a wealth of exclusive apps for Mac & PC. ",
+    "license": "???",
+    "homepage": "https://webcatalog.io",
+    "url": "https://cdn-2.webcatalog.io/webcatalog/WebCatalog%20Setup%2045.0.0.exe#/dl.7z",
+    "hash": "40cb8f70141f149435a95b2ac1484ca3f4147293b214d41b6ad46b5d767122b6",
     "installer": {
         "script": [
-            "Move-Item $dir\\`$PLUGINSDIR\\* $dir -Force",
-            "7z x -y $dir\\app-64.7z -o\"$dir\"",
-            "Remove-Item $dir\\app-64.7z",
-            "Remove-Item $dir\\`$PLUGINSDIR"
+            "Expand-7ZipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\" -Removal",
+            "Remove-Item \"$dir\\`$*\", \"$dir\\Uninst*\" -Force -Recurse"
         ]
     },
     "shortcuts": [
@@ -19,24 +17,11 @@
             "WebCatalog"
         ]
     ],
-    "bin": "WebCatalog.exe",
-    "uninstaller": {
-        "script": [
-            "$webcatalogRoaming = \"$env:APPDATA\\WebCatalog\"",
-            "if ((Test-Path $webcatalogRoaming)) {",
-            "    Remove-Item \"$webcatalogRoaming\" -Recurse -Force",
-            "}",
-            "$webcatalogStartmenu = \"$env:APPDATA\\Microsoft\\Windows\\Start Menu\\Programs\\WebCatalog Apps\"",
-            "if ((Test-Path $webcatalogStartmenu)) {",
-            "    Remove-Item \"$webcatalogStartmenu\" -Recurse -Force",
-            "}"
-        ]
-    },
     "checkver": {
-        "github": "https://github.com/quanglam2807/webcatalog"
+        "url": "https://webcatalog.io",
+        "regex": "Version ([\\d.]+)"
     },
     "autoupdate": {
-        "url": "https://github.com/quanglam2807/webcatalog/releases/download/v$version/webcatalog-setup-$version.exe#/dl.7z"
-    },
-    "notes": "I don't persist your data, they are still in '%APPDATA%\\WebCatalog'. The extra files of apps you installed in WebCatalog are stored in '%APPDATA%\\yourAppName' which you should delete manually after uninstallation."
+        "url": "https://cdn-2.webcatalog.io/webcatalog/WebCatalog%20Setup%20$version.exe#/dl.7z"
+    }
 }
