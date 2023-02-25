@@ -4,13 +4,19 @@
     "homepage": "https://fonts.google.com/noto/specimen/Noto+Serif+JP",
     "license": "OFL-1.1",
     "url": "https://fonts.google.com/download?family=Noto%20Serif%20JP#/dl.7z",
-    "pre_install": [
-        "#Access denied error running: Remove-Item \"$env:windir/fonts/NotoSerifJP*.otf\" -recurse"
-    ],
-    "post_install": [
-        "$fonts = (New-Object -ComObject Shell.Application).Namespace(0x14)",
-        "dir \"$dir/*.otf\" | %{ $fonts.CopyHere($_.fullname) }"
-    ],
+    "installer": {
+        "script": [
+            "$fonts = (New-Object -ComObject Shell.Application).Namespace(0x14)",
+            "dir \"$dir/*.otf\" | %{ $fonts.CopyHere($_.fullname) }"
+        ]
+    },
+    "uninstaller": {
+        "script": [
+            "if ($cmd -eq \"uninstall\") {",
+            "    Write-Host \"To uninstall it completely, you have to delete it from the fonts in the control panel, which can be launched with ``control fonts``.\" -Foreground Magenta",
+            "}"
+        ]
+    },
     "autoupdate": {
         "url": "https://fonts.google.com/download?family=Noto%20Serif%20JP#/dl.7z"
     }
