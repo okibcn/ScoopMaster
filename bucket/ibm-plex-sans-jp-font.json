@@ -12,10 +12,8 @@
     },
     "uninstaller": {
         "script": [
-            "Get-ChildItem $dir\\OpenType\\IBM-Plex-Sans-JP\\hinted -filter '*.otf' | ForEach-Object {",
-            "   $fontdir = \"$env:LocalAppData\\Microsoft\\Windows\\Fonts\"",
-            "   Remove-ItemProperty -Path 'HKCU:\\Software\\Microsoft\\Windows NT\\CurrentVersion\\Fonts' -Name $_.Name.Replace($_.Extension, ' (TrueType)') -Force -ErrorAction SilentlyContinue",
-            "   Remove-Item \"$fontdir\\$($_.Name)\" -Force -ErrorAction SilentlyContinue",
+            "if ($cmd -eq \"uninstall\") {",
+            "    Write-Host \"To uninstall it completely, you have to delete it from the fonts in the control panel, which can be launched with `control fonts`.\" -Foreground Magenta",
             "}"
         ]
     },
