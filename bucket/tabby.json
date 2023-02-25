@@ -1,19 +1,23 @@
 {
-    "homepage": "https://tabby.sh",
-    "description": "A terminal for a more modern age.",
     "version": "1.0.189",
+    "description": "A terminal for a more modern age",
+    "homepage": "https://tabby.sh",
     "license": "MIT",
     "architecture": {
         "64bit": {
-            "url": "https://github.com/Eugeny/tabby/releases/download/v1.0.189/tabby-1.0.189-portable-x64.zip",
-            "hash": "d48d54799a96d954eedb8c56e59a41e060da8da22ffd6080ddbf4d04e125ecb4"
+            "url": "https://github.com/Eugeny/tabby/releases/download/v1.0.189/tabby-1.0.189-setup-x64.exe#/dl.7z",
+            "hash": "dfc7ca0f6be1ff11f3cc1ab50e7d37d624b24d5d56485f78edc48598a8e28bfd",
+            "pre_install": [
+                "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\"",
+                "Remove-Item \"$dir\\`$*\", \"$dir\\Unins*\" -Force -Recurse"
+            ],
+            "post_install": [
+                "if (Test-Path $env:APPDATA\\Tabby) {",
+                "    Copy-Item -Path $env:APPDATA\\Tabby\\* -Destination \"$persist_dir\\data\" -PassThru",
+                "}"
+            ]
         }
     },
-    "post_install": [
-        "if (Test-Path $env:APPDATA\\Tabby) {",
-        "    Copy-Item -Path $env:APPDATA\\Tabby\\* -Destination \"$persist_dir\\data\" -PassThru",
-        "}"
-    ],
     "bin": "Tabby.exe",
     "shortcuts": [
         [
@@ -28,7 +32,11 @@
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://github.com/Eugeny/tabby/releases/download/v$version/tabby-$version-portable-x64.zip"
+                "url": "https://github.com/Eugeny/tabby/releases/download/v$version/tabby-$version-setup-x64.exe#/dl.7z",
+                "hash": {
+                    "url": "$baseurl/latest.yml",
+                    "regex": "sha512: $base64"
+                }
             }
         }
     }
