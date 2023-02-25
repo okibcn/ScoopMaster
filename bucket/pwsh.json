@@ -1,8 +1,12 @@
 {
-    "homepage": "https://github.com/PowerShell/PowerShell",
-    "description": "PowerShell Core, the cross-platform task automation and configuration management framework/tool.",
     "version": "7.3.3",
+    "description": "Cross-platform automation and configuration tool/framework, known as Powershell Core, that works well with existing tools and is optimized for dealing with structured data.",
+    "homepage": "https://github.com/PowerShell/PowerShell",
     "license": "MIT",
+    "notes": [
+        "Add PowerShell Core as a explorer context menu by running: '$dir\\install-explorer-context.reg'",
+        "For file context menu, run '$dir\\install-file-context.reg'"
+    ],
     "architecture": {
         "64bit": {
             "url": "https://github.com/PowerShell/PowerShell/releases/download/v7.3.3/PowerShell-7.3.3-win-x64.zip",
@@ -13,12 +17,34 @@
             "hash": "c0de53efaa3a80e928f79c90169ced8315b0fb7af942295ac19641039dda5e25"
         }
     },
-    "env_add_path": "pwsh.exe",
+    "pre_install": [
+        "'Microsoft.PowerShell_profile.ps1', 'profile.ps1' | ForEach-Object {",
+        "    if (!(Test-Path \"$persist_dir\\$_\")) { New-Item \"$dir\\$_\" | Out-Null }",
+        "}"
+    ],
+    "post_install": [
+        "if ($architecture -eq '32bit') { $pwshArch = 'x86' } else { $pwshArch = 'x64' }",
+        "$pwshPath = \"$dir\\pwsh.exe\".Replace('\\', '\\\\')",
+        "'install-explorer-context', 'uninstall-explorer-context', 'install-file-context' , 'uninstall-file-context' | ForEach-Object {",
+        "    if (Test-Path \"$bucketsdir\\main\\scripts\\pwsh\\$_.reg\") {",
+        "        $content = (Get-Content \"$bucketsdir\\main\\scripts\\pwsh\\$_.reg\").Replace('$pwshPath', $pwshPath)",
+        "        $content = $content.Replace('$pwshArch', $pwshArch)",
+        "        if ($global) { $content = $content.Replace('HKEY_CURRENT_USER', 'HKEY_LOCAL_MACHINE') }",
+        "        Set-Content \"$dir\\$_.reg\" $content -Encoding Ascii -Force",
+        "    }",
+        "}"
+    ],
+    "bin": "pwsh.exe",
     "shortcuts": [
         [
             "pwsh.exe",
-            "PowerShell"
+            "PowerShell Core",
+            "-WorkingDirectory ~"
         ]
+    ],
+    "persist": [
+        "Microsoft.PowerShell_profile.ps1",
+        "profile.ps1"
     ],
     "checkver": "github",
     "autoupdate": {
@@ -32,8 +58,7 @@
         },
         "hash": {
             "url": "https://github.com/PowerShell/PowerShell/releases/tag/v$version/",
-            "find": "$basename\\s*<ul>\\s*<li>([A-Fa-f\\d]{64})"
+            "regex": "$basename\\s*<ul>\\s*<li>$sha256"
         }
-    },
-    "notes": "This version don't use a shim, but add pwsh to env."
+    }
 }
