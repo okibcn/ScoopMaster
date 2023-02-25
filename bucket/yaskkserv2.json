@@ -5,10 +5,13 @@
     "license": "MIT, Apache-2.0",
     "url": "https://github.com/wachikun/yaskkserv2/releases/download/0.1.5/yaskkserv2-0.1.5-x86_64-pc-windows-gnu.zip",
     "hash": "68f7a149ada569ac84781c4f9c09c8df8ab2de8c7655bb16c32a976f52d9c634",
-    "pre_install": "Rename-Item \"$dir\\yaskkserv2-$version-x86_64-pc-windows-gnu\" \"$dir\\yaskkserv2-current-x86_64-pc-windows-gnu\" -ErrorAction SilentlyContinue",
+    "pre_install": [
+        "Move-Item \"$dir\\yaskkserv2-$version-x86_64-pc-windows-gnu\\*\" \"$dir\" -ErrorAction SilentlyContinue",
+        "Remove-Item -Recurse \"$dir\\yaskkserv2-$version-x86_64-pc-windows-gnu\""
+    ],
     "bin": [
-        "yaskkserv2-current-x86_64-pc-windows-gnu\\yaskkserv2.exe",
-        "yaskkserv2-current-x86_64-pc-windows-gnu\\yaskkserv2_make_dictionary.exe"
+        "yaskkserv2.exe",
+        "yaskkserv2_make_dictionary.exe"
     ],
     "checkver": "github",
     "autoupdate": {
