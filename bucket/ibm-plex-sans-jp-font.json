@@ -1,18 +1,29 @@
 {
-    "version": "v6.0.2",
+    "version": "6.1.1",
     "description": "IBM Plex Sans JP",
     "homepage": "https://github.com/IBM/plex",
     "license": "SIL Open Font License 1.1",
-    "url": "https://github.com/IBM/plex/releases/download/v6.0.2/OpenType.zip",
-    "pre_install": [
-        "#Access denied error running: Remove-Item \"$env:windir/fonts/IBMPlexSansJP*.otf\" -recurse"
-    ],
-    "post_install": [
-        "$fonts = (New-Object -ComObject Shell.Application).Namespace(0x14)",
-        "dir \"$dir/OpenType/IBM-Plex-Sans-JP/hinted/*.otf\" | %{ $fonts.CopyHere($_.fullname) }"
-    ],
+    "url": "https://github.com/IBM/plex/releases/download/v6.1.1/OpenType.zip",
+    "installer": {
+        "script": [
+            "Get-ChildItem $dir\\OpenType\\IBM-Plex-Sans -filter '*.otf' | ForEach-Object {",
+            "   $fontdir = \"$env:LocalAppData\\Microsoft\\Windows\\Fonts\"",
+            "   New-ItemProperty -Path 'HKCU:\\Software\\Microsoft\\Windows NT\\CurrentVersion\\Fonts' -Name $_.Name.Replace($_.Extension, ' (TrueType)') -Value \"$fontdir\\$($_.Name)\" -Force | Out-Null",
+            "   Copy-Item $_.Fullname -destination \"$fontdir\"",
+            "}"
+        ]
+    },
+    "uninstaller": {
+        "script": [
+            "Get-ChildItem $dir\\OpenType\\IBM-Plex-Sans -filter '*.otf' | ForEach-Object {",
+            "   $fontdir = \"$env:LocalAppData\\Microsoft\\Windows\\Fonts\"",
+            "   Remove-ItemProperty -Path 'HKCU:\\Software\\Microsoft\\Windows NT\\CurrentVersion\\Fonts' -Name $_.Name.Replace($_.Extension, ' (TrueType)') -Force -ErrorAction SilentlyContinue",
+            "   Remove-Item \"$fontdir\\$($_.Name)\" -Force -ErrorAction SilentlyContinue",
+            "}"
+        ]
+    },
     "checkver": "github",
     "autoupdate": {
-        "url": "https://github.com/IBM/plex/releases/download/$version/OpenType.zip"
+        "url": "https://github.com/IBM/plex/releases/download/v$version/OpenType.zip"
     }
 }
