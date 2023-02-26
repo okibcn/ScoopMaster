@@ -1,34 +1,33 @@
 {
-  "version": "5.5.0",
-  "homepage": "https://www.kdevelop.org/",
-  "description": "A cross-platform IDE for C, C++, Python, QML/JavaScript and PHP.",
-  "license": "GFDL-1.2",
-  "architecture": {
-    "64bit": {
-      "url": "http://download.kde.org/stable/kdevelop/5.5.0/bin/windows/kdevelop-5.5.0-x64-setup.exe#/dl.7z",
-      "hash": "f282c8c798197a79e39692aa8108c5ead58950258ee85cbae8cb571196ecddd2"
-    }
-  },
-  "pre_install": [
-    "Remove-Item \"$dir\" -Include 'unins*', '$*', '7z*' -Recurse; Get-ChildItem \"$dir\\kdevelop-*.7z\" | Rename-Item -NewName 'kdevelop.7z'",
-    "Expand-7zipArchive \"$dir\\kdevelop.7z\" \"$dir\" -Removal"
-  ],
-  "bin": "bin\\kdevelop.exe",
-  "shortcuts": [
-    [
-      "bin\\kdevelop.exe",
-      "KDevelop"
-    ]
-  ],
-  "checkver": {
-    "url": "https://www.kdevelop.org/download",
-    "regex": "stable/kdevelop/([\\d.]+)/bin/windows"
-  },
-  "autoupdate": {
+    "version": "5.6.2-1848",
+    "homepage": "https://www.kdevelop.org/",
+    "description": "A cross-platform IDE for C, C++, Python, QML/JavaScript and PHP.",
+    "license": "GFDL-1.2",
     "architecture": {
-      "64bit": {
-        "url": "http://download.kde.org/stable/kdevelop/$version/bin/windows/kdevelop-$version-x64-setup.exe#/dl.7z"
-      }
+        "64bit": {
+            "url": "https://binary-factory.kde.org/job/KDevelop_Release_win64/1848/artifact/kdevelop-5.6.2-1848-windows-cl-msvc2019-x86_64.7z",
+            "hash": "de5a6419da4b9a4ad97c009ce2875d495bf096459804ffc3ad020c44b48ddbd7"
+        }
+    },
+    "bin": "bin\\kdevelop.exe",
+    "shortcuts": [
+        [
+            "bin\\kdevelop.exe",
+            "KDevelop"
+        ]
+    ],
+    "checkver": {
+        "url": "https://binary-factory.kde.org/job/KDevelop_Release_win64/",
+        "regex": "kdevelop-([\\d.-]+)-windows-cl-msvc2019-x86_64"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://binary-factory.kde.org/job/KDevelop_Release_win64/$preReleaseVersion/artifact/kdevelop-5.6.2-1848-windows-cl-msvc2019-x86_64.7z",
+                "hash": {
+                    "url": "$url.sha256"
+                }
+            }
+        }
     }
-  }
 }
