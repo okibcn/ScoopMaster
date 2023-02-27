@@ -1,18 +1,45 @@
 {
+    "$schema": "https://ghproxy.com/https://raw.githubusercontent.com/ScoopInstaller/Scoop/master/schema.json",
     "version": "0.7.3.0",
-    "description": "A Tool to Redirect News, Search, Widgets, Weather and More to Your Default Browser",
+    "description": "A tool to redirect News, Search, Widgets, Weather and more to your default browser.",
     "homepage": "https://github.com/rcmaehl/MSEdgeRedirect",
-    "license": "LGPL-3.0-only",
+    "license": {
+        "identifier": "LGPL-3.0-only",
+        "url": "https://github.com/rcmaehl/MSEdgeRedirect/blob/main/LICENSE"
+    },
     "architecture": {
         "64bit": {
-            "url": "https://github.com/rcmaehl/MSEdgeRedirect/releases/download/0.7.3.0/MSEdgeRedirect.exe",
+            "url": "https://ghproxy.com/https://github.com/rcmaehl/MSEdgeRedirect/releases/download/0.7.3.0/MSEdgeRedirect.exe",
             "hash": "d046c14b06347fd0053c3321828ae145e5a5a7caecde7c116d24458a8c4268ae"
         },
         "32bit": {
-            "url": "https://github.com/rcmaehl/MSEdgeRedirect/releases/download/0.7.3.0/MSEdgeRedirect_x86.exe#/MSEdgeRedirect.exe",
+            "url": "https://ghproxy.com/https://github.com/rcmaehl/MSEdgeRedirect/releases/download/0.7.3.0/MSEdgeRedirect_x86.exe#/MSEdgeRedirect.exe",
             "hash": "778581273409edd2590e1b023dd7ee0029720a059fda3b413f59c9b564c6f4ba"
         }
     },
+    "pre_install": [
+        "if (!(Test-Path \"$persist_dir\\Setup.ini\")) {",
+        "  Set-Content -Encoding Ascii -Path \"$persist_dir\\Setup.ini\" -Value @'",
+        "[Config]",
+        "Managed=False",
+        "Mode=Service",
+        "",
+        "[Settings]",
+        "NoTray=True",
+        "NoUpdates=True",
+        "StartMenu=None",
+        "Startup=True",
+        "'@",
+        "}"
+    ],
+    "installer": {
+        "script": "Invoke-ExternalCommand \"$dir\\MSEdgeRedirect.exe\" -Args @('/silentinstall', \"$persist_dir\\Setup.ini\") | Out-Null"
+    },
+    "uninstaller": {
+        "file": "MSEdgeRedirect.exe",
+        "args": "/uninstall"
+    },
+    "persist": "Setup.ini",
     "shortcuts": [
         [
             "MSEdgeRedirect.exe",
@@ -23,17 +50,14 @@
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://github.com/rcmaehl/MSEdgeRedirect/releases/download/$version/MSEdgeRedirect.exe",
-                "hash": {
-                    "url": "https://github.com/rcmaehl/MSEdgeRedirect/releases/download/$version/checksums.sha256"
-                }
+                "url": "https://ghproxy.com/https://github.com/rcmaehl/MSEdgeRedirect/releases/download/$version/MSEdgeRedirect.exe"
             },
             "32bit": {
-                "url": "https://github.com/rcmaehl/MSEdgeRedirect/releases/download/$version/MSEdgeRedirect_x86.exe#/MSEdgeRedirect.exe",
-                "hash": {
-                    "url": "https://github.com/rcmaehl/MSEdgeRedirect/releases/download/$version/checksums.sha256"
-                }
+                "url": "https://ghproxy.com/https://github.com/rcmaehl/MSEdgeRedirect/releases/download/$version/MSEdgeRedirect_x86.exe#/MSEdgeRedirect.exe"
             }
+        },
+        "hash": {
+            "url": "$baseurl/checksums.sha256"
         }
     }
 }

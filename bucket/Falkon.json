@@ -1,7 +1,7 @@
 {
-    "homepage": "https://www.falkon.org",
     "version": "3.1.0",
     "description": "KDE web browser using QtWebEngine rendering engine, previously known as QupZilla.",
+    "homepage": "https://www.falkon.org",
     "license": "GPL-3.0-or-later",
     "architecture": {
         "64bit": {
@@ -15,26 +15,23 @@
     },
     "pre_install": "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\uninstall.exe\" -Recurse -Force",
     "bin": "falkon.exe",
-    "persist": [
-        "falkon.conf",
-        "config",
-        "qt.conf",
-        "plugins"
-    ],
     "shortcuts": [
         [
             "falkon.exe",
             "Falkon"
         ]
     ],
-    "checkver": "Current version: ([\\d.]+)",
+    "checkver": {
+        "url": "https://www.falkon.org/download/",
+        "regex": "Falkon-([\\d.]+)-x64\\.exe"
+    },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://download.kde.org/stable/falkon/$matchHead/Falkon.Installer.$version.x64.exe#/dl.7z"
+                "url": "https://download.kde.org/stable/falkon/$majorVersion.$minorVersion/Falkon.Installer.$version.x64.exe#/dl.7z"
             },
             "32bit": {
-                "url": "https://download.kde.org/stable/falkon/$matchHead/Falkon.Installer.$version.exe#/dl.7z"
+                "url": "https://download.kde.org/stable/falkon/$majorVersion.$minorVersion/Falkon.Installer.$version.exe#/dl.7z"
             }
         },
         "hash": {

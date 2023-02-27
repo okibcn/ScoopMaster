@@ -1,26 +1,32 @@
 {
-    "version": "19.29.30137",
-    "description": "The command-line compiler functions of VS 2019 C#/C++.",
-    "homepage": "https://www.visualstudio.com",
-    "license": {
-        "identifier": "Freeware",
-        "url": "https://www.microsoft.com/en-us/legal/intellectualproperty/copyright/default.aspx"
-    },
-    "url": [
-        "https://github.com/mike-macmullin/vm-bucket/releases/download/v2.0/vs_BuildTools.exe",
-        "https://github.com/mike-macmullin/vm-bucket/releases/download/v2.0/prod.vsconfig",
-        "https://gist.githubusercontent.com/mike-macmullin/55a456ef8ece9f13e9331a89d77b0001/raw/65aec602460d3d56d8f8eb9f05c9ebcbccf70d13/vs2019_install.ps1"
-    ],
-    "hash": [
-        "460D80AB276046DE2455A4115CC4E2F1E6529C9E6CB99501844ECAFD16C619C4",
-        "9AB91514EBCA5AA4DF77096798917464E36E4B41223A7B7FD1BBCDCFC27B9884",
-        "7DEDC0EE4C9944965DC1E1070E83502A8348E9659FD5C68ABBECDFDC37262468"
-    ],
+    "version": "16.11.24",
+    "description": "Microsoft Visual Studio Build Tools 2019",
+    "homepage": "https://visualstudio.microsoft.com/downloads/#build-tools-for-visual-studio-2019",
+    "license": "https://visualstudio.microsoft.com/license-terms/mlt031519/",
+    "url": "https://aka.ms/vs/16/release/vs_buildtools.exe",
+    "hash": "86a00d07bc02ba9ba9fe81353d4c62b65379625aac1dc9cbe3b58d9ff48cb6f2",
     "installer": {
-        "file": "vs2019_install.ps1",
-        "args": "$dir"
+        "script": "Start-Process -FilePath \"$dir\\vs_buildtools.exe\" -ArgumentList \"--installPath $dir\\vs\\ --add Microsoft.VisualStudio.Workload.MSBuildTools --add Microsoft.VisualStudio.Workload.VCTools --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64 --quiet --norestart\" -Wait"
     },
     "uninstaller": {
-        "script": "start 'C:\\Program Files (x86)\\Microsoft Visual Studio\\Installer\\InstallCleanup.exe' -wait"
+        "script": "Start-Process -FilePath \"$dir\\vs_buildtools.exe\" -ArgumentList \"uninstall --installPath $dir\\vs\\ --quiet --norestart\" -Wait"
+    },
+    "env_add_path": [
+        "vs\\Common7\\Tools",
+        "vs\\Common7\\IDE",
+        "vs\\MSBuild\\Current\\Bin",
+        "vs\\VC\\Auxiliary\\Build"
+    ],
+    "bin": [
+        "vs\\VC\\Auxiliary\\Build\\vcvars64.bat",
+        "vs\\VC\\Auxiliary\\Build\\vcvars32.bat",
+        "vs\\VC\\Auxiliary\\Build\\vcvarsall.bat"
+    ],
+    "checkver": {
+        "url": "https://docs.microsoft.com/en-us/visualstudio/releases/2019/release-notes",
+        "regex": ">Visual Studio 2019 version ([\\d.]+)</a> <img"
+    },
+    "autoupdate": {
+        "url": "https://aka.ms/vs/16/release/vs_buildtools.exe"
     }
 }

@@ -1,9 +1,31 @@
 {
-    "version": "5.5.2",
-    "architecture": "64bit",
-    "url": "https://ktos.blob.core.windows.net/scoop/whois-5.5.2-1-x86_64.zip",    
+    "version": "1.21",
+    "description": "See who owns an Internet address.",
+    "homepage": "https://docs.microsoft.com/en-us/sysinternals/downloads/whois",
+    "license": {
+        "identifier": "Proprietary",
+        "url": "https://docs.microsoft.com/en-us/sysinternals/license-terms"
+    },
+    "notes": "Usage: <https://docs.microsoft.com/en-us/sysinternals/downloads/whois#usage>",
+    "url": "https://download.sysinternals.com/files/WhoIs.zip",
+    "hash": "43d82eb09a93c788030b31668a1b578d4953c52875dccf5c5ebc98059fa834a1",
+    "architecture": {
+        "64bit": {
+            "post_install": [
+                "@('whois.exe', 'whois64a.exe') | ForEach-Object { Remove-Item \"$dir\\$_\" -Force -ErrorAction SilentlyContinue }",
+                "Rename-Item \"$dir\\whois64.exe\" 'whois.exe' -Force -ErrorAction SilentlyContinue"
+            ]
+        },
+        "32bit": {
+            "post_install": "@('whois64.exe', 'whois64a.exe') | ForEach-Object { Remove-Item \"$dir\\$_\" -Force -ErrorAction SilentlyContinue }"
+        }
+    },
     "bin": "whois.exe",
-    "hash": "7BF5A28BF215C6782B5D4AFDF48B595DCB3AC89C9C9FC8F9668D0A2E70E09ED5",
-    "license": "GPL-2.0-only",
-    "description": "Intelligent WHOIS client"
+    "checkver": {
+        "url": "https://docs.microsoft.com/en-us/sysinternals/downloads/whois",
+        "regex": "Whois v([\\d.]+)"
+    },
+    "autoupdate": {
+        "url": "https://download.sysinternals.com/files/WhoIs.zip"
+    }
 }

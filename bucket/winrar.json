@@ -9,12 +9,12 @@
     "notes": "Set up context menu within settings window.",
     "architecture": {
         "64bit": {
-            "url": "https://www.win-rar.com/fileadmin/winrar-versions/sc/sc20230223/wrr/winrar-x64-621sc.exe#/dl.7z",
-            "hash": "ad3fbd753254d0f28bf67f597e18738dcef04adda31212f384852668bdffab55"
+            "url": "https://www.rarlab.com/rar/winrar-x64-621.exe#/dl.7z",
+            "hash": "af51d8714fbb34157e3bd53fcecdd76bcc0ed732f89cf469f544aec968d192d9"
         },
         "32bit": {
-            "url": "https://www.win-rar.com/fileadmin/winrar-versions/sc/sc20230223/wrr/winrar-x64-621sc.exe#/dl.7z",
-            "hash": "ad3fbd753254d0f28bf67f597e18738dcef04adda31212f384852668bdffab55"
+            "url": "https://www.rarlab.com/rar/winrar-x32-621.exe#/dl.7z",
+            "hash": "b9da88e31ed1207b4bf5a1ac940ee9c74da4728d7a65096fe112d02c01087a6e"
         }
     },
     "pre_install": "if (!(Test-Path \"$persist_dir\\rarreg.key\")) { New-Item \"$dir\\rarreg.key\" | Out-Null }",
@@ -30,17 +30,14 @@
         ]
     ],
     "persist": "rarreg.key",
-    "checkver": {
-        "url": "http://www.kaixinit.com/info/soft/1712.html",
-        "regex": "WinRAR (?<version>[\\d.]+)[\\s\\S]*?https://www.win-rar.com/fileadmin/winrar-versions/sc/sc(?<data>[\\d]+)/"
-    },
+    "checkver": "WinRAR and RAR ([\\d.]+) release",
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://www.win-rar.com/fileadmin/winrar-versions/sc/sc$matchData/wrr/winrar-x64-$majorVersion$minorVersion$patchVersionsc.exe#/dl.7z"
+                "url": "https://www.rarlab.com/rar/winrar-x64-$cleanVersion.exe#/dl.7z"
             },
             "32bit": {
-                "url": "https://www.win-rar.com/fileadmin/winrar-versions/sc/sc$matchData/wrr/winrar-x64-$majorVersion$minorVersion$patchVersionsc.exe#/dl.7z"
+                "url": "https://www.rarlab.com/rar/winrar-x32-$cleanVersion.exe#/dl.7z"
             }
         }
     }

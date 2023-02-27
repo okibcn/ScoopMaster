@@ -1,16 +1,27 @@
 {
-    "version": "1.39.0",
-    "description": "Command-line tooling to compile Dhall to JSON and back (Also contains a basic Dhall to YAML compiler, but a fuller one can be installed with `dhall-yaml`)",
-    "homepage": "https://dhall-lang.org",
-    "license": "BSD-3-Clause",
+    "version": "1.7.4",
+    "checkver": {
+        "url": "https://github.com/dhall-lang/dhall-haskell/releases/latest",
+        "re": "download/(?<dhall>[\\d.]+)/dhall-json-(?<version>[\\d.]+)-x86_64-windows\\.zip"
+    },
+    "bin": [
+        "dhall-to-yaml.exe",
+        "dhall-to-json.exe",
+        "json-to-dhall.exe",
+        "yaml-to-dhall.exe"
+    ],
     "architecture": {
         "64bit": {
-            "url": "https://github.com/dhall-lang/dhall-haskell/releases/download/1.39.0/dhall-json-1.7.7-x86_64-windows.zip",
-            "hash": "236E172BF838E61C6AB6399068EA3B89D248C183C16FB9E2F88C7BC09AC17ED8"
+            "url": "https://github.com/dhall-lang/dhall-haskell/releases/download/1.37.1/dhall-json-1.7.4-x86_64-windows.zip",
+            "hash": "10bc40cade4e67b62854f724810d2c4c01bd278d7b41dc83a5e8b4901c797556"
         }
     },
-    "bin": ["dhall-to-json.exe", "dhall-to-yaml.exe", "json-to-dhall.exe"],
-    "checkver": {
-        "github": "https://github.com/dhall-lang/dhall-haskell"
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/dhall-lang/dhall-haskell/releases/download/$matchDhall/dhall-json-$version-x86_64-windows.zip",
+                "hash": "download"
+            }
+        }
     }
 }

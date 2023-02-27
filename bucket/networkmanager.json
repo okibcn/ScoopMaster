@@ -1,8 +1,12 @@
 {
-    "homepage": "https://github.com/BornToBeRoot/NETworkManager/",
-    "description": "A powerful tool for managing networks and troubleshoot network problems!",
-    "license": "GPL-3.0",
     "version": "2022.12.20.0",
+    "description": "Tool for managing networks and network troubleshooting",
+    "homepage": "https://borntoberoot.net/NETworkManager/",
+    "license": "GPL-3.0-only",
+    "notes": [
+        "You need the .NET Desktop Runtime 6.0.1 in order to run this application.",
+        "See https://borntoberoot.net/NETworkManager/Download#system-requirements for more details."
+    ],
     "architecture": {
         "64bit": {
             "url": "https://github.com/BornToBeRoot/NETworkManager/releases/download/2022.12.20.0/NETworkManager_2022.12.20.0_Portable.zip",
@@ -10,6 +14,7 @@
         }
     },
     "extract_dir": "NETworkManager",
+    "bin": "NETworkManager.exe",
     "shortcuts": [
         [
             "NETworkManager.exe",
@@ -17,18 +22,19 @@
         ]
     ],
     "persist": [
-        "Profiles",
-        "Settings"
+        "Settings",
+        "Profiles"
     ],
-    "notes": "Requirements: .NET Desktop Runtime 6.x (LTS)",
-    "checkver": "github",
+    "checkver": {
+        "github": "https://github.com/BornToBeRoot/NETworkManager"
+    },
     "autoupdate": {
         "architecture": {
             "64bit": {
                 "url": "https://github.com/BornToBeRoot/NETworkManager/releases/download/$version/NETworkManager_$version_Portable.zip",
                 "hash": {
-                    "url": "https://github.com/BornToBeRoot/NETworkManager/releases/download/$version/NETworkManager_$version_Hash.txt",
-                    "regex": "SHA256.*?$sha256.*?$basename"
+                    "url": "https://github.com/BornToBeRoot/NETworkManager/releases/tag/$version",
+                    "find": "(?sm)$basename.*?>$sha256</"
                 }
             }
         }

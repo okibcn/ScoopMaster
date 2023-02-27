@@ -1,66 +1,32 @@
 {
-    "version": "nightly",
-    "description": "Thai National Font",
-    "homepage": "https://fonts.google.com/specimen/Charm",
-    "license": "OFL-1.1",
-    "url": "https://fonts.google.com/download?family=Charm#/fonts.zip",
-    "installer": {
-        "script": [
-            "$currentBuildNumber = [int] (Get-ItemProperty \"HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\").CurrentBuildNumber",
-            "$windows11Version22H2BuildNumber = 22621",
-            "$doesPerUserFontInstallationHaveIssue = $currentBuildNumber -ge $windows11Version22H2BuildNumber",
-            "if ($doesPerUserFontInstallationHaveIssue -and !$global) {",
-            "    scoop uninstall $app",
-            "    Write-Host \"\"",
-            "    Write-Host \"Currently, on Windows 11 Version 22H2 (OS Build 22621) or later,\" -Foreground DarkRed",
-            "    Write-Host \"Font installation only works when installing font for all users.\" -Foreground DarkRed",
-            "    Write-Host \"\"",
-            "    Write-Host \"Please use following commands to install '$app' Font for all users.\" -Foreground DarkRed",
-            "    Write-Host \"\"",
-            "    Write-Host \"        scoop install sudo\"",
-            "    Write-Host \"        sudo scoop install -g $app\"",
-            "    Write-Host \"\"",
-            "    Write-Host \"See https://github.com/matthewjberger/scoop-nerd-fonts/issues/198 for more details.\" -Foreground Magenta",
-            "    exit 1",
-            "}",
-            "$windows10Version1809BuildNumber = 17763",
-            "$isPerUserFontInstallationSupported = $currentBuildNumber -ge $windows10Version1809BuildNumber",
-            "if (!$isPerUserFontInstallationSupported -and !$global) {",
-            "    scoop uninstall $app",
-            "    Write-Host \"\"",
-            "    Write-Host \"For Windows version before Windows 10 Version 1809 (OS Build 17763),\" -Foreground DarkRed",
-            "    Write-Host \"Font can only be installed for all users.\" -Foreground DarkRed",
-            "    Write-Host \"\"",
-            "    Write-Host \"Please use following commands to install '$app' Font for all users.\" -Foreground DarkRed",
-            "    Write-Host \"\"",
-            "    Write-Host \"        scoop install sudo\"",
-            "    Write-Host \"        sudo scoop install -g $app\"",
-            "    Write-Host \"\"",
-            "    exit 1",
-            "}",
-            "$fontInstallDir = if ($global) { \"$env:windir\\Fonts\" } else { \"$env:LOCALAPPDATA\\Microsoft\\Windows\\Fonts\" }",
-            "$registryRoot = if ($global) { \"HKLM\" } else { \"HKCU\" }",
-            "$registryKey = \"${registryRoot}:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\"",
-            "New-Item $fontInstallDir -ItemType Directory -ErrorAction SilentlyContinue | Out-Null",
-            "Get-ChildItem $dir -Filter '*.ttf' | ForEach-Object {",
-            "    $value = if ($global) { $_.Name } else { \"$fontInstallDir\\$($_.Name)\" }",
-            "    New-ItemProperty -Path $registryKey -Name $_.Name.Replace($_.Extension, ' (TrueType)') -Value $value -Force | Out-Null",
-            "    Copy-Item $_.FullName -Destination $fontInstallDir",
-            "}"
-        ]
+    "version": "0.12.5",
+    "description": "Manage your Charm account and access The Charm Cloud.",
+    "homepage": "https://github.com/charmbracelet/charm",
+    "license": "MIT",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/charmbracelet/charm/releases/download/v0.12.5/charm_0.12.5_Windows_x86_64.zip",
+            "hash": "a50ecf4c1688fb4b2c53686bfe99452a4f44f9b34ec6e0186b37516119b2b1a8"
+        },
+        "32bit": {
+            "url": "https://github.com/charmbracelet/charm/releases/download/v0.12.5/charm_0.12.5_Windows_i386.zip",
+            "hash": "6545e5ef37b1246997362cd6aa21354e5c825a81b3cb0b73e718c8efcbe1ea11"
+        }
     },
-    "uninstaller": {
-        "script": [
-            "$fontInstallDir = if ($global) { \"$env:windir\\Fonts\" } else { \"$env:LOCALAPPDATA\\Microsoft\\Windows\\Fonts\" }",
-            "$registryRoot = if ($global) { \"HKLM\" } else { \"HKCU\" }",
-            "$registryKey = \"${registryRoot}:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\"",
-            "Get-ChildItem $dir -Filter '*.ttf' | ForEach-Object {",
-            "    Remove-ItemProperty -Path $registryKey -Name $_.Name.Replace($_.Extension, ' (TrueType)') -Force -ErrorAction SilentlyContinue",
-            "    Remove-Item \"$fontInstallDir\\$($_.Name)\" -Force -ErrorAction SilentlyContinue",
-            "}",
-            "if ($cmd -eq \"uninstall\") {",
-            "    Write-Host \"Font 'Charm' has been uninstalled and will not be present after restarting your computer.\" -Foreground Magenta",
-            "}"
-        ]
+    "bin": "charm.exe",
+    "checkver": "github",
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/charmbracelet/charm/releases/download/v$version/charm_$version_Windows_x86_64.zip"
+            },
+            "32bit": {
+                "url": "https://github.com/charmbracelet/charm/releases/download/v$version/charm_$version_Windows_i386.zip"
+            }
+        },
+        "hash": {
+            "url": "https://github.com/charmbracelet/charm/releases/download/v$version/checksums.txt",
+            "mode": "extract"
+        }
     }
 }
