@@ -157,8 +157,9 @@ jobs:
         $FullDB.Columns.Add("Bucket") | Out-Null
         $FullDB.Columns.Add("Description") | Out-Null
         $FullDB.Columns.Add("Homepage") | Out-Null
+        $FullDB.Columns.Add("Autoupdate") | Out-Null
 
-        $files = gci jsons/*/*.json
+        $files = gci jsons/*/*.json  ##o##
         $nManifests=$files.Count
         $progress=0
         Write-host "##"
@@ -176,7 +177,7 @@ jobs:
             }
             $date = $file.LastWriteTimeUtc.ToString("yyyy-MM-ddTHH:mm:ssZ")
             try{
-                $json = (cat $file) | ConvertFrom-Json
+                $json = (gc $file) | ConvertFrom-Json
                 $version = $json.version
                 $description = "$($json.description)"
             }catch{
@@ -189,7 +190,8 @@ jobs:
                 $file.fullname >> ERROR_manifest.txt
                 $homepage = ""
             }
-            [void]$FullDB.Rows.Add($name, $version, $date, $bucket, $description, $homepage)
+            $autoup = if ($json.autoupdate) {'A'} else {'_'}
+            [void]$FullDB.Rows.Add($name, $version, $date, $bucket, $description, $homepage, $autoup)
         }
         $DB = $FullDB | Sort-Object Name
 
@@ -197,12 +199,11 @@ jobs:
         $hash = New-Object system.data.datatable
         $hash.Columns.Add("Name") | Out-Null
         $hash.Columns.Add("Version") | Out-Null
-        $hash.Columns.Add("FirstDate") | Out-Null
-        $hash.Columns.Add("FirstBucket") | Out-Null
-        $hash.Columns.Add("LastDate") | Out-Null
-        $hash.Columns.Add("LastBucket") | Out-Null
+        $hash.Columns.Add("Date") | Out-Null
+        $hash.Columns.Add("Bucket") | Out-Null
         $hash.Columns.Add("Description") | Out-Null
         $hash.Columns.Add("Homepage") | Out-Null
+        $hash.Columns.Add("Autoupdate") | Out-Null
 
         $name = ""
         $nApps = 0
@@ -215,36 +216,44 @@ jobs:
             $progress++
             $percent = [math]::round(100 * $progress / $nManifests)
             if ($percent -ne $oldpercent){
-              Write-Output "( $percent% )  $nApps / $progress / $nManifests (harvested/indexed/total) Last checked app: $name.json"
+              Write-Output "( $percent% )  $progress / $nManifests - $nApps (indexed/total-harvested) Last checked app: $name.json"
               $oldpercent=$percent
             }
             if ($row.name -ne $name) {
                 $name = $row.name
-                [void]$hash.Rows.Add($name, $row.version, $row.date, $row.bucket, $row.date, $row.bucket, $row.description, $row.homepage)
+                [void]$hash.Rows.Add($name, $row.Version, $row.Date, $row.Bucket, $row.Description, $row.Homepage, $row.Autoupdate)
                 $nApps++
                 continue
             }
-            switch ( CompareV $row.Version $hash.Rows[-1].Version ) {
-                -1 {
+
+            $app=[ref]$hash.Rows[-1]
+            $current = if ($hash.Rows[-1].Bucket.Substring(0,6) -eq 'okibcn' ) 
+                {'O'} 
+                else 
+                {'_'}
+            $current = $current + $hash.Rows[-1].autoupdate + $hash.Rows[-1].Version
+            $candidate = if ($row.Bucket.Substring(0,6) -eq 'okibcn' ) 
+                {'O'} 
+                else 
+                {'_'}
+            $candidate = $candidate + $row.autoupdate + $row.Version
+
+            switch ( CompareV $candidate $current ) {
+                -1 {  # not higher priority
                     break
                 }
-                1 {
+                1 {   # higher priority, replace entry
                     $hash.Rows[-1].Version = $row.Version
-                    $hash.Rows[-1].FirstDate = $row.Date
-                    $hash.Rows[-1].FirstBucket = $row.Bucket
-                    $hash.Rows[-1].LastDate = $row.Date
-                    $hash.Rows[-1].LastBucket = $row.Bucket
+                    $hash.Rows[-1].Date = $row.Date
+                    $hash.Rows[-1].Bucket = $row.Bucket
                     $hash.Rows[-1].Description = $row.Description
                     $hash.Rows[-1].Homepage = $row.Homepage
+                    $hash.Rows[-1].Autoupdate = $row.Autoupdate
                 }
-                0 {
+                0 {   # same priority, update newest
                     if ($row.date -gt $hash.Rows[-1].LastDate) {
-                        $hash.Rows[-1].LastDate = $row.Date
-                        $hash.Rows[-1].LastBucket = $row.Bucket
-                    }
-                    elseif ($row.date -lt $hash.Rows[-1].FirstDate) {
-                        $hash.Rows[-1].FirstDate = $row.Date
-                        $hash.Rows[-1].FirstBucket = $row.Bucket
+                        $hash.Rows[-1].Date = $row.Date
+                        $hash.Rows[-1].Bucket = $row.Bucket
                     }
                 }
             }
@@ -262,29 +271,43 @@ jobs:
         Write-host "##   ============================================================="
         Write-host "##"
         foreach ( $row in $hash ) {
-            [void]$FullDB.Rows.Add($row.Name, $row.Version, $row.FirstDate, "okibcn/ScoopMaster", $row.Description, $row.Homepage)
-            $file="jsons/$( $row.FirstBucket.replace('/','~') )/$($row.Name).json"
+            [void]$FullDB.Rows.Add($row.Name, $row.Version, $row.Date, "okibcn/ScoopMaster", $row.Description, $row.Homepage, $row.Autoupdate)
+            $file="jsons/$( $row.Bucket.replace('/','~') )/$($row.Name).json"
             Get-Content $file > "local/$($row.Name).json"
-            # Copy-Item $file local | Out-Null
             $progress++
             $percent = [math]::round(100 * $progress / $nApps)
             if ($percent -ne $oldpercent){
-              Write-Output "( $percent% )  $progress / $nApps (hasvested/total) Last harvested app: $($row.Name).json"
+              Write-Output "( $percent% )  $progress / $nApps (hasvested/total) Last processed app: $($row.Name).json"
               $oldpercent=$percent
             }
         }
-        $FullDB = $FullDB | Sort-Object Name,Date
+        $FullDB = $FullDB | select Name, Version, Autoupdate, Bucket, Homepage, Description | Sort-Object Name,Autoupdate,Version
         $scoopDBfile = "./AllAppsDB.csv"
         $FullDB | ConvertTo-csv > $scoopDBfile
         echo "N_MANIFESTS=$nManifests" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
         echo "N_APPS=$nApps" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
 
+        7z a AllAppsDB.7z AllAppsDB.csv
+        7z a LastAppsDB.7z LastAppsDB.csv
+        move-item *DB.* ScoopMaster
+
+    - name: "🎉 Release updated databases"
+      uses: softprops/action-gh-release@v0.1.15
+      # go to https://github.com/OWNER/REPO/settings/actions and
+      # in "**"Workflow Permissions" section give actions **Read and Write permissions**.
+      if: github.event_name != 'workflow_dispatch' || github.event.inputs.release == 'Release'
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: Databases
+        body_path: body.txt
+        files: ./*DB.*
 
     - name: "📦 Prepare updated repo"
       run: |
         ############################
         ##                          ##
-        ##     PREPARE PACKAGE      ##
+        ##     UPDATE BUCKET        ##
         ##                          ##
         ############################
 
@@ -331,11 +354,7 @@ jobs:
         $lUpdated > AppsUpdated.txt
         $lNew > AppsNew.txt
 
-        7z a ScoopMaster.7z *
-
-        move-item ../*.csv .
-        7z a AllAppsDB.7z AllAppsDB.csv
-        7z a LastAppsDB.7z LastAppsDB.csv
+        if ( "${{github.event.inputs.release}}" -eq 'Artifact') {7z a '-x!*.7z' ScoopMaster.7z *}
 
         (gc .\README.md) -Replace "\d+(?=\*\* manifests)","$( [int]($env:N_MANIFESTS) + [int]($env:N_APPS) )" | Set-Content README.md
         (gc .\README.md) -Replace "\d+(?=\*\* buckets)","$($env:N_BUCKETS)" | Set-Content README.md
@@ -405,15 +424,3 @@ jobs:
         path: |
           *.txt
 
-
-    - name: "🎉 Release updated databases"
-      uses: softprops/action-gh-release@v0.1.15
-      # go to https://github.com/OWNER/REPO/settings/actions and
-      # in "**"Workflow Permissions" section give actions **Read and Write permissions**.
-      if: github.event_name != 'workflow_dispatch' || github.event.inputs.release == 'Release'
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: Databases
-        body_path: body.txt
-        files: ./*DB.*
