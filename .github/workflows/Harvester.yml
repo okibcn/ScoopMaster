@@ -227,16 +227,12 @@ jobs:
             }
 
             $app=[ref]$hash.Rows[-1]
-            $current = if ($hash.Rows[-1].Bucket.Substring(0,6) -eq 'okibcn' ) 
-                {'O'} 
-                else 
-                {'_'}
+            $current = if ($hash.Rows[-1].Bucket.Substring(0,7) -match '^okibcn/' ) {'O'} else {'_'}
             $current = $current + $hash.Rows[-1].autoupdate + $hash.Rows[-1].Version
-            $candidate = if ($row.Bucket.Substring(0,6) -eq 'okibcn' ) 
-                {'O'} 
-                else 
-                {'_'}
+            $current = $current + (if ($hash.Rows[-1].Bucket.Substring(0,15) -eq 'ScoopInstaller/' ) {'S'} else {'_'})
+            $candidate = if ($row.Bucket.Substring(0,6) -eq 'okibcn' ) {'O'} else {'_'}
             $candidate = $candidate + $row.autoupdate + $row.Version
+            $candidate = $candidate + (if ($row.Bucket.Substring(0,15) -match '^ScoopInstaller/' ) {'S'} else {'_'})
 
             switch ( CompareV $candidate $current ) {
                 -1 {  # not higher priority
