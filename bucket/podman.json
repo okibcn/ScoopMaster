@@ -5,24 +5,28 @@
     "license": "Apache-2.0",
     "architecture": {
         "64bit": {
-            "url": "https://github.com/containers/podman/releases/download/v4.4.2/podman-remote-release-windows_amd64.zip",
-            "hash": "b0f11b787b89b65dc3c514545902513cd4cf2015eefcc40c46f28f4de458c9d1",
-            "extract_dir": "podman-4.4.2"
+            "url": "https://github.com/containers/podman/releases/download/v4.4.2/podman-4.4.2-setup.exe",
+            "hash": "46ff56b28d5a626f13aad9c004584120dbaf8ec18fe8750d98a93c9452a1fc6c"
         }
     },
-    "bin": "usr/bin/podman.exe",
+    "bin": "podman.exe",
+    "installer": {
+        "script": [
+            "Expand-DarkArchive \"$dir\\podman-$version-setup.exe\" \"$dir\\_tmp\" -Removal",
+            "Expand-MsiArchive \"$dir\\_tmp\\AttachedContainer\\podman.msi\" \"$dir\" -ExtractDir 'PFiles\\RedHat\\Podman'"
+        ]
+    },
     "checkver": {
         "github": "https://github.com/containers/podman"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://github.com/containers/podman/releases/download/v$version/podman-remote-release-windows_amd64.zip",
-                "extract_dir": "podman-$version"
+                "url": "https://github.com/containers/podman/releases/download/v$version/podman-$version-setup.exe",
+                "hash": {
+                    "url": "$baseurl/shasums"
+                }
             }
-        },
-        "hash": {
-            "url": "$baseurl/shasums"
         }
     }
 }

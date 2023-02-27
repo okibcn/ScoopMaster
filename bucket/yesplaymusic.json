@@ -1,26 +1,32 @@
 {
     "version": "0.4.7",
-    "description": "高颜值的第三方网易云播放器",
-    "homepage": "https://github.com/qier222/YesPlayMusic",
-    "license": {
-        "identifier": "MIT"
+    "description": "Cloud music player based on NetEase Player, featuring more elegant UI",
+    "homepage": "https://music.qier222.com/",
+    "license": "MIT",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/qier222/YesPlayMusic/releases/download/v0.4.7/YesPlayMusic-0.4.7.exe#/dl.7z",
+            "hash": "f18b0aa4c252f15c05cbf6dbb54707b149ffb7a06c960d538d89112d94932e4c"
+        }
     },
-    "url": "https://ghproxy.com/https://github.com/qier222/YesPlayMusic/releases/download/v0.4.7/YesPlayMusic-0.4.7.exe",
-    "hash": "f18b0aa4c252f15c05cbf6dbb54707b149ffb7a06c960d538d89112d94932e4c",
-    "installer": {
-        "script": "Rename-Item -NewName (Join-Path $dir YesPlayMusic.exe) -Path (Join-Path $dir YesPlayMusic-$version.exe)"
-    },
+    "pre_install": [
+        "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\" | Out-Null",
+        "Remove-Item \"$dir\\`$PLUGINSDIR\" -Force -Recurse"
+    ],
     "shortcuts": [
         [
             "YesPlayMusic.exe",
             "YesPlayMusic"
         ]
     ],
-    "uninstaller": {
-        "script": "Remove-Item -Path $env:APPDATA\\YesPlayMusic -Recurse"
+    "checkver": {
+        "github": "https://github.com/qier222/YesPlayMusic"
     },
-    "checkver": "github",
     "autoupdate": {
-        "url": "https://ghproxy.com/https://github.com/qier222/YesPlayMusic/releases/download/v$version/YesPlayMusic-$version.exe"
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/qier222/YesPlayMusic/releases/download/v$version/YesPlayMusic-$version.exe#/dl.7z"
+            }
+        }
     }
 }

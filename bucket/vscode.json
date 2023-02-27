@@ -7,8 +7,8 @@
         "url": "https://code.visualstudio.com/License/"
     },
     "notes": [
-        "Add Visual Studio Code as a context menu option by running: '$dir\\install-context.reg'",
-        "For file associations, run '$dir\\install-associations.reg'"
+        "Add Visual Studio Code as a context menu option by running: 'reg import \"$dir\\install-context.reg\"'",
+        "For file associations, run 'reg import \"$dir\\install-associations.reg\"'"
     ],
     "architecture": {
         "64bit": {
@@ -18,6 +18,10 @@
         "32bit": {
             "url": "https://update.code.visualstudio.com/1.75.1/win32-archive/stable#/dl.7z",
             "hash": "c3bcec8427afcaa17b4be5e42b3560561cf89ac57015c15b4484e27343f17331"
+        },
+        "arm64": {
+            "url": "https://update.code.visualstudio.com/1.75.1/win32-arm64-archive/stable#/dl.7z",
+            "hash": "4dc7af7d8d4e4f0b002eba78b9631c34579fbe85d4795f462a2645fb84503ade"
         }
     },
     "env_add_path": "bin",
@@ -48,8 +52,16 @@
         "if (!(Test-Path \"$dir\\data\\user-data\") -and (Test-Path \"$env:AppData\\Code\")) {",
         "    info '[Portable Mode] Copying user data...'",
         "    Copy-Item \"$env:AppData\\Code\" \"$dir\\data\\user-data\" -Recurse",
+        "}",
+        "$extensions_file = \"$dir\\data\\extensions\\extensions.json\"",
+        "if ((Test-Path \"$extensions_file\")) {",
+        "    info 'Adjusting path in extensions file...'",
+        "    (Get-Content \"$extensions_file\") -replace '(?<=vscode(/|\\\\\\\\)).*?(?=(/|\\\\\\\\)data(/|\\\\\\\\)extensions)', $version | Set-Content \"$extensions_file\"",
         "}"
     ],
+    "uninstaller": {
+        "script": "if ($cmd -eq 'uninstall') { reg import \"$dir\\uninstall-context.reg\" }"
+    },
     "persist": "data",
     "checkver": {
         "url": "https://code.visualstudio.com/sha?build=stable",
@@ -69,6 +81,13 @@
                 "hash": {
                     "url": "https://code.visualstudio.com/sha?build=stable",
                     "jsonpath": "$.products[?(@.platform.os == 'win32-archive')].sha256hash"
+                }
+            },
+            "arm64": {
+                "url": "https://update.code.visualstudio.com/$version/win32-arm64-archive/stable#/dl.7z",
+                "hash": {
+                    "url": "https://code.visualstudio.com/sha?build=stable",
+                    "jsonpath": "$.products[?(@.platform.os == 'win32-arm64-archive')].sha256hash"
                 }
             }
         }
