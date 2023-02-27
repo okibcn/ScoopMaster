@@ -291,18 +291,6 @@ jobs:
         7z a LastAppsDB.7z LastAppsDB.csv
         move-item *DB.* ScoopMaster
 
-    - name: "🎉 Release updated databases"
-      uses: softprops/action-gh-release@v0.1.15
-      # go to https://github.com/OWNER/REPO/settings/actions and
-      # in "**"Workflow Permissions" section give actions **Read and Write permissions**.
-      if: github.event_name != 'workflow_dispatch' || github.event.inputs.release == 'Release'
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: Databases
-        body_path: body.txt
-        files: ./*DB.*
-
     - name: "📦 Prepare updated repo"
       run: |
         ############################
@@ -319,7 +307,7 @@ jobs:
         $lDeleted = $lUpdated = $lNew = @()
         $progress = 0
         Write-host "##"
-        Write-host "##   CHECKING MODIFIED APPS..."
+        Write-host "##   CHECKING MODIFIED MANIFESTS..."
         Write-host "##   ================================="
         Write-host "##"
         $current = gci bucket/*.json
@@ -392,7 +380,21 @@ jobs:
         ##           or https://github.com/mxschmitt/action-tmate
 
 
+    - name: "🎉 Release updated databases"
+      uses: softprops/action-gh-release@v0.1.15
+      # go to https://github.com/OWNER/REPO/settings/actions and
+      # in "**"Workflow Permissions" section give actions **Read and Write permissions**.
+      if: github.event_name != 'workflow_dispatch' || github.event.inputs.release == 'Release'
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: Databases
+        body_path: body.txt
+        files: ./*DB.*
+
+
     - name: "⭐ Update repo (Commit-n-Push)"
+      if: github.event_name != 'workflow_dispatch' || github.event.inputs.release == 'Release'
       run: |
         git config --global core.autocrlf false
         git config --global core.safecrlf false
