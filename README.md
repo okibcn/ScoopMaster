@@ -2,7 +2,7 @@
 
 </br>
 
-**Scoop Master**, the way to keep all the apps in Scoop ultra-updated.
+**Scoop Master**, the way to keep all the apps in Scoop ultra-updated. One bucket for all.
 
 (Do you find this project useful? give it a ⭐)
 
