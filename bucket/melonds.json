@@ -1,49 +1,34 @@
 {
-    "homepage": "https://melonds.kuribo64.net",
+    "homepage": "http://melonds.kuribo64.net",
+    "description": "DS emulator, sorta. melonDS aims at providing fast and accurate Nintendo DS emulation",
     "version": "0.9.5",
-    "description": "Nintendo DS Emulator",
-    "pre_install": [
-        "function create($path, $type, $content) {",
-        "   if (-not (Test-Path \"$path\")) {",
-        "       New-Item \"$path\" -ItemType $type -Value $content | Out-Null",
-        "   }",
-        "}",
-        "$ini = \"$dir\\melonds.ini\"",
-        "$saves = \"$dir\\Saves\"",
-        "$savestates = \"$dir\\SaveStates\"",
-        "$cheats = \"$dir\\Cheats\"",
-        "create $ini File \"SaveFilePath=$dir/Saves/`nSavestatePath=$dir/SaveStates/`nCheatFilePath=$dir/Cheats/`n\"",
-        "create $saves Directory",
-        "create $savestates Directory",
-        "create $cheats Directory"
-    ],
+    "license": "GPL-3.0-only",
     "architecture": {
         "64bit": {
-            "url": "https://melonds.kuribo64.net/downloads/melonDS_0.9.5_win_x64.zip",
-            "hash": "289b1644004d8762987dc1daf3a61eedfafb0a5f442801bfb9d2a18299fd39a9",
-            "bin": "melonDS.exe",
-            "shortcuts": [
-                [
-                    "melonDS.exe",
-                    "NDS"
-                ]
-            ]
+            "url": "https://github.com/Arisotura/melonDS/releases/download/0.9.5/melonDS_0.9.5_win_x64.zip",
+            "hash": "289b1644004d8762987dc1daf3a61eedfafb0a5f442801bfb9d2a18299fd39a9"
         }
     },
-    "persist": [
-        "Saves",
-        "SaveStates",
-        "Cheats",
-        "melonds.ini"
+    "pre_install": [
+        "if (!(Test-Path \"$persist_dir\\melonDS.ini\")) {",
+        "    New-Item -Force -Path \"$persist_dir\\melonDS.ini\" -ItemType File -Value 'LastROMFolder=' | Out-Null",
+        "}"
     ],
+    "bin": "melonDS.exe",
+    "shortcuts": [
+        [
+            "melonDS.exe",
+            "melonDS"
+        ]
+    ],
+    "persist": "melonDS.ini",
     "checkver": {
-        "url": "https://melonds.kuribo64.net/downloads.php",
-        "regex": "melonDS (\\d.\\d.\\d)"
+        "github": "https://github.com/Arisotura/melonDS"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://melonds.kuribo64.net/downloads/melonDS_$version_win_x64.zip"
+                "url": "https://github.com/Arisotura/melonDS/releases/download/$version/melonDS_$version_win_x64.zip"
             }
         }
     }
