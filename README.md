@@ -12,7 +12,7 @@ And don't miss **[SS (Scoop Super Search)](https://github.com/okibcn/ss)**, the 
 
 </br>
 
-<img width="1162" alt="image" src="https://user-images.githubusercontent.com/22417711/218010286-09080055-dd27-4f10-bc7d-5d05f504e34c.png">
+<img width="1162" alt="image" src="https://user-images.githubusercontent.com/22417711/221735191-c92cf442-b29e-411b-a5c7-2b3ca8de6d50.png">
 
 ____
 
