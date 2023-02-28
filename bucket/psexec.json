@@ -1,33 +1,39 @@
 {
-    "homepage": "https://docs.microsoft.com/en-us/sysinternals/",
-    "description": "Execute processes on remote systems.",
-    "license": {
-        "identifier": "Freeware",
-        "url": "https://docs.microsoft.com/en-us/sysinternals/license-terms"
+  "version": "2.40",
+  "description": "Execute processes on remote systems.",
+  "homepage": "https://learn.microsoft.com/sysinternals/downloads/psexec",
+  "license": {
+    "identifier": "Freeware",
+    "url": "https://learn.microsoft.com/sysinternals/license-terms"
+  },
+  "url": "https://download.sysinternals.com/files/PsExec.zip",
+  "hash": "b331e27a447683ed8cd06390fad8bf99734bb8bcb8831d878fbe8f70dceda8f5",
+  "architecture": {
+    "64bit": {
+      "bin": [
+        [
+          "PsExec64.exe",
+          "PsExec"
+        ]
+      ]
     },
-    "version": "2.40",
-    "url": "https://download.sysinternals.com/files/PSTools.zip",
-    "hash": "3ca39982003d436d289a5a06a2d85b55b0432ca8bb1972226ec25dd96a78d391",
-    "pre_install": "Get-ChildItem \"$dir\" | Where-Object {($_.Name -notlike 'PsExec*') -and ($_.Name -notlike 'Eula.txt') -and $_.Name -notlike '*.chm'} | Remove-Item",
-    "checkver": {
-        "url": "https://docs.microsoft.com/en-us/sysinternals/downloads/psexec",
-        "re": "PsExec\\s(?:v|V)?([\\d.]+)"
+    "32bit": {
+      "bin": "PsExec.exe"
     },
-    "autoupdate": {
-        "url": "https://download.sysinternals.com/files/PSTools.zip"
-    },
-    "architecture": {
-        "32bit": {
-            "bin": "PsExec.exe"
-        },
-        "64bit": {
-            "bin": [
-                [
-                    "PsExec64.exe",
-                    "PsExec"
-                ],
-                "PsExec64.exe"
-            ]
-        }
+    "arm64": {
+      "bin": [
+        [
+          "PsExec64a.exe",
+          "PsExec"
+        ]
+      ]
     }
+  },
+  "checkver": {
+    "url": "https://ghproxy.com/https://raw.githubusercontent.com/MicrosoftDocs/sysinternals/main/sysinternals/downloads/psexec.md",
+    "regex": "#.*?v([\\d.]+)"
+  },
+  "autoupdate": {
+    "url": "https://download.sysinternals.com/files/PsExec.zip"
+  }
 }

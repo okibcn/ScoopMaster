@@ -1,47 +1,47 @@
 {
-  "version": "110.0.1587.57",
-  "description": "Fast, secure, and free web browser, built for the modern web based",
-  "homepage": "https://www.microsoft.com/en-us/edge",
-  "license": {
-    "identifier": "Proprietary Software"
-  },
-  "architecture": {
-    "64bit": {
-      "url": "http://msedge.f.tlu.dl.delivery.mp.microsoft.com/filestreamingservice/files/1c19fd17-f36c-404b-986f-6df681bfb926?P1=1677987649&P2=404&P3=2&P4=gS9S%2f3wF05nO%2bRA2HzUbOp%2bkemlN7cDFs9vcMYKO%2bI%2bpk8Ukx1wSXMzkk%2bAELTlP%2fmJGt6bLDx4NQcae5xvfAA%3d%3d3d#/dl.7z",
-      "hash": "f9528bfa55b43c21ca67fb19d0e01b8b4f4bb03bcdc6d93dcf75f17500b3e46d"
-    }
-  },
-  "pre_install": [
-    "Expand-7zipArchive \"$dir\\MSEDGE.7z\" -ExtractDir 'Chrome-bin' -Removal",
-    "Rename-Item \"$dir\\$version\" \"$dir\\current\" "
-  ],
-  "bin": [
-    [
-      "current\\msedge.exe",
-      "msedge-stable",
-      "--user-data-dir=\"$dir\\User Data\""
-    ]
-  ],
-  "shortcuts": [
-    [
-      "current\\msedge.exe",
-      "Edge Stable",
-      "--user-data-dir=\"$dir\\User Data\""
-    ]
-  ],
-  "persist": "User Data",
-  "checkver": {
-    "url": "https://42wim.github.io/edgeupdates/stable.txt",
-    "regex": "(?sm)(?<version>(.*?)):http://(?<64>(.*))"
-  },
-  "autoupdate": {
+    "version": "110.0.1587.57",
+    "description": "Fast, secure, and free web browser, built for the modern web based",
+    "homepage": "https://www.microsoft.com/en-us/edge",
+    "license": {
+        "identifier": "Proprietary Software"
+    },
     "architecture": {
-      "64bit": {
-        "url": "http://$match64#/dl.7z",
-        "hash": {
-          "url": "https://42wim.github.io/edgeupdates/stable.sha256"
+        "64bit": {
+            "url": "http://msedge.f.tlu.dl.delivery.mp.microsoft.com/filestreamingservice/files/1c19fd17-f36c-404b-986f-6df681bfb926?P1=1677987649&P2=404&P3=2&P4=gS9S%2f3wF05nO%2bRA2HzUbOp%2bkemlN7cDFs9vcMYKO%2bI%2bpk8Ukx1wSXMzkk%2bAELTlP%2fmJGt6bLDx4NQcae5xvfAA%3d%3d3d#/dl.7z",
+            "hash": "f9528bfa55b43c21ca67fb19d0e01b8b4f4bb03bcdc6d93dcf75f17500b3e46d"
         }
-      }
+    },
+    "pre_install": [
+        "Expand-7zipArchive \"$dir\\MSEDGE.7z\" -ExtractDir 'Chrome-bin' -Removal",
+        "Rename-Item \"$dir\\$version\" \"$dir\\current\" "
+    ],
+    "bin": [
+        [
+            "current\\msedge.exe",
+            "msedge-stable",
+            "--user-data-dir=\"$dir\\User Data\""
+        ]
+    ],
+    "shortcuts": [
+        [
+            "current\\msedge.exe",
+            "Edge Stable",
+            "--user-data-dir=\"$dir\\User Data\""
+        ]
+    ],
+    "persist": "User Data",
+    "checkver": {
+        "url": "https://42wim.github.io/edgeupdates/stable.txt",
+        "regex": "(?sm)(?<version>(.*?)):http://(?<64>(.*))"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "http://$match64#/dl.7z",
+                "hash": {
+                    "url": "https://42wim.github.io/edgeupdates/stable.sha256"
+                }
+            }
+        }
     }
-  }
 }
