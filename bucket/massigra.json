@@ -1,31 +1,32 @@
 {
-    "homepage": "http://www.massigra.net/",
-    "description": "Simple and fast image viewer",
-    "license": "Freeware",
-    "version": "0.45",
-    "url": "https://www.dropbox.com/s/vhd2xni16qfcder/MassiGra045.zip?dl=1",
-    "hash": "76f28cf65e900778ae0f67d41ea324d35d0ec162624dcf50ada3e44ce831ca25",
-    "bin": "MassiGra.exe",
-    "shortcuts": [
-        [
-            "MassiGra.exe",
-            "MassiGra"
-        ]
-    ],
-    "persist": [
-        "user",
-        "plugins"
-    ],
-    "post_install": [
-        "if ((Get-ChildItem \"$dir\\user\" | Measure-Object).Count -eq 0) {",
-        "    New-Item -Path \"$dir\\user\\SingleU.cfg\" -ItemType File | Out-Null",
-        "}"
-    ],
-    "checkver": {
-        "url": "http://www.massigra.net/",
-        "re": "MassiGra Version (?<version>[\\d.]+)"
-    },
-    "autoupdate": {
-        "url": "https://www.dropbox.com/s/vhd2xni16qfcder/MassiGra$cleanVersion.zip?dl=1"
-    }
+  "version": "0.45",
+  "description": "シンプルで高速な単画面型の画像ビューワ",
+  "homepage": "http://www.massigra.net/",
+  "license": "Freeware",
+  "url": [
+    "https://ftp.vector.co.jp/60/45/1855/MassiGra045.zip",
+    "https://ftp.vector.co.jp/60/45/1855/MassiGra045Help.zip"
+  ],
+  "hash": [
+    "76f28cf65e900778ae0f67d41ea324d35d0ec162624dcf50ada3e44ce831ca25",
+    "e19e74666205fbacc221970f7c5b7a7354863f7ea5f8eca2d4fa1e61edbf6a9e"
+  ],
+  "pre_install": "ensure \"$persist_dir\\user\"",
+  "persist": "user",
+  "shortcuts": [
+    [
+      "MassiGra.exe",
+      "MassiGra"
+    ]
+  ],
+  "checkver": {
+    "url": "https://siku-api.deno.dev/massigra",
+    "regex": "\"ver\"\\s?:\\s?\"([\\d\\.]+)\".*?\"software_dl_url\"\\s?:\\s?\"(?<soft>.*?)\".*?\"help_dl_url\"\\s?:\\s?\"(?<help>.*?)\""
+  },
+  "autoupdate": {
+    "url": [
+      "$matchSoft",
+      "$matchHelp"
+    ]
+  }
 }
