@@ -1,31 +1,53 @@
 {
     "version": "1.16",
-    "description": "Terminate local or remote processes.",
-    "homepage": "https://learn.microsoft.com/sysinternals/downloads/pskill",
+    "description": "PsKill. Local and remote processes killer",
+    "homepage": "https://docs.microsoft.com/en-us/sysinternals/downloads/pskill",
     "license": {
         "identifier": "Freeware",
-        "url": "https://learn.microsoft.com/sysinternals/license-terms"
+        "url": "https://docs.microsoft.com/en-us/sysinternals/license-terms"
     },
-    "url": "https://download.sysinternals.com/files/pskill.zip",
-    "hash": "17d65146805185ddeec66d4cc6737633f89f773fbe110631d72152ad07597202",
     "architecture": {
         "64bit": {
+            "url": "https://live.sysinternals.com/PsKill64.exe",
+            "hash": "75899c5ace600406503a937ef550ab0bbd0f6e0188b9e93e206beb1dfc79bb81",
             "bin": [
+                "PsKill64.exe",
                 [
-                    "pskill64.exe",
-                    "pskill"
+                    "PsKill64.exe",
+                    "PsKill"
                 ]
             ]
         },
         "32bit": {
-            "bin": "pskill.exe"
+            "url": "https://live.sysinternals.com/PsKill.exe",
+            "hash": "546ec58d0134ea64611e12d7e3a867793e8cb6145ac18745349408a60fc2fabe",
+            "bin": "PsKill.exe"
         }
     },
-    "checkver": {
-        "url": "https://raw.githubusercontent.com/MicrosoftDocs/sysinternals/main/sysinternals/downloads/pskill.md",
-        "regex": "#.*?v([\\d.]+)"
+    "pre_install": [
+        "$sysint = 'HKCU:\\SOFTWARE\\Sysinternals'",
+        "$fin = \"$sysint\\PsKill\"",
+        "New-Item $sysint, $fin -ErrorAction 'SilentlyContinue' | Out-Null",
+        "Set-ItemProperty -Path $fin -Name 'EulaAccepted' -Value 1 -Type 'DWord' -Force | Out-Null"
+    ],
+    "uninstaller": {
+        "script": [
+            "if ($purge) {",
+            "    $sysInt = 'HKCU:\\SOFTWARE\\Sysinternals'",
+            "    Remove-Item \"$sysInt\\PsKill\" -ErrorAction 'SilentlyContinue' -Force -Recurse",
+            "    if ((Get-ChildItem $sysInt).Count -eq 0) { Remove-Item $sysInt -ErrorAction 'SilentlyContinue' -Force -Recurse }",
+            "}"
+        ]
     },
+    "checkver": "PsKill\\s+v([\\d.]+)</h1",
     "autoupdate": {
-        "url": "https://download.sysinternals.com/files/pskill.zip"
+        "architecture": {
+            "64bit": {
+                "url": "https://live.sysinternals.com/PsKill64.exe"
+            },
+            "32bit": {
+                "url": "https://live.sysinternals.com/PsKill.exe"
+            }
+        }
     }
 }
