@@ -1,36 +1,35 @@
 {
-  "homepage": "https://spacedesk.net/",
-  "description": "Multi Monitor App",
-  "version": "1062_BETA",
-  "architecture": {
-    "64bit": {
-      "url": "https://spacedesk.net/downloads/spacedesk_driver_Win_10_64_v1062_BETA.msi#/setup.msi_",
-      "hash": "611ef2295b8a1255ab9e7490556633d6005456723833bf737b37847bbfc17239"
-    },
-    "32bit": {
-      "url": "https://spacedesk.net/downloads/spacedesk_driver_Win_10_32_v1062_BETA.msi#/setup.msi_",
-      "hash": "643b1362a9e587c59fac4e2d4819263bcfa98c850e0be7185d9efd652061da26"
-    }
-  },
-  "checkver": {
-    "url": "https://ghproxy.com/https://raw.githubusercontent.com/kkzzhizhou/scoop-zapps/master/versions/SpacedeskDriver.latest",
-    "regex": "64_v(.*).msi"
-  },
-  "autoupdate": {
+    "homepage": "https://spacedesk.net/",
+    "description": "Multi Monitor App",
+    "version": "1062_BETA",
     "architecture": {
-      "64bit": {
-        "url": "https://spacedesk.net/downloads/spacedesk_driver_Win_10_64_v$version.msi#/setup.msi_"
-      },
-      "32bit": {
-        "url": "https://spacedesk.net/downloads/spacedesk_driver_Win_10_32_v$version.msi#/setup.msi_"
-      }
+        "64bit": {
+            "url": "https://spacedesk.net/downloads/spacedesk_driver_Win_10_64_v1062_BETA.msi#/setup.msi_",
+            "hash": "611ef2295b8a1255ab9e7490556633d6005456723833bf737b37847bbfc17239"
+        },
+        "32bit": {
+            "url": "https://spacedesk.net/downloads/spacedesk_driver_Win_10_32_v1062_BETA.msi#/setup.msi_",
+            "hash": "643b1362a9e587c59fac4e2d4819263bcfa98c850e0be7185d9efd652061da26"
+        }
+    },
+    "checkver": {
+        "url": "https://raw.githubusercontent.com/kkzzhizhou/scoop-zapps/master/versions/SpacedeskDriver.latest",
+        "regex": "64_v(.*).msi"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://spacedesk.net/downloads/spacedesk_driver_Win_10_64_v$version.msi#/setup.msi_"
+            },
+            "32bit": {
+                "url": "https://spacedesk.net/downloads/spacedesk_driver_Win_10_32_v$version.msi#/setup.msi_"
+            }
+        }
+    },
+    "installer": {
+        "script": "Start-Process -Wait msiexec \"/i `\"$dir\\setup.msi_`\" /qn INSTALLFOLDER=`\"$dir`\"\" -Verb RunAs"
+    },
+    "uninstaller": {
+        "script": "Start-Process -Wait msiexec \"/x `\"$dir\\setup.msi_`\" /qn\" -Verb RunAs"
     }
-  },
-  "installer": {
-    "script": "Start-Process -Wait msiexec \"/i `\"$dir\\setup.msi_`\" /qn INSTALLFOLDER=`\"$dir`\"\" -Verb RunAs"
-  },
-  "uninstaller": {
-    "script": "Start-Process -Wait msiexec \"/x `\"$dir\\setup.msi_`\" /qn\" -Verb RunAs"
-  },
-  "_from": "kkzzhizhou/scoop-apps"
 }
