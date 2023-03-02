@@ -1,50 +1,51 @@
 {
-    "version": "SHA512-SUMS.txt",
-    "description": "A feature-packed, cross-platform game engine to create 2D and 3D games from a unified interface.",
-    "homepage": "https://godotengine.org/",
-    "license": "MIT",
-    "architecture": {
-        "64bit": {
-            "url": "https://downloads.tuxfamily.org/godotengine/4.0/SHA512-SUMS.txt/Godot_v4.0-SHA512-SUMS.txt_win64.exe.zip",
-            "hash": "2e43a06a1f91d59d9bf2a71430431a13bffbd009b43a6922f8e690e92dca6612"
-        },
-        "32bit": {
-            "url": "https://downloads.tuxfamily.org/godotengine/4.0/SHA512-SUMS.txt/Godot_v4.0-SHA512-SUMS.txt_win32.exe.zip",
-            "hash": "2e43a06a1f91d59d9bf2a71430431a13bffbd009b43a6922f8e690e92dca6612"
-        }
+  "version": "SHA512-SUMS.txt",
+  "description": "A feature-packed, cross-platform game engine to create 2D and 3D games from a unified interface.",
+  "homepage": "https://godotengine.org/",
+  "license": "MIT",
+  "architecture": {
+    "64bit": {
+      "url": "https://downloads.tuxfamily.org/godotengine/4.0/SHA512-SUMS.txt/Godot_v4.0-SHA512-SUMS.txt_win64.exe.zip",
+      "hash": "2e43a06a1f91d59d9bf2a71430431a13bffbd009b43a6922f8e690e92dca6612"
     },
-    "pre_install": [
-        "Remove-Item \"$dir\\Godot_*_console.*\"",
-        "Get-Item \"$dir\\Godot_*.exe\" | Rename-Item -NewName 'godot.exe'"
-    ],
-    "bin": "godot.exe",
-    "shortcuts": [
-        [
-            "godot.exe",
-            "Godot Engine"
-        ]
-    ],
-    "checkver": {
-        "script": [
-            "$WebResponse = Invoke-WebRequest('https://downloads.tuxfamily.org/godotengine/4.0/')",
-            "$links = $WebResponse.Links | Select-Object -Skip 1",
-            "$versions = $links | ForEach-Object { $_.href.Replace('/', '') }",
-            "$sortedVersions = $versions | Sort-Object {$_ -NotMatch 'pre-'}, {$_ -Replace '\\d*',''}, {[int]($_ -Replace '\\D*','')}",
-            "Write-Output $sortedVersions[-1]"
-        ],
-        "regex": "(\\S+)"
-    },
-    "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://downloads.tuxfamily.org/godotengine/4.0/$version/Godot_v4.0-$version_win64.exe.zip"
-            },
-            "32bit": {
-                "url": "https://downloads.tuxfamily.org/godotengine/4.0/$version/Godot_v4.0-$version_win32.exe.zip"
-            }
-        },
-        "hash": {
-            "url": "$baseurl/SHA512-SUMS.txt"
-        }
+    "32bit": {
+      "url": "https://downloads.tuxfamily.org/godotengine/4.0/SHA512-SUMS.txt/Godot_v4.0-SHA512-SUMS.txt_win32.exe.zip",
+      "hash": "2e43a06a1f91d59d9bf2a71430431a13bffbd009b43a6922f8e690e92dca6612"
     }
+  },
+  "pre_install": [
+    "Remove-Item \"$dir\\Godot_*_console.*\"",
+    "Get-Item \"$dir\\Godot_*.exe\" | Rename-Item -NewName 'godot.exe'"
+  ],
+  "bin": "godot.exe",
+  "shortcuts": [
+    [
+      "godot.exe",
+      "Godot Engine"
+    ]
+  ],
+  "checkver": {
+    "script": [
+      "$WebResponse = Invoke-WebRequest('https://downloads.tuxfamily.org/godotengine/4.0/')",
+      "$links = $WebResponse.Links | Select-Object -Skip 1",
+      "$versions = $links | ForEach-Object { $_.href.Replace('/', '') }",
+      "$sortedVersions = $versions | Sort-Object {$_ -NotMatch 'pre-'}, {$_ -Replace '\\d*',''}, {[int]($_ -Replace '\\D*','')}",
+      "Write-Output $sortedVersions[-1]"
+    ],
+    "regex": "(\\S+)"
+  },
+  "autoupdate": {
+    "architecture": {
+      "64bit": {
+        "url": "https://downloads.tuxfamily.org/godotengine/4.0/$version/Godot_v4.0-$version_win64.exe.zip"
+      },
+      "32bit": {
+        "url": "https://downloads.tuxfamily.org/godotengine/4.0/$version/Godot_v4.0-$version_win32.exe.zip"
+      }
+    },
+    "hash": {
+      "url": "$baseurl/SHA512-SUMS.txt"
+    }
+  },
+  "_from": "ScoopInstaller/Versions"
 }
