@@ -1,20 +1,22 @@
 {
     "homepage": "https://github.com/zzzgydi/clash-verge",
-    "description": "A Clash GUI based on tauri. Supports Windows, macOS and Linux.",
+    "description": "A Clash GUI based on tauri",
     "version": "1.2.3",
+    "license": "GPL-3.0-only",
     "url": "https://github.com/zzzgydi/clash-verge/releases/download/v1.2.3/Clash.Verge_1.2.3_x64_portable.zip",
     "hash": "d022b2e76ffc2fa5a066d42daea07d45dfea9b265eddfdd2391c29576ed6891c",
-    "bin": [
-        [
-            "Clash Verge.exe",
-            "clash-verge"
-        ]
-    ],
     "shortcuts": [
         [
             "Clash Verge.exe",
             "Clash Verge"
         ]
+    ],
+    "persist": ".config",
+    "post_install": [
+        "# https://github.com/zzzgydi/clash-verge/issues/21#issuecomment-1097467046=",
+        "if (!(Test-Path \"$persist_dir\\.config\\PORTABLE\")) {",
+        "    New-Item -Path \"$persist_dir\\.config\\PORTABLE\" -ItemType file | Out-Null",
+        "}"
     ],
     "checkver": "github",
     "autoupdate": {
