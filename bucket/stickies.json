@@ -1,29 +1,26 @@
 {
+    "homepage": "https://www.zhornsoftware.co.uk/stickies/",
+    "description": "Stickies is a PC utility I wrote to try to cut down on the number of yellow notes I was leaving stuck to my monitor. ",
     "version": "10.1c",
-    "description": "A small and simple sticky notes utility.",
-    "homepage": "https://www.zhornsoftware.co.uk/stickies/index.html",
-    "license": "Freeware",
-    "url": "https://www.zhornsoftware.co.uk/stickies/stickies_setup_10_1c.exe#/dl.7z",
+    "url": "https://www.zhornsoftware.co.uk/stickies/stickies_setup_10.1c.exe#/setup.exe",
     "hash": "0d5c0825253ee4e6fce15e4d4cbb64834ca120c6fefa2392776c6bbca55ae04c",
+    "bin": "stickies.exe",
+    "depends": "vcredist2008",
     "pre_install": [
-        "if (!(Test-Path \"$persist_dir\\stickies.db\")) { Set-Content -Encoding ASCII -Path \"$dir\\stickies.db\" -Value $null }",
-        "if (!(Test-Path \"$persist_dir\\backups\\\")) { New-Item -Path \"$dir\\backups\\\" -ItemType Directory | Out-Null }"
-    ],
-    "persist": [
-        "stickies.db",
-        "backups"
-    ],
-    "shortcuts": [
-        [
-            "stickies.exe",
-            "Stickies"
-        ]
+        "cd $dir",
+        "Start-Process -Wait \"$dir\\setup.exe\" \"-extract\""
     ],
     "checkver": {
         "url": "https://www.zhornsoftware.co.uk/stickies/versions.html",
-        "regex": "v([\\d.]+[a-z]*)\\s*-"
+        "regex": "v(\\d+\\.\\d+\\w)"
     },
     "autoupdate": {
-        "url": "https://www.zhornsoftware.co.uk/stickies/stickies_setup_$underscoreVersion.exe#/dl.7z"
-    }
+        "url": "https://www.zhornsoftware.co.uk/stickies/stickies_setup_$version.exe#/setup.exe"
+    },
+    "shortcuts": [
+        [
+            "stickies.exe",
+            "stickies"
+        ]
+    ]
 }
