@@ -1,34 +1,35 @@
 {
-    "$schema": "https://ghproxy.com/https://raw.githubusercontent.com/ScoopInstaller/Scoop/master/schema.json",
-    "version": "2022",
-    "description": "A cross-platform, free software distribution for the TeX typesetting system that includes major TeX-related programs, macro packages, and fonts.",
     "homepage": "https://tug.org/texlive/",
-    "license": {
-        "identifier": "LPPL-1.3c,GPL-2.0-only",
-        "url": "https://tug.org/texlive/LICENSE.TL"
-    },
-    "url": "https://mirrors.tuna.tsinghua.edu.cn/CTAN/systems/texlive/Images/texlive2022.iso",
-    "hash": "sha512:b3d4d2e9b0e3d34a7ca0763fb5c669bb9a26518f86af5cc292c56f7d61ff25dc5fce3373f814d970d99b0d40df393ad594336cf1b35a95a9655289666d964d59",
-    "extract_to": "installer",
+    "description": "TeX Live is a cross-platform, free software distribution for the TeX typesetting system",
+    "license": "LPPL,GPL2",
+    "version": "2022",
+    "url": "http://mirror.ctan.org/systems/texlive/tlnet/install-tl.zip",
+    "hash": "sha512:0b366ef518fc3a2c177173dd1e532dcf239a7cb90257f4ae63570ed1776297e5a74cd41a18c93518daf0eeabdb47459894a3d9d6688a6805583c650fcaeb48f1",
     "installer": {
         "script": [
+            "Write-Host 'Invoking TeX Live installer...' -ForegroundColor DarkCyan",
+            "Write-Host 'This can take a few minutes to to a long time...' -ForegroundColor DarkYellow",
+            "Get-ChildItem \"$dir\\install-tl-*\" | Rename-Item -NewName \"$dir\\installer\"",
             "$env:TEXLIVE_INSTALL_PAPER='a4'",
             "$env:TEXLIVE_INSTALL_PREFIX=\"$dir\"",
             "$env:TEXLIVE_INSTALL_NO_CONTEXT_CACHE=1",
             "$env:TEXLIVE_INSTALL_NO_RESUME=1",
             "$env:TEXLIVE_INSTALL_ENV_NOCHECK=1",
             "$installProfile = \"$dir\\installer\\default.profile\"",
-            "\"selected_scheme scheme-full\" | Out-File $installProfile -Encoding ascii",
-            "Write-Host -ForegroundColor DarkCyan 'Running TeX Live installer...'",
-            "Write-Host -ForegroundColor DarkYellow 'This can take a few minutes or longer...'",
-            "Invoke-ExternalCommand \"$dir\\installer\\install-tl-windows.bat\" -Args @('-no-gui', '-portable', '-non-admin', \"-profile=$installProfile\") | Out-Null",
+            "Write-Output \"selected_scheme scheme-small\" | Out-File $installProfile -Encoding ASCII",
+            "$installArgs = \"-no-gui -portable -non-admin -profile=$installProfile\"",
+            "Write-Output 'Downloading and installing TeX Live packages...'",
+            "Invoke-ExternalCommand -Path \"$dir\\installer\\install-tl-windows.bat\" -ArgumentList $installArgs",
             "Remove-Item \"$dir\\installer\" -Recurse -Force | Out-Null",
-            "if (!(Test-Path \"$dir\\bin\\win64\")) { New-Item -Type Directory -Path \"$dir\\bin\\win64\" | Out-Null }",
-            "$env:TEXLIVE_INSTALL_PAPER=$null",
-            "$env:TEXLIVE_INSTALL_PREFIX=$null",
-            "$env:TEXLIVE_INSTALL_NO_CONTEXT_CACHE=$null",
-            "$env:TEXLIVE_INSTALL_NO_RESUME=$null",
-            "$env:TEXLIVE_INSTALL_ENV_NOCHECK=$null"
+            "if (!(Test-Path \"$dir\\bin\\win64\")) {",
+            "    New-Item -Type Directory -Path \"$dir\\bin\\win64\" | Out-Null",
+            "}",
+            "# Unset install envs",
+            "$env:TEXLIVE_INSTALL_PAPER=''",
+            "$env:TEXLIVE_INSTALL_PREFIX=''",
+            "$env:TEXLIVE_INSTALL_NO_CONTEXT_CACHE=''",
+            "$env:TEXLIVE_INSTALL_NO_RESUME=''",
+            "$env:TEXLIVE_INSTALL_ENV_NOCHECK=''"
         ]
     },
     "env_add_path": [
@@ -39,10 +40,6 @@
         [
             "tl-tray-menu.exe",
             "Tex Live Manager"
-        ],
-        [
-            "bin\\win32\\texworks.exe",
-            "TeXworks"
         ]
     ],
     "persist": "texmf-config",
@@ -50,7 +47,7 @@
         "regex": "Current release: TeX Live ([\\d]+)"
     },
     "autoupdate": {
-        "url": "https://mirrors.tuna.tsinghua.edu.cn/CTAN/systems/texlive/Images/texlive$version.iso",
+        "url": "http://mirror.ctan.org/systems/texlive/tlnet/install-tl.zip",
         "hash": {
             "url": "$url.sha512"
         }

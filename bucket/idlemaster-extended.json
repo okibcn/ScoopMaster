@@ -1,18 +1,30 @@
 {
     "version": "1.9.0",
-    "description": "Get Steam Trading Cards the Fast Way (Fast Mode Extension)",
+    "description": "Get your Steam Trading Cards the Fast Way (Fast Mode Extension)",
     "homepage": "https://github.com/JonasNilson/idle_master_extended",
-    "license": "GPL-2.0",
+    "license": {
+        "identifier": "GPL-2.0-only",
+        "url": "https://github.com/JonasNilson/idle_master_extended/blob/develop/LICENSE"
+    },
     "url": "https://github.com/JonasNilson/idle_master_extended/releases/download/v1.9.0/idle_master_extended_v1.9.0.zip",
-    "hash": "89f432a6085696f9c5827a99af24848d5f81131e17c57ff94c16b73509ef4a41",
+    "hash": "sha256:89F432A6085696F9C5827A99AF24848D5F81131E17C57FF94C16B73509EF4A41",
     "extract_dir": "idle_master_extended_v1.9.0",
+    "bin": [
+        [
+            "steam-idle.exe",
+            "steam-idle"
+        ]
+    ],
     "shortcuts": [
         [
             "IdleMasterExtended.exe",
             "Idle Master Extended"
         ]
     ],
-    "checkver": "github",
+    "post_uninstall": "If ($cmd -eq 'uninstall') { Remove-Item ${env:LOCALAPPDATA}\\IdleMasterExtended\\* -Force -Recurse }",
+    "checkver": {
+        "github": "https://github.com/JonasNilson/idle_master_extended"
+    },
     "autoupdate": {
         "url": "https://github.com/JonasNilson/idle_master_extended/releases/download/v$version/idle_master_extended_v$version.zip",
         "extract_dir": "idle_master_extended_v$version"
