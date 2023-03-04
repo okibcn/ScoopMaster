@@ -1,26 +1,77 @@
 {
-    "version": "6.3.6-20230304163433",
-    "homepage": "https://www.metasploit.com/",
-    "description": "A popular framework used for penetration testing.",
-    "license": "BSD-3-Clause",
-    "architecture": {
-        "64bit": {
-            "url": "https://windows.metasploit.com/metasploit-framework-6.3.6+20230304163433-1rapid7-1-x64.msi",
-            "hash": "7c34a73adfad7d7bd1f44c2a988f8ab36d2bd1cf68a1765389a11e85f8135e0f"
-        }
+    "homepage": "https://github.com/rapid7/metasploit-framework",
+    "description": "Metasploit Framework",
+    "version": "6.3.6+20230304163433",
+    "license": "BSD-3-clause",
+    "hash": "7c34a73adfad7d7bd1f44c2a988f8ab36d2bd1cf68a1765389a11e85f8135e0f",
+    "url": "https://windows.metasploit.com/metasploit-framework-6.3.6+20230304163433-1rapid7-1-x64.msi",
+    "bin": [
+        [
+            "bin\\msfconsole.bat",
+            "msfconsole"
+        ],
+        [
+            "bin\\msfd.bat",
+            "msfd"
+        ],
+        [
+            "bin\\msfdb.bat",
+            "msfdb"
+        ],
+        [
+            "bin\\msfbinscan.bat",
+            "msfbinscan.bat"
+        ],
+        [
+            "bin\\msfelfscan.bat",
+            "msfelfscan"
+        ],
+        [
+            "bin\\msfmachscan.bat",
+            "msfmachscan"
+        ],
+        [
+            "bin\\msfpescan.bat",
+            "msfpescan"
+        ],
+        [
+            "bin\\msfrop.bat",
+            "msfrop"
+        ],
+        [
+            "bin\\msfrpc.bat",
+            "msfrpc"
+        ],
+        [
+            "bin\\msfrpcd.bat",
+            "msfrpcd"
+        ],
+        [
+            "bin\\msfvenom.bat",
+            "msfvenom"
+        ]
+    ],
+    "shortcuts": [
+        
+    ],
+    "installer": {
+        "script": [
+            "Remove-Item –Recurse $dir\\System64",
+            "Expand-7zipArchive $dir\\metasploit-framework.zip $dir\\",
+            "Remove-Item $dir\\metasploit-framework.zip"
+        ]
     },
-    "pre_install": "Remove-Item \"$dir\\*\" -Exclude 'metasploit-framework.zip' -Recurse; Expand-7zipArchive \"$dir\\metasploit-framework.zip\" \"$dir\" -Removal",
-    "env_add_path": "bin",
+    "suggest": {
+        
+    },
+    "persist": [
+        
+    ],
     "checkver": {
         "url": "https://windows.metasploit.com/LATEST",
-        "regex": "-(?<Ver>[\\d.]+)\\+(?<Release>[\\d.]+)-1rapid7-1-x64",
-        "replace": "${Ver}-${Release}"
+        "regex": "metasploit-framework-([\\d.+]+?)-1rapid7-1-x64\\.msi"
     },
     "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://windows.metasploit.com/metasploit-framework-$matchVer+$matchRelease-1rapid7-1-x64.msi"
-            }
-        }
+        "url": "https://windows.metasploit.com/metasploit-framework-$version-1rapid7-1-x64.msi"
     }
 }
