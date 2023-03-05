@@ -29,8 +29,13 @@
     ],
     "pre_uninstall": [
         "if (!(is_admin)) { error \"$app requires admin rights to $cmd\"; break }",
-        "reg export 'HKLM\\SOFTWARE\\Classes\\*\\shell\\PeaZip' \"$persist_dir\\peazip_context_menu1.reg\" /y | Out-Null",
-        "reg export 'HKLM\\SOFTWARE\\Classes\\AllFilesystemObjects\\shell\\PeaZip' \"$persist_dir\\peazip_context_menu2.reg\" /y | Out-Null; Start-Sleep -Seconds 2",
+        "if (Test-Path 'HKLM:\\SOFTWARE\\Classes\\AllFilesystemObjects\\shell\\PeaZip') {",
+        "   reg export 'HKLM\\SOFTWARE\\Classes\\*\\shell\\PeaZip' \"$persist_dir\\peazip_context_menu1.reg\" /y | Out-Null",
+        "   reg export 'HKLM\\SOFTWARE\\Classes\\AllFilesystemObjects\\shell\\PeaZip' \"$persist_dir\\peazip_context_menu2.reg\" /y | Out-Null",
+        "} elseif (Test-Path 'HKCU:\\SOFTWARE\\Classes\\AllFilesystemObjects\\shell\\PeaZip') {",
+        "   reg export 'HKCU\\SOFTWARE\\Classes\\*\\shell\\PeaZip' \"$persist_dir\\peazip_context_menu1.reg\" /y | Out-Null",
+        "   reg export 'HKCU\\SOFTWARE\\Classes\\AllFilesystemObjects\\shell\\PeaZip' \"$persist_dir\\peazip_context_menu2.reg\" /y | Out-Null",
+        "}",
         "foreach ($uninstall_exe in \"$dir\\unins001.exe\", \"$dir\\unins000.exe\") {",
         "   Start-Process $uninstall_exe -Wait -Verb 'RunAs' -ArgumentList @('/VERYSILENT', '/FORCECLOSEAPPLICATIONS', '/SUPPRESSMSGBOXES')",
         "}"
