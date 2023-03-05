@@ -1,25 +1,27 @@
 {
     "version": "1.2.3",
-    "homepage": "https://github.com/zzzgydi/clash-verge",
     "description": "A Clash GUI based on tauri.",
-    "license": "GPL-3.0",
+    "homepage": "https://github.com/zzzgydi/clash-verge",
+    "license": "GPL-3.0-only",
     "architecture": {
         "64bit": {
             "url": "https://github.com/zzzgydi/clash-verge/releases/download/v1.2.3/Clash.Verge_1.2.3_x64_portable.zip",
             "hash": "d022b2e76ffc2fa5a066d42daea07d45dfea9b265eddfdd2391c29576ed6891c"
         }
     },
-    "bin": [
-        "clash.exe",
-        "clash-meta.exe"
+    "post_install": [
+        "ensure \"$dir\\.config\" | Out-Null",
+        "if (!(Test-Path \"$dir\\.config\\PORTABLE\")) {",
+        "    New-Item -Path \"$dir\\.config\\PORTABLE\" -ItemType file | Out-Null",
+        "}"
     ],
+    "persist": ".config",
     "shortcuts": [
         [
             "Clash Verge.exe",
             "Clash Verge"
         ]
     ],
-    "pre_uninstall": "Start-Process \"$dir\\resources\\uninstall-service.exe\" -Wait -Verb 'RunAs' -WindowStyle 'Hidden'; Start-Sleep -Seconds 2",
     "checkver": "github",
     "autoupdate": {
         "architecture": {
