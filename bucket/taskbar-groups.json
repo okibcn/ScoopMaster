@@ -8,7 +8,8 @@
     "extract_dir": "TaskbarGroups",
     "pre_install": [
         "ensure \"$persist_dir\" | Out-Null",
-        "New-Item \"$dir\\OpenTaskbarGroupsShortcuts.cmd\" -Value '@start explorer \"%~dp0Shortcuts\"' | Out-Null",
+        "$newDir = $dir.Replace(\"$version\", 'current')",
+        "New-Item \"$dir\\OpenTaskbarGroupsShortcuts.bat\" -Value \" start \"\"%windir%\\explorer.exe\"\" \"\"$newDir\\Shortcuts\"\" \" | Out-Null",
         "Copy-Item \"$persist_dir\\*\" \"$dir\" -Include 'Shortcuts', 'config' -Recurse -ErrorAction 'SilentlyContinue'"
     ],
     "bin": "TaskbarGroups.exe",
@@ -18,7 +19,7 @@
             "Taskbar Groups"
         ],
         [
-            "OpenTaskbarGroupsShortcuts.cmd",
+            "OpenTaskbarGroupsShortcuts.bat",
             "Open Taskbar Groups Shortcuts",
             "",
             "TaskbarGroups.exe"
