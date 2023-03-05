@@ -24,7 +24,7 @@
             "try {",
             "    $api = (Invoke-RestMethod https://api.github.com/repositories/171577816/releases)[0..2] | Where-Object { $_.assets.name.split('.')[0] -match '^\\d+$' }",
             "    $zip = '\\.zip$'",
-            "    $api[0].tag_name, ($api.assets.name | Where-Object { $_ -match $zip })[0] -replace $zip -join ' '",
+            "    $api[0].tag_name, ($api.assets.name | Where-Object { $_ -match $zip })[0].Replace($zip, '') -join ' '",
             "}",
             "catch {",
             "    ''",
