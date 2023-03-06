@@ -6,6 +6,11 @@
     "url": "https://github.com/YerongAI/Office-Tool/releases/download/v10.0.5.2/Office_Tool_v10.0.5.2.zip",
     "hash": "67fca602a93f2def1f647b9e8a6b436cb01adff6d5cf8df87ea7f1ea45ded774",
     "extract_dir": "Office Tool",
+    "post_install": [
+        "if (Test-Path \"$(appdir vlmcsd)\\current\\vlmcs-Windows.exe\") {",
+        "    New-Item -Force -ItemType HardLink -Path \"$dir\\files\\activate\\\" -Name vlmcs.exe -Target \"$(appdir vlmcsd)\\current\\vlmcs-Windows.exe\" | Out-Null",
+        "}"
+    ],
     "shortcuts": [
         [
             "Office Tool Plus.exe",
@@ -17,9 +22,8 @@
     "autoupdate": {
         "url": "https://github.com/YerongAI/Office-Tool/releases/download/v$version/Office_Tool_v$version.zip",
         "hash": {
-            "url": "https://github.com/YerongAI/Office-Tool/releases/tag/v$version",
-            "mode": "extract",
-            "regex": "(?sm)Office_Tool_v$version.zip.*?$sha256"
+            "url": "https://github.com/YerongAI/Office-Tool/releases/v$version",
+            "find": "Office_Tool_v$version.zip.[\\d\\D]*?$sha256"
         }
     }
 }
