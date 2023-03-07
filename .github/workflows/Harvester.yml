@@ -323,7 +323,6 @@ jobs:
                 $lDeleted += $file.BaseName
                 continue
             }
-            # $hFile = (Get-FileHash -Algorithm SHA1 "../bucket/$($file.Name)").Hash
             $hFile = (Get-FileHash -Algorithm SHA1 $file).Hash
             $hCandidate = (Get-FileHash -Algorithm SHA1 $candidate).Hash
             if ($hCandidate -ne $hFile) {
@@ -336,37 +335,52 @@ jobs:
         $lNew = (gci ../local/*).BaseName
         move-item ../local/* bucket -Force
 
+        move-item ../*.txt .
         $lDeleted > AppsLeavingScoop.txt
         $lUpdated > AppsUpdated.txt
         $lNew > AppsNew.txt
 
         if ( "${{github.event.inputs.release}}" -eq 'Artifact') {7z a '-x!*.7z' ScoopMaster.7z *}
 
-        (gc .\README.md) -Replace "\d+(?=\*\* manifests)","$( [int]($env:N_MANIFESTS) + [int]($env:N_APPS) )" | Set-Content README.md
-        (gc .\README.md) -Replace "\d+(?=\*\* buckets)","$($env:N_BUCKETS)" | Set-Content README.md
-        (gc .\README.md) -Replace "\d+(?=\*\* apps)","$($env:N_APPS)" | Set-Content README.md
+        $stats=@{}
+        $stats.Add('date',"$($env:UPDATE)")
+        $stats.Add('prevDate',"$($env:UPDATE)")
+        $stats.Add('totalBuckets',(gc Bucket_list.txt).count)
+        $stats.Add('badBuckets',((gc ./aria2-out.txt) | sls 'http').Matches.count)
+        $stats.Add('buckets',$stats.totalBuckets - $stats.badBuckets )
+        $stats.Add('manifests',$( [int]($env:N_MANIFESTS) + [int]($env:N_APPS) ) )
+        $stats.Add('apps',$env:N_APPS))
+        $stats.Add('appsNew',$lnew.count)
+        $stats.Add('appsUpdated',$lUpdated.count)
+        $stats.Add('appsDeleted',$lDeleted.count)
+        $stats.Add('downloads',1234)
+        $stats | ConvertTo-Json > stats.json
 
-        move-item ../*.txt .
+        (gc .\README.md) -Replace "\d+(?=\*\* manifests)","$($stats.manifests)" | Set-Content README.md
+        (gc .\README.md) -Replace "\d+(?=\*\* buckets)","$($stats.buckets)" | Set-Content README.md
+        (gc .\README.md) -Replace "\d+(?=\*\* apps)","$($stats.apps)" | Set-Content README.md
+
         Write-Output "These databases are updated every 30 minutes. The current content and metrics for these databases are:" > body.txt
-        Write-Output "- **AllAppsDB** contains info of **$([int]($env:N_MANIFESTS) + [int]($env:N_APPS) )** manifests in **$($env:N_BUCKETS)** online buckets." >> body.txt
-        Write-Output "- **LastAppsDB** contains highest version of each of the **$($env:N_APPS)** apps in Scoop, all of them contained in this bucket." >> body.txt
+        Write-Output "- **AllAppsDB** contains info of **$($stats.manifests)** manifests in **$($stats.buckets)** online buckets." >> body.txt
+        Write-Output "- **LastAppsDB** contains highest version of each of the **$($stats.apps)** apps in Scoop, all of them contained in this bucket." >> body.txt
         Write-Output " " >> body.txt
         Write-Output "These databases can be used for fast online data retrieval, for instance by CLI scoop search utilities such as `ss` (ScoopSearch)" >> body.txt
         Write-Output " " >> body.txt
-        Write-Output "The current snapshot timestamp for these databases is $($env:UPDATE). In the last 30 minutes:" >> body.txt
-        Write-Output "- $($lNew.count) apps were added to Scoop." >> body.txt
-        Write-Output "- $($lUpdated.count) apps were updated." >> body.txt
-        Write-Output "- $($lDeleted.count) apps left Scoop." >> body.txt
+        Write-Output "The current snapshot timestamp for these databases is $($stats.date). In the last 30 minutes:" >> body.txt
+        Write-Output "- $($stats.appsNew) apps were added to Scoop." >> body.txt
+        Write-Output "- $($stats.appsUpdated) apps were updated." >> body.txt
+        Write-Output "- $($stats.appsDeleted) apps left Scoop." >> body.txt
 
         Write-Output " "
         Write-Output " "
-        Write-Output "- AllAppsDB contains the data of **$([int]($env:N_MANIFESTS) + [int]($env:N_APPS) )** manifests in $($env:N_BUCKETS) online buckets."
-        Write-Output "- LastAppsDB contains highest version of each of the $($env:N_APPS) apps in Scoop, all of them contained in this bucket."
+        Write-Output "- AllAppsDB contains the data of **$($stats.manifests)** manifests in $($stats.buckets) online buckets."
+        Write-Output "- LastAppsDB contains highest version of each of the $($stats.apps) apps in Scoop, all of them contained in this bucket."
         Write-Output " "
-        Write-Output "The current snapshot timestamp for these databases is $($env:UPDATE). In the last 30 minutes:"
-        Write-Output "- $($lNew.count) apps were added to Scoop."
-        Write-Output "- $($lUpdated.count) apps were updated."
-        Write-Output "- $($lDeleted.count) apps left Scoop."
+        Write-Output "The current snapshot timestamp for these databases is $($stats.date). In the last 30 minutes:"
+        Write-Output "- $($stats.appsNew) apps were added to Scoop."
+        Write-Output "- $($stats.appsUpdated) apps were updated."
+        Write-Output "- $($stats.appsDeleted) apps left Scoop."
+
 
 
     - name: "🐞 Debug session"
