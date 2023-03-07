@@ -342,6 +342,8 @@ jobs:
 
         if ( "${{github.event.inputs.release}}" -eq 'Artifact') {7z a '-x!*.7z' ScoopMaster.7z *}
 
+        $downloads=(( (wget -qO- https://api.github.com/repos/okibcn/ScoopMaster/releases)  -match  "download_count" | sls \d+ ).matches | Measure-Object Value -Sum ).Sum
+        
         $stats=@{}
         $stats.Add('date',"$($env:UPDATE)")
         $stats.Add('prevDate',"$($env:UPDATE)")
@@ -354,7 +356,8 @@ jobs:
         $stats.Add('appsNew',$lnew.count)
         $stats.Add('appsUpdated',$lUpdated.count)
         $stats.Add('appsDeleted',$lDeleted.count)
-        $stats.Add('downloads',1234)
+        $stats.Add('downloads',[int]$downloads)
+        $stats.Add('totalDownloads',[int]$( (gc stats.json | ConvertFrom-Json).totalDownloads + $stats.downloads  ))
         $stats | ConvertTo-Json > stats.json
 
         (gc .\README.md) -Replace "\d+(?=\*\* manifests)","$($stats.manifests)" | Set-Content README.md
