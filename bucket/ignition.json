@@ -9,6 +9,8 @@
     "url": "https://files.inductiveautomation.com/release/ia/8.1.25/20230214-0923/Ignition-windows-x86-64-8.1.25.zip",
     "hash": "9b88c49c0182babde85f5dd3f1f65b74f7d262468c5fc026362086796e9f12c9",
     "post_install": [
+        "# Update ignition.conf",
+        "(Get-Content \"$dir\\data\\ignition.conf\") -replace '=Ignition', '=Ignition scoop' | Out-File \"$dir\\data\\ignition.conf\"",
         "# Install Ignition",
         "cmd.exe /c \"$dir\\install-ignition.bat\"",
         "# Run upgrader",
