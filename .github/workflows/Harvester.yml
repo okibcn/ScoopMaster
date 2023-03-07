@@ -346,7 +346,7 @@ jobs:
         
         $stats=@{}
         $stats.Add('date',"$($env:UPDATE)")
-        $stats.Add('prevDate',"$((gc stats.json | ConvertFrom-Json).date)")
+        $stats.Add('prevDate',"$((gc stats.json | ConvertFrom-Json).date.ToString("yyyy-MM-ddTHH:mm:ssZ"))")
         $stats.Add('totalBuckets',(gc Bucket_list.txt).count)
         $stats.Add('badBuckets',((gc ./aria2-out.txt) | sls 'http').Matches.count)
         $stats.Add('buckets',$stats.totalBuckets - $stats.badBuckets )
