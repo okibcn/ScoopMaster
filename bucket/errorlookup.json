@@ -1,6 +1,6 @@
 {
     "version": "2.4.2",
-    "description": "Translating error codes into a more meaningful text description.",
+    "description": "A simple tool for retrieving information about Windows errors codes.",
     "homepage": "https://www.henrypp.org/product/errorlookup",
     "license": "GPL-3.0-only",
     "url": "https://github.com/henrypp/errorlookup/releases/download/v.2.4.2/errorlookup-2.4.2-bin.zip",
@@ -13,18 +13,19 @@
             "extract_dir": "errorlookup\\32"
         }
     },
-    "pre_install": [
-        "if (!(Test-Path \"$dir\\errorlookup.ini\")) {",
-        "New-Item \"$dir\\errorlookup.ini\" | Out-Null }"
-    ],
+    "pre_install": "if (!(Test-Path \"$persist_dir\\errorlookup.ini\")) { Set-Content -Encoding ASCII -Path \"$dir\\errorlookup.ini\" -Value $null }",
     "persist": "errorlookup.ini",
+    "bin": "errorlookup.exe",
     "shortcuts": [
         [
             "errorlookup.exe",
             "Error Lookup"
         ]
     ],
-    "checkver": "softwareVersion\">([\\d.]+)",
+    "checkver": {
+        "url": "https://github.com/henrypp/errorlookup/releases/latest",
+        "regex": "/releases/tag/v.([\\d.]+)\""
+    },
     "autoupdate": {
         "url": "https://github.com/henrypp/errorlookup/releases/download/v.$version/errorlookup-$version-bin.zip"
     }
