@@ -1,14 +1,15 @@
 {
     "version": "4.6.3",
+    "description": "An HTTP proxy / HTTP monitor / Reverse Proxy that enables a developer to view all of the HTTP and SSL / HTTPS traffic between their machine and the Internet.",
     "homepage": "https://www.charlesproxy.com/",
-    "description": "Web Debugging Proxy Application",
-    "license": "Freeware",
-    "url": "https://www.charlesproxy.com/assets/release/4.6.3/charles-proxy-4.6.3-win64.msi",
-    "hash": "efb8f5cda02bd6bc42860e7069ada57cd97c5d81e0965a718a419125e65c7f31",
-    "pre_install": [
-        "Move-Item -Path \"$dir\\PFiles\\Charles\\*\" -Destination \"$dir\"",
-        "Remove-Item \"$dir\\PFiles\" -Force -Recurse"
-    ],
+    "license": "Proprietary",
+    "architecture": {
+        "64bit": {
+            "url": "https://www.charlesproxy.com/assets/release/4.6.3/charles-proxy-4.6.3-win64.msi",
+            "hash": "efb8f5cda02bd6bc42860e7069ada57cd97c5d81e0965a718a419125e65c7f31"
+        }
+    },
+    "extract_dir": "PFiles\\Charles",
     "shortcuts": [
         [
             "Charles.exe",
@@ -17,9 +18,13 @@
     ],
     "checkver": {
         "url": "https://www.charlesproxy.com/download/",
-        "regex": "v([\\d\\.]+)"
+        "regex": "Charles\\sis\\s([\\d.]+)\\."
     },
     "autoupdate": {
-        "url": "https://www.charlesproxy.com/assets/release/$version/charles-proxy-$version-win64.msi"
+        "architecture": {
+            "64bit": {
+                "url": "https://www.charlesproxy.com/assets/release/$version/charles-proxy-$version-win64.msi"
+            }
+        }
     }
 }
