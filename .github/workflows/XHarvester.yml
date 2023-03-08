@@ -297,6 +297,8 @@ jobs:
         move-item *DB.* ScoopMaster
 
     - name: "📦 Prepare updated repo"
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         ############################
         ##                          ##
@@ -349,7 +351,7 @@ jobs:
 
         if ( "${{github.event.inputs.release}}" -eq 'Artifact') {7z a '-x!*.7z' ScoopMaster.7z *}
 
-        $downloads=((( (iwr https://api.github.com/repos/okibcn/ScoopMaster/releases).content | jq . ) -match  "download_count" | sls \d+ ).matches | Measure-Object Value -Sum ).Sum
+        $downloads=((( gh api repos/okibcn/ScoopMaster/releases ) -match  "download_count" | sls \d+ ).matches | Measure-Object Value -Sum ).Sum
         
         $stats=@{}
         $stats.Add('date',"$($env:UPDATE)")
