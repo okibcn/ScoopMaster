@@ -352,7 +352,7 @@ jobs:
         if ( "${{github.event.inputs.release}}" -eq 'Artifact') {7z a '-x!*.7z' ScoopMaster.7z *}
 
         $downloads=((( gh api repos/okibcn/ScoopMaster/releases ) -match  "download_count" | sls \d+ ).matches | Measure-Object Value -Sum ).Sum
-        
+        "New Downloads: $downloads"
         $stats=@{}
         $stats.Add('date',"$($env:UPDATE)")
         $stats.Add('prevDate',"$((gc stats.json | ConvertFrom-Json).date.ToString("yyyy-MM-ddTHH:mm:ssZ"))")
