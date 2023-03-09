@@ -352,11 +352,11 @@ jobs:
         if ( "${{github.event.inputs.release}}" -eq 'Artifact') {7z a '-x!*.7z' ScoopMaster.7z *}
 
         "#######################################################################################################################"
-        gh api repos/okibcn/ScoopMaster/releases
+        gh api repos/okibcn/ScoopMaster/releases | jq .
         "#######################################################################################################################"
-        ( gh api repos/okibcn/ScoopMaster/releases ) -match  "download_count"
+        ( gh api repos/okibcn/ScoopMaster/releases | jq . ) -match  "download_count"
         "#######################################################################################################################"
-        ( gh api repos/okibcn/ScoopMaster/releases ) -match  "download_count" | sls \d+ 
+        ( gh api repos/okibcn/ScoopMaster/releases | jq . ) -match  "download_count" | sls \d+ 
         "#######################################################################################################################"
 
         $downloads=((( gh api repos/okibcn/ScoopMaster/releases ) -match  "download_count" | sls \d+ ).matches | Measure-Object Value -Sum ).Sum
