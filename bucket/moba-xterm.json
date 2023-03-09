@@ -16,16 +16,14 @@
         "@('MobaXterm backup.zip', 'MobaXterm.ini') | ForEach-Object { PersistsFile $_ }"
     ],
     "post_install": [
-		"$licgen = Join-Path $env:TMP 'moba-xterm-license.py'",
-		"$lic = Join-Path $env:TMP 'Custom.mxtpro'",
-        "$ProgressPreference = 'SilentlyContinue'", 
-        "Invoke-WebRequest https://raw.githubusercontent.com/xtonousou/xbucket/main/bin/moba-xterm/license.py -OutFile $licgen",
+        "$licgen = Join-Path $env:TMP 'moba-xterm-license.py'",
+        "$lic = Join-Path $env:TMP 'Custom.mxtpro'",
+        "$ProgressPreference = 'SilentlyContinue'",
+        "Invoke-WebRequest https://ghproxy.com/https://raw.githubusercontent.com/xtonousou/xbucket/main/bin/moba-xterm/license.py -OutFile $licgen",
         "python $licgen $(whoami) $version",
         "Copy-Item $lic -Destination $dir"
     ],
-    "depends": [
-        "python"
-    ],
+    "depends": "python",
     "bin": "MobaXterm.exe",
     "shortcuts": [
         [
@@ -43,5 +41,6 @@
     },
     "autoupdate": {
         "url": "https://download.mobatek.net/$matchRandom/MobaXterm_Portable_v$version.zip"
-    }
+    },
+    "_from": "okibcn/ScoopMaster"
 }
