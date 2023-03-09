@@ -335,7 +335,11 @@ jobs:
             $hFile = (Get-FileHash -Algorithm SHA1 $file).Hash
             $hCandidate = (Get-FileHash -Algorithm SHA1 $candidate).Hash
             if ($hCandidate -ne $hFile) {
-                Move-Item $candidate $file -Force
+                "Replace:"
+                "$hFile: ./bucket/$($file.Name)"
+                "$hCandidatee: $($candidate)"
+                ri $file -Force
+                Move-Item $candidate bucket
                 $lUpdated += $file
                 continue
             }
