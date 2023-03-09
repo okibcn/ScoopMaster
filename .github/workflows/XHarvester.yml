@@ -326,14 +326,14 @@ jobs:
               $oldpercent=$percent
             }
 
-            $candidate = "../local/$($file.Name.ToLower()).json"
+            $candidate = "../local/$($file.Name.ToLower())"
             if (-not (test-path $candidate)) {
                 Remove-Item $file
                 $lDeleted += $file.BaseName
                 continue
             }
             $hFile = (Get-FileHash -Algorithm SHA1 $file).Hash
-            $hCandidate = (Get-FileHash -Algorithm SHA1 $candidate).Hash
+            $hCandidate = (Get-FileHash -Algorithm SHA1 "$candidate").Hash
             if ($hCandidate -ne $hFile) {
                 "Replace:"
                 "$($hFile): ./bucket/$($file.Name)"
