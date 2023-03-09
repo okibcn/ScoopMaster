@@ -356,10 +356,10 @@ jobs:
         "#######################################################################################################################"
         ( gh api repos/okibcn/ScoopMaster/releases | jq . ) -match  "download_count"
         "#######################################################################################################################"
-        ( gh api repos/okibcn/ScoopMaster/releases | jq . ) -match  "download_count" | sls \d+ 
+        (( gh api repos/okibcn/ScoopMaster/releases | jq . ) -match  "download_count" | sls '\d+' ).matches
         "#######################################################################################################################"
 
-        $downloads=((( gh api repos/okibcn/ScoopMaster/releases ) -match  "download_count" | sls \d+ ).matches | Measure-Object Value -Sum ).Sum
+        $downloads=((( gh api repos/okibcn/ScoopMaster/releases | jq . ) -match  "download_count" | sls '\d+' ).matches | Measure-Object Value -Sum ).Sum
         "New Downloads: $downloads"
         $stats=@{}
         $stats.Add('date',"$($env:UPDATE)")
