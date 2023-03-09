@@ -1,5 +1,5 @@
 {
-    "version": "9.0.0719",
+    "version": "9.0.1395",
     "description": "A highly configurable text editor",
     "homepage": "https://www.vim.org",
     "license": "Vim",
@@ -8,14 +8,14 @@
         "vimtutor": "vimtutor"
     },
     "architecture": {
-		"32bit": {
-			"url": "https://github.com/vim/vim-win32-installer/releases/download/v9.0.0719/gvim_9.0.0719_x86.zip",
-			"hash": "39d879f14522ebc5be76719d0010d3e06ddd2163eff6257c6181da5e0dd90301"
-		},
-		"64bit": {
-			"url": "https://github.com/vim/vim-win32-installer/releases/download/v9.0.0719/gvim_9.0.0719_x64.zip",
-			"hash": "48705e866c4953b438f322378b57a29f9ad0e9f32047da0ba0c1f14641cf25fe"
-		}
+        "32bit": {
+            "url": "https://ghproxy.com/https://github.com/vim/vim-win32-installer/releases/download/v9.0.1395/gvim_9.0.1395_x86.zip",
+            "hash": "bb398a1e968b483eccdd29a9fe647f71c3eee89f8f552468b53224548ffb4e04"
+        },
+        "64bit": {
+            "url": "https://ghproxy.com/https://github.com/vim/vim-win32-installer/releases/download/v9.0.1395/gvim_9.0.1395_x64.zip",
+            "hash": "ccf0d5de7c1191a0a6f40ad67e753faeb962827921c3e40ed64cca8eecf1b2a1"
+        }
     },
     "extract_dir": "vim\\vim90",
     "pre_install": [
@@ -28,7 +28,7 @@
     "post_install": [
         "'install-context.reg', 'uninstall-context.reg' | ForEach-Object {",
         "    $vimpath = \"$dir\\gVim.exe\".Replace('\\', '\\\\')",
-        "    $content = (Get-Content \"$bucketsdir\\main\\scripts\\vim\\$_\").Replace('$vim', $vimpath)",
+        "    $content = (Get-Content \"$bucketsdir\\$bucket\\scripts\\vim\\$_\").Replace('$vim', $vimpath)",
         "    if ($global) { $content = $content.Replace('HKEY_CURRENT_USER', 'HKEY_LOCAL_MACHINE') }",
         "    Set-Content \"$dir\\$_\" $content",
         "}"
@@ -59,16 +59,17 @@
         ]
     ],
     "checkver": {
-		"github": "https://github.com/vim/vim-win32-installer"
+        "github": "https://github.com/vim/vim-win32-installer"
     },
     "autoupdate": {
-		"architecture": {
-			"32bit": {
-				"url": "https://github.com/vim/vim-win32-installer/releases/download/v$version/gvim_$version_x86.zip"
-			},
-			"64bit": {
-				"url": "https://github.com/vim/vim-win32-installer/releases/download/v$version/gvim_$version_x64.zip"
-			}
-		}
-    }
+        "architecture": {
+            "32bit": {
+                "url": "https://ghproxy.com/https://github.com/vim/vim-win32-installer/releases/download/v$version/gvim_$version_x86.zip"
+            },
+            "64bit": {
+                "url": "https://ghproxy.com/https://github.com/vim/vim-win32-installer/releases/download/v$version/gvim_$version_x64.zip"
+            }
+        }
+    },
+    "_from": "okibcn/ScoopMaster"
 }
