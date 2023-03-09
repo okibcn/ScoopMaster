@@ -278,7 +278,7 @@ jobs:
         foreach ( $row in $hash ) {
             [void]$FullDB.Rows.Add($row.Name, $row.Version, $row.Date, "okibcn/ScoopMaster", $row.Description, $row.Homepage, $row.Autoupdate)
             $file="jsons/$( $row.Bucket  -replace '[/\\]','~' )/$($row.Name).json"
-            Get-Content $file > "local/$($row.Name).json"
+            Get-Content $file > "local/$($row.Name.ToLower()).json"
             $progress++
             $percent = [math]::round(100 * $progress / $nApps)
             if ($percent -ne $oldpercent){
@@ -326,7 +326,7 @@ jobs:
               $oldpercent=$percent
             }
 
-            $candidate = "../local/$($file.Name)"
+            $candidate = "../local/$($file.Name.ToLower())"
             if (-not (test-path $candidate)) {
                 Remove-Item $file
                 $lDeleted += $file.BaseName
@@ -352,7 +352,6 @@ jobs:
         if ( "${{github.event.inputs.release}}" -eq 'Artifact') {7z a '-x!*.7z' ScoopMaster.7z *}
 
         $downloads=((( gh api repos/okibcn/ScoopMaster/releases | jq . ) -match  "download_count" | sls '\d+' ).matches | Measure-Object Value -Sum ).Sum
-        "New Downloads: $downloads"
         $stats=@{}
         $stats.Add('date',"$($env:UPDATE)")
         $stats.Add('prevDate',"$((gc stats.json | ConvertFrom-Json).date.ToString("yyyy-MM-ddTHH:mm:ssZ"))")
@@ -368,6 +367,9 @@ jobs:
         $stats.Add('downloads',[int]$downloads)
         $stats.Add('totalDownloads',[int]$( (gc stats.json | ConvertFrom-Json).totalDownloads + $stats.downloads  ))
         $stats | ConvertTo-Json > stats.json
+
+        "New Downloads: $downloads"
+        "Total Downloads: $( (gc stats.json | ConvertFrom-Json).totalDownloads + $stats.downloads  )"
 
         (gc .\README.md) -Replace "\d+(?=\*\* manifests)","$($stats.manifests)" | Set-Content README.md
         (gc .\README.md) -Replace "\d+(?=\*\* buckets)","$($stats.buckets)" | Set-Content README.md
