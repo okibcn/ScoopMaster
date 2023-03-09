@@ -1,0 +1,32 @@
+{
+    "homepage": "https://github.com/Bin-Huang/chatbox",
+    "description": "a cross-platform desktop client for OpenAI API, also a prompt debugging and management tool.",
+    "version": "0.04",
+    "license": "NO LICENSE",
+    "url": "https://github.com/Bin-Huang/chatbox/releases/download/v0.0.4/chatbox-linux-x64-0.0.4.zip",
+    "hash": "9f0bcc28d65d3b3b9c853e0fcab7368dd675fe874305785f586089db923b493f",
+    "architecture": {
+        "64bit": {
+            "installer": {
+                "script": [
+                    "Move-Item -Path \"$dir\\chatbox-win32-x64\\*\" -Destination \"$dir\"",
+                    "Remove-Item \"$dir\\chatbox-win32-x64\" -Force -Recurse"
+                ]
+            }
+        }
+    },
+    "bin": "chatbox.exe",
+    "shortcuts": [
+        [
+            "chatbox.exe",
+            "ChatBox"
+        ]
+    ],
+    "checkver": {
+        "url": "https://api.github.com/repos/Bin-Huang/chatbox/releases",
+        "regex": "/releases/tag/v([\\d\\.]+)"
+    },
+    "autoupdate": {
+        "url": "https://github.com/Bin-Huang/chatbox/releases/download/v$version/chatbox-linux-x64-$version.zip"
+    }
+}
