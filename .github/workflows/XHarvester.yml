@@ -333,11 +333,11 @@ jobs:
                 continue
             }
             $hFile = (Get-FileHash -Algorithm SHA1 $file).Hash
-            $hCandidate = (Get-FileHash -Algorithm SHA1 "$candidate").Hash
+            $hCandidate = (Get-FileHash -Algorithm SHA1 $candidate).Hash
             if ($hCandidate -ne $hFile) {
                 "Replace:"
                 "$($hFile): ./bucket/$($file.Name)"
-                "$($hCandidatee): $($candidate)"
+                "$($hCandidate): $($candidate)"
                 ri $file -Force
                 Move-Item $candidate bucket
                 $lUpdated += $file
