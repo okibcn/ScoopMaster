@@ -362,6 +362,9 @@ jobs:
         $stats.Add('totalDownloads',[int]$( (gc stats.json | ConvertFrom-Json).totalDownloads + $stats.downloads  ))
         $stats | ConvertTo-Json > stats.json
 
+        "New Downloads: $downloads"
+        "Total Downloads: $( (gc stats.json | ConvertFrom-Json).totalDownloads + $stats.downloads  )"
+
         (gc .\README.md) -Replace "\d+(?=\*\* manifests)","$($stats.manifests)" | Set-Content README.md
         (gc .\README.md) -Replace "\d+(?=\*\* buckets)","$($stats.buckets)" | Set-Content README.md
         (gc .\README.md) -Replace "\d+(?=\*\* apps)","$($stats.apps)" | Set-Content README.md
