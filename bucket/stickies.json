@@ -1,22 +1,26 @@
 {
-    "version": "10.1c",
-    "description": "The Internet's premiere freeware note taking application.",
     "homepage": "https://www.zhornsoftware.co.uk/stickies/",
-    "license": "Freeware",
-    "url": "https://www.zhornsoftware.co.uk/stickies/stickies_setup_10_1c.exe#/dl.7z",
+    "description": "Stickies is a PC utility I wrote to try to cut down on the number of yellow notes I was leaving stuck to my monitor. ",
+    "version": "10.1c",
+    "url": "https://www.zhornsoftware.co.uk/stickies/stickies_setup_10.1c.exe#/setup.exe",
     "hash": "0d5c0825253ee4e6fce15e4d4cbb64834ca120c6fefa2392776c6bbca55ae04c",
     "bin": "stickies.exe",
-    "shortcuts": [
-        [
-            "stickies.exe",
-            "Stickies"
-        ]
+    "depends": "vcredist2008",
+    "pre_install": [
+        "cd $dir",
+        "Start-Process -Wait \"$dir\\setup.exe\" \"-extract\""
     ],
     "checkver": {
         "url": "https://www.zhornsoftware.co.uk/stickies/versions.html",
-        "regex": ">v([\\d.a-z]+)"
+        "regex": "v(\\d+\\.\\d+\\w)"
     },
     "autoupdate": {
-        "url": "https://www.zhornsoftware.co.uk/stickies/stickies_setup_$underscoreVersion.exe#/dl.7z"
-    }
+        "url": "https://www.zhornsoftware.co.uk/stickies/stickies_setup_$version.exe#/setup.exe"
+    },
+    "shortcuts": [
+        [
+            "stickies.exe",
+            "stickies"
+        ]
+    ]
 }
