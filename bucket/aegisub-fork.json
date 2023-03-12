@@ -13,23 +13,19 @@
         }
     },
     "pre_install": [
-        "Expand-7zipArchive \"$dir\\aegisub-portable-64.zip\" \"$dir\\Aegisub\" -ExtractDir 'aegisub-portable' -Removal; Remove-Item \"$dir\\Aegisub\\Microsoft.CRT\" -Recurse",
-        "Set-Content \"$dir\\Aegisub\\hotkey.json\" '' -Encoding 'utf8' -Force",
-        "Copy-Item \"$persist_dir\\Aegisub\\config.json\" \"$dir\\Aegisub\\config.json\" -ErrorAction 'SilentlyContinue'"
+        "Move-Item \"$dir\\Aegisub-*-cibuilds-*.exe\" \"$dir\\Aegisub-cibuilds.exe\"",
+        "Expand-InnoArchive \"$dir\\Aegisub-cibuilds.exe\" $dir -Removal"
     ],
     "shortcuts": [
         [
-            "Aegisub\\aegisub.exe",
+            "aegisub.exe",
             "Aegisub"
         ]
     ],
-    "persist": [
-        "Aegisub\\hotkey.json",
-        "Aegisub\\config",
-        "Aegisub\\feedDump",
-        "Aegisub\\log"
+    "post_install": [
+        ""
     ],
-    "pre_uninstall": "Copy-Item \"$dir\\Aegisub\\config.json\" \"$persist_dir\\Aegisub\\config.json\" -ErrorAction 'SilentlyContinue'",
+    "pre_uninstall": "",
     "checkver": "releases/tag/([\\w_]+)",
     "autoupdate": {
         "architecture": {
