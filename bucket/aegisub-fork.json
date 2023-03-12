@@ -6,6 +6,17 @@
         "identifier": "Freeware",
         "url": "https://github.com/arch1t3cht/Aegisub/blob/feature/LICENCE"
     },
+    "notes": [
+        "To install associations, run:",
+        "reg import \"$dir\\install-associations.reg\"",
+        "To install the context menu, run:",
+        "reg import \"$dir\\install-context.reg\"",
+        "",
+        "To uninstall associations, run:",
+        "reg import \"$dir\\uninstall-associations.reg\"",
+        "To uninstall the context menu, run:",
+        "reg import \"$dir\\uninstall-context.reg\""
+    ],
     "architecture": {
         "64bit": {
             "url": "https://github.com/arch1t3cht/Aegisub/releases/download/feature_09/Windows.MSVC.Release.-.portable.zip",
@@ -13,8 +24,9 @@
         }
     },
     "pre_install": [
-        "Move-Item \"$dir\\Aegisub-*-cibuilds-*.exe\" \"$dir\\Aegisub-cibuilds.exe\"",
-        "Expand-InnoArchive \"$dir\\Aegisub-cibuilds.exe\" $dir -Removal"
+        "Expand-7zipArchive \"$dir\\aegisub-portable-64.zip\" $dir -ExtractDir 'aegisub-portable' -Removal; Remove-Item \"$dir\\Microsoft.CRT\" -Recurse",
+        "Set-Content \"$dir\\hotkey.json\" '' -Encoding 'utf8' -Force",
+        "Copy-Item \"$persist_dir\\config.json\" \"$dir\\config.json\" -ErrorAction 'SilentlyContinue'"
     ],
     "shortcuts": [
         [
@@ -22,10 +34,27 @@
             "Aegisub"
         ]
     ],
-    "post_install": [
-        ""
+    "persist": [
+        "hotkey.json",
+        "config",
+        "feedDump",
+        "log"
     ],
-    "pre_uninstall": "",
+    "post_install": [
+        "$scriptsDir = \"$bucketsdir\\MyScoop\\scripts\"",
+        "Get-ChildItem \"$scriptsDir\\aegisub\\*.reg\" | ForEach-Object {",
+        "   $content = Get-Content $_",
+        "   $content = $content.Replace('REPLACE_HERE', $dir)",
+        "   if ($global) { $content = $content.Replace('HKEY_CURRENT_USER', 'HKEY_LOCAL_MACHINE') }",
+        "   Set-Content \"$dir\\$($_.Name)\" $content -Encoding 'unicode' -Force",
+        "}"
+    ],
+    "pre_uninstall": [
+        "Copy-Item \"$dir\\config.json\" \"$persist_dir\\config.json\" -ErrorAction 'SilentlyContinue'",
+        "if ($cmd -eq 'uninstall') {",
+        "   foreach ($regFile in 'uninstall-associations', 'uninstall-context') { reg import \"$dir\\$regFile.reg\" | Out-Null }",
+        "}"
+    ],
     "checkver": "releases/tag/([\\w_]+)",
     "autoupdate": {
         "architecture": {
