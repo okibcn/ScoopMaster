@@ -1,17 +1,51 @@
 {
-    "version": "2.2.27",
-    "description": "Apifox = Postman + Swagger + Mock + JMeter",
-    "homepage": "https://www.apifox.cn/",
-    "license": "Freeware",
     "architecture": {
         "64bit": {
-            "url": "http://cdn.apifox.cn/download/2.2.27/Apifox-2.2.27.exe#/dl.7z",
             "hash": "sha512:523ed2263c10f9cabc61f8db7e2fb02e871fb0724b8d6f128dbc91b28677e22812791ffb8e04b575f1a9d3f720ace905f11b9a80a2527e93cb588e298d64872c",
+            "installer": {
+                "script": "Start-Process -filepath \"$dir\\installer.exe\" -WorkingDirectory \"$dir\" -ArgumentList \"/S /D=$dir\" -Wait"
+            },
+            "post_install": "@('installer.exe', 'uninstallerIcon.ico') | ForEach-Object { Remove-Item \"$dir\\$_\" -Force -ErrorAction SilentlyContinue }",
             "pre_install": [
-                "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\"",
-                "Remove-Item \"$dir\\`$*\", \"$dir\\Uninst*\" -Recurse"
-            ]
+                "info 'Copying user data...'",
+                "if (Test-Path \"$persist_dir\\User Data\\*\") {",
+                "    Copy-Item \"$persist_dir\\User Data\\*\" \"$env:AppData\\apifox\\\" -Recurse -Force | Out-Null",
+                "}"
+            ],
+            "uninstaller": {
+                "script": [
+                    "Start-Process -filepath \"$dir\\Uninstall Apifox.exe\" -WorkingDirectory \"$dir\" -ArgumentList \"/S\" -Wait",
+                    "info 'Backing up user data...'",
+                    "if (Test-Path \"$env:AppData\\apifox\\*\") {",
+                    "    Copy-Item \"$env:AppData\\apifox\\*\" \"$persist_dir\\User Data\\\" -Recurse -Force | Out-Null",
+                    "}"
+                ]
+            },
+            "url": "http://cdn.apifox.cn/download/2.2.27/Apifox-2.2.27.exe#/installer.exe"
         }
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "hash": {
+                    "mode": "extract",
+                    "regex": "sha512.*?$base64",
+                    "url": "http://cdn.apifox.cn/download/latest.yml"
+                },
+                "url": "http://$matchUrl#/installer.exe"
+            }
+        }
+    },
+    "bin": "Apifox.exe",
+    "checkver": {
+        "regex": "(?sm)version:[\\s]+([\\d.]+).*?http://(?<url>.*?\\.exe)",
+        "url": "http://cdn.apifox.cn/download/latest.yml"
+    },
+    "depends": "sudo",
+    "description": "Apifox = Postman + Swagger + Mock + JMeter",
+    "homepage": "https://www.apifox.cn/",
+    "license": {
+        "identifier": "Freeware"
     },
     "shortcuts": [
         [
@@ -19,20 +53,5 @@
             "Apifox"
         ]
     ],
-    "checkver": {
-        "url": "http://cdn.apifox.cn/download/latest.yml",
-        "regex": "(?sm)version:[\\s]+([\\d.]+).*?http://(?<url>.*?\\.exe)"
-    },
-    "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "http://$matchUrl#/dl.7z",
-                "hash": {
-                    "url": "http://cdn.apifox.cn/download/latest.yml",
-                    "mode": "extract",
-                    "regex": "sha512.*?$base64"
-                }
-            }
-        }
-    }
+    "version": "2.2.27"
 }
