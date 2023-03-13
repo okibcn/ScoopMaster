@@ -1,5 +1,5 @@
 {
-    "version": "9.0.1402",
+    "version": "9.0.1403",
     "description": "A highly configurable text editor for efficiently creating and changing any kind of text.",
     "homepage": "https://www.vim.org",
     "license": "Vim",
@@ -9,20 +9,20 @@
     },
     "architecture": {
         "64bit": {
-            "url": "https://github.com/vim/vim-win32-installer/releases/download/v9.0.1402/gvim_9.0.1402_x64.zip",
-            "hash": "69ce6d0570d17e94ea7f5d3b8d440ae1baa9257119644ad21831b81c5f00f8b3"
+            "url": "https://github.com/vim/vim-win32-installer/releases/download/v9.0.1403/gvim_9.0.1403_x64.zip",
+            "hash": "987b3e68da1976ed1518f1e68c2f0ae890e19dd215604950aa87d4a95fe00663"
         },
         "32bit": {
-            "url": "https://github.com/vim/vim-win32-installer/releases/download/v9.0.1402/gvim_9.0.1402_x86.zip",
-            "hash": "4cd8562dcf7a0c889c12b6638b36a9a294567f0d18287de7f3a7855fbb65ceda"
+            "url": "https://github.com/vim/vim-win32-installer/releases/download/v9.0.1403/gvim_9.0.1403_x86.zip",
+            "hash": "8f275c5d73428ff355e3ba11230ef6f474571dbeab48c2105a62455c2c028a8b"
         }
     },
     "extract_dir": "vim\\vim90",
-    "post_install": [
+    "pre_install": [
         "Remove-Item \"$dir\\`$*\", \"$dir\\uninstal.*\", \"$dir\\install.exe\" -Recurse",
         "'install-context.reg', 'uninstall-context.reg' | ForEach-Object {",
         "    $vimpath = \"$dir\\gVim.exe\".Replace('\\', '\\\\')",
-        "    $content = (Get-Content \"$bucketsdir\\apps\\scripts\\vim\\$_\").Replace('$vim', $vimpath)",
+        "    $content = (Get-Content \"$bucketsdir\\versions\\scripts\\vim\\$_\").Replace('$vim', $vimpath)",
         "    if ($global) { $content = $content.Replace('HKEY_CURRENT_USER', 'HKEY_LOCAL_MACHINE') }",
         "    Set-Content \"$dir\\$_\" $content",
         "}"
@@ -96,6 +96,10 @@
             "gvim.exe",
             "gVim"
         ]
+    ],
+    "persist": [
+        "vimfiles",
+        "vimrc"
     ],
     "checkver": {
         "github": "https://github.com/vim/vim-win32-installer"
