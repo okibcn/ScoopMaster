@@ -1,21 +1,23 @@
 {
     "homepage": "http://gpac.io",
-    "description": "Modular Multimedia framework for packaging, streaming and playing your favorite content.",
+    "description": "Multimedia framework developed for research and academic purposes",
+    "license": "LGPL-2.1",
     "version": "2.2",
-    "license": "LGPL-2.1-only",
     "architecture": {
         "64bit": {
-            "url": "https://download.tsi.telecom-paristech.fr/gpac/release/2.2/gpac-2.2-rev0-gab012bbf-master-x64.exe#/dl.7z",
+            "url": "http://download.tsi.telecom-paristech.fr/gpac/release/2.2/gpac-2.2-rev0-gab012bbf-master-x64.exe#/dl.7z",
             "hash": "24ea2767214862faa37aa280a839f4c318a947649d9afffd47767505b9c69f9f"
         },
         "32bit": {
-            "url": "https://download.tsi.telecom-paristech.fr/gpac/release/2.2/gpac-2.2-rev0-gab012bbf-master-win32.exe#/dl.7z",
+            "url": "http://download.tsi.telecom-paristech.fr/gpac/release/2.2/gpac-2.2-rev0-gab012bbf-master-win32.exe#/dl.7z",
             "hash": "12b6520e0c5f5568ad1b3a94af4120ef09c8934452796627ecaac4fb1d278e7a"
         }
     },
+    "post_install": "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\`$TEMP\", \"$dir\\Uninstall.exe\" -Force -Recurse",
     "bin": [
+        "gpac.exe",
         "mp4box.exe",
-        "gpac.exe"
+        "mp4client.exe"
     ],
     "shortcuts": [
         [
@@ -23,22 +25,21 @@
             "MP4Client"
         ]
     ],
-    "post_install": [
-        "@('$PLUGINSDIR', '$TEMP', 'uninstall.exe') | ForEach-Object {",
-        "    Remove-Item \"$dir\\$_\" -Recurse -Force",
-        "}"
+    "persist": [
+        "GPAC.cfg",
+        "Storage"
     ],
     "checkver": {
         "url": "https://gpac.wp.imt.fr/downloads/",
-        "regex": "gpac-([\\d.]+)-(?<revision>rev\\d-[0-9a-z]+)-master-win32.exe"
+        "regex": "/gpac/release/([\\d.]+)/gpac-(?<rev>[\\d\\w.-]+)-master"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://download.tsi.telecom-paristech.fr/gpac/release/$matchHead/gpac-$version-$matchRevision-master-x64.exe#/dl.7z"
+                "url": "http://download.tsi.telecom-paristech.fr/gpac/release/$version/gpac-$matchRev-master-x64.exe#/dl.7z"
             },
             "32bit": {
-                "url": "https://download.tsi.telecom-paristech.fr/gpac/release/$matchHead/gpac-$version-$matchRevision-master-win32.exe#/dl.7z"
+                "url": "http://download.tsi.telecom-paristech.fr/gpac/release/$version/gpac-$matchRev-master-win32.exe#/dl.7z"
             }
         }
     }
