@@ -158,6 +158,7 @@ jobs:
         $FullDB.Columns.Add("Description") | Out-Null
         $FullDB.Columns.Add("Homepage") | Out-Null
         $FullDB.Columns.Add("Autoupdate") | Out-Null
+        $FullDB.Columns.Add("Clone") | Out-Null
 
         $files = gci jsons/*/*.json  ##o##
         $nManifests=$files.Count
@@ -176,8 +177,9 @@ jobs:
               $oldpercent=$percent
             }
             $date = $file.LastWriteTimeUtc.ToString("yyyy-MM-ddTHH:mm:ssZ")
+            $filecontent = gc $file 
             try{
-                $json = (gc $file) | ConvertFrom-Json
+                $json = $filecontent | ConvertFrom-Json
                 $version = $json.version
                 $description = "$($json.description)"
             }catch{
@@ -190,8 +192,9 @@ jobs:
                 $file.fullname >> ERROR_manifest.txt
                 $homepage = ""
             }
+            $Clone= if ($t -Match '/http|_from') {'C'} else {'N'}
             $autoup = if ($json.autoupdate) {'A'} else {'_'}
-            [void]$FullDB.Rows.Add($name, $version, $date, $bucket, $description, $homepage, $autoup)
+            [void]$FullDB.Rows.Add($name, $version, $date, $bucket, $description, $homepage, $autoup, $clone)
         }
         $DB = $FullDB | Sort-Object Name
 
@@ -204,6 +207,7 @@ jobs:
         $hash.Columns.Add("Description") | Out-Null
         $hash.Columns.Add("Homepage") | Out-Null
         $hash.Columns.Add("Autoupdate") | Out-Null
+        $hash.Columns.Add("Priority") | Out-Null
 
         $name = ""
         $nApps = 0
@@ -223,7 +227,7 @@ jobs:
             if ($row.Bucket -eq "duzyn/scoop-cn") { continue }
             if ($row.name -ne $name) {
                 $name = $row.name
-                [void]$hash.Rows.Add($name, $row.Version, $row.Date, $row.Bucket, $row.Description, $row.Homepage, $row.Autoupdate)
+                [void]$hash.Rows.Add($name, $row.Version, $row.Date, $row.Bucket, $row.Description, $row.Homepage, $row.Autoupdate, , $row.Clone)
                 $nApps++
                 continue
             }
@@ -231,10 +235,10 @@ jobs:
             $app=[ref]$hash.Rows[-1]
             $current = if ($hash.Rows[-1].Bucket -match '^okibcn/' ) {'O'} else {'_'}
             $current = $current + $hash.Rows[-1].autoupdate + $hash.Rows[-1].Version
-            $current = if ($hash.Rows[-1].Bucket -match '^ScoopInstaller/' ) {$current + 'S'} else {$current + '_'}
+            $current = if ($hash.Rows[-1].Bucket -match '^ScoopInstaller/' ) {$current + 'S'} else {$current + $hash.Rows[-1].Priority}
             $candidate = if ($row.Bucket -match '^okibcn/' ) {'O'} else {'_'}
             $candidate = $candidate + $row.autoupdate + $row.Version
-            $candidate = if ($row.Bucket -match '^ScoopInstaller/' ) {$candidate + 'S'} else {$candidate + '_'}
+            $candidate = if ($row.Bucket -match '^ScoopInstaller/' ) {$candidate + 'S'} else {$candidate + $row.Clone}
 
             switch ( CompareV $candidate $current ) {
                 -1 {  # not higher priority
@@ -247,16 +251,21 @@ jobs:
                     $hash.Rows[-1].Description = $row.Description
                     $hash.Rows[-1].Homepage = $row.Homepage
                     $hash.Rows[-1].Autoupdate = $row.Autoupdate
+                    $hash.Rows[-1].Priority = $row.Clone
                 }
                 0 {   # same priority, update newest
                     if ($row.date -gt $hash.Rows[-1].LastDate) {
                         $hash.Rows[-1].Date = $row.Date
                         $hash.Rows[-1].Bucket = $row.Bucket
+                        $hash.Rows[-1].Description = $row.Description
+                        $hash.Rows[-1].Homepage = $row.Homepage
+                        $hash.Rows[-1].Autoupdate = $row.Autoupdate
+                        $hash.Rows[-1].Priority = $row.Clone
                     }
                 }
             }
         }
-        $hash = $hash | Sort-Object Name
+        $hash = $hash | select   | Sort-Object Name 
         $scoopDBfile = "./LastAppsDB.csv"
         $hash | ConvertTo-csv > $scoopDBfile
 
