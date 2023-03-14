@@ -1,9 +1,25 @@
 {
+    "version": "5.2.4",
+    "description": "A database manager for MySQL, PostgreSQL, SQL Server, MongoDB, SQLite and others.",
+    "homepage": "https://dbgate.org/",
+    "license": "MIT",
     "architecture": {
         "64bit": {
-            "hash": "c4d7432ae6255da4d989df67830e2cfd5533ec31096099ca4c5ee149abcc35ab",
-            "url": "https://github.com/dbgate/dbgate/releases/download/v5.2.4/dbgate-5.2.4-win_x64.zip"
+            "url": "https://github.com/dbgate/dbgate/releases/download/v5.2.4/dbgate-5.2.4-win_x64.zip",
+            "hash": "c4d7432ae6255da4d989df67830e2cfd5533ec31096099ca4c5ee149abcc35ab"
         }
+    },
+    "pre_install": "Remove-Item \"$dir\\resources\\app-update.yml\" -Force -Recurse",
+    "bin": "dbgate.exe",
+    "shortcuts": [
+        [
+            "dbgate.exe",
+            "DbGate"
+        ]
+    ],
+    "notes": "DbGate is NOT portable. Built-in auto-updater has been disabled.",
+    "checkver": {
+        "github": "https://github.com/dbgate/dbgate"
     },
     "autoupdate": {
         "architecture": {
@@ -11,28 +27,5 @@
                 "url": "https://github.com/dbgate/dbgate/releases/download/v$version/dbgate-$version-win_x64.zip"
             }
         }
-    },
-    "bin": [
-        [
-            "dbgate.exe",
-            "dbgate",
-            "--user-data-dir=\"$dir\\User Data\""
-        ]
-    ],
-    "checkver": {
-        "github": "https://github.com/dbgate/dbgate"
-    },
-    "description": "A database manager for MySQL, PostgreSQL, SQL Server, MongoDB, SQLite and others.",
-    "homepage": "https://dbgate.org/",
-    "license": "MIT",
-    "persist": "User Data",
-    "pre_install": "Remove-Item \"$dir\\resources\\app-update.yml\" -Force -Recurse",
-    "shortcuts": [
-        [
-            "dbgate.exe",
-            "DbGate",
-            "--user-data-dir=\"$dir\\User Data\""
-        ]
-    ],
-    "version": "5.2.4"
+    }
 }
