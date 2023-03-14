@@ -7,7 +7,7 @@
     "hash": "a2df523717abb4e0a79d2d225f830792e3c390a93f7cffad2b7f8fc3dcfb6c70",
     "post_install": [
         "if (!(is_admin)) { error \"$app requires admin rights to $cmd\"; break }",
-        "Remove-Item \"$dir\\`$*\" -Recurse",
+        "Remove-Item $dir -Include '$*', 'Uninstall.exe' -Recurse",
         "$content1 = (Get-Content \"$dir\\Avisynth_Template.reg\").Replace('%INSTALLDIR%', $dir)",
         "Set-Content \"$dir\\install.reg\" $content1 -Encoding 'unicode' -Force",
         "(Select-String \"$dir\\Avisynth_Template.reg\" -Pattern 'CLSID\\\\\\{([\\w-]+)\\}')[0] -match '\\{(?<key_1>[\\w-]+)\\}' | Out-Null",
