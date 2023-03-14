@@ -1,5 +1,5 @@
 {
-    "version": "1.77.0-522890f47c000a79c4f4a42f1325758c4c23b010",
+    "version": "1.77.0-bbe8e872dc7c8899eb80bc4b650a6f090f4bc952",
     "description": "Visual Studio Code is a lightweight but powerful source code editor (Insiders Edition).",
     "homepage": "https://code.visualstudio.com/",
     "license": {
@@ -13,19 +13,19 @@
     "architecture": {
         "64bit": {
             "url": "https://update.code.visualstudio.com/latest/win32-x64-archive/insider#/dl.7z",
-            "hash": "d270eb2e4a522d38c4a24d3360180a5d637a8bb0a2558d92a566f74f168e5786"
+            "hash": "36cb0093ae2b2039a89c8c43e8444ac13f6efa8dd13c12b21106589ae6b593de"
         },
         "32bit": {
             "url": "https://update.code.visualstudio.com/latest/win32-archive/insider#/dl.7z",
-            "hash": "b8964d3369ec33093a4182539cde9cf6ae1431ee83eaf7d8e607164e229dbb18"
+            "hash": "c0ad59029928130e3d0e71d79fd64b66b42abd9461f2072b1cafc73b7e6e1e5d"
         }
     },
     "post_install": [
         "$dirpath = \"$dir\".Replace('\\', '\\\\')",
         "$exepath = \"$dir\\Code - Insiders.exe\".Replace('\\', '\\\\')",
         "'install-associations', 'uninstall-associations', 'install-context', 'uninstall-context' | ForEach-Object {",
-        "  if (Test-Path \"$bucketsdir\\$bucket\\scripts\\vscode\\$_.reg\") {",
-        "    $content = Get-Content \"$bucketsdir\\$bucket\\scripts\\vscode\\$_.reg\"",
+        "  if (Test-Path \"$bucketsdir\\extras\\scripts\\vscode\\$_.reg\") {",
+        "    $content = Get-Content \"$bucketsdir\\extras\\scripts\\vscode\\$_.reg\"",
         "    $content = $content.Replace('$codedir', $dirpath)",
         "    $content = $content.Replace('$code', $exepath)",
         "    $content = $content.Replace('&Code', 'Code &Insiders')",
@@ -66,6 +66,5 @@
                 }
             }
         }
-    },
-    "_from": "okibcn/ScoopMaster"
+    }
 }
