@@ -1,38 +1,25 @@
 {
-    "version": "1.6.7",
-    "homepage": "http://irreader.fatecore.com/",
-    "url": "http://irreader.fatecore.com/download/irreader-1.6.7.zip",
-    "hash": "bcc3871c72a1b576049fd0637f8e7b4003bc056c77a743fc9a70448e396b0d25",
-    "license": "Freeware",
-    "pre_install": [
-        "Move-Item \"$dir/irreader-$version/*.exe\" \"$dir/irreader Setup.7z\"",
-        "Remove-Item \"$dir/irreader-$version\"",
-        "Expand-7zipArchive \"$dir/irreader Setup.7z\"",
-        "Move-Item \"$dir/`$PLUGINSDIR/*.7z\" \"$dir/Setup.7z\"",
-        "Expand-7zipArchive \"$dir/Setup.7z\"",
-        "Remove-Item \"$dir/`$PLUGINSDIR\", \"$dir/Setup.7z\", \"$dir/irreader Setup.7z\" -Force -Recurse"
-    ],
-    "depends": "7zip",
-    "uninstaller": {
-        "file": "Uninstall irreader.exe"
-    },
-    "bin": [
-        [
-            "irreader.exe",
-            "irreader"
-        ]
-    ],
-    "shortcuts": [
-        [
-            "irreader.exe",
-            "irreader"
-        ]
-    ],
-    "checkver": {
-        "url": "http://irreader.fatecore.com/",
-        "re": "irreader\\s*v([\\d.]+)"
-    },
-    "autoupdate": {
-        "url": "http://irreader.fatecore.com/download/irreader-$version.zip"
-    }
+ "autoupdate": {
+  "url": "http://irreader.fatecore.com/download/irreader-$version.zip"
+ },
+ "checkver": {
+  "regex": "irreader v((\\d+\\.\\d+\\.\\d+))",
+  "url": "http://irreader.fatecore.com/"
+ },
+ "hash": "bcc3871c72a1b576049fd0637f8e7b4003bc056c77a743fc9a70448e396b0d25",
+ "homepage": "http://irreader.fatecore.com/",
+ "installer": {
+  "script": [
+   "Expand-7zipArchive \"$dir\\irreader` $version.exe\" \"$dir\"",
+   "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-32.7z\" \"$dir\""
+  ]
+ },
+ "shortcuts": [
+  [
+   "irreader.exe",
+   "irreader"
+  ]
+ ],
+ "url": "http://irreader.fatecore.com/download/irreader-1.6.7.zip",
+ "version": "1.6.7"
 }
