@@ -1,31 +1,53 @@
 {
     "version": "2.25",
-    "description": "View and control services.",
-    "homepage": "https://learn.microsoft.com/sysinternals/downloads/psservice",
+    "description": "PsService. Local and remote service information and configuration utility",
+    "homepage": "https://docs.microsoft.com/en-us/sysinternals/downloads/psservice",
     "license": {
         "identifier": "Freeware",
-        "url": "https://learn.microsoft.com/sysinternals/license-terms"
+        "url": "https://docs.microsoft.com/en-us/sysinternals/license-terms"
     },
-    "url": "https://download.sysinternals.com/files/PsService.zip",
-    "hash": "e8cb5d7174d6aef18cb22fc05a958d6ecb186b3c95a5c01aface0765c8ee8297",
     "architecture": {
         "64bit": {
+            "url": "https://live.sysinternals.com/PsService64.exe",
+            "hash": "6de3137b3088b2c2c311a540f9aaeb57e9fd38259cb18875f2380ee74ec1c7af",
             "bin": [
+                "PsService64.exe",
                 [
-                    "PsService.exe",
+                    "PsService64.exe",
                     "PsService"
                 ]
             ]
         },
         "32bit": {
+            "url": "https://live.sysinternals.com/PsService.exe",
+            "hash": "9454ba56bcb470d330559573afbc10f6989ba46f3e656c20979de6f92e051752",
             "bin": "PsService.exe"
         }
     },
-    "checkver": {
-        "url": "https://raw.githubusercontent.com/MicrosoftDocs/sysinternals/main/sysinternals/downloads/psservice.md",
-        "regex": "#.*?v([\\d.]+)"
+    "pre_install": [
+        "$sysint = 'HKCU:\\SOFTWARE\\Sysinternals'",
+        "$fin = \"$sysint\\PsService\"",
+        "New-Item $sysint, $fin -ErrorAction 'SilentlyContinue' | Out-Null",
+        "Set-ItemProperty -Path $fin -Name 'EulaAccepted' -Value 1 -Type 'DWord' -Force | Out-Null"
+    ],
+    "uninstaller": {
+        "script": [
+            "if ($purge) {",
+            "    $sysInt = 'HKCU:\\SOFTWARE\\Sysinternals'",
+            "    Remove-Item \"$sysInt\\PsService\" -ErrorAction 'SilentlyContinue' -Force -Recurse",
+            "    if ((Get-ChildItem $sysInt).Count -eq 0) { Remove-Item $sysInt -ErrorAction 'SilentlyContinue' -Force -Recurse }",
+            "}"
+        ]
     },
+    "checkver": "PsService\\s+v([\\d.]+)</h1",
     "autoupdate": {
-        "url": "https://download.sysinternals.com/files/PsService.zip"
+        "architecture": {
+            "64bit": {
+                "url": "https://live.sysinternals.com/PsService64.exe"
+            },
+            "32bit": {
+                "url": "https://live.sysinternals.com/PsService.exe"
+            }
+        }
     }
 }
