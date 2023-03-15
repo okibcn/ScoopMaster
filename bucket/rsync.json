@@ -1,28 +1,30 @@
 {
-    "homepage": "https://www.itefix.net/cwrsync",
-    "description": "rsync is an open source utility that provides fast incremental file transfer. cwRsync is a packaging of Rsync(link is external) for Windows.",
-    "version": "6.2.8",
-    "license": {
-        "identifier": "GPL-3.0-or-later",
-        "url": "https://rsync.samba.org/GPL.html"
-    },
+    "homepage": "https://git-for-windows.github.io/",
+    "license": "GPL2",
+    "version": "3.2.3",
+    "##": "ref: <https://blog.tiger-workshop.com/add-rsync-to-git-bash-for-windows> @@ <https://archive.is/WJCrw>",
     "architecture": {
         "64bit": {
-            "url": "https://itefix.net/dl/free-software/cwrsync_6.2.8_x64_free.zip",
-            "hash": "118a625efc42c4fd48e73c919e2ad179fd01c0df0e5e3070635c11a73e42de5d"
+            "url": [
+                "https://repo.msys2.org/msys/x86_64/msys2-runtime-3.1.7-4-x86_64.pkg.tar.xz",
+                "https://repo.msys2.org/msys/x86_64/liblz4-1.9.3-1-x86_64.pkg.tar.zst",
+                "https://repo.msys2.org/msys/x86_64/libiconv-1.16-2-x86_64.pkg.tar.zst",
+                "https://repo.msys2.org/msys/x86_64/openssh-8.4p1-1-x86_64.pkg.tar.zst",
+                "https://repo.msys2.org/msys/x86_64/rsync-3.2.3-1-x86_64.pkg.tar.zst"
+                ],
+            "hash": [
+                "sha256:fd358b722d3fdb9f1751442f8311f2f40d009a64f2ad0c8cfbae713ff794ceea",
+                "sha256:6a6c458a206ded17e3ba2815686de2b555e413f843bfcbb405e2df019e49969f",
+                "sha256:4d23674f25e9d558295464b4f50689698f8ce240616410da9a4d9420b5130ced",
+                "sha256:ec9c063eb9b6e6a3ff249bce8e03d9bba510335db6473b26aabcd8ce7b5e3b6f",
+                "sha256:a1c7d8735a4d7045bac8ea1928c1ec9416e58667f3ab2b1a00a80b004fa5e375"
+                ]
         }
     },
-    "bin": "bin\\rsync.exe",
-    "checkver": {
-        "url": "https://www.itefix.net/cwrsync?qt-cwrsync_client=3#qt-cwrsync_client",
-        "regex": "cwRsync client ([\\d.]+)"
+    "env_set": {
+        // "RSYNC_RSH": "$dir/usr/bin/ssh.exe -F $env:HOME/.ssh/config -i $env:HOME/.ssh/id_rsa -o UserKnownHostsFile=$env:HOME/.ssh/known_hosts",
+        "RSYNC_RSH": "$dir/usr/bin/ssh.exe"
     },
-    "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://itefix.net/dl/free-software/cwrsync_$version_x64_free.zip",
-                "hash": "https://itefix.net/dl/free-software/cwrsync_$version_x64_free.zip.sha256.asc"
-            }
-        }
-    }
+    "bin": "usr\\bin\\rsync.exe",
+    "notes": "NOTE: local paths with a leading '/' or internal ':' must instead be in Cygwin cygpath format (eg, '/c/...')"
 }
