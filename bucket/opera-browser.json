@@ -1,21 +1,34 @@
 {
-    "version": "96.0.4693.80",
-    "description": "Fast, secure, easy-to-use browser.",
-    "homepage": "https://www.opera.com/",
-    "license": {
-        "identifier": "Freeware",
-        "url": "https://www.opera.com/eula/computers"
-    },
     "architecture": {
-        "64bit": {
-            "url": "https://download1.operacdn.com/pub/opera/desktop/96.0.4693.80/win/Opera_96.0.4693.80_Setup_x64.exe#/dl.7z",
-            "hash": "53eec28bf55869c1e4fe8cb18a791492bc1aab44d1748c33b1826742d6ed1c85"
-        },
         "32bit": {
-            "url": "https://download1.operacdn.com/pub/opera/desktop/96.0.4693.80/win/Opera_96.0.4693.80_Setup.exe#/dl.7z",
-            "hash": "fe8d07f18d2a465882c63ca0d9794e4a549a498c8b310bdaded14f30814e9b74"
+            "hash": "fe8d07f18d2a465882c63ca0d9794e4a549a498c8b310bdaded14f30814e9b74",
+            "url": "https://download1.operacdn.com/pub/opera/desktop/96.0.4693.80/win/Opera_96.0.4693.80_Setup.exe#/dl.7z"
+        },
+        "64bit": {
+            "hash": "53eec28bf55869c1e4fe8cb18a791492bc1aab44d1748c33b1826742d6ed1c85",
+            "url": "https://download1.operacdn.com/pub/opera/desktop/96.0.4693.80/win/Opera_96.0.4693.80_Setup_x64.exe#/dl.7z"
         }
     },
+    "autoupdate": {
+        "architecture": {
+            "32bit": {
+                "url": "https://download1.operacdn.com/pub/opera/desktop/$version/win/Opera_$version_Setup.exe#/dl.7z"
+            },
+            "64bit": {
+                "url": "https://download1.operacdn.com/pub/opera/desktop/$version/win/Opera_$version_Setup_x64.exe#/dl.7z"
+            }
+        },
+        "hash": {
+            "url": "$url.sha256sum"
+        }
+    },
+    "checkver": {
+        "regex": "([\\d.]+)/",
+        "reverse": true,
+        "url": "http://get.opera.com/ftp/pub/opera/desktop/"
+    },
+    "description": "Fast, secure, easy-to-use browser.",
+    "homepage": "https://www.opera.com/",
     "installer": {
         "script": [
             "Remove-Item -Path \"$dir\\*_list\" -Force",
@@ -27,29 +40,16 @@
             "Set-Content -Path \"$dir\\installer_prefs.json\" -Value (@{ 'autoupdate'= $false; 'enable_stats' = $false; 'single_profile' = $true } | ConvertTo-Json) -Encoding ASCII"
         ]
     },
+    "license": {
+        "identifier": "Freeware",
+        "url": "https://www.opera.com/eula/computers"
+    },
+    "persist": "profile",
     "shortcuts": [
         [
             "launcher.exe",
             "Opera"
         ]
     ],
-    "persist": "profile",
-    "checkver": {
-        "url": "http://get.opera.com/ftp/pub/opera/desktop/",
-        "regex": "([\\d.]+)/",
-        "reverse": true
-    },
-    "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://download1.operacdn.com/pub/opera/desktop/$version/win/Opera_$version_Setup_x64.exe#/dl.7z"
-            },
-            "32bit": {
-                "url": "https://download1.operacdn.com/pub/opera/desktop/$version/win/Opera_$version_Setup.exe#/dl.7z"
-            }
-        },
-        "hash": {
-            "url": "$url.sha256sum"
-        }
-    }
+    "version": "96.0.4693.80"
 }
