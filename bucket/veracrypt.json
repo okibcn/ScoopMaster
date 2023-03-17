@@ -1,8 +1,12 @@
 {
+    "##": "Based on https://github.com/soracqt/scoop-bucket/blob/main/bucket/veracrypt-portable.json",
     "version": "1.25.9",
     "description": "A free open source disk encryption software for Windows, Mac OSX and Linux based on TrueCrypt.",
-    "homepage": "https://veracrypt.fr",
-    "license": "Apache-2.0",
+    "homepage": "https://veracrypt.fr/",
+    "license": {
+        "identifier": "Apache-2.0",
+        "url": "https://sourceforge.net/p/veracrypt/code/ci/master/tree/License.txt"
+    },
     "url": "https://launchpad.net/veracrypt/trunk/1.25.9/+download/VeraCrypt%20Portable%201.25.9.exe#/setup.exe",
     "hash": "sha256:785E2953547EA8232AA3C45B9CFE564118809EB84B474DF6488F7519C4E954CC",
     "installer": {
@@ -12,6 +16,24 @@
             "Move-Item \"$dir\\VeraCrypt\\*\" -Destination \"$dir\"",
             "Remove-Item -Recurse \"$dir\\VeraCrypt\""
         ]
+    },
+    "architecture": {
+        "64bit": {
+            "shortcuts": [
+                [
+                    "VeraCrypt-x64.exe",
+                    "VeraCrypt"
+                ]
+            ]
+        },
+        "32bit": {
+            "shortcuts": [
+                [
+                    "VeraCrypt.exe",
+                    "VeraCrypt"
+                ]
+            ]
+        }
     },
     "persist": "Configuration.xml",
     "pre_install": "If (!(Test-Path \"$persist_dir\\Configuration.xml\")) { New-Item \"$dir\\Configuration.xml\" -ItemType File | Out-Null }",
