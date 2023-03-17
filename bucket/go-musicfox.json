@@ -13,6 +13,21 @@
             "extract_dir": "go-musicfox_3.7.4_windows_amd64"
         }
     },
+    "installer": {
+        "script": [
+            "# handle runtime cache",
+            "Import-Module $(Join-Path $(Find-BucketDirectory -Root -Name apps) scripts/AppsUtils.psm1)",
+            "Mount-ExternalRuntimeData -Source \"$persist_dir\\appdata\" -Target \"$env:USERPROFILE\\.go-musicfox\"",
+            "Remove-Module -Name AppsUtils"
+        ]
+    },
+    "uninstaller": {
+        "script": [
+            "Import-Module $(Join-Path $(Find-BucketDirectory -Root -Name apps) scripts/AppsUtils.psm1)",
+            "Dismount-ExternalRuntimeData -Target \"$env:USERPROFILE\\.go-musicfox\"",
+            "Remove-Module -Name AppsUtils"
+        ]
+    },
     "bin": "musicfox.exe",
     "shortcuts": [
         [
