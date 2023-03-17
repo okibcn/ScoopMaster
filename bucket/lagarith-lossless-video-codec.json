@@ -3,14 +3,18 @@
     "homepage": "https://lags.leetcode.net/codec.html",
     "description": "A lossless video codec intended for editing and archiving. The codec offers better compression than other codecs like Huffyuv, Alparysoft, and CorePNG.",
     "license": "GPL-3.0-or-later",
-    "url": "https://lags.leetcode.net/LagarithSetup_1327.exe",
-    "hash": "9406b1ceebd9020c12823604530abc40f884e4f9e0d42d8a96dc77f79933c199",
-    "innosetup": true,
-    "extract_dir": "{sys}",
+    "url": "https://lags.leetcode.net/Lagarith_1327.zip",
+    "hash": "2752a26d08251553469e35d2327544b7b2692fa6a4f3decacc0b464ac4c9af65",
+    "architecture": {
+        "32bit": {
+            "extract_dir": "Lagarith_1327\\lagarith32"
+        },
+        "64bit": {
+            "extract_dir": "Lagarith_1327\\lagarith64"
+        }
+    },
     "post_install": [
         "if (!(is_admin)) { error \"$app requires admin rights to $cmd\"; break }",
-        "if ($architecture -eq '32bit') { Remove-Item \"$dir\\lagarith,1.dll\"; Rename-Item \"$dir\\lagarith,2.dll\" 'lagarith.dll' }",
-        "elseif ($architecture -eq '64bit') { Remove-Item \"$dir\\lagarith,2.dll\"; Rename-Item \"$dir\\lagarith,1.dll\" 'lagarith.dll' }",
         "# Register the Lagarith Lossless Video Codec",
         "New-Item 'HKLM:\\SYSTEM\\CurrentControlSet\\Control\\MediaResources\\icm\\VIDC.LAGS' -Force | Out-Null",
         "foreach ($name in 'Description', 'FriendlyName') {",
@@ -28,8 +32,16 @@
         "Remove-ItemProperty 'HKLM:\\Software\\Microsoft\\Windows NT\\CurrentVersion\\drivers.desc' -Name \"\"\"$newDir\\lagarith.dll\"\"\" -Force",
         "Remove-ItemProperty 'HKLM:\\Software\\Microsoft\\Windows NT\\CurrentVersion\\Drivers32' -Name 'VIDC.LAGS' -Force"
     ],
-    "checkver": "Lagarith\\sInstaller\\s\\(v([\\d.]+)\\)",
+    "checkver": "Lagarith\\s(?:Installer|Codec)\\s\\(v([\\d.]+)\\)",
     "autoupdate": {
-        "url": "https://lags.leetcode.net/LagarithSetup_$cleanVersion.exe"
+        "url": "https://lags.leetcode.net/Lagarith_$cleanVersion.zip",
+        "architecture": {
+            "32bit": {
+                "extract_dir": "Lagarith_$cleanVersion\\lagarith32"
+            },
+            "64bit": {
+                "extract_dir": "Lagarith_$cleanVersion\\lagarith64"
+            }
+        }
     }
 }
