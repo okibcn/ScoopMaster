@@ -1,0 +1,35 @@
+{
+    "version": "1.3.27",
+    "homepage": "https://lags.leetcode.net/codec.html",
+    "description": "A lossless video codec intended for editing and archiving. The codec offers better compression than other codecs like Huffyuv, Alparysoft, and CorePNG.",
+    "license": "GPL-3.0-or-later",
+    "url": "https://lags.leetcode.net/LagarithSetup_1327.exe",
+    "hash": "9406b1ceebd9020c12823604530abc40f884e4f9e0d42d8a96dc77f79933c199",
+    "innosetup": true,
+    "extract_dir": "{sys}",
+    "post_install": [
+        "if (!(is_admin)) { error \"$app requires admin rights to $cmd\"; break }",
+        "if ($architecture -eq '32bit') { Remove-Item \"$dir\\lagarith,1.dll\"; Rename-Item \"$dir\\lagarith,2.dll\" 'lagarith.dll' }",
+        "elseif ($architecture -eq '64bit') { Remove-Item \"$dir\\lagarith,2.dll\"; Rename-Item \"$dir\\lagarith,1.dll\" 'lagarith.dll' }",
+        "# Register the Lagarith Lossless Video Codec",
+        "New-Item 'HKLM:\\SYSTEM\\CurrentControlSet\\Control\\MediaResources\\icm\\VIDC.LAGS' -Force | Out-Null",
+        "foreach ($name in 'Description', 'FriendlyName') {",
+        "    Set-ItemProperty 'HKLM:\\SYSTEM\\CurrentControlSet\\Control\\MediaResources\\icm\\VIDC.LAGS' -Name $name -Value 'Lagarith lossless codec [LAGS]' -Force",
+        "}",
+        "Set-ItemProperty 'HKLM:\\SYSTEM\\CurrentControlSet\\Control\\MediaResources\\icm\\VIDC.LAGS' -Name 'Driver' -Value \"\"\"$dir\\lagarith.dll\"\"\" -Force",
+        "Set-ItemProperty 'HKLM:\\Software\\Microsoft\\Windows NT\\CurrentVersion\\drivers.desc' -Name \"\"\"$dir\\lagarith.dll\"\"\" -Value 'Lagarith lossless codec [LAGS]' -Force",
+        "Set-ItemProperty 'HKLM:\\Software\\Microsoft\\Windows NT\\CurrentVersion\\Drivers32' -Name 'VIDC.LAGS' -Value \"\"\"$dir\\lagarith.dll\"\"\" -Force"
+    ],
+    "pre_uninstall": [
+        "if (!(is_admin)) { error \"$app requires admin rights to $cmd\"; break }",
+        "$newDir = $dir.Replace($version, 'current')",
+        "# Unregister the Lagarith Lossless Video Codec",
+        "Remove-Item 'HKLM:\\SYSTEM\\CurrentControlSet\\Control\\MediaResources\\icm' -Force -Recurse",
+        "Remove-ItemProperty 'HKLM:\\Software\\Microsoft\\Windows NT\\CurrentVersion\\drivers.desc' -Name \"\"\"$newDir\\lagarith.dll\"\"\" -Force",
+        "Remove-ItemProperty 'HKLM:\\Software\\Microsoft\\Windows NT\\CurrentVersion\\Drivers32' -Name 'VIDC.LAGS' -Force"
+    ],
+    "checkver": "Lagarith\\sInstaller\\s\\(v([\\d.]+)\\)",
+    "autoupdate": {
+        "url": "https://lags.leetcode.net/LagarithSetup_$cleanVersion.exe"
+    }
+}
