@@ -1,20 +1,7 @@
 {
-    "homepage": "https://cran.r-project.org/bin/windows/base/rdevel.html",
-    "description": "A free software environment for statistical computing and graphics.",
-    "version": "r83996",
-    "license": "GPL-2.0-only",
-    "url": "https://cloud.r-project.org/bin/windows/base/R-devel-win.exe",
-    "hash": "md5:c0d1692a1a3e49b60ea9ff4daa688020",
-    "innosetup": true,
     "architecture": {
         "64bit": {
-            "bin": [
-                "bin\\x64\\R.exe",
-                "bin\\x64\\Rcmd.exe",
-                "bin\\x64\\Rgui.exe",
-                "bin\\x64\\Rscript.exe",
-                "bin\\x64\\Rterm.exe"
-            ],
+            "pre_install": "Rename-Item \"$dir\\bin\\R,2.exe\" 'R.exe'",
             "shortcuts": [
                 [
                     "bin\\x64\\Rgui.exe",
@@ -23,6 +10,28 @@
             ]
         }
     },
+    "autoupdate": {
+        "hash": {
+            "regex": "$md5",
+            "url": "http://mirrors.aliyun.com/CRAN/bin/windows/base/md5sum.R-devel.txt"
+        },
+        "url": "http://mirrors.aliyun.com/CRAN/bin/windows/base/R-devel-win.exe"
+    },
+    "checkver": {
+        "regex": "(r\\d+)",
+        "url": "https://cran.r-project.org/bin/windows/base/rdevel.html"
+    },
+    "description": "A free software environment for statistical computing and graphics.",
+    "hash": "md5:c00f300ee5964e8b7c54d5ba339f2d49",
+    "homepage": "https://cran.r-project.org/bin/windows/base/rdevel.html",
+    "innosetup": true,
+    "installer": {
+        "script": [
+            "Remove-Item \"$dir\\bin\\R,*.exe\" -Force",
+            "Copy-Item \"$dir\\bin\\R.exe\" \"$dir\\bin\\Rscript.exe\""
+        ]
+    },
+    "license": "GPL-2.0-only",
     "notes": [
         "For source packages installation, you will need to install Rtools if not already present, and add to PATH in your .Renviron: https://cran.r-project.org/bin/windows/Rtools",
         "",
@@ -35,14 +44,6 @@
         "",
         "Annoying, right?! You might want to check out Pshazz (scoop install pshazz)--this has a plugin to remove some crazy aliases from Powershell, as well as many other improvements."
     ],
-    "checkver": {
-        "url": "https://cran.r-project.org/bin/windows/base/rdevel.html",
-        "regex": "(r\\d+)"
-    },
-    "autoupdate": {
-        "url": "https://cloud.r-project.org/bin/windows/base/R-devel-win.exe",
-        "hash": {
-            "url": "$baseurl/md5sum.R-devel.txt"
-        }
-    }
+    "url": "http://mirrors.aliyun.com/CRAN/bin/windows/base/R-devel-win.exe",
+    "version": "r83996"
 }
