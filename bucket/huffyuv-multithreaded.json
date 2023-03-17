@@ -1,30 +1,19 @@
 {
     "version": "7.2.1",
     "homepage": "https://web.archive.org/web/20020607190222/http://www.math.berkeley.edu/~benrg/huffyuv.html",
-    "description": "A very fast, lossless Win32 video codec.",
+    "description": "A very fast, lossless Win32 video codec. (MultiThreaded support version)",
     "license": "GPL-2.0-or-later",
-    "architecture": {
-        "32bit": {
-            "url": "https://www.videohelp.com/download/huffyuv-2.1.1.zip",
-            "hash": "ab061ae4d910c868014ce67dbcef59c916083881aa11e53ed3fd2e9e93c65fb6"
-        },
-        "64bit": {
-            "url": "https://www.videohelp.com/download/huffyuv64.zip",
-            "hash": "701143c215764f43c347f27ea91c3dde77419f894a438740ce89e1b025385d97"
-        }
-    },
+    "url": "https://www.videohelp.com/download/huffyuv_mt_712.zip",
+    "hash": "81b1243938cd2ee7a1eed6d0aa96c7150f371438aeb806f599fb02b93b3928c6",
+    "extract_dir": "huffyuv_mt",
     "post_install": [
         "if (!(is_admin)) { error \"$app requires admin rights to $cmd\"; break }",
-        "Start-Process 'InfDefaultInstall' -Wait -Verb 'RunAs' -Args \"$dir\\huffyuv.inf\""
+        "if ([CultureInfo]::InstalledUICulture.Name -match 'en-*') { Rename-Item \"$dir\\huffyuv_mt_en.dll\" 'huffyuv_mt.dll'; Remove-Item \"$dir\\huffyuv_mt_jp.dll\" }",
+        "elseif ([CultureInfo]::InstalledUICulture.Name -in ('ja', 'ja-JP')) { Rename-Item \"$dir\\huffyuv_mt_jp.dll\" 'huffyuv_mt.dll'; Remove-Item \"$dir\\huffyuv_mt_en.dll\" }",
+        "Start-Process 'InfDefaultInstall' -Wait -Verb 'RunAs' -Args \"$dir\\huffyuv_mt.inf\""
     ],
     "pre_uninstall": [
         "if (!(is_admin)) { error \"$app requires admin rights to $cmd\"; break }",
-        "Start-Process 'rundll32.exe' -Wait -Verb 'RunAs' -Args @('setupapi,InstallHinfSection', 'Remove_HFYU', '132', \"$env:windir\\INF\\HUFFYUV.INF\")",
-        "Remove-Item 'HKLM:\\SYSTEM\\CurrentControlSet\\Control\\MediaResources\\icm\\VIDC.HFYU' -ErrorAction 'SilentlyContinue' -Recurse -Force",
-        "Remove-ItemProperty 'HKLM:\\Software\\Microsoft\\Windows NT\\CurrentVersion\\drivers.desc' -ErrorAction 'SilentlyContinue' -Name 'huffyuv.dll' -Force",
-        "Remove-ItemProperty 'HKLM:\\Software\\Microsoft\\Windows NT\\CurrentVersion\\Drivers32' -ErrorAction 'SilentlyContinue' -Name 'VIDC.HFYU' -Force",
-        "Remove-Item \"$env:windir\\System32\\HUFFYUV.*\" -ErrorAction 'SilentlyContinue' -Force",
-        "Remove-Item \"$env:windir\\inf\\HUFFYUV.*\" -ErrorAction 'SilentlyContinue' -Force",
-        "Remove-Item 'HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\HUFFYUV' -ErrorAction 'SilentlyContinue' -Recurse -Force"
+        "Start-Process 'rundll32.exe' -Wait -Verb 'RunAs' -Args @('setupapi,InstallHinfSection', 'DefaultUninstall', '132', \"$env:windir\\INF\\HUFFYUV_MT.INF\")"
     ]
 }
