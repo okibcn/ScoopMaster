@@ -1,28 +1,27 @@
 {
-    "autoupdate": {
-        "url": "https://github.com/valinet/ExplorerPatcher/releases/download/$matchTag/ep_setup.exe"
-    },
-    "checkver": {
-        "jsonpath": "$.tag_name",
-        "regex": "(?<tag>([\\d.]+).*)",
-        "url": "https://api.github.com/repos/valinet/ExplorerPatcher/releases/latest"
-    },
-    "depends": "sudo",
+    "version": "22621.1413.54.2_e7e3abc",
     "description": "This project aims to enhance the working environment on Windows.",
-    "hash": "8a2d0b507ff72f1155334783705f75ed752ebbfc9919c52b682beeea7f4ddfec",
     "homepage": "https://github.com/valinet/ExplorerPatcher",
-    "installer": {
-        "script": "sudo Start-Process -FilePath \"$dir\\ep_setup.exe\" -WorkingDirectory \"$dir\" -Wait"
-    },
     "license": {
         "identifier": "GPL-2.0-only",
-        "url": "https://github.com/valinet/ExplorerPatcher/blob/master/LICENSE"
+        "url": "https://github.com/valinet/ExplorerPatcher/raw/master/LICENSE"
     },
     "notes": "Wiki: <https://github.com/valinet/ExplorerPatcher/wiki>",
-    "uninstaller": {
-        "args": "/uninstall",
-        "file": "ep_setup.exe"
+    "depends": "sudo",
+    "url": "https://github.com/valinet/ExplorerPatcher/releases/download/22621.1413.54.2_e7e3abc/ep_setup.exe",
+    "hash": "bef9ed83168f57a1179951cb70ee667926759da5378043ad44c1458029c951a9",
+    "installer": {
+        "script": "Start-Process \"$dir\\ep_setup.exe\" -WorkingDirectory \"$dir\" -Wait"
     },
-    "url": "https://github.com/valinet/ExplorerPatcher/releases/download/22621.1413.54.1_8b5443d/ep_setup.exe",
-    "version": "22621.1413.54.1"
+    "uninstaller": {
+        "file": "ep_setup.exe",
+        "args": "/uninstall"
+    },
+    "checkver": {
+        "url": "https://api.github.com/repos/valinet/ExplorerPatcher/releases",
+        "regex": "/releases/tag/([\\w.-]+)"
+    },
+    "autoupdate": {
+        "url": "https://github.com/valinet/ExplorerPatcher/releases/download/$version/ep_setup.exe"
+    }
 }
