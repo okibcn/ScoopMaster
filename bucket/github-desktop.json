@@ -1,26 +1,24 @@
 {
-    "version": "3.2.0",
-    "description": "GitHub Desktop. Extend your GitHub workflow beyond your browser.",
-    "homepage": "https://desktop.github.com/",
-    "license": "MIT",
     "architecture": {
         "64bit": {
-            "url": "https://central.github.com/deployments/desktop/desktop/latest/win32?format=msi#/setup.msi_",
-            "hash": "8a4e3527c17369f81bd8648b217b08d9625be70da9638f086a7494569e306b85"
+            "hash": "8a4e3527c17369f81bd8648b217b08d9625be70da9638f086a7494569e306b85",
+            "url": "https://central.github.com/deployments/desktop/desktop/latest/win32?format=msi#/setup.msi_"
         }
     },
-    "pre_install": [
-        "$processname = \"GitHubDesktop\"",
-        "$process = Get-Process $processname -ErrorAction SilentlyContinue",
-        "if ($process) {",
-        "   $process.CloseMainWindow()",
-        "   Start-Sleep -Seconds 5",
-        "   if (!$process.HasExited) {",
-        "       Start-Sleep -Seconds 25",
-        "       $process | Stop-Process -Force",
-        "   }",
-        "}"
-    ],
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://central.github.com/deployments/desktop/desktop/latest/win32?format=msi#/setup.msi_"
+            }
+        }
+    },
+    "checkver": {
+        "regex": "GitHubDesktop-([\\d.]+)-full.nupkg",
+        "reverse": true,
+        "url": "https://central.github.com/api/deployments/desktop/desktop/latest/RELEASES"
+    },
+    "description": "GitHub Desktop. Extend your GitHub workflow beyond your browser.",
+    "homepage": "https://desktop.github.com/",
     "installer": {
         "script": [
             "$programname = \"GitHub Desktop Machine-Wide Installer*\"",
@@ -42,20 +40,22 @@
             "if (Test-Path -Path \"$dir\\setup.msi_\") { Remove-Item \"$dir\\setup.msi_\" -Force }"
         ]
     },
+    "license": "MIT",
     "post_install": [
         "$DesktopDirectory = [Environment]::GetFolderPath(\"DesktopDirectory\")",
         "if (Test-Path \"$DesktopDirectory\\GitHub Desktop.lnk\") {Remove-Item \"$DesktopDirectory\\GitHub Desktop.lnk\" -Force}"
     ],
-    "checkver": {
-        "url": "https://central.github.com/api/deployments/desktop/desktop/latest/RELEASES",
-        "regex": "GitHubDesktop-([\\d.]+)-full.nupkg",
-        "reverse": true
-    },
-    "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://central.github.com/deployments/desktop/desktop/latest/win32?format=msi#/setup.msi_"
-            }
-        }
-    }
+    "pre_install": [
+        "$processname = \"GitHubDesktop\"",
+        "$process = Get-Process $processname -ErrorAction SilentlyContinue",
+        "if ($process) {",
+        "   $process.CloseMainWindow()",
+        "   Start-Sleep -Seconds 5",
+        "   if (!$process.HasExited) {",
+        "       Start-Sleep -Seconds 25",
+        "       $process | Stop-Process -Force",
+        "   }",
+        "}"
+    ],
+    "version": "3.2.0"
 }
