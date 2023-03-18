@@ -8,8 +8,8 @@
             "url": "http://cdn.apifox.cn/download/2.2.27/Apifox-2.2.27.exe#/dl.7z",
             "hash": "sha512:523ed2263c10f9cabc61f8db7e2fb02e871fb0724b8d6f128dbc91b28677e22812791ffb8e04b575f1a9d3f720ace905f11b9a80a2527e93cb588e298d64872c",
             "pre_install": [
-                "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\" -Removal",
-                "Remove-Item \"$dir\\`$PLUGINSDIR\" -Force -Recurse"
+                "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\"",
+                "Remove-Item \"$dir\\`$*\", \"$dir\\Uninst*\" -Recurse"
             ]
         }
     },
@@ -21,12 +21,12 @@
     ],
     "checkver": {
         "url": "http://cdn.apifox.cn/download/latest.yml",
-        "regex": "Apifox-([\\d.]+).exe"
+        "regex": "(?sm)version:[\\s]+([\\d.]+).*?http://(?<url>.*?\\.exe)"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "http://cdn.apifox.cn/download/$version/Apifox-$version.exe#/dl.7z",
+                "url": "http://$matchUrl#/dl.7z",
                 "hash": {
                     "url": "http://cdn.apifox.cn/download/latest.yml",
                     "mode": "extract",
