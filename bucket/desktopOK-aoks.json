@@ -1,38 +1,18 @@
 {
-    "architecture": {
-        "32bit": {
-            "hash": "1e695181da5ef24540cce7fe2174ae69235458b30743816bac4679ff53f42851",
-            "url": "http://softwareok.com/Download/DesktopOK_Unicode.zip"
-        },
-        "64bit": {
-            "hash": "ff1b779d7dedaf9dee1d7b764aa7edb901b77024032d848ba1161b54190a0f7b",
-            "url": "http://softwareok.com/Download/DesktopOK_x64.zip"
-        }
-    },
-    "autoupdate": {
-        "architecture": {
-            "32bit": {
-                "hash": {
-                    "find": "DesktopOK\\.zip.+?target=_blank>($sha256)",
-                    "url": "http://softwareok.com/?Download=DesktopOK_Unicode"
-                },
-                "url": "http://softwareok.com/Download/DesktopOK_Unicode.zip"
-            },
-            "64bit": {
-                "hash": {
-                    "find": "DesktopOK_x64\\.zip.+?target=_blank>($sha256)",
-                    "url": "http://softwareok.com/?Download=DesktopOK"
-                },
-                "url": "http://softwareok.com/Download/DesktopOK_x64.zip"
-            }
-        }
-    },
-    "bin": "DesktopOK.exe",
-    "checkver": "DesktopOK ([\\d.]+)",
-    "description": "DesktopOK - Save and restore the positions of the Windows 11, 10, ... Desktop Icons!",
     "homepage": "http://softwareok.com/?seite=Microsoft/DesktopOK",
+    "description": "DesktopOK - Save and restore the positions of the Windows 11, 10, ... Desktop Icons!",
     "license": "freeware",
-    "persist": "DesktopOK.ini",
+    "version": "10.71",
+    "architecture": {
+        "64bit": {
+            "url": "http://softwareok.com/Download/DesktopOK_x64.zip",
+            "hash": "ff1b779d7dedaf9dee1d7b764aa7edb901b77024032d848ba1161b54190a0f7b"
+        },
+        "32bit": {
+            "url": "http://softwareok.com/Download/DesktopOK_Unicode.zip",
+            "hash": "1e695181da5ef24540cce7fe2174ae69235458b30743816bac4679ff53f42851"
+        }
+    },
     "pre_install": [
         "$exefile = (Get-ChildItem \"$dir\" '*.exe' | Select-Object -First 1).FullName",
         "Rename-Item \"$exefile\" \"$dir\\DesktopOK.exe\"",
@@ -40,11 +20,31 @@
         "    New-Item \"$dir\\DesktopOK.ini\" -Type File -Force | Out-Null",
         "}"
     ],
+    "bin": "DesktopOK.exe",
     "shortcuts": [
         [
             "DesktopOK.exe",
             "DesktopOK"
         ]
     ],
-    "version": "10.71"
+    "persist": "DesktopOK.ini",
+    "checkver": "DesktopOK ([\\d.]+)",
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "http://softwareok.com/Download/DesktopOK_x64.zip",
+                "hash": {
+                    "url": "http://softwareok.com/?Download=DesktopOK",
+                    "find": "DesktopOK_x64\\.zip.+?target=_blank>($sha256)"
+                }
+            },
+            "32bit": {
+                "url": "http://softwareok.com/Download/DesktopOK_Unicode.zip",
+                "hash": {
+                    "url": "http://softwareok.com/?Download=DesktopOK_Unicode",
+                    "find": "DesktopOK\\.zip.+?target=_blank>($sha256)"
+                }
+            }
+        }
+    }
 }
