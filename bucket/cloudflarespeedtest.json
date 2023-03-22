@@ -1,56 +1,24 @@
 {
-    "version": "2.2.2",
-    "description": "「自选优选 IP / 过滤假墙」测试 Cloudflare CDN 延迟和速度，获取最快 IP (IPv4+IPv6)",
     "homepage": "https://github.com/XIU2/CloudflareSpeedTest",
-    "license": "GPL-3.0-only",
-    "notes": [
-        "详细使用说明请看: ",
-        "  - Github: <https://github.com/XIU2/CloudflareSpeedTest>",
-        "  - 知乎: <https://zhuanlan.zhihu.com/p/207315892>",
-        "可以去这两个网站向我 [反馈问题、提供建议、询问使用方法] !",
-        "",
-        "如果平均延迟非常低（如 0.xx），则说明 CloudflareST 测速时走了代理，请先关闭代理软件后再测速。",
-        "如果延迟很低 (几十ms)，且你也不是移动 (香港直连)，那么你就是遇到假墙 IP 了，记得加上 -tll 参数。",
-        "如果在路由器上运行（如 OpenWrt），请先关闭路由器内的代理，否则测速结果会不准确且无法使用。",
-        "",
-        "因为默认下载测速地址的文件大小只有 300MB，如果你速度太快的话，测速结果可能会低于实际速度。",
-        "官方 500MB (可自定义大小) 下载测速地址: <https://speed.cloudflare.com/__down?bytes=500000000>",
-        "因为每次测速都是在每个 IP 段中随机 IP，所以每次的测速结果都不可能相同，这是正常的!",
-        "",
-        "脚本【cfst_host.bat】的作用是 CloudflareST 测速后获取最快 IP 并替换 Hosts 中的 Cloudflare CDN IP。",
-        "使用前请先阅读: <https://github.com/XIU2/CloudflareSpeedTest/issues/42#issuecomment-768273768>",
-        "",
-        "脚本【cfst_3proxy.bat】的作用为 CloudflareST 测速后获取最快 IP 并替换 3Proxy 配置文件中的 Cloudflare CDN IP。",
-        "可以把所有 Cloudflare CDN IP 都重定向至最快 IP，实现一劳永逸的加速所有使用 Cloudflare CDN 的网站（不需要一个个添加域名到 Hosts 了）。",
-        "使用前请先阅读: <https://github.com/XIU2/CloudflareSpeedTest/discussions/71>"
-    ],
+    "description": "🌩「自选优选 IP」测试 Cloudflare CDN 延迟和速度，获取最快 IP (IPv4 / IPv6)！另外也支持其他 CDN / 网站 IP ~",
+    "license": "GPL-3.0-or-later",
+    "version": "2.2.2",
     "architecture": {
         "64bit": {
             "url": "https://github.com/XIU2/CloudflareSpeedTest/releases/download/v2.2.2/CloudflareST_windows_amd64.zip",
-            "hash": "52be0c5234fe9b8deb59c4fc16b2be004656a91ad8287c1f3cc712359a25c5e3"
+            "hash": "13a48e308ad4442c4805078b6444031ae33cb0ca6f3ae856296c7a11ad683716"
         },
         "32bit": {
             "url": "https://github.com/XIU2/CloudflareSpeedTest/releases/download/v2.2.2/CloudflareST_windows_386.zip",
-            "hash": "08b9eab187b198740662f794e9478a8e4cf489aa68ce665d947263339dfb527f"
+            "hash": "0e412895e3e18bfb4f0243143341f3289e6b5555679c63dd947346cb4fb91974"
         }
     },
     "bin": [
-        "cfst_hosts.bat",
-        "cfst_3proxy.bat"
-    ],
-    "shortcuts": [
         [
-            "cfst_hosts.bat",
-            "CloudflareST - Hosts"
-        ],
-        [
-            "cfst_3proxy.bat",
-            "CloudflareST - 3Proxy"
+            "CloudflareST.exe",
+            "CloudflareST",
+            "-f $dir\\ip.txt"
         ]
-    ],
-    "persist": [
-        "ipv6.txt",
-        "ip.txt"
     ],
     "checkver": "github",
     "autoupdate": {
