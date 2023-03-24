@@ -1,37 +1,36 @@
 {
+    "version": "5.8.2970.3",
+    "description": "An innovatively designed web browser, based on Blink, for users in Vivaldi.net community that replaced departed My Opera.",
     "homepage": "https://vivaldi.com/",
-    "description": "An innovatively designed web browser, based on Blink, for users in Vivaldi.net community that replaced departed My Opera",
-    "version": "5.8.2968.2",
-    "license": "https://vivaldi.com/privacy/vivaldi-end-user-license-agreement/",
+    "license": "BSD-3-Clause",
     "architecture": {
         "64bit": {
-            "url": "https://downloads.vivaldi.com/snapshot/Vivaldi.5.8.2968.2.x64.exe#/dl.7z",
-            "hash": "9ddab03408f1000c20ebd8e85cbfcd7d3788445e26508066fdd5c9801396c863"
+            "url": "https://downloads.vivaldi.com/snapshot/Vivaldi.5.8.2970.3.x64.exe#/dl.7z",
+            "hash": "399af14f571445531b7c7abed864e78a6e6d1f85b6702d53ff4cf3675c5a7961"
         },
         "32bit": {
-            "url": "https://downloads.vivaldi.com/snapshot/Vivaldi.5.8.2968.2.exe#/dl.7z",
-            "hash": "47bfc483b5acc89529b6f83c6b58acc1d5a45ac8bbbfc9a1928cd3d4e3014cf5"
+            "url": "https://downloads.vivaldi.com/snapshot/Vivaldi.5.8.2970.3.exe#/dl.7z",
+            "hash": "1a19f92e8d51876cee889faa066752a0fed8fba4e1e5998ac8c9e5e39b7d7b10"
         }
     },
     "installer": {
         "script": [
-            "Expand-7zipArchive \"$dir\\vivaldi.7z\" \"$dir\"",
-            "Move-Item \"$dir\\Vivaldi-bin\" \"$dir\\Application\"",
-            "Remove-Item \"$dir\\vivaldi.7z\"",
+            "Expand-7zipArchive \"$dir\\vivaldi.7z\" -DestinationPath \"$dir\\Application\" -ExtractDir 'Vivaldi-bin' -Removal",
             "Remove-Item \"$dir\\Application\\update_notifier.exe\"",
-            "Write-Output \"// Vivaldi Standalone\" | Set-Content \"$dir\\Application\\stp.viv\""
+            "Set-Content \"$dir\\Application\\stp.viv\" '// Vivaldi Standalone' -Encoding ASCII"
         ]
     },
+    "bin": "Application\\vivaldi.exe",
     "shortcuts": [
         [
             "Application\\vivaldi.exe",
-            "Vivaldi Snapshot"
+            "Vivaldi"
         ]
     ],
     "persist": "User Data",
     "checkver": {
-        "url": "https://vivaldi.com/blog/feed/",
-        "regex": "snapshot/Vivaldi.([\\d.]+).x64.exe"
+        "url": "https://vivaldi.com/category/desktop-snapshots/feed/",
+        "regex": "Vivaldi\\.([\\d.]+)\\.exe"
     },
     "autoupdate": {
         "architecture": {
