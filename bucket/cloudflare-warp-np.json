@@ -14,13 +14,13 @@
     },
     "post_install": [
         "if (!(is_admin)) { error \"$app requires admin rights to $cmd\"; break }",
-        "Start-Process 'msiexec' -Wait -Verb 'RunAs' -WindowStyle 'Hidden' -Args @('/i', \"$dir\\setup.msi_\", '/qn', \"INSTALLDIR=$dir\", \"TARGETDIR=$dir\")",
-        "Stop-Process -Name 'Cloudflare WARP' -ErrorAction 'SilentlyContinue' -Force"
+        "Start-Process 'msiexec' -Wait -Verb 'RunAs' -WindowStyle 'Hidden' -Args @('/i', \"$dir\\setup.msi_\", '/qn')",
+        "Stop-Process -Name 'Cloudflare WARP' -ErrorAction 'SilentlyContinue' -Force; Stop-Service -Name 'CloudflareWARP' -ErrorAction 'SilentlyContinue' -Force"
     ],
     "uninstaller": {
         "script": [
             "if (!(is_admin)) { error \"$app requires admin rights to $cmd\"; break }",
-            "Stop-Process -Name 'Cloudflare WARP' -ErrorAction 'SilentlyContinue' -Force",
+            "Stop-Process -Name 'Cloudflare WARP' -ErrorAction 'SilentlyContinue' -Force; Stop-Service -Name 'CloudflareWARP' -ErrorAction 'SilentlyContinue' -Force",
             "Start-Process 'msiexec' -Wait -Verb 'RunAs' -WindowStyle 'Hidden' -ArgumentList @('/x', \"$dir\\setup.msi_\", '/qn')"
         ]
     },
