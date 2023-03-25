@@ -1,8 +1,8 @@
 {
     "version": "3.3.0",
+    "description": "新一代效率工具平台，自由组合插件应用，打造专属你的趁手工具集",
     "homepage": "https://u.tools/",
-    "description": "Your productive tools set and launcher.",
-    "license": "Proprietary",
+    "license": "Freeware",
     "architecture": {
         "64bit": {
             "url": "https://res.u-tools.cn/version2/uTools-3.3.0.exe#/dl.7z",
@@ -10,28 +10,30 @@
             "installer": {
                 "script": "Expand-7zipArchive \"$dir\\`$PLUGINSDIR/app-64.7z\" \"$dir\""
             }
+        },
+        "32bit": {
+            "url": "https://res.u-tools.cn/version2/uTools-3.3.0-ia32.exe#/dl.7z",
+            "hash": "2ea63030df803fdd5869ea7e60ae9fe491346a4806d793128dd34cf912b50523",
+            "installer": {
+                "script": "Expand-7zipArchive \"$dir\\`$PLUGINSDIR/app-32.7z\" \"$dir\""
+            }
         }
     },
-    "post_install": "Remove-Item \"$dir\\`$PLUGINSDIR\" -Force -Recurse",
+    "post_install": "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\`$R0\" -Force -Recurse",
     "shortcuts": [
         [
             "uTools.exe",
             "uTools"
         ]
     ],
-    "checkver": {
-        "url": "https://res.u-tools.cn/version2/latest.yml",
-        "regex": "version: ([\\d.]+)"
-    },
+    "checkver": "version: 'V([\\d.]+)'",
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://res.u-tools.cn/version2/uTools-$version.exe#/dl.7z",
-                "hash": {
-                    "url": "https://res.u-tools.cn/version2/latest.yml?",
-                    "mode": "extract",
-                    "regex": "(?sm)$version.exe.*?sha512: $base64"
-                }
+                "url": "https://res.u-tools.cn/version2/uTools-$version.exe#/dl.7z"
+            },
+            "32bit": {
+                "url": "https://res.u-tools.cn/version2/uTools-$version-ia32.exe#/dl.7z"
             }
         }
     }
