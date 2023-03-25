@@ -1,24 +1,32 @@
 {
     "##": "Checkver URL https://docs.microsoft.com/en-us/deployedge/microsoft-edge-relnote-stable-channel",
-    "version": "111.0.1661.54",
-    "description": "Microsoft Edge. The chromium based Microsoft Edge browser.",
-    "homepage": "https://www.microsoft.com/en-us/edge/business",
-    "license": {
-        "identifier": "Freeware",
-        "url": "https://www.microsoft.com/en-us/servicesagreement/"
-    },
-    "changelog": "https://docs.microsoft.com/en-us/deployedge/microsoft-edge-relnote-stable-channel",
     "architecture": {
-        "64bit": {
-            "url": "http://go.microsoft.com/fwlink/?LinkID=2093437#/setup.msi_",
-            "hash": "b6779c6812baa14f1862f8a28c8fd4bc7399d54d1526872aa359a564e12d34e4"
-        },
         "32bit": {
-            "url": "http://go.microsoft.com/fwlink/?LinkID=2093505#/setup.msi_",
-            "hash": "b2fc6ec443dc8b0216fc01dfcffb1c96f006852661ae0634180bcd2820b279e0"
+            "hash": "b2fc6ec443dc8b0216fc01dfcffb1c96f006852661ae0634180bcd2820b279e0",
+            "url": "http://go.microsoft.com/fwlink/?LinkID=2093505#/setup.msi_"
+        },
+        "64bit": {
+            "hash": "b6779c6812baa14f1862f8a28c8fd4bc7399d54d1526872aa359a564e12d34e4",
+            "url": "http://go.microsoft.com/fwlink/?LinkID=2093437#/setup.msi_"
         }
     },
-    "pre_download": "Assert-Administrator",
+    "autoupdate": {
+        "architecture": {
+            "32bit": {
+                "url": "http://go.microsoft.com/fwlink/?LinkID=2093505#/setup.msi_"
+            },
+            "64bit": {
+                "url": "http://go.microsoft.com/fwlink/?LinkID=2093437#/setup.msi_"
+            }
+        }
+    },
+    "changelog": "https://docs.microsoft.com/en-us/deployedge/microsoft-edge-relnote-stable-channel",
+    "checkver": {
+        "regex": ">Version ([\\d.]+)",
+        "url": "https://docs.microsoft.com/en-us/deployedge/microsoft-edge-relnote-stable-channel"
+    },
+    "description": "Microsoft Edge. The chromium based Microsoft Edge browser.",
+    "homepage": "https://www.microsoft.com/en-us/edge/business",
     "installer": {
         "script": [
             "$programname = \"Microsoft Edge*\"",
@@ -36,22 +44,14 @@
             "if (Test-Path -Path \"$dir\\setup.msi_\") { Remove-Item \"$dir\\setup.msi_\" -Force }"
         ]
     },
+    "license": {
+        "identifier": "Freeware",
+        "url": "https://www.microsoft.com/en-us/servicesagreement/"
+    },
     "post_install": [
         "$CommonDesktopPath = [Environment]::GetFolderPath(\"CommonDesktopDirectory\")",
         "if (Test-Path \"$CommonDesktopPath\\Microsoft Edge.lnk\") {Remove-Item \"$CommonDesktopPath\\Microsoft Edge.lnk\" -Force}"
     ],
-    "checkver": {
-        "url": "https://docs.microsoft.com/en-us/deployedge/microsoft-edge-relnote-stable-channel",
-        "regex": ">Version ([\\d.]+)"
-    },
-    "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "http://go.microsoft.com/fwlink/?LinkID=2093437#/setup.msi_"
-            },
-            "32bit": {
-                "url": "http://go.microsoft.com/fwlink/?LinkID=2093505#/setup.msi_"
-            }
-        }
-    }
+    "pre_download": "Assert-Administrator",
+    "version": "111.0.1661.54"
 }
