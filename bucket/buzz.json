@@ -2,19 +2,38 @@
     "version": "0.7.2",
     "description": "Buzz transcribes and translates audio offline on your personal computer. Powered by OpenAI's Whisper.",
     "homepage": "https://github.com/chidiwilliams/buzz",
-    "license": "MIT",
-    "url": "https://github.com/chidiwilliams/buzz/releases/download/v0.7.2/Buzz-0.7.2-windows.tar.gz",
-    "hash": "b6b74e4fcecdfdd5a860402c48e84ec912bab0275104a0af8cd451640e5edba4",
+    "license": "MIT license",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/chidiwilliams/buzz/releases/download/v0.7.2/Buzz-0.7.2-windows.tar.gz",
+            "hash": "b6b74e4fcecdfdd5a860402c48e84ec912bab0275104a0af8cd451640e5edba4"
+        }
+    },
+    "extract_dir": "Buzz",
+    "installer": {
+        "script": [
+            "ensure \"$persist_dir\" | Out-Null",
+            "New-Item \"$env:LOCALAPPDATA\\Buzz\" -ItemType Junction -Target \"$persist_dir\" | Out-Null"
+        ]
+    },
+    "uninstaller": {
+        "script": "Remove-Item \"$env:LOCALAPPDATA\\Buzz\" -Recurse -Force -ErrorAction 'SilentlyContinue'"
+    },
     "shortcuts": [
         [
-            "Buzz\\Buzz.exe",
-            "buzz"
+            "Buzz.exe",
+            "Buzz"
         ]
     ],
     "checkver": {
-        "github": "https://github.com/chidiwilliams/buzz"
+        "url": "https://api.github.com/repos/chidiwilliams/buzz/releases",
+        "regex": "/releases/tag/(?:v|V)?([\\w.-]+)"
     },
     "autoupdate": {
-        "url": "https://github.com/chidiwilliams/buzz/releases/download/v$version/Buzz-$version-windows.tar.gz"
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/chidiwilliams/buzz/releases/download/v$version/Buzz-$version-windows.tar.gz"
+            }
+        }
     }
 }
