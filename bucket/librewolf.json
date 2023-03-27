@@ -1,11 +1,11 @@
 {
-    "version": "111.0-3",
+    "version": "111.0.1-1",
     "description": "An independent fork of Firefox, with the primary goals of privacy, security and user freedom.",
     "homepage": "https://librewolf-community.gitlab.io/",
     "license": "MPL-2.0",
-    "url": "https://gitlab.com/api/v4/projects/44042130/packages/generic/librewolf/111.0-3/librewolf-111.0-3.en-US.win64-portable.zip",
-    "hash": "82b096c36728a0f968f85937b6392036d2a7daffff6596dedb9ac38f323670ac",
-    "extract_dir": "librewolf-111.0-3/LibreWolf",
+    "url": "https://gitlab.com/librewolf-community/browser/windows/-/package_files/73020469/download#/librewolf-111.0.1-1.en-US.win64-portable.zip",
+    "hash": "00a5ecce8e8d523b436f9bbbd5c1b9f82504ceede54062f6309c516667920246",
+    "extract_dir": "librewolf-111.0.1-1/LibreWolf",
     "bin": [
         [
             "librewolf.exe",
@@ -42,10 +42,10 @@
     "checkver": {
         "url": "https://gitlab.com/api/v4/projects/13852981/releases",
         "jsonpath": "$[0].assets.links",
-        "regex": "(?s)(?=.*\"(?<url>https://.+?/librewolf-(?<version>\\d+(?:\\.\\d+)*(?:-\\d+)?)\\.en-US\\.win64-portable\\.zip)\").*(?<hashUrl>https://.+?/sha256sums\\.txt)"
+        "regex": "(?s)(?=.*\"(?<file>librewolf-(?<version>\\d+(?:\\.\\d+)*(?:-\\d+)?)\\.en-US\\.win64-portable\\.zip)\").*?\"(?<url>https://.+?)\".*(?<hashUrl>https://.+?/sha256sums\\.txt)"
     },
     "autoupdate": {
-        "url": "${matchUrl}",
+        "url": "${matchUrl}#/${matchFile}",
         "extract_dir": "librewolf-$version/LibreWolf",
         "hash": {
             "url": "$matchHashurl"
