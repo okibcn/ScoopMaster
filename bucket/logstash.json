@@ -1,10 +1,9 @@
 {
-    "version": "6.8.23",
-    "description": "A data processing pipeline that ingests data from a multitude of sources simultaneously, transforms it, and then sends it to your favorite \"stash\".",
+    "version": "8.6.2",
+    "description": "logstash",
     "homepage": "https://www.elastic.co/products/logstash",
     "license": {
-        "identifier": "Freeware|Apache-2.0",
-        "url": "https://github.com/elastic/logstash/blob/master/LICENSE.txt"
+        "identifier": "Freeware|Apache-2.0"
     },
     "suggest": {
         "JDK": [
@@ -12,9 +11,13 @@
             "java/openjdk"
         ]
     },
-    "url": "https://artifacts.elastic.co/downloads/logstash/logstash-6.8.23.zip",
-    "hash": "sha512:7535cbed7eed3752126da0e200e7e69cfedca9fc8a5cc6d3f9981c675afed135cc334f34b5bc1604f21fc2d52d8671e83ded165cb87d9dccc0d331da7fc45f1f",
-    "extract_dir": "logstash-6.8.23",
+    "architecture": {
+        "64bit": {
+            "url": "https://artifacts.elastic.co/downloads/logstash/logstash-8.6.2-windows-x86_64.zip",
+            "hash": "sha512:fcde7faf9d4d12c98098da176d4df9eaa5e5919e08d336559ba9329e6054a331e8c88127a3aae3b36784cdb79fbf4d9e80a92ad5df4290f140dfa346a1a1a097",
+            "extract_dir": "logstash-8.6.2"
+        }
+    },
     "bin": [
         [
             "bin\\logstash.bat",
@@ -30,14 +33,18 @@
         "data"
     ],
     "checkver": {
-        "url": "https://www.elastic.co/downloads/logstash",
-        "regex": "logstash-([\\d.]+)\\.zip"
+        "url": "https://www.elastic.co/jp/downloads/logstash",
+        "regex": "logstash-([\\d.]+)-windows-x86_64\\.zip"
     },
     "autoupdate": {
-        "url": "https://artifacts.elastic.co/downloads/logstash/logstash-$version.zip",
+        "architecture": {
+            "64bit": {
+                "url": "https://artifacts.elastic.co/downloads/logstash/logstash-$version-windows-x86_64.zip",
+                "extract_dir": "logstash-$version"
+            }
+        },
         "hash": {
             "url": "$url.sha512"
-        },
-        "extract_dir": "logstash-$version"
+        }
     }
 }

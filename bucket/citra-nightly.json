@@ -1,50 +1,31 @@
 {
-    "version": "1868",
-    "description": "Nintendo 3DS emulator",
     "homepage": "https://citra-emu.org/",
-    "license": {
-        "url": "https://github.com/citra-emu/citra-nightly/blob/master/license.txt",
-        "identifier": "GPL-2.0"
-    },
-    "architecture": {
-        "64bit": {
-            "url": "https://github.com/citra-emu/citra-nightly/releases/download/nightly-1868/citra-windows-mingw-20230327-b5d6f64.7z",
-            "hash": "4b8f126e72d82d617a008d4366d6c8febb45c5e72094fbfacfb955ad83201b45"
-        }
-    },
-    "extract_dir": "nightly-mingw",
-    "pre_install": [
-        "if (!(Test-Path \"$persist_dir\\user\")) {",
-        "   New-Item -Path \"$persist_dir\" -Name \"user\" -ItemType \"directory\" | Out-Null",
-        "   if (Test-Path \"$env:APPDATA\\Citra\") {",
-        "       Write-host \"Migrating AppData...\" -ForegroundColor yellow",
-        "       Copy-Item -Path \"$env:APPDATA\\Citra\\*\" -Destination \"$persist_dir\\user\" -Recurse",
-        "       Remove-Item -Path \"$env:APPDATA\\Citra\" -Recurse",
-        "   }",
-        "}"
-    ],
-    "bin": [
-        "citra.exe",
-        "citra-qt.exe",
-        "citra-room.exe"
-    ],
+    "description": "Nightly build of Citra is an emulator Nintendo video game Handheld, for 3DS",
+    "license": "GNU General Public License v2.0",
+    "version": "nightly",
+    "url": "https://github.com/citra-emu/citra-nightly/releases/download/nightly-1185/citra-windows-mingw-20190201-2731437.7z",
+    "bin": ["citra.exe", "citra-qt.exe", "citra-room.exe"],
     "shortcuts": [
         [
+            "citra.exe",
+            "citra"
+        ],
+        [
             "citra-qt.exe",
-            "Citra"
+            "citra-qt"
+            
+        ],
+        [
+            "citra-room.exe",
+            "citra-room"
         ]
     ],
-    "persist": "user",
+    "extract_dir": "nightly-mingw",
     "checkver": {
         "github": "https://github.com/citra-emu/citra-nightly",
-        "regex": "download/nightly-([\\d]+)/citra-windows-(?<env>[\\w]+)-(?<commit>[\\d]{8}-[\\da-f]{7})\\.(?<zip>7z|zip)"
+        "re": "nightly-(?<Short>[\\d]+).*citra-windows-mingw-(?<Version>[\\d\\w-]+)\\.7z"
     },
     "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://github.com/citra-emu/citra-nightly/releases/download/nightly-$version/citra-windows-$matchEnv-$matchCommit.$matchZip"
-            }
-        },
-        "extract_dir": "nightly-$matchEnv"
+        "url": "https://github.com/citra-emu/citra-nightly/releases/download/nightly-$matchShort/citra-windows-mingw-$matchVersion.7z"
     }
 }

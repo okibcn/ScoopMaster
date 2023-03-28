@@ -1,19 +1,37 @@
 {
-    "version": "6514223",
+    "version": "9123335",
     "description": "A component for the Android SDK, which includes the complete set of development and debugging tools for Android.",
-    "homepage": "https://developer.android.com/studio#cmdline-tools",
+    "homepage": "https://developer.android.com/studio/",
     "license": {
         "identifier": "Freeware",
         "url": "https://developer.android.com/studio/terms.html"
     },
     "depends": "adb",
-    "url": "https://dl.google.com/android/repository/commandlinetools-win-6514223_latest.zip",
-    "extract_to": "cmdline-tools",
+    "url": "https://dl.google.com/android/repository/commandlinetools-win-9123335_latest.zip",
+    "hash": "8a90e6a3deb2fa13229b2e335efd07687dcc8a55a3c544da9f40b41404993e7d",
     "bin": [
-        "cmdline-tools\\tools\\bin\\sdkmanager.bat",
-        "cmdline-tools\\tools\\bin\\avdmanager.bat"
     ],
+    "post_install": [
+        "if (Test-Path \"$(appdir adb $global)\") {",
+        "    cmd /c mklink /j \"$dir\\platform-tools\" \"$(appdir adb $global)\\current\\platform-tools\" | out-null",
+        "    attrib \"$(appdir adb $global)\\current\\platform-tools\" +R /L",
+        "}",
+        "&\"$dir\\cmdline-tools\\latest\\bin\\sdkmanager.bat\" '--install' '\"cmdline-tools;latest\"'"
+    ],
+    "env_add_path": "cmdline-tools\\latest\\bin",
     "env_set": {
-        "ANDROID_SDK_ROOT": "$dir"
-    }
+        "ANDROID_HOME": "$dir"
+    },
+    "persist": [
+        ".knownPackages",
+        "build-tools",
+        "cmdline-tools",
+        "emulator",
+        "extras",
+        "licenses",
+        "patcher",
+        "platforms",
+        "sources",
+        "system-images"
+    ]
 }
