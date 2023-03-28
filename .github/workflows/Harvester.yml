@@ -96,12 +96,12 @@ jobs:
         Write-Host "$($oldActive.count) previous Active buckets"
         $oldDeprecated=gc ScoopMaster/DeprecatedBuckets
         Write-Host "$($oldDeprecated.count) previous deprecated buckets"
-        $lDeprecated = ($oldActive+$oldDeprecated) | ? { -not ("$lActive" -match "$_") }
+        $lDeprecated = ($oldActive+$oldDeprecated)  | Sort-Object | Get-Unique | ? { -not ("$lActive" -match "$_") }
         Write-Host "$($lDeprecated.count) current deprecated buckets"
-
-        $lDeprecated | Sort-Object | Get-Unique | Set-Content ScoopMaster/DeprecatedBuckets
         $lBuckets = ($lActive+$lDeprecated) | Sort-Object | Get-Unique
         Write-Host "$($lBuckets.count) Total buckets"
+
+        $lDeprecated | Set-Content ScoopMaster/DeprecatedBuckets
         $lBuckets | Set-Content ScoopMaster/ActiveBuckets
         cp ScoopMaster/ActiveBuckets Bucket_list.txt
 
