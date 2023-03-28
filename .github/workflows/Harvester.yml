@@ -73,7 +73,7 @@ jobs:
             -H 'api-key: DC6D2BBE65FC7313F2C52BBD2B0286ED' `
             -d '
             {
-              \"facets\":[\"Metadata/Repository\"],
+              \"facets\":[\"Metadata/Repository,count:10000\"],
               \"filter\":\"Metadata/OfficialRepositoryNumber eq 1\",
               \"top\":0
             }' | jq . | sls 'http.*github[^"]+').Matches.Value
@@ -83,7 +83,7 @@ jobs:
             -H 'api-key: DC6D2BBE65FC7313F2C52BBD2B0286ED' `
             -d '
             {
-              \"facets\":[\"Metadata/Repository\"],
+              \"facets\":[\"Metadata/Repository,count:10000\"],
               \"filter\":\"Metadata/OfficialRepositoryNumber eq 0\",
               \"top\":0
             }' | jq . | sls 'http.*github[^"]+').Matches.Value
