@@ -67,9 +67,6 @@ jobs:
                 [void]$lActive.Add($matches[1])
             }
         }
-        $oldActive=gc ScoopMaster/ActiveBuckets
-        $oldDeprecated=gc ScoopMaster/DeprecatedBuckets
-        $lDeprecated = ($oldActive+$oldDeprecated) | ? { -not ("$lActive" -match "$_") }
         $lOfficial = (curl -s -X POST 'https://scoopsearch.search.windows.net/indexes/apps/docs/search?api-version=2020-06-30' `
             -H 'Content-Type: application/json' `
             -H 'api-key: DC6D2BBE65FC7313F2C52BBD2B0286ED' `
@@ -90,10 +87,15 @@ jobs:
               "filter":"Metadata/OfficialRepositoryNumber eq 0",
               "top":0
             }' | jq . | sls 'http.*github[^"]+').Matches.Value
-        $lbuckets = ($lActive+$lDeprecated+$lOfficial+$lCommunity) | Sort-Object | Get-Unique
+        $lActive = ($lActive+$lOfficial+$Community) | Sort-Object | Get-Unique | Set-Content ScoopMaster/ActiveBuckets
 
-        $lActive | Sort-Object | Get-Unique | Set-Content ScoopMaster/ActiveBuckets
+        $oldActive=gc ScoopMaster/ActiveBuckets
+        $oldDeprecated=gc ScoopMaster/DeprecatedBuckets
+        $lDeprecated = ($oldActive+$oldDeprecated) | ? { -not ("$lActive" -match "$_") }
+
+        $lActive | Set-Content ScoopMaster/ActiveBuckets
         $lDeprecated | Sort-Object | Get-Unique | Set-Content ScoopMaster/DeprecatedBuckets
+        $lBuckets = ($lActive+$lDeprecated+$lOfficial+$lCommunity) | Sort-Object | Get-Unique
         $lBuckets | Set-Content Bucket_list.txt
         Write-Host "$($lbuckets.count) buckets found."
 
