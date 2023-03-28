@@ -58,16 +58,6 @@ jobs:
     - name: "🔍 Discover known buckets from Scoop-Directory website."
       run: |
         cd ..
-        $scoopDBURL = "https://rasa.github.io/scoop-directory/by-apps.html"
-        $ErrorActionPreference = 'SilentlyContinue'
-        $lActive = [System.Collections.ArrayList]@()
-        $source = iwr $scoopDBURL
-        $source.Content -split '\r?\n' | ForEach-Object -Process {
-            if ($_ -match '<h2.*(http[^\"]+)"'){
-                [void]$lActive.Add($matches[1])
-            }
-        }
-        Write-Host "$($lActive.count) buckets found in Scoop-Directory."
         $lOfficial = (curl -s -X POST 'https://scoopsearch.search.windows.net/indexes/apps/docs/search?api-version=2020-06-30' `
             -H 'Content-Type: application/json' `
             -H 'api-key: DC6D2BBE65FC7313F2C52BBD2B0286ED' `
@@ -88,7 +78,18 @@ jobs:
               \"top\":0
             }' | jq . | sls 'http.*github[^"]+').Matches.Value
         Write-Host "$($lCommunity.count) Community buckets found in Scoop.sh"
-        $lActive = ($lActive+$lOfficial+$Community) | Sort-Object | Get-Unique | Set-Content ScoopMaster/ActiveBuckets
+        $scoopDBURL = "https://rasa.github.io/scoop-directory/by-apps.html"
+        $ErrorActionPreference = 'SilentlyContinue'
+        $lScoopdir = @()
+        $source = iwr $scoopDBURL
+        $source.Content -split '\r?\n' | ForEach-Object -Process {
+            if ($_ -match '<h2.*(http[^\"]+)"'){
+                $lScoopdir = $lScoopdir + ( , $matches[1])
+            }
+        }
+        Write-Host "$($lScoopdir.count) buckets found in Scoop-Directory."
+
+        $lActive = ($lOfficial+$lCommunity+$lScoopdir) | Sort-Object | Get-Unique
         Write-Host "$($lActive.count) total Active buckets found"
 
         $oldActive=gc ScoopMaster/ActiveBuckets
@@ -98,11 +99,11 @@ jobs:
         $lDeprecated = ($oldActive+$oldDeprecated) | ? { -not ("$lActive" -match "$_") }
         Write-Host "$($lDeprecated.count) current deprecated buckets"
 
-        $lActive | Set-Content ScoopMaster/ActiveBuckets
         $lDeprecated | Sort-Object | Get-Unique | Set-Content ScoopMaster/DeprecatedBuckets
         $lBuckets = ($lActive+$lDeprecated) | Sort-Object | Get-Unique
-        $lBuckets | Set-Content Bucket_list.txt
-        Write-Host "$($lbuckets.count) buckets found."
+        Write-Host "$($lBuckets.count) Total buckets"
+        $lBuckets | Set-Content ScoopMaster/ActiveBuckets
+        cp ScoopMaster/ActiveBuckets Bucket_list.txt
 
 
     - name: "⏬ Download Active buckets"
