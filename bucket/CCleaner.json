@@ -20,11 +20,6 @@
                 [
                     "CCleaner64.exe",
                     "CCleaner"
-                ],
-                [
-                    "CCleaner64.exe",
-                    "CCleaner Autoclean",
-                    "/Auto"
                 ]
             ]
         },
@@ -42,11 +37,6 @@
                 [
                     "CCleaner.exe",
                     "CCleaner"
-                ],
-                [
-                    "CCleaner.exe",
-                    "CCleaner Autoclean",
-                    "/Auto"
                 ]
             ]
         }
@@ -55,14 +45,15 @@
         "if(!(Test-Path \"$persist_dir\\ccleaner.ini\")) {",
         "   Set-Content \"$dir\\ccleaner.ini\" (@('[Options]', 'UpdateAuto=0', 'UpdateNotify=0', 'UpdateCheck=0', 'HelpImproveCCleaner=0') -join \"`r`n\") -Encoding ASCII",
         "}",
-        "'winapp.ini', 'winreg.ini', 'winsys.ini' | ForEach-Object {",
+        "'winapp.ini', 'winapp2.ini', 'winreg.ini', 'winsys.ini' | ForEach-Object {",
         "   if(!(Test-Path \"$persist_dir\\$_\")) { New-Item \"$dir\\$_\" | Out-Null }",
         "}"
     ],
-    "post_install": "Remove-Item \"$dir\\x64\",\"$dir\\x86\"  -Force -Recurse",
+    "post_install": "Remove-Item \"$dir\\x64\",\"$dir\\x86\" -Force -Recurse",
     "persist": [
         "ccleaner.ini",
         "winapp.ini",
+        "winapp2.ini",
         "winreg.ini",
         "winsys.ini"
     ],
