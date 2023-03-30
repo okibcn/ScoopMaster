@@ -10,7 +10,7 @@
         "Create scheduled task by running: '$dir\\create-scheduled-task.ps1'",
         "Delete scheduled task by running: '$dir\\delete-scheduled-task.ps1'"
     ],
-    "depends": "gsudo",
+    "depends": "sudo",
     "url": "https://github.com/2dust/clashN/releases/download/2.15/clashN.zip",
     "hash": "29120e0dab4a5955f5890c9a616a7730cbff770d9c9513cae70e587cd7c217d6",
     "extract_dir": "clashN",
@@ -18,9 +18,9 @@
         "'config.yaml', 'guiNConfig.json' | ForEach-Object {",
         "    if (Test-Path \"$persist_dir\\$_\") { Copy-Item \"$persist_dir\\$_\" \"$dir\\\" -Force | Out-Null }",
         "}",
-        "(Get-Content \"$bucketsdir\\ownscoop\\scripts\\clashn\\start-clashn.ps1\") -replace 'clashn', 'clashn' | Set-Content \"$dir\\start-clashn.ps1\" -Encoding ASCII",
-        "(Get-Content \"$bucketsdir\\ownscoop\\scripts\\clashn\\create-scheduled-task.ps1\") -replace 'clashn', 'clashn' | Set-Content \"$dir\\create-scheduled-task.ps1\" -Encoding ASCII",
-        "(Get-Content \"$bucketsdir\\ownscoop\\scripts\\clashn\\delete-scheduled-task.ps1\") -replace 'clashn', 'clashn' | Set-Content \"$dir\\delete-scheduled-task.ps1\" -Encoding ASCII"
+        "(Get-Content \"$bucketsdir\\Apps\\scripts\\clashn\\start-clashn.ps1\") -replace 'clashn', 'clashn' | Set-Content \"$dir\\start-clashn.ps1\" -Encoding ASCII",
+        "(Get-Content \"$bucketsdir\\Apps\\scripts\\clashn\\create-scheduled-task.ps1\") -replace 'clashn', 'clashn' | Set-Content \"$dir\\create-scheduled-task.ps1\" -Encoding ASCII",
+        "(Get-Content \"$bucketsdir\\Apps\\scripts\\clashn\\delete-scheduled-task.ps1\") -replace 'clashn', 'clashn' | Set-Content \"$dir\\delete-scheduled-task.ps1\" -Encoding ASCII"
     ],
     "uninstaller": {
         "script": [
@@ -44,8 +44,8 @@
         "data"
     ],
     "checkver": {
-        "url": "https://api.github.com/repos/2dust/clashN/releases?per_page=1",
-        "jsonpath": "$[0].tag_name"
+        "url": "https://api.github.com/repos/2dust/clashN/tags",
+        "regex": "/refs/tags/([\\d.]+)"
     },
     "autoupdate": {
         "url": "https://github.com/2dust/clashN/releases/download/$version/clashN.zip"

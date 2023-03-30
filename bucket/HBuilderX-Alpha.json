@@ -1,15 +1,26 @@
 {
-    "homepage": "https://www.dcloud.io/hbuilderx.html",
-    "version": "3.7.7.20230316-alpha",
-    "license": "Freeware",
+    "autoupdate": {
+        "url": "https://download1.dcloud.net.cn/download/HBuilderX.$version.zip"
+    },
+    "bin": "HBuilderX.exe",
+    "checkver": {
+        "jsonpath": "$.version",
+        "url": "https://download1.dcloud.net.cn/hbuilderx/alpha.json"
+    },
+    "description": "Lightweight but powerful source code editor(Standard, Alpha Edition).",
     "extract_dir": "HBuilderX",
-    "url": "https://download1.dcloud.net.cn/download/HBuilderX.3.7.7.20230316-alpha.zip",
     "hash": "dc1cc09905612d3faf3dcbde1d71a58702ee643711a0f4d41c61e4f59d88ef75",
-    "bin": [
-        [
-            "HBuilderX.exe",
-            "HBuilderXAlpha"
-        ]
+    "homepage": "https://www.dcloud.io/hbuilderx.html",
+    "license": {
+        "identifier": "Proprietary",
+        "url": "https://hx.dcloud.net.cn/license"
+    },
+    "notes": "If you encounter a situation where HBuilderX does not start, please check <http://ask.dcloud.net.cn/article/35583>",
+    "pre_install": [
+        "if (Test-Path \"$env:AppData\\HBuilder X\") {",
+        "    info \"Copying old '$env:AppData\\HBuilder X' to '$persist_dir\\Data\\settings'\" ...",
+        "    Copy-Item \"$env:AppData\\HBuilder X\" \"$dir\\Data\\\" -Recurse -Force",
+        "}"
     ],
     "shortcuts": [
         [
@@ -17,11 +28,13 @@
             "HBuilderX Alpha"
         ]
     ],
-    "checkver": {
-        "url": "https://download1.dcloud.net.cn/hbuilderx/alpha.json",
-        "jsonpath": "$.version"
+    "uninstaller": {
+        "script": [
+            "Push-Location \"$dir\"",
+            "sudo Start-Process -filepath \"$dir\\reset.bat\" -WorkingDirectory \"$dir\" -Wait",
+            "Pop-Location"
+        ]
     },
-    "autoupdate": {
-        "url": "https://download1.dcloud.net.cn/download/HBuilderX.$version.zip"
-    }
+    "url": "https://download1.dcloud.net.cn/download/HBuilderX.3.7.7.20230316-alpha.zip",
+    "version": "3.7.7.20230316-alpha"
 }
