@@ -1,25 +1,14 @@
 {
     "##": "https://support.plex.tv/articles/201941078-uninstall-plex-media-server/",
-    "autoupdate": {
-        "hash": {
-            "jsonpath": "$.computer.Windows.releases..checksum",
-            "url": "https://plex.tv/api/downloads/1.json"
-        },
-        "url": "https://downloads.plex.tv/plex-media-server-new/$version/windows/PlexMediaServer-$version-x86.exe"
-    },
-    "bin": [
-        [
-            "Plex Media Server.exe",
-            "pms"
-        ]
-    ],
-    "checkver": {
-        "jsonpath": "$.computer.Windows.version",
-        "url": "https://plex.tv/pms/downloads/5.json"
-    },
+    "version": "1.31.3.6868-28fc46b27",
     "description": "Plex Media Server. Stream content to all of devices, anywhere.",
-    "hash": "7ac608e31c7853f6abfd7e62ee4bc1843a178f68e2b602b6091d0180ca014b1b",
     "homepage": "https://www.plex.tv/",
+    "license": {
+        "identifier": "Proprietary",
+        "url": "https://support.plex.tv/articles/204096476-license-information/"
+    },
+    "url": "https://downloads.plex.tv/plex-media-server-new/1.31.3.6868-28fc46b27/windows/PlexMediaServer-1.31.3.6868-28fc46b27-x86.exe",
+    "hash": "7ac608e31c7853f6abfd7e62ee4bc1843a178f68e2b602b6091d0180ca014b1b",
     "installer": {
         "script": [
             "$extracted = \"$dir\\extracted\"",
@@ -30,16 +19,27 @@
             "Remove-Item $extracted, $msi, \"$dir\\$fname\" -Force -Recurse"
         ]
     },
-    "license": {
-        "identifier": "Proprietary",
-        "url": "https://support.plex.tv/articles/204096476-license-information/"
-    },
+    "bin": [
+        [
+            "Plex Media Server.exe",
+            "pms"
+        ]
+    ],
     "shortcuts": [
         [
             "Plex Media Server.exe",
             "Plex Media Server"
         ]
     ],
-    "url": "https://downloads.plex.tv/plex-media-server-new/1.31.3.6868-28fc46b27/windows/PlexMediaServer-1.31.3.6868-28fc46b27-x86.exe",
-    "version": "1.31.3.6868-28fc46b27"
+    "checkver": {
+        "url": "https://plex.tv/pms/downloads/5.json",
+        "jsonpath": "$.computer.Windows.version"
+    },
+    "autoupdate": {
+        "url": "https://downloads.plex.tv/plex-media-server-new/$version/windows/PlexMediaServer-$version-x86.exe",
+        "hash": {
+            "url": "https://plex.tv/api/downloads/1.json",
+            "jsonpath": "$.computer.Windows.releases..checksum"
+        }
+    }
 }
