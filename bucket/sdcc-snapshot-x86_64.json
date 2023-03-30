@@ -1,25 +1,25 @@
 {
-    "version": "20230330-13911",
-    "description": "Small Device C Compiler. (x86_64-w64-mingw32)",
-    "homepage": "http://sdcc.sourceforge.net/",
-    "license": "GPL-2.0-only|GPL-3.0-only",
     "architecture": {
         "64bit": {
-            "url": "https://sourceforge.net/projects/sdcc/files/snapshot_builds/x86_64-w64-mingw32/sdcc-snapshot-x86_64-w64-mingw32-20230330-13911.zip",
-            "hash": "sha1:0edb69d1a9035fd981896430bc73495cc0b27244"
+            "hash": "97a65b8723c3ae2437efee97bbe3ba6d3f5d875d2588259e6f3274841a29e711",
+            "url": "https://sourceforge.net/projects/sdcc/files/snapshot_builds/x86_64-w64-mingw32-setup/sdcc-20230330-13911-x64-setup.exe#dl.7z"
         }
-    },
-    "extract_dir": "sdcc",
-    "bin": "bin\\sdcc.exe",
-    "checkver": {
-        "sourceforge": "sdcc/snapshot_builds/x86_64-w64-mingw32",
-        "regex": "sdcc-snapshot-x86_64-w64-mingw32-([\\d]+-[\\d]+)"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://sourceforge.net/projects/sdcc/files/snapshot_builds/x86_64-w64-mingw32/sdcc-snapshot-x86_64-w64-mingw32-$version.zip"
+                "url": "https://sourceforge.net/projects/sdcc/files/snapshot_builds/x86_64-w64-mingw32-setup/sdcc-$version-x64-setup.exe#dl.7z"
             }
         }
-    }
+    },
+    "bin": "bin\\sdcc.exe",
+    "checkver": {
+        "regex": "sdcc-(\\d.+-\\d.+)-x64-setup\\.exe\\]\\]",
+        "url": "https://sourceforge.net/projects/sdcc/rss?path=/snapshot_builds/x86_64-w64-mingw32-setup"
+    },
+    "description": "Small Device C Compiler. (x86_64-w64-mingw32)",
+    "homepage": "http://sdcc.sourceforge.net/",
+    "license": "GPL-2.0-only|GPL-3.0-only",
+    "post_install": "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\uninstall*\" -Force -Recurse",
+    "version": "20230330-13911"
 }
