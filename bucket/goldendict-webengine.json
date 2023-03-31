@@ -1,15 +1,18 @@
 {
     "version": "23.02.06",
-    "description": "A feature-rich dictionary lookup program",
     "homepage": "https://github.com/xiaoyifang/goldendict",
     "license": "GPL-3.0-only",
-    "url": "https://github.com/xiaoyifang/goldendict/releases/download/v23.02.06-LanternFestival.230208.c9bde81b/6.4.2-GoldenDict-v23.02.06-LanternFestival-Installer.exe#/dl.7z",
-    "hash": "87fe22203152cbf3f150794494bde01ec400f32a08df75a694487279e6ea3392",
-    "pre_install": "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\[LICENSE].txt\", \"$dir\\*.nsi\", \"$dir\\uninstall.exe\" -Recurse",
+    "url": "https://github.com/xiaoyifang/goldendict/releases/download/v23.02.06-LanternFestival.230208.c9bde81b/5.15.2-GoldenDict-v23.02.06-LanternFestival-Installer.exe",
+    "hash": "47a3b3387b7dd1bc2b0b8220b83358e8e49770aa173628e9e3b3324f6172940e",
     "bin": [
+        "GoldenDict.exe",
         [
             "GoldenDict.exe",
-            "goldendict-webengine.exe"
+            "goldendict-webengine"
+        ],
+        [
+            "GoldenDict.exe",
+            "gd"
         ]
     ],
     "shortcuts": [
@@ -18,17 +21,21 @@
             "GoldenDict (Webengine)"
         ]
     ],
+    "checkver": {
+        "github": "https://github.com/xiaoyifang/goldendict",
+        "regex": "/releases/tag/v([\\d.]+)(.*?)\\.(.*?)\""
+    },
+    "autoupdate": {
+        "url": "https://github.com/xiaoyifang/goldendict/releases/download/v$version$match2.$match3/5.15.2-GoldenDict-v$version$match2-Installer.exe"
+    },
     "persist": [
         "portable",
         "content"
     ],
-    "checkver": {
-        "url": "https://api.github.com/repos/xiaoyifang/goldendict/releases/latest",
-        "jsonpath": "$..browser_download_url",
-        "regex": "v([\\d.]+)-(\\w+)\\.([\\d.]+\\.[\\w]+)/([\\d.]+)-GoldenDict-",
-        "reverse": true
-    },
-    "autoupdate": {
-        "url": "https://github.com/xiaoyifang/goldendict/releases/download/v$match1-$match2.$match3/$match4-GoldenDict-v$match1-$match2-Installer.exe#/dl.7z"
-    }
+    "post_install": [
+        "$IndexSyncTarget = $Env:OneDrive + '\\language\\dictionary\\goldendict-config\\index'",
+        "New-Item -ItemType Junction -Target $IndexSyncTarget -Path $persist_dir\\portable\\index -Force",
+        "$ContentTarget = $Env:OneDrive + '\\language\\dictionary\\mdx'",
+        "New-Item -ItemType Junction -Target $ContentTarget -Path $persist_dir\\content\\mdx -Force"
+    ]
 }
