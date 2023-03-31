@@ -1,20 +1,35 @@
 {
-    "version": "4.2.0",
+    "architecture": {
+        "64bit": {
+            "hash": "sha512:d267eadb298937e6f5c3fe48dd3b8a32881de301475a38996e95f5346053d089d0eee2e4b4d309d2f9963d573b9e87c5d1d28f19d3c567506a31c0285e78d2ee",
+            "pre_install": [
+                "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\"",
+                "Remove-Item \"$dir\\$*\" -Recurse",
+                "Remove-Item \"$dir\\Uninst*\" -Recurse"
+            ],
+            "url": "https://downloads.getfiddler.com/win/Fiddler%20Everywhere%204.2.0.exe#/dl.7z"
+        }
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://downloads.getfiddler.com/win/Fiddler%20Everywhere%20$version.exe#/dl.7z"
+            }
+        },
+        "hash": {
+            "regex": "sha512:\\s+$base64",
+            "url": "$baseurl/latest.yml"
+        }
+    },
+    "checkver": {
+        "regex": "version:\\s+([\\d.]+)",
+        "url": "https://downloads.getfiddler.com/win/latest.yml"
+    },
     "description": "Network traffic analyzer",
     "homepage": "https://www.telerik.com/fiddler-everywhere",
     "license": {
         "identifier": "Proprietary",
         "url": "https://www.telerik.com/purchase/license-agreement/fiddler"
-    },
-    "architecture": {
-        "64bit": {
-            "url": "https://downloads.getfiddler.com/win/Fiddler%20Everywhere%204.2.0.exe#/dl.7z",
-            "hash": "797c272f9e621d4273962a6fad3c9f38fa93680898163dcdfe5db0ff505ddd89",
-            "pre_install": [
-                "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\"",
-                "Remove-Item \"$dir/`$PLUGINSDIR\" -Recurse"
-            ]
-        }
     },
     "shortcuts": [
         [
@@ -22,15 +37,5 @@
             "Fiddler Everywhere"
         ]
     ],
-    "checkver": {
-        "url": "https://downloads.getfiddler.com/win/latest.yml",
-        "regex": "version:\\s+([\\d.]+)"
-    },
-    "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://downloads.getfiddler.com/win/Fiddler%20Everywhere%20$version.exe#/dl.7z"
-            }
-        }
-    }
+    "version": "4.2.0"
 }
