@@ -3,19 +3,19 @@
     "description": "Nintendo Game Boy Advance emulator",
     "homepage": "https://mgba.io/",
     "license": {
-        "identifier": "MPL-2.0",
-        "url": "https://github.com/mgba-emu/mgba/blob/master/LICENSE"
+        "url": "https://github.com/mgba-emu/mgba/blob/master/LICENSE",
+        "identifier": "MPL-2.0"
     },
     "architecture": {
-        "32bit": {
-            "url": "https://s3.amazonaws.com/mgba/build/mGBA-build-2023-03-29-win32-8017-1306cfe15e61f7f25913a5770850439d761aa005.7z",
-            "hash": "c1f24f4e38661135cac893c811834817f4ed3746081343a2c1aaa3a0ab2dad94",
-            "extract_dir": "mGBA-build-2023-03-29-win32-8017-1306cfe15e61f7f25913a5770850439d761aa005"
-        },
         "64bit": {
             "url": "https://s3.amazonaws.com/mgba/build/mGBA-build-2023-03-29-win64-8017-1306cfe15e61f7f25913a5770850439d761aa005.7z",
             "hash": "976577bc36a56378a426e2456af002d1bb2a344f00cd79a0e4381597b5d33760",
             "extract_dir": "mGBA-build-2023-03-29-win64-8017-1306cfe15e61f7f25913a5770850439d761aa005"
+        },
+        "32bit": {
+            "url": "https://s3.amazonaws.com/mgba/build/mGBA-build-2023-03-29-win32-8017-1306cfe15e61f7f25913a5770850439d761aa005.7z",
+            "hash": "c1f24f4e38661135cac893c811834817f4ed3746081343a2c1aaa3a0ab2dad94",
+            "extract_dir": "mGBA-build-2023-03-29-win32-8017-1306cfe15e61f7f25913a5770850439d761aa005"
         }
     },
     "pre_install": [
@@ -24,16 +24,6 @@
         "}",
         "if (!(Test-Path \"$persist_dir\\config.ini\")) {",
         "   New-Item \"$dir\\config.ini\" -Type File | Out-Null",
-        "   Set-Content \"$dir\\config.ini\" '[ports.qt]'",
-        "   Add-Content \"$dir\\config.ini\" 'savestatePath=savestate'",
-        "   Add-Content \"$dir\\config.ini\" 'patchPath=patch'",
-        "   Add-Content \"$dir\\config.ini\" 'screenshotPath=screenshot'",
-        "   Add-Content \"$dir\\config.ini\" 'cheatsPath=cheats'",
-        "   Add-Content \"$dir\\config.ini\" 'savegamePath=savegame'",
-        "   Add-Content \"$dir\\config.ini\" 'gba.bios=bios/gba_bios.bin'",
-        "   Add-Content \"$dir\\config.ini\" 'gb.bios=bios/gb_bios.bin'",
-        "   Add-Content \"$dir\\config.ini\" 'gbc.bios=bios/gbc_bios.bin'",
-        "   Add-Content \"$dir\\config.ini\" 'sgb.bios=bios/sgb_bios.bin'",
         "}"
     ],
     "bin": [
@@ -53,7 +43,6 @@
         ]
     ],
     "persist": [
-        "bios",
         "cheats",
         "patch",
         "savegame",
@@ -71,13 +60,13 @@
     },
     "autoupdate": {
         "architecture": {
-            "32bit": {
-                "url": "https://s3.amazonaws.com/mgba/build/mGBA-build-$matchYear-$matchMonth-$matchDay-win32-$matchVer-$matchGit.7z",
-                "extract_dir": "mGBA-build-$matchYear-$matchMonth-$matchDay-win32-$matchVer-$matchGit"
-            },
             "64bit": {
                 "url": "https://s3.amazonaws.com/mgba/build/mGBA-build-$matchYear-$matchMonth-$matchDay-win64-$matchVer-$matchGit.7z",
                 "extract_dir": "mGBA-build-$matchYear-$matchMonth-$matchDay-win64-$matchVer-$matchGit"
+            },
+            "32bit": {
+                "url": "https://s3.amazonaws.com/mgba/build/mGBA-build-$matchYear-$matchMonth-$matchDay-win32-$matchVer-$matchGit.7z",
+                "extract_dir": "mGBA-build-$matchYear-$matchMonth-$matchDay-win32-$matchVer-$matchGit"
             }
         }
     }
