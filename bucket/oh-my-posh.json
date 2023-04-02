@@ -2,29 +2,77 @@
     "version": "14.25.0",
     "description": "A prompt theme engine for any shell",
     "homepage": "https://ohmyposh.dev",
-    "license": "GPL-3.0-only",
-    "notes": "Refer to 'https://ohmyposh.dev/docs/windows#replace-your-existing-prompt' for shell specific configurations.",
+    "license": "MIT",
+    "notes": "Refer to 'https://ohmyposh.dev/docs/installation/prompt' for shell specific configurations.",
     "architecture": {
         "64bit": {
-            "url": "https://github.com/JanDeDobbeleer/oh-my-posh/releases/download/v14.25.0/install-amd64.exe",
-            "hash": "eea884c1a9383d9214032a182a8d52070f09752c0bfecdc45772713a75fef9a1"
+            "url": [
+                "https://github.com/JanDeDobbeleer/oh-my-posh/releases/download/v14.25.0/themes.zip",
+                "https://github.com/JanDeDobbeleer/oh-my-posh/releases/download/v14.25.0/posh-windows-amd64.exe#/oh-my-posh.exe"
+            ],
+            "hash": [
+                "73236a02738a3c733ef48589f67982073eb75e896e396124a4eef7272b4dca26",
+                "807bbae132374fe24ecb219f2cf5576b8891d1e112bb010c15c5ca77b725356e"
+            ]
+        },
+        "32bit": {
+            "url": [
+                "https://github.com/JanDeDobbeleer/oh-my-posh/releases/download/v14.25.0/themes.zip",
+                "https://github.com/JanDeDobbeleer/oh-my-posh/releases/download/v14.25.0/posh-windows-386.exe#/oh-my-posh.exe"
+            ],
+            "hash": [
+                "73236a02738a3c733ef48589f67982073eb75e896e396124a4eef7272b4dca26",
+                "aff42ad80b0b48c0be8b43e53351d54cb3f116407865c323a58eeb1a5d7a0639"
+            ]
+        },
+        "arm64": {
+            "url": [
+                "https://github.com/JanDeDobbeleer/oh-my-posh/releases/download/v14.25.0/themes.zip",
+                "https://github.com/JanDeDobbeleer/oh-my-posh/releases/download/v14.25.0/posh-windows-arm64.exe#/oh-my-posh.exe"
+            ],
+            "hash": [
+                "73236a02738a3c733ef48589f67982073eb75e896e396124a4eef7272b4dca26",
+                "b01dbe1dfd7a23d4d123578729845c6a10b8e5914c89eb58ff6f2b7cc6832e2d"
+            ]
         }
     },
-    "bin": "bin\\oh-my-posh.exe",
-    "innosetup": true,
-    "persist": "themes",
+    "extract_to": "themes",
+    "env_set": {
+        "POSH_THEMES_PATH": "$dir\\themes"
+    },
+    "bin": "oh-my-posh.exe",
+    "post_install": [
+        "$persist_themes=\"$persist_dir\\themes\"",
+        "if (Test-Path $persist_themes) {",
+        "Get-ChildItem -Path $persist_themes | ForEach-Object { New-Item -ItemType HardLink -Path $dir\\themes -Name $_.Name -Value $_.FullName } | Out-Null",
+        "}"
+    ],
     "checkver": {
         "github": "https://github.com/JanDeDobbeleer/oh-my-posh"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://github.com/JanDeDobbeleer/oh-my-posh/releases/download/v$version/install-amd64.exe"
+                "url": [
+                    "https://github.com/JanDeDobbeleer/oh-my-posh/releases/download/v$version/themes.zip",
+                    "https://github.com/JanDeDobbeleer/oh-my-posh/releases/download/v$version/posh-windows-amd64.exe#/oh-my-posh.exe"
+                ]
+            },
+            "32bit": {
+                "url": [
+                    "https://github.com/JanDeDobbeleer/oh-my-posh/releases/download/v$version/themes.zip",
+                    "https://github.com/JanDeDobbeleer/oh-my-posh/releases/download/v$version/posh-windows-386.exe#/oh-my-posh.exe"
+                ]
+            },
+            "arm64": {
+                "url": [
+                    "https://github.com/JanDeDobbeleer/oh-my-posh/releases/download/v$version/themes.zip",
+                    "https://github.com/JanDeDobbeleer/oh-my-posh/releases/download/v$version/posh-windows-arm64.exe#/oh-my-posh.exe"
+                ]
             }
         },
         "hash": {
-            "url": "$url.sha256",
-            "regex": "$sha256"
+            "url": "$url.sha256"
         }
     }
 }
