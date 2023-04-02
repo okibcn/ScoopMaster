@@ -1,65 +1,46 @@
 {
     "version": "5.4.6",
-    "description": "Use USB devices remotely over a network just as if they were locally connected",
+    "description": "Allows USB devices to be used remotely over a network just as if they were locally connected (server-side app)",
     "homepage": "https://www.virtualhere.com/usb_client_software",
     "license": {
         "identifier": "Proprietary",
         "url": "https://www.virtualhere.com/client_license"
     },
-    "suggest": {
-        "Server": "nikkoura/virtualhere-server"
-    },
     "architecture": {
         "64bit": {
-            "url": "https://virtualhere.com/sites/default/files/usbclient/vhui64.exe",
-            "hash": "c75dd634c3d18b93505ace359bae55999dfabdf21b4e21f310a0cbf85dc5f89a",
-            "bin": [
-                [
-                    "vhui64.exe",
-                    "virtualhere-client",
-                    "-c $persist_dir\\vhui.ini"
-                ]
-            ],
+            "url": "https://www.virtualhere.com/sites/default/files/usbclient/vhui64.exe",
+            "hash": "sha1:913c995b0a8103dd76d18ef2ea2df8e5247713f1",
             "shortcuts": [
                 [
                     "vhui64.exe",
-                    "VirtualHere Client",
-                    "-c $persist_dir\\vhui.ini"
+                    "VirtualHere Client"
                 ]
             ]
         },
         "32bit": {
-            "url": "https://virtualhere.com/sites/default/files/usbclient/vhui32.exe",
-            "hash": "ec6832bc8a439037c62587d3dfe808dffedf0fbbe08d2dbfec86571fe2bfc120",
-            "bin": [
-                [
-                    "vhui32.exe",
-                    "virtualhere-client",
-                    "-c $persist_dir\\vhui.ini"
-                ]
-            ],
+            "url": "https://www.virtualhere.com/sites/default/files/usbclient/vhui32.exe",
+            "hash": "sha1:474491d933c12dee0ea760ac7f004cff4be09f21",
             "shortcuts": [
                 [
                     "vhui32.exe",
-                    "VirtualHere Client",
-                    "-c $persist_dir\\vhui.ini"
+                    "VirtualHere Client"
                 ]
             ]
         }
     },
-    "pre_install": "$null = New-Item -Path $dir -Name vhui.ini -ItemType File",
-    "persist": "vhui.ini",
-    "checkver": {
-        "regex": "Version ([\\d.]+)"
-    },
+    "checkver": "Version ([\\d.]+)</b>",
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://virtualhere.com/sites/default/files/usbclient/vhui64.exe"
+                "url": "https://www.virtualhere.com/sites/default/files/usbclient/vhui64.exe"
             },
             "32bit": {
-                "url": "https://virtualhere.com/sites/default/files/usbclient/vhui32.exe"
+                "url": "https://www.virtualhere.com/sites/default/files/usbclient/vhui32.exe"
             }
+        },
+        "hash": {
+            "url": "$baseurl/SHA1SUM",
+            "regex": "$sha1\\s+$basename"
         }
     }
 }
