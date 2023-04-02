@@ -1,18 +1,19 @@
 {
+    "homepage": "https://www.zerotier.com",
     "version": "1.10.6",
-    "url": "https://download.zerotier.com/dist/ZeroTier%20One.msi",
-    "license": {
-        "identifier": "ZeroTier BSL 1.1",
-        "url": "https://github.com/zerotier/ZeroTierOne/blob/master/LICENSE.txt"
-    },
-    "homepage": "https://www.zerotier.com/",
-    "description": "Easily connect cloud, mobile, desktop, and data center resources anywhere.",
+    "description": "ZeroTier is a smart programmable Ethernet switch for planet Earth",
+    "url": "https://download.zerotier.com/RELEASES/1.10.6/dist/ZeroTier%20One.msi#/setup.msi_",
     "hash": "9b3fbbe29771ee2f1b4d45cbf372c9d1dbec9606315aca062c9e909e882b4b64",
+    "installer": {
+        "script": "Start-Process -Wait msiexec \"/i `\"$dir\\setup.msi_`\" /qn INSTALLFOLDER=`\"$dir`\"\" -Verb RunAs"
+    },
+    "uninstaller": {
+        "script": "Start-Process -Wait msiexec \"/x `\"$dir\\setup.msi_`\" /qn\" -Verb RunAs"
+    },
     "checkver": {
-        "url": "https://www.zerotier.com/download/",
-        "re": "Latest Version:\\s*([\\d.]+)"
+        "github": "https://github.com/zerotier/ZeroTierOne"
     },
     "autoupdate": {
-        "url": "https://download.zerotier.com/dist/ZeroTier%20One.msi"
+        "url": "https://download.zerotier.com/RELEASES/$version/dist/ZeroTier%20One.msi#/setup.msi_"
     }
 }
