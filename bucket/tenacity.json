@@ -39,9 +39,9 @@
         "",
         "$v2 = @\"",
         "foreach (`$key_part in '.AUP', '.AUP3') {",
-        "    Remove-ItemProperty \"HKCU:\\SOFTWARE\\Classes\\`$key_part\" -Name '(Default)' -Value 'Tenacity.Project' -ErrorAction 'SilentlyContinue' -Force",
+        "    Remove-ItemProperty \"HKCU:\\SOFTWARE\\Classes\\`$key_part\" -Name '(Default)' -ErrorAction 'SilentlyContinue' -Force",
         "}",
-        "Remove-Item 'HKCU:\\SOFTWARE\\Classes\\Tenacity.Project' -Value 'Tenacity Project File' -Force | Out-Null",
+        "Remove-Item 'HKCU:\\SOFTWARE\\Classes\\Tenacity.Project' -Force -Recurse | Out-Null",
         "\"@",
         "",
         "Set-Content \"$dir\\install-associations.ps1\" $v1 -Encoding 'utf8' -Force",
@@ -50,9 +50,9 @@
     "pre_uninstall": [
         "if ($cmd -eq 'uninstall') {",
         "    foreach ($key_part in '.AUP', '.AUP3') {",
-        "        Remove-ItemProperty \"HKCU:\\SOFTWARE\\Classes\\$key_part\" -Name '(Default)' -Value 'Tenacity.Project' -ErrorAction 'SilentlyContinue' -Force",
+        "        Remove-ItemProperty \"HKCU:\\SOFTWARE\\Classes\\$key_part\" -Name '(Default)' -ErrorAction 'SilentlyContinue' -Force",
         "    }",
-        "    Remove-Item 'HKCU:\\SOFTWARE\\Classes\\Tenacity.Project' -Value 'Tenacity Project File' -Force | Out-Null",
+        "    Remove-Item 'HKCU:\\SOFTWARE\\Classes\\Tenacity.Project' -Force -Recurse | Out-Null",
         "}"
     ],
     "checkver": {
