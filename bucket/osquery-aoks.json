@@ -1,28 +1,15 @@
 {
-    "autoupdate": {
-        "hash": {
-            "url": "$url.sha256"
-        },
-        "url": "https://pkg.osquery.io/windows/osquery-$version.msi"
-    },
+    "version": "5.8.1",
+    "description": "Performant endpoint visibility",
+    "homepage": "https://osquery.io/",
+    "license": "Apache-2.0|GPL-2.0-only",
+    "url": "https://pkg.osquery.io/windows/osquery-5.8.1.msi",
+    "hash": "9c4062537d4be157a517617d7329dafaac6196f3284e7f13a77f8a30860a62a2",
+    "extract_dir": "osquery",
     "bin": [
         "osqueryi.exe",
         "osqueryd\\osqueryd.exe",
         "manage-osqueryd.ps1"
-    ],
-    "checkver": {
-        "jp": "$.current_version",
-        "url": "https://raw.githubusercontent.com/osquery/osquery-site/source/src/data/osquery_metadata.json"
-    },
-    "description": "Performant endpoint visibility",
-    "extract_dir": "osquery",
-    "hash": "9c4062537d4be157a517617d7329dafaac6196f3284e7f13a77f8a30860a62a2",
-    "homepage": "https://osquery.io/",
-    "license": "Apache-2.0|GPL-2.0-only",
-    "notes": [
-        "run \"manage-osqueryd.ps1 -help\" to learn howto install/uninstall/start/stop the osqueryd daemon... and more...",
-        "run \"osqueryd --help\" for the osqueryd daemon help",
-        "run \"osqueryi --help\" for the interactive shell help"
     ],
     "persist": "osquery.conf",
     "post_install": [
@@ -31,6 +18,19 @@
         "$replace = \"$PSScriptRoot, 'osqueryd', 'osqueryd.exe'\"",
         "(Get-Content \"$mng_d\").replace(\"$find\", \"$replace\") | Set-Content \"$mng_d\" | Out-Null"
     ],
-    "url": "https://pkg.osquery.io/windows/osquery-5.8.1.msi",
-    "version": "5.8.1"
+    "notes": [
+        "run \"manage-osqueryd.ps1 -help\" to learn howto install/uninstall/start/stop the osqueryd daemon... and more...",
+        "run \"osqueryd --help\" for the osqueryd daemon help",
+        "run \"osqueryi --help\" for the interactive shell help"
+    ],
+    "checkver": {
+        "url": "https://raw.githubusercontent.com/osquery/osquery-site/source/src/data/osquery_metadata.json",
+        "jp": "$.current_version"
+    },
+    "autoupdate": {
+        "url": "https://pkg.osquery.io/windows/osquery-$version.msi",
+        "hash": {
+            "url": "$url.sha256"
+        }
+    }
 }
