@@ -1,23 +1,17 @@
 {
-    "version": "2023.3.171731-latest",
+    "version": "2023.4.60821-latest",
     "description": "IDE for Kubernetes clusters",
     "homepage": "https://k8slens.dev",
     "license": {
         "identifier": "Proprietary",
-        "url": "https://k8slens.dev/licenses/eula"
+        "url": "https://github.com/lensapp/lensapp.github.io/blob/master/licenses/eula.md"
     },
-    "url": "https://api.k8slens.dev/binaries/Lens%20Setup%202023.3.171731-latest.exe#/dl.7z",
-    "hash": "sha512:45a5157ce7d00badf76a4bdb463ab99d528d448ac69e1897c22797d3c95d04c48d96ac6d21379c946a9e938da9285b773d9cd2587a67c7327c58ef3ca813748f",
     "architecture": {
         "64bit": {
+            "url": "https://api.k8slens.dev/binaries/Lens%20Setup%202023.4.60821-latest.exe#/dl.7z",
+            "hash": "sha512:31b789ce82ea38a0486af310ddcd6ddfbc3353e31d2525205227c12e209d5bac83f00b5c3579a335679cea3cd6675dad40ee5fd5baeae6476689cea79f71b861",
             "pre_install": [
                 "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\"",
-                "Remove-Item \"$dir\\`$*\", \"$dir\\Uninstall*\" -Recurse"
-            ]
-        },
-        "32bit": {
-            "pre_install": [
-                "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-32.7z\" \"$dir\"",
                 "Remove-Item \"$dir\\`$*\", \"$dir\\Uninstall*\" -Recurse"
             ]
         }
@@ -29,14 +23,18 @@
         ]
     ],
     "checkver": {
-        "url": "https://api.k8slens.dev/binaries/latest.yml",
-        "regex": "version:\\s*([\\w.-]+)"
+        "url": "https://api.k8slens.dev/binaries/latest.json",
+        "jsonpath": "$.version"
     },
     "autoupdate": {
-        "url": "https://api.k8slens.dev/binaries/Lens%20Setup%20$version.exe#/dl.7z",
-        "hash": {
-            "url": "$baseurl/latest.yml",
-            "regex": "sha512:\\s+$base64"
+        "architecture": {
+            "64bit": {
+                "url": "https://api.k8slens.dev/binaries/Lens%20Setup%20$version.exe#/dl.7z",
+                "hash": {
+                    "url": "$baseurl/latest.json",
+                    "regex": "\"sha512\":\\s*\"$base64\""
+                }
+            }
         }
     }
 }
