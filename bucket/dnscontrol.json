@@ -3,11 +3,30 @@
     "description": "Synchronize your DNS to multiple providers from a simple DSL",
     "homepage": "https://github.com/StackExchange/dnscontrol",
     "license": "MIT",
-    "url": "https://github.com/StackExchange/dnscontrol/releases/download/v3.30.0/dnscontrol.exe",
-    "hash": "278ca1afcde36a428fd6bda81e4e6b962f228ad7abb8d4454240cc1e28b6f954",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/StackExchange/dnscontrol/releases/download/v3.30.0/dnscontrol_3.30.0_windows_amd64.zip",
+            "hash": "41aab8c6c0eb6d90933933dc24fe51aabd39f941716f67b57f0cf76f93d4f217"
+        },
+        "32bit": {
+            "url": "https://github.com/StackExchange/dnscontrol/releases/download/v3.30.0/dnscontrol_3.30.0_windows_386.zip",
+            "hash": "b7146acb6ba8a78cd066c01f4be33cddf92318660feca7f9c2f77d09c7d4425a"
+        }
+    },
     "bin": "dnscontrol.exe",
     "checkver": "github",
     "autoupdate": {
-        "url": "https://github.com/StackExchange/dnscontrol/releases/download/v$version/dnscontrol.exe"
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/StackExchange/dnscontrol/releases/download/v$version/dnscontrol_$version_windows_amd64.zip"
+            },
+            "32bit": {
+                "url": "https://github.com/StackExchange/dnscontrol/releases/download/v$version/dnscontrol_$version_windows_386.zip"
+            }
+        },
+        "hash": {
+            "url": "$baseurl/checksums.txt",
+            "find": "^$sha256 $basename$"
+        }
     }
 }
