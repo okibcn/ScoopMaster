@@ -1,31 +1,33 @@
 {
-    "version": "1.2.2",
-    "description": "The universal proxy platform",
-    "homepage": "https://github.com/SagerNet/sing-box",
-    "license": "GPL",
+    "version": "1.2.3",
+    "description": "The universal proxy platform.",
+    "homepage": "https://sing-box.sagernet.org",
+    "license": {
+        "identifier": "Freeware",
+        "url": "https://github.com/SagerNet/sing-box/blob/main/LICENSE"
+    },
     "architecture": {
         "64bit": {
-            "url": "https://github.com/SagerNet/sing-box/releases/download/v1.2.2/sing-box-1.2.2-windows-amd64.zip",
-            "hash": "75f83d8580663b796011eb5d90443aa1f41113663dcd958e0a4b3b1e7c16fc18",
-            "extract_dir": "sing-box-1.2.2-windows-amd64"
+            "url": "https://github.com/SagerNet/sing-box/releases/download/v1.2.3/sing-box-1.2.3-windows-amd64.zip",
+            "extract_dir": "sing-box-1.2.3-windows-amd64",
+            "hash": "a9f133e4c1f6ade0cb92cbfe84429b6daec9f3ebc6d36910a7c4d90410b3ff2e"
         },
         "32bit": {
-            "url": "https://github.com/SagerNet/sing-box/releases/download/v1.2.2/sing-box-1.2.2-windows-386.zip",
-            "hash": "f1aca266d94b7edf96d601184bc91470b81a4ec67ecf4ab571d87af52490ee8f",
-            "extract_dir": "sing-box-1.2.2-windows-386"
+            "url": "https://github.com/SagerNet/sing-box/releases/download/v1.2.3/sing-box-1.2.3-windows-386.zip",
+            "extract_dir": "sing-box-1.2.3-windows-386",
+            "hash": "543b20730256a4d3e4385e87e7596c5dd9eeda6c7b8bf8c1367d773967fe354a"
+        },
+        "arm64": {
+            "url": "https://github.com/SagerNet/sing-box/releases/download/v1.2.3/sing-box-1.2.3-windows-arm64.zip",
+            "extract_dir": "sing-box-1.2.3-windows-arm64",
+            "hash": "4b825f42ec2bbd894d5b4618382d1712b62c615899604c177f738dd4d08e0f10"
         }
     },
-    "pre_install": [
-        "function CreateFile ($name, $value = $null) {",
-        "    if (!(Test-Path \"$persist_dir\\$name\")) {",
-        "        Set-Content \"$dir\\$name\" $value -Encoding Ascii",
-        "    }",
-        "}",
-        "CreateFile 'config.json' "
-    ],
-    "persist": "config.json",
     "bin": "sing-box.exe",
-    "checkver": "github",
+    "persist": "config",
+    "checkver": {
+        "github": "https://github.com/SagerNet/sing-box"
+    },
     "autoupdate": {
         "architecture": {
             "64bit": {
@@ -35,6 +37,10 @@
             "32bit": {
                 "url": "https://github.com/SagerNet/sing-box/releases/download/v$version/sing-box-$version-windows-386.zip",
                 "extract_dir": "sing-box-$version-windows-386"
+            },
+            "arm64": {
+                "url": "https://github.com/SagerNet/sing-box/releases/download/v$version/sing-box-$version-windows-arm64.zip",
+                "extract_dir": "sing-box-$version-windows-arm64"
             }
         }
     }
