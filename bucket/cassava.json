@@ -1,21 +1,10 @@
 {
-    "version": "2.4.5",
-    "description": "Cassava Editor: CSV Editor",
     "homepage": "https://www.asukaze.net/soft/cassava/",
-    "license": {
-        "identifier": "Freeware",
-        "url": "https://www.asukaze.net/soft/cassava/help/contact.html"
-    },
-    "architecture": {
-        "64bit": {
-            "url": "https://www.asukaze.net/soft/cassava/arc/Cassava2_4_5_64.zip",
-            "hash": "31312e5de8ee5dd6ee8922993f4a35ca56bbe55f10efddab209e5a1063adcb20"
-        },
-        "32bit": {
-            "url": "https://www.asukaze.net/soft/cassava/arc/Cassava2_4_5.zip",
-            "hash": "2571d6c00fd366681c8fa652cf637743f495c0409055f803421aa2073997fe01"
-        }
-    },
+    "description": "CSV/TSV editor",
+    "license": "Freeware",
+    "version": "2.4.5",
+    "url": "https://www.asukaze.net/soft/cassava/arc/Cassava2_4_5.zip",
+    "hash": "2571d6c00fd366681c8fa652cf637743f495c0409055f803421aa2073997fe01",
     "extract_dir": "Cassava",
     "bin": "Cassava.exe",
     "shortcuts": [
@@ -24,19 +13,21 @@
             "Cassava Editor"
         ]
     ],
-    "persist": "Macro",
+    "persist": [
+        "Cassava.ini",
+        "Macro",
+        "Export"
+    ],
+    "pre_install": [
+        "if (!(Test-Path \"$persist_dir\\Cassava.ini\")) {",
+        "    New-Item -Path \"$dir\\Cassava.ini\" -ItemType File | Out-Null",
+        "}"
+    ],
     "checkver": {
         "url": "https://www.asukaze.net/soft/cassava/",
-        "regex": "Ver\\.([\\d.]+) \\(64 bit\\)"
+        "re": "Ver.(?<version>[\\d.]+)"
     },
     "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://www.asukaze.net/soft/cassava/arc/Cassava$underscoreVersion_64.zip"
-            },
-            "32bit": {
-                "url": "https://www.asukaze.net/soft/cassava/arc/Cassava$underscoreVersion.zip"
-            }
-        }
+        "url": "https://www.asukaze.net/soft/cassava/arc/Cassava$underscoreVersion.zip"
     }
 }
