@@ -1,31 +1,34 @@
 {
-    "autoupdate": {
-        "url": "https://files.pythonhosted.org/$match1"
-    },
-    "bin": "venv\\Scripts\\pdm.exe",
-    "checkver": {
-        "re": "https://files.pythonhosted.org/(packages/.*/pdm-(?<version>[\\d.]+)-.*\\.whl)",
-        "replace": "${version}",
-        "url": "https://pypi.org/project/pdm/#files"
-    },
+    "homepage": "http://pdm.fming.dev",
+    "version": "2.5.1",
+    "description": "Python Development Master",
+    "license": "MIT",
+    "url": "https://files.pythonhosted.org/packages/32/70/c95f48445bf41844f722c9dcaec09dc579ab2e570b739e55846578d97f17/pdm-2.5.1-py3-none-any.whl",
     "depends": "python",
     "hash": "2695549732816ae2b3188061dd474dbf51b9fbbd04f7fae8dd1e60ad45910a3a",
-    "homepage": "http://pdm.fming.dev",
+    "bin": "venv\\Scripts\\pdm.exe",
     "installer": {
         "script": [
             "python -m venv \"$dir\\venv\"",
             "& \"$dir\\venv\\Scripts\\python.exe\" -m pip install \"$dir\\$fname\""
         ]
     },
-    "license": "MIT",
     "post_install": "& \"$dir\\venv\\Scripts\\pdm.exe\" --pep582",
     "uninstaller": {
         "script": [
             "$oldPath = [Environment]::GetEnvironmentVariable(\"PYTHONPATH\", [System.EnvironmentVariableTarget]::User)",
-            "$newPath = ($oldPath.Split(';') | Where { $_ -notlike \"$dir\\venv\\*\" }) -join ';'",
-            "[Environment]::SetEnvironmentVariable(\"PYTHONPATH\", $newPath, [System.EnvironmentVariableTarget]::User)"
+            "If (-not [string]::IsNullOrWhiteSpace($oldPath)) {",
+            "    $newPath = ($oldPath.Split(';') | Where { $_ -notlike \"$dir\\venv\\*\" }) -join ';'",
+            "    [Environment]::SetEnvironmentVariable(\"PYTHONPATH\", $newPath, [System.EnvironmentVariableTarget]::User)",
+            "}"
         ]
     },
-    "url": "https://files.pythonhosted.org/packages/32/70/c95f48445bf41844f722c9dcaec09dc579ab2e570b739e55846578d97f17/pdm-2.5.1-py3-none-any.whl",
-    "version": "2.5.1"
+    "checkver": {
+        "url": "https://pypi.org/project/pdm/#files",
+        "re": "https://files.pythonhosted.org/(packages/.*/pdm-(?<version>[\\d.]+)-.*\\.whl)",
+        "replace": "${version}"
+    },
+    "autoupdate": {
+        "url": "https://files.pythonhosted.org/$match1"
+    }
 }
