@@ -1,32 +1,33 @@
 {
-    "homepage": "https://github.com/troyeguo/koodo-reader",
-    "description": "A modern ebook manager and reader with sync and backup capacities for Windows, macOS, Linux and Web",
     "version": "1.5.3",
+    "homepage": "https://koodo.960960.xyz/en",
+    "description": "All-in-one ebook reader.",
     "license": "AGPL-3.0",
     "architecture": {
         "64bit": {
-            "url": "https://github.com/troyeguo/koodo-reader/releases/download/v1.5.3/Koodo-Reader-1.5.3-x64-Win.zip",
-            "hash": "8fe1009a6a99c018a1e6f31c904cabe1cb942572ddcf73408912f6775cf48789"
-        },
-        "32bit": {
-            "url": "https://github.com/troyeguo/koodo-reader/releases/download/v1.5.3/Koodo-Reader-1.5.3-ia32-Win.zip",
-            "hash": "423a26ad023a14b6f51f17ce254061110ead953e05370d51d9de94234ab8bb39"
+            "url": "https://github.com/troyeguo/koodo-reader/releases/download/v1.5.3/Koodo-Reader-1.5.3.exe#/dl.7z",
+            "hash": "sha512:725664e1112a6c82ed8cfddeb34eb63dc0f24bbc70c61d7c246b2a5f749e88ecf648686aed4650c7cc76e3987fa257cf671814666ca735041416a6e648b93bc1"
         }
     },
+    "extract_dir": "$PLUGINSDIR",
+    "pre_install": "Expand-7zipArchive \"$dir\\app-64.7z\" $dir -Removal",
     "shortcuts": [
         [
             "Koodo Reader.exe",
             "Koodo Reader"
         ]
     ],
-    "checkver": "github",
+    "checkver": {
+        "github": "https://github.com/troyeguo/koodo-reader"
+    },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://github.com/troyeguo/koodo-reader/releases/download/v$version/Koodo-Reader-$version-x64-Win.zip"
-            },
-            "32bit": {
-                "url": "https://github.com/troyeguo/koodo-reader/releases/download/v$version/Koodo-Reader-$version-ia32-Win.zip"
+                "url": "https://github.com/troyeguo/koodo-reader/releases/download/v$version/Koodo-Reader-$version.exe#/dl.7z",
+                "hash": {
+                    "url": "$baseurl/latest.yml",
+                    "regex": "sha512:\\s$base64"
+                }
             }
         }
     }
