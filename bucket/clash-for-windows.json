@@ -1,10 +1,18 @@
 {
+    "homepage": "https://docs.cfw.lbyczf.com/",
+    "description": "A Windows GUI based on Clash",
     "version": "0.20.20",
-    "description": "A Windows/macOS GUI based on Clash",
-    "homepage": "https://github.com/Fndroid/clash_for_windows_pkg",
-    "url": "https://github.com/Fndroid/clash_for_windows_pkg/releases/download/0.20.20/Clash.for.Windows-0.20.20-win.7z",
-    "hash": "e6dd2833cc25ece06eb7811c7634b7ca2ad5498de475eb380c0530661c0534f3",
-    "bin": "Clash for Windows.exe",
+    "license": "MIT",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/Fndroid/clash_for_windows_pkg/releases/download/0.20.20/Clash.for.Windows-0.20.20-win.7z",
+            "hash": "e6dd2833cc25ece06eb7811c7634b7ca2ad5498de475eb380c0530661c0534f3"
+        },
+        "arm64": {
+            "url": "https://github.com/Fndroid/clash_for_windows_pkg/releases/download/0.20.20/Clash.for.Windows-0.20.20-arm64-win.7z",
+            "hash": "0db27b59bd099b6e9fd12b9e56c1d3aad8e9596baf7f38c9d578a11d7bb31143"
+        }
+    },
     "shortcuts": [
         [
             "Clash for Windows.exe",
@@ -16,6 +24,21 @@
         "github": "https://github.com/Fndroid/clash_for_windows_pkg"
     },
     "autoupdate": {
-        "url": "https://github.com/Fndroid/clash_for_windows_pkg/releases/download/$version/Clash.for.Windows-$version-win.7z"
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/Fndroid/clash_for_windows_pkg/releases/download/$version/Clash.for.Windows-$version-win.7z",
+                "hash": {
+                    "url": "$baseurl/sha256sum",
+                    "regex": "^7z: $sha256"
+                }
+            },
+            "arm64": {
+                "url": "https://github.com/Fndroid/clash_for_windows_pkg/releases/download/$version/Clash.for.Windows-$version-arm64-win.7z",
+                "hash": {
+                    "url": "$baseurl/sha256sum",
+                    "regex": "^arm64-7z: $sha256"
+                }
+            }
+        }
     }
 }
