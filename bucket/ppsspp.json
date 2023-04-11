@@ -1,15 +1,12 @@
 {
     "version": "1.14.4",
-    "description": "Sony PSP emulator",
+    "license": "GPL-2.0-only",
     "homepage": "https://www.ppsspp.org",
-    "license": {
-        "identifier": "GPL 2.0 or later",
-        "url": "https://github.com/hrydgard/ppsspp/blob/master/LICENSE.TXT"
-    },
-    "url": "https://ppsspp.org/files/1_12_3/ppsspp_win.zip",
-    "hash": "c29b1faf56df9c9926cfb77f874484571fbe8e59689b1a39091425ab309e6463",
+    "description": "PSP Emulator",
     "architecture": {
         "64bit": {
+            "url": "https://www.ppsspp.org/files/1_14_4/ppsspp_win.zip",
+            "hash": "f4401ce34aae6233c0d3a163903ca035700bf3122eef2030dfc4d79b3e58055d",
             "bin": [
                 [
                     "PPSSPPWindows64.exe",
@@ -22,28 +19,36 @@
                     "PPSSPP"
                 ]
             ]
+        },
+        "32bit": {
+            "url": "https://www.ppsspp.org/files/1_14_4/ppsspp_win.zip",
+            "hash": "f4401ce34aae6233c0d3a163903ca035700bf3122eef2030dfc4d79b3e58055d",
+            "bin": [
+                [
+                    "PPSSPPWindows.exe",
+                    "ppsspp"
+                ]
+            ],
+            "shortcuts": [
+                [
+                    "PPSSPPWindows.exe",
+                    "PSP"
+                ]
+            ]
         }
     },
-    "extract_dir": "ppsspp",
-    "pre_install": [
-        "if (!(Test-Path \"$persist_dir\")) {",
-        "   New-item \"$persist_dir\" -ItemType Directory | Out-Null",
-        "   New-item \"$persist_dir\\memstick\" -ItemType Directory | Out-Null",
-        "}"
-    ],
-    "persist": [
-        "assets",
-        "demos",
-        "memstick"
-    ],
+    "persist": "memstick",
     "checkver": {
-        "url": "https://www.ppsspp.org/downloads.html",
-        "regex": "Download ((?<major>\\d)\\.(?<minor>\\d{1,3})\\.(?<patch>\\d{1,3})) zip",
-        "replace": "${major}.${minor}.${patch}"
+        "github": "https://github.com/hrydgard/ppsspp/"
     },
     "autoupdate": {
-        "64bit": {
-            "url": "https://ppsspp.org/files/${major}_${minor}_${patch}/ppsspp_win.zip"
+        "architecture": {
+            "64bit": {
+                "url": "https://www.ppsspp.org/files/$underscoreVersion/ppsspp_win.zip"
+            },
+            "32bit": {
+                "url": "https://www.ppsspp.org/files/$underscoreVersion/ppsspp_win.zip"
+            }
         }
     }
 }
