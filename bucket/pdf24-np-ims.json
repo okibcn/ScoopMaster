@@ -1,13 +1,17 @@
 {
-    "version": "11.11.0",
+    "version": "11.11.1",
     "homepage": "https://tools.pdf24.org/en/creator",
     "description": "Free and easy to use PDF software with several functions",
     "license": {
-        "identifier": "Proprietary",
+        "identifier": "Freeware",
         "url": "https://www.pdf24.org/en/terms-of-use"
     },
-    "url": "https://stx.pdf24.org/products/pdf-creator/download/pdf24-creator-11.11.0.msi#/setup.msi_",
-    "hash": "959c18f32f5193cd73ae70a0605c8df8c0fab35bc68feb0f82d5f43052c20cf7",
+    "architecture": {
+        "64bit": {
+            "url": "https://download.pdf24.org/pdf24-creator-11.11.1.msi#/setup.msi_",
+            "hash": "832cbdf6678d89bc151676417e318f1bd5852563fb9cff995881c92785ae9ca8"
+        }
+    },
     "post_install": [
         "if (!(is_admin)) { error \"$app requires admin rights to $cmd\"; break }",
         "Write-Host \"Please wait and don't cancel the script...\" -F 'Yellow'",
@@ -22,8 +26,17 @@
         "Start-Process 'msiexec' -Wait -Verb 'RunAs' -WindowStyle 'Hidden' -ArgumentList @('/x', \"$dir\\setup.msi_\", '/qn')",
         "Stop-Process -Name 'explorer' -Force -ErrorAction 'SilentlyContinue'; Start-Sleep -Seconds 3"
     ],
-    "checkver": "Version\\s+([\\d.]+)",
+    "checkver": "Version\\s([\\d.]+)",
     "autoupdate": {
-        "url": "https://stx.pdf24.org/products/pdf-creator/download/pdf24-creator-$version.msi#/setup.msi_"
-    }
+        "architecture": {
+            "64bit": {
+                "url": "https://download.pdf24.org/pdf24-creator-$version.msi#/setup.msi_",
+                "hash": {
+                    "url": "https://creator.pdf24.org/listVersions.php",
+                    "find": "<td>$sha256</td>"
+                }
+            }
+        }
+    },
+    "_from": "okibcn/ScoopMaster"
 }
