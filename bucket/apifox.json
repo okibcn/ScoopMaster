@@ -1,43 +1,39 @@
 {
     "version": "2.2.31",
-    "description": "API 文档、API 调试、API Mock、API 自动化测试",
-    "homepage": "https://www.apifox.cn",
-    "license": "Unknown",
-    "url": "http://cdn.apifox.cn/download/2.2.31/Apifox-2.2.31.exe#/dl.7z",
-    "hash": "sha512:d00d08c261e1e19383c1a232c502bdbdc08a4e6bc702cbd5278a9f4cdfe77a771e0291b7f5be5ca77354b0d6479cfcf71be829dfdda67047e440e9594aa94f69",
-    "installer": {
-        "script": [
-            "# Expand-7zipArchive",
-            "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\" -Removal",
-            "Remove-Item \"$dir\\`$PLUGINSDIR\" -Force -Recurse",
-            "# handle runtime cache",
-            "if (!(Test-Path $persist_dir)) {",
-            "    New-Item $persist_dir -Type Directory -Force | Out-Null",
-            "}",
-            "$runtimeCache = \"$env:APPDATA\\apifox\"",
-            "$runtimeCachePersist = \"$persist_dir\\appdata\"",
-            "if (Test-Path $runtimeCachePersist) {",
-            "    Remove-Item $runtimeCache -Force -Recurse -ErrorAction SilentlyContinue",
-            "    New-Item -Type Junction -Path $runtimeCache -Target $runtimeCachePersist | Out-Null",
-            "} else {",
-            "    if (Test-Path $runtimeCache) {",
-            "        Move-Item $runtimeCache $runtimeCachePersist -Force",
-            "        New-Item -Type Junction -Path $runtimeCache -Target $runtimeCachePersist | Out-Null",
-            "    }",
-            "}"
-        ]
+    "homepage": "https://www.apifox.cn/",
+    "license": "Freeware",
+    "description": "",
+    "architecture": {
+        "64bit": {
+            "url": "https://cdn.apifox.cn/download/Apifox-windows-latest.zip",
+            "hash": "80326486874c7afb0c9b4037166ef79d1ab50b0f6e91162d09d7cdef2c667fc1",
+            "pre_install": [
+                "Move-Item \"$dir/*.exe\" \"$dir/Setup.7z\"",
+                "Expand-7zipArchive \"$dir\\Setup.7z\" \"$dir\"",
+                "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\"",
+                "Remove-Item \"$dir/`$PLUGINSDIR\", \"$dir/Setup.7z\" -Recurse -Force"
+            ]
+        },
+        "32bit": {
+            "url": "https://cdn.apifox.cn/download/Apifox-win32-latest.zip",
+            "hash": "40bd1c615b378efd6d170908505bbafd4d9211227978babdcd65bbb5277f401f",
+            "pre_install": [
+                "Move-Item \"$dir/*.exe\" \"$dir/Setup.7z\"",
+                "Expand-7zipArchive \"$dir\\Setup.7z\" \"$dir\"",
+                "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-32.7z\" \"$dir\"",
+                "Remove-Item \"$dir/`$PLUGINSDIR\", \"$dir\\Setup.7z\" -Recurse -Force"
+            ]
+        }
     },
     "uninstaller": {
-        "script": [
-            "$runtimeCache = \"$env:APPDATA\\apifox\"",
-            "$runtimeCachePersist = \"$persist_dir\\appdata\"",
-            "if (!(Test-Path $runtimeCachePersist)) {",
-            "    Move-Item $runtimeCache $runtimeCachePersist -Force",
-            "} else {",
-            "    Remove-Item $runtimeCache -Force -Recurse -ErrorAction SilentlyContinue",
-            "}"
-        ]
+        "file": "Uninstall Apifox.exe"
     },
+    "bin": [
+        [
+            "Apifox.exe",
+            "Apifox"
+        ]
+    ],
     "shortcuts": [
         [
             "Apifox.exe",
@@ -45,14 +41,17 @@
         ]
     ],
     "checkver": {
-        "url": "http://cdn.apifox.cn/download/latest.yml",
-        "regex": "Apifox-([\\d.]+).exe"
+        "url": "https://apifox.com/help/app/changelog",
+        "re": ">([\\d.]+) <"
     },
     "autoupdate": {
-        "url": "http://cdn.apifox.cn/download/$version/Apifox-$version.exe#/dl.7z",
-        "hash": {
-            "url": "http://cdn.apifox.cn/download/latest.yml",
-            "regex": "sha512.*?$base64"
+        "architecture": {
+            "64bit": {
+                "url": "https://cdn.apifox.cn/download/Apifox-windows-latest.zip"
+            },
+            "32bit": {
+                "url": "https://cdn.apifox.cn/download/Apifox-win32-latest.zip"
+            }
         }
     }
 }
