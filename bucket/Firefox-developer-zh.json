@@ -1,41 +1,41 @@
 {
-    "version": "113.0b1",
-    "description": "Developer builds of Firefox: the popular open source web browser.",
-    "homepage": "https://www.mozilla.org/zh-CN/firefox/developer/",
-    "license": "MPL-2.0",
     "architecture": {
         "64bit": {
-            "url": "https://archive.mozilla.org/pub/devedition/releases/113.0b1/win64/zh-CN/Firefox%20Setup%20113.0b1.exe#/dl.7z",
-            "hash": "sha512:efbf95c3927e6d2667c49a8cc268ba0d5b18c84bbc2bdb24b8b7b0130c0c4239190b268440237673596820ebfe53405979eff38c0ee428cfaa3d35b9511d1d3e"
+            "hash": "sha512:515c4a57632137573ac763b2c5be49a61363ef2c311674f136f9b04910847aac238c3a1a82ce3c585ffa5f0e26a5efe5c26dc539119f5f93108f702cc98bd51e",
+            "url": "https://archive.mozilla.org/pub/devedition/releases/113.0b2/win64/zh-CN/Firefox%20Setup%20113.0b2.exe#/dl.7z"
         }
     },
-    "extract_dir": "core",
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "hash": {
+                    "regex": "$sha512\\s+win64/zh-CN/$basename",
+                    "url": "https://archive.mozilla.org/pub/devedition/releases/$version/SHA512SUMS"
+                },
+                "url": "https://archive.mozilla.org/pub/devedition/releases/$version/win64/zh-CN/Firefox%20Setup%20$version.exe#/dl.7z"
+            }
+        }
+    },
     "bin": [
         [
             "firefox.exe",
             "firefox-dev"
         ]
     ],
+    "checkver": {
+        "regex": "devedition-([\\db.]+)-",
+        "url": "https://aus5.mozilla.org/update/6/Firefox/93.0/_/WINNT_x86_64-msvc-x64/en-US/aurora/_/_/_/_/update.xml",
+        "xpath": "/updates/update/patch/@URL"
+    },
+    "description": "Developer builds of Firefox: the popular open source web browser.",
+    "extract_dir": "core",
+    "homepage": "https://www.mozilla.org/zh-CN/firefox/developer/",
+    "license": "MPL-2.0",
     "shortcuts": [
         [
             "firefox.exe",
             "Firefox Developer Edition"
         ]
     ],
-    "checkver": {
-        "url": "https://aus5.mozilla.org/update/6/Firefox/93.0/_/WINNT_x86_64-msvc-x64/zh-CN/aurora/_/_/_/_/update.xml",
-        "xpath": "/updates/update/patch/@URL",
-        "regex": "devedition-([\\db.]+)-"
-    },
-    "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://archive.mozilla.org/pub/devedition/releases/$version/win64/zh-CN/Firefox%20Setup%20$version.exe#/dl.7z",
-                "hash": {
-                    "url": "https://archive.mozilla.org/pub/devedition/releases/$version/SHA512SUMS",
-                    "regex": "$sha512\\s+win64/zh-CN/$basename"
-                }
-            }
-        }
-    }
+    "version": "113.0b2"
 }
