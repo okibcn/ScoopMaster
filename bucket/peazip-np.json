@@ -29,7 +29,8 @@
         "    if (Test-Path $regFile) {",
         "        reg import $regFile | Out-Null",
         "    }",
-        "}"
+        "}",
+        "Get-ChildItem \"$dir\\unins*.exe\" | Rename-Item -NewName { $_.Name -replace ('unins([\\d]+).exe', 'unins$1.exe_') }"
     ],
     "env_add_path": ".",
     "pre_uninstall": [
@@ -41,6 +42,7 @@
         "    reg export 'HKCU\\SOFTWARE\\Classes\\*\\shell\\PeaZip' \"$persist_dir\\peazip_context_menu1.reg\" /y | Out-Null",
         "    reg export 'HKCU\\SOFTWARE\\Classes\\AllFilesystemObjects\\shell\\PeaZip' \"$persist_dir\\peazip_context_menu2.reg\" /y | Out-Null",
         "}",
+        "Get-ChildItem \"$dir\\unins*.exe_\" | Rename-Item -NewName { $_.Name -replace ('unins([\\d]+).exe_', 'unins$1.exe') }",
         "foreach ($uninstall_exe in \"$dir\\unins001.exe\", \"$dir\\unins000.exe\") {",
         "    Start-Process $uninstall_exe -Wait -Verb 'RunAs' -ArgumentList @('/VERYSILENT', '/FORCECLOSEAPPLICATIONS', '/SUPPRESSMSGBOXES')",
         "}"
