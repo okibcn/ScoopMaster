@@ -1,42 +1,41 @@
 {
     "version": "3.3.0",
+    "description": "A next-generation productivity tool platform",
     "homepage": "https://u.tools/",
-    "checkver": {
-        "regex": "uTools-([\\d|\\.]+)\\.exe"
+    "license": {
+        "identifier": "Proprietary",
+        "url": "https://u.tools/dev.html"
     },
-    "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://res.u-tools.cn/version2/uTools-$version.exe#/uTools.7z"
-            },
-            "32bit": {
-                "url": "https://res.u-tools.cn/version2/uTools-$version-ia32.exe#/uTools.7z"
-            }
-        }
-    },
+    "notes": [
+        "This package is protable version, for default install, please visit https://u.tools/",
+        "Your old configeration has been moved to uools.bak if it exist, you can put it to \"$dir\\data\\\" if you need! "
+    ],
+    "url": "https://res.u-tools.cn/version2/uTools-3.3.0.exe#/dl.7z",
+    "hash": "C22C0A0B90550CC3FFBB85EB9D211575AE4BA5907DBF9090EA8B4480277E23BB",
     "architecture": {
         "64bit": {
-            "url": "https://res.u-tools.cn/version2/uTools-3.3.0.exe#/uTools.7z",
-            "hash": "c22c0a0b90550cc3ffbb85eb9d211575ae4ba5907dbf9090ea8b4480277e23bb",
-            "installer": {
-                "script": "7z x $original_dir/PLUGINSDIR/app-64.7z -o\"$original_dir\""
-            }
-        },
-        "32bit": {
-            "url": "https://res.u-tools.cn/version2/uTools-3.3.0-ia32.exe#/uTools.7z",
-            "hash": "2ea63030df803fdd5869ea7e60ae9fe491346a4806d793128dd34cf912b50523",
-            "installer": {
-                "script": "7z x $original_dir/PLUGINSDIR/app-32.7z -o\"$original_dir\""
-            }
+            "pre_install": "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\""
         }
     },
-    "extract_dir": "$PLUGINSDIR",
-    "extract_to": "PLUGINSDIR",
-    "post_install": "rm $original_dir/PLUGINSDIR -recurse",
+    "post_install": [
+        "Remove-Item \"$dir\\`$*\" -Recurse",
+        " if ( Test-Path \"$env:APPDATA\\utools\"){",
+        "Move-Item \"$env:APPDATA\\utools\" \"$env:APPDATA\\utools.bak\" ;",
+        "}",
+        "New-Item -Path \"$env:APPDATA\\uTools\" -ItemType Junction -Value \"$dir\\data\" ;"
+    ],
+    "checkver": {
+        "url": "https://res.u-tools.cn/version2/uTools-$version.exe"
+    },
+    "autoupdate": {
+        "url": "https://res.u-tools.cn/version2/uTools-$version.exe"
+    },
+    "persist": "data",
+    "bin": "uTools.exe",
     "shortcuts": [
         [
             "uTools.exe",
-            "uTools"
+            "uTool"
         ]
     ]
 }
