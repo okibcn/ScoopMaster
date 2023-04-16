@@ -29,7 +29,7 @@
             "$basever = $cont.tag_name.TrimStart('v')",
             "foreach ($_ in $cont.assets) {",
             "  if ($_.name -cmatch '^N_m3u8DL-RE_(?<phase>[A-Za-z]+_)?win-x64_(?<date>\\d+)\\.zip$') {",
-            "    $updated_date = ([DateTime]$_.updated_at).ToString('yyyyMMddHHmmss')",
+            "    $updated_date = ([DateTime]$_.updated_at).ToUniversalTime().ToString('yyyyMMddHHmmss')",
             "    Write-Output ('basever:\"' + $basever + '\"') ('phase:\"' + $matches.phase + '\"') ('date:\"' + $matches.date + '\"') ('updated_date:\"' + $updated_date + '\"')",
             "    break",
             "  }",
