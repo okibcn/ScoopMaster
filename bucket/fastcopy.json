@@ -1,45 +1,27 @@
 {
-    "architecture": {
-        "32bit": {
-            "installer": {
-                "script": [
-                    "Invoke-ExternalCommand \"$dir\\$fname\" '/EXTRACT32' | Out-Null",
-                    "Get-ChildItem \"$dir\\FastCopy$version\\*\" -Recurse | Move-Item -Destination $dir",
-                    "Remove-Item \"$dir\\$fname\", \"$dir\\FastCopy$version\" "
-                ]
-            }
-        },
-        "64bit": {
-            "installer": {
-                "script": [
-                    "Invoke-ExternalCommand \"$dir\\$fname\" '/EXTRACT64' | Out-Null",
-                    "Get-ChildItem \"$dir\\FastCopy$version*x64\\*\" -Recurse | Move-Item -Destination $dir",
-                    "Remove-Item \"$dir\\$fname\", \"$dir\\FastCopy$version*\" "
-                ]
-            }
-        }
-    },
-    "autoupdate": {
-        "url": "https://fastcopy.jp/archive/FastCopy$version_installer.exe"
-    },
-    "bin": [
-        "FastCopy.exe",
-        "FcHash.exe",
-        "fcp.exe"
-    ],
-    "checkver": "FastCopy ver ([\\d.]+)",
+    "version": "5.0.2",
     "description": "The Fastest copy/backup software.",
-    "hash": "1192ff6459440840df651c2e4049a6db3fbafa0d6809637db3092a7c0f19ba33",
     "homepage": "https://fastcopy.jp",
     "license": {
         "identifier": "Freeware",
         "url": "https://fastcopy.jp/help/fastcopy_eng.htm#license"
     },
-    "persist": "FastCopy2.ini",
+    "url": "https://fastcopy.jp/archive/FastCopy5.0.2_installer.exe",
+    "hash": "b15ed66a8e5b88b81899bf2c161dc7fa9e8827866139589855ab9391044c859b",
     "pre_install": [
-        "if (!(Test-Path \"$persist_dir\\FastCopy2.ini\")) {",
-        "   Set-Content \"$dir\\FastCopy2.ini\" '[main]' -Encoding ASCII",
-        "}"
+        "if ($architecture -eq '64bit') {Invoke-ExternalCommand \"$dir\\$fname\" '/EXTRACT64' | Out-Null }",
+        "elseif ($architecture -eq '32bit') {Invoke-ExternalCommand \"$dir\\$fname\" '/EXTRACT32' | Out-Null }",
+        "Get-ChildItem \"$dir\\FastCopy$version*\\*\" -Recurse | Move-Item -Destination $dir",
+        "Remove-Item \"$dir\\$fname\", \"$dir\\FastCopy$version*\", \"$dir\\setup.exe\"",
+        "",
+        "if (!(Test-Path \"$persist_dir\\FastCopy.log\")) { New-Item \"$dir\\FastCopy.log\" | Out-Null }",
+        "if (Test-Path \"$persist_dir\\scoop_backup.ini\") { Copy-Item -Path \"$persist_dir\\scoop_backup.ini\" -Destination \"$dir\\FastCopy2.ini\" -Force | Out-Null }"
+    ],
+    "pre_uninstall": "Copy-Item -Path \"$dir\\FastCopy2.ini\" -Destination \"$persist_dir\\scoop_backup.ini\" -Force | Out-Null",
+    "bin": [
+        "FastCopy.exe",
+        "FcHash.exe",
+        "fcp.exe"
     ],
     "shortcuts": [
         [
@@ -47,10 +29,19 @@
             "FastCopy"
         ],
         [
-            "setup.exe",
-            "FastCopy Setup"
+            "doc\\FastCopy.chm",
+            "FastCopy Manual"
         ]
     ],
-    "url": "https://fastcopy.jp/archive/FastCopy5.0.2_installer.exe",
-    "version": "5.0.2"
+    "persist": [
+        "Log",
+        "FastCopy.log"
+    ],
+    "checkver": {
+        "script": "(Invoke-WebRequest -UseBasicParsing -Method Get -Headers @{'Accept'='text/html';'Accept-Encoding'='gzip'} -MaximumRedirection 0 -Uri 'https://fastcopy.jp/').Content",
+        "regex": "FastCopy ver ([\\d.]+)"
+    },
+    "autoupdate": {
+        "url": "https://fastcopy.jp/archive/FastCopy$version_installer.exe"
+    }
 }
