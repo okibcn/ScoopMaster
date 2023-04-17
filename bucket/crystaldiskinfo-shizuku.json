@@ -1,36 +1,52 @@
 {
-    "homepage": "https://crystalmark.info/ja/software/crystaldiskinfo/",
-    "description": "CrystalDiskInfo is a HDD/SSD utility software which supports S.M.A.R.T and a part of USB-HDD.",
-    "license": "MIT",
+    "$schema": "https://raw.githubusercontent.com/ScoopInstaller/Scoop/master/schema.json",
     "version": "8.17.14",
-    "url": "https://osdn.net/frs/redir.php?m=auto&f=crystaldiskinfo%2F78192%2FCrystalDiskInfo8_17_14Shizuku.zip#/dl.zip",
+    "description": "A HDD/SSD utility software which supports a part of USB, Intel RAID and NVMe.",
+    "homepage": "https://crystalmark.info/en/software/crystaldiskinfo/",
+    "license": "MIT",
+    "url": "https://free.nchc.org.tw/osdn//crystaldiskinfo/78192/CrystalDiskInfo8_17_14Shizuku.zip",
     "hash": "233208d67d9592f1778bf13d25e84756887d1376a205359810ba792f7e62f390",
+    "pre_install": "if (!(Test-Path \"$persist_dir\\DiskInfo.ini\")) { New-Item \"$dir\\DiskInfo.ini\" | Out-Null }",
     "architecture": {
         "64bit": {
+            "bin": [
+                [
+                    "DiskInfo64S.exe",
+                    "DiskInfo-Shizuku"
+                ]
+            ],
             "shortcuts": [
                 [
                     "DiskInfo64S.exe",
-                    "CrystalDiskInfo Shizuku Edition"
+                    "CrystalDiskInfo (Shizuku Edition)"
                 ]
             ]
         },
         "32bit": {
-            "shortcuts": [
+            "bin": [
                 [
                     "DiskInfo32S.exe",
-                    "CrystalDiskInfo Shizuku Edition"
+                    "DiskInfo-Shizuku"
+                ]
+            ],
+            "shortcuts": [
+                [
+                    "DiskInfo32S",
+                    "CrystalDiskInfo (Shizuku Edition)"
                 ]
             ]
         }
     },
-    "persist": "DiskInfo.ini",
-    "pre_install": "if(!(Test-Path \"$dir/DiskInfo.ini\")) { Add-Content \"$dir/DiskInfo.ini\" $null }",
+    "persist": [
+        "Smart",
+        "DiskInfo.ini"
+    ],
     "checkver": {
         "url": "https://osdn.net/projects/crystaldiskinfo/",
-        "regex": "<a href=\"/projects/crystaldiskinfo/releases/(?<release>[\\d]*)\">CrystalDiskInfo ([\\d+\\.*]+)</a>"
+        "regex": "releases/(?<release>[\\d]+)\">CrystalDiskInfo ([\\w.]+)<"
     },
     "autoupdate": {
-        "url": "https://osdn.net/frs/redir.php?m=auto&f=crystaldiskinfo%2F$matchRelease%2FCrystalDiskInfo$underscoreVersionShizuku.zip#/dl.zip",
+        "url": "https://free.nchc.org.tw/osdn//crystaldiskinfo/$matchRelease/CrystalDiskInfo$underscoreVersionShizuku.zip",
         "hash": {
             "url": "https://osdn.net/projects/crystaldiskinfo/downloads/$matchRelease/CrystalDiskInfo$underscoreVersionShizuku.zip/",
             "regex": "<dd>$sha256</dd>"
