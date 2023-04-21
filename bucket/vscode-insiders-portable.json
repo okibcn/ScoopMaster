@@ -1,6 +1,6 @@
 {
-    "version": "1.78.0-202304210457",
-    "description": "Visual Studio Code is a lightweight but powerful source code editor (Insiders, Portable Edition).",
+    "version": "1.78.0-insider",
+    "description": "Visual Studio Code is a code editor redefined and optimized for building and debugging modern web and cloud applications(Insiders, Portable Edition).",
     "homepage": "https://code.visualstudio.com/insiders/",
     "license": {
         "identifier": "Freeware",
@@ -9,18 +9,55 @@
     "notes": [
         "Visual Studio Code now supports Portable Mode! Please move the following directories:",
         "From \"$env:USERPROFILE\\.vscode-insiders\\extensions\" to \"$env:SCOOP\\persist\\vscode-insiders-portable\\data\\extensions\"",
-        "From \"$env:APPDATA\\Code - Insiders\" to \"$env:SCOOP\\persist\\vscode-insiders-portable\\data\\user-data\""
+        "From \"$env:APPDATA\\Code - Insiders\" to \"$env:SCOOP\\persist\\vscode-insiders-portable\\data\\user-data\"",
+        "Add Visual Studio Code as a context menu option by running: \"$dir\\install-context.reg\""
     ],
     "architecture": {
         "64bit": {
-            "url": "https://az764295.vo.msecnd.net/insider/b19017cea80b6157aa8214c984a70022e77526f2/VSCode-win32-x64-1.78.0-insider.zip",
-            "hash": "98e7ec34d09ee3f8e136aa2158a439d727369d3936e276bc65940ca05abe3ddd"
+            "url": [
+                "https://update.code.visualstudio.com/latest/win32-x64-archive/insider#/dl.7z",
+                "https://raw.githubusercontent.com/ScoopInstaller/Extras/master/scripts/vscode/install-context.reg",
+                "https://raw.githubusercontent.com/ScoopInstaller/Extras/master/scripts/vscode/uninstall-context.reg"
+            ],
+            "hash": [
+                "c543902b83ea1e012e0b8219ac9893e136943c13d4aabdfdf5b3c877ff492552",
+                "8ef94c82319b69754bdae0099af266d184d179a37af8b8beb11334c6ab639752",
+                "df2a5162e72e2518e2b75b4337c8e7b46c136554872af90fa0de1cf6ebef376f"
+            ]
         },
         "32bit": {
-            "url": "https://az764295.vo.msecnd.net/insider/b19017cea80b6157aa8214c984a70022e77526f2/VSCode-win32-ia32-1.78.0-insider.zip",
-            "hash": "1c733ebafee90cf74ab4b9a111b3c72d3db41132fd78588bc8d21b2b8845e232"
+            "url": [
+                "https://update.code.visualstudio.com/latest/win32-archive/insider#/dl.7z",
+                "https://raw.githubusercontent.com/ScoopInstaller/Extras/master/scripts/vscode-install-context.reg",
+                "https://raw.githubusercontent.com/ScoopInstaller/Extras/master/scripts/vscode-uninstall-context.reg"
+            ],
+            "hash": [
+                "1c733ebafee90cf74ab4b9a111b3c72d3db41132fd78588bc8d21b2b8845e232",
+                "8ef94c82319b69754bdae0099af266d184d179a37af8b8beb11334c6ab639752",
+                "df2a5162e72e2518e2b75b4337c8e7b46c136554872af90fa0de1cf6ebef376f"
+            ]
         }
     },
+    "post_install": [
+        "if (Test-Path \"$dir\\install-context.reg\") {",
+        "  $codepath = \"$dir\\Code - Insiders.exe\".Replace('\\', '\\\\')",
+        "  $content = Get-Content \"$dir\\install-context.reg\"",
+        "  $content = $content.Replace('$code', $codepath)",
+        "  $content = $content.Replace('&Code', 'Code &Insiders')",
+        "  if ($global) {",
+        "    $content = $content.Replace('HKEY_CURRENT_USER', 'HKEY_LOCAL_MACHINE')",
+        "  }",
+        "  $content | Set-Content -Path \"$dir\\install-context.reg\"",
+        "}",
+        "if (Test-Path \"$dir\\uninstall-context.reg\") {",
+        "  $content = Get-Content \"$dir\\uninstall-context.reg\"",
+        "  $content = $content.Replace('&Code', 'Code &Insiders')",
+        "  if ($global) {",
+        "    $content = $content.Replace('HKEY_CURRENT_USER', 'HKEY_LOCAL_MACHINE')",
+        "  }",
+        "  $content | Set-Content -Path \"$dir\\uninstall-context.reg\"",
+        "}"
+    ],
     "bin": [
         [
             "bin\\code-insiders.cmd",
@@ -35,23 +72,23 @@
     ],
     "persist": "data",
     "checkver": {
-        "url": "https://api.xuann.wang/api/vscode-insiders",
-        "regex": "([\\d.-]+) (?<commit>\\w+)"
+        "url": "https://code.visualstudio.com/sha?build=insider",
+        "jsonpath": "$.products[?(@.platform.os == 'win32-x64-archive')].name"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://az764295.vo.msecnd.net/insider/$matchCommit/VSCode-win32-x64-$matchHead-insider.zip",
+                "url": "https://update.code.visualstudio.com/latest/win32-x64-archive/insider#/dl.7z",
                 "hash": {
                     "url": "https://code.visualstudio.com/sha?build=insider",
-                    "jsonpath": "$.products[5].sha256hash"
+                    "jsonpath": "$.products[?(@.platform.os == 'win32-x64-archive')].sha256hash"
                 }
             },
             "32bit": {
-                "url": "https://az764295.vo.msecnd.net/insider/$matchCommit/VSCode-win32-ia32-$matchHead-insider.zip",
+                "url": "https://update.code.visualstudio.com/latest/win32-archive/insider#/dl.7z",
                 "hash": {
                     "url": "https://code.visualstudio.com/sha?build=insider",
-                    "jsonpath": "$.products[2].sha256hash"
+                    "jsonpath": "$.products[?(@.platform.os == 'win32-archive')].sha256hash"
                 }
             }
         }
