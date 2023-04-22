@@ -17,7 +17,16 @@
         ]
     },
     "checkver": {
-        "url": "https://www.getmusicbee.com/downloads/",
-        "regex": ">MusicBee ([\\d.]+)<"
+        "script": [
+            "(Invoke-WebRequest 'https://www.majorgeeks.com/files/details/musicbee_portable.html') -match 'MusicBee Portable (?<version>[\\d.]+)' | Out-Null",
+            "$resp = $Matches['version']",
+            "(Invoke-WebRequest 'https://www.majorgeeks.com/mg/getmirror/musicbee_portable,1.html') -match '(?<url>https:.*.zip)' | Out-Null",
+            "$resp += \",\" + $Matches['url']",
+            "Write-Output $resp"
+        ],
+        "regex": "(?<version>[\\d.]+),https:(?<dlurl>.*\\.zip)"
+    },
+    "autoupdate": {
+        "url": "https:$matchDlurl"
     }
 }
