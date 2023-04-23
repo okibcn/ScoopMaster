@@ -1,23 +1,31 @@
 {
     "version": "3.52.0",
-    "description": "A hackable markdown note application for programmers",
+    "description": "A hackable markdown note application for programmers.",
     "homepage": "https://github.com/purocean/yn",
-    "license": "GNU Affero General Public License v3.0",
+    "license": "AGPL-3.0-only",
     "architecture": {
         "64bit": {
             "url": "https://github.com/purocean/yn/releases/download/v3.52.0/Yank-Note-win-x64-3.52.0.zip",
             "hash": "3c5c92697a2925503c65b03b32ad49e3274f6a0c4280286e19334681d4e325a4"
         }
     },
+    "pre_install": "Remove-Item \"$dir\\resources\\app-update.yml\"  -Force -Recurse",
+    "bin": [
+        [
+            "Yank Note.exe",
+            "Yank Note",
+            "--user-data-dir=\"$dir\\User Data\""
+        ]
+    ],
     "shortcuts": [
         [
             "Yank Note.exe",
-            "Yank Note"
+            "Yank Note",
+            "--user-data-dir=\"$dir\\User Data\""
         ]
     ],
-    "checkver": {
-        "github": "https://github.com/purocean/yn"
-    },
+    "persist": "User Data",
+    "checkver": "github",
     "autoupdate": {
         "architecture": {
             "64bit": {
