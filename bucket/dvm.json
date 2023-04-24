@@ -9,17 +9,27 @@
             "hash": "bbbc0c5a1420eff9429eb2a305da5046d03a477d85f186c0acb587c7e62c3d5d"
         }
     },
-    "env_add_path": ".dvm\\bin",
-    "env_set": {
-        "DENO_INSTALL": "$persist_dir\\.deno",
-        "DVM_DIR": "$persist_dir\\.dvm"
-    },
-    "persist": [
-        ".deno",
-        ".dvm"
+    "post_install": [
+        "",
+        "[Environment]::SetEnvironmentVariable('DVM_DIR', \"$dir/.dvm\", 'Process')",
+        "[Environment]::SetEnvironmentVariable('DENO_INSTALL', \"$dir/.dvm/deno\", 'Process')",
+        "Invoke-ExternalCommand -Path \"$dir/dvm.exe\" -Args 'use latest' | Out-Null",
+        "Write-Output \"Done.\"",
+        "",
+        ""
     ],
     "bin": "dvm.exe",
-    "checkver": "github",
+    "env_add_path": ".dvm/bin",
+    "env_set": {
+        "DVM_DIR": "$dir/.dvm",
+        "DENO_INSTALL": "$dir/.dvm/bin",
+        "DENO_INSTALL_ROOT": "$dir/.dvm",
+        "DENO_DIR": "$dir/.dvm/data"
+    },
+    "persist": ".dvm",
+    "checkver": {
+        "github": "https://github.com/justjavac/dvm"
+    },
     "autoupdate": {
         "architecture": {
             "64bit": {
