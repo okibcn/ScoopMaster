@@ -13,19 +13,19 @@
     "architecture": {
         "64bit": {
             "url": "https://update.code.visualstudio.com/latest/win32-x64-archive/insider#/dl.7z",
-            "hash": "c1ba81f18dd2cecd320af09f37c046b6d0c6c6ee7d08b534c17289698b6bbd78"
+            "hash": "c543902b83ea1e012e0b8219ac9893e136943c13d4aabdfdf5b3c877ff492552"
         },
         "32bit": {
             "url": "https://update.code.visualstudio.com/latest/win32-archive/insider#/dl.7z",
-            "hash": "157c5be2cd6190e61c870c5901a6b2e2ba4f210bb5f0190a8d89cdac298390f4"
+            "hash": "1c733ebafee90cf74ab4b9a111b3c72d3db41132fd78588bc8d21b2b8845e232"
         }
     },
     "post_install": [
         "$dirpath = \"$dir\".Replace('\\', '\\\\')",
         "$exepath = \"$dir\\Code - Insiders.exe\".Replace('\\', '\\\\')",
         "'install-associations', 'uninstall-associations', 'install-context', 'uninstall-context' | ForEach-Object {",
-        "  if (Test-Path \"$bucketsdir\\extras\\scripts\\vscode\\$_.reg\") {",
-        "    $content = Get-Content \"$bucketsdir\\extras\\scripts\\vscode\\$_.reg\"",
+        "  if (Test-Path \"$bucketsdir\\$bucket\\scripts\\vscode\\$_.reg\") {",
+        "    $content = Get-Content \"$bucketsdir\\$bucket\\scripts\\vscode\\$_.reg\"",
         "    $content = $content.Replace('$codedir', $dirpath)",
         "    $content = $content.Replace('$code', $exepath)",
         "    $content = $content.Replace('&Code', 'Code &Insiders')",
@@ -66,5 +66,6 @@
                 }
             }
         }
-    }
+    },
+    "_from": "okibcn/ScoopMaster"
 }
