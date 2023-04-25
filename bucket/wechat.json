@@ -1,39 +1,22 @@
 {
+    "homepage": "https://weixin.qq.com",
+    "description": "微信，是一个生活方式",
     "version": "3.9.2",
-    "homepage": "https://pc.weixin.qq.com/",
-    "description": "Free messaging and calling app.",
-    "license": {
-        "identifier": "EULA",
-        "url": "https://weixin.qq.com/cgi-bin/readtemplate?lang=zh_CN&t=weixin_agreement&s=default"
-    },
-    "notes": "We don't persist your WeChat data, they are still storaged in '%APPDATA%\\Tencent\\WeChat'.",
-    "architecture": {
-        "64bit": {
-            "url": "https://dldir1.qq.com/weixin/Windows/WeChatSetup.exe#/dl.7z",
-            "hash": "f73007b32df3ce9e71f9148bef4be07ff10390f432c6939175e17bf45dc086c6"
-        }
-    },
-    "bin": "wechat.exe",
+    "license": "© 1998 - 2021 Tencent Inc. All Rights Reserved",
+    "url": "https://dldir1.qq.com/weixin/Windows/WeChatSetup.exe#/dl.7z",
+    "hash": "f73007b32df3ce9e71f9148bef4be07ff10390f432c6939175e17bf45dc086c6",
     "shortcuts": [
         [
-            "wechat.exe",
+            "WeChat.exe",
             "WeChat"
         ]
     ],
-    "post_install": [
-        "Remove-Item \"$dir\\`$PLUGINSDIR\" -Force -Recurse",
-        "Remove-Item \"$dir\\`$_15_\" -Force -Recurse",
-        "Remove-Item \"$dir\\`$R5\" -Force -Recurse"
-    ],
+    "post_install": "Echo $dir\\`$R5 $dir\\`$_15_ $dir\\`$PLUGINSDIR | Remove-Item -Recurse",
     "checkver": {
-        "url": "https://pc.weixin.qq.com/",
-        "regex": "download-version\">([\\d.]+)"
+        "url": "https://pc.weixin.qq.com",
+        "regex": "class=\"download-version\">([\\d.]+)"
     },
     "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://dldir1.qq.com/weixin/Windows/WeChatSetup.exe#/dl.7z"
-            }
-        }
+        "url": "https://dldir1.qq.com/weixin/Windows/WeChatSetup.exe#/dl.7z"
     }
 }
