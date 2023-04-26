@@ -1,18 +1,19 @@
 {
-    "version": "1.6.11",
+    "homepage": "https://github.com/agalwood/Motrix",
     "description": "A full-featured download manager.",
-    "homepage": "https://motrix.app",
+    "version": "1.8.11",
     "license": "MIT",
     "architecture": {
         "64bit": {
-            "url": "https://github.com/agalwood/Motrix/releases/download/v1.6.11/Motrix-Setup-1.6.11.exe#/dl.7z",
-            "hash": "sha512:3cc06acbcad9344a47929639102e0211af1f8545773ef86279f141cc5702f345f1cad6fbbd9e8ee6143c4d57593355a770a51bbd13d43fb2224a900af4396dff",
-            "pre_install": [
-                "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\"",
-                "Remove-Item \"$dir\\`$*\" -Force -Recurse"
-            ]
+            "url": "https://github.com/agalwood/Motrix/releases/download/v1.8.11/Motrix-1.8.11-win.zip",
+            "hash": "8bb44f1adfb19dc770557650193326465e4f07553ba83639a955a49a2994f7c5"
+        },
+        "32bit": {
+            "url": "https://github.com/agalwood/Motrix/releases/download/v1.8.11/Motrix-1.8.11-ia32-win.zip",
+            "hash": "54d289d7d5ace53aff93475b317626bc82b6ccd7a286ec7d3af4ab513ebe006c"
         }
     },
+    "bin": "Motrix.exe",
     "shortcuts": [
         [
             "Motrix.exe",
@@ -20,17 +21,18 @@
         ]
     ],
     "checkver": {
-        "github": "https://github.com/agalwood/Motrix"
+        "url": "https://github.com/agalwood/Motrix/releases",
+        "regex": "Motrix v([\\d.]+)"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://github.com/agalwood/Motrix/releases/download/v$version/Motrix-Setup-$version.exe#/dl.7z",
-                "hash": {
-                    "url": "$baseurl/latest.yml",
-                    "regex": "sha512:\\s+$base64"
-                }
+                "url": "https://github.com/agalwood/Motrix/releases/download/v$version/Motrix-$version-win.zip"
+            },
+            "32bit": {
+                "url": "https://github.com/agalwood/Motrix/releases/download/v$version/Motrix-$version-ia32-win.zip"
             }
         }
-    }
+    },
+    "notes": "this may contains pre-release builds."
 }
