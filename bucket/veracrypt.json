@@ -1,39 +1,19 @@
 {
+    "homepage": "https://www.veracrypt.fr/",
+    "license": "tbd",
     "version": "1.25.9",
-    "description": "Free, open source disk encryption software based on TrueCrypt",
-    "homepage": "https://www.veracrypt.fr",
-    "license": {
-        "identifier": "Apache-2.0,TrueCrypt-3.0",
-        "url": "https://www.veracrypt.fr/code/VeraCrypt/plain/License.txt"
-    },
-    "url": "https://launchpad.net/veracrypt/trunk/1.25.9/+download/VeraCrypt_Setup_x64_1.25.9.msi",
-    "hash": "sha512:29e816b2ed928ceb79f000002b36d4f114670795a482ad4e3a15a0bcd889089a83a701b83709a6ca3a8a92df20e2ec1f2a9a729251ff6fc20e2dd091f9b6ad90",
-    "extract_dir": "VeraCrypt",
-    "pre_install": "Test-Persistence Configuration.xml",
-    "post_install": "Move-Item \"$dir\\veracrypt.sys\" \"$dir\\veracrypt-x64.sys\"",
-    "shortcuts": [
+    "url": "https://launchpad.net/veracrypt/trunk/1.25.9/+download/VeraCrypt%20Portable%201.25.9.exe#/dl.7z",
+    "hash": "785e2953547ea8232aa3c45b9cfe564118809eb84b474df6488f7519c4e954cc",
+    "bin": [
         [
-            "VeraCrypt.exe",
-            "VeraCrypt"
-        ],
-        [
-            "VeraCrypt Format.exe",
-            "VeraCrypt Format"
-        ],
-        [
-            "VeraCryptExpander.exe",
-            "VeraCryptExpander"
+            "veracrypt.exe"
         ]
     ],
-    "persist": "Configuration.xml",
     "checkver": {
         "url": "https://www.veracrypt.fr/en/Downloads.html",
-        "regex": "Latest Stable Release\\s*-\\s*(\\d+(\\.\\d+)*)"
+        "re": "/trunk/(?<folder>[\\w.-]+)/\\+download/VeraCrypt%20Portable%20(?<version>[\\w.-]+)\\.exe"
     },
     "autoupdate": {
-        "url": "https://launchpad.net/veracrypt/trunk/$version/+download/VeraCrypt_Setup_x64_$version.msi",
-        "hash": {
-            "url": "https://launchpad.net/veracrypt/trunk/$version/+download/veracrypt-$version-sha512sum.txt"
-        }
+        "url": "https://launchpad.net/veracrypt/trunk/$matchFolder/+download/VeraCrypt%20Portable%20$version.exe#/dl.7z"
     }
 }
