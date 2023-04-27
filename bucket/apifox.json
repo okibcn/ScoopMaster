@@ -1,39 +1,18 @@
 {
     "version": "2.2.34",
+    "description": "Apifox = Postman + Swagger + Mock + JMeter",
     "homepage": "https://www.apifox.cn/",
     "license": "Freeware",
-    "description": "",
     "architecture": {
         "64bit": {
-            "url": "https://cdn.apifox.cn/download/Apifox-windows-latest.zip",
-            "hash": "1a2a566ff38d8dc62e7a6f2f8c1a75b90dfc5259341474d9f9266cead9b643ae",
+            "url": "http://cdn.apifox.cn/download/2.2.34/Apifox-2.2.34.exe#/dl.7z",
+            "hash": "sha512:3c55acfefad72724dccd1784f01008dfcbba4a96a3e4668b3f78e626ba29c4fbe593e60d39c964398898eedb59ccafb1215619c2e1caa135dfbae1ea447a50a0",
             "pre_install": [
-                "Move-Item \"$dir/*.exe\" \"$dir/Setup.7z\"",
-                "Expand-7zipArchive \"$dir\\Setup.7z\" \"$dir\"",
-                "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\"",
-                "Remove-Item \"$dir/`$PLUGINSDIR\", \"$dir/Setup.7z\" -Recurse -Force"
-            ]
-        },
-        "32bit": {
-            "url": "https://cdn.apifox.cn/download/Apifox-win32-latest.zip",
-            "hash": "73674c5038edddae74b168dc0f83f9f09ea33bdf12e71da62a62c013e828f89b",
-            "pre_install": [
-                "Move-Item \"$dir/*.exe\" \"$dir/Setup.7z\"",
-                "Expand-7zipArchive \"$dir\\Setup.7z\" \"$dir\"",
-                "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-32.7z\" \"$dir\"",
-                "Remove-Item \"$dir/`$PLUGINSDIR\", \"$dir\\Setup.7z\" -Recurse -Force"
+                "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\" -Removal",
+                "Remove-Item \"$dir\\`$PLUGINSDIR\" -Force -Recurse"
             ]
         }
     },
-    "uninstaller": {
-        "file": "Uninstall Apifox.exe"
-    },
-    "bin": [
-        [
-            "Apifox.exe",
-            "Apifox"
-        ]
-    ],
     "shortcuts": [
         [
             "Apifox.exe",
@@ -41,16 +20,18 @@
         ]
     ],
     "checkver": {
-        "url": "https://apifox.com/help/app/changelog",
-        "re": ">([\\d.]+) <"
+        "url": "http://cdn.apifox.cn/download/latest.yml",
+        "regex": "Apifox-([\\d.]+).exe"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://cdn.apifox.cn/download/Apifox-windows-latest.zip"
-            },
-            "32bit": {
-                "url": "https://cdn.apifox.cn/download/Apifox-win32-latest.zip"
+                "url": "http://cdn.apifox.cn/download/$version/Apifox-$version.exe#/dl.7z",
+                "hash": {
+                    "url": "http://cdn.apifox.cn/download/latest.yml",
+                    "mode": "extract",
+                    "regex": "sha512.*?$base64"
+                }
             }
         }
     }
