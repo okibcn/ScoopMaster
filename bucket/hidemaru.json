@@ -4,7 +4,11 @@
     "description": "A text editor well-known in Japan",
     "homepage": "https://hide.maruo.co.jp/software/hidemaru.html",
     "license": "Shareware",
-    "notes": "portable kit is applied, so that configuration is stored not into registry but into an ini-like file",
+    "notes": [
+        "portable kit is applied, so that configuration is stored not into registry but into an ini-like file",
+        "",
+        "To create file-associations for .c, .cpp, .h, .mac, and .txt, and to add into an application list for text files, run '$dir\\install-file-associations.reg'"
+    ],
     "architecture": {
         "64bit": {
             "url": [
@@ -17,7 +21,20 @@
             ],
             "post_install": [
                 "Remove-Item @(\"$dir\\HmRegIni.chm\",\"$dir\\HmRegIni.dll\",\"$dir\\HmRegIniInst.exe\")",
-                "Rename-Item \"$dir\\HmRegIni64.dll\" \"$dir\\HmRegIni.dll\""
+                "Rename-Item \"$dir\\HmRegIni64.dll\" \"$dir\\HmRegIni.dll\"",
+                "'install-file-associations', 'uninstall-file-associations' | ForEach-Object {",
+                "    $reg_file_in  = \"$bucketsdir\\yak1ex\\scripts\\hidemaru\\$_.reg\"",
+                "    $reg_file_out = \"$dir\\$_.reg\"",
+                "    $hidemaru_root     = \"$dir\".Replace('\\', '\\\\')",
+                "    if (Test-Path $reg_file_in) {",
+                "        $content = Get-Content $reg_file_in",
+                "        $content = $content.Replace('$hidemaru_root', $hidemaru_root)",
+                "        if ($global) {",
+                "            $content = $content.Replace('HKEY_CURRENT_USER', 'HKEY_LOCAL_MACHINE')",
+                "        }",
+                "        Set-Content -Path $reg_file_out -Value $content -Encoding Unicode",
+                "    }",
+                "}"
             ]
         },
         "32bit": {
@@ -30,7 +47,20 @@
                 "009c57c6a9f65f056146c7c6a4da114072dd4736daa2509ccce9975df559684f"
             ],
             "post_install": [
-                "Remove-Item @(\"$dir\\HmRegIni.chm\",\"$dir\\HmRegIni64.dll\",\"$dir\\HmRegIniInst.exe\")"
+                "Remove-Item @(\"$dir\\HmRegIni.chm\",\"$dir\\HmRegIni64.dll\",\"$dir\\HmRegIniInst.exe\")",
+                "'install-file-associations', 'uninstall-file-associations' | ForEach-Object {",
+                "    $reg_file_in  = \"$bucketsdir\\main\\scripts\\hidemaru\\$_.reg\"",
+                "    $reg_file_out = \"$dir\\$_.reg\"",
+                "    $hidemaru_root     = \"$dir\".Replace('\\', '\\\\')",
+                "    if (Test-Path $reg_file_in) {",
+                "        $content = Get-Content $reg_file_in",
+                "        $content = $content.Replace('$hidemaru_root', $hidemaru_root)",
+                "        if ($global) {",
+                "            $content = $content.Replace('HKEY_CURRENT_USER', 'HKEY_LOCAL_MACHINE')",
+                "        }",
+                "        Set-Content -Path $reg_file_out -Value $content -Encoding Unicode",
+                "    }",
+                "}"
             ]
         }
     },
