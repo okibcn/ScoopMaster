@@ -9,11 +9,20 @@
     "architecture": {
         "64bit": {
             "extract_dir": "x64"
+        },
+        "32bit": {
+            "extract_dir": "x86"
         }
     },
-    "post_install": "Start-Process \"$dir\\Install_XySubFilter.bat\"",
+    "pre_install": [
+        "ForEach($file in Get-ChildItem $dir\\ -Filter Install_*.bat) {(Get-Content $dir\\$file) | ForEach-Object {$_ -replace \"regsvr32.exe Xy\",\"regsvr32.exe /s Xy\"} | Out-File -Encoding oem $dir\\$file}",
+        "ForEach($file in Get-ChildItem $dir\\ -Filter Uninstall_*.bat) {(Get-Content $dir\\$file) | ForEach-Object {$_ -replace \"regsvr32.exe /u Xy\",\"regsvr32.exe /u /s Xy\"} | Out-File -Encoding oem $dir\\$file}"
+    ],
+    "installer": {
+        "script": "sudo \"$dir\\Install_XySubFilter.bat\""
+    },
     "uninstaller": {
-        "script": "Start-Process \"$dir\\Uninstall_XySubFilter.bat\""
+        "script": "sudo \"$dir\\Uninstall_XySubFilter.bat\""
     },
     "checkver": {
         "github": "https://github.com/pinterf/xy-VSFilter/"
