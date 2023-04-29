@@ -1,19 +1,18 @@
 {
-    "homepage": "https://github.com/agalwood/Motrix",
-    "description": "A full-featured download manager.",
     "version": "1.8.15",
+    "description": "A full-featured download manager.",
+    "homepage": "https://motrix.app",
     "license": "MIT",
     "architecture": {
         "64bit": {
-            "url": "https://github.com/agalwood/Motrix/releases/download/v1.8.15/Motrix-1.8.15-win.zip",
-            "hash": "9f5fb01c42180325ca7a40190a2ff3ced4c3771ec58a857d234275e0c106891e"
-        },
-        "32bit": {
-            "url": "https://github.com/agalwood/Motrix/releases/download/v1.8.15/Motrix-1.8.15-ia32-win.zip",
-            "hash": "03818b8def8afe53312855856a66fd4647b254db9bebf14a79b0292d83bd21cc"
+            "url": "https://github.com/agalwood/Motrix/releases/download/v1.8.15/Motrix-Setup-1.8.15.exe#/dl.7z",
+            "hash": "sha512:0500f7f8727bc36b9d27b36b428f17affc19c8f8e0ece2882270485983ccca50bc13398d7d1b9560f56b9c36ce24256048ca229d99b0311146ffcfc351b621cf",
+            "pre_install": [
+                "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\"",
+                "Remove-Item \"$dir\\`$*\" -Force -Recurse"
+            ]
         }
     },
-    "bin": "Motrix.exe",
     "shortcuts": [
         [
             "Motrix.exe",
@@ -21,18 +20,18 @@
         ]
     ],
     "checkver": {
-        "url": "https://github.com/agalwood/Motrix/releases",
-        "regex": "Motrix v([\\d.]+)"
+        "url": "https://api.github.com/repos/agalwood/Motrix/releases",
+        "regex": "/releases/tag/v([\\d.]+)"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://github.com/agalwood/Motrix/releases/download/v$version/Motrix-$version-win.zip"
-            },
-            "32bit": {
-                "url": "https://github.com/agalwood/Motrix/releases/download/v$version/Motrix-$version-ia32-win.zip"
+                "url": "https://github.com/agalwood/Motrix/releases/download/v$version/Motrix-Setup-$version.exe#/dl.7z",
+                "hash": {
+                    "url": "$baseurl/latest.yml",
+                    "regex": "sha512:\\s+$base64"
+                }
             }
         }
-    },
-    "notes": "this may contains pre-release builds."
+    }
 }
