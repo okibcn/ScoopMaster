@@ -1,5 +1,5 @@
 {
-    "version": "115.0.5741.0",
+    "version": "115.0.5742.0",
     "description": "Fast, secure, and free web browser, built for the modern web.",
     "homepage": "https://www.google.com/chrome/canary",
     "license": {
@@ -8,8 +8,8 @@
     },
     "architecture": {
         "64bit": {
-            "url": "https://dl.google.com/release2/chrome/oplehub7w5pj6jdvbi5updgxfm_115.0.5741.0/115.0.5741.0_chrome_installer.exe#/dl.7z",
-            "hash": "2ba488b61682c9257e7d5ad63e1685e6a3c95e3c1a244714ede3a9c6ff4c3cbf"
+            "url": "https://dl.google.com/release2/chrome/fnmmoycbdlcv3mgzwuw6ifpdoy_115.0.5742.0/115.0.5742.0_chrome_installer.exe#/dl.7z",
+            "hash": "f4325effedb5351a0970e9a4258f185460713c53e0b03dc327d27f62f2d96768"
         },
         "32bit": {
             "url": "https://dl.google.com/release2/chrome/acwtj3ebuva6br5btgkn6m5ofogq_115.0.5741.0/115.0.5741.0_chrome_installer.exe#/dl.7z",
@@ -32,24 +32,17 @@
         ]
     ],
     "checkver": {
-        "url": "https://scoopinstaller.github.io/UpdateTracker/googlechrome/chrome.min.xml",
-        "regex": "(?sm)<canary32><version>(?<version>[\\d.]+)</version>.+release2/chrome/(?<32>[\\w-]+)_.+<canary64>.+release2/chrome/(?<64>[\\w-]+)_.+</canary64>"
+        "url": "https://www.iplaysoft.com/tools/chrome/",
+        "regex": "(?sm)Windows 金丝雀版 64 位.*?dl.google.com/release2/chrome/(?<64>[\\w.-]+)/(?<version64>[\\d.]+)_chrome_installer\\.exe.*?Windows 金丝雀版 32 位.*?dl.google.com/release2/chrome/(?<32>[\\w.-]+)/(?<version32>[\\d.]+)_chrome_installer\\.exe",
+        "replace": "${version64}"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://dl.google.com/release2/chrome/$match64_$version/$version_chrome_installer.exe#/dl.7z",
-                "hash": {
-                    "url": "https://scoopinstaller.github.io/UpdateTracker/googlechrome/chrome.min.xml",
-                    "xpath": "/chromechecker/canary64[version='$version']/sha256"
-                }
+                "url": "https://dl.google.com/release2/chrome/$match64/$matchVersion64_chrome_installer.exe#/dl.7z"
             },
             "32bit": {
-                "url": "https://dl.google.com/release2/chrome/$match32_$version/$version_chrome_installer.exe#/dl.7z",
-                "hash": {
-                    "url": "https://scoopinstaller.github.io/UpdateTracker/googlechrome/chrome.min.xml",
-                    "xpath": "/chromechecker/canary32[version='$version']/sha256"
-                }
+                "url": "https://dl.google.com/release2/chrome/$match32/$matchVersion32_chrome_installer.exe#/dl.7z"
             }
         }
     }
