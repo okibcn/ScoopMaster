@@ -1,10 +1,10 @@
 {
-    "version": "2.3.3",
+    "version": "3.0.0",
     "description": "Nerd Fonts patched 'InconsolataLGC' Font family. (Normal version, Nerd Fonts Symbol/Icon could be 1 or 2 cell wide)",
     "homepage": "https://github.com/ryanoasis/nerd-fonts",
     "license": "MIT",
-    "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.3.3/InconsolataLGC.zip",
-    "hash": "826471e967933f020150430db978a7729927d96bacf3c4e7fbe1e216834f4599",
+    "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.0/InconsolataLGC.zip",
+    "hash": "2d33c53aac3426f6e2c2a2d697d53510075e5cbd4913095866b45c93ca95f30b",
     "installer": {
         "script": [
             "$currentBuildNumber = [int] (Get-ItemProperty \"HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\").CurrentBuildNumber",
@@ -44,6 +44,33 @@
             "}"
         ]
     },
+    "pre_uninstall": [
+        "$fontInstallDir = if ($global) { \"$env:windir\\Fonts\" } else { \"$env:LOCALAPPDATA\\Microsoft\\Windows\\Fonts\" }",
+        "Get-ChildItem $dir -Filter '*Complete Windows Compatible*' | ForEach-Object {",
+        "    Get-ChildItem $fontInstallDir -Filter $_.Name | ForEach-Object {",
+        "        try {",
+        "            Rename-Item $_.FullName $_.FullName -ErrorVariable LockError -ErrorAction Stop",
+        "        } catch {",
+        "            Write-Host \"\"",
+        "            Write-Host \" Error \" -Background DarkRed -Foreground White -NoNewline",
+        "            Write-Host \"\"",
+        "            Write-Host \" Cannot uninstall '$app' font.\" -Foreground DarkRed",
+        "            Write-Host \"\"",
+        "            Write-Host \" Reason \" -Background DarkCyan -Foreground White -NoNewline",
+        "            Write-Host \"\"",
+        "            Write-Host \" The '$app' font is currently being used by another application,\" -Foreground DarkCyan",
+        "            Write-Host \" so it cannot be deleted.\" -Foreground DarkCyan",
+        "            Write-Host \"\"",
+        "            Write-Host \" Suggestion \" -Background Magenta -Foreground White -NoNewline",
+        "            Write-Host \"\"",
+        "            Write-Host \" Close all applications that are using '$app' font (e.g. vscode),\" -Foreground Magenta",
+        "            Write-Host \" and then try again.\" -Foreground Magenta",
+        "            Write-Host \"\"",
+        "            exit 1",
+        "        }",
+        "    }",
+        "}"
+    ],
     "uninstaller": {
         "script": [
             "$fontInstallDir = if ($global) { \"$env:windir\\Fonts\" } else { \"$env:LOCALAPPDATA\\Microsoft\\Windows\\Fonts\" }",

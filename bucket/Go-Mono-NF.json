@@ -1,10 +1,10 @@
 {
-    "version": "2.3.3",
+    "version": "3.0.0",
     "description": "Nerd Fonts patched 'Go-Mono' Font family. (Normal version, Nerd Fonts Symbol/Icon could be 1 or 2 cell wide)",
     "homepage": "https://github.com/ryanoasis/nerd-fonts",
     "license": "MIT",
-    "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.3.3/Go-Mono.zip",
-    "hash": "3ba2661e638c8d9cb377e81c3f0e51af5cd51f788a363bef23e5688d463ead2e",
+    "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.0/Go-Mono.zip",
+    "hash": "9969921572402738cef5e85174160d2b59728df2d5f7949bdf0bcbd2fa2e6c8e",
     "installer": {
         "script": [
             "$currentBuildNumber = [int] (Get-ItemProperty \"HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\").CurrentBuildNumber",
@@ -44,6 +44,33 @@
             "}"
         ]
     },
+    "pre_uninstall": [
+        "$fontInstallDir = if ($global) { \"$env:windir\\Fonts\" } else { \"$env:LOCALAPPDATA\\Microsoft\\Windows\\Fonts\" }",
+        "Get-ChildItem $dir -Filter '*Complete Windows Compatible*' | ForEach-Object {",
+        "    Get-ChildItem $fontInstallDir -Filter $_.Name | ForEach-Object {",
+        "        try {",
+        "            Rename-Item $_.FullName $_.FullName -ErrorVariable LockError -ErrorAction Stop",
+        "        } catch {",
+        "            Write-Host \"\"",
+        "            Write-Host \" Error \" -Background DarkRed -Foreground White -NoNewline",
+        "            Write-Host \"\"",
+        "            Write-Host \" Cannot uninstall '$app' font.\" -Foreground DarkRed",
+        "            Write-Host \"\"",
+        "            Write-Host \" Reason \" -Background DarkCyan -Foreground White -NoNewline",
+        "            Write-Host \"\"",
+        "            Write-Host \" The '$app' font is currently being used by another application,\" -Foreground DarkCyan",
+        "            Write-Host \" so it cannot be deleted.\" -Foreground DarkCyan",
+        "            Write-Host \"\"",
+        "            Write-Host \" Suggestion \" -Background Magenta -Foreground White -NoNewline",
+        "            Write-Host \"\"",
+        "            Write-Host \" Close all applications that are using '$app' font (e.g. vscode),\" -Foreground Magenta",
+        "            Write-Host \" and then try again.\" -Foreground Magenta",
+        "            Write-Host \"\"",
+        "            exit 1",
+        "        }",
+        "    }",
+        "}"
+    ],
     "uninstaller": {
         "script": [
             "$fontInstallDir = if ($global) { \"$env:windir\\Fonts\" } else { \"$env:LOCALAPPDATA\\Microsoft\\Windows\\Fonts\" }",
