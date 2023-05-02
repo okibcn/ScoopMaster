@@ -7,8 +7,7 @@
         "From 4.6.0, conda has built the support for Cmd, Powershell or other shells.",
         "Use \"conda init powershell\" or \"conda init __your_favorite_shell__\"",
         "",
-        "Anaconda3 drops support for 32-bit CPUs from v2022.10. If you are running a 32-bit system, please install anaconda3-2022.05 from the Versions bucket.",
-        "If you found the conda cannot fetch update, just run \" conda config --set ssl_verify False \" and try again."
+        "Anaconda3 drops support for 32-bit CPUs from v2022.10. If you are running a 32-bit system, please install anaconda3-2022.05 from the Versions bucket."
     ],
     "architecture": {
         "64bit": {
@@ -16,16 +15,13 @@
             "hash": "849daee6c1926bb43306d0e4ce0cc50719b5bb5e43e085fc5092513ef8bf1fd5"
         }
     },
-    "pre_install": "if ($dir -match ' ') { error 'The installation directory cannot include a space'; break}",
     "installer": {
         "script": [
-            "Move-Item \"$dir\\setup.exe\" \"$dir\\..\\setup.exe\" | Out-Null",
             "Write-Host 'Installing Anaconda 3. This can take up to 30 minutes on an HDD.' -ForegroundColor Magenta",
             "# Using Start-Process as a workaround because the installer will not work properly when args are quoted (e.g. \"`\"/S`\"\")",
-            "Start-Process \"$dir\\..\\setup.exe\" -ArgumentList @('/S', '/InstallationType=JustMe', '/RegisterPython=1', '/AddToPath=0', '/NoRegistry=1', \"/D=$dir\") -Wait | Out-Null"
+            "Start-Process \"$dir\\setup.exe\" -ArgumentList @('/S', '/InstallationType=JustMe', '/RegisterPython=1', '/AddToPath=0', '/NoRegistry=1', \"/D=$dir\") -Wait | Out-Null"
         ]
     },
-    "post_install": "Remove-Item \"$dir\\..\\setup.exe\" -Force | Out-Null",
     "uninstaller": {
         "script": [
             "Start-Process \"$dir\\Uninstall-Anaconda3.exe\" -ArgumentList '/S' -Wait | Out-Null",
@@ -39,6 +35,18 @@
         [
             "python.exe",
             "python3"
+        ],
+        [
+            "python.exe",
+            "py"
+        ],
+        [
+            "bin\\_conda.exe",
+            "conda"
+        ],
+        [
+            "bin\\_conda.exe",
+            "conda3"
         ]
     ],
     "env_add_path": "Scripts",
