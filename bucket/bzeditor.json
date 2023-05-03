@@ -26,6 +26,25 @@
             ]
         }
     },
+    "post_install": [
+        "$arch=@{'64bit'='64';'32bit'=''}[$architecture]",
+        "$sendto=\"$env:USERPROFILE\\AppData\\Roaming\\Microsoft\\Windows\\SendTo\"",
+        "$wsh_shell = New-Object -comObject WScript.Shell",
+        "@{'Name'='Bz (Admin)';'Admin'='Admin'}, @{'Name'='Bz';'Admin'=''} | ForEach-Object {",
+        "    $link = \"$sendto\\$($_.Name).lnk\"",
+        "    $target = \"$dir\\Bz${arch}$($_.Admin).exe\"",
+        "    $shortcut = $wsh_shell.CreateShortcut($link)",
+        "    $shortcut.TargetPath = $target",
+        "    $shortcut.WorkingDirectory = $dir",
+        "    $shortcut.Save()",
+        "}"
+    ],
+    "post_uninstall": [
+        "$sendto=\"$env:USERPROFILE\\AppData\\Roaming\\Microsoft\\Windows\\SendTo\"",
+        "'Bz (Admin)', 'Bz' | ForEach-Object {",
+        "    Remove-Item -Path \"$sendto\\$_.lnk\"",
+        "}"
+    ],
     "checkver": {
         "url": "https://gitlab.com/api/v4/projects/devill.tamachan%2Fbinaryeditorbz/releases/permalink/latest",
         "jsonpath": "$.description",

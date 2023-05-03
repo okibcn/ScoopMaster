@@ -12,12 +12,6 @@
             "hash": [
                 "8d07c725858bad69d1248e36aea8eb75d29c10497846bc96049cfe839a99da9e",
                 "15f58dd292aa6fc8fd592fa97a75d58b5680ddf7aa66ba10a2dd5c9f0ee159c1"
-            ],
-            "post_install": [
-                "Write-Host \"Placing bregonig.dll, migemo.dll and dict folder\"",
-                "New-Item -Type HardLink -Target \"$dir\\bregonig\\x64\\bregonig.dll\" -Path \"$dir\\bregonig.dll\" | Out-Null",
-                "New-Item -Type HardLink -Target \"$dir\\cmigemo-default-win64\\migemo.dll\" -Path \"$dir\\migemo.dll\" | Out-Null",
-                "New-Item -Type Junction -Target \"$dir\\cmigemo-default-win64\\dict\\cp932\" -Path \"$dir\\dict\" | Out-Null"
             ]
         },
         "32bit": {
@@ -28,19 +22,12 @@
             "hash": [
                 "3510bac5b47623b428da40276c99a6a836037df5532e8df2a8e4ab229a3e3e04",
                 "15f58dd292aa6fc8fd592fa97a75d58b5680ddf7aa66ba10a2dd5c9f0ee159c1"
-            ],
-            "post_install": [
-                "Write-Host \"Placing bregonig.dll, migemo.dll and dict folder\"",
-                "New-Item -Type HardLink -Target \"$dir\\bregonig\\bregonig.dll\" -Path \"$dir\bregonig.dll\" | Out-Null",
-                "New-Item -Type HardLink -Target \"$dir\\cmigemo-default-win32\\migemo.dll\" -Path \"$dir\\migemo.dll\" | Out-Null",
-                "New-Item -Type Junction -Target \"$dir\\cmigemo-default-win64\\dict\\cp932\" -Path \"$dir\\dict\" | Out-Null"
             ]
         }
     },
     "extract_to": [
         "",
-        "bregonig",
-        ""
+        "bregonig"
     ],
     "bin": [
         "AFXW.EXE",
@@ -52,6 +39,11 @@
         "AFXW.HIS",
         "AFXW.INI",
         "AFXW.KEY"
+    ],
+    "post_install": [
+        "Write-Host \"Placing bregonig.dll, migemo.dll and dict folder\"",
+        "$arch=@{'64bit'='\\x64';'32bit'='\\.'}[$architecture]",
+        "New-Item -Type HardLink -Target \"$dir\\bregonig\\$arch\\bregonig.dll\" -Path \"$dir\\bregonig.dll\" | Out-Null"
     ],
     "suggest": {
         "C/Migemo": "cmigemo"
