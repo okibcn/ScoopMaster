@@ -10,5 +10,32 @@
         "32bit": {
             "url": "https://github.com/jellyfin/jellyfin-media-player/releases/download/v1.9.1/JellyfinMediaPlayer-1.9.1-windows-x86.exe"
         }
+    },
+    "shortcuts": [
+        [
+            "JellyfinMediaPlayer.exe",
+            "Jellyfin Media Player"
+        ]
+    ],
+    "installer": {
+      "script": [
+          "$extracted = \"$dir\\extracted\"",
+          "$msi = \"$dir\\msi\"",
+          "Expand-DarkArchive \"$dir\\$fname\" \"$extracted\"",
+          "Expand-MsiArchive \"$extracted\\AttachedContainer\\PMP.msi\" \"$msi\"",
+          "Move-Item \"$msi\\Msi\\*\" \"$dir\" -Force",
+          "Remove-Item $extracted, $msi, \"$dir\\$fname\" -Force -Recurse"
+      ]
+  },
+  "checkver": "github",
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/jellyfin/jellyfin-media-player/releases/download/v$version/JellyfinMediaPlayer-$version-windows-x64.exe"
+            },
+            "32bit": {
+                "url": "https://github.com/jellyfin/jellyfin-media-player/releases/download/v$version/JellyfinMediaPlayer-$version-windows-x86.exe"
+            }
+        }
     }
 }
