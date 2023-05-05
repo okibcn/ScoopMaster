@@ -1,35 +1,13 @@
 {
-    "homepage": "https://github.com/Dreamacro/clash/wiki/Premium-Core-Features",
-    "description": "close-sourced pre-built Clash binary with TUN support and more (it's free)",
     "version": "2023.04.16",
-    "license": "Proprietary",
-    "persist": [
-        "config.yaml",
-        "Country.mmdb"
-    ],
-    "pre_install": [
-        "$config = \"$dir\\config.yaml\"",
-        "$value  = \"# Configuration reference:",
-        "# https: //github.com/Dreamacro/clash/wiki/configuration\"",
-        "if (!(Test-Path $config)) {",
-        "    Add-Content -Path $config -Value $value",
-        "}",
-        "$mmdb     = \"$dir\\Country.mmdb\"",
-        "$mmdb_url = \"https://cdn.jsdelivr.net/gh/Hackl0us/GeoIP2-CN@release/Country.mmdb\"",
-        "if (!(Test-Path $mmdb)) {",
-        "   Invoke-WebRequest -uri $mmdb_url -OutFile $mmdb",
-        "}"
-    ],
+    "description": "A rule-based tunnel",
+    "homepage": "https://github.com/Dreamacro/clash",
+    "license": "MIT",
     "architecture": {
         "64bit": {
-            "url": "https://github.com/Dreamacro/clash/releases/download/premium/clash-windows-amd64-2023.04.16.zip",
-            "hash": "52f45bf0e7f47ecb11da21af00c75350923efd1c42f4e02e8e50e1e2c703ca59",
+            "url": "https://release.dreamacro.workers.dev/2023.04.16/clash-windows-amd64-2023.04.16.zip",
+            "hash": "2a9e1e488760bcb4ed0b99972a23e9f7bad7dd602b55a470e1ee9412c7578069",
             "bin": [
-                [
-                    "clash-windows-amd64.exe",
-                    "clashd",
-                    "-d $dir"
-                ],
                 [
                     "clash-windows-amd64.exe",
                     "clash-premium"
@@ -37,14 +15,9 @@
             ]
         },
         "32bit": {
-            "url": "https://github.com/Dreamacro/clash/releases/download/premium/clash-windows-386-2023.04.16.zip",
-            "hash": "0d1765f5d48717cd43fa4977c2fd65b232fd904a9ed5a770409024df872b9f5c",
+            "url": "https://release.dreamacro.workers.dev/2023.04.16/clash-windows-386-2023.04.16.zip",
+            "hash": "9844ef58d6c714e1212cba96111faddfa0b7f248f71c0527dfb48e028284f115",
             "bin": [
-                [
-                    "clash-windows-386.exe",
-                    "clashd",
-                    "-d $dir"
-                ],
                 [
                     "clash-windows-386.exe",
                     "clash-premium"
@@ -52,24 +25,17 @@
             ]
         }
     },
-    "suggest": {
-        "Dashboard": [
-            "clash-dashboard",
-            "yacd"
-        ],
-        "Daemon": "nssm"
-    },
     "checkver": {
         "url": "https://github.com/Dreamacro/clash/releases/tag/premium",
-        "regex": "Premium\\s+([\\d.]+)"
+        "regex": "Premium (\\d+.\\d+.\\d+)"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://github.com/Dreamacro/clash/releases/download/premium/clash-windows-amd64-$version.zip"
+                "url": "https://release.dreamacro.workers.dev/$version/clash-windows-amd64-$version.zip"
             },
             "32bit": {
-                "url": "https://github.com/Dreamacro/clash/releases/download/premium/clash-windows-386-$version.zip"
+                "url": "https://release.dreamacro.workers.dev/$version/clash-windows-386-$version.zip"
             }
         }
     }
