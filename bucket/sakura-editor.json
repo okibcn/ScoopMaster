@@ -16,13 +16,17 @@
     ],
     "pre_install": [
         "if(!(Test-Path(\"$persist_dir\"))) { New-Item \"$persist_dir\" -type directory | Out-Null }",
-        "if(!(Test-Path(\"$persist_dir\\sakura.ini\"))) { ",
+        "if(!(Test-Path(\"$persist_dir\\sakura.ini\"))) { New-Item \"$persist_dir\\sakura.ini\" -type file | Out-Null }"
+    ],
+    "post_install": [
+        "if ((Get-Item \"$dir\\sakura.ini\").Length -eq 0) {",
+        "  Rename-Item -Path \"$dir\\sakura.ini\" -NewName \"$dir\\sakura_.ini\"",
         "  Start-Process -FilePath \"$dir\\sakura.exe\"",
         "  Stop-Process -Name sakura",
         "  Copy-Item -Path \"$dir\\sakura.ini\" -Destination \"$persist_dir\\sakura.ini\" -Force",
-        "}"
-    ],
-    "post_install": [
+        "  Remove-Item -LiteralPath \"$dir\\sakura.ini\"",
+        "  Rename-Item -Path \"$dir\\sakura_.ini\" -NewName \"$dir\\sakura.ini\"",
+        "}",
         "if (Test-Path \"$dir\\sakura-install-context.reg\") {",
         "  $sakurapath = \"$dir\\sakura.exe\".Replace('\\', '\\\\')",
         "  $content = Get-Content \"$dir\\sakura-install-context.reg\"",
