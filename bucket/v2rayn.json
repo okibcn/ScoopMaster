@@ -1,50 +1,34 @@
 {
     "version": "6.23",
-    "description": "GUI client based on v2ray core",
+    "description": "A V2Ray client for Windows, support Xray & v2fly core",
     "homepage": "https://github.com/2dust/v2rayN",
     "license": "GPL-3.0-only",
-    "depends": [
-        "v2ray",
-        "xray"
-    ],
+    "depends": "xray",
     "suggest": {
-        "rules": "v2ray-rules-dat"
+        ".NET Desktop Runtime": "extras/windowsdesktop-runtime-lts",
+        "v2fly-core": "main/v2ray"
     },
     "url": "https://github.com/2dust/v2rayN/releases/download/6.23/v2rayN.zip",
     "hash": "e03163198e4dbebdbb50f030da6104d802d9c108f262a33ffa9a1bf0cdf4126f",
     "extract_dir": "v2rayN",
     "pre_install": [
-        "foreach ($form in @('*.exe')) {",
-        "    foreach ($_ in Get-ChildItem \"$(appdir v2ray $global)\\current\" -File) {",
-        "        $name = $_.Name",
-        "        if ($name -Like $form) {",
-        "            Write-Host \"Creating SymbolicLink for $name\"",
-        "            New-Item -ItemType SymbolicLink -Path \"$dir\\bin\\v2fly_v5\\\" -Name $name -Target \"$(appdir v2ray $global)\\current\\$name\" | Out-Null",
-        "        }",
-        "    }",
-        "}",
-        "foreach ($form in @('*.exe')) {",
+        "foreach ($form in @('*.exe', '*.dat')) {",
         "    foreach ($_ in Get-ChildItem \"$(appdir xray $global)\\current\" -File) {",
         "        $name = $_.Name",
         "        if ($name -Like $form) {",
-        "            Write-Host \"Creating SymbolicLink for $name\"",
-        "            New-Item -ItemType SymbolicLink -Path \"$dir\\bin\\xray\\\" -Name $name -Target \"$(appdir xray $global)\\current\\$name\" | Out-Null",
+        "            Write-Host \"Creating hardlink for $name\"",
+        "            New-Item -ItemType HardLink -Path \"$dir\\bin\\Xray\" -Name $name -Target \"$(appdir xray $global)\\current\\$name\" | Out-Null",
         "        }",
         "    }",
-        "}",
-        "if (Test-Path $(appdir v2ray-rules-dat $global)) {",
-        "   Remove-Item -Path \"$dir\\bin\\\" -Include *.dat -Recurse -Force",
-        "   foreach ($form in @('*.dat')) {",
-        "       foreach ($_ in Get-ChildItem \"$(appdir v2ray-rules-dat $global)\\current\" -File) {",
-        "           $name = $_.Name",
-        "           if ($name -Like $form) {",
-        "               Write-Host \"Creating SymbolicLink for $name\"",
-        "               New-Item -ItemType SymbolicLink -Path \"$dir\\bin\\\" -Name $name -Target \"$(appdir v2ray-rules-dat $global)\\current\\$name\" | Out-Null",
-        "           }",
-        "       }",
-        "   }",
         "}"
     ],
+    "uninstaller": {
+        "script": [
+            "if (Test-Path \"$dir\\guiConfigs\\config.json\") {",
+            "    Copy-Item \"$dir\\guiConfigs\\config.json\" \"$persist_dir\\guiConfigs\\config.json\" | Out-Null",
+            "}"
+        ]
+    },
     "bin": "v2rayN.exe",
     "shortcuts": [
         [
