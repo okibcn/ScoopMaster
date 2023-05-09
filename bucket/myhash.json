@@ -1,29 +1,39 @@
 {
+    "homepage": "https://github.com/dragonyee/MyHash",
+    "license": "freeware",
+    "version": "1.4.7",
+    "url": "https://raw.githubusercontent.com/meihanai/jikoapp/main/app/MyHash/1.4.7/MyHash_1.4.7.7z",
+    "hash": "6f763beadbefb4903deca05edd32bddda3130b5b4e5ecbf1664948d96c65bb27",
     "architecture": {
-        "32bit": {
-            "bin": "MyHash.exe",
-            "shortcuts": [
-                [
-                    "MyHash.exe",
-                    "MyHash"
-                ]
-            ]
-        },
         "64bit": {
-            "bin": "MyHash64.exe",
-            "shortcuts": [
-                [
-                    "MyHash64.exe",
-                    "MyHash"
+            "installer": {
+                "script": [
+                    "Remove-Item \"$dir\\MyHash.exe\",\"$dir\\MyHash.ini\",\"$dir\\MyHashExt.dll\"",
+                    "Rename-Item \"$dir\\MyHash64.exe\" \"MyHash.exe\"",
+                    "Rename-Item \"$dir\\MyHash64.ini\" \"MyHash.ini\"",
+                    "Rename-Item \"$dir\\MyHashExt64.dll\" \"MyHashExt.dll\""
                 ]
-            ]
+            }
+        },
+        "32bit": {
+            "installer": {
+                "script": "Remove-Item \"$dir\\MyHash64.exe\",\"$dir\\MyHash64.ini\",\"$dir\\MyHashExt64.dll\""
+            }
         }
     },
-    "description": "一款采用并行计算, 充分利用多核CPU性能, 快速计算文件哈希值的工具",
-    "hash": "77F8C17B281CC693DBAD871A246867DFA1B0E4C56A1EACAD1D9E7DF72A92AA9B",
-    "homepage": "https://github.com/dragonyee/MyHash",
-    "license": "Unknown",
-    "notes": "添加鼠标右键菜单：软件标题栏 -> 右键 -> 增加右键菜单(R)",
-    "url": "https://pan.jiemi.workers.dev/?file=/scoop/MyHash_1.4.7_Final_drag0n.zip",
-    "version": "1.4.7"
+    "bin": "MyHash.exe",
+    "persist": "MyHash.ini",
+    "shortcuts": [
+        [
+            "MyHash.exe",
+            "MyHash"
+        ]
+    ],
+    "checkver": {
+        "url": "https://raw.githubusercontent.com/meihanai/jikoapp/main/versions/MyHash.latest",
+        "regex": "([\\d.]+)"
+    },
+    "autoupdate": {
+        "url": "https://raw.githubusercontent.com/meihanai/jikoapp/main/app/MyHash/$version/MyHash_$version.7z"
+    }
 }

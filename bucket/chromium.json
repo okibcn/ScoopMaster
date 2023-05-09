@@ -8,10 +8,6 @@
         "64bit": {
             "url": "https://github.com/Hibbiki/chromium-win64/releases/download/v113.0.5672.93-r1121455/chrome.sync.7z",
             "hash": "sha1:5fcb6cd922c4875a0ceead43b097556b863fd3ba"
-        },
-        "32bit": {
-            "url": "https://github.com/Hibbiki/chromium-win32/releases/download/v113.0.5672.93-r1121455/chrome.sync.7z",
-            "hash": "sha1:0914ccdc66e8ebd58cbad511584bd23a8aea02e8"
         }
     },
     "extract_dir": "Chrome-bin",
@@ -37,23 +33,17 @@
     ],
     "persist": "User Data",
     "checkver": {
-        "url": "https://github.com/Hibbiki/chromium-win64/releases/latest",
-        "regex": ">v([\\d.\\-r]+)</h1>"
+        "url": "https://api.github.com/repos/Hibbiki/chromium-win64/tags",
+        "jsonpath": "$..name",
+        "regex": "v([\\d.\\-r]+)"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
                 "url": "https://github.com/Hibbiki/chromium-win64/releases/download/v$version/chrome.sync.7z",
                 "hash": {
-                    "url": "https://github.com/Hibbiki/chromium-win64/releases/latest",
+                    "url": "https://github.com/Hibbiki/chromium-win64/releases/tag/v$version",
                     "regex": "$sha1 \\.\\./out/x64/chrome.sync.7z"
-                }
-            },
-            "32bit": {
-                "url": "https://github.com/Hibbiki/chromium-win32/releases/download/v$version/chrome.sync.7z",
-                "hash": {
-                    "url": "https://github.com/Hibbiki/chromium-win32/releases/latest",
-                    "regex": "$sha1 \\.\\./out/x86/chrome.sync.7z"
                 }
             }
         }
