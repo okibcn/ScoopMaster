@@ -1,17 +1,16 @@
 {
-    "version": "155",
-    "description": "A highly customizable fan controlling software for Windows",
+    "version": "156",
+    "description": "A highly customizable fan controlling software for the Windows OS.",
     "homepage": "https://getfancontrol.com/",
     "license": "Freeware",
-    "suggest": {
-        ".NET Desktop Runtime": "extras/windowsdesktop-runtime"
-    },
-    "architecture": {
-        "64bit": {
-            "url": "https://github.com/Rem0o/FanControl.Releases/releases/download/V155/FanControl_net_7_0.zip",
-            "hash": "288adb89861573637441fe222bbfbb1c1b9c35078109af5e498461e00fcd8b30"
-        }
-    },
+    "notes": "You will need to force close fancontrol before running this, I have tried multiple methods to force close it through the installer but it doesn't work. I will try to fix this in the future.",
+    "url": "https://raw.githubusercontent.com/Rem0o/FanControl.Releases/master/FanControl.zip",
+    "hash": "74012b41ee60703237aba1bbf9da4dcc4489528a81d82b8dc5b65b43d36b13cb",
+    "pre_install": [
+        "if (!(Test-Path \"$persist_dir\\Configurations\")) {",
+        "   New-Item \"$persist_dir\\Configurations\" -ItemType Directory -Force | Out-Null",
+        "}"
+    ],
     "shortcuts": [
         [
             "FanControl.exe",
@@ -19,19 +18,14 @@
         ]
     ],
     "persist": [
-        "Configurations",
-        "Plugins"
+        "plugins",
+        "Configurations"
     ],
     "checkver": {
-        "url": "https://api.github.com/repos/Rem0o/FanControl.Releases/releases/latest",
-        "jsonpath": "$.assets..browser_download_url",
-        "regex": "/V([\\d.]+)/FanControl_net_(?<netver>(?!4_8)[\\d_]+).zip"
+        "url": "https://raw.githubusercontent.com/Rem0o/FanControl.Releases/master/version.json",
+        "jsonpath": "$.Number"
     },
     "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://github.com/Rem0o/FanControl.Releases/releases/download/V$version/FanControl_net_$matchNetver.zip"
-            }
-        }
+        "url": "https://raw.githubusercontent.com/Rem0o/FanControl.Releases/master/FanControl.zip"
     }
 }
