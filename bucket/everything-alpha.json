@@ -7,23 +7,23 @@
     "architecture": {
         "64bit": {
             "url": "https://www.voidtools.com/Everything-1.5.0.1346a.x64.zip",
-            "hash": "ecc412b7d471096f59cab69f92cc83e02b075b9849a01a3b67f1d1c0dbcd6b74"
+            "hash": "56e8a8c9fcaaca50613c05f353b83c02427f7d151e45e0f5ff3b7ac2a0195c04"
         },
         "32bit": {
             "url": "https://www.voidtools.com/Everything-1.5.0.1346a.x86.zip",
-            "hash": "01609233272a2d71210d603a58b1b494573372f9135056f444eda454e7d0756d"
+            "hash": "8b9f44b55666734e7febcc527abab099fe73970194f01a517b7b37084c27417c"
         }
     },
     "pre_install": [
         "ensure \"$persist_dir\" | Out-Null",
         "if (Test-Path \"$dir\\Everything64.exe\") { Rename-Item \"$dir\\Everything64.exe\" 'Everything.exe' }",
-        "if (!(Test-Path \"$persist_dir\\Everything*.ini\")) { Invoke-ExternalCommand \"$dir\\Everything.exe\" -Args @('-install-config null') | Out-Null }",
-        "Get-ChildItem \"$persist_dir\\*\" -Include 'Bookmarks.csv', 'Everything.db', 'Everything.ini', 'Filters.csv', 'Search History.csv' | Copy-Item -Destination \"$dir\" -ErrorAction SilentlyContinue",
-        "Copy-Item \"$bucketsdir\\apps\\scripts\\everything\\uninstall-context.reg\" \"$dir\\\""
+        "if (!(Test-Path \"$persist_dir\\Everything*.ini\")) { Invoke-ExternalCommand \"$dir\\Everything.exe\" -Args @('-install-config', 'null') | Out-Null }",
+        "Get-ChildItem \"$persist_dir\\*\" -Include 'Bookmarks*.csv', 'Everything.lng', 'Everything*.db', 'Everything*.ini', 'Filters*.csv', 'Plugins*.ini', 'Run History*.csv', 'Search History*.csv' | Copy-Item -Destination \"$dir\" -ErrorAction SilentlyContinue",
+        "Copy-Item \"$bucketsdir\\versions\\scripts\\everything\\uninstall-context.reg\" \"$dir\\\""
     ],
     "post_install": [
         "$app_path = \"$dir\\Everything.exe\".Replace('\\', '\\\\')",
-        "$reg_content = Get-Content \"$bucketsdir\\apps\\scripts\\everything\\install-context.reg\"",
+        "$reg_content = Get-Content \"$bucketsdir\\versions\\scripts\\everything\\install-context.reg\"",
         "$reg_content = $reg_content.replace('$app_path', $app_path)",
         "Set-Content \"$dir\\install-context.reg\" $reg_content -Encoding ASCII"
     ],
@@ -38,7 +38,7 @@
         "    sc.exe delete 'Everything'",
         "}",
         "if ($cmd -eq 'uninstall') { reg import \"$dir\\uninstall-context.reg\" }",
-        "Get-ChildItem \"$dir\\*\" -Include 'Bookmarks.csv', 'Everything.db', 'Everything.ini', 'Filters.csv', 'Search History.csv' | Copy-Item -Destination \"$persist_dir\" -ErrorAction SilentlyContinue -Force"
+        "Get-ChildItem \"$dir\\*\" -Include 'Bookmarks*.csv', 'Everything.lng', 'Everything*.db', 'Everything*.ini', 'Filters*.csv', 'Plugins*.ini', 'Run History*.csv', 'Search History*.csv' | Copy-Item -Destination \"$persist_dir\" -ErrorAction SilentlyContinue -Force"
     ],
     "bin": "Everything.exe",
     "shortcuts": [
