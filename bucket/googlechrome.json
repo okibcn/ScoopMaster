@@ -1,5 +1,5 @@
 {
-    "version": "113.0.5672.64",
+    "version": "113.0.5672.93",
     "description": "Fast, secure, and free web browser, built for the modern web.",
     "homepage": "https://www.google.com/chrome/",
     "license": {
@@ -8,41 +8,24 @@
     },
     "architecture": {
         "64bit": {
-            "url": "https://dl.google.com/release2/chrome/oc4ajc46fztwjy5s2b3gkctjdi_113.0.5672.64/113.0.5672.64_chrome_installer.exe#/dl.7z",
-            "hash": "56b02b3562e7e61c200810ce14d900d7d7356c228516c253b27921914de44781"
+            "url": "https://dl.google.com/release2/chrome/pxdjhchicvhxhf56y2sondqxx4_113.0.5672.93/113.0.5672.93_chrome_installer.exe#/dl.7z",
+            "hash": "f9fee2df5d1bf50f3406bd9f82f0b88d93c45f0db866dc8d735a7e90ba5bfe4b"
         },
         "32bit": {
-            "url": "https://dl.google.com/release2/chrome/ad2xsj5cpidt5m7r42izxfjmfmnq_113.0.5672.64/113.0.5672.64_chrome_installer.exe#/dl.7z",
-            "hash": "6a4925547d5f1d311c8ed2d4670cee6e043dacd6956b22f8e239b4d48527ce88"
+            "url": "https://dl.google.com/release2/chrome/acqyhu64diifvdijdkf4nnuunqsa_113.0.5672.93/113.0.5672.93_chrome_installer.exe#/dl.7z",
+            "hash": "4c4cd477fb53465a3234464c20ab704859e869dc98052fc076824eceb5f35d2b"
         }
     },
     "installer": {
         "script": "Expand-7zipArchive \"$dir\\chrome.7z\" -ExtractDir 'Chrome-bin' -Removal"
     },
-    "bin": [
-        [
-            "chrome.exe",
-            "chrome",
-            "--user-data-dir=\"$dir\\User Data\""
-        ]
-    ],
+    "bin": "chrome.exe",
     "shortcuts": [
         [
             "chrome.exe",
-            "Google Chrome",
-            "--user-data-dir=\"$dir\\User Data\""
+            "Google Chrome"
         ]
     ],
-    "post_install": [
-        "if (!(Test-Path \"$dir\\User Data\\*\") -and (Test-Path \"$env:LocalAppData\\Google\\Chrome\\User Data\")) {",
-        "    info '[Portable Mode]: Copying user data...'",
-        "    Copy-Item \"$env:LocalAppData\\Google\\Chrome\\User Data\\*\" \"$dir\\User Data\" -Recurse",
-        "}"
-    ],
-    "env_set": {
-        "CHROME_EXECUTABLE": "$dir\\chrome.exe"
-    },
-    "persist": "User Data",
     "checkver": {
         "url": "https://scoopinstaller.github.io/UpdateTracker/googlechrome/chrome.min.xml",
         "regex": "(?sm)<stable32><version>(?<version>[\\d.]+)</version>.+release2/chrome/(?<32>[\\w-]+)_.+<stable64>.+release2/chrome/(?<64>[\\w-]+)_.+</stable64>"
