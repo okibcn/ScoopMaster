@@ -1,18 +1,18 @@
 {
-    "version": "2.0-36",
-    "description": "A Nintendo WiiU emulator capable of online play (development version)",
-    "homepage": "https://cemu.info/",
-    "license": "MPL-2.0",
+    "version": "2.0-37",
+    "description": "Nintendo Wii U emulator",
+    "homepage": "https://cemu.info",
+    "license": {
+        "identifier": "MPL-2.0",
+        "url": "https://github.com/cemu-project/Cemu/blob/main/LICENSE.txt"
+    },
     "suggest": {
         "Microsoft Visual C++ Runtime 2022": "extras/vcredist2022"
     },
-    "architecture": {
-        "64bit": {
-            "url": "https://github.com/cemu-project/Cemu/releases/download/v2.0-36/cemu-2.0-36-windows-x64.zip",
-            "hash": "0e20cd1ab3aa5890f9b8c9ac8acde0faf422c32f1f4a1db39a9057073ece7a87"
-        }
-    },
-    "extract_dir": "Cemu_2.0-36",
+    "url": "https://github.com/cemu-project/Cemu/releases/download/v2.0-37/cemu-2.0-37-windows-x64.zip",
+    "hash": "a1ece929da1508a4bf081c3e5a3fa0c826b77cd289cd31a54ed38a1c26fe3e46",
+    "extract_dir": "Cemu_2.0-37",
+    "pre_install": "if (!(Test-Path \"$persist_dir\\keys.txt\")) { New-Item \"$dir\\keys.txt\" -Type File | Out-Null }",
     "installer": {
         "script": [
             "if (!(Test-Path \"$persist_dir\\keys.txt\")) {",
@@ -31,14 +31,14 @@
     ],
     "bin": [
         [
-            "Cemu.exe",
+            "cemu.exe",
             "cemu-dev"
         ]
     ],
     "shortcuts": [
         [
-            "Cemu.exe",
-            "Cemu (Development)"
+            "cemu.exe",
+            "Cemu (dev)"
         ]
     ],
     "persist": [
@@ -53,21 +53,16 @@
     "uninstaller": {
         "script": [
             "'settings.xml' | ForEach-Object {",
-            "   Copy-Item \"$dir\\$_\" \"$persist_dir\\$_.bak\" -Force",
+            "   Copy-Item \"$dir\\$_\" \"$persist_dir\\$_.bak\" -Force -ErrorAction SilentlyContinue",
             "}"
         ]
     },
     "checkver": {
         "url": "https://github.com/cemu-project/Cemu/releases",
-        "regex": "Cemu (?<ver>\\d+\\.\\d+-\\d+) \\(Experimental\\)",
-        "replace": "${1}"
+        "regex": "v(\\d\\.\\d-\\d+)"
     },
     "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://github.com/cemu-project/Cemu/releases/download/v$matchVer/cemu-$matchVer-windows-x64.zip"
-            }
-        },
-        "extract_dir": "Cemu_$matchVer"
+        "url": "https://github.com/cemu-project/Cemu/releases/download/v$version/cemu-$version-windows-x64.zip",
+        "extract_dir": "Cemu_$version"
     }
 }
