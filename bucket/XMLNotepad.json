@@ -1,21 +1,17 @@
 {
-    "homepage": "https://github.com/Microsoft/XmlNotepad",
     "version": "2.9.0.2",
+    "description": "Provides a simple intuitive User Interface for browsing and editing XML documents",
+    "homepage": "https://microsoft.github.io/XmlNotepad/",
     "license": "MIT",
-    "url": "https://lovettsoftwarestorage.blob.core.windows.net/downloads/XmlNotepad/XmlNotepadSetup.zip",
-    "hash": "68a980c5e8f78395b1cbba921aac024dd033f15d98c5f8685ac1ac401de93e4c",
+    "url": "https://github.com/microsoft/XmlNotepad/releases/download/2.9.0.2/XmlNotepadPackage_2.9.0.2_AnyCPU.msixbundle#/dl.7z",
+    "hash": "e30846147408bb2267dc29c3893fabeab1c82878bb2ef552880e8731b19bc62c",
     "installer": {
         "script": [
-            "Expand-7ZipArchive \"$dir\\cab1.cab\" \"$dir\" -Removal",
-            "New-Item \"$dir\\Help\\images\" -Type Directory | Out-Null",
-            "Move-Item \"$dir\\*.htm\" \"$dir\\Help\"",
-            "Move-Item \"$dir\\*.css\" \"$dir\\Help\"",
-            "Move-Item \"$dir\\*.jpg\" \"$dir\\Help\\images\"",
-            "Move-Item \"$dir\\*.png\" \"$dir\\Help\\images\"",
-            "Remove-Item \"$dir\\XmlNotepadSetup.msi\""
+            "Get-ChildItem \"$dir\" -Filter '*AnyCPU.msix' | Rename-Item -NewName { $_.Name -replace '_[\\d.]+_', '_' }",
+            "Expand-7zipArchive \"$dir\\XmlNotepadPackage_AnyCPU.msix\" \"$dir\" -ExtractDir 'Application'",
+            "Remove-Item -Path \"$dir\" -Include *.msix, *.xml, Appx* -Force -Recurse"
         ]
     },
-    "bin": "XmlNotepad.exe",
     "shortcuts": [
         [
             "XmlNotepad.exe",
@@ -23,9 +19,9 @@
         ]
     ],
     "checkver": {
-        "github": "https://github.com/Microsoft/XmlNotepad"
+        "github": "https://github.com/microsoft/XmlNotepad"
     },
     "autoupdate": {
-        "url": "https://lovettsoftwarestorage.blob.core.windows.net/downloads/XmlNotepad/XmlNotepadSetup.zip"
+        "url": "https://github.com/microsoft/XmlNotepad/releases/download/$version/XmlNotepadPackage_$version_AnyCPU.msixbundle#/dl.7z"
     }
 }
