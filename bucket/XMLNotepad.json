@@ -1,17 +1,21 @@
 {
-    "version": "2.9.0.2",
-    "description": "Provides a simple intuitive User Interface for browsing and editing XML documents",
-    "homepage": "https://microsoft.github.io/XmlNotepad/",
+    "homepage": "https://github.com/Microsoft/XmlNotepad",
+    "version": "2.9.0.3",
     "license": "MIT",
-    "url": "https://github.com/microsoft/XmlNotepad/releases/download/2.9.0.2/XmlNotepadPackage_2.9.0.2_AnyCPU.msixbundle#/dl.7z",
-    "hash": "e30846147408bb2267dc29c3893fabeab1c82878bb2ef552880e8731b19bc62c",
+    "url": "https://lovettsoftwarestorage.blob.core.windows.net/downloads/XmlNotepad/XmlNotepadSetup.zip",
+    "hash": "faf293923dab3e9f7b5ce0ad0d851033ff942c552d289e3ff8ef29f6419ca998",
     "installer": {
         "script": [
-            "Get-ChildItem \"$dir\" -Filter '*AnyCPU.msix' | Rename-Item -NewName { $_.Name -replace '_[\\d.]+_', '_' }",
-            "Expand-7zipArchive \"$dir\\XmlNotepadPackage_AnyCPU.msix\" \"$dir\" -ExtractDir 'Application'",
-            "Remove-Item -Path \"$dir\" -Include *.msix, *.xml, Appx* -Force -Recurse"
+            "Expand-7ZipArchive \"$dir\\cab1.cab\" \"$dir\" -Removal",
+            "New-Item \"$dir\\Help\\images\" -Type Directory | Out-Null",
+            "Move-Item \"$dir\\*.htm\" \"$dir\\Help\"",
+            "Move-Item \"$dir\\*.css\" \"$dir\\Help\"",
+            "Move-Item \"$dir\\*.jpg\" \"$dir\\Help\\images\"",
+            "Move-Item \"$dir\\*.png\" \"$dir\\Help\\images\"",
+            "Remove-Item \"$dir\\XmlNotepadSetup.msi\""
         ]
     },
+    "bin": "XmlNotepad.exe",
     "shortcuts": [
         [
             "XmlNotepad.exe",
@@ -19,9 +23,9 @@
         ]
     ],
     "checkver": {
-        "github": "https://github.com/microsoft/XmlNotepad"
+        "github": "https://github.com/Microsoft/XmlNotepad"
     },
     "autoupdate": {
-        "url": "https://github.com/microsoft/XmlNotepad/releases/download/$version/XmlNotepadPackage_$version_AnyCPU.msixbundle#/dl.7z"
+        "url": "https://lovettsoftwarestorage.blob.core.windows.net/downloads/XmlNotepad/XmlNotepadSetup.zip"
     }
 }
