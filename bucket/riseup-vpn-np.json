@@ -24,11 +24,11 @@
         "script": [
             "# This checkver script is needed because the files, are not in a newest-to-oldest order",
             "$content = (Invoke-WebRequest 'https://downloads.leap.se/RiseupVPN/windows/').Content",
-            "$dates = Select-String -InputObject $content -AllMatches '([\\d]+-[\\w]+-[\\d]+\\s[\\d:]+)'",
-            "$highestDate = $dates.Matches.Value | Get-Date | Sort-Object -Unique -Descending",
-            "$highestDate = $highestDate[0] | Get-Date -UFormat '%d-%b-%Y %R'",
-            "$content -match \"RiseupVPN-installer-(?<version>[\\w.-]+)\\.exe</a>\\s+$highestDate\" | Out-Null",
-            "$version = $Matches.version",
+            "$releaseDate = Select-String -InputObject $content -AllMatches '([\\d]+-[\\w]+-[\\d]+\\s[\\d:]+)'",
+            "$releaseDate = $releaseDate.Matches.Value | Get-Date | Sort-Object -Unique -Descending",
+            "$releaseDate = $releaseDate[0] | Get-Date -UFormat '%d-%b-%Y %R'",
+            "$regex = \"RiseupVPN-installer-(?<version>[\\w.-]+)\\.exe</a>\\s+$releaseDate\"",
+            "$content -match $regex | Out-Null; $version = $Matches.version",
             "$version | Write-Output"
         ],
         "regex": "([\\w.-]+)"
