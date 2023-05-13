@@ -8,15 +8,15 @@
     "installer": {
         "script": [
             "if (!(is_admin)) { error \"$app requires admin rights to $cmd\"; break }",
-            "Start-Process \"$dir\\$fname\" -Wait -Verb 'RunAs' -Args @('in', '--am', '--confirm-command', '--al')",
-            "Remove-Item \"$dir\\$fname\""
+            "Start-Process \"$dir\\$fname\" -Wait -Verb 'RunAs' -WindowStyle 'Hidden' -Args @('in', '--am', '--confirm-command', '--al')",
+            "Remove-Item \"$dir\\$fname\", \"$env:APPDATA\\Microsoft\\Windows\\Start Menu\\Programs\\RiseupVPN\\Uninstall.lnk\" -Force"
         ]
     },
     "uninstaller": {
         "script": [
             "if (!(is_admin)) { error \"$app requires admin rights to $cmd\"; break }",
-            "Start-Process 'msiexec' -Wait -Verb 'RunAs' -Args @('/x', \"${env:ProgramFiles(x86)}\\RiseupVPN\\openvpn-installer.msi\", '/qn', '/norestart')",
-            "Start-Process \"${env:ProgramFiles(x86)}\\RiseupVPN\\uninstall.exe\" -Wait -Verb 'RunAs' -Args @('pr', '-c', '--am', '--al')",
+            "Start-Process 'msiexec' -Wait -Verb 'RunAs' -Args @('/x', \"`\"${env:ProgramFiles(x86)}\\RiseupVPN\\openvpn-installer.msi`\"\", '/qn', '/norestart')",
+            "Start-Process \"${env:ProgramFiles(x86)}\\RiseupVPN\\uninstall.exe\" -Wait -Verb 'RunAs' -Args @('pr', '--confirm-command', '--am', '--al')",
             "Start-Sleep -Seconds 2"
         ]
     },
