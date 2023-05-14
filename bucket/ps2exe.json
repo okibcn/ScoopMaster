@@ -16,19 +16,23 @@
     "autoupdate": {
         "url": "https://psg-prod-eastus.azureedge.net/packages/ps2exe.$version.nupkg"
     },
-    "post_install":[
+    "pre_install": [
         "if ($PSVersionTable.PSVersion.Major -gt 5) { # When in Powershell Core",
-        "   # Always install to Windows Powershell instead of Powershell Core as per https://github.com/MScholtes/PS2EXE#use-of-powershell-core",
-        "   $curInstallationPath = \"$scoopdir\\modules\\$($manifest.psmodule.name)\"",
-        "   $trueInstallationPath = Join-Path -Path $env:ProgramFiles -ChildPath \"WindowsPowerShell\\Modules\\$($manifest.psmodule.name)\"",
         "   # Check for Admin rights",
         "   $isAdmin = ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)",
         "   if (!$isAdmin) {",
         "       $exception = New-Object \"System.ArgumentException\" \"Administrator right is required to install the package for Powershell Core\"",
         "       throw $exception",
         "   }",
+        "}"
+    ],
+    "post_install":[
+        "if ($PSVersionTable.PSVersion.Major -gt 5) { # When in Powershell Core",
+        "   # Always install to Windows Powershell instead of Powershell Core as per https://github.com/MScholtes/PS2EXE#use-of-powershell-core",
+        "   $curInstallationPath = \"$scoopdir\\modules\\$($manifest.psmodule.name)\"",
+        "   $trueInstallationPath = Join-Path -Path $env:ProgramFiles -ChildPath \"WindowsPowerShell\\Modules\\$($manifest.psmodule.name)\"",
         "	if ((Test-Path -Path $trueInstallationPath) -and ((Get-Item $trueInstallationPath).LinkType -eq \"Junction\")) {",
-        "		Remove-Item $trueInstallationPath",
+        "	    Remove-Item $trueInstallationPath",
         "	}",
         "   Move-Item -Path $curInstallationPath -Destination $trueInstallationPath -Force",
         "   Import-Module ps2exe -UseWindowsPowerShell -WarningAction:SilentlyContinue",
