@@ -1,0 +1,23 @@
+{
+    "homepage": "https://git.ameliorated.info/Styris/amecs",
+    "description": "Script for automating a large assortment of AME related actions",
+    "license": "Unlicense",
+    "version": "1.3",
+    "url": "https://git.ameliorated.info/attachments/bff1182d-1be7-48e7-ad6b-39f367ab6b44#/dl.7z",
+    "hash": "5774cd9a80179bd1b1fb232061483db2819971b86b93fab1d4762f14e2c2c9e0",
+    "bin": "amecs.cmd",
+    "checkver": {
+        "script": [
+            "$amecs_release_page = Invoke-WebRequest -Uri 'https://git.ameliorated.info/Styris/amecs/releases'",
+            "$amecs_version_url = $amecs_release_page.Links | Where-Object href -match '/releases/tag/(?:v|V)?([\\d.]+)' | Select-Object -first 1 -expand href",
+            "$amecs_version_str = $matches[1]",
+            "$amecs_download_url = $amecs_release_page.Links | Where-Object href -match '/attachments/([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})' | Select-Object -first 1 -expand href",
+            "$amecs_download_path_uuid = $matches[1]",
+            "Write-Output $amecs_version_str $amecs_download_path_uuid"
+        ],
+        "regex": "(?<version>(?:v|V)?[\\d.]+)\\s(?<pathuuid>.+)"
+    },
+    "autoupdate": {
+        "url": "https://git.ameliorated.info/attachments/$matchPathuuid#/dl.7z"
+    }
+}
