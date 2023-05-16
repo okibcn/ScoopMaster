@@ -1,49 +1,35 @@
 {
-    "homepage": "https://github.com/YerongAI/Office-Tool",
-    "description": "Office Tool Plus is a tool for managing, downloading and installing Office.",
     "version": "10.1.8.5",
-    "license": "GPL-3.0-only",
-    "architecture": {
-        "64bit": {
-            "url": "https://github.com/YerongAI/Office-Tool/releases/download/v10.1.8.5/Office_Tool_v10.1.8.5_x64.zip",
-            "hash": "3410506ce149ad9d579f9a111db3fe53f164e5e033ca1e857c249841cb23cbc6"
-        },
-        "32bit": {
-            "url": "https://github.com/YerongAI/Office-Tool/releases/download/v10.1.8.5/Office_Tool_v10.1.8.5_x86.zip",
-            "hash": "cc8caefddcd300cbd89022360b08a9d25d19202dab5f253f3c02ee13d873a430"
-        },
-        "arm64": {
-            "url": "https://github.com/YerongAI/Office-Tool/releases/download/v10.1.8.5/Office_Tool_v10.1.8.5_arm64.zip",
-            "hash": "0c4b740ba9ae518d4e15b6cd168209b17dad2355b75fcbc2de776e83905d3828"
-        }
+    "description": "A simple tool for deploying Office",
+    "homepage": "https://otp.landian.vip",
+    "license": {
+        "identifier": "GPL-3.0-only",
+        "url": "https://github.com/YerongAI/Office-Tool/blob/main/LICENSE"
     },
+    "url": "https://github.com/YerongAI/Office-Tool/releases/download/v10.1.8.5/Office_Tool_with_runtime_v10.1.8.5.7z",
+    "hash": "3862747a956f3237610b15082e5be758b15b2ea222465eb6aa0e1fab837f2501",
     "extract_dir": "Office Tool",
+    "pre_install": "New-Item $dir\\Office -ItemType Directory -ErrorAction SilentlyContinue | Out-Null",
     "shortcuts": [
         [
             "Office Tool Plus.exe",
             "Office Tool Plus"
         ]
     ],
-    "persist": "Office",
+    "persist": [
+        [
+            "Office\\Data",
+            "Data"
+        ]
+    ],
     "checkver": {
-        "url": "https://api.github.com/repos/YerongAI/Office-Tool/releases",
-        "regex": "(?sm)browser_download_url.*?releases/download/v([\\d.]+)/Office_Tool_v([\\d.]+).*?\\.zip"
+        "github": "https://github.com/YerongAI/Office-Tool"
     },
     "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://github.com/YerongAI/Office-Tool/releases/download/v$version/Office_Tool_v$version_x64.zip"
-            },
-            "32bit": {
-                "url": "https://github.com/YerongAI/Office-Tool/releases/download/v$version/Office_Tool_v$version_x86.zip"
-            },
-            "arm64": {
-                "url": "https://github.com/YerongAI/Office-Tool/releases/download/v$version/Office_Tool_v$version_arm64.zip"
-            }
-        },
+        "url": "https://github.com/YerongAI/Office-Tool/releases/download/v$version/Office_Tool_with_runtime_v$version.7z",
         "hash": {
-            "url": "https://github.com/YerongAI/Office-Tool/releases",
-            "regex": "(?s)$basename.*?$sha256"
+            "url": "https://github.com/YerongAI/Office-Tool/releases/tag/v$version",
+            "regex": "with_runtime.*\\.7z.*\\n.*$sha256"
         }
     }
 }
