@@ -1,10 +1,15 @@
 {
     "homepage": "http://www.rejetto.com/hfs/",
-    "description": "HFS is a free, one single executable file Http File Server software.",
+    "description": "HFS is a free, one single executable file Http File Server software. Manifest forked from https://github.com/chawyehsu/dorado/blob/master/bucket/hfs.json and added persistence for config files",
     "license": "GPL-2.0-only",
     "version": "2.3m",
-    "url": "http://www.rejetto.com/hfs/hfs.exe",
-    "hash": "e678899d7ea9702184167b56655f91a69f8a0bdc9df65612762252c053c2cd7c",
+    "url": "https://downloads.sourceforge.net/project/hfs/HFS/2.3m/hfs2.3m.zip",
+    "hash": "sha1:adec3861661cba9d04c214223aaa078b4f4d35dd",
+    "pre_install": [
+        "if (!(Test-Path \"$persist_dir\\hfs.ini\")) { New-Item \"$dir\\hfs.ini\" | Out-Null }",
+        "if (!(Test-Path \"$persist_dir\\HFS.vfs\")) { New-Item \"$dir\\HFS.vfs\" | Out-Null }",
+        "if (!(Test-Path \"$persist_dir\\hfs.ips.txt\")) { New-Item \"$dir\\hfs.ips.txt\" | Out-Null }"
+    ],
     "bin": "hfs.exe",
     "shortcuts": [
         [
@@ -12,11 +17,16 @@
             "HFS"
         ]
     ],
+    "persist": [
+        "hfs.ini",
+        "HFS.vfs",
+        "hfs.ips.txt"
+    ],
     "checkver": {
         "url": "http://www.rejetto.com/hfs/?f=dl",
-        "re": "Latest version: \\<b\\>([\\w\\d.]+)\\<\\/b\\>"
+        "regex": "(?sm)Latest version: <b>([\\w\\d.]+)"
     },
     "autoupdate": {
-        "url": "http://www.rejetto.com/hfs/hfs.exe"
+        "url": "https://downloads.sourceforge.net/project/hfs/HFS/$version/hfs$version.zip"
     }
 }
