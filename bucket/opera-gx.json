@@ -1,5 +1,5 @@
 {
-    "version": "98.0.4759.64",
+    "version": "98.0.4759.74",
     "description": "Gaming counterpart of Opera web browser",
     "homepage": "https://www.opera.com/gx",
     "license": {
@@ -8,23 +8,44 @@
     },
     "architecture": {
         "64bit": {
-            "url": "https://download3.operacdn.com/pub/opera_gx/98.0.4759.64/win/Opera_GX_98.0.4759.64_Setup_x64.exe#/dl.7z",
-            "hash": "9ab0ca9c1216f78cdba7712380b3c57b24b58d69c736f9b5fe5a11ea3f3f8bfd"
+            "url": "https://download3.operacdn.com/pub/opera_gx/98.0.4759.74/win/Opera_GX_98.0.4759.74_Setup_x64.exe#/dl.7z",
+            "hash": "b666a6d1a0dba37e123726d593b771eb9c2c0ce784667d9619cd13f1ac9f3801"
         },
         "32bit": {
-            "url": "https://download3.operacdn.com/pub/opera_gx/98.0.4759.64/win/Opera_GX_98.0.4759.64_Setup.exe#/dl.7z",
-            "hash": "50df3de2a66b8d6c2e23eaef3447570be0a2046499048574cc42a4147ca8b4f7"
+            "url": "https://download3.operacdn.com/pub/opera_gx/98.0.4759.74/win/Opera_GX_98.0.4759.74_Setup.exe#/dl.7z",
+            "hash": "fb0e1cea8891ec9e0f504414b17991dbd43a75d22aec4fc563b16e594cad3a3b"
         }
     },
+    "pre_install": [
+        "$operagx_root = \"$dir\".Replace('\\', '\\\\')",
+        "'install-context.reg', 'uninstall-context.reg' | ForEach-Object {",
+        "    $content = Get-Content \"$bucketsdir\\business\\assets\\opera-gx\\$_\"",
+        "    $content = $content.Replace('$operagx_root', $operagx_root)",
+        "    if ($global) {",
+        "       $content = $content.Replace('HKEY_CURRENT_USER', 'HKEY_LOCAL_MACHINE')",
+        "    }",
+        "    Set-Content \"$dir\\$_\" $content -Encoding Ascii",
+        "}"
+    ],
     "installer": {
         "script": [
             "Remove-Item \"$dir\\*_list\" -Force",
-            "Move-Item \"$dir\\*\" \"$dir\\$version\" -Exclude 'Assets', 'launcher*', 'Resources.pri' -ErrorAction Ignore",
+            "Move-Item \"$dir\\*\" \"$dir\\$version\" -Exclude 'Assets', '*install-context.reg', 'launcher*', 'Resources.pri' -ErrorAction Ignore",
             "if (-not (Test-Path \"$dir\\$version\\localization\")) {",
             "   New-Item -Path \"$dir\\$version\\localization\" -ItemType Directory | Out-Null",
             "   Move-Item -Path \"$dir\\$version\\*.pak\" -Destination \"$dir\\$version\\localization\" -Exclude 'opera*' -ErrorAction Ignore",
             "}",
             "@{ 'autoupdate'= $false; 'enable_stats' = $false; 'single_profile' = $true } | ConvertTo-Json -Depth 20 | Out-File \"$dir\\installer_prefs.json\" -Encoding ASCII"
+        ]
+    },
+    "post_install": [
+        "reg import \"$dir\\install-context.reg\"",
+        "Write-Host Registering the app with : \"$dir\\install-context.reg\""
+    ],
+    "uninstaller": {
+        "script": [
+            "reg import \"$dir\\uninstall-context.reg\"",
+            "Write-Host UnRegistering the app with : \"$dir\\uninstall-context.reg\""
         ]
     },
     "shortcuts": [
