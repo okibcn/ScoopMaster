@@ -13,10 +13,19 @@
             "hash": "f7ca06613a577da8bea1dc45895b6c907bdb474fc5a91eb7aad8378dc7411a16"
         }
     },
-    "pre_install": [
-        "Move-Item $dir\\msdfgen\\* $dir\\"
-    ],
-    "bin": [
-        "msdfgen.exe"
-    ]
+    "pre_install": ["Move-Item $dir\\msdfgen\\* $dir\\"],
+    "bin": ["msdfgen.exe"],
+    "checkver": {
+        "github": "https://github.com/Chlumsky/msdfgen"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/Chlumsky/msdfgen/releases/download/v$version/msdfgen-$version-win64-openmp.zip"
+            },
+            "32bit": {
+                "url": "https://github.com/Chlumsky/msdfgen/releases/download/v$version/msdfgen-$version-win32-openmp.zip"
+            }
+        }
+    }
 }
