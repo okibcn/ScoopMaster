@@ -1,54 +1,33 @@
 {
-    "version": "7.1.1-9",
+    "version": "7.1.1-10",
     "description": "Create, edit, compose, and convert 200+ of bitmap images formats.",
     "homepage": "https://imagemagick.org/",
     "license": "ImageMagick",
-    "architecture": {
-        "64bit": {
-            "url": "https://imagemagick.org/archive/binaries/ImageMagick-7.1.1-9-Q16-HDRI-x64-dll.exe",
-            "hash": "6fdcd88e6435f9650debd862de98ef6d3cb085d773f6a637f23da138a67449b1"
-        },
-        "32bit": {
-            "url": "https://imagemagick.org/archive/binaries/ImageMagick-7.1.1-9-Q16-HDRI-x86-dll.exe",
-            "hash": "57ad1907eff106cb05aeb9a9a05ffc938d232d40ca2fb771ce1f105c5d251a40"
-        },
-        "arm64": {
-            "url": "https://imagemagick.org/archive/binaries/ImageMagick-7.1.1-9-Q16-HDRI-arm64-dll.exe",
-            "hash": "8e00ab91ead62697fe3948b8509c22aaca18683b3c7be7eeb28f79de04ec9880"
-        }
-    },
-    "innosetup": true,
-    "env_set": {
-        "MAGICK_HOME": "$dir",
-        "MAGICK_CONFIGURE_PATH": "$dir",
-        "MAGICK_CODER_MODULE_PATH": "$dir\\modules\\coders"
-    },
-    "env_add_path": ".",
-    "post_install": "Rename-Item $dir\\ffmpeg.exe $dir\\ffmpeg.exe.old",
-    "notes": [
-        "- The bundled ffmpeg has been renamed to 'ffmpeg.exe.old' to prevent conflict with a standalone ffmpeg installation - if you need it for ImageMagick tools, rename it back to 'ffmpeg.exe'.",
-        "- 'convert.exe' is deprecated in v7 (it also conflicts with the builtin Windows 'convert' utility). Use 'magick convert ...' instead."
+    "url": "https://download.imagemagick.org/ImageMagick/download/binaries/ImageMagick-7.1.1-10-portable-Q16-x64.zip",
+    "hash": "a6911d4eb61c308868c4f0f504be651866643ac261286d188f92c863836ce5a1",
+    "bin": [
+        "compare.exe",
+        "composite.exe",
+        "conjure.exe",
+        "convert.exe",
+        [
+            "convert.exe",
+            "imconvert"
+        ],
+        "dcraw.exe",
+        "identify.exe",
+        "IMDisplay.exe",
+        "magick.exe",
+        "mogrify.exe",
+        "montage.exe",
+        "stream.exe"
     ],
     "checkver": {
-        "url": "https://imagemagick.org/archive/binaries/digest.rdf",
-        "reverse": true,
-        "regex": "ImageMagick-([\\d.-]+)-Q16-HDRI-x64-dll\\.exe"
+        "url": "https://download.imagemagick.org/ImageMagick/download/binaries/",
+        "regex": "ImageMagick-((\\d+\\.)+(\\d+)-\\d+)-portable-Q16-x64.zip",
+        "reverse": true
     },
     "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://imagemagick.org/archive/binaries/ImageMagick-$version-Q16-HDRI-x64-dll.exe"
-            },
-            "32bit": {
-                "url": "https://imagemagick.org/archive/binaries/ImageMagick-$version-Q16-HDRI-x86-dll.exe"
-            },
-            "arm64": {
-                "url": "https://imagemagick.org/archive/binaries/ImageMagick-$version-Q16-HDRI-arm64-dll.exe"
-            }
-        },
-        "hash": {
-            "mode": "rdf",
-            "url": "https://imagemagick.org/archive/binaries/digest.rdf"
-        }
+        "url": "https://download.imagemagick.org/ImageMagick/download/binaries/ImageMagick-$version-portable-Q16-x64.zip"
     }
 }
