@@ -1,6 +1,6 @@
 {
-    "version": "1.7.4523",
-    "description": "A feature rich FOSS PlayStation 2 emulator (development version)",
+    "version": "1.7.4524",
+    "description": "Sony PlayStation 2 emulator",
     "homepage": "https://pcsx2.net/",
     "license": {
         "identifier": "GPL-3.0",
@@ -14,15 +14,11 @@
     "suggest": {
         "Microsoft Visual C++ Runtime 2022": "extras/vcredist2022"
     },
-    "architecture": {
-        "64bit": {
-            "url": "https://github.com/PCSX2/pcsx2/releases/download/v1.7.4523/pcsx2-v1.7.4523-windows-64bit-Qt.7z",
-            "hash": "94869ce7e39b70e8b9c5ccf81e92610bcb82da3e4e7c0ee0b040639612ddcfdf"
-        }
-    },
+    "url": "https://github.com/PCSX2/pcsx2/releases/download/v1.7.4524/pcsx2-v1.7.4524-windows-64bit-Qt.7z",
+    "hash": "c4e2ffe3d1673d86f8c2a05eb5681bb8152db8484d8152ba57c7e6109eb0855c",
     "pre_install": [
         "if (!(Test-Path \"$persist_dir\")) {",
-        "   New-Item \"$persist_dir\" -ItemType Directory | Out-Null",
+        "   New-item \"$persist_dir\" -ItemType Directory | Out-Null",
         "   if (Test-Path \"$env:USERPROFILE\\Documents\\PCSX2\") {",
         "       Write-host \"Migrating AppData...\" -ForegroundColor yellow",
         "       Copy-Item -Path \"$env:USERPROFILE\\Documents\\PCSX2\\*\" -Destination \"$persist_dir\" -Recurse",
@@ -48,14 +44,17 @@
     ],
     "persist": [
         "bios",
+        "cache",
         "cheats_ws",
         "cheats",
         "covers",
         "gamesettings",
         "inis",
+        "inputprofiles",
         "logs",
         "memcards",
         "portable.ini",
+        "shaders",
         "snaps",
         "sstates",
         "textures"
@@ -66,10 +65,6 @@
         "regex": "v([\\d.]+)"
     },
     "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://github.com/PCSX2/pcsx2/releases/download/v$version/pcsx2-v$version-windows-64bit-Qt.7z"
-            }
-        }
+        "url": "https://github.com/PCSX2/pcsx2/releases/download/v$version/pcsx2-v$version-windows-64bit-Qt.7z"
     }
 }
