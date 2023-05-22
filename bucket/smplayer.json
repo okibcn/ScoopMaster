@@ -1,54 +1,45 @@
 {
+    "homepage": "https://www.smplayer.info/",
+    "version": "22.7.0",
+    "license": "GPLv2",
     "architecture": {
-        "32bit": {
-            "hash": "sha1:e772bb17060ab145c50b2aa351a4012e889f122f",
-            "url": "https://downloads.sourceforge.net/project/smplayer/SMPlayer/22.7.0/smplayer-portable-22.7.0.0-win32.7z"
-        },
         "64bit": {
-            "hash": "sha1:fc3a4f384cf3fb5733b7dd784c467460451e4b92",
-            "url": "https://downloads.sourceforge.net/project/smplayer/SMPlayer/22.7.0/smplayer-portable-22.7.0.0-x64.7z"
+            "url": "https://sourceforge.net/projects/smplayer/files/SMPlayer/22.7.0/smplayer-22.7.0-x64.exe#/dl.7z",
+            "hash": "20df4aca2ee706cd1cd34cd0ef82db4310fe967702181b2236f0bc630b7bd29e"
+        },
+        "32bit": {
+            "url": "https://sourceforge.net/projects/smplayer/files/SMPlayer/22.7.0/smplayer-22.7.0-win32-qt5.6.exe#/dl.7z",
+            "hash": "8b63eeb3d250b92fcd0e07515d41ae7a98d95f82e7809a5829c67ab0baba9eb8"
         }
     },
-    "autoupdate": {
-        "architecture": {
-            "32bit": {
-                "hash": {
-                    "mode": "fosshub"
-                },
-                "url": "https://downloads.sourceforge.net/project/smplayer/SMPlayer/$version/smplayer-portable-$version.0-win32.7z"
-            },
-            "64bit": {
-                "hash": {
-                    "mode": "fosshub"
-                },
-                "url": "https://downloads.sourceforge.net/project/smplayer/SMPlayer/$version/smplayer-portable-$version.0-x64.7z"
-            }
-        },
-        "extract_dir": "smplayer-portable-$version.0"
-    },
     "bin": "smplayer.exe",
-    "checkver": {
-        "regex": "Click here to download SMPlayer ([\\d.]+) \\(64-bit\\)",
-        "url": "https://www.smplayer.info/downloads/"
-    },
-    "extract_dir": "smplayer-portable",
-    "homepage": "https://www.smplayer.info/",
-    "license": "GPL-2.0-only",
-    "persist": [
-        "smplayer.ini",
-        "playlist.ini",
-        "player_info.ini",
-        "hdpi.ini",
-        "favorites.m3u8",
-        "radio.m3u8",
-        "tv.m3u8",
-        "file_settings"
-    ],
     "shortcuts": [
         [
             "smplayer.exe",
             "SMPlayer"
         ]
     ],
-    "version": "22.7.0"
+    "post_install": "Remove-Item \"$dir\\`$PLUGINSDIR\" -Recurse",
+    "checkver": {
+        "url": "https://sourceforge.net/projects/smplayer/files/SMPlayer/",
+        "re": "/SMPlayer/([\\d.]+)/"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://sourceforge.net/projects/smplayer/files/SMPlayer/$version/smplayer-$version-x64.exe#/dl.7z",
+                "hash": {
+                    "url": "https://www.fosshub.com/SMPlayer.html",
+                    "find": "SMPlayer  Windows 64 bit.*\\n.*\\n.*\\n.*\\n.*\\n.*\\n.*SHA256: ([a-fA-F0-9]{64})</strong>"
+                }
+            },
+            "32bit": {
+                "url": "https://sourceforge.net/projects/smplayer/files/SMPlayer/$version/smplayer-$version-win32-qt5.6.exe#/dl.7z",
+                "hash": {
+                    "url": "https://www.fosshub.com/SMPlayer.html",
+                    "find": "SMPlayer  Windows 32 bit.*\\n.*\\n.*\\n.*\\n.*\\n.*\\n.*SHA256: ([a-fA-F0-9]{64})</strong>"
+                }
+            }
+        }
+    }
 }
