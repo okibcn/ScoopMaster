@@ -18,11 +18,14 @@
         "Remove-Item \"$dir\\LibreWolf-WinUpdater.exe\"",
         "# Customizing LibreWolf Using AutoConfig",
         "# https://support.mozilla.org/en-US/kb/customizing-firefox-using-autoconfig",
-        "$Addition = \"$persist_dir\\addition\"",
-        "if (Test-Path $Addition) {",
-        "  info 'Copying additional items...'",
-        "  Copy-Item -Path $Addition\\* -Destination \"$dir\" -Force -Recurse -ErrorAction SilentlyContinue",
-        "}"
+        "ensure \"$persist_dir\\LibreWolf\\defaults\\pref\" | Out-Null",
+        "Copy-Item \"$persist_dir\\LibreWolf\\defaults\\pref\\*\" \"$dir\\LibreWolf\\defaults\\pref\" -Exclude 'channel-prefs.js'",
+        "Copy-Item \"$persist_dir\\LibreWolf\\*.js\", \"$persist_dir\\LibreWolf\\*.cfg\" \"$dir\\LibreWolf\"",
+        "# Customizing LibreWolf Using policies.json",
+        "# https://support.mozilla.org/en-US/kb/customizing-firefox-using-policiesjson",
+        "# Used to override the default policies.json of LibreWolf, if you want",
+        "ensure \"$persist_dir\\LibreWolf\\distribution\" | Out-Null",
+        "Copy-Item \"$persist_dir\\LibreWolf\\distribution\\policies.json\" \"$dir\\LibreWolf\\distribution\" -ErrorAction SilentlyContinue"
     ],
     "bin": [
         [
