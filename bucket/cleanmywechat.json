@@ -1,7 +1,7 @@
 {
-    "version": "2.0",
-    "description": "A cleaning tool for Wechat files.",
     "homepage": "https://github.com/blackboxo/CleanMyWechat",
+    "description": "A cleaning tool for Wechat files",
+    "version": "2.0",
     "license": "MIT",
     "architecture": {
         "64bit": {
@@ -10,24 +10,18 @@
         }
     },
     "extract_dir": "CleanMyWechat",
-    "installer": {
-        "script": [
-            "ensure $persist_dir",
-            "Get-ChildItem -Path \"$persist_dir\" -Filter \"config.json\" -File | Move-Item -Destination \"$dir\" -Force"
-        ]
-    },
+    "pre_install":[
+        "if (!(Test-Path $persist_dir\\config.json)) {",
+        "    New-Item -Path $persist_dir\\config.json -Value $NULL -ItemType File -Force | Out-Null",
+        "}"
+    ],
+    "persist": "config.json",
     "shortcuts": [
         [
             "start.exe",
             "CleanMyWechat"
         ]
     ],
-    "uninstaller": {
-        "script": [
-            "Get-ChildItem -Path \"$persist_dir\" -Filter \"config.json\" | Remove-Item -Force",
-            "Get-ChildItem -Path \"$dir\" -Filter \"config.json\" -File | Move-Item -Destination \"$persist_dir\" -Force"
-        ]
-    },
     "checkver":"github",
     "autoupdate": {
         "architecture": {
