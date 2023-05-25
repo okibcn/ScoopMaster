@@ -1,15 +1,10 @@
 {
-    "##": "百度网盘",
-    "version": "7.28.1.6",
-    "description": "[百度网盘（原百度云）] - 百度网盘是百度推出的一项云存储服务，用户将可以轻松将自己的文件上传到网盘上，并可跨终端随时随地查看和分享。",
-    "license": {
-        "identifier": "Proprietary",
-        "url": "https://pan.baidu.com/disk/main#/protocol/duty_mobi"
-    },
-    "url": "http://issuecdn.baidupcs.com/issue/netdisk/yunguanjia/BaiduNetdisk_7.28.1.6.exe#/dl.7z",
-    "homepage": "http://pan.baidu.com",
+    "homepage": "https://pan.baidu.com/download",
+    "description": "百度网盘PC版",
+    "version": "7.29.0.2",
+    "url": "http://issuecdn.baidupcs.com/issue/netdisk/yunguanjia/BaiduNetdisk_7.29.0.2.exe#dl.7z",
+    "hash": "b23172014e29a27952debde5e8edcecc2db9d3c13a9cfe78bb3adc4e892349fa",
     "bin": "BaiduNetdisk.exe",
-    "hash": "93f6c3035f3d3369e3b0548a683bc1d72fb4b64291c6fc9c6a9d1d0f7a45b3a3",
     "shortcuts": [
         [
             "BaiduNetdisk.exe",
@@ -17,18 +12,15 @@
         ]
     ],
     "persist": "users",
+    "post_install": [
+        "Remove-Item \"$dir\\`$PLUGINSDIR\" -Recurse",
+        "Remove-Item \"$dir\\`$TEMP\" -Recurse"
+    ],
     "checkver": {
-        "url": "http://pan.baidu.com/disk/cmsdata?do=client",
-        "regex": "BaiduNetdisk_([\\d.]+)\\.exe"
+        "url": "https://pan.baidu.com/disk/cmsdata?do=client",
+        "regex": "BaiduNetdisk_(\\d+.\\d+.\\d+.\\d+).exe"
     },
     "autoupdate": {
-        "url": "http://issuecdn.baidupcs.com/issue/netdisk/yunguanjia/BaiduNetdisk_$version.exe#/dl.7z",
-        "hash": {
-            "mode": "download"
-        }
-    },
-    "post_install": [
-        "Remove-Item \"$dir\\`$PLUGINSDIR\" -Force -Recurse",
-        "Remove-Item \"$dir\\`$TEMP\" -Force -Recurse"
-    ]
+        "url": "http://issuecdn.baidupcs.com/issue/netdisk/yunguanjia/BaiduNetdisk_$version.exe#dl.7z"
+    }
 }
