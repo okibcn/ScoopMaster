@@ -7,38 +7,35 @@
     "suggest": {
         "vcredist": "extras/vcredist2022"
     },
+    "url": "https://github.com/microsoft/terminal/releases/download/v1.18.1421.0/Microsoft.WindowsTerminalPreview_1.18.1421.0_8wekyb3d8bbwe.msixbundle#/dl.7z",
+    "hash": "08F749E71FDEDBF967AED18163005727B4CD91BDBFC93847F4172CD18F3AC417",
     "architecture": {
         "64bit": {
-            "url": "https://github.com/microsoft/terminal/releases/download/v1.18.1421.0/Microsoft.WindowsTerminalPreview_1.18.1421.0_x64.zip",
-            "hash": "a216681cdc0f1b9709201193862d49e54b8047604a342350a2fc98656172f67f"
+            "pre_install": "Get-ChildItem \"$dir\" -Exclude '*x64.msix' | Remove-Item -Force -Recurse"
         },
         "32bit": {
-            "url": "https://github.com/microsoft/terminal/releases/download/v1.18.1421.0/Microsoft.WindowsTerminalPreview_1.18.1421.0_x86.zip",
-            "hash": "043c24ae080c71871958643d1f71976921e6c4cc553ba118846ccca5d93278d2"
-        },
-        "arm64": {
-            "url": "https://github.com/microsoft/terminal/releases/download/v1.18.1421.0/Microsoft.WindowsTerminalPreview_1.18.1421.0_arm64.zip",
-            "hash": "5cc4413ac36ac3c3b3c63c4a57239723fd16df3a1fc25f620ca54bcf0b7f3ff1"
+            "pre_install": "Get-ChildItem \"$dir\" -Exclude '*x86.msix' | Remove-Item -Force -Recurse"
         }
     },
-    "extract_dir": "terminal-1.18.1421.0",
     "installer": {
         "script": [
             "$winVer = [Environment]::OSVersion.Version",
-            "if (($winver.Major -lt '10') -or ($winVer.Build -lt 19041)) { error 'At least Windows 10 20H1 (build 19041) is required.'; break }",
-            "if (!(Test-Path \"$persist_dir\\.portable\")) { Add-Content \"$dir\\.portable\" '' -Encoding Ascii }"
+            "if (($winver.Major -lt '10') -or ($winVer.Build -lt 18362)) { error 'At least Windows 10 19H1 (build 18362) is required.'; break }",
+            "Get-ChildItem \"$dir\" '*.msix' | Select-Object -ExpandProperty Fullname | Expand-7zipArchive -DestinationPath \"$dir\" -Removal",
+            "Get-ChildItem \"$dir\\ProfileIcons\" '*.png' | Rename-Item -NewName { $_.Name.Replace('%7B', '{').Replace('%7D', '}') }"
         ]
     },
     "post_install": [
         "'install-context', 'uninstall-context' | ForEach-Object {",
-        "    if (Test-Path \"$bucketsdir\\heap\\scripts\\windows-terminal-preview\\$_.reg\") {",
+        "    if (Test-Path \"$bucketsdir\\versions\\scripts\\windows-terminal-preview\\$_.reg\") {",
         "        $wtPath = \"$dir\".Replace('\\', '\\\\')",
-        "        $content = (Get-Content \"$bucketsdir\\heap\\scripts\\windows-terminal-preview\\$_.reg\").Replace('$wt', $wtPath)",
+        "        $content = (Get-Content \"$bucketsdir\\versions\\scripts\\windows-terminal-preview\\$_.reg\").Replace('$wt', $wtPath)",
         "        if ($global) { $content = $content.Replace('HKEY_CURRENT_USER', 'HKEY_LOCAL_MACHINE') }",
         "        Set-Content \"$dir\\$_.reg\" $content -Encoding Ascii -Force",
         "    }",
         "}"
     ],
+    "pre_uninstall": "if ($cmd -eq 'uninstall') { reg import \"$dir\\uninstall-context.reg\" }",
     "bin": [
         [
             "WindowsTerminal.exe",
@@ -55,27 +52,11 @@
             "Windows Terminal Preview"
         ]
     ],
-    "persist": [
-        ".portable",
-        "settings"
-    ],
-    "pre_uninstall": "if ($cmd -eq 'uninstall') { reg import \"$dir\\uninstall-context.reg\" }",
     "checkver": {
         "url": "https://github.com/microsoft/terminal/releases",
-        "regex": ">Windows Terminal Preview v([\\d\\.]+)</a>"
+        "regex": "(?s)Windows Terminal Preview.*?/tree/v([\\d.]+).*Microsoft.WindowsTerminalPreview_(?<full>[\\d.]+)"
     },
     "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://github.com/microsoft/terminal/releases/download/v$version/Microsoft.WindowsTerminalPreview_$version_x64.zip"
-            },
-            "32bit": {
-                "url": "https://github.com/microsoft/terminal/releases/download/v$version/Microsoft.WindowsTerminalPreview_$version_x86.zip"
-            },
-            "arm64": {
-                "url": "https://github.com/microsoft/terminal/releases/download/v$version/Microsoft.WindowsTerminalPreview_$version_arm64.zip"
-            }
-        },
-        "extract_dir": "terminal-$version"
+        "url": "https://github.com/microsoft/terminal/releases/download/v$version/Microsoft.WindowsTerminalPreview_$version_8wekyb3d8bbwe.msixbundle#/dl.7z"
     }
 }
