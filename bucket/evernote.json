@@ -1,18 +1,24 @@
 {
     "version": "10.57.6",
+    "description": "App for note taking, organizing, task lists, and archiving",
     "homepage": "https://evernote.com/",
-    "license": "Freeware",
+    "license": {
+        "identifier": "EULA",
+        "url": "https://evernote.com/legal/terms-of-service"
+    },
+    "notes": "We don't persist your Evernote data, they are still storaged in \"$env:APPDATA\\Evernote\".",
     "url": "https://cdn1.evernote.com/boron/win/builds/Evernote-10.57.6-win-ddl-ga-4112-0071a90cd2-setup.exe#/dl.7z",
-    "hash": "sha512:6abe7d6cbd4b73006612d3ac63ebad384d8679aa059c8c0895b1a383a1362c217e54fb8217830857a3fa2a8939f26e9e4b923de98dec270c083ae0c9bbf99ea2",
+    "hash": "fe4c501045c233ba13cfbf6e17c40508d19e9688da1f896e1b52adebf0625920",
     "installer": {
         "script": [
-            "Remove-Item \"$dir\\Unins*\", \"$dir\\resources\" -Force -Recurse",
-            "if ($architecture -eq '64bit') {",
-            "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\"",
-            "} elseif ($architecture -eq '32bit') {",
-            "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-32.7z\" \"$dir\"",
+            "if ([Environment]::Is64BitOperatingSystem) {",
+            "    Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" $dir -Removal",
+            "} else {",
+            "    Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-32.7z\" $dir -Removal",
             "}",
-            "Remove-Item \"$dir\\`$PLUGINSDIR\" -Force -Recurse"
+            "Remove-Item \"$dir\\Uninstall Evernote.exe\"",
+            "Remove-Item \"$dir\\`$PLUGINSDIR\" -Force -Recurse",
+            "Remove-Item \"$dir\\resources\" -Force -Recurse"
         ]
     },
     "shortcuts": [
@@ -22,14 +28,10 @@
         ]
     ],
     "checkver": {
-        "url": "https://evernote.s3.amazonaws.com/boron/win/public/latest.yml",
-        "regex": "Evernote-([\\d.]+)-(?<tail>.+).exe"
+        "url": "https://evernote.com/download",
+        "regex": "Evernote-([\\d.]+)(?<tail>.+)\\.exe"
     },
     "autoupdate": {
-        "url": "https://cdn1.evernote.com/boron/win/builds/Evernote-$version-$matchTail.exe#/dl.7z",
-        "hash": {
-            "url": "https://evernote.s3.amazonaws.com/boron/win/public/latest.yml",
-            "regex": "sha512: $base64"
-        }
+        "url": "https://cdn1.evernote.com/boron/win/builds/Evernote-$version$matchTail.exe#/dl.7z"
     }
 }
