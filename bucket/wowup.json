@@ -1,17 +1,17 @@
 {
     "version": "2.9.3",
-    "description": "World of Warcraft addon updater.",
+    "description": "the World of Warcraft addon updater",
     "homepage": "https://wowup.io/",
-    "license": "GPL-3.0-or-later",
-    "url": "https://github.com/WowUp/WowUp/releases/download/v2.9.3/WowUp-Setup-2.9.3.exe#/dl.7z",
-    "hash": "sha512:9a1629ccc6763747e0697d950b740cd550911a1d6e49483ac26c10ef59e918104c0c11d961f8d2d7a54e949e8dd549c581870cffb9fee3db55b7f00a74937185",
-    "extract_dir": "$PLUGINSDIR",
+    "license": "GPL-3",
     "installer": {
         "script": [
-            "Remove-Item \"$dir\\*\" -Exclude 'app-64.7z'",
-            "Expand-7zipArchive \"$dir\\app-64.7z\" \"$dir\" -Removal"
+            "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\"",
+            "Remove-Item \"$dir\\`$PLUGINSDIR\" -Force -Recurse"
         ]
     },
+    "url": "https://github.com/WowUp/WowUp/releases/download/v2.9.3/WowUp-SetUp-2.9.3.exe#dl.7z",
+    "hash": "463dc704520b6fe11c893ac0630590cc9ff9ccc8f2b34a5793d036d6f1b15f09",
+    "bin": "WowUp.exe",
     "shortcuts": [
         [
             "WowUp.exe",
@@ -22,10 +22,6 @@
         "github": "https://github.com/WowUp/WowUp"
     },
     "autoupdate": {
-        "url": "https://github.com/WowUp/WowUp/releases/download/v$version/WowUp-Setup-$version.exe#/dl.7z",
-        "hash": {
-            "url": "$baseurl/latest.yml",
-            "find": "sha512:\\s+(.*)"
-        }
+        "url": "https://github.com/WowUp/WowUp/releases/download/v$version/WowUp-SetUp-$version.exe#dl.7z"
     }
 }
