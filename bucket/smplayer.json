@@ -1,39 +1,27 @@
 {
-    "architecture": {
-        "32bit": {
-            "hash": "sha1:e772bb17060ab145c50b2aa351a4012e889f122f",
-            "url": "https://downloads.sourceforge.net/project/smplayer/SMPlayer/22.7.0/smplayer-portable-22.7.0.0-win32.7z"
-        },
-        "64bit": {
-            "hash": "sha1:fc3a4f384cf3fb5733b7dd784c467460451e4b92",
-            "url": "https://downloads.sourceforge.net/project/smplayer/SMPlayer/22.7.0/smplayer-portable-22.7.0.0-x64.7z"
-        }
-    },
-    "autoupdate": {
-        "architecture": {
-            "32bit": {
-                "hash": {
-                    "mode": "fosshub"
-                },
-                "url": "https://downloads.sourceforge.net/project/smplayer/SMPlayer/$version/smplayer-portable-$version.0-win32.7z"
-            },
-            "64bit": {
-                "hash": {
-                    "mode": "fosshub"
-                },
-                "url": "https://downloads.sourceforge.net/project/smplayer/SMPlayer/$version/smplayer-portable-$version.0-x64.7z"
-            }
-        },
-        "extract_dir": "smplayer-portable-$version.0"
-    },
-    "bin": "smplayer.exe",
-    "checkver": {
-        "regex": "Click here to download SMPlayer ([\\d.]+) \\(64-bit\\)",
-        "url": "https://www.smplayer.info/downloads/"
-    },
-    "extract_dir": "smplayer-portable",
+    "version": "22.7.0",
+    "description": "Free media player for Windows and Linux with built-in codecs that can also play YouTube videos.",
     "homepage": "https://www.smplayer.info/",
     "license": "GPL-2.0-only",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/smplayer-dev/smplayer/releases/download/v22.7.0/smplayer-portable-22.7.0.0-x64.7z",
+            "hash": "72819385d35f727aa76a513233f7472e82c334d333e879d73682dcc6800cd62a"
+        },
+        "32bit": {
+            "url": "https://github.com/smplayer-dev/smplayer/releases/download/v22.7.0/smplayer-portable-22.7.0.0-win32-qt5.6.7z",
+            "hash": "1f85eb91fed00b15e58a111476a5633e8d1dfc850cb622b10af081dc027a13a4"
+        }
+    },
+    "extract_dir": "smplayer-portable",
+    "pre_install": [
+        "function CreateFile ($name, $value = $null) {",
+        "    if (!(Test-Path \"$persist_dir\\$name\")) {",
+        "        Set-Content \"$dir\\$name\" $value -Encoding Ascii",
+        "    }",
+        "}",
+        " 'mpv\\youtube-dl.exe', 'tv.m3u8', 'radio.m3u8', 'favorites.m3u8', 'hdpi.ini', 'playlist.ini', 'player_info.ini' | ForEach-Object { CreateFile $_ } "
+    ],
     "persist": [
         "smplayer.ini",
         "playlist.ini",
@@ -50,5 +38,17 @@
             "SMPlayer"
         ]
     ],
-    "version": "22.7.0"
+    "checkver": {
+        "github": "https://github.com/smplayer-dev/smplayer"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/smplayer-dev/smplayer/releases/download/v$version/smplayer-portable-$version.0-x64.7z"
+            },
+            "32bit": {
+                "url": "https://github.com/smplayer-dev/smplayer/releases/download/v$version/smplayer-portable-$version.0-win32-qt5.6.7z"
+            }
+        }
+    }
 }
