@@ -1,25 +1,32 @@
 {
     "version": "20220512",
-    "description": "Ultra light self-hosted file server.",
-    "homepage": "https://webd.cf/",
-    "license": "Freeware",
+    "description": "轻量级自建网盘软件，无依赖，速度快，资源占用低",
+    "homepage": "https://webd.cf",
+    "license": "Unknown",
     "url": "https://gwgw.ga/webd/20220512/webd-20220512-win32.7z",
-    "hash": "e42e4d5f4dfb8cb79efec81854e9ac78189f10e70e101995cefb6e98de96ddf5",
+    "hash": "sha1:e0f1cd786571919c5cffcaec16fe001329fa9c3d",
     "extract_dir": "webd",
-    "bin": "webd.exe",
     "shortcuts": [
         [
             "webd.exe",
             "webd"
         ]
     ],
-    "persist": "webd.conf",
+    "persist": [
+        "web",
+        "webd.conf"
+    ],
+    "notes": "Edit the default configuration file $dir\\webd.conf before starting.",
     "checkver": {
-        "url": "https://webd.cf/",
-        "regex": ">下载地址 (\\d+)</a>"
+        "url": "https://gwgw.ga/webd/flst.txt",
+        "regex": "(\\d{8})",
+        "reverse": true
     },
     "autoupdate": {
-        "url": "https://gwgw.ga/webd/$version/webd-$version-win32.7z"
-    },
-    "notes": "Visit https://webd.cf/ for usage."
+        "url": "https://gwgw.ga/webd/$version/webd-$version-win32.7z",
+        "hash": {
+            "url": "$baseurl/sha1sums.txt",
+            "regex": "$sha1\\s*$basename"
+        }
+    }
 }
