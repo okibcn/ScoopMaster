@@ -9,6 +9,7 @@
         "script": [
             "# older versions of Powershell 5 requires BOM to recognize UTF8 scripts",
             "$cont = Get-Content \"$dir\\Install.ps1\" -Encoding utf8",
+            "$cont = $cont -ireplace [regex]::Escape('Etc\\hosts'), 'NUL'",
             "Set-Content \"$dir\\Install.ps1\" $cont -Encoding utf8",
             "& \"$dir\\Install.ps1\" -confirm_uninstall_ms_spoti -confirm_spoti_recomended_over -podcasts_off -cache_limit 1024 -block_update_on -adsections_off -no_shortcut"
         ]
