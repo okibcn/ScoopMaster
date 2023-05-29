@@ -1,34 +1,31 @@
 {
-    "version": "1.5.6",
-    "description": "A commandline downloader for Bilibili.",
     "homepage": "https://github.com/nilaoda/BBDown",
+    "description": "a commandline video downloader for bilibili.com",
     "license": "MIT",
-    "architecture": {
-        "64bit": {
-            "url": "https://github.com/nilaoda/BBDown/releases/download/1.5.6/BBDown_1.5.6_20230529_win-x64.zip",
-            "hash": "985a32895155719feec28c49ec4b1a04ae51d7187e9af6a82db91caae7f655fe"
-        },
-        "arm64": {
-            "url": "https://github.com/nilaoda/BBDown/releases/download/1.5.6/BBDown_1.5.6_20230529_win-arm64.zip",
-            "hash": "35dd134cf4d46ed4f6af9b7b53cdf867f27c8168f08eed0b8009b0912bcd1359"
-        }
-    },
-    "bin": "BBDown.exe",
-    "suggest": {
-        "ffmpeg": "ffmpeg"
-    },
+    "version": "1.5.5",
+    "url": "https://github.com/nilaoda/BBDown/releases/download/1.5.5/BBDown_1.5.5_20230526_win-x64.zip",
+    "hash": "770b6717bad784c527785690fa530ba895c1791c391d9b95d9674386929f703f",
+    "depends": [
+        "aria2",
+        "ffmpeg"
+    ],
+    "bin": [
+        [
+            "BBDown.exe",
+            "bbdown"
+        ]
+    ],
+    "pre_install": [
+        "if (!(Test-Path \"$persist_dir\\BBDown.config\")) {",
+        "    New-Item \"$dir\\BBDown.config\" -Type File | Out-Null",
+        "}"
+    ],
+    "persist": "BBDown.config",
     "checkver": {
         "url": "https://api.github.com/repos/nilaoda/BBDown/releases/latest",
-        "regex": "BBDown_([\\d.]+)_(?<date>\\d+)_win-x64"
+        "re": "BBDown_(?<version>[\\d\\w.]+)_(?<date>\\d+)_win-x64(?<suffix>.*?)\\.zip"
     },
     "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://github.com/nilaoda/BBDown/releases/download/$version/BBDown_$version_$matchDate_win-x64.zip"
-            },
-            "arm64": {
-                "url": "https://github.com/nilaoda/BBDown/releases/download/$version/BBDown_$version_$matchDate_win-arm64.zip"
-            }
-        }
+        "url": "https://github.com/nilaoda/BBDown/releases/download/$version/BBDown_$version_$matchDate_win-x64$matchSuffix.zip"
     }
 }
