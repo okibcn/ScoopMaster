@@ -1,30 +1,37 @@
 {
-    "homepage": "http://dimio.altervista.org/eng/#DSynchronize",
     "version": "2.48",
-    "license": "freeware",
+    "description": "A lightweight file-synchronization tool with many features",
+    "homepage": "http://dimio.altervista.org/eng/#DSynchronize",
+    "license": "Freeware",
     "url": "http://dimiodati.altervista.org/zip/dsynchronize.zip",
-    "hash": "68c1aca3dbd1bd22be8ec52e7433bb36acb1b765cc2362614fc8611d14856f69",
+    "hash": "bda51d2f1d0456bababef99fae8a59dda6b0319b83a0068c10f353dd307bbd3f",
     "extract_dir": "dsynchronize",
-    "bin": "DSynchronize.exe",
-    "persist": [
-        "DSynchronize.ini",
-        "Remote Controller.ini"
-    ],
     "shortcuts": [
         [
             "DSynchronize.exe",
             "DSynchronize"
         ],
         [
-            "Remote Controller.exe",
-            "DSynchronize Remote Controller"
+            "Monitor.exe",
+            "DSynchronize Monitor"
         ]
     ],
+    "pre_install": [
+        "'DSynchronize.ini', 'DSynchronize.log', 'Monitor.ini' | ForEach-Object {",
+        "   if(!(Test-Path \"$persist_dir\\$_\")) { New-Item \"$dir\\$_\" | Out-Null }",
+        "}"
+    ],
+    "persist": [
+        "DSynchronize.ini",
+        "DSynchronize.log",
+        "Monitor.ini"
+    ],
     "checkver": {
-        "url": "http://dimio.altervista.org/eng/",
-        "regex": "DSynchronize v([\\d.]+)"
+        "regex": "DSynchronize v([\\d.]+)",
+        "url": "http://dimio.altervista.org/eng/"
     },
     "autoupdate": {
-        "url": "http://dimiodati.altervista.org/zip/dsynchronize.zip"
+        "url": "http://dimiodati.altervista.org/zip/dsynchronize.zip",
+        "extract_dir": "dsynchronize"
     }
 }

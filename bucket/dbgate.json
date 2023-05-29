@@ -1,19 +1,38 @@
 {
     "version": "5.2.5",
-    "description": "DbGate - The smartest (no)SQL database client",
+    "description": "A database manager for MySQL, PostgreSQL, SQL Server, MongoDB, SQLite and others.",
+    "homepage": "https://dbgate.org/",
     "license": "MIT",
-    "homepage": "https://github.com/dbgate/dbgate",
-    "url": "https://github.com/dbgate/dbgate/releases/download/v5.2.5/dbgate-windows-latest.zip",
-    "hash": "e5917f459946d64153d3a9b2fcd9fea45238ac335a677223a8a5cc0f6a8ba971",
-    "bin": "dbgate.exe",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/dbgate/dbgate/releases/download/v5.2.5/dbgate-5.2.5-win_x64.zip",
+            "hash": "e5917f459946d64153d3a9b2fcd9fea45238ac335a677223a8a5cc0f6a8ba971"
+        }
+    },
+    "pre_install": "Remove-Item \"$dir\\resources\\app-update.yml\" -Force -Recurse",
+    "bin": [
+        [
+            "dbgate.exe",
+            "dbgate",
+            "--user-data-dir=\"$dir\\User Data\""
+        ]
+    ],
     "shortcuts": [
         [
             "dbgate.exe",
-            "DbGate"
+            "DbGate",
+            "--user-data-dir=\"$dir\\User Data\""
         ]
     ],
-    "checkver": "github",
+    "persist": "User Data",
+    "checkver": {
+        "github": "https://github.com/dbgate/dbgate"
+    },
     "autoupdate": {
-        "url": "https://github.com/dbgate/dbgate/releases/download/v$version/dbgate-windows-latest.zip"
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/dbgate/dbgate/releases/download/v$version/dbgate-$version-win_x64.zip"
+            }
+        }
     }
 }
