@@ -12,8 +12,9 @@
             "Get-ChildItem $dir -File -Filter '*.ttf' | ForEach-Object {",
             "    Write-Host Installing $_.Name",
             "    $fontdir = \"$env:LocalAppData\\Microsoft\\Windows\\Fonts\"",
-            "    New-ItemProperty -Path 'registry::HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts' -Name '0xProto Regular (TrueType)' -Value \"$fontdir\\($_.Name)\" -Force | Out-Null",
-            "    Copy-Item $_.FullName -destination \"$fontdir\"",
+            "    New-ItemProperty -Path 'registry::HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts' -Name '0xProto Regular (TrueType)' -Value \"$fontdir\\$($_.Name)\" -Force | Out-Null",
+            "    mkdir -Path \"$fontdir\" -Force | Out-Null",
+            "    Copy-Item -LiteralPath \"$($_.FullName)\" -Destination \"$fontdir\"",
             "}"
         ]
     },
@@ -23,7 +24,7 @@
             "    Write-Host Uninstalling $_.Name",
             "    $fontdir = \"$env:LocalAppData\\Microsoft\\Windows\\Fonts\"",
             "    Remove-ItemProperty -Path 'registry::HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts' -Name '0xProto Regular (TrueType)' -Force -ErrorAction SilentlyContinue",
-            "   Remove-Item \"$fontdir\\$($_.Name)\" -Force -ErrorAction SilentlyContinue",
+            "    Remove-Item -LiteralPath \"$fontdir\\$($_.Name)\" -Force -ErrorAction SilentlyContinue",
             "}",
             "Write-Host \"The '$app' Font family has been uninstalled and will not be present after restarting your computer.\" -Foreground Magenta"
         ]
