@@ -11,11 +11,10 @@
         "script": [
             "Get-ChildItem $dir -File -Filter '*.ttf' | ForEach-Object {",
             "    Write-Host Installing $_.Name",
-            "    $fontdir = \"$env:LocalAppData\\Microsoft\\Windows\\Fonts\"",
+            "    $fontdir = \"$env:WinDir\\Fonts\"",
             "    $fontname = '0xProto Regular (TrueType)'",
-            "    New-ItemProperty -Path 'registry::HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts' -Name \"$fontname\" -Value \"$fontdir\\$($_.Name)\" -Force | Out-Null",
-            "    mkdir -Path \"$fontdir\" -Force | Out-Null",
-            "    Copy-Item -LiteralPath \"$($_.FullName)\" -Destination \"$fontdir\"",
+            "    sudo New-ItemProperty -Path 'registry::HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts' -Name \"$fontname\" -Value \"$($_.Name)\" -Force | Out-Null",
+            "    sudo Copy-Item -LiteralPath \"$($_.FullName)\" -Destination \"$fontdir\"",
             "}"
         ]
     },
@@ -23,9 +22,10 @@
         "script": [
             "Get-ChildItem $dir -File -Filter '*.ttf' | ForEach-Object {",
             "    Write-Host Uninstalling $_.Name",
-            "    $fontname = '0xProto Regular (TrueType)'",
-            "    Remove-ItemProperty -Path 'registry::HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts' -Name \"$fontname\" -Force -ErrorAction SilentlyContinue",
-            "    Remove-Item -LiteralPath \"$fontdir\\$($_.Name)\" -Force -ErrorAction SilentlyContinue",
+            "    $fontdir = \"$env:WinDir\\Fonts\"",
+            "    $fontname = 'DejaVu Sans Mono - Bront (TrueType)'",
+            "    sudo Remove-ItemProperty -Path 'registry::HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts' -Name \"$fontname\" -Force -ErrorAction SilentlyContinue",
+            "    sudo Remove-Item -LiteralPath \"$fontdir\\$($_.Name)\" -Force -ErrorAction SilentlyContinue",
             "}",
             "Write-Host \"The '$app' Font family has been uninstalled and will not be present after restarting your computer.\" -Foreground Magenta"
         ]
