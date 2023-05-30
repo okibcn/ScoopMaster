@@ -9,21 +9,23 @@
     "depends": "sudo",
     "installer": {
         "script": [
-            "if(!(is_admin)) { error \"Admin rights are required, please run 'sudo scoop install $app'\"; exit 1 }",
             "Get-ChildItem $dir -File -Filter '*.ttf' | ForEach-Object {",
             "    Write-Host Installing $_.Name",
-            "    New-ItemProperty -Path 'registry::HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts' -Name 'DejaVu Sans Mono - Bront (TrueType)' -Value \"$($_.Name)\" -Force | Out-Null",
-            "    Copy-Item $_.FullName -destination \"$env:WinDir\\Fonts\"",
+            "    $fontdir = \"$env:LocalAppData\\Microsoft\\Windows\\Fonts\"",
+            "    $fontname = 'DejaVu Sans Mono - Bront (TrueType)'",
+            "    New-ItemProperty -Path 'registry::HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts' -Name \"$fontname\" -Value \"$fontdir\\$($_.Name)\" -Force | Out-Null",
+            "    mkdir -Path \"$fontdir\" -Force | Out-Null",
+            "    Copy-Item -LiteralPath \"$($_.FullName)\" -Destination \"$fontdir\"",
             "}"
         ]
     },
     "uninstaller": {
         "script": [
-            "if(!(is_admin)) { error \"Admin rights are required, please run 'sudo scoop uninstall $app'\"; exit 1 }",
             "Get-ChildItem $dir -File -Filter '*.ttf' | ForEach-Object {",
             "    Write-Host Uninstalling $_.Name",
-            "    Remove-ItemProperty -Path 'registry::HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts' -Name 'DejaVu Sans Mono - Bront (TrueType)' -Force -ErrorAction SilentlyContinue",
-            "    Remove-Item \"$env:WinDir\\Fonts\\$($_.Name)\" -Force -ErrorAction SilentlyContinue",
+            "    $fontname = 'DejaVu Sans Mono - Bront (TrueType)'",
+            "    Remove-ItemProperty -Path 'registry::HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts' -Name \"$fontname\" -Force -ErrorAction SilentlyContinue",
+            "    Remove-Item -LiteralPath \"$fontdir\\$($_.Name)\" -Force -ErrorAction SilentlyContinue",
             "}",
             "Write-Host \"The '$app' Font family has been uninstalled and will not be present after restarting your computer.\" -Foreground Magenta"
         ]
