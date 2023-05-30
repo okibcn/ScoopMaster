@@ -1,0 +1,31 @@
+{
+    "description": "Free and Open-source font for programming.",
+    "version": "1.000",
+    "license": "OFL-1.1",
+    "homepage": "https://github.com/0xType/0xProto",
+    "url": "https://github.com/0xType/0xProto/releases/download/1.000/0xProto-Regular.ttf",
+    "hash": "",
+    "checkver": "github",
+    "depends": "sudo",
+    "installer": {
+        "script": [
+            "Get-ChildItem $dir -File -Filter '*.ttf' | ForEach-Object {",
+            "    Write-Host Installing $_.Name",
+            "    $fontdir = \"$env:LocalAppData\\Microsoft\\Windows\\Fonts\"",
+            "    New-ItemProperty -Path 'registry::HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts' -Name '0xProto Regular (TrueType)' -Value \"$fontdir\\($_.Name)\" -Force | Out-Null",
+            "    Copy-Item $_.FullName -destination \"$fontdir\"",
+            "}"
+        ]
+    },
+    "uninstaller": {
+        "script": [
+            "Get-ChildItem $dir -File -Filter '*.ttf' | ForEach-Object {",
+            "    Write-Host Uninstalling $_.Name",
+            "    $fontdir = \"$env:LocalAppData\\Microsoft\\Windows\\Fonts\"",
+            "    Remove-ItemProperty -Path 'registry::HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts' -Name '0xProto Regular (TrueType)' -Force -ErrorAction SilentlyContinue",
+            "   Remove-Item \"$fontdir\\$($_.Name)\" -Force -ErrorAction SilentlyContinue",
+            "}",
+            "Write-Host \"The '$app' Font family has been uninstalled and will not be present after restarting your computer.\" -Foreground Magenta"
+        ]
+    }
+}

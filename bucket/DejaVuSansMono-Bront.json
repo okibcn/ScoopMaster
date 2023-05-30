@@ -21,6 +21,7 @@
         "script": [
             "if(!(is_admin)) { error \"Admin rights are required, please run 'sudo scoop uninstall $app'\"; exit 1 }",
             "Get-ChildItem $dir -File -Filter '*.ttf' | ForEach-Object {",
+            "    Write-Host Uninstalling $_.Name",
             "    Remove-ItemProperty -Path 'registry::HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts' -Name 'DejaVu Sans Mono - Bront (TrueType)' -Force -ErrorAction SilentlyContinue",
             "    Remove-Item \"$env:WinDir\\Fonts\\$($_.Name)\" -Force -ErrorAction SilentlyContinue",
             "}",

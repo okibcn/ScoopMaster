@@ -2,32 +2,30 @@
     "version": "23.00",
     "description": "A multi-format file archiver with high compression ratios",
     "homepage": "https://www.7-zip.org/",
-    "license": {
-        "identifier": "Freeware,LGPL-2.0-only,BSD-3-Clause",
-        "url": "https://www.7-zip.org/license.txt"
-    },
-    "notes": "Add 7-Zip as a context menu option by running: \"$dir\\7zip-install-context.reg\"",
+    "license": "LGPL-2.1-or-later",
+    "notes": "Add 7-Zip as a context menu option by running: \"$dir\\install-context.reg\"",
     "architecture": {
         "64bit": {
             "url": "https://7-zip.org/a/7z2300-x64.msi",
             "hash": "4dc4f14ffef0691108dd93bd032248ac47dc5cc7f444699d6bb8721c1a77cd0b"
+        },
+        "32bit": {
+            "url": "https://7-zip.org/a/7z2300.msi",
+            "hash": "98d68c5a30f06b2181a876d5a5800b35976f604f2d6f6f1fcaf243011d987163"
         }
     },
+    "extract_dir": "Files\\7-Zip",
     "post_install": [
         "$7zip_root = \"$dir\".Replace('\\', '\\\\')",
-        "'7zip-install-context.reg', '7zip-uninstall-context.reg' | ForEach-Object {",
-        "    $content = Get-Content \"$bucketsdir\\$bucket\\scripts\\$app\\$_\"",
-        "    $content = $content.Replace('&install_dir', $7zip_root)",
+        "'install-context.reg', 'uninstall-context.reg' | ForEach-Object {",
+        "    $content = Get-Content \"$bucketsdir\\main\\scripts\\7-zip\\$_\"",
+        "    $content = $content.Replace('$7zip_root', $7zip_root)",
         "    if ($global) {",
         "       $content = $content.Replace('HKEY_CURRENT_USER', 'HKEY_LOCAL_MACHINE')",
         "    }",
-        "    Set-Content \"$dir\\$_\" $content -Encoding UTF-8",
-        "}",
-        "if (!(Test-Path \"$persist_dir\\7z.dll\")) {",
-        "   Copy-Item -Path \"$bucketsdir\\$bucket\\scripts\\$app\\7z_office.dll\" -Destination \"$persist_dir\\7z.dll\" -Force",
+        "    Set-Content \"$dir\\$_\" $content -Encoding Ascii",
         "}"
     ],
-    "extract_dir": "Files\\7-Zip",
     "bin": "7z.exe",
     "shortcuts": [
         [
@@ -37,8 +35,7 @@
     ],
     "persist": [
         "Codecs",
-        "Formats",
-        "7z.dll"
+        "Formats"
     ],
     "checkver": {
         "url": "https://www.7-zip.org/download.html",
@@ -48,6 +45,9 @@
         "architecture": {
             "64bit": {
                 "url": "https://7-zip.org/a/7z$cleanVersion-x64.msi"
+            },
+            "32bit": {
+                "url": "https://7-zip.org/a/7z$cleanVersion.msi"
             }
         }
     }
