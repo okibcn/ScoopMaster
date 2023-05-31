@@ -1,26 +1,39 @@
 {
     "homepage": "https://github.com/LokerL/tts-vue",
-    "description": "微软语音合成工具，使用 Electron + Vue + ElementPlus + Vite 构建。",
     "version": "1.9.3",
-    "license": "MIT",
-    "url": "https://github.com/LokerL/tts-vue/releases/download/1.9.3/tts-vue-1.9.3.zip",
-    "hash": "945efb2107eede2aed2b484ae56bfe77ae9741f7ce8cb53cb695e5376f526ce0",
-    "extract_dir": "1.9.3",
-    "installer": {
-        "script": [
-            "$installer = Get-Item $dir\\tts-vue_*.exe",
-            "&$installer /S"
-        ]
+    "description": "🎤 微软语音合成工具，使用 Electron + Vue + ElementPlus + Vite 构建。",
+    "license": {
+        "identifier": "Freeware"
     },
-    "uninstaller": {
-        "script": [
-            "$uninstaller = Get-Item \"$env:LocalAppData\\Programs\\tts-vue\\Uninstall tts-vue.exe\"",
-            "&$uninstaller /S"
-        ]
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/LokerL/tts-vue/releases/download/1.9.3/tts-vue-1.9.3.zip",
+            "hash": "945efb2107eede2aed2b484ae56bfe77ae9741f7ce8cb53cb695e5376f526ce0"
+        }
     },
+    "notes": [
+        "Save/Read config_data to Persist directory as follows:",
+        "1. run tts-vue",
+        "2. stop tts-vue",
+        "3. run script by powershell  >>>  $dir\\scoop_persist.ps1 $persist_dir"
+    ],
+    "persist":"",
+    "post_install": [
+        "$tts_vue_root = \"$dir\".Replace('\\', '\\\\')",
+        "'scoop_persist.ps1' | ForEach-Object {",
+        "    $content = Get-Content \"$bucketsdir\\abgo_bucket\\scripts\\tts-vue\\$_\"",
+        "    $content = $content.Replace('$tts_vue_root', $tts_vue_root)",
+        "    if ($global) {",
+        "       $content = $content.Replace('HKEY_CURRENT_USER', 'HKEY_LOCAL_MACHINE')",
+        "    }",
+        "    Set-Content \"$dir\\$_\" $content -Encoding Ascii",
+        "};",
+        "echo \"$dir\\$version\\tts-vue_$version.exe /S /D=$dir\\$version\" > \"$dir/install.ps1\"",
+        "Write-Error \"The app cannot be installed automatically. You need to run the install.ps1 immediately by using powershell，the script path is follow：\";echo \"\";echo \"$dir/install.ps1\";echo \"\";pause"
+    ],
     "checkver": "github",
     "autoupdate": {
-        "url": "https://github.com/LokerL/tts-vue/releases/download/$version/tts-vue-$version.zip",
-        "extract_dir": "$version"
+        "note": "Thanks for using autoupdate, please test your updates!",
+        "url": "https://github.com/LokerL/tts-vue/releases/download/$version/tts-vue-$version.zip"
     }
 }
