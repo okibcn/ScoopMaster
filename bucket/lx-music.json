@@ -1,11 +1,14 @@
 {
-    "version": "2.2.2",
-    "description": "A music app based on electron and vue",
     "homepage": "https://github.com/lyswhut/lx-music-desktop",
-    "license": {
-        "identifier": "Apache-2.0",
-        "url": "https://github.com/lyswhut/lx-music-desktop/blob/master/LICENSE"
-    },
+    "description": "An electron-based music player",
+    "version": "2.2.2",
+    "license": "Apache-2.0",
+    "notes": [
+        "Save data-setting to Persist directory as follows:",
+        "1. run lx-music",
+        "2. stop lx-music",
+        "3. run script by powershell  >>>  $dir\\scoop_persist.ps1 $persist_dir"
+    ],
     "architecture": {
         "64bit": {
             "url": "https://github.com/lyswhut/lx-music-desktop/releases/download/v2.2.2/lx-music-desktop-v2.2.2-win_x64-green.7z",
@@ -16,18 +19,22 @@
             "hash": "082c9a874d271990b815e2cc55af9a891bb3a2fe2fd8ec065cacb96d086cfe89"
         }
     },
-    "pre_install": "New-Item $dir\\portable -ItemType Directory -ErrorAction SilentlyContinue | Out-Null",
     "shortcuts": [
         [
             "lx-music-desktop.exe",
-            "LX Music"
+            "lx-music"
         ]
     ],
-    "persist": [
-        [
-            "portable\\userData",
-            "userData"
-        ]
+    "post_install": [
+        "$lx_music_root = \"$dir\".Replace('\\', '\\\\')",
+        "'scoop_persist.ps1' | ForEach-Object {",
+        "    $content = Get-Content \"$bucketsdir\\abgo_bucket\\scripts\\lx-music\\$_\"",
+        "    $content = $content.Replace('$lx_music_root', $lx_music_root)",
+        "    if ($global) {",
+        "       $content = $content.Replace('HKEY_CURRENT_USER', 'HKEY_LOCAL_MACHINE')",
+        "    }",
+        "    Set-Content \"$dir\\$_\" $content -Encoding Ascii",
+        "}"
     ],
     "checkver": "github",
     "autoupdate": {
