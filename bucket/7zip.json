@@ -9,14 +9,22 @@
     "notes": "Add 7-Zip as a context menu option by running: \"$dir\\install-context.reg\"",
     "architecture": {
         "64bit": {
-            "url": "https://7-zip.org/a/7z2300-x64.msi",
-            "hash": "4dc4f14ffef0691108dd93bd032248ac47dc5cc7f444699d6bb8721c1a77cd0b"
+            "url": [
+                "https://7-zip.org/a/7z2300-x64.msi",
+                "https://raw.githubusercontent.com/asoluter/Scoop-Asoluter/main/scripts/7-zip/install-context.reg",
+                "https://raw.githubusercontent.com/asoluter/Scoop-Asoluter/main/scripts/7-zip/uninstall-context.reg"
+            ],
+            "hash": [
+                "4dc4f14ffef0691108dd93bd032248ac47dc5cc7f444699d6bb8721c1a77cd0b",
+                "358c8a2f87c4dc89c86ee4c72c71766856da146c0a8840001e6821fe5bb0c7ca",
+                "667ef7b5c7bfb6cdcc595042ac6c0cae802fbfd59fc601b22b533f6f1bcaf374"
+            ]
         }
     },
     "pre_install": [
         "$7zip_root = \"$dir\".Replace('\\', '\\\\')",
         "'install-context.reg', 'uninstall-context.reg' | ForEach-Object {",
-        "    $content = Get-Content \"$bucketsdir\\main\\scripts\\7-zip\\$_\"",
+        "    $content = Get-Content \"$dir\\$_\"",
         "    $content = $content.Replace('$7zip_root', $7zip_root)",
         "    if ($global) {",
         "       $content = $content.Replace('HKEY_CURRENT_USER', 'HKEY_LOCAL_MACHINE')",
@@ -37,8 +45,8 @@
         "Formats"
     ],
     "checkver": {
-        "url": "https://www.7-zip.org/download.html",
-        "regex": "Download 7-Zip ([\\d.]+)"
+        "url": "https://www.7-zip.org/history.txt",
+        "regex": "\\n([\\d.]+)"
     },
     "autoupdate": {
         "architecture": {
