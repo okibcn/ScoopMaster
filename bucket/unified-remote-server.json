@@ -7,6 +7,7 @@
         "url": "https://www.unifiedremote.com/terms"
     },
     "notes": [
+        "NOTE: Unified Remote requires all of these to be installed so it can work properly.",
         "If you want to add/remove firewall exceptions, run:",
         "$dir\\add_windows_firewall_exceptions.cmd",
         "$dir\\remove_windows_firewall_exceptions.cmd",
@@ -79,6 +80,7 @@
         "    }",
         "    # Create configuration files.",
         "    foreach ($extension in 'log', 'config') { New-Item \"$dir\\Server.$extension\" | Out-Null }",
+        "    New-Item \"$dir\\Service.log\" | Out-Null",
         "",
         "} catch {",
         "    Write-Host \"Something is wrong`n$_\"",
@@ -92,7 +94,8 @@
     ],
     "persist": [
         "Server.log",
-        "Server.config"
+        "Server.config",
+        "Service.log"
     ],
     "pre_uninstall": [
         "if (!(is_admin)) { error \"$app requires admin rights to $cmd\"; break }",
@@ -104,12 +107,9 @@
         "    Write-Host 'Uninstalling Unified Virtual HID driver...'",
         "    Start-Process \"$dir\\uvhid\\uvhid.exe\" -Wait -Verb 'RunAs' -WindowStyle 'Hidden' -Args 'remove' -WorkingDirectory \"$dir\\uvhid\"",
         "    Write-Host 'Removing Windows Firewall exceptions...'",
-        "    $arg1 = @('firewall', 'delete', 'allowedprogram', \"$dir\\RemoteServerWin.exe\")",
-        "    $arg2 = @('advfirewall', 'firewall', 'delete', 'rule', 'name=Unified Remote', 'dir=out')",
-        "    $arg3 = @('advfirewall', 'firewall', 'delete', 'rule', 'name=Unified Remote', 'dir=in')",
-        "    foreach ($argument in @($arg1, $arg2, $arg3)) {",
-        "        Start-Process 'netsh' -Wait -Verb 'RunAs' -WindowStyle 'Hidden' -Args @($argument)",
-        "    }",
+        "    Start-Process 'netsh' -Wait -Verb 'RunAs' -WindowStyle 'Hidden' -Args @('firewall', 'delete', 'allowedprogram', \"$dir\\RemoteServerWin.exe\")",
+        "    Start-Process 'netsh' -Wait -Verb 'RunAs' -WindowStyle 'Hidden' -Args @('advfirewall', 'firewall', 'delete', 'rule', 'name=Unified Remote', 'dir=out')",
+        "    Start-Process 'netsh' -Wait -Verb 'RunAs' -WindowStyle 'Hidden' -Args @('advfirewall', 'firewall', 'delete', 'rule', 'name=Unified Remote', 'dir=in')",
         "    Write-Host 'Done!'",
         "} catch {",
         "    Write-Host \"Something is wrong`n$_\"",
