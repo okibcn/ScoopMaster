@@ -1,53 +1,44 @@
 {
-    "homepage": "https://github.com/LokerL/tts-vue",
     "version": "1.9.3",
-    "description": "🎤 微软语音合成工具，使用 Electron + Vue + ElementPlus + Vite 构建。",
-    "license": {
-        "identifier": "Freeware"
-    },
+    "description": "微软语音合成工具，使用 Electron + Vue + ElementPlus + Vite 构建",
+    "homepage": "https://tts-doc.loker.vip/home.html",
+    "license": "MIT",
     "architecture": {
         "64bit": {
             "url": "https://github.com/LokerL/tts-vue/releases/download/1.9.3/tts-vue-1.9.3.zip",
-            "hash": "945efb2107eede2aed2b484ae56bfe77ae9741f7ce8cb53cb695e5376f526ce0"
+            "extract_dir": "1.9.3",
+            "hash": "945efb2107eede2aed2b484ae56bfe77ae9741f7ce8cb53cb695e5376f526ce0",
+            "pre_install": [
+                "Expand-7zipArchive -Path (Get-ChildItem \"$dir\" 'tts-vue_*.exe' | Select-Object -First 1).FullName -DestinationPath \"$dir\" -Removal",
+                "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\"",
+                "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\`$R0\", \"$dir\\Uninstall*\", \"$dir\\resources\\app-update.yml\"  -Force -Recurse"
+            ]
         }
     },
-    "post_install": [
-        "$CmdString = \"$dir\\$version\\tts-vue_$version.exe /S /D=$dir\\$version\"",
-        "Invoke-Expression $CmdString",
-        "echo \"The tts-vue is installed silently\"",
-        "echo \"\"",
-        "echo \"It's going to persist data ,and you need to run tts-vue.exe once and close it immediately to generate the tts-vue directory under $env:userProfile\\APPdata\\Roaming to create a link to realize persist\"",
-        "pause",
-        "$origin_path=$env:userProfile + \"\\AppData\\Roaming\\tts-vue\\config.json\"",
-        "$persist_path=$persist_dir + \"\\config.json\"",
-        "do {",
-        "    if (-not (Test-Path $origin_path)) {",
-        "       echo \"\"",
-        "       Write-Host \"The tts-vue\\config.json was not found under $env:userProfile\\APPdata\\Roaming , please run tts-vue.exe to generate the tts-vue directory under $env:userProfile\\APPdata\\Roaming\"",
-        "       pause",
-        "    }",
-        "} while (-not (Test-Path $origin_path))",
-        "Write-Host \"The tts-vue\\config.json was found,and continue persist by a file link \"",
-        "    if (-not (Test-Path $persist_dir)) {",
-        "       mkdir $persist_dir",
-        "    }",
-        "    if(Test-Path $persist_path){",
-        "       Remove-Item -Force  $origin_path",
-        "    }else{",
-        "       Move-Item $origin_path $persist_path;",
-        "    }",
-        "sudo New-Item -ItemType SymbolicLink $origin_path -Target  $persist_path"
-    ],
-    "uninstaller": {
-        "script": [
-            "$shortcut_link_path = \"$env:userProfile\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\tts-vue.lnk\"",
-            "echo \"Removing shortcut > $shortcut_link_path\"",
-            "Remove-Item -Force \"$shortcut_link_path\""
+    "bin": [
+        [
+            "tts-vue.exe",
+            "tts-vue",
+            "--user-data-dir=\"$dir\\User Data\""
         ]
+    ],
+    "shortcuts": [
+        [
+            "tts-vue.exe",
+            "TTS-Vue",
+            "--user-data-dir=\"$dir\\User Data\""
+        ]
+    ],
+    "persist": "User Data",
+    "checkver": {
+        "github": "https://github.com/LokerL/tts-vue"
     },
-    "checkver": "github",
     "autoupdate": {
-        "note": "Thanks for using autoupdate, please test your updates!",
-        "url": "https://github.com/LokerL/tts-vue/releases/download/$version/tts-vue-$version.zip"
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/LokerL/tts-vue/releases/download/$version/tts-vue-$version.zip",
+                "extract_dir": "$version"
+            }
+        }
     }
 }
