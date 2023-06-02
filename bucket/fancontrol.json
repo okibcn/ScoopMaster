@@ -1,10 +1,23 @@
 {
-    "homepage": "https://github.com/Rem0o/FanControl.Releases",
-    "description": "A focused, highly customizable fan controlling software for Windows.",
     "version": "158",
-    "license": "null",
-    "url": "https://raw.githubusercontent.com/Rem0o/FanControl.Releases/master/FanControl.zip",
-    "hash": "d932845b3b02b3426c6467d731cd1d4ca27c78a0d4eedaa0a9de077c874154ee",
+    "homepage": "https://getfancontrol.com/",
+    "description": "A highly customizable fan controlling software for the Windows OS.",
+    "license": "Freeware",
+    "suggest": {
+        ".NET Runtime": "extras/windowsdesktop-runtime"
+    },
+    "notes": "Make sure to install both the 64bit & 32bit versions of Microsoft .NET Desktop Runtime before running the application.",
+    "architecture": {
+        "64bit": {
+            "url": "https://raw.githubusercontent.com/Rem0o/FanControl.Releases/master/FanControl.zip",
+            "hash": "d932845b3b02b3426c6467d731cd1d4ca27c78a0d4eedaa0a9de077c874154ee"
+        }
+    },
+    "pre_install": [
+        "'userConfig.json', 'CACHE', 'Plugins' | ForEach-Object {",
+        "    if (!(Test-Path \"$persist_dir\\$_\")) { New-Item \"$dir\\$_\" | Out-Null }",
+        "}"
+    ],
     "bin": "FanControl.exe",
     "shortcuts": [
         [
@@ -13,14 +26,18 @@
         ]
     ],
     "persist": [
-        "plugins",
-        "Configurations"
+        "Configurations",
+        "Plugins"
     ],
     "checkver": {
         "url": "https://raw.githubusercontent.com/Rem0o/FanControl.Releases/master/version.json",
         "jsonpath": "$.Number"
     },
     "autoupdate": {
-        "url": "https://raw.githubusercontent.com/Rem0o/FanControl.Releases/master/FanControl.zip"
+        "architecture": {
+            "64bit": {
+                "url": "https://raw.githubusercontent.com/Rem0o/FanControl.Releases/master/FanControl.zip"
+            }
+        }
     }
 }
