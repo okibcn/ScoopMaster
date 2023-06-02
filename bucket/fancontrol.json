@@ -1,24 +1,16 @@
 {
-    "version": "158",
-    "homepage": "https://getfancontrol.com/",
+    "version": "159",
     "description": "A highly customizable fan controlling software for the Windows OS.",
+    "homepage": "https://getfancontrol.com/",
     "license": "Freeware",
-    "suggest": {
-        ".NET Runtime": "extras/windowsdesktop-runtime"
-    },
-    "notes": "Make sure to install both the 64bit & 32bit versions of Microsoft .NET Desktop Runtime before running the application.",
-    "architecture": {
-        "64bit": {
-            "url": "https://raw.githubusercontent.com/Rem0o/FanControl.Releases/master/FanControl.zip",
-            "hash": "d932845b3b02b3426c6467d731cd1d4ca27c78a0d4eedaa0a9de077c874154ee"
-        }
-    },
+    "notes": "You will need to force close fancontrol before running this, I have tried multiple methods to force close it through the installer but it doesn't work. I will try to fix this in the future.",
+    "url": "https://raw.githubusercontent.com/Rem0o/FanControl.Releases/master/FanControl.zip",
+    "hash": "925c838c461d22f373c1fe9672dfadf12b5f16d44ac188386230ffc090634cca",
     "pre_install": [
-        "'userConfig.json', 'CACHE', 'Plugins' | ForEach-Object {",
-        "    if (!(Test-Path \"$persist_dir\\$_\")) { New-Item \"$dir\\$_\" | Out-Null }",
+        "if (!(Test-Path \"$persist_dir\\Configurations\")) {",
+        "   New-Item \"$persist_dir\\Configurations\" -ItemType Directory -Force | Out-Null",
         "}"
     ],
-    "bin": "FanControl.exe",
     "shortcuts": [
         [
             "FanControl.exe",
@@ -26,18 +18,14 @@
         ]
     ],
     "persist": [
-        "Configurations",
-        "Plugins"
+        "plugins",
+        "Configurations"
     ],
     "checkver": {
         "url": "https://raw.githubusercontent.com/Rem0o/FanControl.Releases/master/version.json",
         "jsonpath": "$.Number"
     },
     "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://raw.githubusercontent.com/Rem0o/FanControl.Releases/master/FanControl.zip"
-            }
-        }
+        "url": "https://raw.githubusercontent.com/Rem0o/FanControl.Releases/master/FanControl.zip"
     }
 }
