@@ -1,67 +1,26 @@
 {
-    "version": "2.2.2",
-    "description": "An electron-based music player.\n一个基于 electron 的音乐软件",
     "homepage": "https://github.com/lyswhut/lx-music-desktop",
+    "description": "一个基于 electron 的音乐软件",
+    "version": "2.2.2",
     "license": "Apache-2.0",
-    "notes": [],
+    "notes": "Changing music download folder is HIGHLY recommended.",
     "architecture": {
         "64bit": {
             "url": "https://github.com/lyswhut/lx-music-desktop/releases/download/v2.2.2/lx-music-desktop-v2.2.2-win_x64-green.7z",
             "hash": "ca64f35cf2ec4c6d2525b95c56a9e68ad7c0a1f28d46f751b0d39f7e7626c99d"
-        },
-        "32bit": {
-            "url": "https://github.com/lyswhut/lx-music-desktop/releases/download/v2.2.2/lx-music-desktop-v2.2.2-win_x86-green.7z",
-            "hash": "082c9a874d271990b815e2cc55af9a891bb3a2fe2fd8ec065cacb96d086cfe89"
         }
     },
     "shortcuts": [
         [
             "lx-music-desktop.exe",
-            "lx-music"
+            "洛雪音乐助手"
         ]
-    ],
-    "post_install": [
-        "echo \"Persisting LxDatas\"",
-        "$data_dir=\"$env:APPData\\lx-music-desktop\"",
-        "$data_path=\"$data_dir\\LxDatas\"",
-        "$persist_path=\"$persist_dir\\LxDatas\"",
-        "if (!(Test-Path $data_dir)){",
-        "   mkdir $data_dir > $null",
-        "}",
-        "if (!(Test-Path $persist_dir)){",
-        "   mkdir $persist_dir > $null",
-        "   if(Test-Path $data_path){",
-        "       $isLink=(Get-Item $data_path).Attributes -match \"ReparsePoint\"",
-        "       if($isLink){",
-        "           Remove-Item -Force -Recurse $data_path",
-        "       }else{",
-        "           Move-Item $data_path $persist_dir",
-        "       }",
-        "   }else{",
-        "       mkdir $persist_path > $null",
-        "   }",
-        "}",
-        "sudo New-Item -ItemType SymbolicLink \"$data_path\" -Target $persist_path"
-    ],
-    "pre_uninstall":[
-        "sudo taskKill /f /im lx-music-desktop.exe",
-        "Start-Sleep -Seconds 3"
-    ],
-    "post_uninstall":[
-        "$data_path=\"$env:APPData\\lx-music-desktop\"",
-        "if (Test-Path $data_path){",
-        "   Remove-Item -Force -Recurse $data_path",
-        "   echo \"Removing $data_path\"",
-        "}"
     ],
     "checkver": "github",
     "autoupdate": {
         "architecture": {
             "64bit": {
                 "url": "https://github.com/lyswhut/lx-music-desktop/releases/download/v$version/lx-music-desktop-v$version-win_x64-green.7z"
-            },
-            "32bit": {
-                "url": "https://github.com/lyswhut/lx-music-desktop/releases/download/v$version/lx-music-desktop-v$version-win_x86-green.7z"
             }
         }
     }
