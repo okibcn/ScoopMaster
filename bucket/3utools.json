@@ -1,0 +1,28 @@
+{
+    "version": "2.65.003",
+    "homepage": "https://www.3u.com/",
+    "description": "An All-in-One Tool for iOS Devices.",
+    "license": {
+        "identifier": "Freeware",
+        "url": "https://www.3u.com/statement"
+    },
+    "url": "https://d-updater.3u.com/3utools/download/3uTools_v2.65.003_Setup.exe#/dl.7z",
+    "hash": "84f885bf443d5070412cb86c1c49b22963e65187000ba665c12b3c623ab59951",
+    "shortcuts": [
+        [
+            "3uTools.exe",
+            "3uTools"
+        ]
+    ],
+    "checkver": {
+        "script": [
+            "$ua = [Microsoft.PowerShell.Commands.PSUserAgent]::Chrome",
+            "Out-Null ((Invoke-RestMethod 'https://www.3u.com/' -UserAgent $ua) -match '\"(?<URL>https://url.*/[\\w]+)\"')",
+            "$url = $Matches.URL; (Invoke-WebRequest $url -UserAgent $ua).BaseResponse.RequestMessage.RequestUri.AbsoluteUri"
+        ],
+        "regex": "3uTools_v([\\d.]+)_Setup\\.exe"
+    },
+    "autoupdate": {
+        "url": "https://d-updater.3u.com/3utools/download/3uTools_v$version_Setup.exe#/dl.7z"
+    }
+}
