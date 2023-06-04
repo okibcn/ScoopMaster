@@ -8,14 +8,31 @@
     },
     "url": "https://d-updater.3u.com/3utools/download/3uTools_v2.65.003_Setup.exe#/dl.7z",
     "hash": "84f885bf443d5070412cb86c1c49b22963e65187000ba665c12b3c623ab59951",
+    "pre_install": [
+        "if (!(is_admin)) { error \"$app requires admin rights to $cmd\"; break }",
+        "foreach ($f in @('record.db', 'setting.cfg', 'cache', 'Download')) {",
+        "    if (!(Test-Path \"$persist_dir\\$f\")) {",
+        "        cmd /c \"start /b /min `\"$dir\\3uTools.exe`\"\"",
+        "        while (!(Test-Path \"$dir\\$f\")) { Start-Sleep -Seconds 2 }",
+        "        Start-Sleep -Seconds 2; Stop-Process -Name '3uTools' -Force",
+        "    }",
+        "}"
+    ],
     "shortcuts": [
         [
             "3uTools.exe",
             "3uTools"
         ]
     ],
+    "persist": [
+        "record.db",
+        "setting.cfg",
+        "cache",
+        "Download"
+    ],
     "pre_uninstall": [
-        "if (!(is_admin)) { error \"$app requires admin rights to $cmd\"; break }; Start-Process \"$dir\\uninstall.exe\" -Wait -Verb 'RunAs'",
+        "if (!(is_admin)) { error \"$app requires admin rights to $cmd\"; break }; Write-Host 'A GUI UNINSTALLATION PROMPT WILL POP UP IN A FEW SECONDS!'",
+        "Start-Process \"$dir\\uninstall.exe\" -Wait -Verb 'RunAs'; Start-Sleep -Seconds 2; Stop-Process -Name 'explorer' -Force",
         "foreach ($rkey in 'HKLM:\\SOFTWARE\\Classes\\PC3uTools', 'HKCU:\\SOFTWARE\\Classes\\iTunes.ipa\\shell', 'HKCU:\\SOFTWARE\\Classes\\PlistEditor.plist\\shell', 'HKCU:\\SOFTWARE\\Classes\\i4ap\\shell', 'HKCU:\\SOFTWARE\\Classes\\3uViewer.heic', 'HKCU:\\SOFTWARE\\Classes\\3uViewer.svg') {",
         "    Remove-Item $rkey -ErrorAction 'SilentlyContinue' -Recurse -Force",
         "}"
