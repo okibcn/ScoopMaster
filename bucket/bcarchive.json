@@ -1,0 +1,34 @@
+{
+    "description": "BCArchive is designed to compress a group of files or folders into a single encrypted file, which can also be converted to an executable program.",
+    "homepage": "https://www.jetico.com/free-security-tools/encrypt-compress-files-bcarchive",
+    "license": "Unknown",
+    "version": "2.08",
+    "checkver": {
+        "url": "https://www.jetico.com/jetico-product-release-notes-bcarchive-v2",
+        "regex": "Product Updates</h2>\\s*<p><strong>[^<>]*v\\.([\\d\\.]+)</strong>"
+    },
+    "autoupdate": {
+        "url": "https://www.jetico.com/download/bcarchive#/installer.exe",
+        "hash": {
+            "mode": "download"
+        }
+    },
+    "url": "https://www.jetico.com/download/bcarchive#/installer.exe",
+    "hash": "3a2e4786229bbcecf5f2cf807b3a324130264e7b50109c466323028a60bda618",
+    "installer": {
+        "script": [
+            "if (-not (is_admin)) { error 'Administrator privileges are needed for installation'; break }",
+            "mkdir \"$dir\\bin\"",
+            "Start-Process \"$dir\\installer.exe\" -Wait -Verb \"RunAs\" -Args \"-H -P \"\"$dir\\bin\"\"\"",
+            "Remove-Item \"$dir\\installer.exe\" -Force",
+            "Move-Item \"C:\\Windows\\BCUnInstall.exe\" \"$dir\\uninstaller.exe\" -Force"
+        ]
+    },
+    "uninstaller": {
+        "script": [
+            "if (-not (is_admin)) { error 'Administrator privileges are needed for uninstallation'; break }",
+            "Start-Process \"$dir\\uninstaller.exe\" -Wait -Verb \"RunAs\" -Args \"\"\"$dir\\bin\\UnInstall.log\"\" -d -h\"",
+            "Write-Host \"Please reboot at the earliest convenience to finish the uninstallation.\""
+        ]
+    }
+}
