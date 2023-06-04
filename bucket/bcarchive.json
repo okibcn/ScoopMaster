@@ -18,17 +18,23 @@
     "installer": {
         "script": [
             "if (-not (is_admin)) { error 'Administrator privileges are needed for installation'; break }",
-            "mkdir \"$dir\\bin\"",
-            "Start-Process \"$dir\\installer.exe\" -Wait -Verb \"RunAs\" -Args \"-H -P \"\"$dir\\bin\"\"\"",
+            "mkdir \"$dir\\Install\" | Out-Null",
+            "Start-Process \"$dir\\installer.exe\" -Wait -Verb \"RunAs\" -Args \"-H -P \"\"$dir\\Install\"\"\"",
             "Remove-Item \"$dir\\installer.exe\" -Force",
-            "Move-Item \"C:\\Windows\\BCUnInstall.exe\" \"$dir\\uninstaller.exe\" -Force"
+            "Move-Item \"C:\\Windows\\BCUnInstall.exe\" \"$dir\\uninstaller.exe\" -Force | Out-Null"
         ]
     },
     "uninstaller": {
         "script": [
             "if (-not (is_admin)) { error 'Administrator privileges are needed for uninstallation'; break }",
-            "Start-Process \"$dir\\uninstaller.exe\" -Wait -Verb \"RunAs\" -Args \"\"\"$dir\\bin\\UnInstall.log\"\" -d -h\"",
-            "Write-Host \"Please reboot at the earliest convenience to finish the uninstallation.\""
+            "Start-Process \"$dir\\uninstaller.exe\" -Wait -Verb \"RunAs\" -Args \"\"\"$dir\\Install\\UnInstall.log\"\" -d -h\"",
+            "Write-Host \"Please reboot at the earliest convenience to finish the uninstallation. A reinstallation is not possible before that.\""
         ]
-    }
+    },
+    "shortcuts": [
+        [
+            "BCArchive",
+            "BCArchive.exe"
+        ]
+    ]
 }
