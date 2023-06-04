@@ -14,6 +14,12 @@
             "3uTools"
         ]
     ],
+    "pre_uninstall": [
+        "if (!(is_admin)) { error \"$app requires admin rights to $cmd\"; break }; Start-Process \"$dir\\uninstall.exe\" -Wait -Verb 'RunAs'",
+        "foreach ($rkey in 'HKLM:\\SOFTWARE\\Classes\\PC3uTools', 'HKCU:\\SOFTWARE\\Classes\\iTunes.ipa\\shell', 'HKCU:\\SOFTWARE\\Classes\\PlistEditor.plist\\shell', 'HKCU:\\SOFTWARE\\Classes\\i4ap\\shell', 'HKCU:\\SOFTWARE\\Classes\\3uViewer.heic', 'HKCU:\\SOFTWARE\\Classes\\3uViewer.svg') {",
+        "    Remove-Item $rkey -ErrorAction 'SilentlyContinue' -Recurse -Force",
+        "}"
+    ],
     "checkver": {
         "script": [
             "$ua = [Microsoft.PowerShell.Commands.PSUserAgent]::Chrome",
