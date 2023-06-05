@@ -2,34 +2,29 @@
     "version": "23.00",
     "description": "A multi-format file archiver with high compression ratios",
     "homepage": "https://www.7-zip.org/",
-    "license": "LGPL-2.1-or-later",
+    "license": {
+        "identifier": "Freeware,LGPL-2.0-only,BSD-3-Clause",
+        "url": "https://www.7-zip.org/license.txt"
+    },
     "notes": "Add 7-Zip as a context menu option by running: \"$dir\\install-context.reg\"",
     "architecture": {
         "64bit": {
-            "url": "https://www.7-zip.org/a/7z2300-x64.msi",
-            "hash": "4dc4f14ffef0691108dd93bd032248ac47dc5cc7f444699d6bb8721c1a77cd0b",
-            "extract_dir": "Files\\7-Zip"
-        },
-        "32bit": {
-            "url": "https://www.7-zip.org/a/7z2300.msi",
-            "hash": "98d68c5a30f06b2181a876d5a5800b35976f604f2d6f6f1fcaf243011d987163",
-            "extract_dir": "Files\\7-Zip"
-        },
-        "arm64": {
-            "url": "https://www.7-zip.org/a/7z2300-arm64.exe",
-            "hash": "5a498b6f3804e8cd04f3442efe614a9a5614d384e4ee6ca9f02924ad4223b5fa",
-            "pre_install": [
-                "$7zr = Join-Path $env:TMP '7zr.exe'",
-                "Invoke-WebRequest https://www.7-zip.org/a/7zr.exe -OutFile $7zr",
-                "Invoke-ExternalCommand $7zr @('x', \"$dir\\$fname\", \"-o$dir\", '-y') | Out-Null",
-                "Remove-Item \"$dir\\Uninstall.exe\", \"$dir\\*-arm64.exe\", $7zr"
+            "url": [
+                "https://7-zip.org/a/7z2300-x64.msi",
+                "https://raw.githubusercontent.com/asoluter/Scoop-Asoluter/main/scripts/7-zip/install-context.reg",
+                "https://raw.githubusercontent.com/asoluter/Scoop-Asoluter/main/scripts/7-zip/uninstall-context.reg"
+            ],
+            "hash": [
+                "4dc4f14ffef0691108dd93bd032248ac47dc5cc7f444699d6bb8721c1a77cd0b",
+                "358c8a2f87c4dc89c86ee4c72c71766856da146c0a8840001e6821fe5bb0c7ca",
+                "667ef7b5c7bfb6cdcc595042ac6c0cae802fbfd59fc601b22b533f6f1bcaf374"
             ]
         }
     },
-    "post_install": [
+    "pre_install": [
         "$7zip_root = \"$dir\".Replace('\\', '\\\\')",
         "'install-context.reg', 'uninstall-context.reg' | ForEach-Object {",
-        "    $content = Get-Content \"$bucketsdir\\main\\scripts\\7-zip\\$_\"",
+        "    $content = Get-Content \"$dir\\$_\"",
         "    $content = $content.Replace('$7zip_root', $7zip_root)",
         "    if ($global) {",
         "       $content = $content.Replace('HKEY_CURRENT_USER', 'HKEY_LOCAL_MACHINE')",
@@ -37,11 +32,8 @@
         "    Set-Content \"$dir\\$_\" $content -Encoding Ascii",
         "}"
     ],
-    "bin": [
-        "7z.exe",
-        "7zFM.exe",
-        "7zG.exe"
-    ],
+    "extract_dir": "Files\\7-Zip",
+    "bin": "7z.exe",
     "shortcuts": [
         [
             "7zFM.exe",
@@ -53,19 +45,13 @@
         "Formats"
     ],
     "checkver": {
-        "url": "https://www.7-zip.org/download.html",
-        "regex": "Download 7-Zip ([\\d.]+)"
+        "url": "https://www.7-zip.org/history.txt",
+        "regex": "\\n([\\d.]+)"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://www.7-zip.org/a/7z$cleanVersion-x64.msi"
-            },
-            "32bit": {
-                "url": "https://www.7-zip.org/a/7z$cleanVersion.msi"
-            },
-            "arm64": {
-                "url": "https://www.7-zip.org/a/7z$cleanVersion-arm64.exe"
+                "url": "https://7-zip.org/a/7z$cleanVersion-x64.msi"
             }
         }
     }
