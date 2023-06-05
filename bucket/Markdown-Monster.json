@@ -1,31 +1,38 @@
 {
-    "version": "2.9.10",
-    "description": "Markdown editing and weblog publishing tool",
     "homepage": "https://markdownmonster.west-wind.com",
+    "description": "Markdown editing and weblog publishing tool",
+    "version": "2.9.11",
     "license": {
         "identifier": "Proprietary",
         "url": "https://markdownmonster.west-wind.com/purchase.aspx#License"
     },
-    "url": "https://github.com/RickStrahl/MarkdownMonsterReleases/raw/master/CurrentRelease/MarkdownMonsterPortable.zip",
-    "hash": "552707df6b2367169499c9f69262305056c728a21ef40d79f452885f07a25b28",
-    "bin": "mmcli.exe",
+    "url": "https://west-wind.com/files/MarkdownMonsterPortable.zip",
+    "hash": "6bdc89c1adc44d4941e1edb9e5c35158f97091a0d8b34db614df60c5a58e53dd",
+    "pre_install": [
+        "if (!(Test-Path \"$dir\\_IsPortable\")) { New-Item \"$dir\\_IsPortable\" -Force | Out-Null }",
+        "if (!(Test-Path \"$persist_dir\\Registered.key\")) { New-Item \"$dir\\Registered.key\" | Out-Null }"
+    ],
+    "bin": [
+        "mm.exe",
+        "MarkdownMonster.exe",
+        "mmcli.exe"
+    ],
     "shortcuts": [
         [
             "MarkdownMonster.exe",
             "Markdown Monster"
         ]
     ],
-    "persist": "PortableSettings",
+    "persist": [
+        "PortableSettings",
+        "Registered.key"
+    ],
     "checkver": {
-        "script": [
-            "$url = 'https://raw.githubusercontent.com/RickStrahl/MarkdownMonsterReleases/master/CurrentRelease/MarkdownMonster_Version.xml'",
-            "$cont = (Invoke-WebRequest $url).Content",
-            "$cont = $cont.Replace(\"`u{FFFD}\", '').Replace(\"`u{0}\", '')",
-            "Write-Output $cont"
-        ],
-        "xpath": "/VersionInfo/Version"
+        "url": "https://markdownmonster.west-wind.com/download",
+        "regex": "<dd><b>([\\d.-]+)",
+        "reverse": "false"
     },
     "autoupdate": {
-        "url": "https://github.com/RickStrahl/MarkdownMonsterReleases/raw/master/CurrentRelease/MarkdownMonsterPortable.zip"
+        "url": "https://west-wind.com/files/MarkdownMonsterPortable.zip"
     }
 }
