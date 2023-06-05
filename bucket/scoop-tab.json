@@ -23,7 +23,7 @@
         "   if (-not $foundOldContent) {echo \"\";$profileContent += $newContent;echo \"Add Content($PROFILE): `n    $newContent\"}",
         "   $profileContent | Set-Content -Path $PROFILE",
         "}",
-        "   $oldPattern = \"cat.*.*scoop\\.ps1.*\\|.*Out-String.*\\|.*Invoke-Expression\"",
+        "   $oldPattern = \"cat.*.*scoop.*\\.ps1.*\\|.*Out-String.*\\|.*Invoke-Expression\"",
         "   $newContent = \"`ncat '$dir\\scoop.ps1' | Out-String | Invoke-Expression\"",
         "   checkProfile $oldPattern $newContent",
         "   $oldPattern = \"Set-PSReadLineKeyHandler.*Tab.*MenuComplete\"",
@@ -31,7 +31,7 @@
         "   checkProfile $oldPattern $newContent"
     ],
     "post_uninstall": [
-        "$pattern = \"cat.*scoop\\.ps1.*\\|.*Out-String.*\\|.*Invoke-Expression\"",
+        "$pattern = \"cat.*scoop.*\\.ps1.*\\|.*Out-String.*\\|.*Invoke-Expression\"",
         "if (!(Test-Path $PROFILE)) { return }",
         "function RemoveProfileContent($pattern){",
         "   $profileContent = Get-Content $PROFILE",
