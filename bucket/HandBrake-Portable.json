@@ -10,17 +10,14 @@
         }
     },
     "extract_dir": "HandBrake",
-    "post_install": "Move-Item \"$dir\\portable.ini.template\" \"$dir\\portable.ini\"",
+    "pre_install": "Rename-Item $dir/portable.ini.template portable.ini",
     "shortcuts": [
         [
             "HandBrake.exe",
             "HandBrake"
         ]
     ],
-    "persist": [
-        "tmp",
-        "storage"
-    ],
+    "persist": "storage",
     "checkver": {
         "github": "https://github.com/HandBrake/HandBrake"
     },
@@ -30,7 +27,6 @@
                 "url": "https://github.com/HandBrake/HandBrake/releases/download/$version/HandBrake-$version-x86_64-Win_GUI.zip"
             }
         },
-        "extract_dir": "HandBrake",
         "hash": {
             "url": "https://handbrake.fr/rotation.php?file=$basename",
             "regex": "<td>$sha256</td>"
