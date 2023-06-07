@@ -12,8 +12,8 @@
             "hash": "50e9a6ace6fe5b81308ff6dc6c2d2933934628effce8e0e58ec07e2a04160034"
         },
         "32bit": {
-            "url": "https://dl.google.com/release2/chrome/p3gfjw7a62rylj7j4mtkdy6wwi_116.0.5815.0/116.0.5815.0_chrome_installer.exe#/dl.7z",
-            "hash": "2988a356595cd2badc625d684083bfbcae3b44abc3971b5b6b96c4cf5d80c515"
+            "url": "https://dl.google.com/release2/chrome/acl62jq3gvv7aew3to6eys6247nq_116.0.5816.0/116.0.5816.0_chrome_installer.exe#/dl.7z",
+            "hash": "179ff4701e6b9f01d4221833a5fabdd2bebfb8d7a5bb62108dbeaad6a45836d5"
         }
     },
     "installer": {
@@ -32,17 +32,24 @@
         ]
     ],
     "checkver": {
-        "url": "https://www.iplaysoft.com/tools/chrome/",
-        "regex": "(?sm)Windows 金丝雀版 64 位.*?dl.google.com/release2/chrome/(?<64>[\\w.-]+)/(?<version64>[\\d.]+)_chrome_installer\\.exe.*?Windows 金丝雀版 32 位.*?dl.google.com/release2/chrome/(?<32>[\\w.-]+)/(?<version32>[\\d.]+)_chrome_installer\\.exe",
-        "replace": "${version64}"
+        "url": "https://scoopinstaller.github.io/UpdateTracker/googlechrome/chrome.min.xml",
+        "regex": "(?sm)<canary32><version>(?<version>[\\d.]+)</version>.+release2/chrome/(?<32>[\\w-]+)_.+<canary64>.+release2/chrome/(?<64>[\\w-]+)_.+</canary64>"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://dl.google.com/release2/chrome/$match64/$matchVersion64_chrome_installer.exe#/dl.7z"
+                "url": "https://dl.google.com/release2/chrome/$match64_$version/$version_chrome_installer.exe#/dl.7z",
+                "hash": {
+                    "url": "https://scoopinstaller.github.io/UpdateTracker/googlechrome/chrome.min.xml",
+                    "xpath": "/chromechecker/canary64[version='$version']/sha256"
+                }
             },
             "32bit": {
-                "url": "https://dl.google.com/release2/chrome/$match32/$matchVersion32_chrome_installer.exe#/dl.7z"
+                "url": "https://dl.google.com/release2/chrome/$match32_$version/$version_chrome_installer.exe#/dl.7z",
+                "hash": {
+                    "url": "https://scoopinstaller.github.io/UpdateTracker/googlechrome/chrome.min.xml",
+                    "xpath": "/chromechecker/canary32[version='$version']/sha256"
+                }
             }
         }
     }
