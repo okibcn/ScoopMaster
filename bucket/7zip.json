@@ -1,9 +1,9 @@
 {
     "version": "23.00",
-    "description": "A multi-format file archiver with high compression ratios\n具有高压缩比的多格式文件归档器",
+    "description": "A multi-format file archiver with high compression ratios",
     "homepage": "https://www.7-zip.org/",
     "license": "LGPL-2.1-or-later",
-    "notes": [],
+    "notes": "Add 7-Zip as a context menu option by running: \"$dir\\install-context.reg\"",
     "architecture": {
         "64bit": {
             "url": "https://www.7-zip.org/a/7z2300-x64.msi",
@@ -26,6 +26,17 @@
             ]
         }
     },
+    "post_install": [
+        "$7zip_root = \"$dir\".Replace('\\', '\\\\')",
+        "'install-context.reg', 'uninstall-context.reg' | ForEach-Object {",
+        "    $content = Get-Content \"$bucketsdir\\apps\\scripts\\7-zip\\$_\"",
+        "    $content = $content.Replace('$7zip_root', $7zip_root)",
+        "    if ($global) {",
+        "       $content = $content.Replace('HKEY_CURRENT_USER', 'HKEY_LOCAL_MACHINE')",
+        "    }",
+        "    Set-Content \"$dir\\$_\" $content -Encoding Ascii",
+        "}"
+    ],
     "bin": [
         "7z.exe",
         "7zFM.exe",
@@ -34,32 +45,12 @@
     "shortcuts": [
         [
             "7zFM.exe",
-            "7zip"
+            "7-Zip"
         ]
     ],
-    "post_install": [
-        "$count=0;$current_bucket_name=foreach($_ in scoop bucket list,$count){if(($count -eq 0) -and ($_.Source -match \"abgox/abgo_bucket\")){echo $_.Name};$count++}",
-        "$current_bucket_path = \"$bucketsdir\\$current_bucket_name\"",
-        "$7zip_root = \"$dir\".Replace('\\', '\\\\')",
-        "'install-context.reg', 'uninstall-context.reg' | ForEach-Object {",
-        "    $content = Get-Content \"$current_bucket_path\\scripts\\7-zip\\$_\"",
-        "    $content = $content.Replace('$7zip_root', $7zip_root)",
-        "    if ($global) {",
-        "       $content = $content.Replace('HKEY_CURRENT_USER', 'HKEY_LOCAL_MACHINE')",
-        "    }",
-        "    Set-Content \"$dir\\$_\" $content -Encoding Ascii",
-        "}",
-        "   reg import \"$dir\\install-context.reg\""
-    ],
-    "pre_uninstall": [
-        "sudo taskKill /f /im 7z.exe",
-        "sudo taskKill /f /im 7zFM.exe",
-        "sudo taskKill /f /im 7zG.exe",
-        "sudo taskKill /f /im explorer.exe",
-        "start explorer.exe",
-        "if ($cmd -eq 'uninstall') {",
-        "   reg import \"$dir\\uninstall-context.reg\"",
-        "}"
+    "persist": [
+        "Codecs",
+        "Formats"
     ],
     "checkver": {
         "url": "https://www.7-zip.org/download.html",
