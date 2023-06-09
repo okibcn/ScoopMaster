@@ -7,9 +7,9 @@
     "hash": "sha1:0f0f124fb4531ee7fb34cbcef46260574b4c9b13",
     "pre_install": [
         "$arch = if ($architecture -eq '32bit') { $architecture.Substring(0, 2) } else { '64' }",
-        "$rename = [System.Collections.ArrayList]@()",
-        "$remove = [System.Collections.ArrayList]@()",
-        "Get-ChildItem \"$dir\" | ForEach-Object { if ($_ -clike \"*$arch.exe\") { $rename += $_ } else { $remove += $_ } }",
+        "$rename = [System.Collections.ArrayList]::new()",
+        "$remove = [System.Collections.ArrayList]::new()",
+        "Get-ChildItem \"$dir\" | ForEach-Object { if ($_ -clike \"*$arch.exe\") { $rename.Add($_) } else { $remove.Add($_) } } | Out-Null",
         "Remove-Item -Recurse $remove",
         "$rename | Rename-Item -NewName { $_.name.Replace($arch, '') }"
     ],
