@@ -1,32 +1,54 @@
 {
     "version": "1.10.1",
-    "license": "Unknown",
-    "url": "https://dl.hdslb.com/mobile/fixed/bili_win/bili_win-install.exe?v=1.10.1#/dl.7z",
-    "extract_dir": "$PLUGINSDIR",
-    "extract_to": "package",
-    "notes": "In Application Auto update has been disable",
+    "description": "Bilibili(bilibili.com) Official Client.",
+    "homepage": "https://app.bilibili.com",
+    "license": {
+        "identifier": "Proprietary",
+        "url": "https://www.bilibili.com/blackboard/protocal/privacy-pc-desktop.html"
+    },
+    "architecture": {
+        "64bit": {
+            "url": "https://dl.hdslb.com/mobile/fixed/bili_win/bili_win-install.exe#/dl.7z",
+            "hash": "sha512:a21ad15f5fbb28e2f795d4cbfe6a3bfb3d8baac19ea10173508d715265c99c9d5893a7721f74fc540e097f08ff541ac56dab17a7fc12709075cfd1f80ba36f7b",
+            "pre_install": [
+                "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\"",
+                "Remove-Item \"$dir\\`$*\", \"$dir\\Uninstall*\" -Force -Recurse"
+            ]
+        }
+    },
     "installer": {
         "script": [
-            "Expand-7zipArchive -Path \"$dir/package/app-64.7z\" -DestinationPath \"$dir\"",
-            "Remove-Item \"$dir/package/\" -Recurse -Force",
-            "Set-Content -Value \"\" -Path \"$dir/resources/app-update.yml\""
+            "Import-Module $(Join-Path $(Find-BucketDirectory -Root -Name apps) scripts/AppsUtils.psm1)",
+            "Mount-ExternalRuntimeData -Source \"$persist_dir\\appdata\" -Target \"$env:APPDATA\\bilibili\"",
+            "Remove-Module -Name AppsUtils"
         ]
     },
-    "pre_uninstall": "taskkill /F /IM 哔哩哔哩.exe",
+    "uninstaller": {
+        "script": [
+            "Import-Module $(Join-Path $(Find-BucketDirectory -Root -Name apps) scripts/AppsUtils.psm1)",
+            "Dismount-ExternalRuntimeData -Target \"$env:APPDATA\\bilibili\"",
+            "Remove-Module -Name AppsUtils"
+        ]
+    },
     "shortcuts": [
         [
             "哔哩哔哩.exe",
             "哔哩哔哩"
         ]
     ],
-    "homepage": "https://www.bilibili.com/",
-    "hash": "b28de87fe8df0f20fffcd183a45d834833b979e675883e64f3d5a27067e892c9",
     "checkver": {
-        "url": "https://api.bilibili.com/x/web-frontend/getappversion?target=pc_electron&cdn_url=https%3A%2F%2Fdl.hdslb.com%2Fmobile%2Ffixed%2Fbili_win%2Fbili_win-install.exe",
-        "regex": "\\.exe\\?v=([\\d\\.]+)",
-        "useragent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36"
+        "url": "http://api.bilibili.com/x/elec-frontend/update/latest.yml",
+        "regex": "bilibili-setup-v([\\d\\.]+)\\.exe"
     },
     "autoupdate": {
-        "url": "https://dl.hdslb.com/mobile/fixed/bili_win/bili_win-install.exe?v=$version#/dl.7z"
+        "architecture": {
+            "64bit": {
+                "url": "https://dl.hdslb.com/mobile/fixed/bili_win/bili_win-install.exe#/dl.7z",
+                "hash": {
+                    "url": "http://api.bilibili.com/x/elec-frontend/update/latest.yml",
+                    "regex": "sha512: ([\\w\\d+\\/=]{24,88})"
+                }
+            }
+        }
     }
 }
