@@ -1,10 +1,10 @@
 {
     "##": "Renaming .7z to .7z_ so that the archive will not be automatically extracted by Scoop.",
-    "version": "0.41.0",
+    "version": "0.41.1",
     "homepage": "https://github.com/be5invis/Sarasa-Gothic",
     "license": "OFL-1.1",
-    "url": "https://github.com/be5invis/Sarasa-Gothic/releases/download/v0.41.0/sarasa-gothic-ttf-0.41.0.7z#/dl.7z_",
-    "hash": "881644200217305090a57c717a5578ddbdb3eba63c81d4c65bf5c6cee307412d",
+    "url": "https://github.com/be5invis/Sarasa-Gothic/releases/download/v0.41.1/sarasa-gothic-ttf-0.41.1.7z#/dl.7z_",
+    "hash": "ac1f6871da6195578c0ec04b939ea3ad14009773c67a499736dbae07d54c6895",
     "pre_install": [
         "Expand-7zipArchive \"$dir\\dl.7z_\" \"$dir\" -Switches '*-sc-*.ttf' | Out-Null",
         "Remove-Item \"$dir\\dl.7z_\""
@@ -30,6 +30,7 @@
             "$fontInstallDir = if ($global) { \"$env:windir\\Fonts\" } else { \"$env:LOCALAPPDATA\\Microsoft\\Windows\\Fonts\" }",
             "if (-not $global) {",
             "    # Ensure user font install directory exists and has correct permission settings",
+            "    # See https://github.com/matthewjberger/scoop-nerd-fonts/issues/198#issuecomment-1488996737",
             "    New-Item $fontInstallDir -ItemType Directory -ErrorAction SilentlyContinue | Out-Null",
             "    $accessControlList = Get-Acl $fontInstallDir",
             "    $allApplicationPackagesAccessRule = New-Object System.Security.AccessControl.FileSystemAccessRule([System.Security.Principal.SecurityIdentifier]::new(\"S-1-15-2-1\"), \"ReadAndExecute\", \"ContainerInherit,ObjectInherit\", \"None\", \"Allow\")",
