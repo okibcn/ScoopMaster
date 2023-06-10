@@ -1,15 +1,32 @@
 {
-    "homepage": "https://www.vim.org",
-    "description": "A highly configurable text editor for efficiently creating and changing any kind of text.",
-    "license": "Vim",
     "version": "9.0.1623",
+    "description": "A highly configurable text editor for efficiently creating and changing any kind of text.",
+    "homepage": "https://www.vim.org",
+    "license": "Vim",
+    "notes": "Add gVim as a context menu option by running: \"$dir\\install-context.reg\"",
+    "suggest": {
+        "vimtutor": "vimtutor"
+    },
     "architecture": {
         "64bit": {
             "url": "https://github.com/vim/vim-win32-installer/releases/download/v9.0.1623/gvim_9.0.1623_x64.zip",
             "hash": "f278ce124f673fd57a12705219325d566acaab8caa0c483c12566ba49525322d"
+        },
+        "32bit": {
+            "url": "https://github.com/vim/vim-win32-installer/releases/download/v9.0.1623/gvim_9.0.1623_x86.zip",
+            "hash": "11cc1d41e5095b5dac44132b754da022c858eef088c0dcba8af21008670736d0"
         }
     },
     "extract_dir": "vim\\vim90",
+    "post_install": [
+        "Remove-Item \"$dir\\`$*\", \"$dir\\uninstal.*\", \"$dir\\install.exe\" -Recurse",
+        "'install-context.reg', 'uninstall-context.reg' | ForEach-Object {",
+        "    $vimpath = \"$dir\\gVim.exe\".Replace('\\', '\\\\')",
+        "    $content = (Get-Content \"$bucketsdir\\versions\\scripts\\vim\\$_\").Replace('$vim', $vimpath)",
+        "    if ($global) { $content = $content.Replace('HKEY_CURRENT_USER', 'HKEY_LOCAL_MACHINE') }",
+        "    Set-Content \"$dir\\$_\" $content",
+        "}"
+    ],
     "bin": [
         "vim.exe",
         [
@@ -87,11 +104,11 @@
         "architecture": {
             "64bit": {
                 "url": "https://github.com/vim/vim-win32-installer/releases/download/v$version/gvim_$version_x64.zip"
+            },
+            "32bit": {
+                "url": "https://github.com/vim/vim-win32-installer/releases/download/v$version/gvim_$version_x86.zip"
             }
         },
         "extract_dir": "vim\\vim$majorVersion$minorVersion"
-    },
-    "suggest": {
-        "vimtutor": "vimtutor"
     }
 }
