@@ -1,22 +1,52 @@
 {
     "homepage": "https://github.com/Fndroid/clash_for_windows_pkg",
-    "description": "A Windows/macOS/Linux GUI based on Clash and Electron.",
+    "description": "A Windows GUI based on Clash",
     "version": "0.20.25",
     "license": "MIT",
     "architecture": {
         "64bit": {
             "url": "https://github.com/Fndroid/clash_for_windows_pkg/releases/download/0.20.25/Clash.for.Windows.Setup.0.20.25.exe#/dl.7z",
-            "hash": "793356cdcfa867f5ebc9f0a13c25fee86521ffa9dd0810dbe2272e8d1e726a80"
+            "hash": "793356cdcfa867f5ebc9f0a13c25fee86521ffa9dd0810dbe2272e8d1e726a80",
+            "pre_install": [
+                "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\"",
+                "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\`$R0\" -Force -Recurse"
+            ]
         },
         "32bit": {
             "url": "https://github.com/Fndroid/clash_for_windows_pkg/releases/download/0.20.25/Clash.for.Windows.Setup.0.20.25.ia32.exe#/dl.7z",
-            "hash": "0136fbf27f5bc67cb5e1244a28c17feea33e6b0058cd25bf9fe3df957a75e8af"
+            "hash": "0136fbf27f5bc67cb5e1244a28c17feea33e6b0058cd25bf9fe3df957a75e8af",
+            "pre_install": [
+                "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-32.7z\" \"$dir\"",
+                "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\`$R0\" -Force -Recurse"
+            ]
+        },
+        "arm64": {
+            "url": "https://github.com/Fndroid/clash_for_windows_pkg/releases/download/0.20.25/Clash.for.Windows.Setup.0.20.25.arm64.exe#/dl.7z",
+            "hash": "13c239ae50cc714caa6c1811e3201ac9244c6b2d7dac028e0e387ae95fb84a4c",
+            "pre_install": [
+                "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-arm64.7z\" \"$dir\"",
+                "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\`$R0\" -Force -Recurse"
+            ]
         }
     },
     "installer": {
         "script": [
-            "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\"",
-            "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\Uninst*\" -Force -Recurse"
+            "if (!(Test-Path \"$persist_dir\\data\")) {",
+            "    New-Item \"$persist_dir\\data\" -Type Directory -Force | Out-Null",
+            "    if (Test-Path \"$env:USERPROFILE\\.config\\clash\") {",
+            "        Copy-Item -Path \"$env:USERPROFILE\\.config\\clash\\*\" -Destination \"$persist_dir\\data\" -Recurse -Container",
+            "    }",
+            "}",
+            "Import-Module $(Join-Path $(Find-BucketDirectory -Root -Name dorado) scripts/DoradoUtils.psm1)",
+            "Mount-ExternalRuntimeData -Source \"$persist_dir\\clash_win\" -Target \"$env:APPDATA\\clash_win\"",
+            "Remove-Module -Name DoradoUtils"
+        ]
+    },
+    "uninstaller": {
+        "script": [
+            "Import-Module $(Join-Path $(Find-BucketDirectory -Root -Name dorado) scripts/DoradoUtils.psm1)",
+            "Dismount-ExternalRuntimeData -Target \"$env:APPDATA\\clash_win\"",
+            "Remove-Module -Name DoradoUtils"
         ]
     },
     "shortcuts": [
@@ -25,6 +55,7 @@
             "Clash for Windows"
         ]
     ],
+    "persist": "data",
     "checkver": "github",
     "autoupdate": {
         "architecture": {
@@ -33,7 +64,7 @@
                 "hash": {
                     "url": "https://github.com/Fndroid/clash_for_windows_pkg/releases/download/$version/sha256sum",
                     "mode": "extract",
-                    "regex": "^exe: $sha256"
+                    "regex": "(?m)^exe: $sha256"
                 }
             },
             "32bit": {
@@ -41,7 +72,15 @@
                 "hash": {
                     "url": "https://github.com/Fndroid/clash_for_windows_pkg/releases/download/$version/sha256sum",
                     "mode": "extract",
-                    "regex": "^ia32-exe: $sha256"
+                    "regex": "(?m)^ia32-exe: $sha256"
+                }
+            },
+            "arm64": {
+                "url": "https://github.com/Fndroid/clash_for_windows_pkg/releases/download/$version/Clash.for.Windows.Setup.$version.arm64.exe#/dl.7z",
+                "hash": {
+                    "url": "https://github.com/Fndroid/clash_for_windows_pkg/releases/download/$version/sha256sum",
+                    "mode": "extract",
+                    "regex": "(?m)^arm64-exe: $sha256"
                 }
             }
         }
