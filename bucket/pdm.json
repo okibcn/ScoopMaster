@@ -1,6 +1,7 @@
 {
     "homepage": "http://pdm.fming.dev",
     "version": "2.7.2",
+    "description": "Python package and dependency manager supporting the latest PEP standards",
     "license": "MIT",
     "url": "https://files.pythonhosted.org/packages/bc/c3/4a431d70b595034f8d516479c76c70c6ae2c39ce1afb99cb455b5c66024b/pdm-2.7.2-py3-none-any.whl",
     "depends": "python",
@@ -12,12 +13,25 @@
             "& \"$dir\\venv\\Scripts\\python.exe\" -m pip install \"$dir\\$fname\""
         ]
     },
-    "post_install": "& \"$dir\\venv\\Scripts\\pdm.exe\" --pep582",
+    "post_install": [
+        "if (-not (Test-Path -Path $PROFILE\\..\\Completions -PathType Container)) {",
+        "    mkdir $PROFILE\\..\\Completions",
+        "    echo @'",
+        "Get-ChildItem \"$PROFILE\\..\\Completions\\\" | ForEach-Object {",
+        "    . $_.FullName",
+        "}",
+        "'@ | Out-File -Append -Encoding utf8 $PROFILE",
+        "}",
+        "& \"$dir\\venv\\Scripts\\pdm.exe\" completion powershell | Out-File -Encoding utf8 $PROFILE\\..\\Completions\\pdm_completion.ps1"
+    ],
     "uninstaller": {
         "script": [
             "$oldPath = [Environment]::GetEnvironmentVariable(\"PYTHONPATH\", [System.EnvironmentVariableTarget]::User)",
-            "$newPath = ($oldPath.Split(';') | Where { $_ -notlike \"$dir\\venv\\*\" }) -join ';'",
-            "[Environment]::SetEnvironmentVariable(\"PYTHONPATH\", $newPath, [System.EnvironmentVariableTarget]::User)"
+            "If (-not [string]::IsNullOrWhiteSpace($oldPath)) {",
+            "    $newPath = ($oldPath.Split(';') | Where { $_ -notlike \"$dir\\venv\\*\" }) -join ';'",
+            "    [Environment]::SetEnvironmentVariable(\"PYTHONPATH\", $newPath, [System.EnvironmentVariableTarget]::User)",
+            "}",
+            "Remove-Item -Path $PROFILE\\..\\Completions\\pdm_completion.ps1 -ErrorAction SilentlyContinue"
         ]
     },
     "checkver": {
