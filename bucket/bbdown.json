@@ -1,48 +1,31 @@
 {
-    "version": "1.5.8",
-    "description": "一款命令行式哔哩哔哩下载器",
     "homepage": "https://github.com/nilaoda/BBDown",
+    "description": "a commandline video downloader for bilibili.com",
     "license": "MIT",
-    "notes": [
-        "本软件混流时需要外部程序：",
-        "普通视频：ffmpeg ，或 mp4box",
-        "杜比视界：ffmpeg5.0以上或新版mp4box."
+    "version": "1.5.8",
+    "url": "https://github.com/nilaoda/BBDown/releases/download/1.5.8/BBDown_1.5.8_20230608_win-x64.zip",
+    "hash": "bd7649f4ff5d2f6a84f59ac331a7e2c0fdd1b1c9c217cae6d114b6a696c0655a",
+    "depends": [
+        "aria2",
+        "ffmpeg"
     ],
-    "suggest": {
-        "ffmpeg": "ffmpeg",
-        "mp4box": "gpac"
-    },
-    "architecture": {
-        "64bit": {
-            "url": "https://github.com/nilaoda/BBDown/releases/download/1.5.8/BBDown_1.5.8_20230608_win-x64.zip",
-            "hash": "bd7649f4ff5d2f6a84f59ac331a7e2c0fdd1b1c9c217cae6d114b6a696c0655a"
-        },
-        "arm64": {
-            "url": "https://github.com/nilaoda/BBDown/releases/download/1.5.8/BBDown_1.5.8_20230608_win-arm64.zip",
-            "hash": "bbed687c704d0910507b0cd2cd1a2c5f3d22be467e2c166d81cf7c4bb0ea9174"
-        }
-    },
-    "bin": "BBDown.exe",
+    "bin": [
+        [
+            "BBDown.exe",
+            "bbdown"
+        ]
+    ],
     "pre_install": [
-        "if (-not (Test-Path \"$persist_dir\\BBDown.config\")) { New-Item \"$dir\\BBDown.config\" -ItemType file | Out-Null }",
-        "if (-not (Test-Path \"$persist_dir\\BBDown.data\")) { New-Item \"$dir\\BBDown.data\" -ItemType file | Out-Null }"
+        "if (!(Test-Path \"$persist_dir\\BBDown.config\")) {",
+        "    New-Item \"$dir\\BBDown.config\" -Type File | Out-Null",
+        "}"
     ],
-    "persist": [
-        "BBDown.config",
-        "BBDown.data"
-    ],
+    "persist": "BBDown.config",
     "checkver": {
-        "url": "https://api.github.com/repos/nilaoda/BBDown/releases",
-        "regex": "BBDown_(?<version>[\\d.]+)_(?<date>\\d+)_win-x64.zip"
+        "url": "https://api.github.com/repos/nilaoda/BBDown/releases/latest",
+        "re": "BBDown_(?<version>[\\d\\w.]+)_(?<date>\\d+)_win-x64(?<suffix>.*?)\\.zip"
     },
     "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://github.com/nilaoda/BBDown/releases/download/$version/BBDown_$matchVersion_$matchDate_win-x64.zip"
-            },
-            "arm64": {
-                "url": "https://github.com/nilaoda/BBDown/releases/download/$version/BBDown_$matchVersion_$matchDate_win-arm64.zip"
-            }
-        }
+        "url": "https://github.com/nilaoda/BBDown/releases/download/$version/BBDown_$version_$matchDate_win-x64$matchSuffix.zip"
     }
 }
