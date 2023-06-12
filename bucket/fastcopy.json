@@ -1,23 +1,22 @@
 {
     "version": "5.2.0",
     "description": "The Fastest copy/backup software.",
-    "homepage": "https://fastcopy.jp",
+    "homepage": "https://fastcopy.jp/",
     "license": {
         "identifier": "Freeware",
         "url": "https://fastcopy.jp/help/fastcopy_eng.htm#license"
     },
+    "notes": [
+        "If an error occurs when updating or uninstalling, execute the following command then retry:",
+        "`Stop-Process -Name 'explorer'`"
+    ],
     "url": "https://fastcopy.jp/archive/FastCopy5.2.0_installer.exe",
     "hash": "70e273eeed74b819403ba45dc2ba46224435a75836e811c405033670bf0eb83e",
     "pre_install": [
-        "if ($architecture -eq '64bit') {Invoke-ExternalCommand \"$dir\\$fname\" '/EXTRACT64' | Out-Null }",
-        "elseif ($architecture -eq '32bit') {Invoke-ExternalCommand \"$dir\\$fname\" '/EXTRACT32' | Out-Null }",
-        "Get-ChildItem \"$dir\\FastCopy$version*\\*\" -Recurse | Move-Item -Destination $dir",
-        "Remove-Item \"$dir\\$fname\", \"$dir\\FastCopy$version*\", \"$dir\\setup.exe\"",
-        "",
-        "if (!(Test-Path \"$persist_dir\\FastCopy.log\")) { New-Item \"$dir\\FastCopy.log\" | Out-Null }",
-        "if (Test-Path \"$persist_dir\\scoop_backup.ini\") { Copy-Item -Path \"$persist_dir\\scoop_backup.ini\" -Destination \"$dir\\FastCopy2.ini\" -Force | Out-Null }"
+        "Start-Process \"$dir\\$fname\" -Args @('/SILENT', \"/DIR=\"\"$dir\"\"\", '/NOPROG', '/NODESK') -Wait",
+        "Copy-Item \"$persist_dir\\FastCopy.log\", \"$persist_dir\\FastCopy2.ini\", \"$persist_dir\\Log\" -Destination \"$dir\" -Force -Recurse -ErrorAction SilentlyContinue",
+        "Remove-Item \"$dir\\$fname\""
     ],
-    "pre_uninstall": "Copy-Item -Path \"$dir\\FastCopy2.ini\" -Destination \"$persist_dir\\scoop_backup.ini\" -Force | Out-Null",
     "bin": [
         "FastCopy.exe",
         "FcHash.exe",
@@ -33,14 +32,12 @@
             "FastCopy Manual"
         ]
     ],
-    "persist": [
-        "Log",
-        "FastCopy.log"
+    "pre_uninstall": [
+        "ensure \"$persist_dir\\Log\" | Out-Null",
+        "Copy-Item \"$dir\\FastCopy.log\", \"$dir\\FastCopy2.ini\", \"$dir\\Log\" -Destination \"$persist_dir\" -Force -Recurse -ErrorAction SilentlyContinue",
+        "Start-Process \"$dir\\setup.exe\" -Args @('/SILENT', '/r') -Wait"
     ],
-    "checkver": {
-        "script": "(Invoke-WebRequest -UseBasicParsing -Method Get -Headers @{'Accept'='text/html';'Accept-Encoding'='gzip'} -MaximumRedirection 0 -Uri 'https://fastcopy.jp/').Content",
-        "regex": "FastCopy ver ([\\d.]+)"
-    },
+    "checkver": "Download v([\\d.]+)",
     "autoupdate": {
         "url": "https://fastcopy.jp/archive/FastCopy$version_installer.exe"
     }
