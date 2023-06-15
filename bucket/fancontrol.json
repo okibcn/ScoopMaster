@@ -1,16 +1,17 @@
 {
     "version": "160",
-    "description": "A highly customizable fan controlling software for the Windows OS.",
+    "description": "A highly customizable fan controlling software for Windows",
     "homepage": "https://getfancontrol.com/",
     "license": "Freeware",
-    "notes": "You will need to force close fancontrol before running this, I have tried multiple methods to force close it through the installer but it doesn't work. I will try to fix this in the future.",
-    "url": "https://raw.githubusercontent.com/Rem0o/FanControl.Releases/master/FanControl.zip",
-    "hash": "6b7e0f348ff9303ca205e80b5fd1062e20a957f10294d9cc1bbdedd56638575a",
-    "pre_install": [
-        "if (!(Test-Path \"$persist_dir\\Configurations\")) {",
-        "   New-Item \"$persist_dir\\Configurations\" -ItemType Directory -Force | Out-Null",
-        "}"
-    ],
+    "suggest": {
+        ".NET Desktop Runtime": "extras/windowsdesktop-runtime"
+    },
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/Rem0o/FanControl.Releases/releases/download/V160/FanControl_net_7_0.zip",
+            "hash": "77486dd54aeb136eed23cc42cab6c2bedbc59f38300e456d0dd4a099ab2a3eaa"
+        }
+    },
     "shortcuts": [
         [
             "FanControl.exe",
@@ -18,14 +19,19 @@
         ]
     ],
     "persist": [
-        "plugins",
-        "Configurations"
+        "Configurations",
+        "Plugins"
     ],
     "checkver": {
-        "url": "https://raw.githubusercontent.com/Rem0o/FanControl.Releases/master/version.json",
-        "jsonpath": "$.Number"
+        "url": "https://api.github.com/repos/Rem0o/FanControl.Releases/releases/latest",
+        "jsonpath": "$.assets..browser_download_url",
+        "regex": "/V([\\d.]+)/FanControl_net_(?<netver>(?!4_8)[\\d_]+).zip"
     },
     "autoupdate": {
-        "url": "https://raw.githubusercontent.com/Rem0o/FanControl.Releases/master/FanControl.zip"
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/Rem0o/FanControl.Releases/releases/download/V$version/FanControl_net_$matchNetver.zip"
+            }
+        }
     }
 }
