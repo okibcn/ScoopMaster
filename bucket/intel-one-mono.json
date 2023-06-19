@@ -1,9 +1,15 @@
 {
-    "version": "20190603",
-    "homepage": "https://github.com/adobe-fonts/source-han-super-otc",
-    "license": "OFL-1.1",
-    "url": "https://github.com/adobe-fonts/source-han-super-otc/releases/download/20190603/NotoCJK.ttc",
-    "hash": "md5:5fb3f42574c27390bc60347858f4bf8e",
+    "version": "1.2.1",
+    "description": "Intel One Mono font repository",
+    "homepage": "https://github.com/intel/intel-one-mono",
+    "license": "OLF-1.1",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/intel/intel-one-mono/releases/download/V1.2.1/otf.zip",
+            "hash": "44127021492601921168811653115995131f15350574b6c708c4646a0534814d",
+            "extract_dir": "otf"
+        }
+    },
     "installer": {
         "script": [
             "$currentBuildNumber = [int] (Get-ItemProperty \"HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\").CurrentBuildNumber",
@@ -36,7 +42,7 @@
             "}",
             "$registryRoot = if ($global) { \"HKLM\" } else { \"HKCU\" }",
             "$registryKey = \"${registryRoot}:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\"",
-            "Get-ChildItem $dir -Filter '*.ttc' | ForEach-Object {",
+            "Get-ChildItem $dir -Filter '*intelone-*' | ForEach-Object {",
             "    $value = if ($global) { $_.Name } else { \"$fontInstallDir\\$($_.Name)\" }",
             "    New-ItemProperty -Path $registryKey -Name $_.Name.Replace($_.Extension, ' (TrueType)') -Value $value -Force | Out-Null",
             "    Copy-Item $_.FullName -Destination $fontInstallDir",
@@ -45,7 +51,7 @@
     },
     "pre_uninstall": [
         "$fontInstallDir = if ($global) { \"$env:windir\\Fonts\" } else { \"$env:LOCALAPPDATA\\Microsoft\\Windows\\Fonts\" }",
-        "Get-ChildItem $dir -Filter '*.ttc' | ForEach-Object {",
+        "Get-ChildItem $dir -Filter '*intelone-*' | ForEach-Object {",
         "    Get-ChildItem $fontInstallDir -Filter $_.Name | ForEach-Object {",
         "        try {",
         "            Rename-Item $_.FullName $_.FullName -ErrorVariable LockError -ErrorAction Stop",
@@ -75,21 +81,20 @@
             "$fontInstallDir = if ($global) { \"$env:windir\\Fonts\" } else { \"$env:LOCALAPPDATA\\Microsoft\\Windows\\Fonts\" }",
             "$registryRoot = if ($global) { \"HKLM\" } else { \"HKCU\" }",
             "$registryKey = \"${registryRoot}:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\"",
-            "Get-ChildItem $dir -Filter '*.ttc' | ForEach-Object {",
+            "Get-ChildItem $dir -Filter '*intelone-*' | ForEach-Object {",
             "    Remove-ItemProperty -Path $registryKey -Name $_.Name.Replace($_.Extension, ' (TrueType)') -Force -ErrorAction SilentlyContinue",
             "    Remove-Item \"$fontInstallDir\\$($_.Name)\" -Force -ErrorAction SilentlyContinue",
             "}",
             "if ($cmd -eq \"uninstall\") {",
-            "    Write-Host \"The Noto CJK Mega OTC (OpenType Collection) has been uninstalled and will not be present after restarting your computer.\" -Foreground Magenta",
+            "    Write-Host \"The '$app' Font family has been uninstalled and will not be present after restarting your computer.\" -Foreground Magenta",
             "}"
         ]
     },
     "checkver": "github",
     "autoupdate": {
-        "url": "https://github.com/adobe-fonts/source-han-super-otc/releases/download/$version/NotoCJK.ttc",
+        "url": "https://github.com/intel/intel-one-mono/releases/download/V$version/otf.zip",
         "hash": {
-            "url": "https://github.com/adobe-fonts/source-han-super-otc",
-            "find": "href=\"#noto-cjknotocjkttc\">.+?MD5 hash is ([A-Fa-f0-9]{32})"
+            "mode": "download"
         }
     }
 }
