@@ -11,7 +11,26 @@
         "arm64": { "bin": ["Dism++ARM64.exe"] }
     },
     "shortcuts": [["Dism++x64.exe", "Dism++"]],
-    "persist": "Office",
+    "pre_install": [
+        "$path = \"$persist_dir\\Config\"",
+        "if (!(Test-Path $path) -or !(Get-Item $path).Length) {",
+        "  New-Item $path -ItemType Directory -Force | Out-Null",
+        "}"
+    ],
+    "uninstaller": {
+        "script": [
+            "function Copy-PersistFile([String] $path) {",
+            "  if ((Test-Path $path) -and !(Get-Item $path).LinkType) {",
+            "    Copy-Item $path $persist_dir",
+            "  }",
+            "}",
+            "if (Test-Path $persist_dir) {",
+            "  Copy-PersistFile \"$dir\\Config\\Config.ini\"",
+            "  Copy-PersistFile \"$dir\\Config\\UpdateInfo.zip\"",
+            "  Copy-PersistFile \"$dir\\Config\\wsusscn2.cab\"",
+            "}"
+        ]
+    },
     "checkver": "github",
     "autoupdate": {
         "url": "https://github.com/Chuyu-Team/Dism-Multi-language/releases/download/v$version/Dism++$version.zip"
