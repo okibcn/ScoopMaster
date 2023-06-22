@@ -1,5 +1,5 @@
 {
-    "version": "5.0.3",
+    "version": "5.0.3-230622.1417",
     "description": "Movies, TV Shows and Anime files organizer and renamer",
     "homepage": "https://www.filebot.net/",
     "license": {
@@ -7,7 +7,7 @@
         "url": "https://www.filebot.net/eula.html"
     },
     "url": "https://get.filebot.net/filebot/BETA/FileBot_5.0.3-portable.zip",
-    "hash": "d37aefe39ede3d1d7ff2ddfba2d6686d575a6ae11a519b322a6f5325811c4e1f",
+    "hash": "cea3bd6829e35fb4f1e3a4ca83d6996455fc5b78c62509b93aeddbb916d16553",
     "bin": "filebot.exe",
     "shortcuts": [
         [
@@ -17,7 +17,8 @@
     ],
     "persist": "data",
     "checkver": {
-        "regex": "([\\w.-]+)",
+        "regex": "(?<version>[\\w.]+)-(?<date>[\\w.]+)",
+        "replace": "${version}-${date}",
         "script": [
             "try {",
             "    $url = 'https://get.filebot.net/filebot/BETA/'",
@@ -30,13 +31,12 @@
             "    $fileBotVersion = $fileMatch.Groups['version'].Value",
             "    $timestamp = $versionMatch.Groups['date'].Value",
             "    $versionNumber = [DateTime]::ParseExact($timestamp, 'yyyy-MM-dd HH:mm', $null).ToString('yyMMdd.HHmm')",
-            "    $version = \"$fileBotVersion-$versionNumber\"",
-            "    Write-Output $version",
+            "    Write-Output \"$fileBotVersion-$versionNumber\"",
             "}",
             "catch { throw $_.Exception.Message }"
         ]
     },
     "autoupdate": {
-        "url": "https://get.filebot.net/filebot/BETA/FileBot_$fileBotVersion-portable.zip"
+        "url": "https://get.filebot.net/filebot/BETA/FileBot_$matchVersion-portable.zip"
     }
 }
