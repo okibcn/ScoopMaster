@@ -17,38 +17,20 @@
         "arm64": { "bin": ["Dism++ARM64.exe"] }
     },
     "shortcuts": [["Dism++x64.exe", "Dism++"]],
-    "persist": ["Config\\Config.ini"],
+    "persist": ["Config/Config.ini"],
     "pre_install": [
         "$path = \"$persist_dir\\Config\"",
         "if (!(Test-Path $path) -or !(Get-Item $path).Length) {",
         "  New-Item $path -ItemType Directory -Force | Out-Null",
-        "}",
-        "function Copy-PersistFile([String] $src, $dest) {",
-        "  if ((Test-Path $src) -and !(Get-Item $src).Length) {",
-        "    Copy-Item $src $dest",
-        "  }",
         "}",
         "function New-PersistFile([String] $path) {",
         "  if (!(Test-Path $path) -or !(Get-Item $path).Length) {",
         "    New-Item $path -ItemType File -Force | Out-Null",
         "  }",
         "}",
-        "New-PersistFile \"$persist_dir\\Config\\Config.ini\"",
-        "# Copy-PersistFile \"$persist_dir\\Config\\Config.ini\" \"$dir\\Config\""
+        "New-PersistFile \"$persist_dir\\Config\\Config.ini\""
     ],
     "post_install": ["Move-Item $dir/wsusscn3.cab $dir/Config/wsusscn3.cab"],
-    "uninstaller": {
-        "script": [
-            "function Copy-PersistFile([String] $src, $dest) {",
-            "  if ((Test-Path $src) -and !(Get-Item $src).LinkType) {",
-            "    Copy-Item $src $dest",
-            "  }",
-            "}",
-            "if (Test-Path $persist_dir) {",
-            "  Copy-PersistFile \"$dir\\Config\\Config.ini\" \"$persist_dir\\Config\\Config.ini\"",
-            "}"
-        ]
-    },
     "checkver": "github",
     "autoupdate": {
         "url": "https://github.com/Chuyu-Team/Dism-Multi-language/releases/download/v$version/Dism++$version.zip"
