@@ -7,6 +7,12 @@
         "To add PollyMC file association options for .ZIPs and .MRPACKS, run this: \"$dir\\install-associations.reg\"",
         "",
         "This package is now using the portable version of PollyMC, and data should have been migrated automatically.",
+        "If you have an existing PollyMC installation, the data will be migrated from it.",
+        "If you do not have an existing PollyMC installation, but do have an existing Prism Launcher installation,",
+        "the data will be migrated from the Prism Launcher installation.",
+        "",
+        "If there are any issues with migrating data from existing installations of PollyMC or Prism Launcher,",
+        "report them to https://github.com/TechPro424/scoop-bucket/issues",
         "If you are using a global install on a system with more than one user, you will need to copy a user's data from %appdata% to the new Scoop PollyMC persist directory"
     ],
     "architecture": {
@@ -36,7 +42,7 @@
         "    Write-Warning \"A global Scoop installation was detected with multiple user accounts. Please see the notes at the end of the install process.\"",
         "}",
         "",
-        "'accounts.json', 'metacache', 'pollymc.cfg' | ForEach-Object {",
+        "'accounts.json', 'metacache', 'pollymc.cfg', 'prismlauncher.cfg' | ForEach-Object {",
         "    if (!(Test-Path -Path $persist_dir\\$_)) {",
         "        New-Item -Type File $dir/$_ | Out-Null",
         "    }",
@@ -72,7 +78,8 @@
         "translations",
         "accounts.json",
         "metacache",
-        "prismlauncher.cfg"
+        "prismlauncher.cfg",
+        "pollymc.cfg"
     ],
     "checkver": {
         "github": "https://github.com/fn2006/PollyMC"
