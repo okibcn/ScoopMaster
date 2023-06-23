@@ -9,15 +9,15 @@
     ],
     "hash": [
         "5bbab96d60704854efd8246a7d9371688b9102261544827fc8884126d70bcb3b",
-        "sha1:dfbfdb1c5bab3a6782937078878554ad"
+        "md5:dfbfdb1c5bab3a6782937078878554ad"
     ],
-    "extract_to": ["", "Config"],
     "architecture": {
         "32bit": { "bin": ["Dism++x86.exe"] },
         "64bit": { "bin": ["Dism++x64.exe"] },
         "arm64": { "bin": ["Dism++ARM64.exe"] }
     },
     "shortcuts": [["Dism++x64.exe", "Dism++"]],
+    "persist": ["Config\\Config.ini"],
     "pre_install": [
         "$path = \"$persist_dir\\Config\"",
         "if (!(Test-Path $path) -or !(Get-Item $path).Length) {",
@@ -28,19 +28,24 @@
         "    Copy-Item $src $dest",
         "  }",
         "}",
-        "Copy-PersistFile \"$persist_dir\\Config\\Config.ini\" \"$persist_dir\\Config\"",
-        "Copy-PersistFile \"$persist_dir\\Config\\UpdateInfo.zip\" \"$persist_dir\\Config\""
+        "function New-PersistFile([String] $path) {",
+        "  if (!(Test-Path $path) -or !(Get-Item $path).Length) {",
+        "    New-Item $path -ItemType File -Force | Out-Null",
+        "  }",
+        "}",
+        "New-PersistFile \"$persist_dir\\Config\\Config.ini\"",
+        "# Copy-PersistFile \"$persist_dir\\Config\\Config.ini\" \"$dir\\Config\""
     ],
+    "post_install": ["Move-Item $dir/wsusscn3.cab $dir/Config/wsusscn3.cab"],
     "uninstaller": {
         "script": [
             "function Copy-PersistFile([String] $src, $dest) {",
             "  if ((Test-Path $src) -and !(Get-Item $src).LinkType) {",
-            "    Copy-Item $path $dest",
+            "    Copy-Item $src $dest",
             "  }",
             "}",
             "if (Test-Path $persist_dir) {",
-            "  Copy-PersistFile \"$dir\\Config\\Config.ini\" \"$persist_dir\\Config\"",
-            "  Copy-PersistFile \"$dir\\Config\\UpdateInfo.zip\" \"$persist_dir\\Config\"",
+            "  Copy-PersistFile \"$dir\\Config\\Config.ini\" \"$persist_dir\\Config\\Config.ini\"",
             "}"
         ]
     },

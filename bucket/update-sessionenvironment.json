@@ -1,0 +1,26 @@
+{
+    "version": "2023.04.05",
+    "homepage": "https://docs.chocolatey.org/en-us/create/functions/update-sessionenvironment",
+    "description": "Provides a command to refresh environment variables in PowerShell/pwsh.",
+    "license": "Apache-2.0",
+    "url": "https://github.com/chocolatey/choco/raw/6b3989e984d3385a33a480af981c312c0aee8838/src/chocolatey.resources/helpers/functions/Update-SessionEnvironment.ps1#/Update-SessionEnvironment.psm1",
+    "hash": "6ea5ea16cc7effa7b6e88a4a6c755561ae3d0ab92ef4f4f8a6c89377f0125d8e",
+    "psmodule": {
+        "name": "Update-SessionEnvironment"
+    },
+    "checkver": {
+        "script": [
+            "$content = Invoke-RestMethod 'https://github.com/chocolatey/choco/commits/master/src/chocolatey.resources/helpers/functions/Update-SessionEnvironment.ps1'",
+            "$content -match 'Commits\\son\\s(?<Date>[\\w\\s,]+)' | Out-Null",
+            "$date = $Matches.Date",
+            "$newDate = (Get-Date $date).ToString('yyyy.MM.dd')",
+            "$content -match \"($date)*?commits/(?<Sha>[\\w]+)/commits_list_item\" | Out-Null",
+            "$sha = $Matches.Sha",
+            "Write-Output \"$newDate $sha\""
+        ],
+        "regex": "([\\w.]+)\\s(?<Sha>[\\w]+)"
+    },
+    "autoupdate": {
+        "url": "https://github.com/chocolatey/choco/raw/$matchSha/src/chocolatey.resources/helpers/functions/Update-SessionEnvironment.ps1#/Update-SessionEnvironment.psm1"
+    }
+}
