@@ -1,6 +1,6 @@
 {
-    "version": "1.7.4631",
-    "description": "Sony PlayStation 2 emulator",
+    "version": "1.7.4632",
+    "description": "A feature rich FOSS PlayStation 2 emulator (development version)",
     "homepage": "https://pcsx2.net/",
     "license": {
         "identifier": "GPL-3.0",
@@ -14,11 +14,15 @@
     "suggest": {
         "Microsoft Visual C++ Runtime 2022": "extras/vcredist2022"
     },
-    "url": "https://github.com/PCSX2/pcsx2/releases/download/v1.7.4631/pcsx2-v1.7.4631-windows-64bit-Qt.7z",
-    "hash": "e681faeea2ed208f8d24e1f6572cd390780c065970824f2d57215770c6b62b8b",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/PCSX2/pcsx2/releases/download/v1.7.4632/pcsx2-v1.7.4632-windows-64bit-Qt.7z",
+            "hash": "51692361c871e31258b862eb816ff048c9ba553474b75e54da955e2cad20724c"
+        }
+    },
     "pre_install": [
         "if (!(Test-Path \"$persist_dir\")) {",
-        "   New-item \"$persist_dir\" -ItemType Directory | Out-Null",
+        "   New-Item \"$persist_dir\" -ItemType Directory | Out-Null",
         "   if (Test-Path \"$env:USERPROFILE\\Documents\\PCSX2\") {",
         "       Write-host \"Migrating AppData...\" -ForegroundColor yellow",
         "       Copy-Item -Path \"$env:USERPROFILE\\Documents\\PCSX2\\*\" -Destination \"$persist_dir\" -Recurse",
@@ -44,17 +48,14 @@
     ],
     "persist": [
         "bios",
-        "cache",
         "cheats_ws",
         "cheats",
         "covers",
         "gamesettings",
         "inis",
-        "inputprofiles",
         "logs",
         "memcards",
         "portable.ini",
-        "shaders",
         "snaps",
         "sstates",
         "textures"
@@ -65,6 +66,10 @@
         "regex": "v([\\d.]+)"
     },
     "autoupdate": {
-        "url": "https://github.com/PCSX2/pcsx2/releases/download/v$version/pcsx2-v$version-windows-64bit-Qt.7z"
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/PCSX2/pcsx2/releases/download/v$version/pcsx2-v$version-windows-64bit-Qt.7z"
+            }
+        }
     }
 }
