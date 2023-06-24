@@ -1,17 +1,19 @@
 {
     "version": "2.2.9",
-    "description": "基于 electron 的开源工具箱，自由集成丰富插件。",
-    "homepage": "https://github.com/clouDr-f2e/rubick",
+    "description": "Electron based open source toolbox, free integration of rich plug-ins. 基于 electron 的开源工具箱，自由集成丰富插件。",
+    "homepage": "https://rubickcenter.github.io/rubick/",
     "license": "MIT",
-    "depends": "7zip",
-    "url": "https://github.com/clouDr-f2e/rubick/releases/download/v2.2.9/rubick2-Setup-2.2.9.exe#/dl.7z",
-    "hash": "e3e892c33a069c2eeefb6c0c3d84dcdb10e4df0f129424a8d3d3df6a54c314cb",
-    "pre_install": [
-        "7z x \"$dir\\`$PLUGINSDIR\\*.7z\" -o\"$dir\\`$PLUGINSDIR\\rubick\"",
-        "Move-Item $dir\\`$PLUGINSDIR\\rubick\\* $dir",
-        "Remove-Item -R -Path $dir\\`$PLUGINSDIR"
-    ],
-    "bin": "rubick2.exe",
+    "notes": "config location: $env:LocalAppData/rubickconfig location: $env:AppData/rubick - https://github.com/ViCrack/scoop-bucket/blob/master/bucket/rubick.json",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/rubickCenter/rubick/releases/download/v2.2.9/rubick2-Setup-2.2.9.exe#/dl.7z",
+            "hash": "e3e892c33a069c2eeefb6c0c3d84dcdb10e4df0f129424a8d3d3df6a54c314cb",
+            "pre_install": [
+                "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\"",
+                "Remove-Item \"$dir\\`$*\", \"$dir\\Uninstall*\" -Force -Recurse"
+            ]
+        }
+    },
     "shortcuts": [
         [
             "rubick2.exe",
@@ -19,10 +21,13 @@
         ]
     ],
     "checkver": {
-        "url": "https://github.com/clouDr-f2e/rubick",
-        "regex": "/releases/tag/v(?<version>.+)?\""
+        "github": "https://github.com/rubickCenter/rubick"
     },
     "autoupdate": {
-        "url": "https://github.com/clouDr-f2e/rubick/releases/download/v$version/rubick2-Setup-$version.exe#/dl.7z"
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/rubickCenter/rubick/releases/download/v$version/rubick2-Setup-$version.exe#/dl.7z"
+            }
+        }
     }
 }
