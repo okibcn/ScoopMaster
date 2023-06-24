@@ -6,16 +6,44 @@
         "identifier": "Freeware,LGPL-2.0-only,BSD-3-Clause",
         "url": "https://www.7-zip.org/license.txt"
     },
+    "notes": "Add 7-Zip as a context menu option by running: \"$dir\\install-context.reg\"",
     "architecture": {
         "64bit": {
-            "url": "https://7-zip.org/a/7z2301-x64.msi",
-            "hash": "0ba639b6dacdf573d847c911bd147c6384381a54dac082b1e8c77bc73d58958b"
+            "url": [
+                "https://7-zip.org/a/7z2301-x64.msi",
+                "https://raw.githubusercontent.com/ScoopInstaller/Main/master/scripts/7-zip/install-context.reg",
+                "https://raw.githubusercontent.com/ScoopInstaller/Main/master/scripts/7-zip/uninstall-context.reg"
+            ],
+            "hash": [
+                "0ba639b6dacdf573d847c911bd147c6384381a54dac082b1e8c77bc73d58958b",
+                "a3e7a9e3088e4316a7281ef7f0e95168dcdf68d28653b6e44db7b61c9eb01ae6",
+                "494fb5be4bc0b4323701319e72d31acb8c1c8a5d7c94f0e26620a415f551fcfa"
+            ]
         },
         "32bit": {
-            "url": "https://7-zip.org/a/7z2301.msi",
-            "hash": "b32e47f88d03dc29b5cb02c6ed07a7e48015f655346b62a3b32033c49ed9bb06"
+            "url": [
+                "https://7-zip.org/a/7z2301.msi",
+                "https://raw.githubusercontent.com/ScoopInstaller/Main/master/scripts/7-zip/install-context.reg",
+                "https://raw.githubusercontent.com/ScoopInstaller/Main/master/scripts/7-zip/uninstall-context.reg"
+            ],
+            "hash": [
+                "b32e47f88d03dc29b5cb02c6ed07a7e48015f655346b62a3b32033c49ed9bb06",
+                "a3e7a9e3088e4316a7281ef7f0e95168dcdf68d28653b6e44db7b61c9eb01ae6",
+                "494fb5be4bc0b4323701319e72d31acb8c1c8a5d7c94f0e26620a415f551fcfa"
+            ]
         }
     },
+    "pre_install": [
+        "$7zip_root = \"$dir\".Replace('\\', '\\\\')",
+        "'install-context.reg', 'uninstall-context.reg' | ForEach-Object {",
+        "    $content = Get-Content \"$dir\\$_\"",
+        "    $content = $content.Replace('$7zip_root', $7zip_root)",
+        "    if ($global) {",
+        "       $content = $content.Replace('HKEY_CURRENT_USER', 'HKEY_LOCAL_MACHINE')",
+        "    }",
+        "    Set-Content \"$dir\\$_\" $content -Encoding Ascii",
+        "}"
+    ],
     "extract_dir": "Files\\7-Zip",
     "bin": "7z.exe",
     "shortcuts": [
@@ -24,9 +52,13 @@
             "7-Zip"
         ]
     ],
+    "persist": [
+        "Codecs",
+        "Formats"
+    ],
     "checkver": {
-        "url": "https://www.7-zip.org/download.html",
-        "regex": "Download 7-Zip ([\\d.]+)"
+        "url": "https://www.7-zip.org/history.txt",
+        "regex": "(?m)^([\\d.]+)\\s.*?\\d{4}-\\d{2}-\\d{2}\\s+^-----"
     },
     "autoupdate": {
         "architecture": {
