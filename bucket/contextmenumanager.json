@@ -1,27 +1,25 @@
 {
-    "homepage": "https://bluepointlilac.github.io/ContextMenuManager",
+    "homepage": "https://github.com/BluePointLilac/ContextMenuManager",
     "description": "一个纯粹的Windows右键菜单管理程序",
     "version": "3.3.3.1",
-    "license": "MIT",
-    "url": "https://github.com/BluePointLilac/ContextMenuManager/releases/download/3.3.3.1/ContextMenuManager.NET.4.0.exe",
-    "hash": "1352c2222d2d28dd1a8824334f16c0676dfe88cd7211de873ec9b125f6782ec7",
-	"post_install": [
-        "if (-not (Test-Path -Path $dir\\Config\\Config.ini)) {",
-        "    Set-Content -Path $dir\\Config\\Config.ini -Value \"[General]`nUpdateFrequency=-1\" -Encoding unicode",
-        "}"
-    ],
+    "url": "https://github.com/BluePointLilac/ContextMenuManager/releases/download/3.3.3.1/ContextMenuManager.zip",
+    "hash": "3faecb2ae6c9d025df54bdc72d4b0f850a4931dd41235f7f46b291824d3b5dbe",
+    "checkver": {
+        "url": "https://github.com/BluePointLilac/ContextMenuManager/tags",
+        "regex": "/BluePointLilac/ContextMenuManager/releases/tag/([^\"]*)"
+    },
+    "autoupdate": {
+        "url": "https://github.com/BluePointLilac/ContextMenuManager/releases/download/$version/ContextMenuManager.zip"
+    },
+    "persist": "Config",
     "shortcuts": [
         [
             "ContextMenuManager.NET.4.0.exe",
-            "Context Menu Manager"
+            "ContextMenuManager"
         ]
     ],
-	"persist": "Config",
-    "checkver": {
-        "github": "https://github.com/BluePointLilac/ContextMenuManager"
-    },
-    "autoupdate": {
-        "url": "https://github.com/BluePointLilac/ContextMenuManager/releases/download/$version/ContextMenuManager.NET.4.0.exe"
-    },
-    "notes": "prerequisite: .NET4.0"
+    "notes": [
+        "Win8及以上版本自带.NET4.0运行库, 可直接运行.",
+        "Win7及以下版本未自带, 需安装相应运行库: https://dotnet.microsoft.com/download/dotnet-framework"
+    ]
 }
