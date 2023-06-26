@@ -1,5 +1,5 @@
 {
-    "version": "117.0.5854.0",
+    "version": "117.0.5853.0",
     "description": "Fast, secure, and free web browser, built for the modern web.",
     "homepage": "https://www.google.com/chrome/canary",
     "license": {
@@ -8,12 +8,12 @@
     },
     "architecture": {
         "64bit": {
-            "url": "https://dl.google.com/release2/chrome/adddy5hwztlyvidsca6ay2x7qpka_117.0.5854.0/117.0.5854.0_chrome_installer.exe#/dl.7z",
-            "hash": "b9a0f48d9ec8f3066a8273ff06250bf3f27b4608e15bafe09e56a0eb57d77c4e"
+            "url": "https://dl.google.com/release2/chrome/jpvh3mfzjwnlc3uuni2imycusq_117.0.5853.0/117.0.5853.0_chrome_installer.exe#/dl.7z",
+            "hash": "e486fc59a708b27fa71b1356e4896a63997fbdb7602a5e4a8fa00306c1711b73"
         },
         "32bit": {
-            "url": "https://dl.google.com/release2/chrome/hoi6vu2c6bzbzsp6xox2upvl3a_117.0.5854.0/117.0.5854.0_chrome_installer.exe#/dl.7z",
-            "hash": "e247d7b79d27844366e3d840ccd843f28c5a9fa1cded5b11c509afa600db8bdf"
+            "url": "https://dl.google.com/release2/chrome/nhhgjhuhwkhbv5jgl5rul6d3ay_117.0.5853.0/117.0.5853.0_chrome_installer.exe#/dl.7z",
+            "hash": "8a5124ee78ff9ab356b1a0896565024c380d97f58f70121871eb31504c27b61d"
         }
     },
     "installer": {
@@ -32,17 +32,24 @@
         ]
     ],
     "checkver": {
-        "url": "https://www.iplaysoft.com/tools/chrome/",
-        "regex": "(?sm)Windows 金丝雀版 64 位.*?dl.google.com/release2/chrome/(?<64>[\\w.-]+)/(?<version64>[\\d.]+)_chrome_installer\\.exe.*?Windows 金丝雀版 32 位.*?dl.google.com/release2/chrome/(?<32>[\\w.-]+)/(?<version32>[\\d.]+)_chrome_installer\\.exe",
-        "replace": "${version64}"
+        "url": "https://scoopinstaller.github.io/UpdateTracker/googlechrome/chrome.min.xml",
+        "regex": "(?sm)<canary32><version>(?<version>[\\d.]+)</version>.+release2/chrome/(?<32>[\\w-]+)_.+<canary64>.+release2/chrome/(?<64>[\\w-]+)_.+</canary64>"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://dl.google.com/release2/chrome/$match64/$matchVersion64_chrome_installer.exe#/dl.7z"
+                "url": "https://dl.google.com/release2/chrome/$match64_$version/$version_chrome_installer.exe#/dl.7z",
+                "hash": {
+                    "url": "https://scoopinstaller.github.io/UpdateTracker/googlechrome/chrome.min.xml",
+                    "xpath": "/chromechecker/canary64[version='$version']/sha256"
+                }
             },
             "32bit": {
-                "url": "https://dl.google.com/release2/chrome/$match32/$matchVersion32_chrome_installer.exe#/dl.7z"
+                "url": "https://dl.google.com/release2/chrome/$match32_$version/$version_chrome_installer.exe#/dl.7z",
+                "hash": {
+                    "url": "https://scoopinstaller.github.io/UpdateTracker/googlechrome/chrome.min.xml",
+                    "xpath": "/chromechecker/canary32[version='$version']/sha256"
+                }
             }
         }
     }
