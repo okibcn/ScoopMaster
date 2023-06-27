@@ -1,22 +1,19 @@
 {
     "version": "20230627",
-    "description": "Video player based on MPlayer(2) (qwerty12's *modified* nightly builds - AVX2 required)",
+    "description": "Video player based on MPlayer/mplayer2 (builds by shinchiro)",
     "homepage": "https://mpv.io",
     "license": "LGPL-2.1-or-later,GPL-2.0-or-later",
     "notes": [
-        "To set and unset file type associations and AutoPlay handlers, run '$dir\\installer\\mpv-install.bat' and '$dir\\installer\\mpv-uninstall.bat' as administrator, respectively.",
-        "You can use Icaros ('nonportable/icaros-np') to enable thumbnails for all media types."
+        "To set up file type associations and AutoPlay handlers run '$dir\\installer\\mpv-install.bat' as administrator.",
+        "This doesn't need to be done everytime you update mpv however, do keep in mind that if you want to uninstall mpv you'll need to run '$dir\\installer\\mpv-uninstall.bat' beforehand since this action will not be performed automatically.",
+        "You can use Icaros (https://www.majorgeeks.com/files/details/icaros.html) to enable thumbnails for all media types."
     ],
     "suggest": {
         "yt-dlp": "yt-dlp"
     },
-    "architecture": {
-        "64bit": {
-            "url": "https://github.com/qwerty12/mpv-winbuild/releases/download/2023-06-27/mpv-x86_64-v3-20230627-git-e7902eb.7z",
-            "hash": "8959ec73fbe99b47a30c1e69d4cacfb2c289645ee2f315b0e0b49b95fa7b6e9b"
-        }
-    },
-    "env_add_path": ".",
+    "url": "https://github.com//shinchiro/mpv-winbuild-cmake/releases/download/20230627/mpv-x86_64-v3-20230627-git-4dfc2c5.7z",
+    "hash": "49d6aa557a186b22388c57c74181210b97797e62515fb7c4b6fc581f1e06f47f",
+    "bin": "mpv.com",
     "shortcuts": [
         [
             "mpv.exe",
@@ -25,15 +22,17 @@
     ],
     "persist": "portable_config",
     "checkver": {
-        "url": "https://api.github.com/repos/qwerty12/mpv-winbuild/releases/latest",
-        "jsonpath": "$.assets",
-        "regex": "/(?<date>[\\d-]+)/mpv-x86_64-v3-(\\d+)-git-(?<commit>[\\da-f]+)\\.7z"
+        "script": [
+            "$gh_url = Invoke-WebRequest -Uri 'https://github.com/shinchiro/mpv-winbuild-cmake/releases/latest'",
+            "$gh_ass = $gh_url.Content | Select-String -Pattern 'https://github.com/shinchiro/mpv-winbuild-cmake/releases/expanded_assets/[\\d]+' | % { $_.Matches.Value }",
+            "$gh_ver = $gh_ass | Select-String -Pattern '[\\d]+' | % { $_.Matches.Value }",
+            "$gh_ur2 = Invoke-WebRequest -Uri $gh_ass",
+            "$gh_fil = $gh_ur2.Content | Select-String -Pattern 'mpv-x86_64-v3-[\\d]+-git-[\\da-f]+.7z' | % { $_.Matches.Value }",
+            "Write-Output $gh_ver $gh_fil"
+        ],
+        "regex": "(?<version>.+)\\s(?<filename>.+)"
     },
     "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://github.com/qwerty12/mpv-winbuild/releases/download/$matchDate/mpv-x86_64-v3-$version-git-$matchCommit.7z"
-            }
-        }
+        "url": "https://github.com//shinchiro/mpv-winbuild-cmake/releases/download/$version/$matchFilename"
     }
 }
