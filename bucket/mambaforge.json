@@ -13,11 +13,12 @@
             "hash": "99c951c3d277c8fb1043e4bbab7126d7362ef7a40996dd5bdf672219b53964e3"
         }
     },
+    "pre_install": "if ($dir -match ' ') { error 'The installation directory cannot include a space'; break}",
     "installer": {
         "script": [
-            "Move-Item –Path \"$dir\\$fname\" -Destination \"$env:TEMP\" -Force",
-            "Start-Process -Wait \"$env:TEMP\\$fname\" -ArgumentList @('/S', '/InstallationType=JustMe', '/RegisterPython=0', '/AddToPath=0', '/NoRegistry=1', \"/D=$dir\")",
-            "Remove-Item \"$env:TEMP\\$fname\""
+            "Move-Item \"$dir\\$fname\" \"$dir\\..\\$fname\"",
+            "Start-Process -Wait \"$dir\\..\\$fname\" -ArgumentList @('/S', '/InstallationType=JustMe', '/RegisterPython=0', '/AddToPath=0', '/NoRegistry=1', \"/D=$dir\")",
+            "Remove-Item \"$dir\\..\\$fname\""
         ]
     },
     "uninstaller": {
