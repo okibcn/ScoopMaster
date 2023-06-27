@@ -5,16 +5,16 @@
     "license": "Apache-2.0",
     "architecture": {
         "64bit": {
-            "url": "https://github.com/jgraph/drawio-desktop/releases/download/v21.5.1/draw.io-21.5.1-windows-installer.exe#/dl.7z",
-            "hash": "57208b2b7fe0a86ceca619e1f08e06a6a105475a7e778bb01599f27ea392d2d5",
+            "url": "https://github.com/jgraph/drawio-desktop/releases/download/v21.5.1/draw.io-21.5.1-windows-no-installer.exe#/dl.7z",
+            "hash": "e4b37375d21302d0881a61842155a7cf28ef7436d26132695f9ac642277ab0e9",
             "pre_install": [
                 "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\"",
                 "Remove-Item \"$dir\\`$*\", \"$dir\\Uninstall*\" -Recurse"
             ]
         },
         "32bit": {
-            "url": "https://github.com/jgraph/drawio-desktop/releases/download/v21.5.1/draw.io-ia32-21.5.1-windows-32bit-installer.exe#/dl.7z",
-            "hash": "659e22c04f348ae4046d9e897e0537ed9b87f2995e070deb39c17b99d6010b07",
+            "url": "https://github.com/jgraph/drawio-desktop/releases/download/v21.5.1/draw.io-ia32-21.5.1-windows-32bit-no-installer.exe#/dl.7z",
+            "hash": "a62fd967b6b3e58934cdd5a7716b857b83b668acfd4d3dd1c42677799b4b3c9b",
             "pre_install": [
                 "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-32.7z\" \"$dir\"",
                 "Remove-Item \"$dir\\`$*\", \"$dir\\Uninstall*\" -Recurse"
@@ -34,10 +34,18 @@
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://github.com/jgraph/drawio-desktop/releases/download/v$version/draw.io-$version-windows-installer.exe#/dl.7z"
+                "url": "https://github.com/jgraph/drawio-desktop/releases/download/v$version/draw.io-$version-windows-no-installer.exe#/dl.7z",
+                "hash": {
+                    "url": "$baseurl/Files-SHA256-Hashes.txt",
+                    "regex": "draw.io-$version-windows-no-installer.exe\\s*$sha256"
+                }
             },
             "32bit": {
-                "url": "https://github.com/jgraph/drawio-desktop/releases/download/v$version/draw.io-ia32-$version-windows-32bit-installer.exe#/dl.7z"
+                "url": "https://github.com/jgraph/drawio-desktop/releases/download/v$version/draw.io-ia32-$version-windows-32bit-no-installer.exe#/dl.7z",
+                "hash": {
+                    "url": "$baseurl/Files-SHA256-Hashes.txt",
+                    "regex": "draw.io-ia32-$version-windows-32bit-no-installer.exe\\s*$sha256"
+                }
             }
         }
     }
