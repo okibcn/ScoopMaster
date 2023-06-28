@@ -1,9 +1,8 @@
 {
     "version": "114.0.2",
-    "description": "Firefox. Popular open source web browser.",
+    "description": "Popular open source web browser.",
     "homepage": "https://www.mozilla.org/firefox/",
     "license": "MPL-2.0",
-    "changelog": "https://www.mozilla.org/en-US/firefox/114.0.2/releasenotes/",
     "architecture": {
         "64bit": {
             "url": "https://archive.mozilla.org/pub/firefox/releases/114.0.2/win64/en-US/Firefox%20Setup%20114.0.2.exe#/dl.7z",
@@ -15,13 +14,21 @@
         }
     },
     "extract_dir": "core",
-    "bin": "firefox.exe",
+    "bin": [
+        [
+            "firefox.exe",
+            "firefox",
+            "-profile \"$dir\\profile\""
+        ]
+    ],
     "shortcuts": [
         [
             "firefox.exe",
-            "Firefox"
+            "Firefox",
+            "-profile \"$dir\\profile\""
         ]
     ],
+    "persist": "Profile",
     "checkver": {
         "url": "https://www.mozilla.org/en-US/firefox/notes/",
         "regex": "<div class=\"c-release-version\">([\\d.]+)</div>"
@@ -42,7 +49,6 @@
                     "regex": "$sha512\\s+win32/en-US/$basename"
                 }
             }
-        },
-        "changelog": "https://www.mozilla.org/en-US/firefox/$version/releasenotes/"
+        }
     }
 }
