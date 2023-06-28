@@ -1,28 +1,26 @@
 {
-    "version": "12.1.1_531.14",
+    "version": "12.2.0_536.25",
     "description": "A parallel computing platform and programming model invented by NVIDIA",
     "homepage": "https://developer.nvidia.com/cuda-toolkit",
     "license": {
         "identifier": "Freeware",
         "url": "https://docs.nvidia.com/cuda/eula/index.html"
     },
-    "architecture": {
-        "64bit": {
-            "url": "http://developer.download.nvidia.com/compute/cuda/12.1.1/local_installers/cuda_12.1.1_531.14_windows.exe#/dl.7z",
-            "hash": "md5:7da46c38277ab61b78c24d267c5bacae"
-        }
-    },
+    "url": "http://developer.download.nvidia.com/compute/cuda/12.2.0/local_installers/cuda_12.2.0_536.25_windows.exe#/dl.7z",
+    "hash": "md5:4a0f7daaf0a961030a144e853e32d7d5",
     "installer": {
         "script": [
-            "$names = @('bin', 'extras', 'include', 'lib', 'libnvvp', 'nvml', 'nvvm', 'compute-sanitizer')",
+            "$names = @(Get-ChildItem -Path \"$dir\" -Directory -Name -Depth 2 | Where-Object {$_ -match \".*(?<!cuda_samples)\\\\.*\\\\(?:bin|compute-sanitizer|extras|include|lib|libnvvp|nvml|nvvm|nvvm-prev|src)$\"})",
             "foreach ($name in $names) {",
-            "    Copy-Item \"$dir\\cuda_*\\*\\$name\" \"$dir\" -Recurse -Force",
-            "    Copy-Item \"$dir\\lib*\\*\\$name\" \"$dir\" -Recurse -Force",
+            "    Copy-Item \"$dir\\$name\" \"$dir\" -Recurse -Force",
             "}",
-            "Get-ChildItem \"$dir\" -Exclude $names | Remove-Item -Recurse -Force"
+            "Get-ChildItem \"$dir\" -Exclude ('bin', 'compute-sanitizer', 'extras', 'include', 'lib', 'libnvvp', 'nvml', 'nvvm', 'nvvm-prev', 'src', 'version.json') | Remove-Item -Recurse -Force"
         ]
     },
-    "env_add_path": "bin",
+    "env_add_path": [
+        "bin",
+        "libnvvp"
+    ],
     "env_set": {
         "CUDA_PATH": "$dir"
     },
@@ -31,11 +29,7 @@
         "regex": "/cuda_([\\d._]+)_windows\\.exe"
     },
     "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "http://developer.download.nvidia.com/compute/cuda/$matchHead/local_installers/cuda_$version_windows.exe#/dl.7z"
-            }
-        },
+        "url": "http://developer.download.nvidia.com/compute/cuda/$matchHead/local_installers/cuda_$version_windows.exe#/dl.7z",
         "hash": {
             "url": "https://developer.download.nvidia.com/compute/cuda/$matchHead/docs/sidebar/md5sum.txt"
         }
