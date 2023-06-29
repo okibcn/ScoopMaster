@@ -1,38 +1,27 @@
 {
     "version": "2.5.3",
-    "description": "Fully featured and highly configurable SFTP server with optional FTP/S and WebDAV support - S3, Google Cloud Storage, Azure Blob.",
+    "description": "Fully featured and highly configurable SFTP server with optional HTTP, FTP/S and WebDAV support",
     "homepage": "https://github.com/drakkan/sftpgo",
-    "license": "AGPL-3.0",
+    "license": "AGPL-3.0-only",
+    "notes": "Register SFTPGo as Windows Service by running: \"sftpgo service install\" as Administrator",
     "url": "https://github.com/drakkan/sftpgo/releases/download/v2.5.3/sftpgo_v2.5.3_windows_portable.zip",
     "hash": "0c7e39c4d4626c8afff2e2e6f4a28a4f04bea73a2c9da9fe92e0d7ee67667a51",
-    "architecture": {
-        "64bit": {
-            "pre_install": "Remove-Item \"$dir\\x86\", \"$dir\\arm64\" -Force -Recurse"
-        },
-        "32bit": {
-            "pre_install": [
-                "Copy-Item -Path \"$dir\\x86\\sftpgo.exe\" -Destination \"$dir\\sftpgo.exe\" -Force",
-                "Remove-Item \"$dir\\x86\", \"$dir\\arm64\" -Force -Recurse"
-            ]
-        }
-    },
+    "pre_install": [
+        "if ($architecture -eq '32bit') {",
+        "   Move-Item \"$dir\\x86\\sftpgo.exe\" \"$dir\\\" -Force",
+        "} elseif ($architecture -eq 'arm64') {",
+        "   Move-Item \"$dir\\arm64\\sftpgo.exe\" \"$dir\\\" -Force",
+        "}",
+        "Remove-Item \"$dir\\arm64\", \"$dir\\x86\" -Recurse -Force"
+    ],
     "bin": "sftpgo.exe",
-    "env_set": {
-        "SFTPGO_CONFIG_DIR": "$dir\\config",
-        "SFTPGO_HTTPD__TEMPLATES_PATH": "$dir\\templates",
-        "SFTPGO_HTTPD__STATIC_FILES_PATH": "$dir\\static",
-        "SFTPGO_HTTPD__BACKUPS_PATH": "$dir\\backups"
-    },
     "persist": [
-        "config",
-        "backups"
+        "sftpgo.db",
+        "sftpgo.json"
     ],
-    "post_install": [
-        "if (! (Test-Path \"$dir\\config\\sftpgo.json\")) { Copy-Item -Path \"$dir\\sftpgo.json\" -Destination \"$dir\\config\\sftpgo.json\" }",
-        "if (! (Test-Path \"$dir\\config\\sftpgo.db\")) { Copy-Item -Path \"$dir\\sftpgo.db\" -Destination \"$dir\\config\\sftpgo.db\" }",
-        "Remove-Item \"$dir\\sftpgo.json\", \"$dir\\sftpgo.db\" -Force"
-    ],
-    "checkver": "github",
+    "checkver": {
+        "github": "https://github.com/drakkan/sftpgo"
+    },
     "autoupdate": {
         "url": "https://github.com/drakkan/sftpgo/releases/download/v$version/sftpgo_v$version_windows_portable.zip"
     }
