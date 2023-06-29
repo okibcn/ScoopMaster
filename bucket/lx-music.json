@@ -1,8 +1,11 @@
 {
     "version": "2.2.2",
-    "description": "An electron-based music player. 一个基于 electron 的音乐软件",
+    "description": "A music app based on electron and vue",
     "homepage": "https://github.com/lyswhut/lx-music-desktop",
-    "license": "Apache-2.0",
+    "license": {
+        "identifier": "Apache-2.0",
+        "url": "https://github.com/lyswhut/lx-music-desktop/blob/master/LICENSE"
+    },
     "architecture": {
         "64bit": {
             "url": "https://github.com/lyswhut/lx-music-desktop/releases/download/v2.2.2/lx-music-desktop-v2.2.2-win_x64-green.7z",
@@ -13,31 +16,18 @@
             "hash": "082c9a874d271990b815e2cc55af9a891bb3a2fe2fd8ec065cacb96d086cfe89"
         }
     },
+    "pre_install": "New-Item $dir\\portable -ItemType Directory -ErrorAction SilentlyContinue | Out-Null",
     "shortcuts": [
         [
             "lx-music-desktop.exe",
-            "lx-music"
+            "LX Music"
         ]
     ],
-    "post_install": [
-        "Write-Host \"Persisting LxDatas\" -f Green",
-        "$data_path=\"$env:APPData\\lx-music-desktop\\LxDatas\"",
-        "$persist_path=\"$persist_dir\\LxDatas\"",
-        "",
-        "$count=0;$current_bucket_name=foreach($_ in scoop bucket list,$count){if(($count -eq 0) -and ($_.Source -match \"abgox/abgo_bucket\")){echo $_.Name};$count++}",
-        "$ps1 = \"$bucketsdir\\$current_bucket_name\\bin\\persist_link.ps1 $data_path $persist_path\"",
-        "Invoke-Expression \"$ps1\""
-    ],
-    "pre_uninstall":[
-        "sudo taskKill /f /im lx-music-desktop.exe",
-        "Start-Sleep -Seconds 1"
-    ],
-    "post_uninstall":[
-        "$data_path=\"$env:APPData\\lx-music-desktop\"",
-        "if (Test-Path $data_path){",
-        "   Remove-Item -Force -Recurse $data_path",
-        "   echo \"Removing $data_path\"",
-        "}"
+    "persist": [
+        [
+            "portable\\userData",
+            "userData"
+        ]
     ],
     "checkver": "github",
     "autoupdate": {
