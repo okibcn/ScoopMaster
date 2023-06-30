@@ -1,24 +1,31 @@
 {
     "version": "162",
-    "description": "A focused and highly customizable fan controlling software for Windows",
-    "homepage": "https://github.com/Rem0o/FanControl.Releases",
-    "license": "Unknown",
-    "url": "https://github.com/Rem0o/FanControl.Releases/raw/V162/FanControl.zip",
+    "description": "A highly customizable fan controlling software for the Windows OS.",
+    "homepage": "https://getfancontrol.com/",
+    "license": "Freeware",
+    "notes": "You will need to force close fancontrol before running this, I have tried multiple methods to force close it through the installer but it doesn't work. I will try to fix this in the future.",
+    "url": "https://raw.githubusercontent.com/Rem0o/FanControl.Releases/master/FanControl.zip",
     "hash": "f0b3ffee2b337831239b4b18d31533c770b06ed4c9494ad4fd07cbd478612885",
+    "pre_install": [
+        "if (!(Test-Path \"$persist_dir\\Configurations\")) {",
+        "   New-Item \"$persist_dir\\Configurations\" -ItemType Directory -Force | Out-Null",
+        "}"
+    ],
     "shortcuts": [
         [
             "FanControl.exe",
-            "Fan Control"
+            "FanControl"
         ]
     ],
     "persist": [
-        "Configurations",
-        "Plugins"
+        "plugins",
+        "Configurations"
     ],
     "checkver": {
-        "github": "https://github.com/Rem0o/FanControl.Releases"
+        "url": "https://raw.githubusercontent.com/Rem0o/FanControl.Releases/master/version.json",
+        "jsonpath": "$.Number"
     },
     "autoupdate": {
-        "url": "https://github.com/Rem0o/FanControl.Releases/raw/V$version/FanControl.zip"
+        "url": "https://raw.githubusercontent.com/Rem0o/FanControl.Releases/master/FanControl.zip"
     }
 }
