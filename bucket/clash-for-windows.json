@@ -1,35 +1,45 @@
 {
-    "homepage": "https://docs.cfw.lbyczf.com/",
-    "description": "A Windows GUI based on Clash https://docs.cfw.lbyczf.com/",
     "version": "0.20.27",
-    "license": "MIT",
+    "description": "A Windows/macOS GUI based on Clash",
+    "homepage": "https://github.com/Fndroid/clash_for_windows_pkg",
+    "license": "",
+    "notes": [
+        "x86 platform only, ARM users please install clash-for-windows-arm package.",
+        "This version of CFW is a portable version, which means you can run it without installing.",
+        "You can also put it on a USB flash drive or other portable devices and use it on any computer of the same architecture.",
+        "If you want to save the data to local account folder, delete the 'data' folder.",
+        "x86 平台专用， ARM 用户请安装 clash-for-windows-arm 包。",
+        "该版本 CFW 为便携版，即无需安装即可运行。",
+        "你也可以将其放在 U 盘或其他便携设备上，并在任何（同架构）计算机上直接使用它。",
+        "如果你想要将数据保留至本地账户文件夹，请删除 'data' 文件夹。"
+    ],
     "architecture": {
         "64bit": {
-            "url": "https://github.com/Fndroid/clash_for_windows_pkg/releases/download/0.20.27/Clash.for.Windows.Setup.0.20.27.exe#/clash.7z",
-            "hash": "9981c168d78a57aef73d58fff43e3191ef9a9ac8b2075cec6b8bf64e1036a8ae",
-            "installer": {
-                "script": [
-                    "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\"",
-                    "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\Uninstall*\" -Force -Recurse"
-                ]
-            }
+            "url": "https://github.com/Fndroid/clash_for_windows_pkg/releases/download/0.20.27/Clash.for.Windows-0.20.27-win.7z",
+            "hash": "1be4b295263c9bad206f51655ba021adff5648a0ff901d2cab5c462cda3f1171"
+        },
+        "32bit": {
+            "url": "https://github.com/Fndroid/clash_for_windows_pkg/releases/download/0.20.27/Clash.for.Windows-0.20.27-ia32-win.7z",
+            "hash": "a5cdf837ef12bfc72a18bbc512f43e46c7538fd3d2b07717a291c743e2d1d0b2"
         }
     },
-    "shortcuts": [
+    "persist": "data",
+    "checkver": "github",
+    "bin": [
+        "Clash for Windows.exe",
         [
             "Clash for Windows.exe",
-            "Clash for Windows"
+            "cfw"
         ]
     ],
-    "persist": "data",
-    "checkver": {
-        "github": "https://github.com/Fndroid/clash_for_windows_pkg"
-    },
     "autoupdate": {
-        "url": "https://github.com/Fndroid/clash_for_windows_pkg/releases/download/$version/Clash.for.Windows.Setup.$version.exe#/clash.7z",
-        "hash": {
-            "url": "$baseurl/sha256sum",
-            "regex": "^exe: $sha256"
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/Fndroid/clash_for_windows_pkg/releases/download/$version/Clash.for.Windows-$version-win.7z"
+            },
+            "32bit": {
+                "url": "https://github.com/Fndroid/clash_for_windows_pkg/releases/download/$version/Clash.for.Windows-$version-ia32-win.7z"
+            }
         }
     }
 }
