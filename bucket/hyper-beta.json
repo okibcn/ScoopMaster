@@ -1,12 +1,12 @@
 {
     "homepage": "https://hyper.is",
     "description": "A terminal built on web technologies",
-    "version": "4.0.0-canary.3",
+    "version": "4.0.0-canary.4",
     "license": "MIT",
     "architecture": {
         "64bit": {
-            "url": "https://github.com/vercel/hyper/releases/download/v4.0.0-canary.3/Hyper-Setup-4.0.0-canary.3.exe#/dl.7z",
-            "hash": "2cb651ec5be49a0396ba6dd1988664b24ba545e2ade929af9b1aca9d35c5fb27",
+            "url": "https://github.com/vercel/hyper/releases/download/v4.0.0-canary.4/Hyper-4.0.0-canary.4.exe#/dl.7z",
+            "hash": "0fd45934ab4f6066b9b9a8ddcde7c28f3fc9532200a0320790f7fe57a92b892c",
             "pre_install": [
                 "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\"",
                 "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\`$R0\" -Force -Recurse"
@@ -35,12 +35,12 @@
     ],
     "checkver": {
         "url": "https://api.github.com/repos/vercel/hyper/releases",
-        "regex": "/releases/tag/(?:v|V)?([\\d.]+-[\\w.]+)"
+        "regex": "(?sm)browser_download_url.*?releases/download/v(([\\d.])+-([\\w.])+)/Hyper(?<extra>-Setup)?-(([\\d.])+-([\\w.])+)\\.exe"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://github.com/vercel/hyper/releases/download/v$version/Hyper-Setup-$version.exe#/dl.7z"
+                "url": "https://github.com/vercel/hyper/releases/download/v$version/Hyper$matchExtra-$version.exe#/dl.7z"
             }
         }
     }
