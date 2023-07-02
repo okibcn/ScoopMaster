@@ -1,21 +1,32 @@
 {
-    "version": "6.1.7",
-    "description": ".NET debugger and assembly editor.",
-    "homepage": "https://github.com/0xd4d/dnSpy",
+    "version": "6.4.0",
+    "description": ".NET debugger and assembly editor",
+    "homepage": "https://github.com/dnSpyEx/dnSpy",
     "license": "GPL-3.0-only",
     "architecture": {
-        "64bit": {
-            "url": "https://github.com/0xd4d/dnSpy/releases/download/v6.1.7/dnSpy-netcore-win64.zip",
-            "hash": "d7b6bbc7682d7bbc116d0ed95d08a6c1edb2567b539c707e7e09bf014eb9d207"
-        },
         "32bit": {
-            "url": "https://github.com/0xd4d/dnSpy/releases/download/v6.1.7/dnSpy-netcore-win32.zip",
-            "hash": "bc14c3b038bc2f233a9c3b9ea12dbcfe8e909788635eb2eb89c9e8886ce29170"
+            "url": "https://github.com/dnSpyEx/dnSpy/releases/download/v6.4.0/dnSpy-net-win32.zip",
+            "hash": "0cdc1519939a5c599dafc5bed59eab3d2372d0248f078d5c31b7f45445781cef"
+        },
+        "64bit": {
+            "url": "https://github.com/dnSpyEx/dnSpy/releases/download/v6.4.0/dnSpy-net-win64.zip",
+            "hash": "4800a5c4c980d352b649515496a6a6b6ceb62cd48a3fa3aef5454cac2d50ff15"
         }
     },
+    "extract_to": "dnSpy",
+    "pre_install": [
+        "Expand-7zipArchive \"$dir\\dnSpy\\dnSpy-net-win64.zip\" \"$dir\" -Removal",
+        "Remove-Item \"$dir\\dnSpy\" -Force -Recurse"
+    ],
     "bin": [
-        "dnSpy.Console.exe",
-        "dnSpy.exe"
+        [
+            "dnSpy.Console.exe",
+            "dnSpy.Console"
+        ],
+        [
+            "dnSpy.exe",
+            "dnSpy"
+        ]
     ],
     "shortcuts": [
         [
@@ -23,14 +34,16 @@
             "dnSpy"
         ]
     ],
-    "checkver": "github",
+    "checkver": {
+        "github": "https://github.com/dnSpyEx/dnSpy"
+    },
     "autoupdate": {
         "architecture": {
-            "64bit": {
-                "url": "https://github.com/0xd4d/dnSpy/releases/download/v$version/dnSpy-netcore-win64.zip"
-            },
             "32bit": {
-                "url": "https://github.com/0xd4d/dnSpy/releases/download/v$version/dnSpy-netcore-win32.zip"
+                "url": "https://github.com/dnSpyEx/dnSpy/releases/download/v$version/dnSpy-net-win32.zip"
+            },
+            "64bit": {
+                "url": "https://github.com/dnSpyEx/dnSpy/releases/download/v$version/dnSpy-net-win64.zip"
             }
         }
     }
