@@ -34,7 +34,7 @@
     ],
     "checkver": {
         "script": [
-            "$openmw_recent_pipeline = ((Invoke-WebRequest -Uri 'https://gitlab.com/api/v4/projects/7107382/pipelines/').Content | ConvertFrom-Json | Where-Object status -eq 'success' | Where-Object ref -eq 'master')[0].id",
+            "$openmw_recent_pipeline = ((Invoke-WebRequest -Uri 'https://gitlab.com/api/v4/projects/7107382/pipelines/?source=schedule').Content | ConvertFrom-Json | Where-Object ref -eq 'master')[0].id",
             "$openmw_pipeline_jobs_url = 'https://gitlab.com/api/v4/projects/7107382/pipelines/' + $openmw_recent_pipeline + '/jobs/'",
             "$openmw_jobs = ((Invoke-WebRequest -Uri $openmw_pipeline_jobs_url))",
             "$openmw_winjob = ($openmw_jobs | ConvertFrom-Json | Where-Object Name -like 'Windows*' | Where-Object status -eq 'success' | Where-Object ref -eq 'master')",
