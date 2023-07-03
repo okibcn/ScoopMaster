@@ -24,11 +24,18 @@
         ]
     ],
     "post_install": [
-        "if (!(Test-Path \"HKCU:\\Software\\Starward\")) {",
-        "   New-Item -Path \"HKCU:\\Software\\Starward\" -Force | Out-Null",
+        "if (Test-Path \"$persist_dir\\config.ini\") {",
+        "    Copy-Item \"$persist_dir\\config.ini\" \"$dir\"",
         "}",
-        "if (!(Get-ItemProperty -Path \"HKCU:\\Software\\Starward\" -Name \"ConfigDirectory\" -ErrorAction SilentlyContinue)) {",
-        "   New-ItemProperty \"HKCU:\\Software\\Starward\" -Name \"ConfigDirectory\" -Value \"$persist_dir\\data\" -PropertyType String | Out-Null",
+        "else {",
+        "    New-Item \"$persist_dir\\config.ini\" -ItemType File | Out-Null",
+        "    Set-Content -Path \"$persist_dir\\config.ini\" -Value \"EnableConsole = false\nUserDataFolder=./data\"",
+        "    Copy-Item \"$persist_dir\\config.ini\" \"$dir\"",
+        "}"
+    ],
+    "pre_uninstall": [
+        "if (Test-Path \"$dir\\config.ini\") {",
+        "    Copy-Item \"$dir\\config.ini\" \"$persist_dir\"",
         "}"
     ],
     "checkver": {
