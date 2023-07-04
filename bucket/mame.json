@@ -1,8 +1,11 @@
 {
-    "homepage": "http://mamedev.org",
-    "description": "Arcade machine emulator and tools",
     "version": "0.256",
-    "license": "GPL-2.0-or-later",
+    "description": "Arcade machine emulator",
+    "homepage": "http://mamedev.org",
+    "license": {
+        "url": "https://github.com/mamedev/mame/blob/master/COPYING",
+        "identifier": "GPL-2.0"
+    },
     "architecture": {
         "64bit": {
             "url": "https://github.com/mamedev/mame/releases/download/mame0256/mame0256b_64bit.exe#/dl.7z",
@@ -14,33 +17,16 @@
                 "}"
             ],
             "bin": [
-                "mame.exe",
-                "chdman.exe"
+                [
+                    "mame.exe",
+                    "mame"
+                ]
             ],
             "shortcuts": [
                 [
                     "mame.exe",
                     "MAME"
                 ]
-            ]
-        },
-        "32bit": {
-            "url": "https://github.com/mamedev/mame/releases/download/mame0217/mame0217b_32bit.exe#/dl.7z",
-            "hash": "f763580223a35eaa9283b567a3652cf49154e6181bd78122ed993edfa90b8eef",
-            "pre_install": [
-                "Write-Host -ForegroundColor Yellow \"WARN: MAME no longer provides up to date 32bit binaries\"",
-                "Write-Host -ForegroundColor Yellow \"Continue installing latest 32bit release (0.217)? \"",
-                "$choice = (Read-Host -Prompt \"[Y / N]\").toLower()",
-                "switch ($choice) {",
-                "   y {",
-                "       Write-Host -ForegroundColor Yellow \"It is recommended you execute `scoop hold mame` after installation.\"",
-                "       exit 0",
-                "   }",
-                "   n {Write-Error -Message \"Install aborted.\" -Category NotInstalled",
-                "       scoop uninstall mame",
-                "       exit 1",
-                "   }",
-                "}"
             ]
         }
     },
@@ -59,15 +45,11 @@
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://github.com/mamedev/mame/releases/download/mame$cleanVersion/mame$cleanVersionb_64bit.exe#/dl.7z",
-                "hash": {
-                    "url": "https://github.com/mamedev/mame/releases/download/mame$cleanVersion/SHA256SUMS",
-                    "regex": "($sha256) (\\*mame$cleanVersionb_64bit\\.exe)"
-                }
-            },
-            "32bit": {
-                "url": "https://github.com/mamedev/mame/releases/download/mame0217/mame0217b_32bit.exe#/dl.7z"
+                "url": "https://github.com/mamedev/mame/releases/download/mame$cleanVersion/mame$cleanVersionb_64bit.exe#/dl.7z"
             }
+        },
+        "hash": {
+            "url": "$baseurl/SHA256SUMS"
         }
     }
 }
