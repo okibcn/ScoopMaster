@@ -1,5 +1,5 @@
 {
-    "version": "0.11.0-dev.3913",
+    "version": "0.11.0-dev.3932+17890f6b8",
     "description": "General-purpose programming language designed for robustness, optimality, and maintainability.",
     "homepage": "https://ziglang.org/",
     "license": "MIT",
@@ -8,53 +8,35 @@
     },
     "architecture": {
         "64bit": {
-            "url": "https://ziglang.org/builds/zig-windows-x86_64-0.11.0-dev.3913+116a99d3c.zip",
-            "hash": "825e6600362ba965353e2c2a5778978bba6906c29aa5d07e2ddef9c87f117652",
-            "extract_dir": "zig-windows-x86_64-0.11.0-dev.3913+116a99d3c"
-        },
-        "32bit": {
-            "url": "https://ziglang.org/builds/zig-windows-x86-0.11.0-dev.3913+116a99d3c.zip",
-            "hash": "4b48ebcc0c0a8200c3bfdaa48dafe4a6d18bd4e56b23db77d89b1594a0c79398",
-            "extract_dir": "zig-windows-x86-0.11.0-dev.3913+116a99d3c"
-        },
-        "arm64": {
-            "url": "https://ziglang.org/builds/zig-windows-aarch64-0.11.0-dev.3913+116a99d3c.zip",
-            "hash": "aad0c245e69f828531e1b8dc7b1c561bfc7b119b333d2a402b6e41f72f146152",
-            "extract_dir": "zig-windows-aarch64-0.11.0-dev.3913+116a99d3c"
+            "url": "https://ziglang.org/builds/zig-windows-x86_64-0.11.0-dev.3932+17890f6b8.zip",
+            "hash": "4badcd0ce6353f643398b7672d326dc79621cc05c4a89c7e6618da1453d6a4fb",
+            "extract_dir": "zig-windows-x86_64-0.11.0-dev.3932+17890f6b8"
         }
     },
-    "bin": "zig.exe",
+    "bin": [
+        "zig.exe",
+        [
+            "zig.exe",
+            "zig-dev",
+            ""
+        ]
+    ],
     "checkver": {
         "url": "https://ziglang.org/download/index.json",
-        "jsonpath": "$.master.version",
-        "regex": "(?<version>[\\w._-]+)\\+(?<commit>[0-9a-f]+)"
+        "jp": "$.master.version"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://ziglang.org/builds/zig-windows-x86_64-$matchVersion+$matchCommit.zip",
                 "hash": {
+                    "mode": "json",
                     "url": "https://ziglang.org/download/index.json",
-                    "jsonpath": "$.master.x86_64-windows.shasum"
+                    "jp": "$.master.x86_64-windows.shasum"
                 },
-                "extract_dir": "zig-windows-x86_64-$matchVersion+$matchCommit"
-            },
-            "32bit": {
-                "url": "https://ziglang.org/builds/zig-windows-x86-$matchVersion+$matchCommit.zip",
-                "hash": {
-                    "url": "https://ziglang.org/download/index.json",
-                    "jsonpath": "$.master.x86-windows.shasum"
-                },
-                "extract_dir": "zig-windows-x86-$matchVersion+$matchCommit"
-            },
-            "arm64": {
-                "url": "https://ziglang.org/builds/zig-windows-aarch64-$matchVersion+$matchCommit.zip",
-                "hash": {
-                    "url": "https://ziglang.org/download/index.json",
-                    "jsonpath": "$.master.aarch64-windows.shasum"
-                },
-                "extract_dir": "zig-windows-aarch64-$matchVersion+$matchCommit"
+                "url": "https://ziglang.org/builds/zig-windows-x86_64-$version.zip",
+                "extract_dir": "zig-windows-x86_64-$version"
             }
         }
-    }
+    },
+    "post_install": "if (Test-Path \"$(appdir zig)\\current\\zig.exe\") { scoop reset zig }"
 }
