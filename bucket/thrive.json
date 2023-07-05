@@ -17,31 +17,33 @@
     },
     "bin": "Thrive.exe",
     "shortcuts": [
-      [
-        "Thrive.exe",
-        "Thrive"
-      ]
+        [
+            "Thrive.exe",
+            "Thrive"
+        ]
     ],
     "notes": "Thrive stores saves at %APPDATA%\\Thrive\\saves",
     "checkver": {
         "url": "https://github.com/Revolutionary-Games/Thrive/",
         "script": [
             "$url = 'https://api.github.com/repos/Revolutionary-Games/Thrive/releases/latest'",
-            "$thrive_latest = ((Invoke-WebRequest -Uri $url).Content | ConvertFrom-Json)[0].assets_url",
-            "if (((Invoke-WebRequest -Uri $thrive_latest).Content | ConvertFrom-Json | Where-Object name -match '(.*windows_desktop)(?!32-bit)(\\.7z)').name -match '(?<version>[\\d.]+)') { $full_version = $Matches.version}",
-            "Write-Output $full_version"
+            "$thrive_latest = ((Invoke-WebRequest -Uri $url).Content | ConvertFrom-Json)[0]",
+            "$thrive_asset_url = $thrive_latest.assets_url",
+            "$short_version = $thrive_latest.tag_name.substring(1)",
+            "if (((Invoke-WebRequest -Uri $thrive_asset_url).Content | ConvertFrom-Json | Where-Object name -match '(.*windows_desktop)(?!32-bit)(\\.7z)').name -match '(?<version>[\\d.]+)') { $full_version = $Matches.version}",
+            "Write-Output $full_version $short_version"
         ],
-        "regex": "(?<version>.+)",
+        "regex": "(?<version>.+)\\s(?<short>.+)",
         "replace": "${version}"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://github.com/Revolutionary-Games/Thrive/releases/download/v$majorVersion.$minorVersion.$patchVersion/Thrive_$version_windows_desktop.7z",
+                "url": "https://github.com/Revolutionary-Games/Thrive/releases/download/v$matchShort/Thrive_$version_windows_desktop.7z",
                 "extract_dir": "Thrive_$version_windows_desktop"
             },
             "32bit": {
-                "url": "https://github.com/Revolutionary-Games/Thrive/releases/download/v$majorVersion.$minorVersion.$patchVersion/Thrive_$version_windows_desktop_.32-bit.7z",
+                "url": "https://github.com/Revolutionary-Games/Thrive/releases/download/v$matchShort/Thrive_$version_windows_desktop_.32-bit.7z",
                 "extract_dir": "Thrive_$version_windows_desktop_(32-bit)"
             }
         }
