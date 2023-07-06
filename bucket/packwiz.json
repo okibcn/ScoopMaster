@@ -1,5 +1,5 @@
 {
-    "version": "0.0.177+99d0af1.5436839507",
+    "version": "0.0.178+beef8c6.5471387581",
     "description": "A command line tool for editing and distributing Minecraft modpacks, using a git-friendly TOML format. Supports CurseForge and Modrinth mods with automated updates!",
     "homepage": "https://github.com/comp500/packwiz/",
     "license": {
@@ -8,19 +8,22 @@
     },
     "architecture": {
         "64bit": {
-            "url": "https://nightly.link/packwiz/packwiz/actions/runs/5436839507/Windows%2064-bit.zip",
-            "hash": "406a0feec7f5d470fd34a89cce7d757396fb51e684e2ee263dfdb3699d3e12e2"
+            "url": "https://nightly.link/packwiz/packwiz/actions/runs/5471387581/Windows%2064-bit.zip",
+            "hash": "716d92afc1137d98f43440a8b064bc6534d8c7a97380e834027be1b0d2fd75fd"
         },
         "arm64": {
-            "url": "https://nightly.link/packwiz/packwiz/actions/runs/5436839507/Windows%2064-bit%20ARM.zip",
-            "hash": "bd68a020ce08a565b064aaf6c1336a25da9610c4f3740974d801c2bcb5560665"
+            "url": "https://nightly.link/packwiz/packwiz/actions/runs/5471387581/Windows%2064-bit%20ARM.zip",
+            "hash": "9f22ae45a61487d0ea60f11bec8b82b2250feead438f30264b5c64b4a4d175b9"
         }
     },
     "checkver": {
-        "url": "https://api.github.com/repos/packwiz/packwiz/actions/workflows/go.yml/runs",
-        "jsonpath": "$.workflow_runs",
-        "regex": "\"id\": ?(?<id>\\d+),\\s+(\"[\\w_]+\": ?[\"\\w\\d_\\/\\.-]+,\\s+)*\"head_branch\": ?\"main\",\\s+\"head_sha\": ?\"(?<commit>[\\w\\d]{7})[\\w\\d]+\",\\s+(\"[\\w_]+\": ?[\"\\w\\d_\\/\\.\\-\\s]+,\\s+)*\"run_number\": ?(?<run>\\d+),\\s+(\"[\\w_]+\": ?[\"\\w\\d_\\/\\.\\-\\s]+,\\s+)*\"conclusion\": ?\"success\"",
-        "replace": "0.0.${run}+${commit}.${id}"
+        "script": [
+            "$actions = Invoke-RestMethod -Uri 'https://api.github.com/repos/packwiz/packwiz/actions/workflows/go.yml/runs'",
+            "$latest_develop = $actions.workflow_runs.PSObject.Properties.Value | Where-Object { $_.head_branch -eq 'main' } | Where-Object { $_.conclusion -eq 'success' } | Select-Object -first 1",
+            "$version = '0.0.' + $latest_develop.run_number + '+' + $latest_develop.head_sha.substring(0,7) + '.' + $latest_develop.id",
+            "Write-Output $version $latest_develop.id"
+        ],
+        "regex": "(?<version>[^\\s]+)\\s(?<id>\\d+)"
     },
     "autoupdate": {
         "architecture": {

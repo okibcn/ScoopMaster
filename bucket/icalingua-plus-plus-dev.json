@@ -32,8 +32,8 @@
     "checkver": {
         "script": [
             "$actions = Invoke-RestMethod -Uri 'https://api.github.com/repos/Icalingua-plus-plus/Icalingua-plus-plus/actions/workflows/main.yml/runs'",
-            "$latest_develop = $actions.PSObject.Properties.Value | Where-Object { $_.head_branch -eq 'develop' } | Where-Object { $_.conclusion -eq 'success' } | Select-Object -first 1",
-            "$latest_stable_version = ($actions.PSObject.Properties.Value | Where-Object { $_.display_title -match 'release: v\\d+\\.\\d+\\.\\d+' } | Where-Object { $_.conclusion -eq 'success' } | Select-Object -first 1).head_branch.TrimStart('v')",
+            "$latest_develop = $actions.workflow_runs.PSObject.Properties.Value | Where-Object { $_.head_branch -eq 'develop' } | Where-Object { $_.conclusion -eq 'success' } | Select-Object -first 1",
+            "$latest_stable_version = ($actions.workflow_runs.PSObject.Properties.Value | Where-Object { $_.display_title -match 'release: v\\d+\\.\\d+\\.\\d+' } | Where-Object { $_.conclusion -eq 'success' } | Select-Object -first 1).head_branch.TrimStart('v')",
             "$version = $latest_stable_version + '-' + $latest_develop.head_sha.substring(0,8)",
             "Write-Output $version $latest_develop.id"
         ],
