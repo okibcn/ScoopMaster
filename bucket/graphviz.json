@@ -7,6 +7,10 @@
         "64bit": {
             "url": "https://gitlab.com/api/v4/projects/4207231/packages/generic/graphviz-releases/8.1.0/windows_10_cmake_Release_graphviz-install-8.1.0-win64.exe#/dl.7z",
             "hash": "e8f18a59a3c4a7b9d8f00c203d1c3cecb8b2353d79ba6546e78084796e36f56f"
+        },
+        "32bit": {
+            "url": "https://gitlab.com/api/v4/projects/4207231/packages/generic/graphviz-releases/8.1.0/windows_10_cmake_Release_graphviz-install-8.1.0-win32.exe#/dl.7z",
+            "hash": "f4edff476f7905d22ba1eeaff38c728394baf131a8f683db446c48badf22104a"
         }
     },
     "bin": [
@@ -29,14 +33,16 @@
         "bin\\unflatten.exe"
     ],
     "checkver": {
-        "url": "https://gitlab.com/api/v4/projects/4207231/releases",
-        "jsonpath": "$.[0].tag_name",
-        "regex": "([\\d.-]+)"
+        "url": "https://gitlab.com/graphviz/graphviz/-/tags?sort=updated_desc&format=atom",
+        "regex": "/tags/([\\d.]+)<"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
                 "url": "https://gitlab.com/api/v4/projects/4207231/packages/generic/graphviz-releases/$version/windows_10_cmake_Release_graphviz-install-$version-win64.exe#/dl.7z"
+            },
+            "32bit": {
+                "url": "https://gitlab.com/api/v4/projects/4207231/packages/generic/graphviz-releases/$version/windows_10_cmake_Release_graphviz-install-$version-win32.exe#/dl.7z"
             }
         },
         "hash": {
