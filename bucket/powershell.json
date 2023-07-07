@@ -1,16 +1,12 @@
 {
-    "homepage": "https://github.com/PowerShell/PowerShell",
-    "description": "PowerShell Core, the cross-platform task automation and configuration management framework/tool.",
     "version": "7.3.5",
+    "description": " PowerShell Core is a cross-platform (Windows, Linux, and macOS) automation and configuration tool/framework that works well with your existing tools and is optimized for dealing with structured data (e.g. JSON, CSV, XML, etc.), REST APIs, and object models.",
+    "homepage": "https://github.com/PowerShell/PowerShell",
     "license": "MIT",
     "architecture": {
         "64bit": {
-            "url": "https://github.com/PowerShell/PowerShell/releases/download/v7.3.5/PowerShell-7.3.5-win-x64.zip",
+            "url": "https://github.com/PowerShell/PowerShell/releases/download/v7.3.5/PowerShell-7.3.5-win-x64.zip#/dl.7z",
             "hash": "c529d644cfef5a3a7e81f9b68e354ef887f345c7822e3581e9abd7a627f1a03e"
-        },
-        "32bit": {
-            "url": "https://github.com/PowerShell/PowerShell/releases/download/v7.3.5/PowerShell-7.3.5-win-x86.zip",
-            "hash": "9c269eb3a8acda5f263d66842015ba39dc3cece72b87d482d1dc00d5c5e931ab"
         }
     },
     "bin": "pwsh.exe",
@@ -20,22 +16,16 @@
             "PowerShell"
         ]
     ],
-    "checkver": {
-        "url": "https://raw.githubusercontent.com/PowerShell/PowerShell/master/README.md",
-        "regex": "\\[rl-windows-64\\].*releases/download/v([\\d.]+)/PowerShell"
-    },
+    "checkver": "github",
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://github.com/PowerShell/PowerShell/releases/download/v$version/PowerShell-$version-win-x64.zip"
-            },
-            "32bit": {
-                "url": "https://github.com/PowerShell/PowerShell/releases/download/v$version/PowerShell-$version-win-x86.zip"
+                "url": "https://github.com/PowerShell/PowerShell/releases/download/v$version/PowerShell-$version-win-x64.zip#/dl.7z",
+                "hash": {
+                    "url": "https://github.com/PowerShell/PowerShell/releases/tag/v$version/",
+                    "regex": "$basename\\s*<ul>\\s*<li>$sha256"
+                }
             }
-        },
-        "hash": {
-            "url": "https://github.com/PowerShell/PowerShell/releases/tag/v$version/",
-            "find": "$basename\\s*<ul>\\s*<li>([A-Fa-f\\d]{64})"
         }
     }
 }
