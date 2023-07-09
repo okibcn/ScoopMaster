@@ -1,37 +1,43 @@
 {
     "version": "5.2.3",
     "description": "The Fastest copy/backup software.",
-    "homepage": "https://fastcopy.jp",
+    "homepage": "https://fastcopy.jp/",
     "license": {
         "identifier": "Freeware",
         "url": "https://fastcopy.jp/help/fastcopy_eng.htm#license"
     },
+    "notes": [
+        "If an error occurs when updating or uninstalling, execute the following command then retry:",
+        "`Stop-Process -Name 'explorer'`"
+    ],
     "url": "https://fastcopy.jp/archive/FastCopy5.2.3_installer.exe",
     "hash": "c1eb2e2de3db285e110436eed029dcafd74e0c9214f9ef313d78fcb77b574479",
     "pre_install": [
-        "if (!(Test-Path \"$persist_dir\\FastCopy2.ini\")) {",
-        "   Set-Content \"$dir\\FastCopy2.ini\" '[main]' -Encoding ASCII",
-        "}"
+        "Start-Process \"$dir\\$fname\" -Args @('/SILENT', \"/DIR=\"\"$dir\"\"\", '/NOPROG', '/NODESK') -Wait",
+        "Copy-Item \"$persist_dir\\FastCopy.log\", \"$persist_dir\\FastCopy2.ini\", \"$persist_dir\\Log\" -Destination \"$dir\" -Force -Recurse -ErrorAction SilentlyContinue",
+        "Remove-Item \"$dir\\$fname\""
     ],
-    "architecture": {
-        "64bit": {
-            "installer": {
-                "script": [
-                    "Invoke-ExternalCommand \"$dir\\$fname\" '/EXTRACT64' | Out-Null",
-                    "Get-ChildItem \"$dir\\FastCopy$version*x64\\*\" -Recurse | Move-Item -Destination $dir",
-                    "Remove-Item \"$dir\\$fname\", \"$dir\\FastCopy$version*\" "
-                ]
-            }
-        }
-    },
+    "bin": [
+        "FastCopy.exe",
+        "FcHash.exe",
+        "fcp.exe"
+    ],
     "shortcuts": [
         [
             "FastCopy.exe",
             "FastCopy"
+        ],
+        [
+            "doc\\FastCopy.chm",
+            "FastCopy Manual"
         ]
     ],
-    "persist": "FastCopy2.ini",
-    "checkver": "FastCopy ver ([\\d.]+)",
+    "pre_uninstall": [
+        "ensure \"$persist_dir\\Log\" | Out-Null",
+        "Copy-Item \"$dir\\FastCopy.log\", \"$dir\\FastCopy2.ini\", \"$dir\\Log\" -Destination \"$persist_dir\" -Force -Recurse -ErrorAction SilentlyContinue",
+        "Start-Process \"$dir\\setup.exe\" -Args @('/SILENT', '/r') -Wait"
+    ],
+    "checkver": "Download v([\\d.]+)",
     "autoupdate": {
         "url": "https://fastcopy.jp/archive/FastCopy$version_installer.exe"
     }
