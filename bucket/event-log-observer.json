@@ -1,5 +1,5 @@
 {
-    "version": "2022.01.04-13.42.14",
+    "version": "1.6",
     "homepage": "https://www.lizard-labs.com/",
     "description": "An easy and customizable tool for exploring, and analyzing Windows event logs.",
     "license": {
@@ -18,17 +18,14 @@
             "Event Log Observer"
         ]
     ],
-    "pre_uninstall": "if ($purge) { Remove-Item \"$env:USERPROFILE\\Event Log Observer\" -ErrorAction 'SilentlyContinue' -Recurse }",
-    "checkver": {
-        "script": [
-            "# Using a custom script to get the date for when it was last modified, due to the",
-            "# version provided in the website (eg. '1.6') being unreliable for future updates.",
-            "$url = 'https://www.lizard-labs.com/Downloads/EventLogObserverSetup.msi'",
-            "[datetime][string]$date = (Invoke-WebRequest $url).Headers['Last-Modified']",
-            "Write-Output ($date.ToString('yyyy.MM.dd-HH.mm.ss'))"
-        ],
-        "regex": "([\\d.-]+)"
-    },
+    "pre_uninstall": [
+        "if ($purge) {",
+        "    foreach ($f in \"$env:LOCALAPPDATA\\LizardLabs\", \"$env:USERPROFILE\\Documents\\Event Log Observer\") {",
+        "        Remove-Item $f -ErrorAction 'SilentlyContinue' -Recurse",
+        "    }",
+        "}"
+    ],
+    "checkver": "([\\d.]+)</strong>.*?\"/event_log_observer.aspx",
     "autoupdate": {
         "url": "https://www.lizard-labs.com/Downloads/EventLogObserverSetup.msi#/elob.msi_"
     }
