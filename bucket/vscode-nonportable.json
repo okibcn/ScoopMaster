@@ -1,83 +1,83 @@
 {
-    "version": "1.80.0",
-    "description": "Lightweight but powerful source code editor (settings stored in %USERPROFILE%)",
-    "homepage": "https://code.visualstudio.com/",
-    "license": {
-        "identifier": "Freeware",
-        "url": "https://code.visualstudio.com/License/"
+  "version": "1.80.0",
+  "description": "Lightweight but powerful source code editor (settings stored in %USERPROFILE%)",
+  "homepage": "https://code.visualstudio.com/",
+  "license": {
+    "identifier": "Freeware",
+    "url": "https://code.visualstudio.com/License/"
+  },
+  "notes": [
+    "Add Visual Studio Code as a context menu option by running:",
+    "'reg import \"$dir\\install-context.reg\"'",
+    "For file associations, run:",
+    "'reg import \"$dir\\install-associations.reg\"'"
+  ],
+  "architecture": {
+    "64bit": {
+      "url": "https://update.code.visualstudio.com/1.80.0/win32-x64-archive/stable#/dl.7z",
+      "hash": "41dc4b7ae124ac7e13181c04c30f0fd025d9a30fe715f4907f1da130f0ba934e"
     },
-    "notes": [
-        "Add Visual Studio Code as a context menu option by running:",
-        "'reg import \"$dir\\install-context.reg\"'",
-        "For file associations, run:",
-        "'reg import \"$dir\\install-associations.reg\"'"
-    ],
-    "architecture": {
-        "64bit": {
-            "url": "https://update.code.visualstudio.com/1.80.0/win32-x64-archive/stable#/dl.7z",
-            "hash": "41dc4b7ae124ac7e13181c04c30f0fd025d9a30fe715f4907f1da130f0ba934e"
-        },
-        "32bit": {
-            "url": "https://update.code.visualstudio.com/1.80.0/win32-archive/stable#/dl.7z",
-            "hash": "8d4a91b8b4551925b656e223a3d0398540aafd41f57e923e4c5987afb7bb5395"
-        },
-        "arm64": {
-            "url": "https://update.code.visualstudio.com/1.80.0/win32-arm64-archive/stable#/dl.7z",
-            "hash": "a0cf8c11277e9406e606c096ef3b608a7af6656fc93d4c4213ba77cba4eb3c0f"
-        }
+    "32bit": {
+      "url": "https://update.code.visualstudio.com/1.80.0/win32-archive/stable#/dl.7z",
+      "hash": "8d4a91b8b4551925b656e223a3d0398540aafd41f57e923e4c5987afb7bb5395"
     },
-    "env_add_path": "bin",
-    "shortcuts": [
-        [
-            "code.exe",
-            "Visual Studio Code"
-        ]
-    ],
-    "post_install": [
-        "$dirpath = \"$dir\".Replace('\\', '\\\\')",
-        "$exepath = \"$dir\\Code.exe\".Replace('\\', '\\\\')",
-        "'install-associations', 'uninstall-associations', 'install-context', 'uninstall-context' | ForEach-Object {",
-        "  if (Test-Path \"$bucketsdir\\extras\\scripts\\vscode\\$_.reg\") {",
-        "    $content = Get-Content \"$bucketsdir\\extras\\scripts\\vscode\\$_.reg\"",
-        "    $content = $content.Replace('$codedir', $dirpath)",
-        "    $content = $content.Replace('$code', $exepath)",
-        "    if ($global) {",
-        "      $content = $content.Replace('HKEY_CURRENT_USER', 'HKEY_LOCAL_MACHINE')",
-        "    }",
-        "    $content | Set-Content -Path \"$dir\\$_.reg\"",
-        "  }",
-        "}"
-    ],
-    "uninstaller": {
-        "script": "if ($cmd -eq 'uninstall') { reg import \"$dir\\uninstall-context.reg\" }"
-    },
-    "checkver": {
-        "url": "https://code.visualstudio.com/sha?build=stable",
-        "jsonpath": "$.products[?(@.platform.os == 'win32-x64-archive')].name"
-    },
-    "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://update.code.visualstudio.com/$version/win32-x64-archive/stable#/dl.7z",
-                "hash": {
-                    "url": "https://code.visualstudio.com/sha?build=stable",
-                    "jsonpath": "$.products[?(@.platform.os == 'win32-x64-archive')].sha256hash"
-                }
-            },
-            "32bit": {
-                "url": "https://update.code.visualstudio.com/$version/win32-archive/stable#/dl.7z",
-                "hash": {
-                    "url": "https://code.visualstudio.com/sha?build=stable",
-                    "jsonpath": "$.products[?(@.platform.os == 'win32-archive')].sha256hash"
-                }
-            },
-            "arm64": {
-                "url": "https://update.code.visualstudio.com/$version/win32-arm64-archive/stable#/dl.7z",
-                "hash": {
-                    "url": "https://code.visualstudio.com/sha?build=stable",
-                    "jsonpath": "$.products[?(@.platform.os == 'win32-arm64-archive')].sha256hash"
-                }
-            }
-        }
+    "arm64": {
+      "url": "https://update.code.visualstudio.com/1.80.0/win32-arm64-archive/stable#/dl.7z",
+      "hash": "a0cf8c11277e9406e606c096ef3b608a7af6656fc93d4c4213ba77cba4eb3c0f"
     }
+  },
+  "env_add_path": "bin",
+  "shortcuts": [
+    [
+      "code.exe",
+      "Visual Studio Code"
+    ]
+  ],
+  "post_install": [
+    "$dirpath = \"$dir\".Replace('\\', '\\\\')",
+    "$exepath = \"$dir\\Code.exe\".Replace('\\', '\\\\')",
+    "'install-associations', 'uninstall-associations', 'install-context', 'uninstall-context' | ForEach-Object {",
+    "  if (Test-Path \"$bucketsdir\\$bucket\\scripts\\vscode\\$_.reg\") {",
+    "    $content = Get-Content \"$bucketsdir\\$bucket\\scripts\\vscode\\$_.reg\"",
+    "    $content = $content.Replace('$codedir', $dirpath)",
+    "    $content = $content.Replace('$code', $exepath)",
+    "    if ($global) {",
+    "      $content = $content.Replace('HKEY_CURRENT_USER', 'HKEY_LOCAL_MACHINE')",
+    "    }",
+    "    $content | Set-Content -Path \"$dir\\$_.reg\"",
+    "  }",
+    "}"
+  ],
+  "uninstaller": {
+    "script": "if ($cmd -eq 'uninstall') { reg import \"$dir\\uninstall-context.reg\" }"
+  },
+  "checkver": {
+    "url": "https://code.visualstudio.com/sha?build=stable",
+    "jsonpath": "$.products[?(@.platform.os == 'win32-x64-archive')].name"
+  },
+  "autoupdate": {
+    "architecture": {
+      "64bit": {
+        "url": "https://update.code.visualstudio.com/$version/win32-x64-archive/stable#/dl.7z",
+        "hash": {
+          "url": "https://code.visualstudio.com/sha?build=stable",
+          "jsonpath": "$.products[?(@.platform.os == 'win32-x64-archive')].sha256hash"
+        }
+      },
+      "32bit": {
+        "url": "https://update.code.visualstudio.com/$version/win32-archive/stable#/dl.7z",
+        "hash": {
+          "url": "https://code.visualstudio.com/sha?build=stable",
+          "jsonpath": "$.products[?(@.platform.os == 'win32-archive')].sha256hash"
+        }
+      },
+      "arm64": {
+        "url": "https://update.code.visualstudio.com/$version/win32-arm64-archive/stable#/dl.7z",
+        "hash": {
+          "url": "https://code.visualstudio.com/sha?build=stable",
+          "jsonpath": "$.products[?(@.platform.os == 'win32-arm64-archive')].sha256hash"
+        }
+      }
+    }
+  }
 }
