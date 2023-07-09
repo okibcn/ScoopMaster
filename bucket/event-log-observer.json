@@ -6,25 +6,30 @@
         "identifier": "Shareware",
         "url": "https://lizard-labs.com/Docs/TERMS_AND_CONDITIONS.html"
     },
-    "url": "https://www.lizard-labs.com/Downloads/EventLogObserverSetup.msi",
+    "url": "https://www.lizard-labs.com/Downloads/EventLogObserverSetup.msi#/elob.msi_",
     "hash": "7d2c013988b21a10aa8f1532515652e533dfa18da8f725283174f4bcf296b4be",
-    "pre_install": "Remove-Item \"$dir\\updater.exe\"",
+    "pre_install": [
+        "Expand-MsiArchive \"$dir\\elob.msi_\" \"$env:USERPROFILE\\temp\" -Removal",
+        "Move-Item \"$env:USERPROFILE\\temp\\*\" $dir; Remove-Item \"$env:USERPROFILE\\temp\", \"$dir\\updater.exe\" -Recurse"
+    ],
     "shortcuts": [
         [
             "EventLogObserver.exe",
             "Event Log Observer"
         ]
     ],
+    "pre_uninstall": "if ($purge) { Remove-Item \"$env:USERPROFILE\\Event Log Observer\" -ErrorAction 'SilentlyContinue' -Recurse }",
     "checkver": {
         "script": [
             "# Using a custom script to get the date for when it was last modified, due to the",
             "# version provided in the website (eg. '1.6') being unreliable for future updates.",
-            "[datetime][string]$date = (Invoke-WebRequest 'https://www.lizard-labs.com/Downloads/EventLogObserverSetup.msi').Headers['Last-Modified']",
+            "$url = 'https://www.lizard-labs.com/Downloads/EventLogObserverSetup.msi'",
+            "[datetime][string]$date = (Invoke-WebRequest $url).Headers['Last-Modified']",
             "Write-Output ($date.ToString('yyyy.MM.dd-HH.mm.ss'))"
         ],
         "regex": "([\\d.-]+)"
     },
     "autoupdate": {
-        "url": "https://www.lizard-labs.com/Downloads/EventLogObserverSetup.msi"
+        "url": "https://www.lizard-labs.com/Downloads/EventLogObserverSetup.msi#/elob.msi_"
     }
 }
