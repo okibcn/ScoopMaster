@@ -1,38 +1,31 @@
 {
-    "homepage": "https://markdownmonster.west-wind.com",
+    "version": "3.0.0.21",
     "description": "Markdown editing and weblog publishing tool",
-    "version": "3.0.0.20",
+    "homepage": "https://markdownmonster.west-wind.com",
     "license": {
         "identifier": "Proprietary",
         "url": "https://markdownmonster.west-wind.com/purchase.aspx#License"
     },
-    "url": "https://west-wind.com/files/MarkdownMonsterPortable.zip",
-    "hash": "17fd0155c0bd268e4852e176cb88ff066f385d30197e7244199ab45054ff00da",
-    "pre_install": [
-        "if (!(Test-Path \"$dir\\_IsPortable\")) { New-Item \"$dir\\_IsPortable\" -Force | Out-Null }",
-        "if (!(Test-Path \"$persist_dir\\Registered.key\")) { New-Item \"$dir\\Registered.key\" | Out-Null }"
-    ],
-    "bin": [
-        "mm.exe",
-        "MarkdownMonster.exe",
-        "mmcli.exe"
-    ],
+    "url": "https://github.com/RickStrahl/MarkdownMonsterReleases/raw/master/CurrentRelease/MarkdownMonsterPortable.zip",
+    "hash": "8aff5fc96c74bd5f381726eeb4c8499c46ebd29a8a4a8f39d377ea423c2d03f6",
+    "bin": "mmcli.exe",
     "shortcuts": [
         [
             "MarkdownMonster.exe",
             "Markdown Monster"
         ]
     ],
-    "persist": [
-        "PortableSettings",
-        "Registered.key"
-    ],
+    "persist": "PortableSettings",
     "checkver": {
-        "url": "https://markdownmonster.west-wind.com/download",
-        "regex": "<dd><b>([\\d.-]+)",
-        "reverse": "false"
+        "script": [
+            "$url = 'https://raw.githubusercontent.com/RickStrahl/MarkdownMonsterReleases/master/CurrentRelease/MarkdownMonster_Version.xml'",
+            "$cont = (Invoke-WebRequest $url).Content",
+            "$cont = $cont.Replace(\"`u{FFFD}\", '').Replace(\"`u{0}\", '')",
+            "Write-Output $cont"
+        ],
+        "xpath": "/VersionInfo/Version"
     },
     "autoupdate": {
-        "url": "https://west-wind.com/files/MarkdownMonsterPortable.zip"
+        "url": "https://github.com/RickStrahl/MarkdownMonsterReleases/raw/master/CurrentRelease/MarkdownMonsterPortable.zip"
     }
 }
