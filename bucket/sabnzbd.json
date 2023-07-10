@@ -1,12 +1,8 @@
 {
     "version": "4.0.3",
-    "description": "The automated Usenet download tool (Beta/RC if available)",
+    "description": "The automated Usenet download tool",
     "homepage": "https://sabnzbd.org",
     "license": "GPL-2.0-or-later",
-    "suggest": {
-        "unrar (or systemwide WinRAR install)": "main/unrar",
-        "MultiPar (possibly newer)": "versions/multipar-beta"
-    },
     "architecture": {
         "64bit": {
             "url": "https://github.com/sabnzbd/sabnzbd/releases/download/4.0.3/SABnzbd-4.0.3-win64-bin.zip",
@@ -31,18 +27,8 @@
             "SABnzbd"
         ]
     ],
-    "post_install": [
-        "if ($architecture -eq '64bit' -and $global) {",
-        "$multipar = $(appdir multipar-beta $global)",
-        "$unrar = $(appdir unrar $global)",
-        "if (!(Test-Path \"$unrar\")) { $unrar = \"$env:ProgramFiles\\WinRAR\\UnRAR.exe\" } else { $unrar = \"$unrar\\current\\UnRAR.exe\" }",
-        "if (Test-Path \"$unrar\") { New-Item -Path \"$dir\\win\\unrar\\x64\\UnRAR.exe\" -Force -ItemType SymbolicLink -Value \"$unrar\" | Out-Null }",
-        "if (Test-Path \"$multipar\") { New-Item -Path \"$dir\\win\\multipar\\par2j64.exe\" -Force -ItemType SymbolicLink -Value \"$multipar\\current\\par2j64.exe\" | Out-Null }",
-        "}"
-    ],
     "checkver": {
-        "url": "https://api.github.com/repos/sabnzbd/sabnzbd/releases?per_page=1",
-        "jsonpath": "$[0].tag_name"
+        "github": "https://github.com/sabnzbd/sabnzbd"
     },
     "autoupdate": {
         "architecture": {
