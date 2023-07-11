@@ -2,17 +2,8 @@
     "version": "1.35.0",
     "description": "Cross-platform Node.js version switcher",
     "homepage": "https://github.com/Schniz/fnm",
-    "license": {
-        "identifier": "GPL-3.0-only",
-        "url": "https://github.com/Schniz/fnm/blob/master/LICENSE"
-    },
-    "notes": [
-        "To use fnm, don't forget to add this to your powershell profile:",
-        "fnm env --use-on-cd | Out-String | Invoke-Expression",
-        "",
-        "Furthermore, you can also add this to enable completions for fnm:",
-        "Import-Module -Name \"$dir\\fnm-completions.ps1\""
-    ],
+    "license": "GPL-3.0-only",
+    "notes": "Don't forget to add \"fnm env --use-on-cd | Out-String | Invoke-Expression\" to your powershell profile.",
     "architecture": {
         "64bit": {
             "url": "https://github.com/Schniz/fnm/releases/download/v1.35.0/fnm-windows.zip",
@@ -20,14 +11,6 @@
         }
     },
     "bin": "fnm.exe",
-    "post_install": "Set-Content -Path $dir\\fnm-completions.ps1 -Value (fnm completions --shell powershell)",
-    "uninstaller": {
-        "script": "Remove-Item -Path \"$env:LOCALAPPDATA\\fnm_multishells\" -Recurse -Force -ErrorAction SilentlyContinue"
-    },
-    "env_set": {
-        "FNM_DIR": "$dir\\installations"
-    },
-    "persist": "installations",
     "checkver": "github",
     "autoupdate": {
         "architecture": {
