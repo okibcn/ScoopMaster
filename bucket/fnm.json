@@ -1,39 +1,24 @@
 {
+    "homepage": "https://fnm.vercel.app",
+    "description": "Fast and simple Node.js version manager, built in Rust",
+    "license": " GPL-3.0-only",
     "version": "1.35.0",
-    "description": "Cross-platform Node.js version switcher",
-    "homepage": "https://github.com/Schniz/fnm",
-    "license": {
-        "identifier": "GPL-3.0-only",
-        "url": "https://github.com/Schniz/fnm/blob/master/LICENSE"
+    "url": "https://github.com/Schniz/fnm/releases/download/v1.35.0/fnm-windows.zip",
+    "hash": "6d3d10306b077293331a90107457abdeaf5de91d58b70202eb5e0d51adb5f4ca",
+    "bin": "fnm.exe",
+    "checkver": {
+        "github": "https://github.com/Schniz/fnm"
+    },
+    "autoupdate": {
+        "url": "https://github.com/Schniz/fnm/releases/download/v$version/fnm-windows.zip"
     },
     "notes": [
-        "To use fnm, don't forget to add this to your powershell profile:",
-        "fnm env --use-on-cd | Out-String | Invoke-Expression",
+        "To use fnm, add following code to your PowerShell PROFILE:",
         "",
-        "Furthermore, you can also add this to enable completions for fnm:",
-        "Import-Module -Name \"$dir\\fnm-completions.ps1\""
-    ],
-    "architecture": {
-        "64bit": {
-            "url": "https://github.com/Schniz/fnm/releases/download/v1.35.0/fnm-windows.zip",
-            "hash": "6d3d10306b077293331a90107457abdeaf5de91d58b70202eb5e0d51adb5f4ca"
-        }
-    },
-    "bin": "fnm.exe",
-    "post_install": "Set-Content -Path $dir\\fnm-completions.ps1 -Value (fnm completions --shell powershell)",
-    "uninstaller": {
-        "script": "Remove-Item -Path \"$env:LOCALAPPDATA\\fnm_multishells\" -Recurse -Force -ErrorAction SilentlyContinue"
-    },
-    "env_set": {
-        "FNM_DIR": "$dir\\installations"
-    },
-    "persist": "installations",
-    "checkver": "github",
-    "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://github.com/Schniz/fnm/releases/download/v$version/fnm-windows.zip"
-            }
-        }
-    }
+        "(& fnm env --use-on-cd) | Out-String | Invoke-Expression",
+        "",
+        "To use fnm tab-completions, add following code to your PowerShell PROFILE:",
+        "",
+        "(& fnm completions --shell powershell) | Out-String | Invoke-Expression"
+    ]
 }
