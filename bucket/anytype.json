@@ -5,13 +5,13 @@
     "license": "Proprietary",
     "architecture": {
         "64bit": {
-            "url": "https://anytype-release.fra1.cdn.digitaloceanspaces.com/Anytype%20Setup%200.32.3.exe",
+            "url": "https://anytype-release.fra1.cdn.digitaloceanspaces.com/Anytype%20Setup%200.32.3.exe#/dl.7z",
             "hash": "cbaf929c16bc93b41ddb3b6b2f50f1fa240c0a67990ccd9839913cd998cb35fb",
             "pre_install": [
-                "$7zr = Join-Path $env:TMP '7zr.exe'",
-                "Invoke-WebRequest https://www.7-zip.org/a/7zr.exe -OutFile $7zr",
-                "Invoke-ExternalCommand $7zr @('x', \"$dir\\$fname\", \"-o$dir\", '-y') | Out-Null",
-                "Remove-Item \"$dir\\$fname\", $7zr"
+                "$innerZip = 'app-64.7z'",
+                "Move-Item -Path \"$dir\\`$PLUGINSDIR\\app-64.7z\" -Destination \"$dir\\$innerZip\"",
+                "Invoke-ExternalCommand 7z @('x', \"$dir\\$innerZip\", \"-o$dir\", '-y') | Out-Null",
+                "Remove-Item \"$dir\\`$R0\", \"$dir\\`$PLUGINSDIR\", \"$dir\\app-64.7z\" -Recurse"
             ]
         }
     },
@@ -29,7 +29,7 @@
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://anytype-release.fra1.cdn.digitaloceanspaces.com/Anytype%20Setup%20$version.exe"
+                "url": "https://anytype-release.fra1.cdn.digitaloceanspaces.com/Anytype%20Setup%20$version.exe#/dl.7z"
             }
         }
     }
