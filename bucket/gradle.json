@@ -1,25 +1,31 @@
 {
     "version": "8.2",
-    "description": "An open-source build automation tool focused on flexibility and performance. (Source code and documentation bundled)",
+    "description": "An open-source build automation tool focused on flexibility and performance. (Source code and documentation boundled)",
     "homepage": "https://gradle.org",
-    "license": "Apache-2.0",
+    "license": {
+        "identifier": "Apache-2.0",
+        "url": "https://docs.gradle.org/current/userguide/licenses.html"
+    },
     "suggest": {
-        "JDK": "java/openjdk"
+        "JDK": [
+            "java/oraclejdk",
+            "java/openjdk"
+        ]
     },
     "url": "https://services.gradle.org/distributions/gradle-8.2-all.zip",
     "hash": "5022b0b25fe182b0e50867e77f484501dba44feeea88f5c1f13b6b4660463640",
     "extract_dir": "gradle-8.2",
-    "post_install": [
-        "$current_env = env GRADLE_USER_HOME $global",
-        "If ($null -eq $current_env) {",
-        "    $path = \"$dir\\.gradle\"",
-        "    env GRADLE_USER_HOME $global $path",
-        "    $Env:GRADLE_USER_HOME = $path",
-        "    Write-Host \"Environment variable 'GRADLE_USER_HOME' set to '$path'\"",
+    "bin": "bin\\gradle.bat",
+    "pre_install": [
+        "if (-not (Test-Path \"$persist_dir\\home\")) {",
+        "    New-Item \"$dir\\home\" -ItemType \"directory\" | Out-Null",
         "}"
     ],
-    "persist": ".gradle",
-    "bin": "bin\\gradle.bat",
+    "persist": "home",
+    "env_set": {
+        "GRADLE_HOME": "$dir",
+        "GRADLE_USER_HOME": "$dir\\home"
+    },
     "checkver": {
         "url": "https://gradle.org/install/",
         "regex": "The current Gradle release is version ([\\d.]+)"
