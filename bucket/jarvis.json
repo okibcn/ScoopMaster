@@ -1,5 +1,5 @@
 {
-    "version": "1.2.4",
+    "version": "1.2.5",
     "description": "Jarvis is a tool designed to manipulate robot locations within the 3D simulation software called Process Simulate. With this app, users can easily control and modify the positions of robots in the virtual environment using convenient keyboard shortcuts. By interacting with the app, users can trigger movements, rotations, or adjustments to the robots' positions in real-time, enabling precise control and manipulation of their locations within the simulation. This app enhances the user experience by providing a streamlined and efficient way to modify robot positions, making it easier to simulate and optimize various industrial processes.",
     "homepage": "https://icarus-consult.de",
     "license": "non-free",
@@ -14,7 +14,9 @@
        " }",
        "$FileName = \"C:\\ProgramData\\Jarvis\\keyboard.xml\"",
        "if (Test-Path $FileName) {",
-       "Move-Item $FileName -Destination \"C:\\ProgramData\\Jarvis\\keyboard_backup.xml\"",
+       "$userJarvisDirectory = [System.Environment]::ExpandEnvironmentVariables($env:USERPROFILE) + \"\\Jarvis\"",
+       "[System.IO.Directory]::CreateDirectory($userJarvisDirectory)",
+       "Move-Item $FileName -Destination $userJarvisDirectory -Force",
        "Write-host $FileName \" has been copied to backup your shortcut settings.\"",
        "}"
     ],
@@ -45,14 +47,22 @@
         "$configDir = $original_dir + \"\\ABSOLUTEPATH1\\*\"",
         "Copy-Item $configDir -Destination \"C:\\ProgramData\\Jarvis\" -Force -Recurse",
         "# Copy App Files",
-        "$app = $original_dir + \"\\ABSOLUTEPATH\"",
+        "[System.IO.Directory]::CreateDirectory('C:\\ProgramData\\Jarvis\\app')",
+        "$app = $original_dir + \"\\ABSOLUTEPATH\\*\"",
         "Copy-Item $app -Destination \"C:\\ProgramData\\Jarvis\\app\" -Force -Recurse"
     ],
     "pre_uninstall": [
         "if(Get-Process -Name \"tune\" -ErrorAction SilentlyContinue) {",
         "    Write-Error \"Process Simulate is running. Please close it to continue.\"",
         "    exit 1",
-       " }"
+       " }",
+       "$FileName = \"C:\\ProgramData\\Jarvis\\keyboard.xml\"",
+       "if (Test-Path $FileName) {",
+       "$userJarvisDirectory = [System.Environment]::ExpandEnvironmentVariables($env:USERPROFILE) + \"\\Jarvis\"",
+       "[System.IO.Directory]::CreateDirectory($userJarvisDirectory)",
+       "Move-Item $FileName -Destination $userJarvisDirectory -Force",
+       "Write-host $FileName \" has been copied to backup your shortcut settings.\"",
+       "}"
     ],
     "post_uninstall": [
         "# Copy to emPower Directory",
