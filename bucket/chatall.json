@@ -12,6 +12,14 @@
                 "Remove-Item \"$dir\\`$*\", \"$dir\\Uninst*\" -Recurse"
             ]
         },
+        "32bit": {
+            "url": "https://github.com/sunner/ChatALL/releases/download/v1.33.49/ChatALL-1.33.49-win.exe#/dl.7z",
+            "hash": "sha512:fbb6544a15eedf84f48b0098b5b2968c2e404d6f71ad2548931cdb6150321c6f944de924f4a3f8bd4edb0b57f9e98e7ef9f9f09ce5306ecd13f54a22ea648016",
+            "pre_install": [
+                "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-32.7z\" \"$dir\" -Removal",
+                "Remove-Item \"$dir\\`$*\", \"$dir\\Uninst*\" -Recurse"
+            ]
+        },
         "arm64": {
             "url": "https://github.com/sunner/ChatALL/releases/download/v1.33.49/ChatALL-1.33.49-win-arm64.exe#/dl.7z",
             "hash": "sha512:94daaf7160c8ef361f8f58bd5d6adcde0a78ea1946734db4d4df5351cc75d932011e7a7d2b324016d7e29a966ecc8ac7774b06b1ebdb2c019bb33df18fe6aaa2",
@@ -21,10 +29,19 @@
             ]
         }
     },
+    "installer": {
+        "script": [
+            "ensure \"$persist_dir\" | Out-Null",
+            "New-Item \"$env:APPDATA\\chatall\" -ItemType Junction -Target \"$persist_dir\" | Out-Null"
+        ]
+    },
+    "uninstaller": {
+        "script": "Remove-Item \"$env:APPDATA\\chatall\" -Recurse -Force -ErrorAction 'SilentlyContinue'"
+    },
     "shortcuts": [
         [
-            "chatALL.exe",
-            "chatALL"
+            "ChatALL.exe",
+            "ChatALL"
         ]
     ],
     "checkver": {
@@ -34,6 +51,9 @@
         "architecture": {
             "64bit": {
                 "url": "https://github.com/sunner/ChatALL/releases/download/v$version/ChatALL-$version-win-x64.exe#/dl.7z"
+            },
+            "32bit": {
+                "url": "https://github.com/sunner/ChatALL/releases/download/v$version/ChatALL-$version-win.exe#/dl.7z"
             },
             "arm64": {
                 "url": "https://github.com/sunner/ChatALL/releases/download/v$version/ChatALL-$version-win-arm64.exe#/dl.7z"
