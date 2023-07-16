@@ -1,16 +1,12 @@
 {
-    "version": "20230715",
+    "version": "20230716",
     "description": "A free and open source multimedia player and framework that plays most multimedia files as well as DVDs, Audio CDs, VCDs, and various streaming protocols.",
     "homepage": "https://www.videolan.org/",
     "license": "GPL-2.0-only",
     "architecture": {
         "64bit": {
-            "url": "https://artifacts.videolan.org/vlc/nightly-win64/20230715-0431/vlc-4.0.0-dev-win64-0e9a1033.7z",
-            "hash": "sha512:b1c2d13e12950eaa23b109a3da20f826ea14f2d2cf5b06bb077ca0794f6cd3a12585edb43473fa7566e496099d78dd8ec0049e91d2bf7014d69d43b8d717ada6"
-        },
-        "32bit": {
-            "url": "https://artifacts.videolan.org/vlc/nightly-win32/20230715-0427/vlc-4.0.0-dev-win32-0e9a1033.7z",
-            "hash": "sha512:db4963bd4fa5f44c5f0404e055928f094b0213c699ca494852e293cdcdba1a160598a529e85c41b7e7a21aafc960799a16f023b9a3c691d99756e9b4eab06967"
+            "url": "https://artifacts.videolan.org/vlc/nightly-win64-ucrt-llvm/20230716-0425/vlc-4.0.0-dev-win64-e4fef615.7z",
+            "hash": "sha512:040c110793da447b3376613b8bff568fe0afac81e237de4b8d37107bbb4c08ebf7ecf885021319628f7375e985a8ac1f3f89f28c00544cd0e80f2d379bf6bb93"
         }
     },
     "extract_dir": "vlc-4.0.0-dev",
@@ -32,34 +28,26 @@
     "persist": "portable",
     "checkver": {
         "script": [
-            "$builds = 'win32', 'win64'",
+            "$build = 'win64'",
             "$scriptver = ''",
             "$urls =  @()",
-            "foreach ($build in $builds) {",
-            "   $base_url = 'https://artifacts.videolan.org/vlc/nightly-' + $build + '/'",
-            "   $page = Invoke-WebRequest $base_url -UseBasicParsing",
-            "   $full_version = $page.links | Where-Object href -match '\\d+-\\d+' | Select-Object -first 1 -expand href",
-            "   $dl_page = Invoke-WebRequest ($base_url + $full_version) -UseBasicParsing",
-            "   $scriptver = $full_version -split '-' | Select-Object -first 1",
-            "   $dl = $full_version + ($dl_page.links | Where-Object href -match '\\.7z$' | Select-Object -first 1 -expand href)",
-            "   $urls += $dl",
-            "}",
+            "$base_url = 'https://artifacts.videolan.org/vlc/nightly-win64-ucrt-llvm/'",
+            "$page = Invoke-WebRequest $base_url -UseBasicParsing",
+            "$full_version = $page.links | Where-Object href -match '\\d+-\\d+' | Select-Object -first 1 -expand href",
+            "$dl_page = Invoke-WebRequest ($base_url + $full_version) -UseBasicParsing",
+            "$scriptver = $full_version -split '-' | Select-Object -first 1",
+            "$dl = $full_version + ($dl_page.links | Where-Object href -match '\\.7z$' | Select-Object -first 1 -expand href)",
+            "$urls += $dl",
             "Write-Output ('version:\"' + $scriptver + '\"') ('urls:\"' + $urls + '\"')"
         ],
-        "regex": "version:\"(?<version>\\d+)\"\\surls:\"(?<win32bitver>.+\\/)(?<win32bitfile>(?<folderversion>vlc-[\\d.]+-dev).+)\\s(?<win64bitver>.+\\/)(?<win64bitfile>.+)\""
+        "regex": "version:\"(?<version>\\d+)\"\\surls:\"(?<win64bitver>.+\\/)(?<win64bitfile>(?<folderversion>vlc-[\\d.]+-dev).+)\""
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://artifacts.videolan.org/vlc/nightly-win64/$matchWin64bitver$matchWin64bitfile",
+                "url": "https://artifacts.videolan.org/vlc/nightly-win64-ucrt-llvm/$matchWin64bitver$matchWin64bitfile",
                 "hash": {
-                    "url": "https://artifacts.videolan.org/vlc/nightly-win64/$matchWin64bitverSHA512SUM"
-                }
-            },
-            "32bit": {
-                "url": "https://artifacts.videolan.org/vlc/nightly-win32/$matchWin32bitver$matchWin32bitfile",
-                "hash": {
-                    "url": "https://artifacts.videolan.org/vlc/nightly-win32/$matchWin32bitverSHA512SUM"
+                    "url": "https://artifacts.videolan.org/vlc/nightly-win64-ucrt-llvm/$matchWin64bitverSHA512SUM"
                 }
             }
         },
