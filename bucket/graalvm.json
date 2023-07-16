@@ -23,8 +23,6 @@
             "$zip = \"$cachedir\\$app#$graalvm_version#https_download.oracle.com_graalvm_20_latest_graalvm-jdk-20_windows-x64_bin.zip\"",
             "if (!((Test-Path $zip) -and ((Get-FileHash $zip).Hash -eq $hash))) {",
             "$download = Invoke-WebRequest '$downloadUrl' -o $zip -UseBasicParsing",
-            "} else {",
-            "Write-Warning 'Found identical GraalVM ZIP already, using that instead of redownloading...'",
             "}",
             "[void][Reflection.Assembly]::LoadWithPartialName('System.IO.Compression.FileSystem')",
             "$files = [IO.Compression.ZipFile]::OpenRead($zip).Entries",
