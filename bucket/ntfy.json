@@ -1,13 +1,13 @@
 {
-    "version": "2.6.1",
+    "version": "2.6.2",
     "description": "Send push notifications to your phone or desktop via PUT/POST",
     "homepage": "https://ntfy.sh",
     "license": "Apache-2.0",
     "architecture": {
         "64bit": {
-            "url": "https://github.com/binwiederhier/ntfy/releases/download/v2.6.1/ntfy_2.6.1_windows_x86_64.zip",
-            "hash": "c63135de25ee1e66d00ea6ed854bb986f5fd64fe9b9b6809e6f0120e849514d2",
-            "extract_dir": "ntfy_2.6.1_windows_x86_64"
+            "url": "https://github.com/binwiederhier/ntfy/releases/download/v2.6.2/ntfy_2.6.2_windows_amd64.zip",
+            "hash": "233530d3aebc4ec31b0cb35ef691ddaa942e40e845de1450870e64cf44f0a687",
+            "extract_dir": "ntfy_2.6.2_windows_amd64"
         }
     },
     "bin": "ntfy.exe",
@@ -17,12 +17,32 @@
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://github.com/binwiederhier/ntfy/releases/download/v$version/ntfy_$version_windows_x86_64.zip",
-                "extract_dir": "ntfy_$version_windows_x86_64"
+                "url": "https://github.com/binwiederhier/ntfy/releases/download/v$version/ntfy_$version_windows_amd64.zip",
+                "extract_dir": "ntfy_$version_windows_amd64"
             }
         },
         "hash": {
             "url": "https://github.com/binwiederhier/ntfy/releases/download/v$version/checksums.txt"
         }
-    }
+    },
+    "post_install": [
+        "# Create %AppData%\\ntfy\\client.yml if not exists",
+        "$configDir = Join-Path -Path $env:APPDATA -ChildPath 'ntfy'",
+        "$configPath = Join-Path -Path $configDir -ChildPath 'client.yml'",
+        "if (!(Test-Path -Path $configPath)) {",
+        "   New-Item -Path $configDir -ItemType Directory -Force | Out-Null",
+        "   Copy-Item -Path $(Join-Path -Path $dir -ChildPath 'client\\client.yml') -Destination $configPath -Force",
+        "}",
+        "Remove-Item -Path $(Join-Path -Path $dir -ChildPath 'client') -Force -Recurse",
+        "$xdgConfigMirror = Join-Path -Path $env:USERPROFILE -ChildPath '.config\\ntfy\\client.yml'",
+        "if (!(Test-Path -Path $xdgConfigMirror)) {",
+        "   New-Item -Path $(Split-Path -Path $xdgConfigMirror -Parent) -ItemType Directory -Force | Out-Null",
+        "   New-Item -Path $xdgConfigMirror -ItemType SymbolicLink -Value $configPath -Force | Out-Null",
+        "}"
+    ],
+    "notes": [
+        "The configuration file is located at %AppData%\\ntfy\\client.yml",
+        "It will not be automatically removed during uninstallation even with -p flag. Delete them manually if needed.",
+        "A symbolic link mirror of the configuration file is located at %USERPROFILE%\\.config\\ntfy\\client.yml"
+    ]
 }
