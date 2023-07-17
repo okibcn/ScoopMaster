@@ -1,8 +1,16 @@
 {
-    "homepage": "https://github.com/Nevcairiel/LAVFilters",
-    "description": "LAV Filters - Open-Source DirectShow Media Splitter and Decoders",
     "version": "0.77.2",
-    "license": "GPL-2.0",
+    "description": "FFmpeg based DirectShow splitter and decoders",
+    "homepage": "https://github.com/Nevcairiel/LAVFilters",
+    "license": {
+        "identifier": "GPL-2.0-only",
+        "url": "https://github.com/Nevcairiel/LAVFilters/blob/master/COPYING"
+    },
+    "notes": [
+        "Please do not move or delete this app manually!",
+        "If you want to reset the settings, you can just delete the item \"LAV\" at \"HKCU\\Software\" in the registry."
+    ],
+    "depends": "sudo",
     "architecture": {
         "64bit": {
             "url": "https://github.com/Nevcairiel/LAVFilters/releases/download/0.77.2/LAVFilters-0.77.2-x64.zip",
@@ -12,6 +20,18 @@
             "url": "https://github.com/Nevcairiel/LAVFilters/releases/download/0.77.2/LAVFilters-0.77.2-x86.zip",
             "hash": "cb4875fb50806b4ef599905a5d18026cca2a967d698dd08e25a7784b71ed66ff"
         }
+    },
+    "pre_install": [
+        "if (-not $global) {",
+        "    Write-Host -Foreground Red \"$app should be installed globally.\"",
+        "    break",
+        "}"
+    ],
+    "installer": {
+        "script": "\"$env:COMSPEC\" /c \"regsvr32 /s `\"$dir\\LAVAudio.ax`\" & regsvr32 /s `\"$dir\\LAVSplitter.ax`\" & regsvr32 /s `\"$dir\\LAVVideo.ax`\"\""
+    },
+    "uninstaller": {
+        "script": "\"$env:COMSPEC\" /c \"regsvr32 /u /s `\"$dir\\LAVAudio.ax`\" & regsvr32 /u /s `\"$dir\\LAVSplitter.ax`\" & regsvr32 /u /s `\"$dir\\LAVVideo.ax`\"\""
     },
     "checkver": "github",
     "autoupdate": {

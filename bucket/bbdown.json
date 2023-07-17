@@ -3,6 +3,15 @@
     "description": "一款命令行式哔哩哔哩下载器",
     "homepage": "https://github.com/nilaoda/BBDown",
     "license": "MIT",
+    "notes": [
+        "本软件混流时需要外部程序：",
+        "普通视频：ffmpeg ，或 mp4box",
+        "杜比视界：ffmpeg5.0以上或新版mp4box."
+    ],
+    "suggest": {
+        "ffmpeg": "ffmpeg",
+        "mp4box": "gpac"
+    },
     "architecture": {
         "64bit": {
             "url": "https://github.com/nilaoda/BBDown/releases/download/1.6.0/BBDown_1.6.0_20230715_win-x64.zip",
@@ -13,31 +22,26 @@
             "hash": "0ce0c42d40b503c4642ca65a79c6ca658c1fe5e77f22f5c5483c19409b2ec621"
         }
     },
-    "bin": [
-        [
-            "BBDown.exe",
-            "bbdown"
-        ]
+    "bin": "BBDown.exe",
+    "pre_install": [
+        "if (-not (Test-Path \"$persist_dir\\BBDown.config\")) { New-Item \"$dir\\BBDown.config\" -ItemType file | Out-Null }",
+        "if (-not (Test-Path \"$persist_dir\\BBDown.data\")) { New-Item \"$dir\\BBDown.data\" -ItemType file | Out-Null }"
     ],
-    "suggest": {
-        "aria2": "main/aria2",
-        "mixer": [
-            "main/ffmpeg",
-            "main/ffmpeg-shared",
-            "main/gpac"
-        ]
-    },
+    "persist": [
+        "BBDown.config",
+        "BBDown.data"
+    ],
     "checkver": {
-        "url": "https://api.github.com/repos/nilaoda/BBDown/releases/latest",
-        "regex": "BBDown_(?<v>v?)([\\d\\.]+)_(?<date>\\d+)_win"
+        "url": "https://api.github.com/repos/nilaoda/BBDown/releases",
+        "regex": "BBDown_(?<version>[\\d.]+)_(?<date>\\d+)_win-x64.zip"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://github.com/nilaoda/BBDown/releases/download/$version/BBDown_$version_$matchDate_win-x64.zip"
+                "url": "https://github.com/nilaoda/BBDown/releases/download/$version/BBDown_$matchVersion_$matchDate_win-x64.zip"
             },
             "arm64": {
-                "url": "https://github.com/nilaoda/BBDown/releases/download/$version/BBDown_$version_$matchDate_win-arm64.zip"
+                "url": "https://github.com/nilaoda/BBDown/releases/download/$version/BBDown_$matchVersion_$matchDate_win-arm64.zip"
             }
         }
     }
