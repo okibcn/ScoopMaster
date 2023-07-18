@@ -1,27 +1,19 @@
 {
     "version": "8.0.2",
-    "homepage": "https://termius.com/",
-    "description": "A cross-platform SSH client",
-    "url": "https://autoupdate.termius.com/windows/Termius.exe#/dl.7z",
-    "hash": "c3bb1134396531af173074dd5642decabfcb62fcd8974a5791ab5317bade8cce",
+    "description": "Modern SSH client",
+    "homepage": "https://www.termius.com",
+    "license": "Unknown",
+    "url": "https://autoupdate.termius.com/windows/Install%20Termius.exe#/dl.7z",
+    "hash": "sha512:a7b48fbc81e88544e851a3d17908923a57548e82c1d63312a4eb099d19c6046e406d27397bfba25fc5687d2a55a557f46313b5ad6ab2e6c8fe4a47ff1b465f5b",
     "architecture": {
         "64bit": {
-            "installer": {
-                "script": [
-                    "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\"",
-                    "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\Uninst*\" -Force -Recurse"
-                ]
-            }
+            "pre_install": "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\""
         },
         "32bit": {
-            "installer": {
-                "script": [
-                    "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-32.7z\" \"$dir\"",
-                    "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\Uninst*\" -Force -Recurse"
-                ]
-            }
+            "pre_install": "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-32.7z\" \"$dir\""
         }
     },
+    "post_install": "Remove-Item \"$dir\\`$*\", \"$dir\\Uninst*\" -Recurse",
     "shortcuts": [
         [
             "Termius.exe",
@@ -33,6 +25,10 @@
         "regex": "version:\\s*([\\d.]+)"
     },
     "autoupdate": {
-        "url": "https://autoupdate.termius.com/windows/Termius.exe#/dl.7z"
+        "url": "https://autoupdate.termius.com/windows/Install%20Termius.exe#/dl.7z",
+        "hash": {
+            "url": "$baseurl/latest.yml",
+            "regex": "sha512:\\s+$base64"
+        }
     }
 }
