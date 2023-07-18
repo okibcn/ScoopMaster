@@ -12,17 +12,13 @@
     ],
     "architecture": {
         "64bit": {
-            "url": "https://github.com/git-for-windows/git/releases/download/v2.41.0.windows.1/PortableGit-2.41.0-64-bit.7z.exe#/dl.7z",
+            "url": "https://mirror.nju.edu.cn/github-release/git-for-windows/git/Git%20for%20Windows%20v2.41.0.windows.1/PortableGit-2.41.0-64-bit.7z.exe#/dl.7z",
             "hash": "fcbaeffd24fdf435a1f7844825253509136377915e6720aa66aa256ec1f83c30"
-        },
-        "32bit": {
-            "url": "https://github.com/git-for-windows/git/releases/download/v2.41.0.windows.1/PortableGit-2.41.0-32-bit.7z.exe#/dl.7z",
-            "hash": "12190f5bec59a187ec0368f39dba55a7802706076b91fe400ef5da4247999467"
         }
     },
     "post_install": [
         "'install-context', 'uninstall-context', 'install-file-associations', 'uninstall-file-associations' | ForEach-Object {",
-        "    $reg_file_in  = \"$bucketsdir\\main\\scripts\\git\\$_.reg\"",
+        "    $reg_file_in  = \"$bucketsdir\\$bucket\\scripts\\git\\$_.reg\"",
         "    $reg_file_out = \"$dir\\$_.reg\"",
         "    $git_root     = \"$dir\".Replace('\\', '\\\\')",
         "    if (Test-Path $reg_file_in) {",
@@ -67,10 +63,7 @@
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://github.com/git-for-windows/git/releases/download/v$matchTag/PortableGit-$version-64-bit.7z.exe#/dl.7z"
-            },
-            "32bit": {
-                "url": "https://github.com/git-for-windows/git/releases/download/v$matchTag/PortableGit-$version-32-bit.7z.exe#/dl.7z"
+                "url": "https://mirror.nju.edu.cn/github-release/git-for-windows/git/Git%20for%20Windows%20v$matchTag/PortableGit-$version-64-bit.7z.exe#/dl.7z"
             }
         },
         "hash": {
