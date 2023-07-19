@@ -6,13 +6,13 @@
     "architecture": {
         "64bit": {
             "url": "https://github.com/ThaUnknown/miru/releases/download/v4.2.5/win-Miru-4.2.5.exe#/dl.7z",
-            "hash": "sha512:844b2d86a6d8b141c8079f7cf09adc55c41086b8387e422afe36208f4be0bdbc329f52fba4421d0569793f14b587dc9d31a56f9cd5b2094d649c430f90071be5",
-            "installer": {
-                "script": "Expand-7zipArchive -Path \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\""
-            }
+            "hash": "sha512:844b2d86a6d8b141c8079f7cf09adc55c41086b8387e422afe36208f4be0bdbc329f52fba4421d0569793f14b587dc9d31a56f9cd5b2094d649c430f90071be5"
         }
     },
-    "post_install": "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\Uninstall*\" -Recurse -Force",
+    "pre_install": [
+        "Expand-7zipArchive -Path \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\"",
+        "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\Uninstall*\" -Recurse -Force"
+    ],
     "checkver": "github",
     "shortcuts": [
         [
