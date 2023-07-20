@@ -1,29 +1,60 @@
 {
-    "version": "1.38.31.0",
-    "description": "您的指尖工具箱",
     "homepage": "https://getquicker.net/",
-    "license": "Proprietary",
-    "url": "https://files.getquicker.net/_productfiles/202307/Quicker.x64.1.38.31.0.msi",
-    "hash": "0371c8e2e118c97afea6a9d817fbf268f3f6cf7c602e5b7d32043c9cfc1f0d9a",
+    "version": "1.38.31.0",
+    "license": "Freeware",
+    "architecture": {
+        "64bit": {
+            "url": "https://getquicker.net/download/item/fast_x64#.msi",
+            "hash": "0371c8e2e118c97afea6a9d817fbf268f3f6cf7c602e5b7d32043c9cfc1f0d9a"
+        },
+        "32bit": {
+            "url": "https://getquicker.net/download/item/fast_x86#.msi",
+            "hash": "1ec46b0dc0ca5ff5dbe3466ee5d3dfe6c4e4069b84067ac575b8d881d89d5ce4"
+        }
+    },
     "extract_dir": "Quicker",
+    "checkver": {
+        "url": "https://getquicker.net/Download",
+        "regex": "快速通道[\\w\\W]*?(\\d.[\\d.]+)"
+    },
+    "installer": {
+        "script": [
+            "if (!(is_admin)) {",
+            "    error \"Administrator rights are required to uninstall $app.\"",
+            "    exit 1",
+            "}",
+            "New-Item Registry::HKEY_CLASSES_ROOT\\quicker -Force -ItemType String -Value 'URL:Quicker Protocol' | Out-Null",
+            "New-ItemProperty Registry::HKEY_CLASSES_ROOT\\quicker -Force -PropertyType string -Name 'URL Protocol' -Value '' | Out-Null",
+            "New-Item Registry::HKEY_CLASSES_ROOT\\quicker\\DefaultIcon -Force -ItemType String -Value 'Quicker.exe' | Out-Null",
+            "New-Item Registry::HKEY_CLASSES_ROOT\\quicker\\shell\\open\\command -Force -ItemType String -Value \"`\"$dir\\QuickerStarter.exe`\" `\"%1`\"\" | Out-Null"
+        ]
+    },
+    "uninstaller": {
+        "script": [
+            "if (!(is_admin)) {",
+            "    error \"Administrator rights are required to uninstall $app.\"",
+            "    exit 1",
+            "}",
+            "if (Test-Path Registry::HKEY_CLASSES_ROOT\\quicker) {",
+            "    Remove-Item Registry::HKEY_CLASSES_ROOT\\quicker -Force -Recurse | Out-Null",
+            "}"
+        ]
+    },
+    "bin": "Quicker.exe",
     "shortcuts": [
         [
             "Quicker.exe",
             "Quicker"
         ]
     ],
-    "checkver": {
-        "script": [
-            "$url = 'https://getquicker.net/Download'",
-            "$cont = $(Invoke-WebRequest $url).Content",
-            "$version = (Select-String -InputObject $cont 'version=([\\d.]+)' -AllMatches).Matches[1].Groups[1].Value",
-            "$releaseDate = (Select-String -InputObject $cont '发布时间：(\\d{4})-(\\d+)' -AllMatches).Matches[1].Groups",
-            "Write-Output ('{0}-{1}{2}' -f $version, $releaseDate[1].value, $releaseDate[2].value)"
-        ],
-        "re": "([\\d.]+)-(\\d+)",
-        "replace": "$1"
-    },
     "autoupdate": {
-        "url": "https://files.getquicker.net/_productfiles/$match2/Quicker.x64.$version.msi"
+        "architecture": {
+            "64bit": {
+                "url": "https://getquicker.net/download/item/fast_x64#.msi"
+            },
+            "32bit": {
+                "url": "https://getquicker.net/download/item/fast_x86#.msi"
+            }
+        }
     }
 }
