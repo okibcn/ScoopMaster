@@ -1,14 +1,15 @@
 {
-    "version": "1.15.4-602",
+    "version": "1.15.4-606-3e213667c",
+    "description": "Sony PlayStation Portable (PSP) emulator",
     "homepage": "https://www.ppsspp.org",
-    "license": "GPL-2.0-only",
-    "extract_dir": "ppsspp",
-    "post_install": "Remove-Item \"$dir\\demos\" -Recurse",
-    "persist": "memstick",
+    "license": {
+        "url": "https://github.com/hrydgard/ppsspp/blob/master/LICENSE.TXT",
+        "identifier": "GPL 2.0 or later"
+    },
     "architecture": {
         "64bit": {
-            "url": "https://buildbot.orphis.net/ppsspp/index.php?m=dl&rev=v1.15.4-602-gf6b2ba455&platform=windows-amd64#/dl.7z",
-            "hash": "c4a02f7cef9ae6deeb46e8cc014569ec634831e579f5e89bba844fba73e9443a",
+            "url": "https://buildbot.orphis.net/ppsspp/index.php?m=dl&rev=v1.15.4-606-g3e213667c&platform=windows-amd64#/dl.zip",
+            "hash": "1a4d95a8810f230bf872ebcfea1d362ea0d1fb201e5ee34db9024eba2db69316",
             "bin": [
                 [
                     "PPSSPPWindows64.exe",
@@ -18,12 +19,12 @@
             "shortcuts": [
                 [
                     "PPSSPPWindows64.exe",
-                    "PPSSPP-DEV"
+                    "PPSSPP (dev)"
                 ]
             ]
         },
         "32bit": {
-            "url": "https://buildbot.orphis.net/ppsspp/index.php?m=dl&rev=v1.15.4-602-gf6b2ba455&platform=windows-x86#/dl.7z",
+            "url": "https://buildbot.orphis.net/ppsspp/index.php?m=dl&rev=v1.15.4-606-g3e213667c&platform=windows-x86#/dl.zip",
             "hash": "7f0fe787ed3ad1e5b7e3db4fe55c7507e9a3e1ded80ea41848dc711f6f9358ee",
             "bin": [
                 [
@@ -34,23 +35,35 @@
             "shortcuts": [
                 [
                     "PPSSPPWindows.exe",
-                    "PPSSPP-DEV"
+                    "PPSSPP (dev)"
                 ]
             ]
         }
     },
+    "extract_dir": "ppsspp",
+    "pre_install": [
+        "if (!(Test-Path \"$persist_dir\")) {",
+        "   New-item \"$persist_dir\" -ItemType Directory | Out-Null",
+        "   New-item \"$persist_dir\\memstick\" -ItemType Directory | Out-Null",
+        "}"
+    ],
+    "persist": [
+        "memstick",
+        "assets",
+        "demos"
+    ],
     "checkver": {
-        "url": "https://buildbot.orphis.net/ppsspp/index.php?m=fulllist",
-        "regex": "v(?<version>[\\d.]+)-(?<rev>[\\d]+)-(?<commit>[\\d\\w]+)",
-        "replace": "${version}-${rev}"
+        "url": "https://buildbot.orphis.net/ppsspp/index.php",
+        "regex": "rev=v(?<version>[\\d.]+)-(?<build>[\\d]+)-g(?<commit>[\\da-fA-F]+)&(?:amp;)platform=windows-amd64",
+        "replace": "${version}-${build}-${commit}"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://buildbot.orphis.net/ppsspp/index.php?m=dl&rev=v$version-$matchCommit&platform=windows-amd64#/dl.7z"
+                "url": "https://buildbot.orphis.net/ppsspp/index.php?m=dl&rev=v$matchVersion-$matchBuild-g$matchCommit&platform=windows-amd64#/dl.zip"
             },
             "32bit": {
-                "url": "https://buildbot.orphis.net/ppsspp/index.php?m=dl&rev=v$version-$matchCommit&platform=windows-x86#/dl.7z"
+                "url": "https://buildbot.orphis.net/ppsspp/index.php?m=dl&rev=v$matchVersion-$matchBuild-g$matchCommit&platform=windows-x86#/dl.zip"
             }
         }
     }
