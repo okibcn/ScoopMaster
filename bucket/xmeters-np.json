@@ -14,7 +14,8 @@
     "uninstaller": {
         "script": [
             "if (!(is_admin)) { error \"$app requires admin rights to $cmd\"; break }",
-            "Start-Process \"$dir\\XMetersSetup.exe\" -Wait -Verb 'RunAs' -Args @('/silent', '/uninstall'); Start-Sleep -Seconds 2"
+            "Start-Process \"$dir\\XMetersSetup.exe\" -Wait -Verb 'RunAs' -Args @('/silent', '/uninstall'); Stop-Process -Name 'explorer' -Force",
+            "Start-Sleep -Seconds 2"
         ]
     },
     "checkver": {
