@@ -1,6 +1,6 @@
 {
     "version": "115.0.2",
-    "description": "Firefox 浏览器中文版本",
+    "description": "Popular open source web browser.",
     "homepage": "https://www.mozilla.org/firefox/",
     "license": "MPL-2.0",
     "architecture": {
@@ -11,6 +11,10 @@
         "32bit": {
             "url": "https://archive.mozilla.org/pub/firefox/releases/115.0.2/win32/zh-CN/Firefox%20Setup%20115.0.2.exe#/dl.7z",
             "hash": "sha512:0bfb3a33fe99f2c81031e7b963d2848a2be8fb63810a9da5424a7a2374818720e7096c61d3525728ef597e7f2bd1fb050ae258bd4def370a1f90f3e86bbfa592"
+        },
+        "arm64": {
+            "url": "https://archive.mozilla.org/pub/firefox/releases/115.0.2/win64-aarch64/zh-CN/Firefox%20Setup%20115.0.2.exe#/dl.7z",
+            "hash": "sha512:793a17b9487125b3b98317c9f0579443c9a3e93193cf6172d12c720ea4824659ee8a09c50c0942147a4b157d20848fb3421b936a82c8b79604485db1548ea2e8"
         }
     },
     "extract_dir": "core",
@@ -23,8 +27,8 @@
     ],
     "persist": "distribution",
     "checkver": {
-        "url": "https://www.mozilla.org/en-US/firefox/notes/",
-        "regex": "<div class=\"c-release-version\">([\\d.]+)</div>"
+        "url": "https://www.mozilla.org/zh-CN/firefox/all/",
+        "regex": "data-latest-firefox=\"([\\d.]+)\""
     },
     "autoupdate": {
         "architecture": {
@@ -40,6 +44,13 @@
                 "hash": {
                     "url": "https://archive.mozilla.org/pub/firefox/releases/$version/SHA512SUMS",
                     "regex": "$sha512\\s+win32/zh-CN/$basename"
+                }
+            },
+            "arm64": {
+                "url": "https://archive.mozilla.org/pub/firefox/releases/$version/win64-aarch64/zh-CN/Firefox%20Setup%20$version.exe#/dl.7z",
+                "hash": {
+                    "url": "https://archive.mozilla.org/pub/firefox/releases/$version/SHA512SUMS",
+                    "regex": "$sha512\\s+win64-aarch64/zh-CN/$basename"
                 }
             }
         }
