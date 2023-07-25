@@ -1,8 +1,8 @@
 {
-    "homepage": "https://www.emeditor.com/",
     "version": "22.5.0",
-    "description": "EmEditor is a fast, lightweight, yet extensible, easy-to-use text editor for Windows.",
-    "license": "https://www.emeditor.com/#toggle-id-4",
+    "description": "A fast, lightweight and extensible text editor for Windows. Useful for opening very large files.",
+    "homepage": "https://www.emeditor.com/",
+    "license": "Shareware",
     "architecture": {
         "64bit": {
             "url": "https://emeditor.blob.core.windows.net/emed64_22.5.0_portable.zip",
@@ -13,6 +13,13 @@
             "hash": "acb3f6d9ad6abbf50b422f4a7579080dede636e10fb2d4bb4b23fba4aa79eec7"
         }
     },
+    "pre_install": [
+        "$manifest.persist | ForEach-Object {",
+        "    if ([io.path]::GetExtension($_)) {",
+        "        if (!(Test-Path \"$persist_dir\\$_\")) { New-Item \"$dir\\$_\" | Out-Null }",
+        "    }",
+        "}"
+    ],
     "bin": "EmEditor.exe",
     "shortcuts": [
         [
@@ -20,10 +27,15 @@
             "EmEditor"
         ]
     ],
-    "post_install": "Remove-Item \"$dir\\eeUseIni.ini\"",
+    "persist": [
+        "eeCommon.ini",
+        "eeConfig.ini",
+        "eeLM.ini",
+        "eePlugins.ini"
+    ],
     "checkver": {
-        "url": "https://www.emeditor.com/",
-        "re": "EmEditor v([\\d.]+) released"
+        "url": "https://support.emeditor.com/en/downloads",
+        "regex": "v([\\d.]+)"
     },
     "autoupdate": {
         "architecture": {
