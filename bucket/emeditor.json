@@ -1,31 +1,18 @@
 {
-    "homepage": "https://jp.emeditor.com/",
-    "url": [
-        "https://emeditor.blob.core.windows.net/emed64_22.5.0_portable.zip",
-        "https://raw.githubusercontent.com/ba230t/scoop-bucket/master/scripts/emeditor-install-context.reg",
-        "https://raw.githubusercontent.com/ba230t/scoop-bucket/master/scripts/emeditor-uninstall-context.reg"
-    ],
+    "homepage": "https://www.emeditor.com/",
     "version": "22.5.0",
-    "checkver": {
-        "url": "https://support.emeditor.com/ja/downloads",
-        "re": "v([\\d.]+.[\\d.]+.[\\d.]+)"
+    "description": "EmEditor is a fast, lightweight, yet extensible, easy-to-use text editor for Windows.",
+    "license": "https://www.emeditor.com/#toggle-id-4",
+    "architecture": {
+        "64bit": {
+            "url": "https://emeditor.blob.core.windows.net/emed64_22.5.0_portable.zip",
+            "hash": "18c9981adb609efc3920171714b8a81ad5c30b0ee427477b604ad737800eadc3"
+        },
+        "32bit": {
+            "url": "https://emeditor.blob.core.windows.net/emed32_22.5.0_portable.zip",
+            "hash": "acb3f6d9ad6abbf50b422f4a7579080dede636e10fb2d4bb4b23fba4aa79eec7"
+        }
     },
-    "autoupdate": {
-        "url": "https://emeditor.blob.core.windows.net/emed64_$version_portable.zip"
-    },
-    "hash": [
-        "18c9981adb609efc3920171714b8a81ad5c30b0ee427477b604ad737800eadc3",
-        "f6fe1f745ec7f1b1be59c89cb112b5d85388b346babb58e4f242107167ab9045",
-        "3917570e98ad30e7c9325b97356cc46fb28ab67d734aaf77c206b732f75c6b8a"
-    ],
-    "persist": [
-        "Macros",
-        "AppData",
-        "eeCommon.ini",
-        "eeConfig.ini",
-        "eePlugins.ini",
-        "eeLM.ini"
-    ],
     "bin": "EmEditor.exe",
     "shortcuts": [
         [
@@ -33,20 +20,19 @@
             "EmEditor"
         ]
     ],
-    "pre_install": [
-        "if(!(test-path \"$persist_dir\\eeUseIni.ini\"))  { Add-Content \"$dir\\eeUseIni.ini\" \"\" }",
-        "if(!(test-path \"$persist_dir\\eeCommon.ini\"))  { Add-Content \"$dir\\eeCommon.ini\" \"\" }",
-        "if(!(test-path \"$persist_dir\\eeConfig.ini\"))  { Add-Content \"$dir\\eeConfig.ini\" \"\" }",
-        "if(!(test-path \"$persist_dir\\eePlugins.ini\")) { Add-Content \"$dir\\eePlugins.ini\" \"\" }",
-        "if(!(test-path \"$persist_dir\\eeLM.ini\"))      { Add-Content \"$dir\\eeLM.ini\" \"\" }"
-    ],
-    "post_install": [
-        "if(Test-Path(\"$dir\\emeditor-install-context.reg\")) {",
-        "  $empath = \"$dir\\EmEditor.exe\".Replace('\\', '\\\\')",
-        "  $content = Get-Content \"$dir\\emeditor-install-context.reg\"",
-        "  $content = $content.Replace('$em', $empath)",
-        "  $content | Set-Content -Path \"$dir\\emeditor-install-context.reg\"",
-        "}"
-    ],
-    "notes": "Add EmEditor as a context menu option by running: \"$dir\\emeditor-install-context.reg\""
+    "post_install": "Remove-Item \"$dir\\eeUseIni.ini\"",
+    "checkver": {
+        "url": "https://www.emeditor.com/",
+        "re": "EmEditor v([\\d.]+) released"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://emeditor.blob.core.windows.net/emed64_$version_portable.zip"
+            },
+            "32bit": {
+                "url": "https://emeditor.blob.core.windows.net/emed32_$version_portable.zip"
+            }
+        }
+    }
 }
