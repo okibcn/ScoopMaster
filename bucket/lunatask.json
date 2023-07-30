@@ -1,18 +1,18 @@
 {
     "version": "1.7.3",
+    "description": "All-in-one privacy-focused todo list, notebook, habit and mood tracker, and pomodoro timer.",
     "homepage": "https://lunatask.app/",
-    "description": "An all-in-one encrypted to-do list, notebook, habit and mood tracker, and journaling app. Built with ADHD brains in mind",
-    "license": {
-        "identifier": "Freeware",
-        "url": "https://lunatask.app/terms"
-    },
+    "license": "Proprietary",
     "architecture": {
         "64bit": {
-            "url": "https://lunatask.app/download/Lunatask-Setup-1.7.3.exe#/dl.zip",
-            "hash": "e768fe72b233f1d45ee2833c6cdd50de75007437dd0cbed7b95080b2317b8001"
+            "url": "https://github.com/lunatask/lunatask/releases/download/v1.7.3/Lunatask-Setup-1.7.3.exe#/dl.7z",
+            "hash": "e768fe72b233f1d45ee2833c6cdd50de75007437dd0cbed7b95080b2317b8001",
+            "pre_install": [
+                "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\"",
+                "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\Uninstall*\" -Force -Recurse"
+            ]
         }
     },
-    "pre_install": "Get-Item \"$dir\\*\" -Exclude '$PLUGINSDIR' | Remove-Item -Recurse; Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" $dir; Remove-Item \"$dir\\`$PLUGINSDIR\" -Recurse",
     "shortcuts": [
         [
             "Lunatask.exe",
@@ -20,13 +20,12 @@
         ]
     ],
     "checkver": {
-        "url": "https://lunatask.app/releases",
-        "regex": "releases/([\\d.]+)"
+        "github": "https://github.com/lunatask/lunatask"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://lunatask.app/download/Lunatask-Setup-$version.exe#/dl.zip"
+                "url": "https://github.com/lunatask/lunatask/releases/download/v$version/Lunatask-Setup-$version.exe#/dl.7z"
             }
         }
     }
