@@ -1,14 +1,19 @@
 {
-    "version": "1.46",
-    "description": "the open source, free file copy utility that is: fast, highly customizable, and loaded with features.",
     "homepage": "https://www.copyhandler.com/",
-    "license": "GPLv2",
-    "url": "https://sourceforge.net/projects/copyhandler/files/copyhandler/1.46/ch-portable-1.46.zip",
+    "description": "A tool that allows you to manage different copy/move operations for files and folders.",
+    "license": "freeware",
+    "version": "1.46",
+    "url": "https://www.fosshub.com/Copy-Handler.html?dwl=ch-portable-1.46.zip",
     "hash": "cc119d21baa0fadcd9f27abeb4eb24fc88914cf595a13fc4e3a96142bc53cb98",
+    "pre_install": "Expand-7ZipArchive \"$dir\\Copy-Handler.html\" \"$dir\" -Removal",
     "architecture": {
         "64bit": {
-            "extract_dir": "64bit",
-            "bin": "ch64.exe",
+            "installer": {
+                "script": [
+                    "Move-Item \"$dir\\64bit\\*\" \"$dir\"",
+                    "Remove-Item \"$dir\\64bit\", \"$dir\\32bit\" -Force -Recurse"
+                ]
+            },
             "shortcuts": [
                 [
                     "ch64.exe",
@@ -17,8 +22,12 @@
             ]
         },
         "32bit": {
-            "extract_dir": "32bit",
-            "bin": "ch.exe",
+            "installer": {
+                "script": [
+                    "Move-Item \"$dir\\32bit\\*\" \"$dir\"",
+                    "Remove-Item \"$dir\\64bit\", \"$dir\\32bit\" -Force -Recurse"
+                ]
+            },
             "shortcuts": [
                 [
                     "ch.exe",
@@ -27,12 +36,18 @@
             ]
         }
     },
-    "persist": "ch.xml",
+    "persist": [
+        "ch.xml",
+        "Tasks"
+    ],
     "checkver": {
-        "url": "https://sourceforge.net/projects/copyhandler/rss?path=/copyhandler",
-        "regex": "ch-portable-([\\d.]+).zip"
+        "url": "https://www.copyhandler.com/download",
+        "regex": "Copy-Handler\\.html\\?dwl=chsetup-(.+?)\\.exe"
     },
     "autoupdate": {
-        "url": "https://sourceforge.net/projects/copyhandler/files/copyhandler/$version/ch-portable-$version.zip"
+        "url": "https://www.fosshub.com/Copy-Handler.html?dwl=ch-portable-$version.zip",
+        "hash": {
+            "mode": "fosshub"
+        }
     }
 }
