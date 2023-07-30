@@ -1,15 +1,11 @@
 {
     "version": "1.2.1",
-    "description": "Intel One Mono font repository",
+    "description": "An expressive monospaced font family that's built with clarity, legibility, and the needs of developers in mind,",
     "homepage": "https://github.com/intel/intel-one-mono",
-    "license": "OLF-1.1",
-    "architecture": {
-        "64bit": {
-            "url": "https://github.com/intel/intel-one-mono/releases/download/V1.2.1/otf.zip",
-            "hash": "44127021492601921168811653115995131f15350574b6c708c4646a0534814d",
-            "extract_dir": "otf"
-        }
-    },
+    "license": "OFL-1.1",
+    "url": "https://github.com/intel/intel-one-mono/releases/download/V1.2.1/ttf.zip",
+    "hash": "0d5fcf4fe3fe186abf7a34b9731e4436e0b2fa2884df600c3a2af0b9308fdef6",
+    "extract_dir": "ttf",
     "installer": {
         "script": [
             "$currentBuildNumber = [int] (Get-ItemProperty \"HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\").CurrentBuildNumber",
@@ -42,7 +38,7 @@
             "}",
             "$registryRoot = if ($global) { \"HKLM\" } else { \"HKCU\" }",
             "$registryKey = \"${registryRoot}:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\"",
-            "Get-ChildItem $dir -Filter '*intelone-*' | ForEach-Object {",
+            "Get-ChildItem $dir -Filter '*.ttf' | ForEach-Object {",
             "    $value = if ($global) { $_.Name } else { \"$fontInstallDir\\$($_.Name)\" }",
             "    New-ItemProperty -Path $registryKey -Name $_.Name.Replace($_.Extension, ' (TrueType)') -Value $value -Force | Out-Null",
             "    Copy-Item $_.FullName -Destination $fontInstallDir",
@@ -51,7 +47,7 @@
     },
     "pre_uninstall": [
         "$fontInstallDir = if ($global) { \"$env:windir\\Fonts\" } else { \"$env:LOCALAPPDATA\\Microsoft\\Windows\\Fonts\" }",
-        "Get-ChildItem $dir -Filter '*intelone-*' | ForEach-Object {",
+        "Get-ChildItem $dir -Filter '*.ttf' | ForEach-Object {",
         "    Get-ChildItem $fontInstallDir -Filter $_.Name | ForEach-Object {",
         "        try {",
         "            Rename-Item $_.FullName $_.FullName -ErrorVariable LockError -ErrorAction Stop",
@@ -81,7 +77,7 @@
             "$fontInstallDir = if ($global) { \"$env:windir\\Fonts\" } else { \"$env:LOCALAPPDATA\\Microsoft\\Windows\\Fonts\" }",
             "$registryRoot = if ($global) { \"HKLM\" } else { \"HKCU\" }",
             "$registryKey = \"${registryRoot}:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\"",
-            "Get-ChildItem $dir -Filter '*intelone-*' | ForEach-Object {",
+            "Get-ChildItem $dir -Filter '*.ttf' | ForEach-Object {",
             "    Remove-ItemProperty -Path $registryKey -Name $_.Name.Replace($_.Extension, ' (TrueType)') -Force -ErrorAction SilentlyContinue",
             "    Remove-Item \"$fontInstallDir\\$($_.Name)\" -Force -ErrorAction SilentlyContinue",
             "}",
@@ -92,9 +88,6 @@
     },
     "checkver": "github",
     "autoupdate": {
-        "url": "https://github.com/intel/intel-one-mono/releases/download/V$version/otf.zip",
-        "hash": {
-            "mode": "download"
-        }
+        "url": "https://github.com/intel/intel-one-mono/releases/download/V$version/ttf.zip"
     }
 }
