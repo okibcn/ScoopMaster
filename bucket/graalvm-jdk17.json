@@ -1,41 +1,23 @@
 {
     "description": "High-performance, embeddable, polyglot Virtual Machine for JVM-langs (Java, Scala, Kotlin), JavaScript/NodeJS, Python, Ruby, R, and LLVM-langs (C, C++, Rust)",
-    "version": "23.0.0-17.0.7+8.1.sha.1ef3705",
+    "version": "22.3.2",
     "homepage": "https://www.graalvm.org/",
-    "license": {
-        "identifier": "Freeware",
-        "url": "https://www.oracle.com/downloads/licenses/graal-free-license.html"
-    },
-    "url": "https://download.oracle.com/graalvm/17/latest/graalvm-jdk-17_windows-x64_bin.zip",
-    "hash": "1ef3705fef76554bba792075df2f206237bd9d8603a4fc5ebb45a67ceb1e20d9",
-    "extract_dir": "graalvm-jdk-17.0.7+8.1",
+    "license": "GPL-2.0",
+    "url": "https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-22.3.2/graalvm-ce-java17-windows-amd64-22.3.2.zip",
+    "hash": "23fcc0ef9d245fc087d2bcefb321d2ef13a87dd10bfc04b2a98c55db7b401732",
+    "extract_dir": "graalvm-ce-java17-22.3.2",
     "env_add_path": "bin",
     "env_set": {
         "JAVA_HOME": "$dir",
         "GRAALVM_HOME": "$dir"
     },
     "checkver": {
-        "script": [
-            "$graalvm_downloads = Invoke-RestMethod -Uri 'https://www.oracle.com/a/tech/docs/graalvm-downloads.json'",
-            "$graalvm_version = ($graalvm_downloads.PSObject.Properties.Value | Where-Object { $_.Title -eq 'Oracle GraalVM' } | Select-Object -first 1 -expand Releases | Get-Member)[-1].Name",
-            "$downloadUrl = 'https://download.oracle.com/graalvm/17/latest/graalvm-jdk-17_windows-x64_bin.zip'",
-            "$hash = (Invoke-WebRequest \"$downloadUrl.sha256\").Content",
-            "$zip = \"$cachedir\\$app#$graalvm_version#https_download.oracle.com_graalvm_17_latest_graalvm-jdk-17_windows-x64_bin.zip\"",
-            "if (!((Test-Path $zip) -and ((Get-FileHash $zip).Hash -eq $hash))) {",
-            "$download = Invoke-WebRequest $downloadUrl -o $zip -UseBasicParsing",
-            "}",
-            "[void][Reflection.Assembly]::LoadWithPartialName('System.IO.Compression.FileSystem')",
-            "$files = [IO.Compression.ZipFile]::OpenRead($zip).Entries",
-            "$folderInZip = (($files | Where FullName -match '/' | Select -First 1).Fullname -Split '/')[0]",
-            "$java_version = $folderInZip | Select-String '[\\d.]+\\+[\\d.]+' -AllMatches | % Matches | % Value",
-            "$version = $graalvm_version + '-' + $java_version + '.sha.' + ($hash -replace '(?<=.{7}).+')",
-            "Write-Output $version $folderInZip"
-        ],
-        "regex": "(?<version>[^\\s]+)\\s(?<extract>.+)"
+        "url": "https://www.graalvm.org/downloads/",
+        "regex": "vm-([\\d.]+)"
     },
     "autoupdate": {
-        "url": "https://download.oracle.com/graalvm/17/latest/graalvm-jdk-17_windows-x64_bin.zip",
-        "extract_dir": "$matchExtract",
+        "url": "https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-$version/graalvm-ce-java17-windows-amd64-$version.zip",
+        "extract_dir": "graalvm-ce-java17-$version",
         "hash": {
             "url": "$url.sha256"
         }
