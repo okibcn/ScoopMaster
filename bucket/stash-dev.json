@@ -1,25 +1,31 @@
 {
     "version": "0.21.0-55-g170f45c4",
-    "description": "An organizer for your porn.",
+    "description": "An organizer for your porn. (Dev release channel)",
     "homepage": "https://stashapp.cc",
     "license": "AGPL-3.0-only",
     "suggest": {
-        "FFmpeg": [
-            "ffmpeg",
-            "ffmpeg-nightly"
-        ]
+        "ffmpeg": "ffmpeg"
     },
     "url": "https://github.com/stashapp/stash/releases/download/latest_develop/stash-win.exe",
-    "hash": "sha1:209a2c8dd052e4ff73f94476dc67b82046cc45ea",
-    "bin": "stash-win.exe",
+    "hash": "2ae136e4d78757af9d5be2aebc3cfc8df49c0efdfe7480452ac7a416c40d4bbb",
+    "bin": [
+        [
+            "stash-win.exe",
+            "stash-win",
+            "-c \"$dir\\config\\config.yml\""
+        ],
+        [
+            "stash-win.exe",
+            "stash",
+            "-c \"$dir\\config\\config.yml\""
+        ]
+    ],
+    "persist": "config",
     "checkver": {
         "url": "https://github.com/stashapp/stash/releases/tag/latest_develop",
-        "regex": "v([\\d\\-.]+\\-g[0-9a-f]{6,})"
+        "regex": "Release v([\\w.-]+)"
     },
     "autoupdate": {
-        "url": "https://github.com/stashapp/stash/releases/download/latest_develop/stash-win.exe",
-        "hash": {
-            "url": "$baseurl/CHECKSUMS_SHA1"
-        }
+        "url": "https://github.com/stashapp/stash/releases/download/latest_develop/stash-win.exe"
     }
 }
