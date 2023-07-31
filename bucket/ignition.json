@@ -1,46 +1,46 @@
 {
-    "version": "8.1.30",
-    "description": "Unlimited Platform for SCADA and so much more",
-    "homepage": "https://inductiveautomation.com/",
-    "license": {
-        "identifier": "Proprietary",
-        "url": "https://inductiveautomation.com/ignition/license"
-    },
-    "url": "https://files.inductiveautomation.com/release/ia/8.1.30/20230714-0908/Ignition-windows-x86-64-8.1.30.zip",
-    "hash": "0607332f04a4f91b3ac57532c49222d9571ce729e50998a3751051e0bd576fc4",
-    "post_install": [
-        "# Update ignition.conf",
-        "(Get-Content \"$dir\\data\\ignition.conf\") -replace '=Ignition scoop', '=Ignition' | Out-File \"$dir\\data\\ignition.conf\"",
-        "(Get-Content \"$dir\\data\\ignition.conf\") -replace '=Ignition', '=Ignition scoop' | Out-File \"$dir\\data\\ignition.conf\"",
-        "# Install Ignition",
-        "cmd.exe /c \"$dir\\install-ignition.bat\"",
-        "# Run upgrader",
-        "Set-Location \"$dir\" ; cmd.exe /c run-upgrader.bat",
-        "# Start Ignition",
-        "cmd.exe /c \"$dir\\start-ignition.bat\""
+  "version": "8.1.30",
+  "description": "Unlimited Platform for SCADA and so much more",
+  "homepage": "https://inductiveautomation.com/",
+  "license": {
+    "identifier": "Proprietary",
+    "url": "https://inductiveautomation.com/ignition/license"
+  },
+  "url": "https://files.inductiveautomation.com/release/ia/8.1.30/20230714-0908/Ignition-windows-x86-64-8.1.30.zip",
+  "hash": "0607332f04a4f91b3ac57532c49222d9571ce729e50998a3751051e0bd576fc4",
+  "post_install": [
+    "# Update ignition.conf",
+    "(Get-Content \"$dir\\data\\ignition.conf\") -replace '=Ignition scoop', '=Ignition' | Out-File \"$dir\\data\\ignition.conf\"",
+    "(Get-Content \"$dir\\data\\ignition.conf\") -replace '=Ignition', '=Ignition scoop' | Out-File \"$dir\\data\\ignition.conf\"",
+    "# Install Ignition",
+    "cmd.exe /c \"$dir\\install-ignition.bat\"",
+    "# Run upgrader",
+    "Set-Location \"$dir\" ; cmd.exe /c run-upgrader.bat",
+    "# Start Ignition",
+    "cmd.exe /c \"$dir\\start-ignition.bat\""
+  ],
+  "uninstaller": {
+    "script": [
+      "# Uninstall Ignition",
+      "cmd.exe /c \"$dir\\uninstall-ignition.bat\""
+    ]
+  },
+  "bin": [
+    [
+      "start-ignition.bat",
+      "start-ignition"
     ],
-    "uninstaller": {
-        "script": [
-            "# Uninstall Ignition",
-            "cmd.exe /c \"$dir\\uninstall-ignition.bat\""
-        ]
-    },
-    "bin": [
-        [
-            "start-ignition.bat",
-            "start-ignition"
-        ],
-        [
-            "stop-ignition.bat",
-            "stop-ignition"
-        ]
-    ],
-    "persist": [
-        "data",
-        "logs"
-    ],
-    "checkver": {
-        "url": "https://inductiveautomation.com/downloads/ignition/",
-        "regex": "\"version\":\\s*\"(\\d+(:?\\.\\d+)*)\""
-    }
+    [
+      "stop-ignition.bat",
+      "stop-ignition"
+    ]
+  ],
+  "persist": [
+    "data",
+    "logs"
+  ],
+  "checkver": {
+    "url": "https://inductiveautomation.com/downloads/ignition/",
+    "regex": "\"version\":\\s*\"(\\d+(:?\\.\\d+)*)\""
+  }
 }
