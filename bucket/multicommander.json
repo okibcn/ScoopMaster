@@ -1,45 +1,45 @@
 {
-    "version": "13.1.0.2955",
-    "description": "A multi-tabbed file manager and is an alternative to the standard Windows Explorer",
-    "homepage": "https://multicommander.com/",
+    "homepage": "http://multicommander.com/",
+    "version": "13.1.2955",
+    "description": "Multi Commander is a multi-tabbed file manager and is an alternative to the standard Windows Explorer. ",
     "license": {
-        "identifier": "Freeware",
-        "url": "https://multicommander.com/docs/License"
+        "identifier": "Freeware"
     },
-    "architecture": {
-        "64bit": {
-            "url": "https://multicommander.com/files/updates/MultiCommander_x64_Portable_(13.1.0.2955).zip",
-            "hash": "1d741ba8457724c33606e8f8e684e413965683e8e923ce22a0374910842dddd0"
-        },
-        "32bit": {
-            "url": "https://multicommander.com/files/updates/MultiCommander_win32_Portable_(13.1.0.2955).zip",
-            "hash": "3c2b0666a5658799cfd4a91592edd2f7d9bbab602b1d0ab0aa9434333f9651ba"
-        }
-    },
-    "bin": "MultiCommander.exe",
-    "shortcuts": [
-        [
-            "MultiCommander.exe",
-            "Multi Commander"
-        ]
-    ],
     "persist": [
         "Config",
-        "SessionConfig",
-        "Extensions",
-        "UserData"
+        "UserData",
+        "SessionConfig"
     ],
+    "architecture": {
+        "64bit": {
+            "url": "http://multicommander.com/files/updates/MultiCommander_x64_Portable_(13.1.0.2955).zip",
+            "hash": "sha1:C09CBAE4514E9C5312BA96EB68CE63AB0553C11D"
+        },
+        "32bit": {
+            "url": "http://multicommander.com/files/updates/MultiCommander_win32_Portable_(13.1.0.2955).zip",
+            "hash": "sha1:14140598BEBF430CA9C23C8EA92895F23B41BA1E"
+        }
+    },
     "checkver": {
-        "url": "https://multicommander.com/updates/version.xml",
-        "xpath": "/updates/multicommander/stable/@version"
+        "url": "http://multicommander.com/downloads",
+        "re": "Multi Commander v(?<version>[\\d.]+) \\(Build (?<build>[\\d]{4})\\)",
+        "replace": "${version}.${build}"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://multicommander.com/files/updates/MultiCommander_x64_Portable_($version).zip"
+                "url": "http://multicommander.com/files/updates/MultiCommander_x64_Portable_($version).zip",
+                "hash": {
+                    "url": "http://multicommander.com/downloads",
+                    "find": "(?:Portable).*\\(64 bit\\).*?([a-fA-F0-9]{40})"
+                }
             },
             "32bit": {
-                "url": "https://multicommander.com/files/updates/MultiCommander_win32_Portable_($version).zip"
+                "url": "http://multicommander.com/files/updates/MultiCommander_win32_Portable_($version).zip",
+                "hash": {
+                    "url": "http://multicommander.com/downloads",
+                    "find": "(?:Portable).*\\(32 bit\\).*?([a-fA-F0-9]{40})"
+                }
             }
         }
     }
