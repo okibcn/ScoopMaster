@@ -1,8 +1,11 @@
 {
     "version": "0.7.2",
-    "description": "Utility to convert between various subscription format.",
+    "description": "Utility to convert between various proxy subscription formats.",
     "homepage": "https://github.com/tindy2013/subconverter",
-    "license": "GPL-3.0-or-later",
+    "license": {
+        "identifier": "GPL-3.0-only",
+        "url": "https://github.com/tindy2013/subconverter/blob/master/LICENSE"
+    },
     "architecture": {
         "64bit": {
             "url": "https://github.com/tindy2013/subconverter/releases/download/v0.7.2/subconverter_win64.7z",
@@ -14,11 +17,25 @@
         }
     },
     "extract_dir": "subconverter",
+    "pre_install": [
+        "'pref.ini', 'pref.toml', 'pref.yml' | ForEach-Object {",
+        "    if (!(Test-Path \"$persist_dir\\$_\")) { New-Item \"$dir\\$_\" | Out-Null }",
+        "}"
+    ],
     "bin": "subconverter.exe",
+    "shortcuts": [
+        [
+            "subconverter.exe",
+            "subconverter"
+        ]
+    ],
     "persist": [
-        "config",
         "profiles",
-        "rules"
+        "generate.ini",
+        "gistconf.ini",
+        "pref.ini",
+        "pref.toml",
+        "pref.yml"
     ],
     "checkver": "github",
     "autoupdate": {
