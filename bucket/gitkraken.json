@@ -1,63 +1,45 @@
 {
-    "architecture": {
-        "32bit": {
-            "hash": "sha1:3b479588265a4ed9ad35419bd4bc321f3f4efdff",
-            "url": "https://release.gitkraken.com/win32/gitkraken-9.6.1-full.nupkg"
-        },
-        "64bit": {
-            "hash": "sha1:a5c251e752605fa2068aea88b3c432a394a7e9be",
-            "url": "https://release.gitkraken.com/win64/gitkraken-9.6.1-full.nupkg"
-        }
-    },
-    "autoupdate": {
-        "architecture": {
-            "32bit": {
-                "url": "https://release.gitkraken.com/win32/gitkraken-$version-full.nupkg"
-            },
-            "64bit": {
-                "url": "https://release.gitkraken.com/win64/gitkraken-$version-full.nupkg"
-            }
-        },
-        "hash": {
-            "url": "$baseurl/RELEASES"
-        }
-    },
-    "bin": "gitkraken.exe",
-    "checkver": {
-        "regex": "gitkraken-([\\d.]+)-full\\.nupkg",
-        "reverse": true,
-        "url": "https://release.gitkraken.com/win64/RELEASES?id=gitkraken&localVersion=0&arch=amd64"
-    },
+    "version": "9.6.1",
     "description": "A Git client which helps you track and manage changes to your code.",
-    "extract_dir": "lib\\net45",
     "homepage": "https://www.gitkraken.com/",
     "license": {
         "identifier": "Freeware",
         "url": "https://www.gitkraken.com/eula"
     },
-    "post_install": [
-        "'install-context', 'uninstall-context' | ForEach-Object {",
-        "    if (Test-Path \"$bucketsdir\\bodrick_scoop-bucket\\scripts\\gitkraken\\$_.reg\") {",
-        "        $gitkrakenPath = \"$dir\\gitkraken.exe\".Replace('\\', '\\\\')",
-        "        $content = (Get-Content \"$bucketsdir\\bodrick_scoop-bucket\\scripts\\gitkraken\\$_.reg\").Replace('$gitkraken', $gitkrakenPath)",
-        "        if ($global) { $content = $content.Replace('HKEY_CURRENT_USER', 'HKEY_LOCAL_MACHINE') }",
-        "        Set-Content \"$dir\\$_.reg\" $content -Encoding Ascii -Force",
-        "    }",
-        "}"
-    ],
-    "uninstaller": {
-        "script": [
-            "if ($cmd -eq 'uninstall') {",
-            "    reg import \"$dir\\uninstall-context.reg\"",
-            "}"
-        ]
+    "architecture": {
+        "64bit": {
+            "url": "https://release.gitkraken.com/win64/gitkraken-9.6.1-full.nupkg",
+            "hash": "sha1:a5c251e752605fa2068aea88b3c432a394a7e9be"
+        },
+        "32bit": {
+            "url": "https://release.gitkraken.com/win32/gitkraken-9.6.1-full.nupkg",
+            "hash": "sha1:3b479588265a4ed9ad35419bd4bc321f3f4efdff"
+        }
     },
-    "notes": "Add GitKraken as a context menu option by running: reg import \"$dir\\install-context.reg\"",
+    "extract_dir": "lib\\net45",
+    "bin": "gitkraken.exe",
     "shortcuts": [
         [
             "gitkraken.exe",
             "GitKraken"
         ]
     ],
-    "version": "9.6.1"
+    "checkver": {
+        "url": "https://release.gitkraken.com/win64/RELEASES?id=gitkraken&localVersion=0&arch=amd64",
+        "regex": "gitkraken-([\\d.]+)-full\\.nupkg",
+        "reverse": true
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://release.gitkraken.com/win64/gitkraken-$version-full.nupkg"
+            },
+            "32bit": {
+                "url": "https://release.gitkraken.com/win32/gitkraken-$version-full.nupkg"
+            }
+        },
+        "hash": {
+            "url": "$baseurl/RELEASES"
+        }
+    }
 }
