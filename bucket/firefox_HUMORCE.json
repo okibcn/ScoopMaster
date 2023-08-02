@@ -1,69 +1,69 @@
 {
-  "version": "115.0.3",
-  "description": "Popular open source web browser",
-  "homepage": "https://www.mozilla.org/firefox/",
-  "license": "MPL-2.0",
-  "notes": [
-    "To set 'Scoop' as the default profile, or profiles/settings was lost after update:",
-    "  - Run 'Firefox Profile Manager', choose 'Scoop' or previously using profile then click 'Start Firefox'.",
-    "  - Visit 'about:profiles' page in Firefox to check the current default profile.",
-    "For details: https://support.mozilla.org/en-US/kb/profile-manager-create-remove-switch-firefox-profiles"
-  ],
-  "architecture": {
-    "64bit": {
-      "url": "https://archive.mozilla.org/pub/firefox/releases/115.0.3/win64/en-US/Firefox%20Setup%20115.0.3.exe#/dl.7z",
-      "hash": "sha512:51742cfda478a03926b62e639c7f1f0bdd127ee96f779d0c9eb9cb6b99eb06b741f9b69a1422061475131e9efd29d3ff61b7f7e1531725dffb33139393e5a725"
-    },
-    "32bit": {
-      "url": "https://archive.mozilla.org/pub/firefox/releases/115.0.3/win32/en-US/Firefox%20Setup%20115.0.3.exe#/dl.7z",
-      "hash": "sha512:0b490d862b0216881ce075ac21da374ad959dda8118e9fa3aba52f19dfa9639ae82ae9c078ddd8d5e0fc4bb883cdf7a6ebaffa67f18dc60c57c962afea9dfaf8"
-    }
-  },
-  "extract_dir": "core",
-  "post_install": [
-    "firefox -CreateProfile \"Scoop $persist_dir\\profile\"",
-    "$Addition = \"$persist_dir\\addition\"",
-    "if (Test-Path $Addition) {",
-    "  info 'Copying additional items...'",
-    "  Copy-Item -Path $Addition\\* -Destination $dir -Force -Recurse -ErrorAction SilentlyContinue",
-    "}"
-  ],
-  "bin": "firefox.exe",
-  "shortcuts": [
-    [
-      "firefox.exe",
-      "Firefox"
+    "version": "115.0.3",
+    "description": "Popular open source web browser",
+    "homepage": "https://www.mozilla.org/firefox/",
+    "license": "MPL-2.0",
+    "notes": [
+        "To set 'Scoop' as the default profile, or profiles/settings was lost after update:",
+        "  - Run 'Firefox Profile Manager', choose 'Scoop' or previously using profile then click 'Start Firefox'.",
+        "  - Visit 'about:profiles' page in Firefox to check the current default profile.",
+        "For details: https://support.mozilla.org/en-US/kb/profile-manager-create-remove-switch-firefox-profiles"
     ],
-    [
-      "firefox.exe",
-      "Firefox Profile Manager",
-      "-P"
-    ]
-  ],
-  "persist": [
-    "profile",
-    "distribution"
-  ],
-  "checkver": {
-    "url": "https://www.mozilla.org/en-US/firefox/notes/",
-    "regex": "<div class=\"c-release-version\">([\\d.]+)</div>"
-  },
-  "autoupdate": {
     "architecture": {
-      "64bit": {
-        "url": "https://archive.mozilla.org/pub/firefox/releases/$version/win64/en-US/Firefox%20Setup%20$version.exe#/dl.7z",
-        "hash": {
-          "url": "https://archive.mozilla.org/pub/firefox/releases/$version/SHA512SUMS",
-          "regex": "$sha512\\s+win64/en-US/$basename"
+        "64bit": {
+            "url": "https://archive.mozilla.org/pub/firefox/releases/115.0.3/win64/en-US/Firefox%20Setup%20115.0.3.exe#/dl.7z",
+            "hash": "sha512:51742cfda478a03926b62e639c7f1f0bdd127ee96f779d0c9eb9cb6b99eb06b741f9b69a1422061475131e9efd29d3ff61b7f7e1531725dffb33139393e5a725"
+        },
+        "32bit": {
+            "url": "https://archive.mozilla.org/pub/firefox/releases/115.0.3/win32/en-US/Firefox%20Setup%20115.0.3.exe#/dl.7z",
+            "hash": "sha512:0b490d862b0216881ce075ac21da374ad959dda8118e9fa3aba52f19dfa9639ae82ae9c078ddd8d5e0fc4bb883cdf7a6ebaffa67f18dc60c57c962afea9dfaf8"
         }
-      },
-      "32bit": {
-        "url": "https://archive.mozilla.org/pub/firefox/releases/$version/win32/en-US/Firefox%20Setup%20$version.exe#/dl.7z",
-        "hash": {
-          "url": "https://archive.mozilla.org/pub/firefox/releases/$version/SHA512SUMS",
-          "regex": "$sha512\\s+win32/en-US/$basename"
+    },
+    "extract_dir": "core",
+    "post_install": [
+        "firefox -CreateProfile \"Scoop $persist_dir\\profile\"",
+        "$Addition = \"$persist_dir\\addition\"",
+        "if (Test-Path $Addition) {",
+        "  info 'Copying additional items...'",
+        "  Copy-Item -Path $Addition\\* -Destination $dir -Force -Recurse -ErrorAction SilentlyContinue",
+        "}"
+    ],
+    "bin": "firefox.exe",
+    "shortcuts": [
+        [
+            "firefox.exe",
+            "Firefox"
+        ],
+        [
+            "firefox.exe",
+            "Firefox Profile Manager",
+            "-P"
+        ]
+    ],
+    "persist": [
+        "profile",
+        "distribution"
+    ],
+    "checkver": {
+        "url": "https://www.mozilla.org/en-US/firefox/notes/",
+        "regex": "<div class=\"c-release-version\">([\\d.]+)</div>"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://archive.mozilla.org/pub/firefox/releases/$version/win64/en-US/Firefox%20Setup%20$version.exe#/dl.7z",
+                "hash": {
+                    "url": "https://archive.mozilla.org/pub/firefox/releases/$version/SHA512SUMS",
+                    "regex": "$sha512\\s+win64/en-US/$basename"
+                }
+            },
+            "32bit": {
+                "url": "https://archive.mozilla.org/pub/firefox/releases/$version/win32/en-US/Firefox%20Setup%20$version.exe#/dl.7z",
+                "hash": {
+                    "url": "https://archive.mozilla.org/pub/firefox/releases/$version/SHA512SUMS",
+                    "regex": "$sha512\\s+win32/en-US/$basename"
+                }
+            }
         }
-      }
     }
-  }
 }
