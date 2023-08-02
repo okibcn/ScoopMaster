@@ -1,11 +1,11 @@
 {
-    "version": "6.4.0",
+    "version": "6.4.2",
     "description": "The most popular icon set",
     "homepage": "https://fontawesome.com",
     "license": "OFL-1.1",
-    "url": "https://github.com/FortAwesome/Font-Awesome/releases/download/6.4.0/fontawesome-free-6.4.0-desktop.zip",
-    "hash": "128b850cef31dd9c21f42dc19b028a02302408659dc0350c5111ea126f6c00ae",
-    "extract_dir": "fontawesome-free-6.4.0-desktop/otfs",
+    "url": "https://github.com/FortAwesome/Font-Awesome/releases/download/6.4.2/fontawesome-free-6.4.2-desktop.zip",
+    "hash": "30861f49309ca47d016b35d210eed41d0b782f1d185f9211345c18594c5feade",
+    "extract_dir": "fontawesome-free-6.4.2-desktop/otfs",
     "installer": {
         "script": [
             "$currentBuildNumber = [int] (Get-ItemProperty \"HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\").CurrentBuildNumber",
@@ -27,6 +27,7 @@
             "$fontInstallDir = if ($global) { \"$env:windir\\Fonts\" } else { \"$env:LOCALAPPDATA\\Microsoft\\Windows\\Fonts\" }",
             "if (-not $global) {",
             "    # Ensure user font install directory exists and has correct permission settings",
+            "    # See https://github.com/matthewjberger/scoop-nerd-fonts/issues/198#issuecomment-1488996737",
             "    New-Item $fontInstallDir -ItemType Directory -ErrorAction SilentlyContinue | Out-Null",
             "    $accessControlList = Get-Acl $fontInstallDir",
             "    $allApplicationPackagesAccessRule = New-Object System.Security.AccessControl.FileSystemAccessRule([System.Security.Principal.SecurityIdentifier]::new(\"S-1-15-2-1\"), \"ReadAndExecute\", \"ContainerInherit,ObjectInherit\", \"None\", \"Allow\")",
