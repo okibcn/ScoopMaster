@@ -4,29 +4,13 @@
     "homepage": "https://roslynpad.net",
     "license": "Apache-2.0",
     "suggest": {
-        "dotnetRuntime": "windowsdesktop-runtime"
+        ".NET Desktop Runtime": "extras/windowsdesktop-runtime"
     },
     "architecture": {
         "64bit": {
             "url": "https://github.com/aelij/RoslynPad/releases/download/18/RoslynPad.zip",
             "hash": "44e3cc3c2261ac507d6e69f315bdf184d9d93b17e0f39b80a7b0622482488871"
         }
-    },
-    "installer": {
-        "script": [
-            "$documentPath = [Environment]::GetFolderPath('MyDocuments')",
-            "Import-Module $(Join-Path $(Find-BucketDirectory -Root -Name cesar) scripts/CesarUtils.psm1)",
-            "PersistConfigWithJunction -PersistDir \"$persist_dir\" -ConfigDir \"$documentPath\\RoslynPad\"",
-            "Remove-Module -Name CesarUtils"
-        ]
-    },
-    "uninstaller": {
-        "script": [
-            "$documentPath = [Environment]::GetFolderPath('MyDocuments')",
-            "Import-Module $(Join-Path $(Find-BucketDirectory -Root -Name cesar) scripts/CesarUtils.psm1)",
-            "RemoveConfigJunction -PersistDir \"$persist_dir\" -ConfigDir \"$documentPath\\RoslynPad\"",
-            "Remove-Module -Name CesarUtils"
-        ]
     },
     "bin": "RoslynPad.exe",
     "shortcuts": [
