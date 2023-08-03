@@ -12,6 +12,10 @@
     "installer": {
         "script": "Start-Process -FilePath \"$dir\\UnitySetup64-${version}.exe\" -ArgumentList \"/S /D=$dir\" -Wait"
     },
+    "post_install": [
+        "Remove-Item \"$Env:Public\\Desktop\\Unity ${version}.lnk\"",
+        "Remove-Item \"$dir\\UnitySetup64-${version}.exe\""
+    ],
     "uninstaller": {
         "script": "Start-Process -FilePath \"$dir\\Editor\\Uninstall.exe\" -ArgumentList \"/S\" -Wait"
     },

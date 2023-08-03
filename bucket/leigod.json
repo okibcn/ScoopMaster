@@ -1,0 +1,31 @@
+{
+    "homepage": "https://www.leigod.com/",
+    "description": "Leigod Online Game Accelerator",
+    "version": "10.0.0.0",
+    "license": {
+        "identifier": "Proprietary",
+        "url": "https://www.leigod.com/help/privacyAgreement.html"
+    },
+    "notes": "Config stored in $env:APPDATA\\leigod",
+    "url": "https://update.leigod.com/soft/channel/LeiGodSetup_steam.exe#/dl.7z",
+    "hash": "a7eb8da6ba87aa90dc4bc2d9efe3808cea731ababe9d18dbbb2ca09b5d5ea47b",
+    "innosetup": true,
+    "post_install": [
+        "Remove-Item \"$dir\\Uninstaller\" -Force -Recurse",
+        "Remove-Item \"$dir\\Uninstall.exe\" -Force"
+    ],
+    "shortcuts": [
+        [
+            "leigod.exe",
+            "雷神加速器"
+        ]
+    ],
+    "checkver": {
+        "url": "https://www.leigod.com/configs.json",
+        "jsonpath": "$.windows.download_url",
+        "regex": "LeiGodSetup\\.(\\d+\\.\\d+\\.\\d+\\.\\d+)\\.exe"
+    },
+    "autoupdate": {
+        "url": "https://update.leigod.com/soft/channel/LeiGodSetup_steam.exe#/dl.7z"
+    }
+}
