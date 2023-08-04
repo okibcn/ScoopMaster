@@ -1,29 +1,27 @@
 {
-    "homepage": "https://mubu.com",
-    "description": "幕布，让XX更专注更高效",
-    "version": "3.6.0",
-    "license": "©2017-2018 幕布",
-    "url": "https://lf1-ttcdn-tos.pstatp.com/obj/mubu-assets/client/Mubu-3.6.0.exe#/Mubu-Install.exe",
-    "hash": "1449077fca34c50d7628bd2e6044a8274c23ad3da9c9c4c9a65dd876102cbf75",
+    "version": "3.7.0",
+    "description": "Mubu - Mind mapping tool",
+    "homepage": "https://mubu.com/apps",
+    "license": "Freeware",
+    "notes": "Your Mubu data are stored in '%APPDATA%\\Mubu'",
+    "url": "https://lf1-ttcdn-tos.pstatp.com/obj/mubu-assets/client/Mubu-3.7.0.exe#/mubu-3.7.0.7z",
+    "hash": "3d3bfdf7b97975073bf774fb0f527f98b896d292ffbe740879a067be9bf40878",
+    "extract_dir": "$PLUGINSDIR",
     "installer": {
         "script": [
-            "Start-Process -Wait $dir\\Mubu-Install.exe /i",
-            "Remove-Item \"$dir\\Mubu-Install.exe\" -Recurse -Force"
-        ],
-        "keep": true
+            "Remove-Item \"$dir\\*\" -Exclude \"app-32.7z\"",
+            "Expand-7zipArchive \"$dir\\app-32.7z\" \"$dir\"",
+            "Remove-Item \"$dir\\app-32.7z\""
+        ]
     },
     "shortcuts": [
         [
             "幕布.exe",
-            "Mubu"
+            "幕布"
         ]
     ],
-    "checkver": {
-        "url": "https://mubu.com/apps",
-        "regex": "<a class=\"download-desktop download-app-btn\" data-type=\"windows_app\" onclick=\"verifyDownload(event)\" href=\"https://lf1-ttcdn-tos.pstatp.com/obj/mubu-assets/client/Mubu-([\\d.]+).exe\"><span class=\"btn\">Windows</span></a>"
-    },
+    "checkver": "client/Mubu-([\\d.]+).exe",
     "autoupdate": {
-        "url": "https://lf1-ttcdn-tos.pstatp.com/obj/mubu-assets/client/Mubu-$version.exe#/Mubu-Install.exe"
+        "url": "https://lf1-ttcdn-tos.pstatp.com/obj/mubu-assets/client/Mubu-$version.exe#/mubu-$version.7z"
     }
 }
-
