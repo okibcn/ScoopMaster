@@ -1,75 +1,46 @@
 {
-    "homepage": "https://github.com/Dreamacro/clash/wiki/Premium-Core-Features",
-    "description": "close-sourced pre-built Clash binary with TUN support and more (it's free)",
     "version": "2023.07.22",
-    "license": "Proprietary",
-    "persist": [
-        "config.yaml",
-        "Country.mmdb"
-    ],
-    "pre_install": [
-        "$config = \"$dir\\config.yaml\"",
-        "$value  = \"# Configuration reference:",
-        "# https: //github.com/Dreamacro/clash/wiki/configuration\"",
-        "if (!(Test-Path $config)) {",
-        "    Add-Content -Path $config -Value $value",
-        "}",
-        "$mmdb     = \"$dir\\Country.mmdb\"",
-        "$mmdb_url = \"https://cdn.jsdelivr.net/gh/Hackl0us/GeoIP2-CN@release/Country.mmdb\"",
-        "if (!(Test-Path $mmdb)) {",
-        "   Invoke-WebRequest -uri $mmdb_url -OutFile $mmdb",
-        "}"
-    ],
+    "description": "A rule-based tunnel in Go.",
+    "homepage": "https://github.com/Dreamacro/clash",
+    "license": {
+        "identifier": "GPL-3.0-only",
+        "url": "https://github.com/Dreamacro/clash/raw/master/LICENSE"
+    },
     "architecture": {
         "64bit": {
             "url": "https://github.com/Dreamacro/clash/releases/download/premium/clash-windows-amd64-2023.07.22.zip",
-            "hash": "b1969ee89b5720c5880588a760f321a678a2d75828479a57b5d3588d1ffe27ac",
-            "bin": [
-                [
-                    "clash-windows-amd64.exe",
-                    "clashd",
-                    "-d $dir"
-                ],
-                [
-                    "clash-windows-amd64.exe",
-                    "clash-premium"
-                ]
-            ]
+            "hash": "b1969ee89b5720c5880588a760f321a678a2d75828479a57b5d3588d1ffe27ac"
         },
         "32bit": {
             "url": "https://github.com/Dreamacro/clash/releases/download/premium/clash-windows-386-2023.07.22.zip",
-            "hash": "70fd9bb5d3afc84036f8d7ae6688b6d3c2eb060110cb23d4d8417c76e0da3f1a",
-            "bin": [
-                [
-                    "clash-windows-386.exe",
-                    "clashd",
-                    "-d $dir"
-                ],
-                [
-                    "clash-windows-386.exe",
-                    "clash-premium"
-                ]
-            ]
+            "hash": "70fd9bb5d3afc84036f8d7ae6688b6d3c2eb060110cb23d4d8417c76e0da3f1a"
+        },
+        "arm64": {
+            "url": "https://github.com/Dreamacro/clash/releases/download/premium/clash-windows-arm64-2023.07.22.zip",
+            "hash": "4829fabc2bb992f53b9ff8172b9ff5a3123617b307d8f067b19e4120e5e64146"
         }
     },
-    "suggest": {
-        "Dashboard": [
-            "clash-dashboard",
-            "yacd"
-        ],
-        "Daemon": "nssm"
-    },
+    "pre_install": "Get-ChildItem \"$dir\\clash*.exe\" | Rename-Item -NewName 'clash-premium.exe'",
+    "bin": [
+        [
+            "clash-premium.exe",
+            "clash"
+        ]
+    ],
     "checkver": {
-        "url": "https://github.com/Dreamacro/clash/releases/tag/premium",
-        "regex": "Premium\\s+([\\d.]+)"
+        "url": "https://api.github.com/repos/Dreamacro/clash/releases/tags/premium",
+        "regex": "(?sm)Premium ([\\d.]+).*?releases/download/premium/(?<x86>clash-windows-386.*?\\.zip).*?(?<x64>clash-windows-amd64.*?\\.zip).*?(?<arm64>clash-windows-arm64.*?\\.zip)"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://github.com/Dreamacro/clash/releases/download/premium/clash-windows-amd64-$version.zip"
+                "url": "https://github.com/Dreamacro/clash/releases/download/premium/$matchX64"
             },
             "32bit": {
-                "url": "https://github.com/Dreamacro/clash/releases/download/premium/clash-windows-386-$version.zip"
+                "url": "https://github.com/Dreamacro/clash/releases/download/premium/$matchX86"
+            },
+            "arm64": {
+                "url": "https://github.com/Dreamacro/clash/releases/download/premium/$matchArm64"
             }
         }
     }
