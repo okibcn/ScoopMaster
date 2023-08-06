@@ -1,41 +1,20 @@
 {
-	"autoupdate": {
-		"hash": {
-			"jp": "$.[0].x86_64.hash",
-			"url": "http://127.0.0.1:8123/ipns/k51qzi5uqu5dim6iey988wcz8xl5mlvgoigd0hk7w875zomh3f0knmyf2gfpma/Versions/Charles"
-		},
-		"url": "http://127.0.0.1:8123/ipns/k51qzi5uqu5dim6iey988wcz8xl5mlvgoigd0hk7w875zomh3f0knmyf2gfpma/Software/Charles/Charles_$version_x86_64.msi#/Charles.msi"
-	},
-	"checkver": {
-		"jp": "$.[0].version",
-		"url": "http://127.0.0.1:8123/ipns/k51qzi5uqu5dim6iey988wcz8xl5mlvgoigd0hk7w875zomh3f0knmyf2gfpma/Versions/Charles"
-	},
-	"description": "Charles是一个HTTP代理/HTTP监视器/反向代理，使开发人员能够查看其机器和Internet之间的所有HTTP和SSL / HTTPS流量。这包括请求、响应和 HTTP 标头（包含 Cookie 和缓存信息）。",
-	"extract_dir": "PFiles\\Charles",
-	"hash": "c2aa21aea1070000c9230dc101904671363bdf360edade5ec0f2dd9f9dedae59",
-	"homepage": "https://www.charlesproxy.com",
-	"license": "Proprietary",
-	"notes": [
-		"默认已激活",
-		"激活码生成: https://www.zzzmode.com/mytools/charles"
-	],
-	"persist": [
-		"Charles.ini"
-	],
-	"pre_install": [
-		"$appData = [Environment]::GetFolderPath('ApplicationData')",
-		"$configFile = $appData +'\\Charles\\charles.config'",
-		"New-Item -Path $appData -Name 'Charles' -ItemType 'directory' -Force | Out-Null",
-		"if (!(Test-Path $configFile)){",
-		"   Set-Content $configFile \"<?xml version='1.0' encoding='UTF-8' ?><?charles serialisation-version='2.0' ?><configuration><startupConfiguration><checkUpdates>false</checkUpdates></startupConfiguration><registrationConfiguration><name>foxxorcat</name><key>c8440e436ffbb6fdd6</key></registrationConfiguration></configuration>\"",
-		"}"
-	],
-	"shortcuts": [
-		[
-			"Charles.exe",
-			"Charles"
-		]
-	],
-	"url": "http://127.0.0.1:8123/ipfs/QmSUR8d423CvNaQDKQnvDi3xB7xqEYFCq2KtM1VYFKWLck#/Charles.msi",
-	"version": "4.6.4"
+    "version": "4.6.4",
+    "description": "Charles is an HTTP proxy / HTTP monitor / Reverse Proxy. http层抓包工具",
+    "homepage": "https://www.charlesproxy.com/",
+    "url": "https://www.charlesproxy.com/assets/release/4.6.4/charles-proxy-4.6.4-win64.msi#/setup.msi_",
+    "hash": "c2aa21aea1070000c9230dc101904671363bdf360edade5ec0f2dd9f9dedae59",
+    "installer": {
+        "script": "Invoke-ExternalCommand msiexec -ArgumentList @('/i', \"$dir\\setup.msi_\", '/qn') -RunAs | Out-Null"
+    },
+    "uninstaller": {
+        "script": "Invoke-ExternalCommand msiexec -ArgumentList @('/x', \"$dir\\setup.msi_\", '/qn') -RunAs | Out-Null"
+    },
+    "checkver": {
+        "url": "https://raw.githubusercontent.com/kkzzhizhou/scoop-zapps/master/versions/Charles.latest",
+        "regex": "([\\d.]+)"
+    },
+    "autoupdate": {
+        "url": "https://www.charlesproxy.com/assets/release/$version/charles-proxy-$version-win64.msi#/setup.msi_"
+    }
 }
