@@ -1,28 +1,31 @@
 {
     "version": "1.3.5",
-    "description": "The universal proxy platform.",
-    "homepage": "https://sing-box.sagernet.org",
-    "license": {
-        "identifier": "Freeware",
-        "url": "https://github.com/SagerNet/sing-box/blob/main/LICENSE"
-    },
+    "description": "The universal proxy platform",
+    "homepage": "https://github.com/SagerNet/sing-box",
+    "license": "GPL",
     "architecture": {
         "64bit": {
             "url": "https://github.com/SagerNet/sing-box/releases/download/v1.3.5/sing-box-1.3.5-windows-amd64.zip",
-            "extract_dir": "sing-box-1.3.5-windows-amd64",
-            "hash": "890714bd7f2907e4f7400554c7efdf6f2506e079d1070deee810df40101b3417"
+            "hash": "890714bd7f2907e4f7400554c7efdf6f2506e079d1070deee810df40101b3417",
+            "extract_dir": "sing-box-1.3.5-windows-amd64"
         },
         "32bit": {
             "url": "https://github.com/SagerNet/sing-box/releases/download/v1.3.5/sing-box-1.3.5-windows-386.zip",
-            "extract_dir": "sing-box-1.3.5-windows-386",
-            "hash": "ec997f95744adb98844f1eef39d1641d02a4d8b89b49387528417cea4ad247a1"
+            "hash": "ec997f95744adb98844f1eef39d1641d02a4d8b89b49387528417cea4ad247a1",
+            "extract_dir": "sing-box-1.3.5-windows-386"
         }
     },
+    "pre_install": [
+        "function CreateFile ($name, $value = $null) {",
+        "    if (!(Test-Path \"$persist_dir\\$name\")) {",
+        "        Set-Content \"$dir\\$name\" $value -Encoding Ascii",
+        "    }",
+        "}",
+        "CreateFile 'config.json' "
+    ],
+    "persist": "config.json",
     "bin": "sing-box.exe",
-    "persist": "config",
-    "checkver": {
-        "github": "https://github.com/SagerNet/sing-box"
-    },
+    "checkver": "github",
     "autoupdate": {
         "architecture": {
             "64bit": {
