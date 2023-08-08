@@ -5,6 +5,7 @@
     "license": "AGPL-3.0-or-later",
     "url": "https://cdn.download.pdfforge.org/pdfcreator/5.1.1/PDFCreator-5_1_1-Setup.exe#/dl.7z",
     "hash": "md5:0fb8c933f54e56df20807888c0439ad2",
+    "notes": "You may have to restart your computer to properly install/uninstall PDFCreator if you used the virtual printer feature.",
     "pre_install": [
         "if (!(is_admin)) { error \"$app requires admin rights to $cmd\"; break }",
         "Start-Process \"$dir\\PDFCreatorSetup.exe\" -Wait -Verb 'RunAs' -Args @('/COMPONENTS=program', '/VERYSILENT', '/NORESTART')"
@@ -22,7 +23,7 @@
             "pre_uninstall": [
                 "if (!(is_admin)) { error \"$app requires admin rights to $cmd\"; break }",
                 "Start-Process 'msiexec' -Wait -Verb 'RunAs' -Args @('/x', \"$dir\\PDFCreator_Setup_x86.msi\", '/qn')",
-                "Start-Sleep -Seconds 2"
+                "Start-Sleep -Seconds 2; warn 'You may have to restart your computer to properly uninstall PDFCreator if you used the virtual printer feature.'"
             ]
         },
         "64bit": {
@@ -32,7 +33,7 @@
             "pre_uninstall": [
                 "if (!(is_admin)) { error \"$app requires admin rights to $cmd\"; break }",
                 "Start-Process 'msiexec' -Wait -Verb 'RunAs' -Args @('/x', \"$dir\\PDFCreator_Setup_x64.msi\", '/qn')",
-                "Start-Sleep -Seconds 2"
+                "Start-Sleep -Seconds 2; warn 'You may have to restart your computer to properly uninstall PDFCreator if you used the virtual printer feature.'"
             ]
         }
     },
