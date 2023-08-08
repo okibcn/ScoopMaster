@@ -15,7 +15,7 @@
                 "script": [
                     "$setup_x64 = Get-Item \"$dir\\PDFCreator-*_x64.msi\"; $setup_x86_delta = Get-Item \"$dir\\PDFCreator-*_x86.msi.delta\"",
                     "$setup_x86 = $setup_x86_delta.BaseName",
-                    "Start-Process \"$dir\\Octodiff.exe\" -Wait -Args @($setup_x64, $setup_x86_delta, $setup_x86)",
+                    "Start-Process \"$dir\\Octodiff.exe\" -Wait -Args @('patch', \"$setup_x64\", \"$setup_x86_delta\", \"$setup_x86\")",
                     "Rename-Item $setup_x86 'PDFCreator_Setup_x86.msi'"
                 ]
             },
@@ -44,7 +44,7 @@
         "url": "https://cdn.download.pdfforge.org/pdfcreator/$version/PDFCreator-$underscoreVersion-Setup.exe#/dl.7z",
         "hash": {
             "url": "https://download.pdfforge.org/download/pdfcreator/list",
-            "regex": "$basename\\n\\s+\\</a\\>\\n\\s+\\</p\\>\\<.*?MD5\\:\\s$md5"
+            "regex": "(?s)$basename.*?MD5\\:\\s$md5"
         }
     }
 }
