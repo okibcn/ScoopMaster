@@ -25,10 +25,18 @@
             "AdGuardHome"
         ]
     ],
-    "persist": [
-        "AdGuardHome.yaml",
-        "data"
+    "##": "We can't create a default config because that would skip the first-run wizard. Instead, we hack around it by copying back to the persist_dir on uninstall and hardlink-ing on install",
+    "pre_install": [
+        "if ((Test-Path \"$persist_dir\\AdGuardHome.yaml\")) {",
+        "    New-Item -Path \"$dir\\AdGuardHome.yaml\" -Target \"$persist_dir\\AdGuardHome.yaml\" -ItemType HardLink | Out-Null",
+        "}"
     ],
+    "pre_uninstall": [
+        "if (!(Test-Path \"$persist_dir\\AdGuardHome.yaml\") -and (Test-Path \"$dir\\AdGuardHome.yaml\")) {",
+        "    Copy-Item \"$dir\\AdGuardHome.yaml\" \"$persist_dir\"",
+        "}"
+    ],
+    "persist": "data",
     "checkver": "github",
     "autoupdate": {
         "architecture": {
