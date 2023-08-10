@@ -13,6 +13,13 @@
                     "Start-Process \"$dir\\$fname\" -Wait -Verb 'RunAs' -Args @('/verysilent', '/allusers', '/suppressmsgboxes', '/sp-', '/restartapplications', '/norestart')",
                     "Remove-Item \"$dir\\$fname\"; Set-Content \"$dir\\cubevpc.cmd\" '@\"%ProgramFiles(x86)%\\CubePDF\\CubeVpc.exe\"  %*' -Encoding 'utf8'"
                 ]
+            },
+            "uninstaller": {
+                "script": [
+                    "if (!(is_admin)) { error \"$app requires admin rights to $cmd\"; break }",
+                    "Start-Process \"${env:ProgramFiles(x86)}\\CubePDF\\unins000.exe\" -Wait -Verb 'RunAs' -Args @('/verysilent', '/forcecloseapplications', '/suppressmsgboxes')",
+                    "Start-Sleep -Seconds 2"
+                ]
             }
         },
         "64bit": {
@@ -24,6 +31,13 @@
                     "Start-Process \"$dir\\$fname\" -Wait -Verb 'RunAs' -Args @('/verysilent', '/allusers', '/suppressmsgboxes', '/sp-', '/restartapplications', '/norestart')",
                     "Remove-Item \"$dir\\$fname\"; Set-Content \"$dir\\cubevpc.cmd\" '@\"%ProgramFiles%\\CubePDF\\CubeVpc.exe\"  %*' -Encoding 'utf8'"
                 ]
+            },
+            "uninstaller": {
+                "script": [
+                    "if (!(is_admin)) { error \"$app requires admin rights to $cmd\"; break }",
+                    "Start-Process \"$env:ProgramFiles\\CubePDF\\unins000.exe\" -Wait -Verb 'RunAs' -Args @('/verysilent', '/forcecloseapplications', '/suppressmsgboxes')",
+                    "Start-Sleep -Seconds 2"
+                ]
             }
         },
         "arm64": {
@@ -34,6 +48,13 @@
                     "if (!(is_admin)) { error \"$app requires admin rights to $cmd\"; break }",
                     "Start-Process \"$dir\\$fname\" -Wait -Verb 'RunAs' -Args @('/verysilent', '/allusers', '/suppressmsgboxes', '/sp-', '/restartapplications', '/norestart')",
                     "Remove-Item \"$dir\\$fname\"; Set-Content \"$dir\\cubevpc.cmd\" '@\"%ProgramFiles%\\CubePDF\\CubeVpc.exe\"  %*' -Encoding 'utf8'"
+                ]
+            },
+            "uninstaller": {
+                "script": [
+                    "if (!(is_admin)) { error \"$app requires admin rights to $cmd\"; break }",
+                    "Start-Process \"$env:ProgramFiles\\CubePDF\\unins000.exe\" -Wait -Verb 'RunAs' -Args @('/verysilent', '/forcecloseapplications', '/suppressmsgboxes')",
+                    "Start-Sleep -Seconds 2"
                 ]
             }
         }
