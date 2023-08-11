@@ -1,26 +1,33 @@
 {
     "version": "3.9.6",
-    "homepage": "https://weixin.qq.com/",
-    "description": "Connection Makes a Smarter Business",
+    "homepage": "https://pc.weixin.qq.com/",
+    "description": "Free messaging and calling app.",
     "license": {
         "identifier": "EULA",
         "url": "https://weixin.qq.com/cgi-bin/readtemplate?lang=zh_CN&t=weixin_agreement&s=default"
     },
+    "notes": "We don't persist your WeChat data, they are still storaged in '%APPDATA%\\Tencent\\WeChat'.",
     "architecture": {
         "64bit": {
-            "url": "https://dldir1.qq.com/weixin/Windows/WeChatSetup.exe#/dl.7z"
+            "url": "https://dldir1.qq.com/weixin/Windows/WeChatSetup.exe#/dl.7z",
+            "hash": "38148311ea13440b64bd68647f7a06721f1af7f0c6fff9f3e07516162252c18c"
         }
     },
+    "bin": "wechat.exe",
     "shortcuts": [
         [
-            "WeChat.exe",
-            "微信"
+            "wechat.exe",
+            "WeChat"
         ]
     ],
-    "post_install": "Remove-Item \"$dir\\`$PLUGINSDIR\" -Force -Recurse",
+    "post_install": [
+        "Remove-Item \"$dir\\`$PLUGINSDIR\" -Force -Recurse",
+        "Remove-Item \"$dir\\`$_15_\" -Force -Recurse",
+        "Remove-Item \"$dir\\`$R5\" -Force -Recurse"
+    ],
     "checkver": {
-        "url": "https://weixin.qq.com",
-        "regex": "微信 ([\\d.]+) for Windows"
+        "url": "https://pc.weixin.qq.com/",
+        "regex": "download-version\">([\\d.]+)"
     },
     "autoupdate": {
         "architecture": {
