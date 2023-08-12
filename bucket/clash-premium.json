@@ -1,41 +1,28 @@
 {
     "version": "2023.07.22",
-    "description": "A rule-based tunnel in Go.",
-    "homepage": "https://github.com/Dreamacro/clash/releases/tag/premium",
-    "license": "",
-    "notes": "",
+    "description": "A rule-based tunnel with TUN support and more. (close-sourced)",
+    "homepage": "https://github.com/Dreamacro/clash",
+    "license": "Freeware",
     "architecture": {
         "64bit": {
             "url": "https://github.com/Dreamacro/clash/releases/download/premium/clash-windows-amd64-2023.07.22.zip",
-            "bin": [
-                [
-                    "clash-windows-amd64.exe",
-                    "clash"  
-                ]
-            ]
+            "hash": "b1969ee89b5720c5880588a760f321a678a2d75828479a57b5d3588d1ffe27ac"
         },
         "32bit": {
             "url": "https://github.com/Dreamacro/clash/releases/download/premium/clash-windows-386-2023.07.22.zip",
-            "bin": [
-                [
-                    "clash-windows-386.exe",
-                    "clash"  
-                ]
-            ]
-        },
-        "arm64":{
-            "url": "https://github.com/Dreamacro/clash/releases/download/premium/clash-windows-arm64-2023.07.22.zip",
-            "bin": [
-                [
-                    "clash-windows-arm64.exe",
-                    "clash"  
-                ]
-            ]
+            "hash": "70fd9bb5d3afc84036f8d7ae6688b6d3c2eb060110cb23d4d8417c76e0da3f1a"
         }
     },
+    "pre_install": "Get-ChildItem \"$dir\\clash-windows-*.exe\" | Rename-Item -NewName 'clash-premium.exe'",
+    "bin": [
+        [
+            "clash-premium.exe",
+            "clash-premium"
+        ]
+    ],
     "checkver": {
         "url": "https://github.com/Dreamacro/clash/releases/tag/premium",
-        "regex": "<h1 data-view-component=\"true\" class=\"d-inline mr-3\">Premium ([\\d.]+)</h1>"
+        "regex": "Premium ([\\d.]+)"
     },
     "autoupdate": {
         "architecture": {
@@ -44,9 +31,6 @@
             },
             "32bit": {
                 "url": "https://github.com/Dreamacro/clash/releases/download/premium/clash-windows-386-$version.zip"
-            },
-            "arm64": {
-                "url": "https://github.com/dreamacro/clash/releases/download/premium/clash-windows-arm64-$version.zip"
             }
         }
     }
