@@ -1,48 +1,25 @@
 {
-    "version": "1.3.6",
-    "description": "A Clash GUI based on tauri. Supports Windows and macOS.",
     "homepage": "https://github.com/zzzgydi/clash-verge",
-    "license": {
-        "identifier": "GPL-3.0-or-later",
-        "url": "https://github.com/zzzgydi/clash-verge/blob/main/LICENSE"
-    },
-    "architecture": {
-        "64bit": {
-            "url": "https://github.com/zzzgydi/clash-verge/releases/download/v1.3.6/Clash.Verge_1.3.6_x64_portable.zip",
-            "hash": "cd7d98da0b0f8d18fb2dad288c81534f304c39d3147cf788ae2817d1ab4074ca"
-        }
-    },
-    "pre_install": [
-        "info '[Portable Mode]: Copying user data...'",
-        "if (Test-Path \"$persist_dir\\*\") {",
-        "    ensure \"$env:USERNAME\\.config\\clash-verge\" | Out-Null",
-        "    Copy-Item \"$persist_dir\\*\" \"$env:USERNAME\\.config\\clash-verge\\\" -Recurse -Force | Out-Null ",
-        "}"
-    ],
-    "uninstaller": {
-        "script": [
-            "info '[Portable Mode]: Backing up user data...'",
-            "if (Test-Path \"$env:USERNAME\\.config\\clash-verge\\*\") { ",
-            "    ensure \"$persist_dir\" | Out-Null",
-            "    Copy-Item \"$env:USERNAME\\.config\\clash-verge\\*\" \"$persist_dir\\\" -Recurse -Force | Out-Null ",
-            "}"
-        ]
-    },
+    "description": "A Clash GUI based on tauri",
+    "version": "1.3.6",
+    "license": "GPL-3.0-only",
+    "url": "https://github.com/zzzgydi/clash-verge/releases/download/v1.3.6/Clash.Verge_1.3.6_x64_portable.zip",
+    "hash": "e5776a68656babe0b5def418c8ef420362112711a900a292f16d6fe4409202c1",
     "shortcuts": [
         [
             "Clash Verge.exe",
             "Clash Verge"
         ]
     ],
-    "checkver": {
-        "url": "https://api.github.com/repos/zzzgydi/clash-verge/releases",
-        "regex": "(?sm)browser_download_url.*?(?<file>Clash.Verge_([\\d.]+)_x64_(?:green|portable)\\.zip)"
-    },
+    "persist": ".config",
+    "post_install": [
+        "# https://github.com/zzzgydi/clash-verge/issues/21#issuecomment-1097467046=",
+        "if (!(Test-Path \"$persist_dir\\.config\\PORTABLE\")) {",
+        "    New-Item -Path \"$persist_dir\\.config\\PORTABLE\" -ItemType file | Out-Null",
+        "}"
+    ],
+    "checkver": "github",
     "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://github.com/zzzgydi/clash-verge/releases/download/v$version/$matchFile"
-            }
-        }
+        "url": "https://github.com/zzzgydi/clash-verge/releases/download/v$version/Clash.Verge_$version_x64_portable.zip"
     }
 }
