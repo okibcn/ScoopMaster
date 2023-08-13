@@ -34,11 +34,7 @@
         "New-ItemProperty 'HKCU:\\SOFTWARE\\Classes\\Chime' -Name 'UseOriginalUrlEncoding' -PropertyType 'Dword' -Value '1' -Force | Out-Null",
         "Write-Host 'Done!'"
     ],
-    "pre_uninstall": [
-        "Write-Host \"Unregistering 'URL:chime' protocol handler\"; Remove-Item 'HKCU:\\SOFTWARE\\Classes\\Chime' -Recurse -Force",
-        "Remove-Item $env:APPDATA -Include 'AWS Mobile Services', 'Amazon' -Recurse -Force",
-        "Write-Host 'Done!'"
-    ],
+    "pre_uninstall": "Write-Host \"Unregistering 'URL:chime' protocol handler\"; Remove-Item 'HKCU:\\SOFTWARE\\Classes\\Chime' -Recurse -Force; Write-Host 'Done!'",
     "checkver": {
         "url": "https://clients.chime.aws/win-nme/RELEASES",
         "regex": "AmazonChime-([\\d.]+)-full\\.nupkg"

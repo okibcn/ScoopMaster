@@ -7,8 +7,13 @@
     "hash": "d7e90fcd6e13e662d4149497162519bc9466d89f0c92201b2774737e4a83afb8",
     "extract_dir": "ChapterMaker",
     "pre_install": [
-        "if (-not (Test-Path \"$dir\\ChapterMaker.cfg\")) { New-Item \"$dir\\ChapterMaker.cfg\" -ItemType File | Out-Null }",
-        "if (-not (Test-Path \"$dir\\tWordCase.xml\")) { New-Item \"$dir\\tWordCase.xml\" -ItemType File | Out-Null }"
+        "'ChapterMaker.cfg', 'tWordCase.xml' | ForEach-Object {",
+        "    if (!(Test-Path -Path $persist_dir\\$_)) {",
+        "        if (Test-Path \"$bucketsdir\\404NetworkError\\scripts\\chaptermaker\\$_\") {",
+        "            Copy-Item \"$bucketsdir\\404NetworkError\\scripts\\chaptermaker\\$_\" \"$persist_dir\\\" -ErrorAction SilentlyContinue -Force",
+        "        }",
+        "    }",
+        "}"
     ],
     "shortcuts": [
         [
