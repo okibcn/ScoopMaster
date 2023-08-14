@@ -1,14 +1,21 @@
 {
     "version": "166",
-    "description": "A focused and highly customizable fan controlling software for Windows",
-    "homepage": "https://github.com/Rem0o/FanControl.Releases",
-    "license": "Unknown",
-    "url": "https://github.com/Rem0o/FanControl.Releases/raw/V166/FanControl.zip",
-    "hash": "50b04931c960ee247696df14ac67e52dc6d1fa367e8fa7d050156642ad9cbe34",
+    "description": "A highly customizable fan controlling software for Windows",
+    "homepage": "https://getfancontrol.com/",
+    "license": "Freeware",
+    "suggest": {
+        ".NET Desktop Runtime": "extras/windowsdesktop-runtime"
+    },
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/Rem0o/FanControl.Releases/releases/download/V166/FanControl_net_7_0.zip",
+            "hash": "2750df417753dec66c2f31ac8db878bbc5c0472d61f4cb41af758a25ea73edac"
+        }
+    },
     "shortcuts": [
         [
             "FanControl.exe",
-            "Fan Control"
+            "FanControl"
         ]
     ],
     "persist": [
@@ -16,9 +23,15 @@
         "Plugins"
     ],
     "checkver": {
-        "github": "https://github.com/Rem0o/FanControl.Releases"
+        "url": "https://api.github.com/repos/Rem0o/FanControl.Releases/releases/latest",
+        "jsonpath": "$.assets..browser_download_url",
+        "regex": "/V([\\d.]+)/FanControl_net_(?<netver>(?!4_8)[\\d_]+).zip"
     },
     "autoupdate": {
-        "url": "https://github.com/Rem0o/FanControl.Releases/raw/V$version/FanControl.zip"
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/Rem0o/FanControl.Releases/releases/download/V$version/FanControl_net_$matchNetver.zip"
+            }
+        }
     }
 }
