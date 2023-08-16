@@ -1,32 +1,37 @@
 {
+    "homepage": "https://app.bilibili.com/",
+    "license": "Freeware",
     "version": "1.11.2",
-    "license": "Unknown",
-    "url": "https://dl.hdslb.com/mobile/fixed/bili_win/bili_win-install.exe?v=1.11.2#/dl.7z",
-    "extract_dir": "$PLUGINSDIR",
-    "extract_to": "package",
-    "notes": "In Application Auto update has been disable",
-    "installer": {
-        "script": [
-            "Expand-7zipArchive -Path \"$dir/package/app-64.7z\" -DestinationPath \"$dir\"",
-            "Remove-Item \"$dir/package/\" -Recurse -Force",
-            "Set-Content -Value \"\" -Path \"$dir/resources/app-update.yml\""
-        ]
-    },
-    "pre_uninstall": "taskkill /F /IM 哔哩哔哩.exe",
+    "description": "哔哩哔哩桌面客户端",
     "shortcuts": [
         [
             "哔哩哔哩.exe",
             "哔哩哔哩"
         ]
     ],
-    "homepage": "https://www.bilibili.com/",
-    "hash": "ed87f5498a5b84a0c9325f271f6a9f2fb5812248dc0024b58af827735a8ee352",
+    "architecture": {
+        "64bit": {
+            "url": "https://dl.hdslb.com/mobile/fixed/bili_win/bili_win-install.exe#/dl.7z",
+            "hash": "sha512:9926f70c5a72a754ade83d5046f4a70299f3e2550c6f360598f47128b9dfa33d9bc77a0ab7165aaa9296e066fdf82df81d67968790733361f8b16ec6e6f60c02",
+            "pre_install": [
+                "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\"",
+                "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\Uninstall*\" -Recurse"
+            ]
+        }
+    },
     "checkver": {
-        "url": "https://api.bilibili.com/x/web-frontend/getappversion?target=pc_electron&cdn_url=https%3A%2F%2Fdl.hdslb.com%2Fmobile%2Ffixed%2Fbili_win%2Fbili_win-install.exe",
-        "regex": "\\.exe\\?v=([\\d\\.]+)",
-        "useragent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36"
+        "url": "http://api.bilibili.com/x/elec-frontend/update/latest.yml",
+        "re": "bilibili-setup-v(.+)\\.exe"
     },
     "autoupdate": {
-        "url": "https://dl.hdslb.com/mobile/fixed/bili_win/bili_win-install.exe?v=$version#/dl.7z"
+        "architecture": {
+            "64bit": {
+                "url": "https://dl.hdslb.com/mobile/fixed/bili_win/bili_win-install.exe#/dl.7z",
+                "hash": {
+                    "url": "http://api.bilibili.com/x/elec-frontend/update/latest.yml",
+                    "regex": "sha512: (.+==)"
+                }
+            }
+        }
     }
 }
