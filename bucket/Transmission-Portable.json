@@ -1,34 +1,51 @@
 {
-    "homepage": "https://transmissionbt.com/",
     "version": "4.0.3",
+    "description": "Transmission. A fast, easy, and free BitTorrent client",
+    "homepage": "https://transmissionbt.com/",
     "license": "GPL-2.0-only|GPL-3.0-only",
-    "url": "https://sourceforge.net/projects/portableapps/files/Transmission%20Portable/TransmissionPortable_4.0.3.paf.exe#/dl.7z",
-    "hash": "sha1:e47627b68fd8d7f37897d1e7c503e24c3f20d5ca",
+    "changelog": "https://github.com/transmission/transmission/releases",
+    "suggest": {
+        "vcredist": "extras/vcredist2022"
+    },
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/transmission/transmission/releases/download/4.0.3/transmission-4.0.3-x64.msi",
+            "hash": "1ef1294f0cd1f352db7367be04a8bdc77083ee82926d76769f20937b90fa1202"
+        },
+        "32bit": {
+            "url": "https://github.com/transmission/transmission/releases/download/4.0.3/transmission-4.0.3-x86.msi",
+            "hash": "a131f8f1654c5a787d8c67a0667a34852952cdfaaf97dd1e93864200196ce098"
+        }
+    },
+    "extract_dir": "PFiles\\Transmission",
     "bin": [
         [
-            "TransmissionPortable.exe",
+            "transmission-qt.exe",
             "transmission"
-        ]
+        ],
+        "transmission-create.exe",
+        "transmission-daemon.exe",
+        "transmission-edit.exe",
+        "transmission-remote.exe",
+        "transmission-show.exe"
     ],
     "shortcuts": [
         [
-            "TransmissionPortable.exe",
+            "transmission-qt.exe",
             "Transmission"
         ]
     ],
-    "persist": "Data",
-    "post_install": [
-        "Remove-Item -LiteralPath \"$dir\\`$PLUGINSDIR\" -Force -Recurse",
-        "if(!(test-path \"$dir\\TransmissionPortable.ini\")) {",
-        "   Copy-Item \"$dir\\Other\\Source\\AppNamePortable.ini\" \"$dir\\TransmissionPortable.ini\"",
-        "   (Get-Content \"$dir\\TransmissionPortable.ini\").replace('DisableSplashScreen=false', 'DisableSplashScreen=true') | Set-Content \"$dir\\TransmissionPortable.ini\"",
-        "}"
-    ],
     "checkver": {
-        "url": "https://sourceforge.net/projects/portableapps/rss?path=/Transmission%20Portable",
-        "re": "/Transmission Portable/TransmissionPortable_([\\d.]+(?:_Rev_[\\d.])?).paf.exe]]>"
+        "github": "https://github.com/transmission/transmission"
     },
     "autoupdate": {
-        "url": "https://sourceforge.net/projects/portableapps/files/Transmission%20Portable/TransmissionPortable_$version.paf.exe#/dl.7z"
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/transmission/transmission/releases/download/$version/transmission-$version-x64.msi"
+            },
+            "32bit": {
+                "url": "https://github.com/transmission/transmission/releases/download/$version/transmission-$version-x86.msi"
+            }
+        }
     }
 }
