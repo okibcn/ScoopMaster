@@ -14,6 +14,8 @@
         }
     },
     "extract_dir": "Telegram",
+    "pre_install": "Set-Content \"$dir\\telegram.cmd\" '@start \"Telegram\" /D \"%~dp0\" \"%~dp0Telegram.exe\" %*' -Encoding Ascii",
+    "bin": "telegram.cmd",
     "shortcuts": [
         [
             "Telegram.exe",
@@ -22,7 +24,8 @@
     ],
     "persist": "tdata",
     "checkver": {
-        "github": "https://github.com/telegramdesktop/tdesktop"
+        "url": "https://api.github.com/repos/telegramdesktop/tdesktop/releases",
+        "regex": "(?sm)browser_download_url.*?releases/download/v([\\d.]+)/tportable-x64.([\\d.]+)\\.zip.*?tportable.([\\d.]+)\\.zip"
     },
     "autoupdate": {
         "architecture": {
