@@ -1,8 +1,8 @@
 {
-    "version": "2.0",
-    "description": "CuteHttpFileServer(chfs) is a free file sharing http server tool. CuteHttpFileServer(chfs)是一个免费的http服务器文件共享工具，通过局域网实现文件传输",
     "homepage": "http://iscute.cn/chfs",
+    "description": "CuteHttpFileServer(chfs) is a free file sharing http server tool.",
     "license": "Freeware",
+    "version": "2.0",
     "architecture": {
         "64bit": {
             "url": "http://iscute.cn/tar/chfs/2.0/chfs-windows-x64-2.0.zip",
@@ -13,23 +13,15 @@
             "hash": "95fdf8b8169dd3b49b87245a72adb57f8525164a894ace3a6ae3726dcb8cb64a"
         }
     },
-    "pre_install": [
-        "if (!(Test-Path \"$persist_dir\\chfs.ini\")) {",
-        "    Set-Content \"$dir\\chfs.ini\" $null -Encoding Ascii",
-        "}"
-    ],
-    "pre_uninstall": [
-        "$App_name=\"chfs\"",
-        "$existProcess=Get-Process -Name \"$App_name*\" -ErrorAction SilentlyContinue",
-        "foreach($_ in $existProcess.ProcessName){ Write-Host \"Stop-Process  $_\" -f red }",
-        "while($true){",
-        "   if(Get-Process -Name \"$App_name*\" -ErrorAction SilentlyContinue){",
-        "       Stop-Process -Name \"$App_name*\" -Force",
-        "   }else { break }",
-        "   Start-Sleep -Milliseconds 500",
-        "}"
-    ],
     "bin": "chfs.exe",
+    "pre_install": [
+        "function CreateFile ($name, $value = $null) {",
+        "    if (!(Test-Path \"$persist_dir\\$name\")) {",
+        "        Set-Content \"$dir\\$name\" $value -Encoding Ascii",
+        "    }",
+        "}",
+        "CreateFile 'chfs.ini' "
+    ],
     "persist": "chfs.ini",
     "checkver": {
         "regex": "chfs-windows-x64-([\\d.]+).zip"

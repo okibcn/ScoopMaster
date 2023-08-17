@@ -3,17 +3,21 @@
     "description": "Distributed version control system",
     "homepage": "https://gitforwindows.org",
     "license": "GPL-2.0-only",
-    "notes": "Set Git Credential Manager Core by running: \"git config --global credential.helper manager-core\"",
     "architecture": {
         "64bit": {
             "url": "https://github.com/git-for-windows/git/releases/download/v2.41.0.windows.3/PortableGit-2.41.0.3-64-bit.7z.exe#/dl.7z",
             "hash": "61c62a2590799bc37d88b51871abb13ff4057b2626b89d6bc11afd58888d11c6"
+        },
+        "32bit": {
+            "url": "https://github.com/git-for-windows/git/releases/download/v2.41.0.windows.3/PortableGit-2.41.0.3-32-bit.7z.exe#/dl.7z",
+            "hash": "49578dd063951c3c8848365461a1da473c7849ac720e681aa10e2ba499e8a64e"
         }
     },
     "bin": [
         "cmd\\git.exe",
         "cmd\\gitk.exe",
         "cmd\\git-gui.exe",
+        "cmd\\scalar.exe",
         "usr\\bin\\tig.exe",
         "git-bash.exe"
     ],
@@ -28,17 +32,25 @@
             "Git GUI"
         ]
     ],
+    "post_install": "git config --system --unset credential.helper",
+    "persist": [
+        "etc\\profile.d",
+        "etc\\profile"
+    ],
     "env_set": {
         "GIT_INSTALL_ROOT": "$dir"
     },
     "checkver": {
-        "github": "https://github.com/git-for-windows/git",
+        "url": "https://api.github.com/repos/git-for-windows/git/releases/latest",
         "regex": "v([\\w.]+)/PortableGit-(?<full>[\\w.]+)-64-bit"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
                 "url": "https://github.com/git-for-windows/git/releases/download/v$version/PortableGit-$matchFull-64-bit.7z.exe#/dl.7z"
+            },
+            "32bit": {
+                "url": "https://github.com/git-for-windows/git/releases/download/v$version/PortableGit-$matchFull-32-bit.7z.exe#/dl.7z"
             }
         },
         "hash": {
