@@ -1,45 +1,71 @@
 {
-    "homepage": "http://cemu.info/",
     "version": "2.0",
-    "url": "http://cemu.info/releases/cemu_2.0.zip",
-    "hash": "660a5461333c9eecad3065c4c3e891e6c362f6df05c5e18fc4c36e3d806b6ca4",
-    "extract_dir": "cemu_2.0",
+    "description": "A Nintendo WiiU emulator capable of online play",
+    "homepage": "https://cemu.info/",
+    "license": "MPL-2.0",
+    "suggest": {
+        "Microsoft Visual C++ Runtime 2022": "extras/vcredist2022"
+    },
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/cemu-project/Cemu/releases/download/v2.0/cemu-2.0-windows-x64.zip",
+            "hash": "660a5461333c9eecad3065c4c3e891e6c362f6df05c5e18fc4c36e3d806b6ca4"
+        }
+    },
+    "extract_dir": "Cemu_2.0",
+    "installer": {
+        "script": [
+            "if (!(Test-Path \"$persist_dir\\keys.txt\")) {",
+            "    New-Item \"$dir\\keys.txt\" -Type File | Out-Null",
+            "}"
+        ]
+    },
+    "post_install": [
+        "'settings.xml' | ForEach-Object {",
+        "   if (Test-Path \"$persist_dir\\$_.bak\") {",
+        "       Copy-Item \"$persist_dir\\$_.bak\" \"$dir\\$_\"  -Force",
+        "   } else {",
+        "       New-Item -ItemType File \"$dir\\$_\" | Out-Null",
+        "   }",
+        "}"
+    ],
+    "bin": [
+        [
+            "Cemu.exe",
+            "cemu"
+        ]
+    ],
     "shortcuts": [
         [
             "Cemu.exe",
             "Cemu"
         ]
     ],
-    "bin": [
-        [
-            "cemu.bat",
-            "cemu"
-        ],
-        [
-            "Cemu.exe",
-            "cemu-nopath"
-        ]
-    ],
-    "checkver": "Latest release[\\s\\S]*?Cemu ((?<short>[0-9.]+)[a-z]?)",
-    "autoupdate": {
-        "url": "http://cemu.info/releases/cemu_$matchShort.zip",
-        "extract_dir": "cemu_$matchShort"
-    },
-    "suggest": {
-        "Microsoft Visual C++ 2015 X64 Redistributable": "extras/vcredist2015"
-    },
     "persist": [
-        "keys.txt",
-        "settings.bin",
         "controllerProfiles",
         "gameProfiles",
         "graphicPacks",
-        "shaderCache/transferable",
         "mlc01",
-        "hfiomlc01",
-        "memorySearcher"
+        "sharedFonts",
+        "shaderCache\\transferable",
+        "keys.txt"
     ],
-    "pre_install": "Add-Content \"$dir\\keys.txt\" $null; Add-Content \"$dir\\settings.bin\" $null; \"@echo off`r`npushd $dir`r`nCemu.exe %*`r`npopd\" | out-file -Encoding ASCII $dir\\cemu.bat",
-    "description": "Experimental software to emulate Wii U applications on PC.",
-    "license": "Freeware"
+    "uninstaller": {
+        "script": [
+            "'settings.xml' | ForEach-Object {",
+            "   Copy-Item \"$dir\\$_\" \"$persist_dir\\$_.bak\" -Force",
+            "}"
+        ]
+    },
+    "checkver": {
+        "github": "https://github.com/cemu-project/Cemu"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/cemu-project/Cemu/releases/download/v$version/cemu-$version-windows-x64.zip"
+            }
+        },
+        "extract_dir": "Cemu_$version"
+    }
 }
