@@ -1,46 +1,55 @@
 {
     "version": "2.0",
-    "description": "CuteHttpFileServer(chfs) is a free file sharing http server tool. CuteHttpFileServer(chfs)是一个免费的http服务器文件共享工具，通过局域网实现文件传输",
+    "description": "CuteHttpFileServer/chfs是一个免费的、HTTP协议的文件共享服务器，使用浏览器可以快速访问.",
     "homepage": "http://iscute.cn/chfs",
     "license": "Freeware",
     "architecture": {
         "64bit": {
-            "url": "http://iscute.cn/tar/chfs/2.0/chfs-windows-x64-2.0.zip",
-            "hash": "33e4c6fe4d99327160e41f52dea31b967a627e5e249266743f3cc0f43e3828b8"
+            "url": [
+                "http://iscute.cn/tar/chfs/2.0/chfs-windows-x64-2.0.zip",
+                "http://iscute.cn/asset/chfs.ini"
+            ],
+            "hash": [
+                "33e4c6fe4d99327160e41f52dea31b967a627e5e249266743f3cc0f43e3828b8",
+                "69d9e8917cfee8e0d1ad4c6697cb0c9956a4a5dc2f684e17f4a6ecf6580417f3"
+            ]
         },
         "32bit": {
-            "url": "http://iscute.cn/tar/chfs/2.0/chfs-windows-x86-2.0.zip",
-            "hash": "95fdf8b8169dd3b49b87245a72adb57f8525164a894ace3a6ae3726dcb8cb64a"
+            "url": [
+                "http://iscute.cn/tar/chfs/2.0/chfs-windows-x86-2.0.zip",
+                "http://iscute.cn/asset/chfs.ini"
+            ],
+            "hash": [
+                "95fdf8b8169dd3b49b87245a72adb57f8525164a894ace3a6ae3726dcb8cb64a",
+                "69d9e8917cfee8e0d1ad4c6697cb0c9956a4a5dc2f684e17f4a6ecf6580417f3"
+            ]
         }
     },
-    "pre_install": [
-        "if (!(Test-Path \"$persist_dir\\chfs.ini\")) {",
-        "    Set-Content \"$dir\\chfs.ini\" $null -Encoding Ascii",
-        "}"
-    ],
-    "pre_uninstall": [
-        "$App_name=\"chfs\"",
-        "$existProcess=Get-Process -Name \"$App_name*\" -ErrorAction SilentlyContinue",
-        "foreach($_ in $existProcess.ProcessName){ Write-Host \"Stop-Process  $_\" -f red }",
-        "while($true){",
-        "   if(Get-Process -Name \"$App_name*\" -ErrorAction SilentlyContinue){",
-        "       Stop-Process -Name \"$App_name*\" -Force",
-        "   }else { break }",
-        "   Start-Sleep -Milliseconds 500",
-        "}"
-    ],
     "bin": "chfs.exe",
-    "persist": "chfs.ini",
     "checkver": {
         "regex": "chfs-windows-x64-([\\d.]+).zip"
     },
+    "persist": [
+        "chfs.ini",
+        "logs"
+    ],
+    "notes": [
+        "使用配置文件启动如下",
+        "chfs --file=\"$dir\\chfs.ini\""
+    ],
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "http://iscute.cn/tar/chfs/$version/chfs-windows-x64-$version.zip"
+                "url": [
+                    "http://iscute.cn/tar/chfs/$version/chfs-windows-x64-$version.zip",
+                    "http://iscute.cn/asset/chfs.ini"
+                ]
             },
             "32bit": {
-                "url": "http://iscute.cn/tar/chfs/$version/chfs-windows-x86-$version.zip"
+                "url": [
+                    "http://iscute.cn/tar/chfs/$version/chfs-windows-x86-$version.zip",
+                    "http://iscute.cn/asset/chfs.ini"
+                ]
             }
         }
     }
