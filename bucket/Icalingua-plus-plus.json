@@ -2,14 +2,14 @@
     "version": "2.10.0",
     "description": "A client for QQ and more.",
     "homepage": "https://github.com/Icalingua-plus-plus/Icalingua-plus-plus",
-    "license": "MIT",
+    "license": "AGPL-3.0-only",
     "architecture": {
         "64bit": {
             "url": "https://github.com/Icalingua-plus-plus/Icalingua-plus-plus/releases/download/v2.10.0/Icalingua++-2.10.0_x64.exe#/dl.7z",
             "hash": "b819ffcf38080a91491eae522e23a1431ec2573d6768f01b12d0ddec21386355",
             "pre_install": [
                 "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\"",
-                "Remove-Item \"$dir\\`$*\", \"$dir\\Uninst*\" -Force -Recurse"
+                "Remove-Item \"$dir\\`$*\", \"$dir\\Unins*\" -Force -Recurse"
             ]
         },
         "arm64": {
@@ -17,17 +17,28 @@
             "hash": "ba989948d7567e11c576e30b00a8b7f2ddeb70c55fb3097b9798825e1a768ee6",
             "pre_install": [
                 "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-arm64.7z\" \"$dir\"",
-                "Remove-Item \"$dir\\`$*\", \"$dir\\Uninst*\" -Force -Recurse"
+                "Remove-Item \"$dir\\`$*\", \"$dir\\Unins*\" -Force -Recurse"
             ]
         }
     },
+    "bin": [
+        [
+            "Icalingua++.exe",
+            "Icalingua++",
+            "--user-data-dir=\"$dir\\data\""
+        ]
+    ],
     "shortcuts": [
         [
             "Icalingua++.exe",
-            "Icalingua++"
+            "Icalingua++",
+            "--user-data-dir=\"$dir\\data\""
         ]
     ],
-    "checkver": "github",
+    "persist": "data",
+    "checkver": {
+        "github": "https://github.com/Icalingua-plus-plus/Icalingua-plus-plus"
+    },
     "autoupdate": {
         "architecture": {
             "64bit": {
