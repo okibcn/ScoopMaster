@@ -1,0 +1,42 @@
+{
+    "version": "1.0.14",
+    "description": "🔋Improve your Windows 11 device's battery life. A WinUI 3 GUI for https://github.com/imbushuo/EnergyStar",
+    "homepage": "https://www.microsoft.com/store/productId/9NF7JTB3B17P",
+    "license": {
+        "identifier": "GPL-3.0 license",
+        "url": "https://github.com/JasonWei512/EnergyStarX/blob/develop/LICENSE.txt"
+    },
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/JasonWei512/EnergyStarX/releases/download/v1.0.14/EnergyStarX_1.0.14.0_x64.Msix",
+            "hash": "39c261d76a53c579ef6b90b67f9887f25e0db98eec18bd4c795dd546cca090d3"
+        },
+        "arm64": {
+            "url": "https://github.com/JasonWei512/EnergyStarX/releases/download/v1.0.14/EnergyStarX_1.0.14.0_arm64.Msix",
+            "hash": "4f20886a4e64874896fea06c1f0d5e8d9c45059202ea38f25fa7cb98ffac5c0f"
+        }
+    },
+    "installer": {
+        "script": "Get-ChildItem \"$dir\" '*.msix' | Select-Object -ExpandProperty Fullname | Expand-7zipArchive -DestinationPath \"$dir\" -Removal"
+    },
+    "shortcuts": [
+        [
+            "EnergyStarX.exe",
+            "EnergyStarX"
+        ]
+    ],
+    "checkver": {
+        "url": "https://api.github.com/repos/JasonWei512/EnergyStarX/releases",
+        "regex": "/releases/tag/v([\\d.]+)"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/JasonWei512/EnergyStarX/releases/download/v$version/EnergyStarX_$version.0_x64.Msix"
+            },
+            "arm64": {
+                "url": "https://github.com/JasonWei512/EnergyStarX/releases/download/v$version/EnergyStarX_$version.0_arm64.Msix"
+            }
+        }
+    }
+}
