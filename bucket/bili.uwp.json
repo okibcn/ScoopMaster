@@ -1,0 +1,73 @@
+{
+    "version": "0.2307.1.0",
+    "description": "适用于新系统UI的哔哩",
+    "homepage": "https://github.com/Richasy/Bili.Uwp",
+    "license": {
+        "identifier": "MIT license",
+        "url": "https://github.com/Richasy/Bili.Uwp/blob/main/LICENSE"
+    },
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/Richasy/Bili.Uwp/releases/download/v2.2307.1.0/Bili.Uwp_2.2307.1.0_x64.zip",
+            "hash": "b031da7ac8b35f17b95ade54cab0c36923807afe2f15bd4ee8e91c1a8a082c15",
+            "extract_dir": "App_$version_Test",
+            "pre_install": [
+                "Get-ChildItem \"$dir\" -Exclude '*.msixbundle' '*.cer' | Remove-Item -Force -Recurse",
+                "Expand-7zipArchive \"$dir\\App_2.2307.1.0_x64.msixbundle\" \"$dir\""
+            ]
+        },
+        "32bit": {
+            "url": "https://github.com/Richasy/Bili.Uwp/releases/download/v2.2307.1.0/Bili.Uwp_2.2307.1.0_x86.zip",
+            "hash": "0a0ac055a3904860df1e75a76b8bb685f0fa17674846245b7b84cfcd8c19b197",
+            "extract_dir": "App_$version_Test",
+            "pre_install": [
+                "Get-ChildItem \"$dir\" -Exclude '*.msixbundle' '*.cer' | Remove-Item -Force -Recurse",
+                "Expand-7zipArchive \"$dir\\App_2.2307.1.0_x86.msixbundle\" \"$dir\""
+            ]
+        },
+        "arm64": {
+            "url": "https://github.com/Richasy/Bili.Uwp/releases/download/v2.2307.1.0/Bili.Uwp_2.2307.1.0_ARM64.zip",
+            "hash": "1381ec2bde3d7cca39f7baac80b10db2af5ee1cbda471dc2e66fc375827ea8b2",
+            "extract_dir": "App_$version_Test",
+            "pre_install": [
+                "Get-ChildItem \"$dir\" -Exclude '*.msixbundle' '*.cer' | Remove-Item -Force -Recurse",
+                "Expand-7zipArchive \"$dir\\App_2.2307.1.0_arm64.msixbundle\" \"$dir\""
+            ]
+        }
+    },
+    "installer": {
+        "script": "Get-ChildItem \"$dir\" '*.msix' | Select-Object -ExpandProperty Fullname | Expand-7zipArchive -DestinationPath \"$dir\" -Removal"
+    },
+    "checkver": {
+        "url": "https://github.com/Richasy/Bili.Uwp/releases.atom",
+        "regex": "/releases/tag/v([\\d.]+)"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/Richasy/Bili.Uwp/releases/download/v$version/Bili.Uwp_$version_x64.zip",
+                "extract_dir": "App_$version_Test",
+                "pre_install": [
+                    "Get-ChildItem \"$dir\" -Exclude '*.msixbundle' '*.cer' | Remove-Item -Force -Recurse",
+                    "Expand-7zipArchive \"$dir\\App_$version_x64.msixbundle\" \"$dir\""
+                ]
+            },
+            "32bit": {
+                "url": "https://github.com/Richasy/Bili.Uwp/releases/download/v$version/Bili.Uwp_$version_x86.zip",
+                "extract_dir": "App_$version_Test",
+                "pre_install": [
+                    "Get-ChildItem \"$dir\" -Exclude '*.msixbundle' '*.cer' | Remove-Item -Force -Recurse",
+                    "Expand-7zipArchive \"$dir\\App_$version_x86.msixbundle\" \"$dir\""
+                ]
+            },
+            "arm64": {
+                "url": "https://github.com/Richasy/Bili.Uwp/releases/download/v$version/Bili.Uwp_$version_ARM64.zip",
+                "extract_dir": "App_$version_Test",
+                "pre_install": [
+                    "Get-ChildItem \"$dir\" -Exclude '*.msixbundle' '*.cer' | Remove-Item -Force -Recurse",
+                    "Expand-7zipArchive \"$dir\\App_$version_arm64.msixbundle\" \"$dir\""
+                ]
+            }
+        }
+    }
+}
