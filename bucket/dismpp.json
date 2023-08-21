@@ -11,13 +11,6 @@
         "5bbab96d60704854efd8246a7d9371688b9102261544827fc8884126d70bcb3b",
         "md5:dfbfdb1c5bab3a6782937078878554ad"
     ],
-    "architecture": {
-        "32bit": { "bin": ["Dism++x86.exe"] },
-        "64bit": { "bin": ["Dism++x64.exe"] },
-        "arm64": { "bin": ["Dism++ARM64.exe"] }
-    },
-    "shortcuts": [["Dism++x64.exe", "Dism++"]],
-    "persist": ["Config/Config.ini"],
     "pre_install": [
         "$path = \"$persist_dir\\Config\"",
         "if (!(Test-Path $path) -or !(Get-Item $path).Length) {",
@@ -31,6 +24,13 @@
         "New-PersistFile \"$persist_dir\\Config\\Config.ini\""
     ],
     "post_install": ["Move-Item $dir/wsusscn3.cab $dir/Config/wsusscn3.cab"],
+    "architecture": {
+        "32bit": { "bin": ["Dism++x86.exe"] },
+        "64bit": { "bin": ["Dism++x64.exe"] },
+        "arm64": { "bin": ["Dism++ARM64.exe"] }
+    },
+    "shortcuts": [["Dism++x64.exe", "Dism++"]],
+    "persist": ["Config/Config.ini"],
     "checkver": "github",
     "autoupdate": {
         "url": "https://github.com/Chuyu-Team/Dism-Multi-language/releases/download/v$version/Dism++$version.zip"
