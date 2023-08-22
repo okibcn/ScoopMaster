@@ -1,24 +1,48 @@
 {
     "version": "1.6.1",
-    "description": "一款命令行式哔哩哔哩下载器. Bilibili Downloader.",
+    "description": "一款命令行式哔哩哔哩下载器",
     "homepage": "https://github.com/nilaoda/BBDown",
-    "license": {
-        "identifier": "MIT"
+    "license": "MIT",
+    "notes": [
+        "本软件混流时需要外部程序：",
+        "普通视频：ffmpeg ，或 mp4box",
+        "杜比视界：ffmpeg5.0以上或新版mp4box."
+    ],
+    "suggest": {
+        "ffmpeg": "ffmpeg",
+        "mp4box": "gpac"
     },
-    "url": "https://github.com/nilaoda/BBDown/releases/download/1.6.1/BBDown_1.6.1_20230817_win-x64.zip",
-    "hash": "248c3aafb8e767f9cfa55e36f2a1a19b1653bbcdb44c1a2fec394560eb79c1a1",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/nilaoda/BBDown/releases/download/1.6.1/BBDown_1.6.1_20230817_win-x64.zip",
+            "hash": "248c3aafb8e767f9cfa55e36f2a1a19b1653bbcdb44c1a2fec394560eb79c1a1"
+        },
+        "arm64": {
+            "url": "https://github.com/nilaoda/BBDown/releases/download/1.6.1/BBDown_1.6.1_20230817_win-arm64.zip",
+            "hash": "6f160f88a2feab201d8f503f3fe8e626d037c456c52a50971bb9ceec3e0f4040"
+        }
+    },
     "bin": "BBDown.exe",
+    "pre_install": [
+        "if (-not (Test-Path \"$persist_dir\\BBDown.config\")) { New-Item \"$dir\\BBDown.config\" -ItemType file | Out-Null }",
+        "if (-not (Test-Path \"$persist_dir\\BBDown.data\")) { New-Item \"$dir\\BBDown.data\" -ItemType file | Out-Null }"
+    ],
+    "persist": [
+        "BBDown.config",
+        "BBDown.data"
+    ],
     "checkver": {
-        "url": "https://github.com/nilaoda/BBDown/releases",
-        "regex": "<h2 .+?>BBDown v(?<version>\\d\\.\\d\\.\\d)</h2>[\\s\\S]+?datetime=\"(?<year>\\d{4})-(?<month>\\d{2})-(?<day>\\d{2})T"
+        "url": "https://api.github.com/repos/nilaoda/BBDown/releases",
+        "regex": "BBDown_(?<version>[\\d.]+)_(?<date>\\d+)_win-x64.zip"
     },
     "autoupdate": {
-        "url": "https://github.com/nilaoda/BBDown/releases/download/$matchVersion/BBDown_$matchVersion_$matchYear$matchMonth$matchDay_win-x64.zip"
-    },
-    "pre_install": "if(!(Test-Path $dir\\BBDown.config)){ New-Item -ItemType File $dir\\BBDown.config;}",
-    "persist": [
-        [
-            ".\\BBDown.config"
-        ]
-    ]
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/nilaoda/BBDown/releases/download/$version/BBDown_$matchVersion_$matchDate_win-x64.zip"
+            },
+            "arm64": {
+                "url": "https://github.com/nilaoda/BBDown/releases/download/$version/BBDown_$matchVersion_$matchDate_win-arm64.zip"
+            }
+        }
+    }
 }
