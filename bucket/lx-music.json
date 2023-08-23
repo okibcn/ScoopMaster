@@ -1,11 +1,8 @@
 {
     "version": "2.3.0",
-    "description": "A music app based on electron and vue",
+    "description": "An electron-based music player. 一个基于 electron 的音乐软件",
     "homepage": "https://github.com/lyswhut/lx-music-desktop",
-    "license": {
-        "identifier": "Apache-2.0",
-        "url": "https://github.com/lyswhut/lx-music-desktop/blob/master/LICENSE"
-    },
+    "license": "Apache-2.0",
     "architecture": {
         "64bit": {
             "url": "https://github.com/lyswhut/lx-music-desktop/releases/download/v2.3.0/lx-music-desktop-v2.3.0-win_x64-green.7z",
@@ -16,18 +13,38 @@
             "hash": "83ec4a5eb776e90237af91a68dedcf53024453ef445a469c7ec9b2598a35c96a"
         }
     },
-    "pre_install": "New-Item $dir\\portable -ItemType Directory -ErrorAction SilentlyContinue | Out-Null",
     "shortcuts": [
         [
             "lx-music-desktop.exe",
-            "LX Music"
+            "lx-music"
         ]
     ],
-    "persist": [
-        [
-            "portable\\userData",
-            "userData"
-        ]
+    "post_install": [
+        "Write-Host \"Persisting LxDatas\" -f Green",
+        "$data_path=\"$env:APPData\\lx-music-desktop\\LxDatas\"",
+        "$persist_path=\"$persist_dir\\LxDatas\"",
+        "",
+        "$count=0;$current_bucket_name=foreach($_ in scoop bucket list,$count){if(($count -eq 0) -and ($_.Source -match \"abgox/abgo_bucket\")){echo $_.Name};$count++}",
+        "$ps1 = \"$bucketsdir\\$current_bucket_name\\bin\\persist_link.ps1 $data_path $persist_path\"",
+        "Invoke-Expression \"$ps1\""
+    ],
+    "pre_uninstall": [
+        "$App_name=\"lx-music-desktop\"",
+        "$existProcess=Get-Process -Name \"$App_name*\" -ErrorAction SilentlyContinue",
+        "foreach($_ in $existProcess.ProcessName){ Write-Host \"Stop-Process  $_\" -f red }",
+        "while($true){",
+        "   if(Get-Process -Name \"$App_name*\" -ErrorAction SilentlyContinue){",
+        "       Stop-Process -Name \"$App_name*\" -Force",
+        "   }else { break }",
+        "   Start-Sleep -Milliseconds 500",
+        "}"
+    ],
+    "post_uninstall": [
+        "$data_path=\"$env:APPData\\lx-music-desktop\"",
+        "if (Test-Path $data_path){",
+        "   Remove-Item -Force -Recurse $data_path",
+        "   echo \"Removing $data_path\"",
+        "}"
     ],
     "checkver": "github",
     "autoupdate": {
