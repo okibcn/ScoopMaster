@@ -1,46 +1,42 @@
 {
     "version": "2023.06.2-561",
-    "description": "An IDE for R with console, syntax-highlighting, editor that supports direct code execution, as well as tools for plotting, history, debugging and workspace management.",
-    "homepage": "https://www.rstudio.com/products/rstudio/",
+    "homepage": "https://posit.co/download/rstudio-desktop/",
+    "description": "An IDE for R, which includes a console, syntax-highlighting editor that supports direct code execution, as well as tools for plotting, history, debugging and workspace management.",
     "license": "AGPL-3.0-only",
     "notes": "For 32bit, please install 'versions/rstudio11",
     "depends": "r",
     "architecture": {
         "64bit": {
-            "url": "https://download1.rstudio.org/desktop/windows/RStudio-2023.06.2-561.exe#/dl.7z",
-            "hash": "0b6590be5799a248f05e3cf75dc8efe324c52bc1f86dcc5ea0108967358a0da6",
-            "post_install": [
-                "Remove-Item \"$dir\\`$*\" -Recurse",
-                "if (!(Test-Path \"$env:Appdata\\RStudio\")) {",
-                "    New-Item \"$env:Appdata\\RStudio\" -ItemType Directory -Force | Out-Null",
-                "    @(",
-                "        '[General]'",
-                "        \"RBinDir=`\"$(appdir r $global)\\current\\bin\\x64`\"\".Replace('\\', '/')",
-                "    ) | Add-Content -Path \"$env:Appdata\\RStudio\\desktop.ini\" -Encoding UTF8 -Force",
-                "}"
-            ]
+            "url": "https://download1.rstudio.org/electron/windows/RStudio-2023.06.2-561.zip",
+            "hash": "88a767513d6c0000f1db8309e82693ae6df30a12b6ff3d0eec7002ef9d4e8aa1"
         }
     },
-    "bin": "bin\\rstudio.exe",
+    "bin": [
+        [
+            "bin\\rstudio.exe",
+            "rstudio-preview"
+        ]
+    ],
     "shortcuts": [
         [
             "bin\\rstudio.exe",
-            "RStudio"
+            "RStudio Preview"
         ]
     ],
     "checkver": {
-        "url": "https://www.rstudio.com/products/rstudio/download/",
-        "regex": "/windows/RStudio-([\\d.-]+)\\."
+        "url": "https://posit.co/download/rstudio-desktop/",
+        "regex": "RStudio-(?<date>[\\d.]+)-(?<build>\\d+)",
+        "replace": "${date}-${build}"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://download1.rstudio.org/desktop/windows/RStudio-$version.exe#/dl.7z",
-                "hash": {
-                    "url": "https://www.rstudio.com/products/rstudio/download/",
-                    "regex": "(?s)$basename.*?$sha256"
-                }
+                "url": "https://download1.rstudio.org/electron/windows/RStudio-$matchDate-$matchBuild.zip"
             }
+        },
+        "hash": {
+            "url": "https://posit.co/download/rstudio-desktop/",
+            "find": "(?s)$url.*?data-content=\"$sha256\""
         }
     }
 }
