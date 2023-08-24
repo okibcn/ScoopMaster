@@ -9,30 +9,7 @@
     ],
     "url": "https://github.com/chrisant996/clink/releases/download/v1.5.4/clink.1.5.4.6f56dd.zip",
     "hash": "678138e04a692a2c2193dfa132fcf6089ee553532e7798b3fc70904bcd4354e3",
-    "bin": [
-        [
-            "portable.bat",
-            "clink"
-        ]
-    ],
-    "pre_install": [
-        "$portable = \"portable.bat\"",
-        "$portableContent = ",
-        "'@echo off",
-        "rem -- Do any other desired configuration here, such as loading a doskey macro file.",
-        "call \"%~dp0clink.bat\" inject --profile \"%~dp0clink_profile\" %1 %2 %3 %4 %5 %6 %7 %8 %9'",
-        "if (!(Test-Path \"$persist_dir\\$portable\")) { New-Item -ItemType File -Path \"$dir\\$portable\" -Value $portableContent | Out-Null } else {",
-        "Set-Content -Path $dir\\$portable -Value (Get-Content -Path $persist_dir\\$portable ) | Out-Null }"
-    ],
-    "post_install": [
-        "$inputrc = \"clink_profile\\_inputrc\"",
-        "if (!(Test-Path \"$persist_dir\\clink_profile\")) { New-Item -Path \"$dir\\clink_profile\" -ItemType Directory | Out-Null }",
-        "if (!(Test-Path \"$persist_dir\\$inputrc\")) { New-Item -Path \"$dir\\$inputrc\" -ItemType File | Out-Null }"
-    ],
-    "persist": [
-        "portable.bat",
-        "clink_profile"
-    ],
+    "bin": "clink.bat",
     "checkver": {
         "github": "https://github.com/chrisant996/clink",
         "regex": "/v(?<tag>[\\d.]+)/clink\\.([\\d.]+)\\.(?<commit>[\\w.]+)\\.zip"
