@@ -25,15 +25,14 @@
         "}"
     ],
     "checkver": {
-        "url": "https://clireleases.jonaskohl.de/releases/api.php",
-        "jsonpath": "$[0].version"
+        "url": "https://clireleases.jonaskohl.de/releases/simple.php?css=true",
+        "regex": "Version\\s([\\d.]+)"
     },
     "autoupdate": {
         "url": "https://cli.jonaskohl.de/!/download/$version#/cli.exe",
         "hash": {
-            "mode": "json",
-            "url": "https://clireleases.jonaskohl.de/releases/api.php",
-            "jsonpath": "$[?(@.version == '$version')].hashes[?(@.algo == 'md5')].value"
+            "url": "https://clireleases.jonaskohl.de/releases/simple.php?css=true",
+            "regex": "(?s)$version\"\\>Build\\s\\(cli\\.jonaskohl\\.de\\).*?\\<td\\>MD5:\\</td\\>.*?\\<td\\>.*?value=\"$md5"
         }
     }
 }
