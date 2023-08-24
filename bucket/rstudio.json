@@ -7,10 +7,10 @@
     "depends": "r",
     "architecture": {
         "64bit": {
-            "url": "https://download1.rstudio.org/desktop/windows/RStudio-2023.06.2-561.exe#/dl.7z",
+            "url": "https://download1.rstudio.org/electron/windows/RStudio-2023.06.2-561.exe#/dl.7z",
             "hash": "0b6590be5799a248f05e3cf75dc8efe324c52bc1f86dcc5ea0108967358a0da6",
             "post_install": [
-                "Remove-Item \"$dir\\`$*\" -Recurse",
+                "Remove-Item \"$dir\\`$PLUGINSDIR\" -Force -Recurse",
                 "if (!(Test-Path \"$env:Appdata\\RStudio\")) {",
                 "    New-Item \"$env:Appdata\\RStudio\" -ItemType Directory -Force | Out-Null",
                 "    @(",
@@ -21,10 +21,10 @@
             ]
         }
     },
-    "bin": "bin\\rstudio.exe",
+    "bin": "rstudio.exe",
     "shortcuts": [
         [
-            "bin\\rstudio.exe",
+            "rstudio.exe",
             "RStudio"
         ]
     ],
@@ -35,7 +35,7 @@
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://download1.rstudio.org/desktop/windows/RStudio-$version.exe#/dl.7z",
+                "url": "https://download1.rstudio.org/electron/windows/RStudio-$version.exe#/dl.7z",
                 "hash": {
                     "url": "https://www.rstudio.com/products/rstudio/download/",
                     "regex": "(?s)$basename.*?$sha256"

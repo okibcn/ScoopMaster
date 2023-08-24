@@ -1,24 +1,35 @@
 {
     "version": "1.6.1",
-    "description": "一款命令行式哔哩哔哩下载器. Bilibili Downloader.",
+    "description": "A commandline downloader for Bilibili.",
     "homepage": "https://github.com/nilaoda/BBDown",
-    "license": {
-        "identifier": "MIT"
+    "license": "MIT",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/nilaoda/BBDown/releases/download/1.6.1/BBDown_1.6.1_20230817_win-x64.zip",
+            "hash": "248c3aafb8e767f9cfa55e36f2a1a19b1653bbcdb44c1a2fec394560eb79c1a1"
+        }
     },
-    "url": "https://github.com/nilaoda/BBDown/releases/download/1.6.1/BBDown_1.6.1_20230817_win-x64.zip",
-    "hash": "248c3aafb8e767f9cfa55e36f2a1a19b1653bbcdb44c1a2fec394560eb79c1a1",
     "bin": "BBDown.exe",
+    "suggest": {
+        "aria2": "aria2",
+        "ffmpeg": [
+            "ffmpeg",
+            "ffmpeg-shared"
+        ],
+        "MP4Box": [
+            "MP4Tools",
+            "GPAC"
+        ]
+    },
     "checkver": {
-        "url": "https://github.com/nilaoda/BBDown/releases",
-        "regex": "<h2 .+?>BBDown v(?<version>\\d\\.\\d\\.\\d)</h2>[\\s\\S]+?datetime=\"(?<year>\\d{4})-(?<month>\\d{2})-(?<day>\\d{2})T"
+        "url": "https://api.github.com/repos/nilaoda/BBDown/releases/latest",
+        "regex": "BBDown_([\\d.]+)_(?<date>\\d+)_win-x64"
     },
     "autoupdate": {
-        "url": "https://github.com/nilaoda/BBDown/releases/download/$matchVersion/BBDown_$matchVersion_$matchYear$matchMonth$matchDay_win-x64.zip"
-    },
-    "pre_install": "if(!(Test-Path $dir\\BBDown.config)){ New-Item -ItemType File $dir\\BBDown.config;}",
-    "persist": [
-        [
-            ".\\BBDown.config"
-        ]
-    ]
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/nilaoda/BBDown/releases/download/$version/BBDown_$version_$matchDate_win-x64.zip"
+            }
+        }
+    }
 }
