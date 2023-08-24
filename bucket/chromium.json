@@ -1,11 +1,15 @@
 {
-    "version": "116.0.5845.97",
+    "version": "116.0.5845.111-r1160321",
     "description": "Browser aiming for safer, faster, and more stable way for all users to experience the web.",
     "homepage": "https://www.chromium.org",
     "license": "BSD-3-Clause",
-    "url": "https://github.com/macchrome/winchrome/releases/download/v116.5845.97-M116.0.5845.97-r1160321-Win64/ungoogled-chromium-116.0.5845.97-1_Win64.7z",
-    "hash": "sha1:fd08ec59cf72c44b50e0f799b94ace57b5c0c20e",
-    "extract_dir": "ungoogled-chromium-116.0.5845.97-1_Win64",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/Hibbiki/chromium-win64/releases/download/v116.0.5845.111-r1160321/chrome.sync.7z",
+            "hash": "sha1:b1f9b123ec53fd21e346520ba8aa98dd8f2434a7"
+        }
+    },
+    "extract_dir": "Chrome-bin",
     "bin": [
         [
             "chrome.exe",
@@ -28,15 +32,19 @@
     ],
     "persist": "User Data",
     "checkver": {
-        "github": "https://github.com/macchrome/winchrome",
-        "regex": "v(?<semver>[\\d.]+)-M([\\d.]+)-r(?<build>\\d+)-Win64"
+        "url": "https://api.github.com/repos/Hibbiki/chromium-win64/tags",
+        "jsonpath": "$..name",
+        "regex": "v([\\d.\\-r]+)"
     },
     "autoupdate": {
-        "url": "https://github.com/macchrome/winchrome/releases/download/v$matchSemver-M$version-r$matchBuild-Win64/ungoogled-chromium-$version-1_Win64.7z",
-        "extract_dir": "ungoogled-chromium-$version-1_Win64",
-        "hash": {
-            "url": "https://github.com/macchrome/winchrome/releases/v$matchSemver-M$version-r$matchBuild-Win64",
-            "regex": "(?s)$basename.*?$sha1"
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/Hibbiki/chromium-win64/releases/download/v$version/chrome.sync.7z",
+                "hash": {
+                    "url": "https://github.com/Hibbiki/chromium-win64/releases/tag/v$version",
+                    "regex": "$sha1 \\.\\./out/x64/chrome.sync.7z"
+                }
+            }
         }
     }
 }
