@@ -1,45 +1,85 @@
 {
     "version": "0.20.32",
-    "description": "A Windows/macOS GUI based on Clash",
     "homepage": "https://github.com/Fndroid/clash_for_windows_pkg",
-    "license": "",
-    "notes": [
-        "x86 platform only, ARM users please install clash-for-windows-arm package.",
-        "This version of CFW is a portable version, which means you can run it without installing.",
-        "You can also put it on a USB flash drive or other portable devices and use it on any computer of the same architecture.",
-        "If you want to save the data to local account folder, delete the 'data' folder.",
-        "x86 平台专用， ARM 用户请安装 clash-for-windows-arm 包。",
-        "该版本 CFW 为便携版，即无需安装即可运行。",
-        "你也可以将其放在 U 盘或其他便携设备上，并在任何（同架构）计算机上直接使用它。",
-        "如果你想要将数据保留至本地账户文件夹，请删除 'data' 文件夹。"
-    ],
+    "description": "A Windows GUI based on Clash",
+    "license": "MIT",
     "architecture": {
         "64bit": {
-            "url": "https://github.com/Fndroid/clash_for_windows_pkg/releases/download/0.20.32/Clash.for.Windows-0.20.32-win.7z",
-            "hash": "ffc840b0775fe473e77a1586651b8141529f7d2691a275a1c51fdd4d0655207b"
+            "url": "https://github.com/Fndroid/clash_for_windows_pkg/releases/download/0.20.32/Clash.for.Windows.Setup.0.20.32.exe#/dl.7z",
+            "hash": "e977391c033ff9e5377fb097e579899918706da222d8683a61dd85ef28bfc5e0",
+            "pre_install": [
+                "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\"",
+                "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\`$R0\" -Force -Recurse"
+            ]
         },
         "32bit": {
-            "url": "https://github.com/Fndroid/clash_for_windows_pkg/releases/download/0.20.32/Clash.for.Windows-0.20.32-ia32-win.7z",
-            "hash": "f9a05eb6ddb75c01b9e8dd1f48e1e158050aad89c933e3627d876fe514f9cada"
+            "url": "https://github.com/Fndroid/clash_for_windows_pkg/releases/download/0.20.32/Clash.for.Windows.Setup.0.20.32.ia32.exe#/dl.7z",
+            "hash": "3caab899ba98a35ad9b36962fd6b3bb748036ff19e07c46263310ae44028583f",
+            "pre_install": [
+                "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-32.7z\" \"$dir\"",
+                "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\`$R0\" -Force -Recurse"
+            ]
         }
     },
-    "persist": "data",
-    "checkver": "github",
-    "bin": [
-        "Clash for Windows.exe",
+    "installer": {
+        "script": [
+            "if (!(Test-Path \"$persist_dir\\data\")) {",
+            "    New-Item \"$persist_dir\\data\" -Type Directory -Force | Out-Null",
+            "    if (Test-Path \"$env:USERPROFILE\\.config\\clash\") {",
+            "        Copy-Item -Path \"$env:USERPROFILE\\.config\\clash\\*\" -Destination \"$persist_dir\\data\" -Recurse -Container",
+            "    }",
+            "}",
+            "$runtimeCache = \"$env:APPDATA\\clash_win\"",
+            "$runtimeCachePersist = \"$persist_dir\\clash_win\"",
+            "if (Test-Path $runtimeCachePersist) {",
+            "    Remove-Item $runtimeCache -Force -Recurse -ErrorAction SilentlyContinue",
+            "    New-Item -Type Junction -Path $runtimeCache -Target $runtimeCachePersist | Out-Null",
+            "} else {",
+            "    if (Test-Path $runtimeCache) {",
+            "        Move-Item $runtimeCache $runtimeCachePersist -Force",
+            "        New-Item -Type Junction -Path $runtimeCache -Target $runtimeCachePersist | Out-Null",
+            "    }",
+            "}"
+        ]
+    },
+    "uninstaller": {
+        "script": [
+            "$runtimeCache = \"$env:APPDATA\\clash_win\"",
+            "$runtimeCachePersist = \"$persist_dir\\clash_win\"",
+            "if (!(Test-Path $runtimeCachePersist)) {",
+            "    Move-Item $runtimeCache $runtimeCachePersist -Force",
+            "} else {",
+            "    Remove-Item $runtimeCache -Force -Recurse -ErrorAction SilentlyContinue",
+            "}"
+        ]
+    },
+    "shortcuts": [
         [
             "Clash for Windows.exe",
-            "cfw"
+            "Clash for Windows"
         ]
     ],
+    "persist": "data",
+    "checkver": "github",
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://github.com/Fndroid/clash_for_windows_pkg/releases/download/$version/Clash.for.Windows-$version-win.7z"
+                "url": "https://github.com/Fndroid/clash_for_windows_pkg/releases/download/$version/Clash.for.Windows.Setup.$version.exe#/dl.7z",
+                "hash": {
+                    "url": "https://github.com/Fndroid/clash_for_windows_pkg/releases/download/$version/sha256sum",
+                    "mode": "extract",
+                    "regex": "(?m)^exe: $sha256"
+                }
             },
             "32bit": {
-                "url": "https://github.com/Fndroid/clash_for_windows_pkg/releases/download/$version/Clash.for.Windows-$version-ia32-win.7z"
+                "url": "https://github.com/Fndroid/clash_for_windows_pkg/releases/download/$version/Clash.for.Windows.Setup.$version.ia32.exe#/dl.7z",
+                "hash": {
+                    "url": "https://github.com/Fndroid/clash_for_windows_pkg/releases/download/$version/sha256sum",
+                    "mode": "extract",
+                    "regex": "(?m)^ia32-exe: $sha256"
+                }
             }
         }
-    }
+    },
+    "notes": "Clash for Windows data are now saved into '$persist_dir' and persisted by Scoop."
 }
