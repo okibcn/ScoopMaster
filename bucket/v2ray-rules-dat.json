@@ -1,37 +1,24 @@
 {
-    "version": "202308242208",
-    "description": "Data files from Loyalsoldier/v2ray-rules-dat, works for v2ray and Xray.",
+    "version": "202308252208",
+    "description": "Enhanced ruleset for V2Ray (unofficial)",
     "homepage": "https://github.com/Loyalsoldier/v2ray-rules-dat",
-    "license": {
-        "identifier": "GPL-3.0-or-later",
-        "url": "https://github.com/Loyalsoldier/v2ray-rules-dat/raw/master/LICENSE"
-    },
-    "depends": "maoyeedy_scoop/xray",
-    "url": [
-        "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/download/202308242208/geoip.dat",
-        "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/download/202308242208/geosite.dat"
-    ],
-    "hash": [
-        "c0b1162d64e1b38bfa63445798a876f16cc415e3fdfe0f092e99782ecd0388f9",
-        "9c3afac9af8806da9ec96fd69d37a83d938f6e9252c0a6370e9b7bf77f925eed"
-    ],
+    "license": "GPL-3.0-only",
+    "depends": "v2ray",
+    "url": "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/download/202308252208/rules.zip",
+    "hash": "c801f0db52100ade39b1b641e883f25e331c9390aab11f6fc15504b5fb4a01a6",
     "installer": {
         "script": [
-            "@('geosite.dat', 'geoip.dat') | ForEach-Object { Remove-Item \"$(appdir xray $global)\\current\\$_\" -Force -ErrorAction SilentlyContinue }",
-            "New-Item \"$(appdir xray $global)\\current\\geosite.dat\" -ItemType HardLink -Target \"$dir\\geosite.dat\" | Out-Null",
-            "New-Item \"$(appdir xray $global)\\current\\geoip.dat\" -ItemType HardLink -Target \"$dir\\geoip.dat\" | Out-Null",
-            "Write-Host \"v2ray-rules-dat installation finished, it's suggested to restart your applications using v2ray-rules-dat now.\" -ForegroundColor Magenta"
+            "function LinkFile([String] $file, [String] $source = $file) {",
+            "    Write-Host \"Creating SymbolicLink for $file\"",
+            "    New-Item -Force -ItemType SymbolicLink -Path \"$(appdir v2ray $global)\\current\" -Name $file -Target \"$dir\\$source\" | Out-Null",
+            "}",
+            "LinkFile 'geoip.dat'",
+            "LinkFile 'geosite.dat'"
         ]
-    },
-    "env_set": {
-        "XRAY_LOCATION_ASSET": "$(scoop prefix xray)"
     },
     "checkver": "github",
     "autoupdate": {
-        "url": [
-            "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/download/$version/geoip.dat",
-            "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/download/$version/geosite.dat"
-        ],
+        "url": "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/download/$version/rules.zip",
         "hash": {
             "url": "$url.sha256sum"
         }
