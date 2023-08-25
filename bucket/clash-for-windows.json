@@ -1,15 +1,16 @@
 {
-    "homepage": "https://github.com/Fndroid/clash_for_windows_pkg",
-    "description": "A Windows GUI based on Clash",
     "version": "0.20.32",
+    "description": "A Windows GUI based on Clash",
+    "homepage": "https://github.com/Fndroid/clash_for_windows_pkg",
     "license": "MIT",
+    "notes": "Clash for Windows data are now saved into '$persist_dir' and persisted by Scoop.",
     "architecture": {
         "64bit": {
             "url": "https://github.com/Fndroid/clash_for_windows_pkg/releases/download/0.20.32/Clash.for.Windows.Setup.0.20.32.exe#/dl.7z",
             "hash": "e977391c033ff9e5377fb097e579899918706da222d8683a61dd85ef28bfc5e0",
             "pre_install": [
                 "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\"",
-                "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\`$R0\" -Force -Recurse"
+                "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\Uninst*\" -Force -Recurse"
             ]
         },
         "32bit": {
@@ -17,7 +18,7 @@
             "hash": "3caab899ba98a35ad9b36962fd6b3bb748036ff19e07c46263310ae44028583f",
             "pre_install": [
                 "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-32.7z\" \"$dir\"",
-                "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\`$R0\" -Force -Recurse"
+                "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\Uninst*\" -Force -Recurse"
             ]
         }
     },
@@ -76,10 +77,9 @@
                 "hash": {
                     "url": "https://github.com/Fndroid/clash_for_windows_pkg/releases/download/$version/sha256sum",
                     "mode": "extract",
-                    "regex": "(?m)^ia32-exe: $sha256"
+                    "regex": "^ia32-exe: $sha256"
                 }
             }
         }
-    },
-    "notes": "Clash for Windows data are now saved into '$persist_dir' and persisted by Scoop."
+    }
 }

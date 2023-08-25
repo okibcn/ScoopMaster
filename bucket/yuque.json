@@ -1,18 +1,23 @@
 {
-    "##": "语雀, checkver|https://www.yuque.com/api/docs/changelog?book_id=1840275|$.data.content|Yuque-([\\d.]+).exe",
+    "homepage": "https://www.yuque.com/",
+    "description": "Professional note and document repositories",
     "version": "3.0.8.1086",
-    "description": "[语雀] - 一款文档与知识管理工具。语雀使用了\"结构化知识库管理\"，形式上类似书籍的目录",
     "license": {
         "identifier": "EULA",
         "url": "https://www.yuque.com/terms"
     },
-    "homepage": "https://www.yuque.com",
-    "url": "https://app.nlark.com/yuque-desktop/3.0.8.1086/BJ9865b71d3c0640aa9c94413b7b0c3987/Yuque-3.0.8.1086.exe#/dl.7z",
-    "hash": "2b262d76c0d5dbf7dc533359b2085b61f1972108a91a8f55f91f3447c679f9a9",
-    "pre_install": [
-        "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" $dir",
-        "Remove-Item \"$dir\\`$*\" -Force -Recurse"
-    ],
+    "architecture": {
+        "64bit": {
+            "url": "https://app.nlark.com/yuque-desktop/3.0.8.1086/BJ9865b71d3c0640aa9c94413b7b0c3987/Yuque-3.0.8.1086.exe#/Yuque_3.0.8.1086.7z",
+            "hash": "2b262d76c0d5dbf7dc533359b2085b61f1972108a91a8f55f91f3447c679f9a9",
+            "installer": {
+                "script": [
+                    "Expand-7zipArchive \"$dir\\`$PLUGINSDIR/app-64.7z\" \"$dir\" -Removal",
+                    "Remove-Item \"$dir\\`$PLUGINSDIR\" -Recurse"
+                ]
+            }
+        }
+    },
     "shortcuts": [
         [
             "语雀.exe",
@@ -20,10 +25,15 @@
         ]
     ],
     "checkver": {
-        "url": "https://www.yuque.com/install/desktop",
-        "regex": "windowsDownLoadURL%22%3A%22https%3A%2F%2Fapp\\.nlark\\.com%2Fyuque-desktop%2F([\\d.]+)%2F(?<hash>\\w+)%2FYuque-[\\d.]+\\.exe"
+        "url": "https://www.yuque.com/download",
+        "regex": "%2F(?<code>[a-zA-Z0-9]+)%2FYuque-([\\d.]+).exe"
     },
     "autoupdate": {
-        "url": "https://app.nlark.com/yuque-desktop/$version/$matchHash/Yuque-$version.exe#/dl.7z"
-    }
+        "architecture": {
+            "64bit": {
+                "url": "https://app.nlark.com/yuque-desktop/$version/$matchCode/Yuque-$version.exe#/Yuque_$version.7z"
+            }
+        }
+    },
+    "notes": "Your Yuque data are not persisted by Scoop and still storaged in '%APPDATA%\\yuque-desktop'."
 }
