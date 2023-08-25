@@ -20,7 +20,7 @@
         "Start-Process \"$dir\\setup.exe\" -Wait -Verb 'RunAs' -Args $setupArgs; Remove-Item \"$dir\\setup.exe\"",
         "New-Item \"$dir\\configure-peazip.exe\" -ItemType 'SymbolicLink' -Target \"$persist_dir\\PeaZip\\res\\bin\\Configure PeaZip.exe\" | Out-Null",
         "foreach ($f in @(Get-ChildItem \"$persist_dir\\PeaZip\" -Exclude 'unins*.*')) {",
-        "    $name = $f.Name; New-Item \"$dir\\$n\" -ItemType 'SymbolicLink' -Target $f.FullName | Out-Null",
+        "    $name = $f.Name; New-Item \"$dir\\$name\" -ItemType 'SymbolicLink' -Target $f.FullName | Out-Null",
         "}",
         "if ($cmd -eq 'install') { Start-Process \"$persist_dir\\PeaZip\\res\\bin\\Configure PeaZip.exe\" -Wait -Verb 'RunAs' -Args $setupArgs; Start-Sleep -Seconds 2 }"
     ],
