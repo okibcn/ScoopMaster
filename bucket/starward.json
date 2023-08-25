@@ -1,29 +1,55 @@
 {
     "version": "0.9.0",
-    "description": "Game Launcher for miHoYo - 米家游戏启动器",
+    "description": "Game Launcher for miHoYo",
+    "notes": "the newest version should always be used, the internal update check cannot be disabled.",
     "homepage": "https://github.com/Scighost/Starward",
-    "license": "Unknown",
+    "license": "MIT",
     "architecture": {
         "64bit": {
             "url": "https://github.com/Scighost/Starward/releases/download/0.9.0/Starward_Portable_0.9.0_x64.7z",
-            "hash": "63dfca83edad6611783714c654b6b16aacd140951cb054755f68b9cc04589d4c",
-            "extract_dir": "Starward"
+            "hash": "63dfca83edad6611783714c654b6b16aacd140951cb054755f68b9cc04589d4c"
+        },
+        "arm64": {
+            "url": "https://github.com/Scighost/Starward/releases/download/0.9.0/Starward_Portable_0.9.0_arm64.7z",
+            "hash": "0ad60de20f6340f75a67dcea1578cb1be8b6211186b649cb591e31754f6fb5ca"
         }
     },
+    "extract_dir": "Starward",
     "bin": "Starward.exe",
+    "persist": "data",
     "shortcuts": [
         [
             "Starward.exe",
             "Starward"
         ]
     ],
+    "post_install": [
+        "if (Test-Path \"$persist_dir\\config.ini\") {",
+        "    Copy-Item \"$persist_dir\\config.ini\" \"$dir\"",
+        "}",
+        "else {",
+        "    New-Item \"$persist_dir\\config.ini\" -ItemType File | Out-Null",
+        "    Set-Content -Path \"$persist_dir\\config.ini\" -Value \"EnableConsole = false
+UserDataFolder=./data\"",
+        "    Copy-Item \"$persist_dir\\config.ini\" \"$dir\"",
+        "}"
+    ],
+    "pre_uninstall": [
+        "if (Test-Path \"$dir\\config.ini\") {",
+        "    Copy-Item \"$dir\\config.ini\" \"$persist_dir\"",
+        "}"
+    ],
     "checkver": {
         "github": "https://github.com/Scighost/Starward"
     },
     "autoupdate": {
-        "url": "https://github.com/Scighost/Starward/releases/download/$version/Starward_Portable_$version_x64.7z",
-        "hash": {
-            "mode": "download"
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/Scighost/Starward/releases/download/$version/Starward_Portable_$version_x64.7z"
+            },
+            "arm64": {
+                "url": "https://github.com/Scighost/Starward/releases/download/$version/Starward_Portable_$version_arm64.7z"
+            }
         }
     }
 }

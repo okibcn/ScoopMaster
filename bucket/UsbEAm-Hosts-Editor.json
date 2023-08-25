@@ -1,32 +1,26 @@
 {
     "version": "3.63",
-    "description": "多平台hosts修改",
+    "description": "游戏/开发多平台hosts修改工具",
     "homepage": "https://www.dogfight360.com/blog/475/",
-    "license": "Unknown",
-    "architecture": {
-        "64bit": {
-            "url": "https://github.com/Weidows-projects/scoop-3rd/releases/download/1.0.0/UsbEAm_Hosts_Editor.7z",
-            "hash": "8b640b77959df02c47aa8d4859d25cc0d723e8e63e136ea05968695543518f6a"
-        }
-    },
+    "license": "Freeware",
+    "url": "https://www.dogfight360.com/blog/wp-content/uploads/2022/06/UsbEAm-Hosts-Editor-v3.63_%E8%A7%A3%E5%8E%8B%E5%AF%86%E7%A0%81dogfight360.zip#/dl.zip_",
+    "hash": "618f2f9a7c87137d015df2c486662fb3b221a06e92bfd0bb9a128354c69711bb",
+    "pre_install": [
+        "Expand-7zipArchive -Path \"$dir\\dl.zip_\" -DestinationPath \"$dir\" -ExtractDir 'UsbEAm Hosts Editor' -Removal -Switches '-pdogfight360'",
+        "Get-ChildItem \"$dir\" 'UsbEAm Hosts Editor*.exe' | Select-Object -First 1 | Rename-Item -NewName 'UsbEAm Hosts Editor.exe'"
+    ],
     "shortcuts": [
         [
-            "UsbEAm Hosts Editor v3.62.exe",
+            "UsbEAm Hosts Editor.exe",
             "UsbEAm Hosts Editor"
         ]
     ],
     "checkver": {
         "url": "https://www.dogfight360.com/blog/475/",
-        "regex": "V(\\d+\\.\\d+)"
+        "regex": "www.dogfight360.com/blog/wp-content/uploads/(\\d+)/(\\d+)/UsbEAm-Hosts-Editor-v([\\d.]+)_",
+        "replace": "${3}"
     },
     "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://github.com/Weidows-projects/scoop-3rd/releases/download/1.0.0/UsbEAm_Hosts_Editor.7z",
-                "hash": {
-                    "mode": "download"
-                }
-            }
-        }
+        "url": "https://www.dogfight360.com/blog/wp-content/uploads/$match1/$match2/UsbEAm-Hosts-Editor-v$version_%E8%A7%A3%E5%8E%8B%E5%AF%86%E7%A0%81dogfight360.zip#/dl.zip_"
     }
 }
