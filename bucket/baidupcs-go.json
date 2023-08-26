@@ -19,10 +19,10 @@
     },
     "installer": {
         "script": [
-            "Move-Item \"$dir\\Baidu*\\*\", \"$dir\""
+            "Move-Item \"$dir\\BaiduPCS-Go-*\\*\" \"$dir\\\" -Force",
+            "Remove-Item \"$dir\\BaiduPCS-Go-*\" -Force " 
         ]
     },
-    "bin": "BaiduPCS-Go.exe",
     "pre_install": [
         "if (!(Test-Path \"$persist_dir\\pcs_config.json\") -or !(Get-Item \"$persist_dir\\pcs_config.json\").Length) {",
         "   New-Item \"$persist_dir\\pcs_config.json\" -ItemType File -Force | Out-Null}",
@@ -30,7 +30,9 @@
         "   New-Item \"$persist_dir\\pcs_command_history.txt\" -ItemType File -Force | Out-Null}",
         "if (!(Test-Path \"$persist_dir\\pcs_uploading.json\") -or !(Get-Item \"$persist_dir\\pcs_uploading.json\").Length) {",
         "   New-Item \"$persist_dir\\pcs_uploading.json\" -ItemType File -Force | Out-Null}"
+        
     ],
+    "bin": "baiduPCS-Go.exe",
     "persist": [
         "pcs_config.json",
         "pcs_command_history.txt",
