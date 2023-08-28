@@ -1,35 +1,18 @@
 {
-    "version": "0.0.29-15544",
-    "description": "Sony PlayStation 3 emulator",
     "homepage": "https://rpcs3.net/",
+    "version": "0.0.29-15544",
+    "description": "Playstation 3 Emulator",
     "license": {
         "identifier": "GPL-2.0",
         "url": "https://github.com/RPCS3/rpcs3/blob/master/LICENSE"
     },
-    "notes": [
-        "ATTENTION: RPCS3 requires a copy of the official PS3 firmware to function.",
-        "Install the ps3-system-software package.  You must still manually load PS3UPDAT.PUP",
-        "See the official quickstart guide for further instructions: https://rpcs3.net/quickstart"
-    ],
-    "depends": "ps3-system-software",
-    "suggest": {
-        "Microsoft Visual C++ Runtime 2022": "extras/vcredist2022"
-    },
-    "url": "https://github.com/rpcs3/rpcs3-binaries-win/releases/download/build-3d2229ca0577066fc7cd45c15a742d05551c7f42/rpcs3-v0.0.29-15544-3d2229ca_win64.7z",
+    "url": "https://github.com/RPCS3/rpcs3-binaries-win/releases/download/build-3d2229ca0577066fc7cd45c15a742d05551c7f42/rpcs3-v0.0.29-15544-3d2229ca_win64.7z",
     "hash": "2142752f9299653b08d23486cbe18526572717bc1c905b9a2df0f4f2e6e64c63",
-    "pre_install": [
-        "if (!(Test-Path \"$persist_dir\")) {",
-        "   New-Item \"$persist_dir\" -ItemType Directory | Out-Null",
-        "   New-Item \"$persist_dir\\config.yml\" -ItemType File | Out-Null",
-        "   New-Item \"$persist_dir\\games.yml\" -ItemType File | Out-Null",
-        "   '[Meta]', 'checkUpdateStart=false' | Set-Content \"$dir\\GuiConfigs\\CurrentSettings.ini\"",
-        "}"
-    ],
     "bin": "rpcs3.exe",
     "shortcuts": [
         [
             "rpcs3.exe",
-            "RPCS3"
+            "PS3"
         ]
     ],
     "persist": [
@@ -38,27 +21,41 @@
         "dev_flash3",
         "dev_hdd0",
         "dev_hdd1",
-        "dev_usb000",
         "cache",
-        "captures",
-        "config.yml",
         "config",
-        "firmware",
-        "games.yml",
-        "GuiConfigs",
-        "Icons",
-        "patches"
+        "patches",
+        "captures",
+        "recordings",
+        "savestates",
+        "config.yml",
+        "games.yml"
     ],
+    "installer": {
+        "script": [
+            "function create($path, $type, $content) {",
+            "   if (-not (Test-Path \"$path\")) {",
+            "       New-Item \"$path\" -ItemType $type -Value $content | Out-Null",
+            "       Write-Output \"Creating $path...\"",
+            "   }",
+            "}",
+            "$conf = \"$persist_dir\\config.yml\"",
+            "$games = \"$persist_dir\\games.yml\"",
+            "create $conf File",
+            "create $games File"
+        ]
+    },
     "checkver": {
-        "url": "https://rpcs3.net/compatibility?b",
-        "regex": "/rpcs3-binaries-win/releases/download/build-(?<fullhash>[0-9a-f]+)/rpcs3-v(?<build>[0-9]+\\.[0-9]+\\.[0-9]+\\-[0-9]+)-(?<shorthash>[0-9a-f]{8})",
-        "replace": "${build}"
+        "url": "https://update.rpcs3.net/?api=v2&c=0",
+        "jsonpath": {
+            "version": "$.latest_build.version",
+            "download": "$.latest_build.windows.download",
+            "hash": "$.latest_build.windows.checksum"
+        }
     },
     "autoupdate": {
-        "url": "https://github.com/rpcs3/rpcs3-binaries-win/releases/download/build-$matchFullhash/rpcs3-v$matchBuild-$matchShorthash_win64.7z",
+        "url": "$matchDownload",
         "hash": {
-            "url": "https://rpcs3.net/compatibility?b",
-            "regex": "Windows SHA-256: ($sha256)"
+            "url": "$url.sha256"
         }
     }
 }
