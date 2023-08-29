@@ -1,33 +1,42 @@
 {
     "version": "0.9.0",
-    "description": "Game Launcher for miHoYo - 米家游戏启动器",
+    "description": "Game Launcher for miHoYo/hoyoverse.",
     "homepage": "https://github.com/Scighost/Starward",
-    "license": "Unknown",
+    "license": {
+        "identifier": "MIT",
+        "url": "https://github.com/Scighost/Starward/blob/main/LICENSE"
+    },
     "architecture": {
         "64bit": {
             "url": "https://github.com/Scighost/Starward/releases/download/0.9.0/Starward_Portable_0.9.0_x64.7z",
-            "hash": "63dfca83edad6611783714c654b6b16aacd140951cb054755f68b9cc04589d4c",
-            "extract_dir": "Starward"
+            "hash": "63dfca83edad6611783714c654b6b16aacd140951cb054755f68b9cc04589d4c"
+        },
+        "arm64": {
+            "url": "https://github.com/Scighost/Starward/releases/download/0.9.0/Starward_Portable_0.9.0_arm64.7z",
+            "hash": "0ad60de20f6340f75a67dcea1578cb1be8b6211186b649cb591e31754f6fb5ca"
         }
     },
-    "bin": "Starward.exe",
+    "checkver": "github",
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/Scighost/Starward/releases/download/$version/Starward_Portable_$version_x64.7z"
+            },
+            "arm64": {
+                "url": "https://github.com/Scighost/Starward/releases/download/$version/Starward_Portable_$version_arm64.7z"
+            }
+        }
+    },
+    "extract_dir": "Starward",
     "shortcuts": [
         [
             "Starward.exe",
             "Starward"
         ]
     ],
-    "persist": [
-        "config.ini",
-        "data"
+    "pre_install": [
+        "If (-not (Test-Path $persist_dir\\config.ini)) {\"UserDataFolder=$persist_dir\\data\" | Out-File $persist_dir\\config.ini}"
     ],
-    "checkver": {
-        "github": "https://github.com/Scighost/Starward"
-    },
-    "autoupdate": {
-        "url": "https://github.com/Scighost/Starward/releases/download/$version/Starward_Portable_$version_x64.7z",
-        "hash": {
-            "mode": "download"
-        }
-    }
+    "persist": ["data", "config.ini"],
+    "notes": "Setup wizard would be skipped because of preset value of user data by pre-install scripts."
 }
