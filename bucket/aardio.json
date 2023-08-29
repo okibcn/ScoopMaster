@@ -1,34 +1,22 @@
 {
+    "##": "This package is not added to official buckets because only Chinese UI / docs is available.",
     "version": "35.69.2",
-    "description": "aardio | flexible and powerful dynamic language. aardio | 灵活而强大的动态语言",
+    "description": "Rapid programming platform for Windows desktop applications",
     "homepage": "https://www.aardio.com/",
-    "license": "Unknown",
+    "license": "Freeware",
     "url": "https://ide.update.aardio.com/releases/aardio.7z",
     "hash": "a3c99fa58f63340b1e1c39ab94dff9745b7a6399ecda098317f63425587d2de1",
-    "persist": [
-        "config",
-        "project"
-    ],
+    "bin": "aardio.exe",
     "shortcuts": [
         [
             "aardio.exe",
             "aardio"
         ]
     ],
-    "pre_uninstall": [
-        "$App_name=\"aardio\"",
-        "$existProcess=Get-Process -Name \"$App_name*\" -ErrorAction SilentlyContinue",
-        "foreach($_ in $existProcess.ProcessName){ Write-Host \"Stop-Process  $_\" -f red }",
-        "while($true){",
-        "   if(Get-Process -Name \"$App_name*\" -ErrorAction SilentlyContinue){",
-        "       Stop-Process -Name \"$App_name*\" -Force",
-        "   }else { break }",
-        "   Start-Sleep -Milliseconds 500",
-        "}"
-    ],
+    "persist": "config\\USR.CFG",
     "checkver": {
-        "url": "https://ide.update.aardio.com/log/",
-        "regex": "aardio v([\\d.]+)"
+        "url": "http://ide.update.aardio.com/check/",
+        "regex": "\"version\":\"([\\d.]+)\""
     },
     "autoupdate": {
         "url": "https://ide.update.aardio.com/releases/aardio.7z"
