@@ -1,26 +1,38 @@
 {
-    "version": "2.02",
     "homepage": "https://www.bitcomet.com/",
-    "description": "BitComet is a powerful, super-fast and easy-to-use, free BitTorrent download client.",
+    "version": "2.02",
     "license": {
-        "identifier": "BitComet Software License Agreement",
+        "identifier": "freeware for non-commercial use",
         "url": "https://www.bitcomet.com/en/license"
     },
     "url": "https://download.bitcomet.com/achive/BitComet_2.02.zip",
     "hash": "e5d3d32330fc61b56ffd36ce99729438dd144ea1a67420dc20b53783d359cd3a",
+    "bin": "BitComet.exe",
+    "pre_install": [
+        "'BitComet.xml', 'Downloads.xml' | ForEach-Object {",
+        "   if(!(Test-Path \"$persist_dir\\$_\")) { New-Item \"$dir\\$_\" | Out-Null }",
+        "}"
+    ],
+    "persist": [
+        "BitComet.xml",
+        "Downloads.xml",
+        "torrents",
+        "share",
+        "archive"
+    ],
     "architecture": {
-        "32bit": {
-            "shortcuts": [
-                [
-                    "BitComet.exe",
-                    "BitComet"
-                ]
-            ]
-        },
         "64bit": {
             "shortcuts": [
                 [
                     "BitComet_x64.exe",
+                    "BitComet"
+                ]
+            ]
+        },
+        "32bit": {
+            "shortcuts": [
+                [
+                    "BitComet.exe",
                     "BitComet"
                 ]
             ]
@@ -33,8 +45,8 @@
     "autoupdate": {
         "url": "https://download.bitcomet.com/achive/BitComet_$version.zip",
         "hash": {
-            "regex": "zip.*?SHA256.*?($sha256)",
-            "url": "https://www.bitcomet.com/en/archive"
+            "url": "https://www.bitcomet.com/en/archive",
+            "find": "BitComet_$version.zip.*?($sha256)"
         }
     }
 }
