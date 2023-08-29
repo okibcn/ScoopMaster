@@ -1,32 +1,39 @@
 {
     "version": "202308282208",
+    "description": "Data files from Loyalsoldier/v2ray-rules-dat, works for v2ray and Xray.",
     "homepage": "https://github.com/Loyalsoldier/v2ray-rules-dat",
-    "description": "Enhanced edition of V2Ray rules dat files.",
-    "license": "GPL-3.0-or-later",
+    "license": {
+        "identifier": "GPL-3.0-or-later",
+        "url": "https://github.com/Loyalsoldier/v2ray-rules-dat/raw/master/LICENSE"
+    },
+    "depends": "maoyeedy_scoop/xray",
     "url": [
-        "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/download/202308282208/rules.zip",
-        "https://github.com/CALMorACT/hola_bucket/raw/master/scripts/v2ray-rules-search.ps1"
+        "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/download/202308282208/geoip.dat",
+        "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/download/202308282208/geosite.dat"
     ],
     "hash": [
-        "6f90535eefba8ba4efae2d625b63556e4c87ca32933894c4b341bcbc244b8f24",
-        "c189578c79940f3ab935df8c27d0e2e1ca9773acc7ef61f772f83e7c2523e700"
+        "c0b1162d64e1b38bfa63445798a876f16cc415e3fdfe0f092e99782ecd0388f9",
+        "fab5f99da206f118ca0da5e90a2aaf2956d2abd491b17076fb93c02c47afd911"
     ],
-    "depends": "v2ray",
-    "post_install": [
-        "Copy-Item \"$dir/geoip.dat\" \"$dir/../../v2ray/current\" -Force",
-        "Copy-Item \"$dir/geosite.dat\" \"$dir/../../v2ray/current\" -Force"
-    ],
-    "bin": [
-        [
-            "v2ray-rules-search.ps1",
-            "v2rulesearch"
+    "installer": {
+        "script": [
+            "@('geosite.dat', 'geoip.dat') | ForEach-Object { Remove-Item \"$(appdir xray $global)\\current\\$_\" -Force -ErrorAction SilentlyContinue }",
+            "New-Item \"$(appdir xray $global)\\current\\geosite.dat\" -ItemType HardLink -Target \"$dir\\geosite.dat\" | Out-Null",
+            "New-Item \"$(appdir xray $global)\\current\\geoip.dat\" -ItemType HardLink -Target \"$dir\\geoip.dat\" | Out-Null",
+            "Write-Host \"v2ray-rules-dat installation finished, it's suggested to restart your applications using v2ray-rules-dat now.\" -ForegroundColor Magenta"
         ]
-    ],
+    },
+    "env_set": {
+        "XRAY_LOCATION_ASSET": "$(scoop prefix xray)"
+    },
     "checkver": "github",
     "autoupdate": {
-        "url": "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/download/$version/rules.zip",
+        "url": [
+            "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/download/$version/geoip.dat",
+            "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/download/$version/geosite.dat"
+        ],
         "hash": {
-            "url": "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/download/$version/rules.zip.sha256sum"
+            "url": "$url.sha256sum"
         }
     }
 }
