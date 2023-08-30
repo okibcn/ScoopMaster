@@ -1,13 +1,13 @@
 {
-    "version": "26683",
+    "version": "33992",
     "description": "Freecad weekly builds",
     "homepage": "https://www.freecadweb.org",
     "license": "GPL-2.0",
     "architecture": {
         "64bit": {
-            "url": "https://github.com/FreeCAD/FreeCAD-Bundle/releases/download/weekly-builds/FreeCAD_weekly-builds-26683-Win-Conda_vc14.x-x86_64.7z",
-            "extract_dir": "FreeCAD_weekly-builds-26683-Win-Conda_vc14.x-x86_64",
-            "hash": "830497b35ebffea5004323633576a40a3481cc93f4451f8d20771f7d0f31bbce"
+            "url": "https://github.com/FreeCAD/FreeCAD-Bundle/releases/download/weekly-builds/FreeCAD_weekly-builds-33992-2023-08-27-conda-Windows-x86_64-py310.7z",
+            "extract_dir": "weekly-builds/FreeCAD_weekly-builds-33992-2023-08-27-conda-Windows-x86_64-py310",
+            "hash": "005aef16f9ee35d8ca85b8f636d72695f208a63a832f900f4e6db7d4f43c05dc"
         }
     },
     "pre_install": [
@@ -40,19 +40,20 @@
         ]
     ],
     "checkver": {
-        "url": "https://github.com/FreeCAD/FreeCAD-Bundle/releases/tag/weekly-builds",
-        "regex": "(?sm)FreeCAD_weekly-builds-([\\d.]+)-Win-Conda_vc14\\.x-x86_64\\.7z"
+        "url": "https://api.github.com/repos/FreeCAD/FreeCAD-Bundle/releases/tags/weekly-builds",
+        "jsonPath": "$.assets[*].browser_download_url",
+        "regex": "(?sm)FreeCAD_weekly-builds-(?<version>\\d+)-(?<date>[\\d-]{10})-"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://github.com/FreeCAD/FreeCAD-Bundle/releases/download/weekly-builds/FreeCAD_weekly-builds-$version-Win-Conda_vc14.x-x86_64.7z",
-                "extract_dir": "FreeCAD_weekly-builds-$version-Win-Conda_vc14.x-x86_64"
+                "url": "https://github.com/FreeCAD/FreeCAD-Bundle/releases/download/weekly-builds/FreeCAD_weekly-builds-$version-$matchDate-conda-Windows-x86_64-py310.7z",
+                "extract_dir": "weekly-builds/FreeCAD_weekly-builds-$version-$matchDate-conda-Windows-x86_64-py310"
             }
         },
         "hash": {
             "url": "$url-SHA256.txt",
-            "regex": "(?sm):\\s+([a-fA-F\\d\\s]+)CertUtil"
+            "regex": "(?sm):.+?(\\w+).+CertUtil:"
         }
     },
     "notes": [
