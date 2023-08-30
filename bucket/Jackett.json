@@ -5,9 +5,15 @@
     "license": "GPL-2.0-or-later",
     "url": "https://github.com/Jackett/Jackett/releases/download/v0.21.716/Jackett.Binaries.Windows.zip",
     "hash": "1835d58e51b6b18e01e39b5fa6fa72be874482fe13a07541bc8aff8226fe0675",
+    "extract_dir": "Jackett",
+    "pre_uninstall": [
+        "'JacketTray', 'JacketConsole', 'JacketService' | ForEach-Object {",
+        "    Stop-Process -Name $_ -ErrorAction SilentlyContinue",
+        "}"
+    ],
     "shortcuts": [
         [
-            "Jackett\\JackettTray.exe",
+            "JackettTray.exe",
             "Jackett"
         ]
     ],
