@@ -24,14 +24,16 @@
     "architecture": {
         "64bit": {
             "url": "https://github.com/arch1t3cht/Aegisub/releases/download/feature_10/Windows.MSVC.Release.-.portable.zip",
-            "hash": "6dde45c221ba109ee3756169ccdf06d70f052f5adc489d26da16f4413ab50ae6"
+            "hash": "a95ceeedbab7b7ac71dd161fcf14cd46b5c9f7b141dfc887a36fe4bfa86ecf26"
         }
     },
     "pre_install": [
-        "ensure \"$persist_dir\\Aegisub\" | Out-Null",
+        "if (!(Test-Path $persist_dir)) { ensure $persist_dir | Out-Null }",
         "Expand-7zipArchive \"$dir\\aegisub-portable-64.zip\" \"$persist_dir\\Aegisub\" -ExtractDir 'aegisub-portable' -Removal",
-        "Remove-Item \"$dir\\Microsoft.CRT\" -Recurse",
-        "[System.IO.File]::WriteAllLines(\"$dir\\Aegisub\\hotkey.json\", '', [System.text.UTF8Encoding]($false))",
+        "Remove-Item \"$persist_dir\\Aegisub\\Microsoft.CRT\" -Recurse",
+        "if (!(Test-Path \"$persist_dir\\Aegisub\\hotkey.json\")) {",
+        "    [System.IO.File]::WriteAllLines(\"$persist_dir\\Aegisub\\hotkey.json\", '', [System.text.UTF8Encoding]($false))",
+        "}"
     ],
     "shortcuts": [
         [
@@ -40,7 +42,6 @@
         ]
     ],
     "persist": [
-        "Aegisub\\hotkey.json",
         "Aegisub\\config",
         "Aegisub\\feedDump",
         "Aegisub\\log"
