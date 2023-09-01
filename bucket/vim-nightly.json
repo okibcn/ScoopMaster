@@ -1,32 +1,15 @@
 {
-    "version": "9.0.1826",
-    "description": "A highly configurable text editor for efficiently creating and changing any kind of text.",
     "homepage": "https://www.vim.org",
+    "description": "A highly configurable text editor for efficiently creating and changing any kind of text.",
     "license": "Vim",
-    "notes": "Add gVim as a context menu option by running: \"$dir\\install-context.reg\"",
-    "suggest": {
-        "vimtutor": "vimtutor"
-    },
+    "version": "9.0.1833",
     "architecture": {
         "64bit": {
-            "url": "https://github.com/vim/vim-win32-installer/releases/download/v9.0.1826/gvim_9.0.1826_x64.zip",
-            "hash": "00e0d737b0356ace635a7ec2dc44cb0881ed8b7176b91b30cd279d46271c03e3"
-        },
-        "32bit": {
-            "url": "https://github.com/vim/vim-win32-installer/releases/download/v9.0.1826/gvim_9.0.1826_x86.zip",
-            "hash": "41465b650e6bdb3a8d5018a41494726f4d14ff35c8edbe9be6a7725891503e5c"
+            "url": "https://github.com/vim/vim-win32-installer/releases/download/v9.0.1833/gvim_9.0.1833_x64.zip",
+            "hash": "0e4f3f2801f41792d7da5afa7143b9dd68d2f5b943303068e680fc4af1b44307"
         }
     },
     "extract_dir": "vim\\vim90",
-    "post_install": [
-        "Remove-Item \"$dir\\`$*\", \"$dir\\uninstal.*\", \"$dir\\install.exe\" -Recurse",
-        "'install-context.reg', 'uninstall-context.reg' | ForEach-Object {",
-        "    $vimpath = \"$dir\\gVim.exe\".Replace('\\', '\\\\')",
-        "    $content = (Get-Content \"$bucketsdir\\versions\\scripts\\vim\\$_\").Replace('$vim', $vimpath)",
-        "    if ($global) { $content = $content.Replace('HKEY_CURRENT_USER', 'HKEY_LOCAL_MACHINE') }",
-        "    Set-Content \"$dir\\$_\" $content",
-        "}"
-    ],
     "bin": [
         "vim.exe",
         [
@@ -104,11 +87,11 @@
         "architecture": {
             "64bit": {
                 "url": "https://github.com/vim/vim-win32-installer/releases/download/v$version/gvim_$version_x64.zip"
-            },
-            "32bit": {
-                "url": "https://github.com/vim/vim-win32-installer/releases/download/v$version/gvim_$version_x86.zip"
             }
         },
         "extract_dir": "vim\\vim$majorVersion$minorVersion"
+    },
+    "suggest": {
+        "vimtutor": "vimtutor"
     }
 }
