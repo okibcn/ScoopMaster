@@ -1,8 +1,11 @@
 {
     "version": "8.5",
     "homepage": "https://www.poweriso.com/index.htm",
-    "description": "",
-    "license": "",
+    "description": "A powerful CD / DVD / BD image file processing tool, which allows you to open, extract, burn, create, edit, compress, encrypt, split and convert ISO files, and mount ISO files with internal virtual drive.",
+    "license": {
+        "identifier": "Shareware",
+        "url": "https://www.poweriso.com/tutorials/eula.htm"
+    },
     "architecture": {
         "32bit": {
             "url": "https://www.poweriso.net/PowerISO8.exe#/setup.exe",
@@ -17,10 +20,12 @@
             },
             "uninstaller": {
                 "script": [
-                    "if (!(is_admin)) { error \"$app requires admin rights to $cmd\"; break }",
-                    "Stop-Process -Name 'PWRISOVM', 'explorer' -Force",
-                    "Start-Process \"${env:ProgramFiles(x86)}\\PowerISO\\uninstall.exe\" -Wait -Verb 'RunAs' -Args '/S'",
-                    "Remove-Item 'HKCU:\\SOFTWARE\\PowerISO1' -Recurse"
+                    "if ($cmd -eq 'uninstall') {",
+                    "    if (!(is_admin)) { error \"$app requires admin rights to $cmd\"; break }",
+                    "    Stop-Process -Name 'PWRISOVM', 'explorer' -Force",
+                    "    Start-Process \"${env:ProgramFiles(x86)}\\PowerISO\\uninstall.exe\" -Wait -Verb 'RunAs' -Args '/S'",
+                    "    Remove-Item 'HKCU:\\SOFTWARE\\PowerISO1' -Recurse",
+                    "}"
                 ]
             }
         },
@@ -37,10 +42,12 @@
             },
             "uninstaller": {
                 "script": [
-                    "if (!(is_admin)) { error \"$app requires admin rights to $cmd\"; break }",
-                    "Stop-Process -Name 'PWRISOVM', 'explorer' -Force",
-                    "Start-Process \"$env:ProgramFiles\\PowerISO\\uninstall.exe\" -Wait -Verb 'RunAs' -Args '/S'",
-                    "Remove-Item 'HKCU:\\SOFTWARE\\PowerISO1' -Recurse"
+                    "if ($cmd -eq 'uninstall') {",
+                    "    if (!(is_admin)) { error \"$app requires admin rights to $cmd\"; break }",
+                    "    Stop-Process -Name 'PWRISOVM', 'explorer' -Force",
+                    "    Start-Process \"$env:ProgramFiles\\PowerISO\\uninstall.exe\" -Wait -Verb 'RunAs' -Args '/S'",
+                    "    Remove-Item 'HKCU:\\SOFTWARE\\PowerISO1' -Recurse",
+                    "}"
                 ]
             }
         }
