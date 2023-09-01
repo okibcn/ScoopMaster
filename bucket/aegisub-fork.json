@@ -28,23 +28,22 @@
         }
     },
     "pre_install": [
-        "if (!(Test-Path $persist_dir)) { ensure $persist_dir | Out-Null }",
+        "if (!(Test-Path \"$persist_dir\\Aegisub\")) { ensure \"$persist_dir\\Aegisub\" | Out-Null }",
         "Expand-7zipArchive \"$dir\\aegisub-portable-64.zip\" \"$persist_dir\\Aegisub\" -ExtractDir 'aegisub-portable' -Removal",
-        "Remove-Item \"$persist_dir\\Aegisub\\Microsoft.CRT\" -Recurse",
+        "[System.IO.File]::WriteAllLines(\"$dir\\aegisub.cmd\", \"@start '$persist_dir\\Aegisub\\aegisub.exe'\", [System.text.UTF8Encoding]($false))",
+        "# This is just to extract the the icon from the `.exe` file.",
+        "[System.Drawing.Icon]::ExtractAssociatedIcon(\"$persist_dir\\Aegisub\\aegisub.exe\").ToBitmap().Save(\"$dir\\aegisub.ico\")",
         "if (!(Test-Path \"$persist_dir\\Aegisub\\hotkey.json\")) {",
         "    [System.IO.File]::WriteAllLines(\"$persist_dir\\Aegisub\\hotkey.json\", '', [System.text.UTF8Encoding]($false))",
         "}"
     ],
     "shortcuts": [
         [
-            "Aegisub\\aegisub.exe",
-            "Aegisub"
+            "aegisub.cmd",
+            "Aegisub",
+            "",
+            "icon.exe_"
         ]
-    ],
-    "persist": [
-        "Aegisub\\config",
-        "Aegisub\\feedDump",
-        "Aegisub\\log"
     ],
     "post_install": [
         "$scriptsDir = \"$bucketsdir\\MyScoop\\scripts\"",
