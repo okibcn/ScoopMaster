@@ -1,25 +1,30 @@
 {
     "version": "4.23.1",
-    "description": "An Arknights assistant, supports ZH and EN client",
-    "homepage": "https://www.maa.plus/",
+    "homepage": "https://github.com/MaaAssistantArknights/MaaAssistantArknights",
     "license": "AGPL-3.0",
-    "url": "https://github.com/MaaAssistantArknights/MaaAssistantArknights/releases/download/v4.23.1/MAA-v4.23.1-win-x64.zip",
-    "hash": "3b2cdb8568e48a0b8c63ce18cec45b776240760a7f14a0eb12b2090b574fb571",
-    "bin": "MAA.exe",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/MaaAssistantArknights/MaaAssistantArknights/releases/download/v4.23.1/MAA-v4.23.1-win-x64.zip",
+            "hash": "3b2cdb8568e48a0b8c63ce18cec45b776240760a7f14a0eb12b2090b574fb571"
+        }
+    },
     "shortcuts": [
         [
             "MAA.exe",
-            "MAA Assistant Arknights"
+            "MAA"
         ]
     ],
-    "persist": [
-        "config",
-        "debug"
-    ],
+    "persist": "config",
     "checkver": {
-        "github": "https://github.com/MaaAssistantArknights/MaaAssistantArknights"
+        "url": "https://api.github.com/repos/MaaAssistantArknights/MaaAssistantArknights/releases",
+        "jsonpath": "$[0].tag_name",
+        "re": "v(.+)"
     },
     "autoupdate": {
-        "url": "https://github.com/MaaAssistantArknights/MaaAssistantArknights/releases/download/v$version/MAA-v$version-win-x64.zip"
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/MaaAssistantArknights/MaaAssistantArknights/releases/download/v$version/MAA-v$version-win-x64.zip"
+            }
+        }
     }
 }
