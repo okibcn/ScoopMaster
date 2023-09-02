@@ -1,25 +1,28 @@
 {
     "version": "6.0.1",
+    "homepage": "https://shana.pe.kr/",
     "description": "ShanaEncoder is audio/video encoding program based on FFmpeg.",
-    "homepage": "https://shana.pe.kr",
-    "license": {
-        "identifier": "Freeware",
-        "url": "https://shana.pe.kr/license"
-    },
-    "url": "https://www.videohelp.com/download/ShanaEncoder6.0.1.exe#/dl.7z",
+    "license": "Freeware",
+    "url": "https://downloads.sourceforge.net/project/shanaencoder/ShanaEncoder6.0.1.exe#/dl.7z",
     "hash": "98c08600d3fd6f8c8072b886ba2130c07fde154721faecf32313a5609be8e619",
+    "script": [
+        "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\*\" \"$dir\"",
+        "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\Uninst*\" -Force -Recurse"
+    ],
     "shortcuts": [
         [
             "ShanaEncoder.exe",
             "ShanaEncoder"
         ]
     ],
-    "post_install": "Remove-Item \"$dir\\`$PLUGINSDIR\" -Force -Recurse",
     "checkver": {
-        "url": "https://www.videohelp.com/software/ShanaEncoder",
-        "regex": "ShanaEncoder ([\\d.]+) Free Download"
+        "url": "https://sourceforge.net/projects/shanaencoder/files/",
+        "regex": "\"/projects/shanaencoder/files/latest/download\" title=\"/ShanaEncoder([\\d\\w\\.]+)\\.exe"
     },
     "autoupdate": {
-        "url": "https://www.videohelp.com/download/ShanaEncoder$version.exe#/dl.7z"
+        "url": "https://downloads.sourceforge.net/project/shanaencoder/ShanaEncoder$version.exe#/dl.7z",
+        "hash": {
+            "mode": "sourceforge"
+        }
     }
 }
