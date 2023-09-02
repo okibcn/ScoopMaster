@@ -5,8 +5,12 @@
     "license": "GPL-2.0-only",
     "architecture": {
         "64bit": {
-            "url": "https://artifacts.videolan.org/vlc/nightly-win64-ucrt-llvm/20230902-0427/vlc-4.0.0-dev-win64-d3026b16.7z",
-            "hash": "sha512:b23babadbbeda3e3bef85d00bc3869f4b9deec56b72ca7c4db9c504e5ca014dbfcf66af74592a397c2aa71c4807a591e96329ba8936ca0d95dacafc6c285ebd4"
+            "url": "https://artifacts.videolan.org/vlc/nightly-win64/20230902-0430/vlc-4.0.0-dev-win64-d3026b16.7z",
+            "hash": "sha512:1b7804b150899af96519d6b7b0e05e3e0c4a7f99f3da26eaddfef5f6c2d82b6ded73d579f68ed6b0eafffe1adcc738cebac353db79ff9631276e8b8c13ef1bd8"
+        },
+        "32bit": {
+            "url": "https://artifacts.videolan.org/vlc/nightly-win32/20230902-0427/vlc-4.0.0-dev-win32-d3026b16.7z",
+            "hash": "sha512:129ecf93b1937483b79c20ec0f990aa11d883112d5e3b9da84a774576467ccf88dc6a91a53cf76f596528cfa6b4b70d3ab40e7e1d7ccff3118154417407b9f3e"
         }
     },
     "extract_dir": "vlc-4.0.0-dev",
@@ -28,26 +32,34 @@
     "persist": "portable",
     "checkver": {
         "script": [
-            "$build = 'win64'",
+            "$builds = 'win32', 'win64'",
             "$scriptver = ''",
             "$urls =  @()",
-            "$base_url = 'https://artifacts.videolan.org/vlc/nightly-win64-ucrt-llvm/'",
-            "$page = Invoke-WebRequest $base_url -UseBasicParsing",
-            "$full_version = $page.links | Where-Object href -match '\\d+-\\d+' | Select-Object -first 1 -expand href",
-            "$dl_page = Invoke-WebRequest ($base_url + $full_version) -UseBasicParsing",
-            "$scriptver = $full_version -split '-' | Select-Object -first 1",
-            "$dl = $full_version + ($dl_page.links | Where-Object href -match '\\.7z$' | Select-Object -first 1 -expand href)",
-            "$urls += $dl",
+            "foreach ($build in $builds) {",
+            "   $base_url = 'https://artifacts.videolan.org/vlc/nightly-' + $build + '/'",
+            "   $page = Invoke-WebRequest $base_url -UseBasicParsing",
+            "   $full_version = $page.links | Where-Object href -match '\\d+-\\d+' | Select-Object -first 1 -expand href",
+            "   $dl_page = Invoke-WebRequest ($base_url + $full_version) -UseBasicParsing",
+            "   $scriptver = $full_version -split '-' | Select-Object -first 1",
+            "   $dl = $full_version + ($dl_page.links | Where-Object href -match '\\.7z$' | Select-Object -first 1 -expand href)",
+            "   $urls += $dl",
+            "}",
             "Write-Output ('version:\"' + $scriptver + '\"') ('urls:\"' + $urls + '\"')"
         ],
-        "regex": "version:\"(?<version>\\d+)\"\\surls:\"(?<win64bitver>.+\\/)(?<win64bitfile>(?<folderversion>vlc-[\\d.]+-dev).+)\""
+        "regex": "version:\"(?<version>\\d+)\"\\surls:\"(?<win32bitver>.+\\/)(?<win32bitfile>(?<folderversion>vlc-[\\d.]+-dev).+)\\s(?<win64bitver>.+\\/)(?<win64bitfile>.+)\""
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://artifacts.videolan.org/vlc/nightly-win64-ucrt-llvm/$matchWin64bitver$matchWin64bitfile",
+                "url": "https://artifacts.videolan.org/vlc/nightly-win64/$matchWin64bitver$matchWin64bitfile",
                 "hash": {
-                    "url": "https://artifacts.videolan.org/vlc/nightly-win64-ucrt-llvm/$matchWin64bitverSHA512SUM"
+                    "url": "https://artifacts.videolan.org/vlc/nightly-win64/$matchWin64bitverSHA512SUM"
+                }
+            },
+            "32bit": {
+                "url": "https://artifacts.videolan.org/vlc/nightly-win32/$matchWin32bitver$matchWin32bitfile",
+                "hash": {
+                    "url": "https://artifacts.videolan.org/vlc/nightly-win32/$matchWin32bitverSHA512SUM"
                 }
             }
         },
