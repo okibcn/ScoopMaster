@@ -5,19 +5,23 @@
     "license": "GPL-3.0-or-later",
     "architecture": {
         "64bit": {
-            "url": "https://github.com/mintty/wsltty/releases/download/3.6.5/wsltty-3.6.5-x86_64-install.exe#/dl.7z",
-            "hash": "eff112bd2df23db306d27b91a08c7bcd45f3e87eca36545ad7d8e54b89099c28"
+            "url": "https://github.com/mintty/wsltty/releases/download/3.6.5/wsltty-3.6.5-x86_64.cab#/dl.7z",
+            "hash": "345164d61d4dbe80eebbb9a39ae8a1480c43ad9dbf68699cec6e7383cc27b597",
+            "extract_dir": "wsltty-3.6.5-x86_64"
         },
         "32bit": {
-            "url": "https://github.com/mintty/wsltty/releases/download/3.6.5/wsltty-3.6.5-i686-install.exe#/dl.7z",
-            "hash": "903b5f1de563b47c040b7075b655953c93d57569559bfaf15214630d911d7144"
+            "url": "https://github.com/mintty/wsltty/releases/download/3.6.5/wsltty-3.6.5-i686.cab#/dl.7z",
+            "hash": "1d2f9da1e28ef79e64b2d2d58a08c5ca38c209bd2070819fc25cb53ab888aab6",
+            "extract_dir": "wsltty-3.6.5-i686"
         }
     },
     "extract_to": "installer",
     "installer": {
         "script": [
+            "$env:installdir = $dir",
+            "$env:configdir = \"$dir\\config\"",
             "Push-Location \"$dir\\installer\"",
-            "& .\\install.bat \"$dir\" \"$dir\\config\"",
+            "& .\\install.bat 2>&1>$null",
             "Pop-Location"
         ]
     },
@@ -26,18 +30,21 @@
         "script": [
             "$env:installdir = $dir",
             "Push-Location \"$dir\"",
-            "& .\\uninstall.bat",
+            "& .\\uninstall.bat 2>&1>$null",
             "Pop-Location"
         ]
     },
+    "persist": "config",
     "checkver": "github",
     "autoupdate": {
         "architecture": {
-            "32bit": {
-                "url": "https://github.com/mintty/wsltty/releases/download/$version/wsltty-$version-i686-install.exe#/dl.7z"
-            },
             "64bit": {
-                "url": "https://github.com/mintty/wsltty/releases/download/$version/wsltty-$version-x86_64-install.exe#/dl.7z"
+                "url": "https://github.com/mintty/wsltty/releases/download/$version/wsltty-$version-x86_64.cab#/dl.7z",
+                "extract_dir": "wsltty-$version-x86_64"
+            },
+            "32bit": {
+                "url": "https://github.com/mintty/wsltty/releases/download/$version/wsltty-$version-i686.cab#/dl.7z",
+                "extract_dir": "wsltty-$version-i686"
             }
         }
     }
