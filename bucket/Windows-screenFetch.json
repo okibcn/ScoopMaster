@@ -13,6 +13,13 @@
     "psmodule": {
         "name": "Windows-screenFetch"
     },
+    "pre_install": [
+        "$CheckAltInstall = $(appdir Windows-screenFetch-alt $global)",
+        "if (Test-Path \"$CheckAltInstall\") {",
+        "    Write-Host \"Found conflict version, uninstalling ...\" -ForegroundColor Yellow",
+        "    scoop uninstall Windows-screenFetch-alt",
+        "}"
+    ],
     "post_install": [
         "Remove-Item \"$dir\\LICENSE\", \"$dir\\README.md\", \"$dir\\screenshots\" -Force -Recurse -ErrorAction SilentlyContinue",
         "Import-Module $manifest.psmodule.name",
@@ -25,7 +32,7 @@
         "    New-ProfileModifier -Behavior RemoveModule -PSModuleName $manifest.psmodule.name -AppDir $dir -BucketDir $BucketDir",
         "    Remove-Module S4Utils -ErrorAction SilentlyContinue",
         "} else {",
-        "    Write-Host 'Missing files, please re-add Scoop4kariiin bucket and re-install this app.' -ForegroundColor Red",
+        "    Write-Host \"Missing files, please re-add Scoop4kariiin bucket and re-install this app.\" -ForegroundColor Red",
         "}"
     ],
     "pre_uninstall": [
@@ -38,7 +45,7 @@
     ],
     "checkver": {
         "url": "https://api.github.com/repos/AkariiinMKII/Windows-screenFetch/tags",
-        "regex": "tags/v([\\d.]+)"
+        "regex": "tags/v([\\d.]+)\""
     },
     "autoupdate": {
         "url": "https://github.com/AkariiinMKII/Windows-screenFetch/archive/v$version.zip",

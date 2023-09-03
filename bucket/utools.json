@@ -1,76 +1,45 @@
 {
-    "description": "",
-    "homepage": "https://u.tools",
-    "license": "",
+    "homepage": "https://u.tools/",
+    "description": "新一代效率工具平台，自由组合丰富插件，打造随手可取的终极神器",
+    "license": "Unknown",
     "version": "4.0.1",
-    "notes": "",
-    "architecture": {
-        "64bit": {
-            "url": "https://res.u-tools.cn/version2/uTools-4.0.1.exe#/dl.7z",
-            "hash": "6c65bc730488688185479621536bb1f47f846db84af4c35a047b52b971d8a1ed",
-            "installer": {
-                "script": "Expand-7zipArchive \"$dir\\`$PLUGINSDIR/app-64.7z\" \"$dir\""
-            }
-        },
-        "32bit": {
-            "url": "https://res.u-tools.cn/version2/uTools-4.0.1-ia32.exe#/dl.7z",
-            "hash": "0c17f3347d72ed49a41c8bff8c08c27b0846328478ce468ece31ef395e084f1e",
-            "installer": {
-                "script": [
-                    "Expand-7zipArchive \"$dir\\`$PLUGINSDIR/app-32.7z\" \"$dir\"",
-                    "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\`$R0\" -Recurse -Force"
-                ]
-            }
-        }
-    },
-    "pre_install": "",
-    "post_install": [
-        "Remove-Item -Recurse -Force \"$dir\\`$PLUGINSDIR\"",
-        "$runtimeCache = \"$env:APPDATA\\uTools\"",
-        "$runtimeCachePersist = \"$persist_dir\\data\"",
-        "if (Test-Path $runtimeCachePersist) {",
-        "    Remove-Item $runtimeCache -Force -Recurse -ErrorAction SilentlyContinue",
-        "    New-Item -Type SymbolicLink -Path $runtimeCache -Target $runtimeCachePersist | Out-Null",
-        "} else {",
-        "    if (Test-Path $runtimeCache) {",
-        "        Move-Item $runtimeCache $runtimeCachePersist -Force",
-        "        New-Item -Type SymbolicLink -Path $runtimeCache -Target $runtimeCachePersist | Out-Null",
-        "    }",
-        "}"
-    ],
-    "uninstaller": {
-        "script": [
-            "$runtimeCache = \"$env:APPDATA\\uTools\"",
-            "$runtimeCachePersist = \"$persist_dir\\data\"",
-            "$tmp = \"$dir\\tmp\"",
-            "New-Item -Type SymbolicLink -Path $runtimeCache -Target $tmp -Force | Out-Null",
-            "Remove-Item $runtimeCache -Recurse -Force | Out-Null",
-            "Remove-Item $tmp -Recurse -Force | Out-Null"
-        ]
-    },
-    "shortcuts": [
-        [
-            "utools.exe",
-            "uTools"
-        ]
-    ],
-    "env_add_path": [
-        "",
-        ""
-    ],
-    "persist": "data",
     "checkver": {
-        "url": "https://u.tools",
-        "regex": "version: 'V(\\d\\.\\d\\.\\d)'"
+        "url": "https://u.tools/",
+        "regex": "uTools-([\\d.]+)\\.exe"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://res.u-tools.cn/version2/uTools-$version.exe#/dl.7z"
+                "url": "https://res.u-tools.cn/version2/uTools-$version.exe#/uTools.7z"
             },
             "32bit": {
-                "url": "https://res.u-tools.cn/version2/uTools-$version-ia32.exe#/dl.7z"
+                "url": "https://res.u-tools.cn/version2/uTools-$version-ia32.exe#/uTools.7z"
             }
         }
-    }
+    },
+    "architecture": {
+        "64bit": {
+            "url": "https://res.u-tools.cn/version2/uTools-4.0.1.exe#/uTools.7z",
+            "hash": "6c65bc730488688185479621536bb1f47f846db84af4c35a047b52b971d8a1ed",
+            "installer": {
+                "script": "7z x $original_dir/PLUGINSDIR/app-64.7z -o\"$original_dir\""
+            }
+        },
+        "32bit": {
+            "url": "https://res.u-tools.cn/version2/uTools-4.0.1-ia32.exe#/uTools.7z",
+            "hash": "0c17f3347d72ed49a41c8bff8c08c27b0846328478ce468ece31ef395e084f1e",
+            "installer": {
+                "script": "7z x $original_dir/PLUGINSDIR/app-32.7z -o\"$original_dir\""
+            }
+        }
+    },
+    "extract_dir": "$PLUGINSDIR",
+    "extract_to": "PLUGINSDIR",
+    "post_install": "rm $original_dir/PLUGINSDIR -recurse",
+    "shortcuts": [
+        [
+            "uTools.exe",
+            "uTools"
+        ]
+    ]
 }
