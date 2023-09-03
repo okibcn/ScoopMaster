@@ -1,5 +1,5 @@
 {
-    "version": "1.3.0",
+    "version": "1.3.1",
     "description": "A Powershell port of bash/unix screenfetch.",
     "homepage": "https://github.com/AkariiinMKII/Windows-screenFetch",
     "license": "GPL-3.0-only",
@@ -7,15 +7,15 @@
         "Run following command to import Windows-screenFetch automatically in Powershell:",
         "$dir\\add-profile-content.ps1"
     ],
-    "url": "https://github.com/AkariiinMKII/Windows-screenFetch/archive/v1.3.0.zip",
-    "hash": "2b5dca2546fb0ed19af973a759d70f00e167310094fbc3febfd4c03c054a4876",
-    "extract_dir": "Windows-screenFetch-1.3.0",
+    "url": "https://github.com/AkariiinMKII/Windows-screenFetch/archive/v1.3.1.zip",
+    "hash": "bdf6c9cabb1dacdf357fbdc6f60666025203fbcba58f18cd50df293fb4b064e9",
+    "extract_dir": "Windows-screenFetch-1.3.1",
     "psmodule": {
         "name": "Windows-screenFetch"
     },
     "post_install": [
         "Remove-Item \"$dir\\LICENSE\", \"$dir\\README.md\", \"$dir\\screenshots\" -Force -Recurse -ErrorAction SilentlyContinue",
-        "Import-Module Windows-screenFetch",
+        "Import-Module $manifest.psmodule.name",
         "$BucketDir = Find-BucketDirectory -Root -Name $bucket",
         "$S4UtilsPath = $BucketDir | Join-Path -ChildPath \"scripts\\S4Utils.psm1\"",
         "if (Test-Path $S4UtilsPath) {",
@@ -29,7 +29,7 @@
         "}"
     ],
     "pre_uninstall": [
-        "Remove-Module Windows-screenFetch -ErrorAction SilentlyContinue",
+        "Remove-Module $manifest.psmodule.name -ErrorAction SilentlyContinue",
         "$S4UtilsPath = Find-BucketDirectory -Root -Name $install.bucket | Join-Path -ChildPath \"scripts\\S4Utils.psm1\"",
         "if (($cmd -eq 'uninstall') -and (Test-Path \"$dir\\remove-profile-content.ps1\") -and (Test-Path $S4UtilsPath)) {",
         "    Unblock-File $S4UtilsPath",
