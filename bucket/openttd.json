@@ -1,62 +1,56 @@
 {
+    "homepage": "https://www.openttd.org",
     "version": "13.4",
-    "description": "Simulation game based upon Transport Tycoon Deluxe",
-    "homepage": "https://www.openttd.org/",
-    "license": "GPL-2.0-or-later",
+    "description": "OpenTTD is an open source simulation game based upon Transport Tycoon Deluxe.",
     "architecture": {
-        "32bit": {
-            "url": [
-                "https://cdn.openttd.org/openttd-releases/13.4/openttd-13.4-windows-win64.zip",
-                "https://cdn.openttd.org/opengfx-releases/7.1/opengfx-7.1-all.zip",
-                "https://cdn.openttd.org/opensfx-releases/1.0.3/opensfx-1.0.3-all.zip",
-                "https://cdn.openttd.org/openmsx-releases/0.4.2/openmsx-0.4.2-all.zip"
-            ],
-            "hash": [
-                "38a257b735f6a97c96047f6a53d1115eaffad49b9d8fae203921ee0dc7d1959e",
-                "928fcf34efd0719a3560cbab6821d71ce686b6315e8825360fba87a7a94d7846",
-                "e0a218b7dd9438e701503b0f84c25a97c1c11b7c2f025323fb19d6db16ef3759",
-                "5a4277a2e62d87f2952ea5020dc20fb2f6ffafdccf9913fbf35ad45ee30ec762"
-            ],
+        "64bit": {
+            "url": "https://proxy.binaries.openttd.org/openttd-releases/13.4/openttd-13.4-windows-win64.zip",
+            "hash": "38a257b735f6a97c96047f6a53d1115eaffad49b9d8fae203921ee0dc7d1959e",
             "extract_dir": "openttd-13.4-windows-win64"
         },
-        "64bit": {
-            "url": [
-                "https://cdn.openttd.org/openttd-releases/13.4/openttd-13.4-windows-win32.zip",
-                "https://cdn.openttd.org/opengfx-releases/7.1/opengfx-7.1-all.zip",
-                "https://cdn.openttd.org/opensfx-releases/1.0.3/opensfx-1.0.3-all.zip",
-                "https://cdn.openttd.org/openmsx-releases/0.4.2/openmsx-0.4.2-all.zip"
-            ],
-            "hash": [
-                "5dcb2dddd520da59518d4bf4f405f088706b872a5dd36dce20151a57066a20bc",
-                "928fcf34efd0719a3560cbab6821d71ce686b6315e8825360fba87a7a94d7846",
-                "e0a218b7dd9438e701503b0f84c25a97c1c11b7c2f025323fb19d6db16ef3759",
-                "5a4277a2e62d87f2952ea5020dc20fb2f6ffafdccf9913fbf35ad45ee30ec762"
-            ],
-            "extract_dir": "openttd-13.4-windows-win32"
+        "32bit": {
+            "url": "https://proxy.binaries.openttd.org/openttd-releases/13.4/openttd-13.4-windows-win32.zip",
+            "hash": "5dcb2dddd520da59518d4bf4f405f088706b872a5dd36dce20151a57066a20bc",
+            "extract_dir": "openttd-13.4-windows-win632"
         }
     },
-    "pre_install": [
-        "Move-Item \"$dir\\opengfx-7.1.tar\" \"$dir\\baseset\"",
-        "Move-Item \"$dir\\opensfx-1.0.3.tar\" \"$dir\\baseset\"",
-        "Move-Item \"$dir\\openmsx-0.4.2.tar\" \"$dir\\baseset\""
-    ],
     "bin": "openttd.exe",
+    "persist": [
+        "content_download",
+        "screenshot",
+        "save",
+        "newgrf",
+        "scenario",
+        "openttd.cfg"
+    ],
+    "notes": [
+        "Requires Transport Tycoon Deluxe Data Files,",
+        "or open alternatives: OpenGFX (graphics), OpenSFX (sound) and OpenMSX (music) which can be downloaded in-game."
+    ],
     "shortcuts": [
         [
             "openttd.exe",
             "OpenTTD"
         ]
     ],
-    "checkver": "Download stable \\(([\\d\\.]+)\\)",
+    "checkver": "Download stable \\((\\d.+\\d)\\)<\\/a>",
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://cdn.openttd.org/openttd-releases/$version/openttd-$version-windows-win32.zip",
-                "extract_dir": "openttd-$version-windows-win32"
+                "url": "https://proxy.binaries.openttd.org/openttd-releases/$version/openttd-$version-windows-win64.zip",
+                "hash": {
+                    "url": "https://www.openttd.org/downloads/openttd-releases/latest.html",
+                    "regex": "checksum-openttd-$version-windows-win64\\.zip\"[\\s\\w=\":;><&\\/]+  sha256sum: ([a-zA-Z0-9]{64})"
+                },
+                "extract_dir": "openttd-$version-windows-win64"
             },
             "32bit": {
-                "url": "https://cdn.openttd.org/openttd-releases/$version/openttd-$version-windows-win64.zip",
-                "extract_dir": "openttd-$version-windows-win64"
+                "url": "https://proxy.binaries.openttd.org/openttd-releases/$version/openttd-$version-windows-win32.zip",
+                "hash": {
+                    "url": "https://www.openttd.org/downloads/openttd-releases/latest.html",
+                    "regex": "checksum-openttd-$version-windows-win32\\.zip\"[\\s\\w=\":;><&\\/]+  sha256sum: ([a-zA-Z0-9]{64})"
+                },
+                "extract_dir": "openttd-$version-windows-win632"
             }
         }
     }
