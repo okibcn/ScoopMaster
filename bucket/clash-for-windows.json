@@ -1,35 +1,38 @@
 {
-    "homepage": "https://docs.cfw.lbyczf.com/",
-    "description": "A Windows GUI based on Clash https://docs.cfw.lbyczf.com/",
+    "homepage": "https://github.com/Fndroid/clash_for_windows_pkg",
+    "description": "A Windows/macOS/Linux GUI based on Clash and Electron",
     "version": "0.20.33",
-    "license": "MIT",
     "architecture": {
         "64bit": {
-            "url": "https://github.com/Fndroid/clash_for_windows_pkg/releases/download/0.20.33/Clash.for.Windows.Setup.0.20.33.exe#/clash.7z",
-            "hash": "891e04ce4e250c3db27b46230087ddde8dea024ae2879e3ace2eb31b7fa213c2",
-            "installer": {
-                "script": [
-                    "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\"",
-                    "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\Uninstall*\" -Force -Recurse"
-                ]
-            }
+            "url": "https://github.com/Fndroid/clash_for_windows_pkg/releases/download/0.20.33/Clash.for.Windows-0.20.33-win.7z",
+            "hash": "ed4644d6744f2396e689a07025e3590e082dfd78882dd016f4fdb4d9d48cbb53"
+        },
+        "32bit": {
+            "url": "https://github.com/Fndroid/clash_for_windows_pkg/releases/download/0.20.33/Clash.for.Windows-0.20.33-ia32-win.7z",
+            "hash": "8e06302e40f96310d1ce5a83e3a25aadc1934bd7fd9eb23aafb3a1f08fb2e84c"
         }
     },
+    "bin": [
+        [
+            "Clash for Windows.exe",
+            "clash-for-windows"
+        ]
+    ],
     "shortcuts": [
         [
             "Clash for Windows.exe",
             "Clash for Windows"
         ]
     ],
-    "persist": "data",
-    "checkver": {
-        "github": "https://github.com/Fndroid/clash_for_windows_pkg"
-    },
+    "checkver": "github",
     "autoupdate": {
-        "url": "https://github.com/Fndroid/clash_for_windows_pkg/releases/download/$version/Clash.for.Windows.Setup.$version.exe#/clash.7z",
-        "hash": {
-            "url": "$baseurl/sha256sum",
-            "regex": "^exe: $sha256"
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/Fndroid/clash_for_windows_pkg/releases/download/$version/Clash.for.Windows-$version-win.7z"
+            },
+            "32bit": {
+                "url": "https://github.com/Fndroid/clash_for_windows_pkg/releases/download/$version/Clash.for.Windows-$version-ia32-win.7z"
+            }
         }
     }
 }
