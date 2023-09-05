@@ -1,17 +1,40 @@
 {
-    "checkver": {
-        "github": "https://github.com/pypy-vrc/VRCX"
+    "version": "2022.07.13",
+    "description": "manage your friendship of VRChat",
+    "homepage": "https://github.com/pypy-vrc/VRCX",
+    "license": {
+        "identifier": "MIT",
+        "url": "https://github.com/pypy-vrc/VRCX/blob/master/LICENSE"
     },
-    "autoupdate": {
-        "url": "https://github.com/pypy-vrc/VRCX/releases/download/v$version/VRCX_$cleanVersion.zip"
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/pypy-vrc/VRCX/releases/download/v2022.07.13/VRCX_20220713.zip#/dl.7z",
+            "hash": "de70fbc104892e2a87c8994aba8f585b6e27624ec03ee701d55efe5c7c4b630c"
+        }
     },
-    "version": "2023.07.30",
-    "url": "https://github.com/pypy-vrc/VRCX/releases/download/v2023.07.30/VRCX_20230730.zip",
-    "hash": "fb6b0763b4355b6355fcad2b17936509d89bb06aa81da768ed9f1715c2bff8e9",
+    "pre_install": [
+        "if (!(test-path \"$dir\\VRCX.json\")) { new-item -force \"$dir\\VRCX.json\" -itemtype file | out-null }",
+        "if (!(test-path \"$dir\\VRCX.sqlite3\")) { new-item -force \"$dir\\VRCX.sqlite3\" -itemtype file | out-null }"
+    ],
+    "persist": [
+        "cache",
+        "userdata",
+        "VRCX.json",
+        "VRCX.sqlite3"
+    ],
+    "bin": "VRCX.exe",
     "shortcuts": [
         [
             "VRCX.exe",
             "VRCX"
         ]
-    ]
+    ],
+    "checkver": "github",
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/pypy-vrc/VRCX/releases/download/v$version/VRCX_$cleanVersion.zip#/dl.7z"
+            }
+        }
+    }
 }

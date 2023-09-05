@@ -13,7 +13,7 @@
     "usr\\bin\\tig.exe",
     "git-bash.exe"
   ],
-  "version": "2.41.0.windows.1",
+  "version": "2.41.0.3",
   "license": "GPL-2.0-only",
   "shortcuts": [
     [
@@ -35,22 +35,23 @@
     "To create file-associations for .git* and .sh files, run '$dir\\install-file-associations.reg'"
   ],
   "checkver": {
-    "regex": "tag/v([\\d.]+\\.windows\\.\\d)",
-    "github": "https://github.com/git-for-windows/git"
+    "url": "https://api.github.com/repos/git-for-windows/git/releases/latest",
+    "jsonpath": "$..browser_download_url",
+    "regex": "download/v(?<tag>[\\d.]+windows\\.\\d)/PortableGit-([\\d.]+)-64"
   },
   "architecture": {
     "64bit": {
-      "url": "https://registry.npmmirror.com/-/binary/git-for-windows/v2.41.0.windows.1/PortableGit-2.41.0-64-bit.7z.exe#/dl.7z",
-      "hash": "fcbaeffd24fdf435a1f7844825253509136377915e6720aa66aa256ec1f83c30"
+      "url": "https://registry.npmmirror.com/-/binary/git-for-windows/v2.41.0.windows.3/PortableGit-2.41.0.3-64-bit.7z.exe#/dl.7z",
+      "hash": "61c62a2590799bc37d88b51871abb13ff4057b2626b89d6bc11afd58888d11c6"
     },
     "32bit": {
-      "url": "https://registry.npmmirror.com/-/binary/git-for-windows/v2.41.0.windows.1/PortableGit-2.41.0-32-bit.7z.exe#/dl.7z",
-      "hash": "12190f5bec59a187ec0368f39dba55a7802706076b91fe400ef5da4247999467"
+      "url": "https://registry.npmmirror.com/-/binary/git-for-windows/v2.41.0.windows.3/PortableGit-2.41.0.3-32-bit.7z.exe#/dl.7z",
+      "hash": "49578dd063951c3c8848365461a1da473c7849ac720e681aa10e2ba499e8a64e"
     }
   },
   "post_install": [
     "'install-context', 'uninstall-context', 'install-file-associations', 'uninstall-file-associations' | ForEach-Object {",
-    "    $reg_file_in  = \"$bucketsdir\\$bucket\\scripts\\git\\$_.reg\"",
+    "    $reg_file_in  = \"$bucketsdir\\main\\scripts\\git\\$_.reg\"",
     "    $reg_file_out = \"$dir\\$_.reg\"",
     "    $git_root     = \"$dir\".Replace('\\', '\\\\')",
     "    if (Test-Path $reg_file_in) {",
@@ -66,14 +67,14 @@
   "autoupdate": {
     "architecture": {
       "64bit": {
-        "url": "https://registry.npmmirror.com/-/binary/git-for-windows/v$version/PortableGit-$matchHead-64-bit.7z.exe#/dl.7z"
+        "url": "https://registry.npmmirror.com/-/binary/git-for-windows/v$matchTag/PortableGit-$version-64-bit.7z.exe#/dl.7z"
       },
       "32bit": {
-        "url": "https://registry.npmmirror.com/-/binary/git-for-windows/v$version/PortableGit-$matchHead-32-bit.7z.exe#/dl.7z"
+        "url": "https://registry.npmmirror.com/-/binary/git-for-windows/v$matchTag/PortableGit-$version-32-bit.7z.exe#/dl.7z"
       }
     },
     "hash": {
-      "url": "https://github.com/git-for-windows/git/releases/tag/v$version",
+      "url": "https://github.com/git-for-windows/git/releases/tag/v$matchTag",
       "regex": "(?s)$basename.*?$sha256"
     }
   }
