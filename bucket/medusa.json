@@ -1,18 +1,17 @@
 {
-  "##": [
-    "name:Medusa",
-    "author:Jeffrey Pfau",
-    "cmd:%BIN% %ROM%",
-    "logo:https://consolo.is.cc/images/emuDownloadCenter/hooks/medusa/emulator_logo.png",
-    "screenshot:https://consolo.is.cc/images/emuDownloadCenter/hooks/medusa/emulator_screen_01.jpg"
-  ],
-  "bin": [
-    "medusa.exe"
-  ],
-  "description": "medusa is an emulator for running Nintendo DS, Game Boy Advance and Game Boy games. It aims to be faster and more accurate than many existing Nintendo DS and Game Boy Advance emulators, as well as adding features that other emulators lack. It also supports Game Boy and Game Boy Color games.",
-  "hash": "059b38c48ac8bbb2f810f8c80bfed5903197375caffa27f7926f11950cf39ed3",
-  "homepage": "http://mgba.io",
-  "license": "Freeware",
-  "url": "https://consolo.is.cc/emu/medusa/alpha2-win64.7z",
-  "version": "alpha2-win64"
+    "description": "Virtual synthesizer for chiptune",
+    "version": "2",
+    "license": {
+        "identifier": "Freeware"
+    },
+    "url": "http://www.milkcrate.com.au/ub/Medusa2.zip",
+    "hash": "270fd98d0ceabd078865f951357a97fed3a38109673d8d299fabf9d0e186091a",
+    "post_install": [
+        "New-Item -ErrorAction Ignore $env:USERPROFILE\\.vst -ItemType Directory",
+        "New-Item -Type Junction -Path $env:USERPROFILE\\.vst\\medusa -Value $dir"
+    ],
+    "uninstaller": {
+        "script": ["(Get-Item $env:USERPROFILE\\.vst\\medusa).Delete()"]
+    },
+    "##": "NOTE: バージョンをチェックする手段がない"
 }
