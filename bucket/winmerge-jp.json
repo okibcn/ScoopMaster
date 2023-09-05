@@ -1,41 +1,40 @@
 {
-    "version": "2.16.22-jp-1",
-    "license": "GPL-2.0",
-    "architecture": {
-        "64bit": {
-            "url": "http://inazumaapps.info/scoop/redist/winmerge-2.16.28-jp-4-x64-exe.zip",
-            "hash": "dfa47ea131b7318d0cf7ef6b4b609f140f514e1d4d734d7bfe4840652dda338c"
-        },
-        "32bit": {
-            "url": "http://inazumaapps.info/scoop/redist/winmerge-2.16.28-jp-4-exe.zip",
-            "hash": "62d1a4a182fbed121f3d29cc1468d44db77fd0bd5eac6f858b492f774d80dc82"
-        }
+  "homepage": "https://winmergejp.bitbucket.io/",
+  "description": "An open source differencing and merging tool for Windows that compares both folders and files.",
+  "license": "GPL-2.0-only",
+  "version": "2.16.30+-jp-4",
+  "architecture": {
+    "32bit": {
+      "url": "https://osdn.net/frs/redir.php?f=winmerge-jp%2F78921%2Fwinmerge-2.16.30-jp-4-exe.zip#/dl.7z",
+      "hash": "5c7c9b145de33dcfbb4dbb33194acdd0db69e774941e0ddf84b43ac557d56313"
     },
-    "extract_dir": "WinMerge",
-    "homepage": "https://winmergejp.bitbucket.io/",
-    "bin": "WinMergeU.exe",
-    "pre_install": [
-        "if((Test-Path(\"$env:TEMP\\__scoop__preserved\"))) { Write-Output \"[pre_install] Removing temporary preserved folder\"; Remove-Item \"$env:TEMP\\__scoop__preserved\" -Recurse -Force }",
-        "Write-Output \"[pre_install] Creating temporary preserved folder\"; New-Item \"$env:TEMP\\__scoop__preserved\" -type directory | Out-Null",
-        "Write-Output \"[pre_install] Preserving original files\"; Copy-Item \"$dir\\*\" \"$env:TEMP\\__scoop__preserved\" -Recurse -Force"
-    ],
-    "persist": [
-        "Filters",
-        "MergePlugins"
-    ],
-    "post_install": [
-        "Write-Output \"[post_install] Overwriting from original files\"; Copy-Item \"$env:TEMP\\__scoop__preserved\\*\" \"$dir\" -Recurse -Force",
-        "Write-Output \"[post_install] Removing temporary preserved folder\"; Remove-Item \"$env:TEMP\\__scoop__preserved\" -Recurse -Force"
-    ],
-    "shortcuts": [
-        [
-            "WinMergeU.exe",
-            "WinMerge (日本語版)"
-        ]
-    ],
-    "checkver": {
-        "url": "https://winmergejp.bitbucket.io/",
-        "re": "winmerge-([\\d.]+)-jp-([\\d]+)-exe.zip",
-        "replace": "${1}-jp-${2}"
+    "64bit": {
+      "url": "https://osdn.net/frs/redir.php?f=winmerge-jp%2F78921%2Fwinmerge-2.16.30-jp-4-x64-exe.zip#/dl.7z",
+      "hash": "9370c1999d6bdd9d59264ff36c874775247a1a6fc82d89d9418c3c10bfe675d1"
     }
+  },
+  "extract_dir": "WinMerge",
+  "bin": "WinMergeU.exe",
+  "shortcuts": [
+    [
+      "WinMergeU.exe",
+      "WinMerge-JP"
+    ]
+  ],
+  "persist": "MergePlugins",
+  "checkver": {
+    "url": "https://osdn.net/projects/winmerge-jp/",
+    "re": "releases/(?<release>[\\d]{5})\">.+WinMerge (?<version>[\\d.]+)\\+-jp-(?<build>[\\d]+)",
+    "replace": "${version}+-jp-${build}"
+  },
+  "autoupdate": {
+    "architecture": {
+      "32bit": {
+        "url": "https://osdn.net/frs/redir.php?f=winmerge-jp%2F$matchRelease%2Fwinmerge-$matchVersion-jp-$matchBuild-exe.zip#/dl.7z"
+      },
+      "64bit": {
+        "url": "https://osdn.net/frs/redir.php?f=winmerge-jp%2F$matchRelease%2Fwinmerge-$matchVersion-jp-$matchBuild-x64-exe.zip#/dl.7z"
+      }
+    }
+  }
 }

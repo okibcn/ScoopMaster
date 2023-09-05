@@ -1,10 +1,14 @@
 {
-    "version": "2022.5.341.0",
-    "description": "The free app that makes your Internet safer.",
-    "homepage": "https://1.1.1.1/",
-    "license": "Freeware",
-    "url": "https://1111-releases.cloudflareclient.com/windows/Cloudflare_WARP_Release-x64.msi#/setup.msi_",
-    "hash": "f6ff3390444844f87f27f613085364c7f67cf9fad5950f57ad5f3290ceea15f3",
+    "version": "2023.7.160.0",
+    "description": "The WARP application uses BoringTun to encrypt all the traffic from your device and send it directly to Cloudflare's edge, ensuring that no one in between is snooping on what you're doing.",
+    "homepage": "https://cloudflarewarp.com/",
+    "license": {
+        "identifier": "Freeware",
+        "url": "https://www.cloudflare.com/zh-cn/application/terms/"
+    },
+    "url": "https://ocean-api.deno.dev/cloudflare-warp?dl#/setup.msi_",
+    "hash": "c8b0bcbb71a708d32e0d60d04a16ef6ed4ce369d99c00e547e9ac0a5fa16c11d",
+    "pre_install": "if (-not (is_admin)) { error 'This package requires admin privileges to install.'; break }",
     "installer": {
         "script": [
             "Invoke-ExternalCommand msiexec -ArgumentList @('/i', \"$dir\\$fname\", '/quiet', '/norestart') -RunAs | Out-Null",
@@ -20,10 +24,11 @@
         "script": "cmd /c (((Get-ItemProperty -Path HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\* | Where-Object {$_.DisplayName -eq \"Cloudflare WARP\"} | Select-Object -Expand UninstallString))+ \" /norestart\")"
     },
     "checkver": {
-        "url": "https://install.appcenter.ms/api/v0.1/apps/cloudflare/1.1.1.1-windows-1/distribution_groups/release/public_releases",
-        "jp": "$[0].version"
+        "url": "https://ocean-api.deno.dev/cloudflare-warp",
+        "jsonpath": "$.version"
     },
     "autoupdate": {
-        "url": "https://1111-releases.cloudflareclient.com/windows/Cloudflare_WARP_Release-x64.msi#/setup.msi_"
-    }
+        "url": "https://ocean-api.deno.dev/cloudflare-warp?dl#/setup.msi_"
+    },
+    "_from": "okibcn/ScoopMaster"
 }

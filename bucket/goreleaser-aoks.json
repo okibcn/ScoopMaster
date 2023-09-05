@@ -1,0 +1,38 @@
+{
+    "version": "1.20.0",
+    "homepage": "https://goreleaser.com",
+    "description": "Deliver Go binaries as fast and easily as possible",
+    "license": "MIT",
+    "architecture": {
+        "32bit": {
+            "url": "https://github.com/goreleaser/goreleaser/releases/download/v1.20.0/goreleaser_Windows_i386.zip",
+            "hash": "9504b2361b5e1957bc5215354d400e60409a544100570714ce11ce70466ba166"
+        },
+        "64bit": {
+            "url": "https://github.com/goreleaser/goreleaser/releases/download/v1.20.0/goreleaser_Windows_x86_64.zip",
+            "hash": "87ad7f3766b3f181e97579f8a33b65475a71d8302c5519c4f0885b76a10bed8d"
+        }
+    },
+    "bin": "goreleaser.exe",
+    "checkver": {
+        "github": "https://github.com/goreleaser/goreleaser"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/goreleaser/goreleaser/releases/download/v$version/goreleaser_Windows_x86_64.zip",
+                "hash": {
+                    "url": "$baseurl/checksums.txt",
+                    "regex": "$sha256\\s+$basename"
+                }
+            },
+            "32bit": {
+                "url": "https://github.com/goreleaser/goreleaser/releases/download/v$version/goreleaser_Windows_i386.zip",
+                "hash": {
+                    "url": "$baseurl/checksums.txt",
+                    "regex": "$sha256\\s+$basename"
+                }
+            }
+        }
+    }
+}
