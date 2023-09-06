@@ -1,11 +1,16 @@
 {
-    "version": "17.0.2-21581411",
     "homepage": "https://www.vmware.com/products/workstation-pro.html",
-    "description": "vmware虚拟机专业版",
+    "version": "17.0.2.21581411",
+    "description": "VMWare. Industry standard for running multiple operating systems as virtual machines (VMs) on a single PC.",
     "license": {
         "identifier": "Proprietary",
         "url": "https://www.vmware.com/content/dam/digitalmarketing/vmware/en/pdf/downloads/eula/universal_eula.pdf"
     },
+    "bin": [
+        "vmware.exe",
+        "vmplayer.exe",
+        "vmnetcfg.exe"
+    ],
     "architecture": {
         "64bit": {
             "url": "https://download3.vmware.com/software/WKST-1702-WIN/VMware-workstation-full-17.0.2-21581411.exe#/cosi.exe",
@@ -53,19 +58,14 @@
     },
     "checkver": {
         "url": "https://chocolatey.org/packages/vmwareworkstation",
-        "regex": "(?<major>\\d+).(?<minor>\\d+).(?<patch>\\d+).(?<flag>\\d+)",
-        "replace": "${major}.${minor}.${patch}-${flag}"
+        "regex": "Downloads of v\\s+([\\d.]+)"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://download3.vmware.com/software/WKST-$matchMajor$matchMinor$matchPatch-WIN/VMware-workstation-full-$version.exe#/cosi.exe",
-                "hash": {
-                    "url": "https://customerconnect.vmware.com/channel/public/api/v1.0/dlg/details?locale=cn_CN&downloadGroup=WKST-$matchMajor$matchMinor$matchPatch-WIN&productId=1038",
-                    "mode": "json",
-                    "jsonpath": "$.downloadFiles[0].sha256checksum"
-                }
+                "url": "https://download3.vmware.com/software/WKST-$majorVersion$minorVersion$patchVersion-WIN/VMware-workstation-full-$majorVersion.$minorVersion.$patchVersion-$buildVersion.exe#/cosi.exe"
             }
         }
-    }
+    },
+    "notes": "install/uninstall with administrator right"
 }
