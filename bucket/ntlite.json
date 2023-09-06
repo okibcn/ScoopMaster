@@ -1,34 +1,38 @@
 {
-    "autoupdate": {
-        "url": "https://downloads.ntlite.com/files/NTLite_setup_x64.exe"
-    },
-    "checkver": {
-        "regex": "<span.+>v([\\d.]+)<\\/span>",
-        "url": "https://www.ntlite.com/download/"
-    },
+    "##": "Based on https://github.com/anderlli0053/DEV-tools/blob/master/bucket/NTLite-Portable.json",
     "depends": "innounp",
-    "description": "NTLite. Cutting-edge Windows configuration tool",
+    "version": "2023.8.9408",
+    "description": "Local control for updating and editing Windows images and deployments.",
+    "homepage": "https://www.ntlite.com",
+    "license": {
+        "identifier": "Shareware",
+        "url": "https://www.ntlite.com/shop/"
+    },
+    "url": "https://downloads.ntlite.com/files/NTLite_setup_x64.exe",
     "hash": "7e60e2a9c72ebc0c60dbcb43ea322c0e00d0dfde634efd8475f508062cad90be",
-    "homepage": "https://www.ntlite.com/",
+    "pre_install": "If (!(Test-Path \"$persist_dir\\settings.xml\")) { New-Item \"$dir\\settings.xml\" -ItemType File | Out-Null }",
     "installer": {
         "script": [
             "Expand-InnoArchive -Path \"$dir\\$fname\"",
             "Expand-InnoArchive -Path \"$dir\\$fname\" -ExtractDir '{code_CefInstallDir}' -Removal"
         ]
     },
-    "license": "Proprietary",
-    "persist": [
-        "settings.xml",
-        "Presets",
-        "Updates"
-    ],
-    "pre_install": "if(!(Test-Path \"$persist_dir\\settings.xml\")) {Set-Content -Encoding ASCII -Path \"$dir\\settings.xml\" -Value '<?xml version=\"1.0\" encoding=\"utf-8\"?><WebDAVClientSetting xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"></WebDAVClientSetting>'}",
     "shortcuts": [
         [
             "NTLite.exe",
             "NTLite"
         ]
     ],
-    "url": "https://downloads.ntlite.com/files/NTLite_setup_x64.exe",
-    "version": "2023.8.9408"
+    "persist": [
+        "Presets",
+        "Updates",
+        "settings.xml"
+    ],
+    "checkver": {
+        "url": "https://www.ntlite.com/download/",
+        "regex": "<span.+>v([\\d.]+)<\\/span>"
+    },
+    "autoupdate": {
+        "url": "https://downloads.ntlite.com/files/NTLite_setup_x64.exe"
+    }
 }
