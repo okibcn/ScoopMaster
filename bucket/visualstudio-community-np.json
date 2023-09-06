@@ -6,6 +6,7 @@
         "identifier": "Freeware",
         "url": "https://www.microsoft.com/en-ca/legal/terms-of-use"
     },
+    "notes": "You may have to restart your system after installing this app for it to work properly!",
     "architecture": {
         "64bit": {
             "url": "https://aka.ms/vs/17/release/vs_community.exe",
@@ -17,7 +18,8 @@
             "if (!(is_admin)) { error \"Admin privileges are required to $cmd $app\"; break }",
             "if ($cmd -eq 'update') {",
             "    $installDir = (Get-ChildItem \"$env:ProgramFiles\\Microsoft Visual Studio\" -Filter 'Community' -Recurse).FullName",
-            "    Start-Process \"$dir\\vs_community.exe\" -Wait -Verb 'RunAs' -Args @('update', \"$installDir\", '-q', '--norestart', '--wait')",
+            "    Start-Process \"$dir\\vs_community.exe\" -Wait -Verb 'RunAs' `",
+            "      -Args @('update', '--installPath',  \"`\"$installDir`\"\", '-q', '--norestart', '--wait')",
             "}",
             "else { Start-Process \"$dir\\vs_community.exe\" -Wait -Verb 'RunAs' -Args @('-q', '--norestart', '--wait') }",
             "Start-Sleep -Seconds 2; Remove-Item \"$dir\\vs_community.exe\""
@@ -29,14 +31,19 @@
             "if ($cmd -eq 'uninstall') {",
             "    $setupFile = \"${env:ProgramFiles(x86)}\\Microsoft Visual Studio\\Installer\\setup.exe\"",
             "    $installDir = (Get-ChildItem \"$env:ProgramFiles\\Microsoft Visual Studio\" -Filter 'Community' -Recurse).FullName",
-            "    Start-Process ($setupFile) -Wait -Verb 'RunAs' -Args @('uninstall', '--installPath', \"$installDir\", '--force', '-q', '--norestart')",
+            "    Start-Process $setupFile -Wait -Verb 'RunAs' -Args @('uninstall', '--installPath', \"`\"$installDir`\"\", '-q', '--norestart')",
+            "    Start-Sleep -Seconds 2; Start-Process $setupFile -Wait -Verb 'RunAs' -Args @('/uninstall', '-q')",
+            "    if ($purge) { Remove-Item \"$env:LOCALAPPDATA\\Microsoft\\VisualStudio\", 'HKCU:\\SOFTWARE\\Microsoft\\VisualStudio' -Recurse }",
             "}"
         ]
     },
     "post_uninstall": [
         "if ($cmd -eq 'uninstall') {",
-        "    warn \"$app might have left some unwanted files!\"; warn \"You can uninstall the rest of $app using:\"",
-        "    Write-Host '& \"${env:ProgramFiles(x86)}\\Microsoft Visual Studio\\Installer\\setup.exe\" /uninstall' -F 'Red'",
+        "    if (Test-Path \"${env:ProgramFiles(x86)}\\Microsoft Visual Studio\\Installer\\setup.exe\") {",
+        "        warn \"$app might have left some unwanted files!\"; warn \"You can uninstall the rest of $app using:\"",
+        "        Write-Host '& \"${env:ProgramFiles(x86)}\\Microsoft Visual Studio\\Installer\\setup.exe\" /uninstall -q' -F 'Red'",
+        "    }",
+        "    warn \"`nYou may have to restart your system after uninstalling this app for it to completely removed!\"",
         "}"
     ],
     "checkver": {
