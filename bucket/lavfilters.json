@@ -1,16 +1,8 @@
 {
     "version": "0.77.2",
-    "description": "FFmpeg based DirectShow splitter and decoders",
+    "description": "Open-Source DirectShow Media Splitter and Decoders",
     "homepage": "https://github.com/Nevcairiel/LAVFilters",
-    "license": {
-        "identifier": "GPL-2.0-only",
-        "url": "https://github.com/Nevcairiel/LAVFilters/blob/master/COPYING"
-    },
-    "notes": [
-        "Please do not move or delete this app manually!",
-        "If you want to reset the settings, you can just delete the item \"LAV\" at \"HKCU\\Software\" in the registry."
-    ],
-    "depends": "sudo",
+    "license": "GPL-2.0-only",
     "architecture": {
         "64bit": {
             "url": "https://github.com/Nevcairiel/LAVFilters/releases/download/0.77.2/LAVFilters-0.77.2-x64.zip",
@@ -21,18 +13,49 @@
             "hash": "cb4875fb50806b4ef599905a5d18026cca2a967d698dd08e25a7784b71ed66ff"
         }
     },
-    "pre_install": [
-        "if (-not $global) {",
-        "    Write-Host -Foreground Red \"$app should be installed globally.\"",
-        "    break",
-        "}"
-    ],
     "installer": {
-        "script": "\"$env:COMSPEC\" /c \"regsvr32 /s `\"$dir\\LAVAudio.ax`\" & regsvr32 /s `\"$dir\\LAVSplitter.ax`\" & regsvr32 /s `\"$dir\\LAVVideo.ax`\"\""
+        "script": [
+            "if (!(is_admin)) {",
+            "    error \"Administrator rights are required to install $app.\"",
+            "    exit 1",
+            "}",
+            "'LAVAudio', 'LAVVideo', 'LAVSplitter' | %{",
+            "    $codec = \"$dir\\$_.ax\"",
+            "    regsvr32 /s $codec",
+            "    $WshShell = New-Object -comObject WScript.Shell",
+            "    $Shortcut = $WshShell.CreateShortcut(\"$dir\\$_.lnk\")",
+            "    $Shortcut.TargetPath = 'rundll32.exe'",
+            "    $Shortcut.Arguments = \"$codec,OpenConfiguration\"",
+            "    $Shortcut.IconLocation = $codec",
+            "    $Shortcut.Save()",
+            "}"
+        ]
     },
     "uninstaller": {
-        "script": "\"$env:COMSPEC\" /c \"regsvr32 /u /s `\"$dir\\LAVAudio.ax`\" & regsvr32 /u /s `\"$dir\\LAVSplitter.ax`\" & regsvr32 /u /s `\"$dir\\LAVVideo.ax`\"\""
+        "script": [
+            "if (!(is_admin)) {",
+            "    error \"Administrator rights are required to uninstall $app.\"",
+            "    exit 1",
+            "}",
+            "'LAVAudio', 'LAVVideo', 'LAVSplitter' | %{",
+            "    regsvr32 /u /s \"$dir\\$_.ax\"",
+            "}"
+        ]
     },
+    "shortcuts": [
+        [
+            "LAVAudio.lnk",
+            "LAV Audio Configuration"
+        ],
+        [
+            "LAVSplitter.lnk",
+            "LAV Splitter Configuration"
+        ],
+        [
+            "LAVVideo.lnk",
+            "LAV Video Configuration"
+        ]
+    ],
     "checkver": "github",
     "autoupdate": {
         "architecture": {
