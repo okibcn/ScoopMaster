@@ -1,18 +1,14 @@
 {
-    "version": "2611",
+    "version": "2612-20230907",
     "description": "Nintendo 3DS emulator",
     "homepage": "https://citra-emu.org/",
     "license": {
-        "url": "https://github.com/citra-emu/citra-canary/blob/master/license.txt",
-        "identifier": "GPL-2.0-only"
+        "identifier": "GPL-2.0",
+        "url": "https://github.com/citra-emu/citra-canary/blob/master/license.txt"
     },
-    "architecture": {
-        "64bit": {
-            "url": "https://github.com/citra-emu/citra-canary/releases/download/canary-2611/citra-windows-msvc-20230906-4fafef2.7z",
-            "hash": "64d59722233e26734513ef1c3e83b9eff8e7e43fa8c546714c880f33edbe320d"
-        }
-    },
-    "extract_dir": "canary-msvc",
+    "url": "https://github.com/citra-emu/citra-canary/releases/download/canary-2612/citra-windows-msvc-20230907-891f527.7z",
+    "hash": "1f963a3821a51f016f96a23a7818b3c6ba943f519df30878868259b8a9a9f68d",
+    "extract_dir": "canary",
     "pre_install": [
         "if (!(Test-Path \"$persist_dir\\user\")) {",
         "   New-Item -Path \"$persist_dir\" -Name \"user\" -ItemType \"directory\" | Out-Null",
@@ -24,9 +20,18 @@
         "}"
     ],
     "bin": [
-        "citra.exe",
-        "citra-qt.exe",
-        "citra-room.exe"
+        [
+            "citra.exe",
+            "citra-canary"
+        ],
+        [
+            "citra-qt.exe",
+            "citra-qt-canary"
+        ],
+        [
+            "citra-room.exe",
+            "citra-room-canary"
+        ]
     ],
     "shortcuts": [
         [
@@ -37,14 +42,10 @@
     "persist": "user",
     "checkver": {
         "github": "https://github.com/citra-emu/citra-canary",
-        "regex": "releases/download/canary-([\\d]+)/citra-windows-(?<env>[\\w]+)-(?<commit>[\\d]{8}-[\\da-f]{7})\\.(?<zip>7z|zip)"
+        "regex": "download/canary-(?<build>[\\d]+)/citra-windows-(?<env>[\\w]+)-(?<date>[\\d]{8})-(?<commit>[\\da-f]{7})\\.(?<zip>7z|zip)",
+        "replace": "${build}-${date}"
     },
     "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://github.com/citra-emu/citra-canary/releases/download/canary-$version/citra-windows-$matchEnv-$matchCommit.$matchZip"
-            }
-        },
-        "extract_dir": "canary-$matchEnv"
+        "url": "https://github.com/citra-emu/citra-canary/releases/download/canary-$matchBuild/citra-windows-$matchEnv-$matchDate-$matchCommit.$matchZip"
     }
 }
