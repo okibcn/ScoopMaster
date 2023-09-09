@@ -1,16 +1,24 @@
 {
     "version": "169",
-    "description": "A highly customizable fan controlling software for the Windows OS.",
     "homepage": "https://getfancontrol.com/",
+    "description": "A highly customizable fan controlling software for the Windows OS.",
     "license": "Freeware",
-    "notes": "You will need to force close fancontrol before running this, I have tried multiple methods to force close it through the installer but it doesn't work. I will try to fix this in the future.",
-    "url": "https://raw.githubusercontent.com/Rem0o/FanControl.Releases/master/FanControl.zip",
-    "hash": "251263d7fc1eed336c284057e6c2ab3c178822fb2f75501e0ad887a7b1d6ec39",
+    "suggest": {
+        ".NET Runtime": "extras/windowsdesktop-runtime"
+    },
+    "notes": "Make sure to install both the 64bit & 32bit versions of Microsoft .NET Desktop Runtime before running the application.",
+    "architecture": {
+        "64bit": {
+            "url": "https://raw.githubusercontent.com/Rem0o/FanControl.Releases/master/FanControl.zip",
+            "hash": "251263d7fc1eed336c284057e6c2ab3c178822fb2f75501e0ad887a7b1d6ec39"
+        }
+    },
     "pre_install": [
-        "if (!(Test-Path \"$persist_dir\\Configurations\")) {",
-        "   New-Item \"$persist_dir\\Configurations\" -ItemType Directory -Force | Out-Null",
+        "'userConfig.json', 'CACHE', 'Plugins' | ForEach-Object {",
+        "    if (!(Test-Path \"$persist_dir\\$_\")) { New-Item \"$dir\\$_\" | Out-Null }",
         "}"
     ],
+    "bin": "FanControl.exe",
     "shortcuts": [
         [
             "FanControl.exe",
@@ -18,14 +26,18 @@
         ]
     ],
     "persist": [
-        "plugins",
-        "Configurations"
+        "Configurations",
+        "Plugins"
     ],
     "checkver": {
         "url": "https://raw.githubusercontent.com/Rem0o/FanControl.Releases/master/version.json",
         "jsonpath": "$.Number"
     },
     "autoupdate": {
-        "url": "https://raw.githubusercontent.com/Rem0o/FanControl.Releases/master/FanControl.zip"
+        "architecture": {
+            "64bit": {
+                "url": "https://raw.githubusercontent.com/Rem0o/FanControl.Releases/master/FanControl.zip"
+            }
+        }
     }
 }
