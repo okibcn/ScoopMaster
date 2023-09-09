@@ -1,15 +1,15 @@
 {
-    "description": "Popular open source web browser. Cross-platform and available in many languages.",
-    "homepage": "https://www.mozilla.org/zh-CN/firefox/new/",
     "version": "117.0",
+    "description": "Firefox 浏览器中文版本",
+    "homepage": "https://www.mozilla.org/firefox/",
     "license": "MPL-2.0",
     "architecture": {
         "64bit": {
-            "url": "https://download-installer.cdn.mozilla.net/pub/firefox/releases/117.0/win64/zh-CN/Firefox%20Setup%20117.0.exe#/firefox.7z",
+            "url": "https://archive.mozilla.org/pub/firefox/releases/117.0/win64/zh-CN/Firefox%20Setup%20117.0.exe#/dl.7z",
             "hash": "sha512:68d09f3dc538d4b81ab9956109d05ae096599a810823dbb7a564189e51830a84f32aca60a2e8712fa98f43b3c8150b8860dbc7888f8428ee69cd1f682644b9e4"
         },
         "32bit": {
-            "url": "https://download-installer.cdn.mozilla.net/pub/firefox/releases/117.0/win32/zh-CN/Firefox%20Setup%20117.0.exe#/firefox.7z",
+            "url": "https://archive.mozilla.org/pub/firefox/releases/117.0/win32/zh-CN/Firefox%20Setup%20117.0.exe#/dl.7z",
             "hash": "sha512:54e53f36e61a8010cac34ebdd6066649b3449cabadf523124b2176d718362b8b00ea843ce859ad8684bd735d9ddfd386e2c8600d62bd2898f39519a8143dcb08"
         }
     },
@@ -18,31 +18,30 @@
     "shortcuts": [
         [
             "firefox.exe",
-            "Mozilla Firefox"
+            "Firefox"
         ]
     ],
-    "persist": "profile-portable",
+    "persist": "distribution",
     "checkver": {
-        "url": "https://www.mozilla.org/zh-CN/firefox/all/",
-        "re": "data-latest-firefox=\"([\\d.]+)\""
+        "url": "https://www.mozilla.org/en-US/firefox/notes/",
+        "regex": "<div class=\"c-release-version\">([\\d.]+)</div>"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://download-installer.cdn.mozilla.net/pub/firefox/releases/$version/win64/zh-CN/Firefox%20Setup%20$version.exe#/firefox.7z",
+                "url": "https://archive.mozilla.org/pub/firefox/releases/$version/win64/zh-CN/Firefox%20Setup%20$version.exe#/dl.7z",
                 "hash": {
-                    "url": "https://download-installer.cdn.mozilla.net/pub/firefox/releases/$version/SHA512SUMS",
+                    "url": "https://archive.mozilla.org/pub/firefox/releases/$version/SHA512SUMS",
                     "regex": "$sha512\\s+win64/zh-CN/$basename"
                 }
             },
             "32bit": {
-                "url": "https://download-installer.cdn.mozilla.net/pub/firefox/releases/$version/win32/zh-CN/Firefox%20Setup%20$version.exe#/firefox.7z",
+                "url": "https://archive.mozilla.org/pub/firefox/releases/$version/win32/zh-CN/Firefox%20Setup%20$version.exe#/dl.7z",
                 "hash": {
-                    "url": "https://download-installer.cdn.mozilla.net/pub/firefox/releases/$version/SHA512SUMS",
+                    "url": "https://archive.mozilla.org/pub/firefox/releases/$version/SHA512SUMS",
                     "regex": "$sha512\\s+win32/zh-CN/$basename"
                 }
             }
         }
-    },
-    "notes": "To recover persisted profile, you need to open the Profile Manager with `firefox -P` and create by selecting the portable profile directory."
+    }
 }
