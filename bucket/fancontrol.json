@@ -1,24 +1,17 @@
 {
     "version": "170",
+    "description": "A highly customizable fan controlling software for Windows",
     "homepage": "https://getfancontrol.com/",
-    "description": "A highly customizable fan controlling software for the Windows OS.",
     "license": "Freeware",
     "suggest": {
-        ".NET Runtime": "extras/windowsdesktop-runtime"
+        ".NET Desktop Runtime": "extras/windowsdesktop-runtime"
     },
-    "notes": "Make sure to install both the 64bit & 32bit versions of Microsoft .NET Desktop Runtime before running the application.",
     "architecture": {
         "64bit": {
-            "url": "https://raw.githubusercontent.com/Rem0o/FanControl.Releases/master/FanControl.zip",
-            "hash": "d9f2dfc1985b52b02e809697093d7dbf187e8dddbbccdc8ec906c4b82be0f3da"
+            "url": "https://github.com/Rem0o/FanControl.Releases/releases/download/V170/FanControl_net_7_0.zip",
+            "hash": "d611946fb6ea5d061e016c9fec8e026f43e2237df5cd3f777599e71685e21a11"
         }
     },
-    "pre_install": [
-        "'userConfig.json', 'CACHE', 'Plugins' | ForEach-Object {",
-        "    if (!(Test-Path \"$persist_dir\\$_\")) { New-Item \"$dir\\$_\" | Out-Null }",
-        "}"
-    ],
-    "bin": "FanControl.exe",
     "shortcuts": [
         [
             "FanControl.exe",
@@ -30,13 +23,14 @@
         "Plugins"
     ],
     "checkver": {
-        "url": "https://raw.githubusercontent.com/Rem0o/FanControl.Releases/master/version.json",
-        "jsonpath": "$.Number"
+        "url": "https://api.github.com/repos/Rem0o/FanControl.Releases/releases/latest",
+        "jsonpath": "$.assets..browser_download_url",
+        "regex": "/V([\\d.]+)/FanControl_net_(?<netver>(?!4_8)[\\d_]+).zip"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://raw.githubusercontent.com/Rem0o/FanControl.Releases/master/FanControl.zip"
+                "url": "https://github.com/Rem0o/FanControl.Releases/releases/download/V$version/FanControl_net_$matchNetver.zip"
             }
         }
     }
