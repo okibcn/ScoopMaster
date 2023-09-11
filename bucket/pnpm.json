@@ -1,15 +1,31 @@
 {
-    "version": "8.7.4",
+    "version": "8.7.5",
     "description": "A fast and disk space efficient Node package manager.",
     "homepage": "https://pnpm.io/",
     "license": "MIT",
     "architecture": {
         "64bit": {
-            "url": "https://github.com/pnpm/pnpm/releases/download/v8.7.4/pnpm-win-x64.exe#/pnpm.exe",
-            "hash": "19a6c87039501fabf093995c192e785ce3fd28bd679fba44fd8956818ce9c062"
+            "url": "https://github.com/pnpm/pnpm/releases/download/v8.7.5/pnpm-win-x64.exe#/pnpm.exe",
+            "hash": "a5af3ce3fa3a2373f0306dfcadb6e979ae72e5301739f9f6fa3e1e1d49d4ec78"
         }
     },
+    "notes": [
+        "To install the LTS version of Node.js, use following command:",
+        "pnpm env use --global lts"
+    ],
     "bin": "pnpm.exe",
+    "persist": [
+        "store",
+        "global",
+        "pnpm",
+        "pnpm-state",
+        "pnpm-cache"
+    ],
+    "post_install": [
+        "# Set npm prefix to install modules inside bin and npm cache so they persist",
+        "Set-Content -Value \"store-dir=$dir\\store`nstate-dir=$dir\\pnpm-state`ncache-dir=$dir\\pnpm-cache`nglobal-dir=$dir\\global`nglobal-bin-dir=$dir\\pnpm`nregistry=https://registry.npmmirror.com/`nnode-mirror:release=https://npmmirror.com/mirrors/node/`nnode-mirror:rc=https://npmmirror.com/mirrors/node-rc/`nnode-mirror:nightly=https://npmmirror.com/mirrors/node-nightly/`nupdate-notifier=false`n\" -Path \"$HOME\\.npmrc\""
+    ],
+    "env_add_path": "pnpm",
     "checkver": {
         "script": [
             "# Using checkver script to check through all release tags",
