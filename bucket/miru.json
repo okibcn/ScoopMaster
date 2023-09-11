@@ -1,18 +1,18 @@
 {
-    "version": "4.4.5",
+    "version": "4.4.6",
     "description": "Stream anime torrents, real-time with no waiting for downloads",
     "homepage": "https://github.com/ThaUnknown/miru",
     "license": "GPL-3.0-or-later",
     "architecture": {
         "64bit": {
-            "url": "https://github.com/ThaUnknown/miru/releases/download/v4.4.5/win-Miru-4.4.5.exe#/dl.7z",
-            "hash": "sha512:cd5ff4cbc3fad7dccec43fb65cb5e5fd3d18e3d9bd84304e15248818560bf4aff742e9c8562417a5315b9c01b464efef1d5783434725e98643a07d4a717863ad",
-            "installer": {
-                "script": "Expand-7zipArchive -Path \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\""
-            }
+            "url": "https://github.com/ThaUnknown/miru/releases/download/v4.4.6/win-Miru-4.4.6.exe#/dl.7z",
+            "hash": "sha512:f973a611e9f7fc6d23c698d755036f930ce8bbb117ce5bb28752d5f9266634119ac97ba72216d4178d8cbf791466b928e5783fef853043e752b86a9c0a6754bf"
         }
     },
-    "post_install": "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\Uninstall*\" -Recurse -Force",
+    "pre_install": [
+        "Expand-7zipArchive -Path \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\"",
+        "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\Uninstall*\" -Recurse -Force"
+    ],
     "checkver": "github",
     "shortcuts": [
         [
