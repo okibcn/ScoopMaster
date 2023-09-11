@@ -1,11 +1,15 @@
 {
-    "version": "7.6.1.2",
+    "##": [
+        "LibreOffice Germany non portable (quiet, no restart, no check for updates",
+        "including saving jump lists before and restoring jump lists after the installations, ",
+        "to loose existing LibreOffice jump list entries in the taskbar."
+    ],
+    "version": "7.6.1.1",
     "description": "Powerful and free office suite, a successor to OpenOffice(.org).",
     "homepage": "https://libreoffice.org/",
     "license": "MPL-2.0",
-    "url": "https://downloadarchive.documentfoundation.org/libreoffice/old/7.6.1.2/win/x86_64/LibreOffice_7.6.1.2_Win_x86-64.msi#/setup.msi_",
-    "hash": "0f254e6a0a6bb5747ae0c0820a400ab39028d3f39a0807d0857f7715ee9c8c7d",
-    "##": "LibreOffice installation including saving jump lists before and restoring jump lists after the installations, to avoid re-creation of LibreOffice icons in the taskbar.",
+    "url": "https://downloadarchive.documentfoundation.org/libreoffice/old/7.6.1.1/win/x86_64/LibreOffice_7.6.1.1_Win_x86-64.msi#/setup.msi_",
+    "hash": "fb28a77ad294ff0674e69b0da719f954f2263212e8ed7883cef916dea5b2f900",
     "installer": {
         "script": [
             "if (!(is_admin)) { error \"$app requires admin rights to $cmd\"; break }",
@@ -15,8 +19,12 @@
     "post_install": [
         "$jumpListPath = \"$env:AppData\\Microsoft\\Windows\\Recent\"",
         "$backupPath = $env:temp",
-        "7z x $backupPath\\AutomaticDestinations.7z -o$jumpListPath\\AutomaticDestinations -aoa | Out-Null",
-        "7z x $backupPath\\CustomDestinations.7z -o$jumpListPath\\CustomDestinations -aoa | Out-Null"
+        "if (Test-Path $backupPath\\AutomaticDestinations.7z) {",
+        "  7z x $backupPath\\AutomaticDestinations.7z -o$jumpListPath\\AutomaticDestinations -aoa | Out-Null",
+        "}",
+        "if (Test-Path $backupPath\\CustomDestinations.7z) {",
+        "  7z x $backupPath\\CustomDestinations.7z -o$jumpListPath\\CustomDestinations -aoa | Out-Null",
+        "}"
     ],
     "pre_uninstall": [
         "if (!(is_admin)) { error \"$app requires admin rights to $cmd\"; break }",
