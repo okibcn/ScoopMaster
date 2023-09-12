@@ -1,12 +1,12 @@
 {
     "version": "117.0",
-    "description": "Popular open source web browser",
+    "description": "Popular open source web browser.",
     "homepage": "https://www.mozilla.org/firefox/",
     "license": "MPL-2.0",
     "notes": [
-        "To set 'Scoop' as the default profile, or profiles/settings was lost after update:",
-        "  - Run 'Firefox Profile Manager', choose 'Scoop' or previously using profile then click 'Start Firefox'.",
-        "  - Visit 'about:profiles' page in Firefox to check the current default profile.",
+        "To set profile 'Scoop' as *DEFAULT*, or profiles/settings was lost after update:",
+        "  - Run 'Firefox Profile Manager', choose 'Scoop' then click 'Start Firefox'.",
+        "  - Visit 'about:profiles' page in Firefox to check *DEFAULT* profile.",
         "For details: https://support.mozilla.org/en-US/kb/profile-manager-create-remove-switch-firefox-profiles"
     ],
     "architecture": {
@@ -17,6 +17,10 @@
         "32bit": {
             "url": "https://archive.mozilla.org/pub/firefox/releases/117.0/win32/en-US/Firefox%20Setup%20117.0.exe#/dl.7z",
             "hash": "sha512:6ad8d8439218b9e92df5ee04af20c0d2fab54d0cfab9c6da0e8f8870842f531fafe2d764c84f3a29751a7224e259d985ed0dbb7798aa960d80ce8d6a4ba243a5"
+        },
+        "arm64": {
+            "url": "https://archive.mozilla.org/pub/firefox/releases/117.0/win64-aarch64/en-US/Firefox%20Setup%20117.0.exe#/dl.7z",
+            "hash": "sha512:5982cd7b7584a1f58932070ed02378cc1bbc780ff5736d19398f8e040d7cef4a4100ffb3241cee235ea0017e6749402e0d119a7177683cf97d0a3233bd3adad4"
         }
     },
     "extract_dir": "core",
@@ -41,8 +45,8 @@
         ]
     ],
     "persist": [
-        "profile",
-        "distribution"
+        "distribution",
+        "profile"
     ],
     "checkver": {
         "url": "https://www.mozilla.org/en-US/firefox/notes/",
@@ -62,6 +66,13 @@
                 "hash": {
                     "url": "https://archive.mozilla.org/pub/firefox/releases/$version/SHA512SUMS",
                     "regex": "$sha512\\s+win32/en-US/$basename"
+                }
+            },
+            "arm64": {
+                "url": "https://archive.mozilla.org/pub/firefox/releases/$version/win64-aarch64/en-US/Firefox%20Setup%20$version.exe#/dl.7z",
+                "hash": {
+                    "url": "https://archive.mozilla.org/pub/firefox/releases/$version/SHA512SUMS",
+                    "regex": "$sha512\\s+win64-aarch64/en-US/$basename"
                 }
             }
         }
