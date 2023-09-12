@@ -1,12 +1,12 @@
 {
     "version": "117.0",
-    "description": "Popular open source web browser.",
+    "description": "Popular open source web browser",
     "homepage": "https://www.mozilla.org/firefox/",
     "license": "MPL-2.0",
     "notes": [
-        "To set profile 'Scoop' as *DEFAULT*, or profiles/settings was lost after update:",
-        "  - Run 'Firefox Profile Manager', choose 'Scoop' then click 'Start Firefox'.",
-        "  - Visit 'about:profiles' page in Firefox to check *DEFAULT* profile.",
+        "To set 'Scoop' as the default profile, or profiles/settings was lost after update:",
+        "  - Run 'Firefox Profile Manager', choose 'Scoop' or previously using profile then click 'Start Firefox'.",
+        "  - Visit 'about:profiles' page in Firefox to check the current default profile.",
         "For details: https://support.mozilla.org/en-US/kb/profile-manager-create-remove-switch-firefox-profiles"
     ],
     "architecture": {
@@ -21,12 +21,11 @@
     },
     "extract_dir": "core",
     "post_install": [
-        "firefox -CreateProfile \"Priv $persist_dir\\profiles\\priv\"",
-        "firefox -CreateProfile \"Work $persist_dir\\profiles\\work\"",
+        "firefox -CreateProfile \"Scoop $persist_dir\\profile\"",
         "$Addition = \"$persist_dir\\addition\"",
         "if (Test-Path $Addition) {",
-        "    info 'Copying additional items...'",
-        "    Copy-Item -Path $Addition\\* -Destination $dir -Force -Recurse -ErrorAction SilentlyContinue",
+        "  info 'Copying additional items...'",
+        "  Copy-Item -Path $Addition\\* -Destination $dir -Force -Recurse -ErrorAction SilentlyContinue",
         "}"
     ],
     "bin": "firefox.exe",
@@ -39,21 +38,11 @@
             "firefox.exe",
             "Firefox Profile Manager",
             "-P"
-        ],
-        [
-            "firefox.exe",
-            "Firefox Priv",
-            "-P Priv"
-        ],
-        [
-            "firefox.exe",
-            "Firefox Work",
-            "-P Work"
         ]
     ],
     "persist": [
-        "distribution",
-        "profiles"
+        "profile",
+        "distribution"
     ],
     "checkver": {
         "url": "https://www.mozilla.org/en-US/firefox/notes/",

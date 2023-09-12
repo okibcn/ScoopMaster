@@ -1,20 +1,18 @@
 {
-    "version": "10.61.9",
+    "version": "10.61.10.20230912133353-5e0d2e66bd348caa56c6b073748499d2f3a5324a",
     "homepage": "https://evernote.com/",
-    "license": "Freeware",
-    "url": "https://cdn1.evernote.com/boron/win/builds/Evernote-10.61.9-win-ddl-stage-20230908160425-6adb0bcc6524c002f5a8349f941f504d27d86f3e-setup.exe#/dl.7z",
-    "hash": "sha512:81c2cb4b11d37fb1ca78824e231f0d58a717fa3e5636e517e1efbeb801bdd07e670dafe18a0afea817cbd3a8b0ff576512badac453a5295093a0ac19bc3c4b0b",
-    "installer": {
-        "script": [
-            "Remove-Item \"$dir\\Unins*\", \"$dir\\resources\" -Force -Recurse",
-            "if ($architecture -eq '64bit') {",
-            "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\"",
-            "} elseif ($architecture -eq '32bit') {",
-            "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-32.7z\" \"$dir\"",
-            "}",
-            "Remove-Item \"$dir\\`$PLUGINSDIR\" -Force -Recurse"
-        ]
+    "description": "Remember everything and tackle any project with your notes, tasks, and schedule all in one place.",
+    "license": {
+        "identifier": "Freeware",
+        "url": "https://evernote.com/legal"
     },
+    "url": "https://cdn1.evernote.com/boron/win/builds/Evernote-10.61.10-win-ddl-stage-20230912133353-5e0d2e66bd348caa56c6b073748499d2f3a5324a-setup.exe#/dl.7z",
+    "hash": "47f303c6ca7505260b0ed462c119a6d97c06f05ebd62e957e573e07eb11a478e",
+    "extract_dir": "$PLUGINSDIR",
+    "pre_install": [
+        "if ($architecture -eq '32bit') { Expand-7zipArchive \"$dir\\app-32.7z\" \"$dir\" -Removal; Remove-Item \"$dir\\app-64.7z\" }",
+        "elseif ($architecture -eq '64bit') { Expand-7zipArchive \"$dir\\app-64.7z\" \"$dir\" -Removal; Remove-Item \"$dir\\app-32.7z\" }"
+    ],
     "shortcuts": [
         [
             "Evernote.exe",
@@ -22,14 +20,15 @@
         ]
     ],
     "checkver": {
-        "url": "https://evernote.s3.amazonaws.com/boron/win/public/latest.yml",
-        "regex": "Evernote-([\\d.]+)-(?<tail>.+).exe"
+        "script": [
+            "$ua = [Microsoft.PowerShell.Commands.PSUserAgent]::Chrome",
+            "(Invoke-RestMethod 'https://evernote.com/download' -UserAgent $ua) -match '(?<File>Evernote-(?<Ver>[\\d.]+)-win-ddl-(?:stage|ga)-(?<Build>[\\w-]+)-setup\\.exe)' | Out-Null",
+            "$getFile = $Matches['File']; $getVersion = $Matches['Ver']; $getBuild = $Matches['Build']",
+            "Write-Output \"$getFile, $getVersion.$getBuild\""
+        ],
+        "regex": "(?<File>[\\w.-]+),\\s([\\w.-]+)"
     },
     "autoupdate": {
-        "url": "https://cdn1.evernote.com/boron/win/builds/Evernote-$version-$matchTail.exe#/dl.7z",
-        "hash": {
-            "url": "https://evernote.s3.amazonaws.com/boron/win/public/latest.yml",
-            "regex": "sha512: $base64"
-        }
+        "url": "https://cdn1.evernote.com/boron/win/builds/$matchFile#/dl.7z"
     }
 }
