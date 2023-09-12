@@ -1,9 +1,7 @@
 {
+    "homepage": "https://github.com/libretro/ludo",
     "version": "0.17.1",
-    "homepage": "https://ludo.libretro.com/",
-    "description": "Minimalist styled front-end for retro video game emulators",
-    "license": "GPL-3.0-only",
-    "notes": "Settings are stored in the \"$env:LOCALAPPDATA\\ludo\" directory.",
+    "description": "Ludo is a work in progress libretro frontend written in go.",
     "architecture": {
         "64bit": {
             "url": "https://github.com/libretro/ludo/releases/download/v0.17.1/Ludo-Windows-x86_64-0.17.1.zip",
@@ -11,12 +9,18 @@
             "extract_dir": "Ludo-Windows-x86_64-0.17.1"
         }
     },
-    "bin": "ludo.exe",
     "shortcuts": [
         [
             "ludo.exe",
             "Ludo"
         ]
+    ],
+    "persist": [
+        "savestates/",
+        "savefiles/",
+        "screenshots/",
+        "playlists/",
+        "thumbnails/"
     ],
     "checkver": {
         "github": "https://github.com/libretro/ludo"
@@ -25,11 +29,11 @@
         "architecture": {
             "64bit": {
                 "url": "https://github.com/libretro/ludo/releases/download/v$version/Ludo-Windows-x86_64-$version.zip",
+                "extract_dir": "Ludo-Windows-x86_64-$version",
                 "hash": {
-                    "url": "$url.sha256",
-                    "regex": ",$sha256,"
-                },
-                "extract_dir": "Ludo-Windows-x86_64-$version"
+                    "url": "https://github.com/libretro/ludo/releases/download/v$version/Ludo-Windows-x86_64-$version.zip.sha256",
+                    "regex": "($sha256)"
+                }
             }
         }
     }
