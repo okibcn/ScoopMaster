@@ -1,40 +1,24 @@
 {
-    "version": "1.77.3.3966-a5ddb215",
+    "version": "1.78.2.3975-c5bd0cbb",
     "description": "Official Plex client",
     "homepage": "https://www.plex.tv/apps-devices/#modal-devices-plex-for-windows",
     "license": {
         "identifier": "Proprietary",
         "url": "https://www.plex.tv/media-server-downloads/?platform=windows#remodal-terms"
     },
-    "suggest": {
-        "vcredist": "extras/vcredist2022"
-    },
-    "architecture": {
-        "64bit": {
-            "url": "https://downloads.plex.tv/plex-desktop/1.77.3.3966-a5ddb215/windows/Plex-1.77.3.3966-a5ddb215-x86_64.exe#/dl.7z",
-            "hash": "sha1:eba5688ee5a255338f1a66d136a71bff65f85080"
-        }
-    },
-    "pre_install": "Remove-Item \"$dir\\`$*\", \"$dir\\Uninst*\", \"$dir\\vc_red*\" -Recurse",
-    "shortcuts": [
-        [
-            "Plex.exe",
-            "Plex for Windows"
+    "url": "https://downloads.plex.tv/plex-desktop/1.78.2.3975-c5bd0cbb/windows/Plex-1.78.2.3975-c5bd0cbb-x86_64.exe#/setup.exe",
+    "hash": "a68e1e668c576e35754948f85a3feac4859f1809a98d4b2fa1d91b3d74e4187c",
+    "installer": {
+        "script": [
+            "Start-Process \"$dir\\setup.exe\" -ArgumentList '/S' -Wait -Verb RunAs | Out-Null",
+            "Remove-Item \"$dir\\setup.exe\""
         ]
-    ],
+    },
     "checkver": {
         "url": "https://plex.tv/pms/downloads/6.json",
         "jsonpath": "$.computer.Windows.version"
     },
     "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://downloads.plex.tv/plex-desktop/$version/windows/Plex-$version-x86_64.exe#/dl.7z",
-                "hash": {
-                    "url": "https://plex.tv/pms/downloads/6.json",
-                    "jsonpath": "$.computer.Windows.releases[?(@.build == 'windows-x86_64')].checksum"
-                }
-            }
-        }
+        "url": "https://downloads.plex.tv/plex-desktop/$version/windows/Plex-$version-x86_64.exe#/setup.exe"
     }
 }
