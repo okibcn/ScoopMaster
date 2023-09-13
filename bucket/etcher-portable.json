@@ -1,0 +1,47 @@
+{
+    "version": "1.0.12",
+    "description": "Flash OS images to SD cards & USB drives, safely and easily.",
+    "homepage": "https://etcher.io/",
+    "license": {
+        "identifier": "Apache-2.0 license",
+        "url": "https://github.com/balena-io/etcher/blob/master/LICENSE"
+    },
+    "url": "https://github.com/balena-io/etcher/releases/download/v1.18.12/balenaEtcher-Portable-1.18.12.exe#/dl.7z",
+    "hash": "sha512:a13da4176b805186ff252e4bdc5a8ec0ac7e699fff165ab317401f565fcca04fde54881575e2398eee0e24cb0575783e015d7765c8115d27667597de384e16a8",
+    "architecture": {
+        "64bit": {
+            "pre_install": [
+                "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\"",
+                "Remove-Item \"$dir\\`$PLUGINSDIR\" -Force -Recurse"
+            ]
+        },
+        "32bit": {
+            "pre_install": [
+                "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-32.7z\" \"$dir\"",
+                "Remove-Item \"$dir\\`$PLUGINSDIR\" -Force -Recurse"
+            ]
+        }
+    },
+    "installer": {
+        "script": [
+            "ensure \"$persist_dir\" | Out-Null",
+            "New-Item \"$env:APPDATA\\balena-etcher\" -ItemType Junction -Target \"$persist_dir\" | Out-Null"
+        ]
+    },
+    "uninstaller": {
+        "script": "Remove-Item \"$env:APPDATA\\balena-etcher\" -Recurse -Force -ErrorAction 'SilentlyContinue'"
+    },
+    "shortcuts": [
+        [
+            "balenaEtcher.exe",
+            "Etcher"
+        ]
+    ],
+    "checkver": {
+        "url": "https://github.com/balena-io/etcher/releases.atom",
+        "regex": "/releases/tag/v([\\d.]+)"
+    },
+    "autoupdate": {
+        "url": "https://github.com/balena-io/etcher/releases/download/v$version/balenaEtcher-Portable-$version.exe#/dl.7z"
+    }
+}
