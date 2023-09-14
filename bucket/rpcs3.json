@@ -1,39 +1,61 @@
 {
-    "version": "0.0.29-15620",
-    "description": "Open-source Sony PlayStation 3 emulator and debugger",
     "homepage": "https://rpcs3.net/",
-    "license": "GPL-2.0-or-later",
-    "suggest": {
-        "vcredist2019": "extras/vcredist2019"
+    "version": "0.0.29-15620",
+    "description": "Playstation 3 Emulator",
+    "license": {
+        "identifier": "GPL-2.0",
+        "url": "https://github.com/RPCS3/rpcs3/blob/master/LICENSE"
     },
-    "architecture": {
-        "64bit": {
-            "url": "https://github.com/RPCS3/rpcs3-binaries-win/releases/download/build-f398f1113de8e1e316e95d345dcae0b7523cd132/rpcs3-v0.0.29-15620-f398f111_win64.7z",
-            "hash": "ef54f34c112fc1ebb75f35de41bc9c9f66df9204e875e37d56bc864f2171eb9f"
-        }
-    },
+    "url": "https://github.com/RPCS3/rpcs3-binaries-win/releases/download/build-f398f1113de8e1e316e95d345dcae0b7523cd132/rpcs3-v0.0.29-15620-f398f111_win64.7z",
+    "hash": "ef54f34c112fc1ebb75f35de41bc9c9f66df9204e875e37d56bc864f2171eb9f",
+    "bin": "rpcs3.exe",
     "shortcuts": [
         [
             "rpcs3.exe",
-            "RPCS3"
+            "PS3"
         ]
     ],
     "persist": [
-        "GuiConfigs",
-        "dev_hdd0"
+        "dev_flash",
+        "dev_flash2",
+        "dev_flash3",
+        "dev_hdd0",
+        "dev_hdd1",
+        "cache",
+        "config",
+        "patches",
+        "captures",
+        "recordings",
+        "savestates",
+        "config.yml",
+        "games.yml"
     ],
+    "installer": {
+        "script": [
+            "function create($path, $type, $content) {",
+            "   if (-not (Test-Path \"$path\")) {",
+            "       New-Item \"$path\" -ItemType $type -Value $content | Out-Null",
+            "       Write-Output \"Creating $path...\"",
+            "   }",
+            "}",
+            "$conf = \"$persist_dir\\config.yml\"",
+            "$games = \"$persist_dir\\games.yml\"",
+            "create $conf File",
+            "create $games File"
+        ]
+    },
     "checkver": {
-        "url": "https://rpcs3.net/download",
-        "regex": "/build-(?<originalhash>.*)/rpcs3-v(?<version>[\\d.]+-[\\d]{5})-(?<shorthash>.*)_win64.7z"
+        "url": "https://update.rpcs3.net/?api=v2&c=0",
+        "jsonpath": {
+            "version": "$.latest_build.version",
+            "download": "$.latest_build.windows.download",
+            "hash": "$.latest_build.windows.checksum"
+        }
     },
     "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://github.com/RPCS3/rpcs3-binaries-win/releases/download/build-$matchOriginalhash/rpcs3-v$version-$matchShorthash_win64.7z",
-                "hash": {
-                    "url": "$url.sha256"
-                }
-            }
+        "url": "$matchDownload",
+        "hash": {
+            "url": "$url.sha256"
         }
     }
 }
