@@ -1,34 +1,24 @@
 {
-    "homepage": "http://pdm.fming.dev",
     "version": "2.9.2",
-    "description": "Python Development Master",
+    "description": "A modern Python package and dependency manager supporting the latest PEP standards",
+    "homepage": "https://pdm.fming.dev",
     "license": "MIT",
     "url": "https://files.pythonhosted.org/packages/f9/be/b4f44a0de4ac4df755f495aa7fe76ec34589e4010d55f073a7a22b2a6071/pdm-2.9.2-py3-none-any.whl",
-    "depends": "python",
     "hash": "4ff083931d97c3a33d24651bcd19627184a1a681578330d50cced73749ff341d",
-    "bin": "venv\\Scripts\\pdm.exe",
-    "installer": {
-        "script": [
-            "python -m venv \"$dir\\venv\"",
-            "& \"$dir\\venv\\Scripts\\python.exe\" -m pip install \"$dir\\$fname\""
-        ]
-    },
-    "post_install": "& \"$dir\\venv\\Scripts\\pdm.exe\" --pep582",
-    "uninstaller": {
-        "script": [
-            "$oldPath = [Environment]::GetEnvironmentVariable(\"PYTHONPATH\", [System.EnvironmentVariableTarget]::User)",
-            "If (-not [string]::IsNullOrWhiteSpace($oldPath)) {",
-            "    $newPath = ($oldPath.Split(';') | Where { $_ -notlike \"$dir\\venv\\*\" }) -join ';'",
-            "    [Environment]::SetEnvironmentVariable(\"PYTHONPATH\", $newPath, [System.EnvironmentVariableTarget]::User)",
-            "}"
-        ]
-    },
+    "bin": "venv\\scripts\\pdm.exe",
+    "pre_install": [
+        "$bpath = if ($app.LocalPath) { $app.LocalPath.Directory.Parent.FullName } else { \"$bucketsdir\\$bucket\" }",
+        "& (Join-Path \"$bpath\" \"scripts\\Install-WithVirtualEnv.ps1\") \"/$fname\""
+    ],
     "checkver": {
-        "url": "https://pypi.org/project/pdm/#files",
-        "re": "https://files.pythonhosted.org/(packages/.*/pdm-(?<version>[\\d.]+)-.*\\.whl)",
-        "replace": "${version}"
+        "url": "https://pypi.org/project/pdm/",
+        "regex": "(?sm)https:\\/\\/files\\.pythonhosted\\.org\\/(?<path>[\\w\\-\\/\\.]+-py3-none-any\\.whl).+?(?<version>[\\d\\.]+)-py3-none-any\\.whl"
     },
     "autoupdate": {
-        "url": "https://files.pythonhosted.org/$match1"
+        "url": "https://files.pythonhosted.org/$matchPath",
+        "hash": {
+            "url": "https://pypi.org/project/pdm/",
+            "regex": "(?sm)Hashes for $basename.*?$sha256"
+        }
     }
 }
