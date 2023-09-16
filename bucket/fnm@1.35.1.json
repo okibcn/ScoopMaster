@@ -1,0 +1,39 @@
+{
+	"version": "1.35.1",
+	"description": "Cross-platform Node.js version manager",
+	"homepage": "https://github.com/Schniz/fnm",
+	"license": "GPL-3.0-only",
+	"#notes": "Don't forget to add \"fnm env --use-on-cd | Out-String | Invoke-Expression\" to your powershell profile.",
+	"architecture": {
+		"64bit": {
+			"url": "https://github.com/Schniz/fnm/releases/download/v1.35.1/fnm-windows.zip",
+			"hash": "f083e7256c24f359d2101934426c87e3066831a40303ebe6e538cea917a0f184"
+		}
+	},
+	"bin": "fnm.exe",
+	"env_set": {
+		"FNM_HOME": "$HOME\\.fnm",
+		"FNM_ARCH": "x64",
+		"FNM_LOGLEVEL": "info",
+		"FNM_NODE_DIST_MIRROR": "https://nodejs.org/dist",
+		"FNM_VERSION_FILE_STRATEGY": "local",
+		"FNM_MULTISHELL_PATH": ""
+	},
+	"post_install": "
+        # * FNM_MULTISHELL_PATH is reset by `fnm`; use this 'post_install' to setup FNM's preferred value
+        & $dir\\fnm.exe env | select-string -pattern \"env:FNM\" | out-string | invoke-expression
+        $val = $env:FNM_MULTISHELL_PATH
+        env FNM_MULTISHELL_PATH -t $global $val
+        env FNM_MULTISHELL_PATH $val
+        ensure_in_path \"$env:FNM_MULTISHELL_PATH\" $global
+        ",
+	"uninstaller": { "script": "remove_from_path \"$env:FNM_MULTISHELL_PATH\" $global" },
+	"checkver": "github",
+	"autoupdate": {
+		"architecture": {
+			"64bit": {
+				"url": "https://github.com/Schniz/fnm/releases/download/v$version/fnm-windows.zip"
+			}
+		}
+	}
+}
