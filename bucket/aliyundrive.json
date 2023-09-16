@@ -1,33 +1,24 @@
 {
     "version": "4.9.8",
-    "description": "The official client for Alibaba's cloud dirve service",
     "homepage": "https://www.aliyundrive.com/",
-    "license": {
-        "identifier": "EULA",
-        "url": "https://www.aliyundrive.com/protocol/service"
-    },
-    "url": "https://cdn.aliyundrive.net/downloads/apps/desktop/update/4.9.8/win32/ia32/aDrive-4.9.8.exe#/aDrive-4.9.8.7z",
+    "license": "Freeware",
+    "url": "https://cdn.aliyundrive.net/downloads/apps/desktop/update/4.9.8/win32/ia32/aDrive-4.9.8.exe#/dl.7z",
     "hash": "sha512:627fa85495b3a87e605564cb4a452099e2871c2b11b721624df7763531954b54b502c6100488cb6493cbc4d958d1a47a39bd9389bc0a93d0f57dea28034b0b8b",
-    "post_install": [
-        "@('$PLUGINSDIR', '$TEMP') | ForEach-Object {",
-        "    Remove-Item \"$dir\\$_\" -Recurse -Force",
-        "}"
-    ],
+    "post_install": "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\`$TEMP\" -Force -Recurse",
     "shortcuts": [
         [
             "aDrive.exe",
-            "阿里云盘"
+            "aliyun drive"
         ]
     ],
     "checkver": {
-        "script": "return (iwr -useb \"$($(iwr -useb 'https://www.aliyundrive.com/desktop/version/update.json' | ConvertFrom-Json).url)/win32/ia32/latest.yml\")",
-        "re": "version: ([\\d.]+)"
+        "url": "https://api.nicoconi.com/updater/aliyundrive",
+        "regex": "version: ([\\d.]+)"
     },
     "autoupdate": {
-        "url": "https://cdn.aliyundrive.net/downloads/apps/desktop/update/$version/win32/ia32/aDrive-$version.exe#/aDrive-$version.7z",
+        "url": "https://cdn.aliyundrive.net/downloads/apps/desktop/update/$version/win32/ia32/aDrive-$version.exe#/dl.7z",
         "hash": {
-            "url": "https://g.alicdn.com/aliyun-drive-fe/aliyun-drive-desktop-version/$version/win32/ia32/latest.yml",
-            "mode": "extract",
+            "url": "https://api.nicoconi.com/updater/aliyundrive",
             "regex": "sha512: $base64"
         }
     }
