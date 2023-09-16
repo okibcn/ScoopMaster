@@ -2,12 +2,13 @@
     "version": "0.14.0",
     "description": "Fast and secure open source backup.",
     "homepage": "https://kopia.io/",
-    "license": {
-        "identifier": "Apache-2.0",
-        "url": "https://raw.githubusercontent.com/kopia/kopia/master/LICENSE"
+    "license": "Apache-2.0",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/kopia/kopia/releases/download/v0.14.0/KopiaUI-0.14.0-win.zip",
+            "hash": "56cbf0b2b6844aab7427b1a3de799085d360b1733d915ffcacb187da10773a16"
+        }
     },
-    "url": "https://github.com/kopia/kopia/releases/download/v0.14.0/KopiaUI-0.14.0-win.zip",
-    "hash": "56cbf0b2b6844aab7427b1a3de799085d360b1733d915ffcacb187da10773a16",
     "bin": "resources\\server\\kopia.exe",
     "shortcuts": [
         [
@@ -19,6 +20,14 @@
         "github": "https://github.com/kopia/kopia"
     },
     "autoupdate": {
-        "url": "https://github.com/kopia/kopia/releases/download/v$version/KopiaUI-$version-win.zip"
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/kopia/kopia/releases/download/v$version/KopiaUI-$version-win.zip",
+                "hash": {
+                    "url": "$baseurl/checksums.txt",
+                    "regex": "$sha256\\s+$basename"
+                }
+            }
+        }
     }
 }
