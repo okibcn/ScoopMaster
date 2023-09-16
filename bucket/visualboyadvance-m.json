@@ -1,8 +1,11 @@
 {
-    "homepage": "https://github.com/visualboyadvance-m/visualboyadvance-m",
-    "description": "Community-maintained, improved version of the VisualBoyAdvance Game Boy emulator",
     "version": "2.1.7",
-    "license": "GPL-2.0-or-later",
+    "description": "Nintendo Game Boy Advance emulator",
+    "homepage": "https://vba-m.com",
+    "license": {
+        "identifier": "GPL-2.0",
+        "url": "http://www.gnu.org/licenses/gpl-2.0.html"
+    },
     "architecture": {
         "32bit": {
             "url": "https://github.com/visualboyadvance-m/visualboyadvance-m/releases/download/v2.1.7/visualboyadvance-m-Win-x86_32.zip",
@@ -13,30 +16,27 @@
             "hash": "97dc8da83900334954085666ea09962ed5a8a7b6c721ef70e2fa57cc64be61c5"
         }
     },
+    "pre_install": [
+        "if (!(Test-Path \"$persist_dir\\vbam.ini\")) {",
+        "   New-Item \"$dir\\vbam.ini\" -Type File | Out-Null",
+        "   Set-Content \"$dir\\vbam.ini\" '[General]'",
+        "   Add-Content \"$dir\\vbam.ini\" 'OnlineUpdates=never'",
+        "   'Battery', 'Recording', 'Screenshot', 'State' | ForEach-Object {",
+        "   Add-Content -Path \"$dir\\vbam.ini\" -Value $_`Dir`=$_ }",
+        "}"
+    ],
     "bin": "visualboyadvance-m.exe",
     "shortcuts": [
         [
             "visualboyadvance-m.exe",
-            "GBA"
+            "VisualBoyAdvance-M"
         ]
     ],
-    "pre_install": [
-        "function create($path, $type, $content) {",
-        "   if (-not (Test-Path \"$path\")) {",
-        "       New-Item \"$path\" -ItemType $type -Value $content | Out-Null",
-        "       Write-Output \"Creating $path...\"",
-        "   }",
-        "}",
-        "create $dir\\saves Directory",
-        "create $dir\\savestates Directory",
-        "create $dir\\screenshots Directory",
-        "create $dir\\vbam.ini File \"[General]`nBatteryDir=$dir\\saves`nStateDir=$dir\\savestates`nScreenshotDir=$dir\\screenshots\""
-    ],
     "persist": [
-        "vbam.ini",
-        "saves",
-        "savestates",
-        "screenshots"
+        "Battery",
+        "Recording",
+        "Screenshot",
+        "State"
     ],
     "checkver": {
         "github": "https://github.com/visualboyadvance-m/visualboyadvance-m"
