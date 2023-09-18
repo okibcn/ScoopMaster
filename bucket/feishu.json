@@ -1,28 +1,30 @@
 {
-    "version": "6.11.12",
-    "description": "飞书",
     "homepage": "https://www.feishu.cn/",
+    "description": "Connect with teammates anytime and anywhere",
     "license": {
-        "identifier": "Freeware"
+        "identifier": "EULA",
+        "url": "https://www.feishu.cn/en/terms"
     },
-    "url": "https://sf3-cn.feishucdn.com/obj/ee-appcenter/2831b811/Feishu-win32_ia32-6.11.12-signed.exe#/dl.7z",
+    "version": "6.11.12",
+    "url": "https://sf3-cn.feishucdn.com/obj/ee-appcenter/2831b811/Feishu-win32_ia32-6.11.12-signed.exe#/feishu-6.11.12.7z",
     "hash": "md5:59101a0c42988d4a0b26504fdf10be49",
+    "extract_to": "app",
     "shortcuts": [
         [
-            "Feishu.exe",
-            "飞书"
+            "app/Feishu.exe",
+            "Feishu"
         ]
     ],
     "checkver": {
         "url": "https://www.feishu.cn/api/downloads",
-        "jp": "$.versions.Windows.download_link",
-        "regex": "/(?<id>[\\d\\w]+)/Feishu-(?<arch>[\\d\\w]+)-([\\d\\.]+)\\-signed\\.exe"
+        "jsonpath": "$.versions",
+        "regex": "(?sm)Windows.*?https://(?<path>[\\w.-/].*?)-(?<version>[\\d+\\.]+\\d+)(?<suffix>[\\w.-].*?).exe"
     },
     "autoupdate": {
-        "url": "https://sf3-cn.feishucdn.com/obj/ee-appcenter/$matchId/Feishu-$matchArch-$version-signed.exe#/dl.7z",
+        "url": "https://$matchPath-$version$matchSuffix.exe#/feishu-$version.7z",
         "hash": {
             "url": "https://www.feishu.cn/api/downloads",
-            "jp": "$.versions.Windows.hash"
+            "jsonpath": "$.versions.Windows.hash"
         }
     }
 }
