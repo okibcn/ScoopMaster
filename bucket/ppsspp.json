@@ -1,18 +1,12 @@
 {
     "version": "1.16.1",
-    "license": "GPL-2.0-only",
+    "description": "Sony PlayStation Portable (PSP) emulator",
     "homepage": "https://www.ppsspp.org",
-    "description": "PSP Emulator",
+    "license": "GPL-2.0-or-later",
     "architecture": {
         "64bit": {
-            "url": "https://www.ppsspp.org/files/1_16_1/ppsspp_win.zip",
+            "url": "https://ppsspp.org/files/1_16_1/ppsspp_win.zip",
             "hash": "7fce194f90f7de71082a395735f8bd0e0b695c546b9c9461995d4069f97f1f31",
-            "bin": [
-                [
-                    "PPSSPPWindows64.exe",
-                    "ppsspp"
-                ]
-            ],
             "shortcuts": [
                 [
                     "PPSSPPWindows64.exe",
@@ -21,33 +15,51 @@
             ]
         },
         "32bit": {
-            "url": "https://www.ppsspp.org/files/1_16_1/ppsspp_win.zip",
+            "url": "https://ppsspp.org/files/1_16_1/ppsspp_win.zip",
             "hash": "7fce194f90f7de71082a395735f8bd0e0b695c546b9c9461995d4069f97f1f31",
-            "bin": [
-                [
-                    "PPSSPPWindows.exe",
-                    "ppsspp"
-                ]
-            ],
             "shortcuts": [
                 [
                     "PPSSPPWindows.exe",
-                    "PSP"
+                    "PPSSPP"
+                ]
+            ]
+        },
+        "arm64": {
+            "url": "https://ppsspp.org/files/1_16_1/PPSSPPWindowsARM64.zip",
+            "hash": "2948c18f637cfb171d1d2c93a69fdfaeb7faea0d2a91850f1a02ce60a2318989",
+            "shortcuts": [
+                [
+                    "PPSSPPWindowsARM64.exe",
+                    "PPSSPP"
                 ]
             ]
         }
     },
-    "persist": "memstick",
+    "pre_install": [
+        "if (!(Test-Path \"$persist_dir\")) {",
+        "   New-item \"$persist_dir\" -ItemType Directory | Out-Null",
+        "   New-item \"$persist_dir\\memstick\" -ItemType Directory | Out-Null",
+        "}"
+    ],
+    "persist": [
+        "assets",
+        "demos",
+        "memstick"
+    ],
     "checkver": {
-        "github": "https://github.com/hrydgard/ppsspp/"
+        "github": "https://github.com/hrydgard/ppsspp",
+        "regex": "v([\\d.]+)"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://www.ppsspp.org/files/$underscoreVersion/ppsspp_win.zip"
+                "url": "https://ppsspp.org/files/$underscoreVersion/ppsspp_win.zip"
             },
             "32bit": {
-                "url": "https://www.ppsspp.org/files/$underscoreVersion/ppsspp_win.zip"
+                "url": "https://ppsspp.org/files/$underscoreVersion/ppsspp_win.zip"
+            },
+            "arm64": {
+                "url": "https://ppsspp.org/files/$underscoreVersion/PPSSPPWindowsARM64.zip"
             }
         }
     }
