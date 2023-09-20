@@ -1,17 +1,27 @@
 {
     "homepage": "https://www.eudic.net/",
-    "description": "权威的英语词典软件 英语学习者必备的工具",
     "version": "2023-09-19",
     "license": "freeware",
-    "url": "https://static.frdic.com/pkg/eudic_win.zip",
+    "url": "http://static.frdic.com/pkg/eudic_win.zip",
+    "hash": "4521d61ebed21e63c2122b636bcd0e79b8203cb708a810b8103bca6f8a873953",
     "installer": {
-        "script": "Start-Process -Wait $dir\\eudic_win.exe"
+        "script": [
+            "Expand-7ZipArchive \"$dir\\eudic_win.exe\" \"$dir\\\" -Removal",
+            "Expand-7ZipArchive \"$dir\\app.7z\" \"$dir\" -Removal",
+            "Remove-Item \"$dir\\uninst.exe.nsis\",\"$dir\\`$PLUGINSDIR\"  -Force -Recurse"
+        ]
     },
+    "shortcuts": [
+        [
+            "eudic.exe",
+            "Eudic"
+        ]
+    ],
     "checkver": {
         "url": "https://www.eudic.net/v4/en/app/download",
         "regex": "<a href=\"https://www.eudic.net/download/eudic_win.zip\\?v=([\\d-]+)\""
     },
     "autoupdate": {
-        "url": "https://static.frdic.com/pkg/eudic_win.zip"
+        "url": "http://static.frdic.com/pkg/eudic_win.zip"
     }
 }
