@@ -1,8 +1,11 @@
 {
-    "description": "Oracle Java Platform, Standard Edition Development Kit (JDK)",
-    "homepage": "https://www.oracle.com/java/",
     "version": "21",
-    "license": "https://www.oracle.com/downloads/licenses/no-fee-license.html",
+    "description": "Oracle Java SE Development Kit",
+    "homepage": "https://www.oracle.com/java/",
+    "license": {
+        "identifier": "Freeware",
+        "url": "https://www.oracle.com/downloads/licenses/no-fee-license.html"
+    },
     "architecture": {
         "64bit": {
             "url": "https://download.oracle.com/java/21/archive/jdk-21_windows-x64_bin.zip",
@@ -15,18 +18,18 @@
         "JAVA_HOME": "$dir"
     },
     "checkver": {
-        "url": "https://www.oracle.com/java/technologies/javase/jdk21-archive-downloads.html",
-        "useragent": "curl/7",
-        "regex": "/jdk-([\\d.]+)_windows-x64"
+        "url": "https://www.oracle.com/java/technologies/downloads/",
+        "regex": "JDK Development Kit ((?<major>\\d+)[\\d.]*) downloads",
+        "useragent": "Mozilla/5.0 (Windows NT 10.0; Trident/7.0; rv:11.0) like Gecko"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://download.oracle.com/java/$majorVersion/archive/jdk-$version_windows-x64_bin.zip"
+                "url": "https://download.oracle.com/java/$matchMajor/archive/jdk-$version_windows-x64_bin.zip"
             }
         },
         "hash": {
-            "url": "$url.sha256"
+            "url": "https://download.oracle.com/java/$matchMajor/archive/jdk-$version_windows-x64_bin.zip.sha256"
         },
         "extract_dir": "jdk-$version"
     }
