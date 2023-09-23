@@ -1,53 +1,44 @@
 {
     "version": "3.9.4",
-    "description": "iikira/BaiduPCS-Go原版基础上集成了分享链接/秒传链接转存功能",
+    "description": "iikira/BaiduPCS-Go 原版基础上集成了分享链接/秒传链接转存功能",
     "homepage": "https://github.com/qjfoidnh/BaiduPCS-Go",
     "license": "Apache-2.0",
     "architecture": {
         "64bit": {
             "url": "https://github.com/qjfoidnh/BaiduPCS-Go/releases/download/v3.9.4/BaiduPCS-Go-v3.9.4-windows-x64.zip",
-            "hash": "ffa94c4a5e0f0b14d9470dea85869607a61e8b97d065db393f43d74a8fd3c8e9"
+            "hash": "ffa94c4a5e0f0b14d9470dea85869607a61e8b97d065db393f43d74a8fd3c8e9",
+            "extract_dir": "BaiduPCS-Go-v3.9.4-windows-x64"
         },
         "32bit": {
             "url": "https://github.com/qjfoidnh/BaiduPCS-Go/releases/download/v3.9.4/BaiduPCS-Go-v3.9.4-windows-x86.zip",
-            "hash": "105775665eea97822e80a38e9e215a5dcb7620e994e127ad49d5304338ab859f"
-        },
-        "arm64": {
-            "url": "https://github.com/qjfoidnh/BaiduPCS-Go/releases/download/v3.9.4/BaiduPCS-Go-v3.9.4-windows-arm.zip",
-            "hash": "0893e3d263ef3302128640d80b697db15a3018909de908ba2b2a95381f0911f4"
+            "hash": "105775665eea97822e80a38e9e215a5dcb7620e994e127ad49d5304338ab859f",
+            "extract_dir": "BaiduPCS-Go-v3.9.4-windows-x86"
         }
     },
-    "installer": {
-        "script": [
-            "Move-Item \"$dir\\BaiduPCS-Go-*\\*\" \"$dir\\\" -Force",
-            "Remove-Item \"$dir\\BaiduPCS-Go-*\" -Force "
+    "bin": "BaiduPCS-Go.exe",
+    "shortcuts": [
+        [
+            "BaiduPCS-Go.exe",
+            "BaiduPCS-Go"
         ]
-    },
-    "pre_install": [
-        "if (!(Test-Path \"$persist_dir\\pcs_config.json\") -or !(Get-Item \"$persist_dir\\pcs_config.json\").Length) {",
-        "   New-Item \"$persist_dir\\pcs_config.json\" -ItemType File -Force | Out-Null}",
-        "if (!(Test-Path \"$persist_dir\\pcs_command_history.txt\") -or !(Get-Item \"$persist_dir\\pcs_command_history.txt\").Length) {",
-        "   New-Item \"$persist_dir\\pcs_command_history.txt\" -ItemType File -Force | Out-Null}",
-        "if (!(Test-Path \"$persist_dir\\pcs_uploading.json\") -or !(Get-Item \"$persist_dir\\pcs_uploading.json\").Length) {",
-        "   New-Item \"$persist_dir\\pcs_uploading.json\" -ItemType File -Force | Out-Null}"
     ],
-    "bin": "baiduPCS-Go.exe",
     "persist": [
-        "pcs_config.json",
-        "pcs_command_history.txt",
-        "pcs_uploading.json"
+        "config",
+        "Downloads"
     ],
+    "env_set": {
+        "BAIDUPCS_GO_CONFIG_DIR": "$dir\\config"
+    },
     "checkver": "github",
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://github.com/qjfoidnh/BaiduPCS-Go/releases/download/v$version/BaiduPCS-Go-v$version-windows-x64.zip"
+                "url": "https://github.com/qjfoidnh/BaiduPCS-Go/releases/download/v$version/BaiduPCS-Go-v$version-windows-x64.zip",
+                "extract_dir": "BaiduPCS-Go-v$version-windows-x64"
             },
             "32bit": {
-                "url": "https://github.com/qjfoidnh/BaiduPCS-Go/releases/download/v$version/BaiduPCS-Go-v$version-windows-x86.zip"
-            },
-            "arm64": {
-                "url": "https://github.com/qjfoidnh/BaiduPCS-Go/releases/download/v$version/BaiduPCS-Go-v$version-windows-arm.zip"
+                "url": "https://github.com/qjfoidnh/BaiduPCS-Go/releases/download/v$version/BaiduPCS-Go-v$version-windows-x86.zip",
+                "extract_dir": "BaiduPCS-Go-v$version-windows-x86"
             }
         }
     }
