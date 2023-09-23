@@ -1,16 +1,21 @@
 {
-    "version": "5.0-20130",
+    "version": "5.0-20132",
     "description": "A Nintendo GameCube and Wii emulator",
     "homepage": "https://dolphin-emu.org/",
     "license": {
-        "identifier": "GPL-2.0-or-later",
-        "url": "https://github.com/dolphin-emu/dolphin/blob/master/COPYING"
+        "url": "https://github.com/dolphin-emu/dolphin/blob/master/COPYING",
+        "identifier": "GPL-2.0-or-later"
     },
     "suggest": {
-        "Microsoft Visual C++ Runtime 2022": "extras/vcredist2022"
+        "Microsoft Visual C++ Runtime 2019": "extras/vcredist2019"
     },
-    "url": "https://dl.dolphin-emu.org/builds/aa/ae/dolphin-master-5.0-20130-x64.7z",
-    "hash": "1673a6980ab2a9719316ae44fca7bb43ca82a91b6d515cb6e84d5921f348b864",
+    "architecture": {
+        "64bit": {
+            "url": "https://dl.dolphin-emu.org/builds/a8/ba/dolphin-master-5.0-20132-x64.7z",
+            "hash": "d84ee5ac45a47f33a9d52711bb7aa23d4d759aa990de6dbd450730f6ec4b9cff",
+            "extract_dir": "Dolphin-x64"
+        }
+    },
     "extract_dir": "Dolphin-x64",
     "pre_install": [
         "if (!(Test-Path \"$persist_dir\")) {",
@@ -43,6 +48,10 @@
         "replace": "${major}-${build}"
     },
     "autoupdate": {
-        "url": "https://dl.dolphin-emu.org/builds/$matchRand1/$matchRand2/dolphin-master-$matchMajor-$matchBuild-x64.7z"
+        "architecture": {
+            "64bit": {
+                "url": "https://dl.dolphin-emu.org/builds/$matchRand1/$matchRand2/dolphin-master-$version-x64.7z"
+            }
+        }
     }
 }
