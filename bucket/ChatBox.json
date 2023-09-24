@@ -1,34 +1,25 @@
 {
-    "version": "1.0.0",
-    "description": "A desktop app for GPT/LLM that supports Windows, Mac, Linux & Web Online",
     "homepage": "https://github.com/Bin-Huang/chatbox",
-    "license": "GPL-3.0-only",
-    "architecture": {
-        "64bit": {
-            "url": "https://github.com/Bin-Huang/chatbox/releases/download/v1.0.0/Chatbox-1.0.0-Setup.exe#/dl.7z",
-            "hash": "sha512:7a3aaacce08ca5fa95a739c3e52945d0f0278e23a4350f273e7403a4930d895b412a9150d451c928894c58ecc061e49c646a1d45a0def6500864d29f74568068"
-        }
-    },
+    "description": "a cross-platform desktop client for OpenAI API, also a prompt debugging and management tool.",
+    "version": "1.0.0",
+    "license": "GPL-3.0",
+    "url": "https://github.com/Bin-Huang/chatbox/releases/download/v1.0.0/Chatbox-1.0.0-Setup.exe#/dl.7z",
+    "hash": "C1DADB2A688E5D71ED339FE73C3AB453D5D21676786EE94A6EFB410B13CB4E2E",
+    "bin": "Chatbox.exe",
     "pre_install": [
-        "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\" -Removal",
-        "Remove-Item \"$dir\\`$*\" -Recurse"
+        "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\"",
+        "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\Uninst*\" -Force -Recurse"
     ],
     "shortcuts": [
         [
-            "chatbox.exe",
+            "Chatbox.exe",
             "ChatBox"
         ]
     ],
-    "checkver": "github",
+    "checkver": {
+        "github": "https://github.com/Bin-Huang/chatbox"
+    },
     "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://github.com/Bin-Huang/chatbox/releases/download/v$version/Chatbox-$version-Setup.exe#/dl.7z"
-            }
-        },
-        "hash": {
-            "url": "$baseurl/latest.yml",
-            "regex": "$basename\\s+sha512:\\s+$base64"
-        }
+        "url": "https://github.com/Bin-Huang/chatbox/releases/download/v$version/Chatbox-v$version-Setup.exe#/dl.7z"
     }
 }

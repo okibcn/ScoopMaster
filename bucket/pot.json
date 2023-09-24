@@ -1,45 +1,37 @@
 {
     "version": "2.5.0",
-    "description": "一个跨平台的划词翻译和OCR软件 | A cross-platform software for text translation and recognize",
-    "homepage": "https://pot-app.com",
-    "license": "GPL-3.0-or-later",
-    "notes": [
-        "Scoop doesn't persist your pot data, by default they are stored in: ",
-        "Config&log files: '%AppData%\\com.pot-app.desktop'",
-        "WebView files: '%LocalAppData%\\com.pot-app.desktop'"
-    ],
+    "description": "A cross-platform software for text translation.",
+    "homepage": "https://pot-app.com/",
+    "license": "GPL-3.0-only",
     "architecture": {
         "64bit": {
-            "url": "https://github.com/pot-app/pot-desktop/releases/download/2.5.0/pot_2.5.0_x64-setup.nsis.zip",
-            "hash": "b1302371c365cb80ef52b22836cf27e9326ce28c48bb2b1616964ef8a3847c48"
+            "url": "https://github.com/pot-app/pot-desktop/releases/download/2.5.0/pot_2.5.0_x86-setup.exe#/dl.7z",
+            "hash": "c8552cb9f8ceb0247f57d270d09fc2656794dfa6e6f4694f5e15058f970584a5"
         },
         "32bit": {
-            "url": "https://github.com/pot-app/pot-desktop/releases/download/2.5.0/pot_2.5.0_x86-setup.nsis.zip",
-            "hash": "2ba3262414db2606a72adfeabfaa165a606e3621bf680e505f5f3366a4440d37"
+            "url": "https://github.com/pot-app/pot-desktop/releases/download/2.5.0/pot_2.5.0_x64-setup.exe#/dl.7z",
+            "hash": "16751283be7e0d5ba544298e3a440a589ea668ec31d093261726f63bc67c0ee7"
         }
     },
+    "post_install": "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\uninstall*\" -Force -Recurse",
+    "bin": "pot.exe",
     "shortcuts": [
         [
             "pot.exe",
-            "pot"
+            "Pot"
         ]
-    ],
-    "extract_to": "_EXTRACTED",
-    "pre_install": [
-        "Expand-7zipArchive (Get-ChildItem \"$dir\\_EXTRACTED\\pot_*.exe\").FullName \"$dir\"",
-        "Remove-Item \"$dir\\_EXTRACTED\" -Force -Recurse",
-        "Remove-Item \"$dir\" -Include 'Uninstall.exe', '$PLUGINSDIR' -Recurse"
     ],
     "checkver": {
         "github": "https://github.com/pot-app/pot-desktop"
     },
+    "notes": "Pot is NOT portable.",
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://github.com/pot-app/pot-desktop/releases/download/$version/pot_$version_x64-setup.nsis.zip"
+                "url": "https://github.com/pot-app/pot-desktop/releases/download/$version/pot_$version_x86-setup.exe#/dl.7z"
             },
             "32bit": {
-                "url": "https://github.com/pot-app/pot-desktop/releases/download/$version/pot_$version_x86-setup.nsis.zip"
+                "url": "https://github.com/pot-app/pot-desktop/releases/download/$version/pot_$version_x64-setup.exe#/dl.7z"
             }
         }
     }
