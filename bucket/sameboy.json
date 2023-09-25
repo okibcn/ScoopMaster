@@ -1,40 +1,44 @@
 {
     "version": "0.15.8",
-    "description": "A Game Boy and Game Boy Color emulator written in C",
+    "description": "Nintendo Game Boy and Game Boy Color emulator",
     "homepage": "https://sameboy.github.io/",
     "license": {
-        "identifier": "MIT",
-        "url": "https://github.com/LIJI32/SameBoy/blob/master/LICENSE"
+        "url": "https://github.com/LIJI32/SameBoy/blob/master/LICENSE",
+        "identifier": "MIT"
     },
-    "url": "https://github.com/LIJI32/SameBoy/releases/download/v0.15.8/sameboy_winsdl_v0.15.8.zip",
-    "hash": "9583633193a4e5bdec463c8195e9a8136259d1797fe713b1ba998e72447f5e56",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/LIJI32/SameBoy/releases/download/v0.15.8/sameboy_winsdl_v0.15.8.zip",
+            "hash": "9583633193a4e5bdec463c8195e9a8136259d1797fe713b1ba998e72447f5e56",
+            "bin": [
+                [
+                    "sameboy.exe",
+                    "sameboy"
+                ]
+            ],
+            "shortcuts": [
+                [
+                    "sameboy.exe",
+                    "SameBoy"
+                ]
+            ]
+        }
+    },
     "pre_install": [
         "if (!(Test-Path \"$persist_dir\\prefs.bin\")) {",
         "    New-Item \"$dir\\prefs.bin\" -Type File | Out-Null",
         "}"
     ],
-    "bin": [
-        "sameboy.exe",
-        "sameboy_debugger.exe"
-    ],
-    "shortcuts": [
-        [
-            "sameboy.exe",
-            "SameBoy"
-        ],
-        [
-            "sameboy_debugger.exe",
-            "SameBoy Debugger"
-        ]
-    ],
     "persist": "prefs.bin",
     "checkver": {
-        "github": "https://github.com/LIJI32/SameBoy"
+        "github": "https://github.com/LIJI32/SameBoy",
+        "regex": "SameBoy v([\\d.]+)"
     },
     "autoupdate": {
-        "url": "https://github.com/LIJI32/SameBoy/releases/download/v$version/sameboy_winsdl_v$version.zip",
-        "hash": {
-            "url": "$baseurl/SHA2-256SUMS"
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/LIJI32/SameBoy/releases/download/v$version/sameboy_winsdl_v$version.zip"
+            }
         }
     }
 }

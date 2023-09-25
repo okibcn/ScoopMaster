@@ -1,6 +1,7 @@
 {
-    "license": "GPL",
-    "homepage": "https://github.com/pot-app/pot-desktop",
+    "homepage": "https://pot-app.com/",
+    "description": "A cross-platform translation software",
+    "license": "GPL-3.0-only",
     "version": "2.5.1",
     "architecture": {
         "64bit": {
@@ -12,13 +13,17 @@
             "hash": "12ec7f15899a024db93ec89983340154fa73cfccb28a1ec0eb606a234f46d238"
         }
     },
+    "post_install": "Remove-Item \"$dir\\`$PLUGINSDIR\" -Force -Recurse",
     "shortcuts": [
         [
             "pot.exe",
             "Pot"
         ]
     ],
-    "checkver": "github",
+    "persist": "config.toml",
+    "checkver": {
+        "github": "https://github.com/pot-app/pot-desktop"
+    },
     "autoupdate": {
         "architecture": {
             "64bit": {
@@ -28,5 +33,9 @@
                 "url": "https://github.com/pot-app/pot-desktop/releases/download/$version/pot_$version_x86-setup.exe#/dl.7z"
             }
         }
-    }
+    },
+    "notes": [
+        "You may need to install Edge WebView2 Runtime to use Pot.",
+        "A installer of Edge WebView2 Runtime is available under the 'redist' folder of the Pot installation directory."
+    ]
 }
