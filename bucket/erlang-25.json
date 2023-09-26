@@ -1,0 +1,57 @@
+{
+    "version": "25.3.2.6",
+    "description": "A programming language used to build massively scalable soft real-time systems with requirements on high availability. OTP-25",
+    "homepage": "https://www.erlang.org",
+    "license": "Apache-2.0",
+    "suggest": {
+        "vcredist": "extras/vcredist2013"
+    },
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/erlang/otp/releases/download/OTP-25.3.2.6/otp_win64_25.3.2.6.exe#/dl.7z",
+            "hash": "md5:b5d76a70c2a5af3cd87c9843bd01920b"
+        },
+        "32bit": {
+            "url": "https://github.com/erlang/otp/releases/download/OTP-25.3.2.6/otp_win32_25.3.2.6.exe#/dl.7z",
+            "hash": "md5:14932a5227a33b7984abe2f56490646d"
+        }
+    },
+    "installer": {
+        "file": "Install.exe",
+        "args": "-sasl"
+    },
+    "post_install": "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\Uninstall.exe.nsis\", \"$dir\\vcredist*\" -Force -Recurse",
+    "bin": [
+        "bin\\erl.exe",
+        "bin\\erlc.exe",
+        "bin\\escript.exe",
+        "bin\\werl.exe"
+    ],
+    "shortcuts": [
+        [
+            "bin\\werl.exe",
+            "Erlang"
+        ]
+    ],
+    "env_set": {
+        "ERLANG_HOME": "$dir"
+    },
+    "checkver": {
+        "url": "https://www.erlang.org/downloads/25",
+        "regex": "https:\\/\\/github.com\\/erlang\\/otp\\/releases\\/download\\/OTP-([\\d.]+)\\/otp_win64_\\1\\.exe"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/erlang/otp/releases/download/OTP-$version/otp_win64_$version.exe#/dl.7z"
+            },
+            "32bit": {
+                "url": "https://github.com/erlang/otp/releases/download/OTP-$version/otp_win32_$version.exe#/dl.7z"
+            }
+        },
+        "hash": {
+            "url": "https://erlang.org/download/MD5",
+            "find": "MD5\\($basename\\)=\\s$md5"
+        }
+    }
+}
