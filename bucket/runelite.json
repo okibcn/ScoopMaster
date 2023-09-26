@@ -1,45 +1,39 @@
 {
-    "homepage": "https://github.com/runelite/launcher",
     "version": "2.6.8",
-    "description": "Launcher for the RuneLite Client - a free, open source OldSchool RuneScape client.",
-    "license": {
-        "identifier": "BSD-2-Clause",
-        "url": "https://github.com/runelite/launcher/blob/master/LICENSE"
+    "description": "An open source Old School RuneScape client",
+    "homepage": "https://runelite.net",
+    "license": "BSD-2-Clause",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/runelite/launcher/releases/download/2.6.8/RuneLiteSetup.exe#/dl.7z",
+            "hash": "c964d9400e616b5b61069c6a27573c93a83d9de8cbbb5094d69f2ee2dd3a56ab"
+        },
+        "32bit": {
+            "url": "https://github.com/runelite/launcher/releases/download/2.6.8/RuneLiteSetup32.exe#/dl.7z",
+            "hash": "1d889b01eb4e93b3fd427316769014fc2483ebd8bd3eb2a2624ff02aa46b55de"
+        }
     },
-    "url": [
-        "https://github.com/runelite/launcher/releases/download/2.6.8/RuneLite.jar",
-        "https://i.imgur.com/Ozfabsa.png"
-    ],
-    "pre_install": "Rename-Item -Path $dir\\Ozfabsa.png -NewName icon.png",
-    "bin": [
-        [
-            "java.exe",
-            "runelite",
-            "-jar $dir\\RuneLite.jar"
-        ]
-    ],
     "shortcuts": [
         [
-            "$env:SCOOP\\shims\\runelite.exe",
-            "Runescape",
-            "",
-            "icon.png"
+            "RuneLite.exe",
+            "RuneLite"
         ]
     ],
-    "hash": [
-        "adea934585e6a5fc70a39324c5015d89f95d1694d8d1ab1c4cf5c0e264af96e3",
-        "57AF236659C56FEAE8B23F1272F3592735E087D52BD90A92E10B7319574D0800"
-    ],
-    "notes": "Java 8 or 11 is recommended",
-    "suggest": {
-        "JRE8": [
-            "java/oraclejre8",
-            "java/openjdk8"
-        ],
-        "JRE11": "java/openjdk11"
+    "innosetup": true,
+    "checkver": {
+        "github": "https://github.com/runelite/launcher"
     },
-    "checkver": "github",
     "autoupdate": {
-        "url": "https://github.com/runelite/launcher/releases/download/$version/RuneLite.jar"
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/runelite/launcher/releases/download/$version/RuneLiteSetup.exe#/dl.7z"
+            },
+            "32bit": {
+                "url": "https://github.com/runelite/launcher/releases/download/$version/RuneLiteSetup32.exe#/dl.7z"
+            }
+        },
+        "hash": {
+            "url": "https://github.com/runelite/launcher/releases/tag/$version"
+        }
     }
 }
