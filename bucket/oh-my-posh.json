@@ -37,16 +37,11 @@
         }
     },
     "extract_to": "themes",
+    "persist": "themes",
     "env_set": {
-        "POSH_THEMES_PATH": "$dir\\themes"
+        "POSH_THEMES_PATH": "$persist_dir\\themes"
     },
     "bin": "oh-my-posh.exe",
-    "post_install": [
-        "$persist_themes=\"$persist_dir\\themes\"",
-        "if (Test-Path $persist_themes) {",
-        "Get-ChildItem -Path $persist_themes | ForEach-Object { New-Item -ItemType HardLink -Path $dir\\themes -Name $_.Name -Value $_.FullName } | Out-Null",
-        "}"
-    ],
     "checkver": {
         "github": "https://github.com/JanDeDobbeleer/oh-my-posh"
     },
