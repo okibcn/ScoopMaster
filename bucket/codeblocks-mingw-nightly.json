@@ -5,10 +5,35 @@
     "license": {
         "identifier": "GPL-3.0-or-later"
     },
+    "suggest": {
+        "mingw": "main/mingw"
+    },
     "architecture": {
         "64bit": {
             "hash": "sha1:0cd9ebbef084dbcc811b865e6ed62f730967e69a",
-            "url": "https://sourceforge.net/projects/codeblocks/files/Binaries/Nightlies/2023/CB_20230924_rev13360_win64.7z"
+            "url": "https://sourceforge.net/projects/codeblocks/files/Binaries/Nightlies/2023/CB_20230924_rev13360_win64.7z",
+            "pre_install": [
+                "$url = \"https://sourceforge.net/projects/codeblocks/rss?path=/Binaries/Nightlies/Prerequisites/\"",
+                "$response = Invoke-WebRequest -Uri $url",
+                "$mingwPath = [regex]::Matches($response.Content, \"/Binaries/Nightlies/Prerequisites/Mingw64dlls(?<ver>[\\d.]+).7z\")[0]",
+                "if ($mingwPath) {",
+                "    $fileUrl = \"https://nchc.dl.sourceforge.net/project/codeblocks$mingwPath\"",
+                "    $tempFileName = ([System.IO.Path]::GetFileName($fileUrl))",
+                "    $tempFile = Join-Path $ENV:TEMP $tempFileName",
+                "    & { Invoke-WebRequest -Uri $fileUrl -OutFile $tempFile } *>&1 | Out-Null",
+                "    & { 7z x $tempFile \"-o$($dir)\" -y } *>&1 | Out-Null",
+                "    & { Remove-Item -Path $tempFile -Confirm:$false -Force | Out-Null } *>&1 | Out-Null",
+                "}",
+                "$gccPath = [regex]::Matches($response.Content, \"\/Binaries\/Nightlies\/Prerequisites\/wxmsw(?<sw>[\\d]+)[\\w]+_gcc_cb_wx(?<wx>[\\d]+)_2D_gcc(?<gcc>[\\d]+)-mingw64.7z\")[0]",
+                "if ($gccPath) {",
+                "    $fileUrl = \"https://nchc.dl.sourceforge.net/project/codeblocks$gccPath\"",
+                "    $tempFileName = ([System.IO.Path]::GetFileName($fileUrl))",
+                "    $tempFile = Join-Path $ENV:TEMP $tempFileName",
+                "    & { Invoke-WebRequest -Uri $fileUrl -OutFile $tempFile } *>&1 | Out-Null",
+                "    & { 7z x $tempFile \"-o$($dir)\" -y } *>&1 | Out-Null",
+                "    & { Remove-Item -Path $tempFile -Confirm:$false -Force | Out-Null } *>&1 | Out-Null",
+                "}"
+            ]
         }
     },
     "bin": "codeblocks.exe",
