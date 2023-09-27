@@ -1,49 +1,48 @@
 {
-    "$schema": "https://raw.githubusercontent.com/ScoopInstaller/Scoop/master/schema.json",
     "version": "9.1.1",
     "description": "A HDD/SSD utility software which supports a part of USB, Intel RAID and NVMe.",
-    "homepage": "https://crystalmark.info/en/software/crystaldiskinfo/",
+    "homepage": "https://crystalmark.info/en/",
     "license": "MIT",
     "url": "https://crystalmark.info/download/zz/CrystalDiskInfo9_1_1Shizuku.zip",
     "hash": "cee8575b8e19855495a1072e628ed7967aa0fd687b1650adf5864fbd7ce88607",
-    "pre_install": "if (!(Test-Path \"$persist_dir\\DiskInfo.ini\")) { New-Item \"$dir\\DiskInfo.ini\" | Out-Null }",
     "architecture": {
         "64bit": {
-            "bin": [
-                [
-                    "DiskInfo64S.exe",
-                    "DiskInfo-Shizuku"
-                ]
-            ],
             "shortcuts": [
                 [
                     "DiskInfo64S.exe",
-                    "CrystalDiskInfo (Shizuku Edition)"
+                    "CrystalDiskInfo Shizuku Edition"
                 ]
             ]
         },
         "32bit": {
-            "bin": [
-                [
-                    "DiskInfo32S.exe",
-                    "DiskInfo-Shizuku"
-                ]
-            ],
             "shortcuts": [
                 [
-                    "DiskInfo32S",
-                    "CrystalDiskInfo (Shizuku Edition)"
+                    "DiskInfo32S.exe",
+                    "CrystalDiskInfo Shizuku Edition"
+                ]
+            ]
+        },
+        "arm64": {
+            "shortcuts": [
+                [
+                    "DiskInfoA64S.exe",
+                    "CrystalDiskInfo Shizuku Edition"
                 ]
             ]
         }
     },
+    "pre_install": [
+        "if (!(Test-Path \"$persist_dir\\DiskInfo.ini\")) {",
+        "    New-Item \"$dir\\DiskInfo.ini\" -ItemType File | Out-Null",
+        "}"
+    ],
     "persist": [
-        "Smart",
-        "DiskInfo.ini"
+        "DiskInfo.ini",
+        "Smart"
     ],
     "checkver": {
         "url": "https://crystalmark.info/en/download/",
-        "regex": "CrystalDiskInfo\\s+([\\w.]+)\\s"
+        "regex": "meta name=\"description.+CrystalDiskInfo ([\\w\\.]+) - Manual"
     },
     "autoupdate": {
         "url": "https://crystalmark.info/download/zz/CrystalDiskInfo$underscoreVersionShizuku.zip"
