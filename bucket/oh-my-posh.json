@@ -4,9 +4,6 @@
     "homepage": "https://ohmyposh.dev",
     "license": "MIT",
     "notes": "Refer to 'https://ohmyposh.dev/docs/installation/prompt' for shell specific configurations.",
-    "suggest": {
-        "PowerShell": "pwsh"
-    },
     "architecture": {
         "64bit": {
             "url": [
@@ -44,7 +41,12 @@
         "POSH_THEMES_PATH": "$dir\\themes"
     },
     "bin": "oh-my-posh.exe",
-    "persist": "themes",
+    "post_install": [
+        "$persist_themes=\"$persist_dir\\themes\"",
+        "if (Test-Path $persist_themes) {",
+        "Get-ChildItem -Path $persist_themes | ForEach-Object { New-Item -ItemType HardLink -Path $dir\\themes -Name $_.Name -Value $_.FullName } | Out-Null",
+        "}"
+    ],
     "checkver": {
         "github": "https://github.com/JanDeDobbeleer/oh-my-posh"
     },
