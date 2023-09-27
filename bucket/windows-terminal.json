@@ -3,35 +3,52 @@
     "description": "The new Windows Terminal, and the original Windows console host - all in the same place!",
     "homepage": "https://github.com/microsoft/terminal",
     "license": "MIT",
-    "notes": "Add Windows Terminal as a context menu option by running `reg import \"$dir\\install-context.reg\"`",
+    "notes": [
+        "This version may contain breaking changes. You can use app `windows-terminal-1-16` instead",
+        "For prior to Windows 10 20H1 (build 19041), use `windows-terminal-1-16` instead"
+    ],
     "suggest": {
-        "vcredist": "zault/vcredist2022"
+        "vcredist": "extras/vcredist2022"
     },
     "architecture": {
         "64bit": {
-            "url": "https://github.com/microsoft/terminal/releases/download/v1.18.2681.0/Microsoft.WindowsTerminal_1.18.2681.0_x64.zip",
-            "hash": "f4fe48c51b96b591b56b60a437acdf73aa2797a01b77360660bdb47e1a9ed184"
+            "url": [
+                "https://github.com/microsoft/terminal/releases/download/v1.18.2681.0/Microsoft.WindowsTerminal_1.18.2681.0_x64.zip",
+                "https://raw.githubusercontent.com/brave-simpletons/scoop-the-business/main/assets/windows-terminal/install-context.reg",
+                "https://raw.githubusercontent.com/brave-simpletons/scoop-the-business/main/assets/windows-terminal/uninstall-context.reg"
+            ],
+            "hash": [
+                "f4fe48c51b96b591b56b60a437acdf73aa2797a01b77360660bdb47e1a9ed184",
+                "baf11f7fb4e99fbd80e931dcdbb860b4e598182830ac7b310d7cd9efcb2a66d8",
+                "5e1429c0750845a2bd09b47029c3ae47ce8fa4dbc0effb92740d91ea7076dd4b"
+            ]
         },
         "32bit": {
-            "url": "https://github.com/microsoft/terminal/releases/download/v1.18.2681.0/Microsoft.WindowsTerminal_1.18.2681.0_x86.zip",
-            "hash": "7bf1a048fed827d8638de934f5de8eb711cef42e0ce46e0a638e0ac87ae56d64"
+            "url": [
+                "https://github.com/microsoft/terminal/releases/download/v1.18.2681.0/Microsoft.WindowsTerminal_1.18.2681.0_x86.zip",
+                "https://raw.githubusercontent.com/brave-simpletons/scoop-the-business/main/assets/windows-terminal/install-context.reg",
+                "https://raw.githubusercontent.com/brave-simpletons/scoop-the-business/main/assets/windows-terminal/uninstall-context.reg"
+            ],
+            "hash": [
+                "7bf1a048fed827d8638de934f5de8eb711cef42e0ce46e0a638e0ac87ae56d64",
+                "baf11f7fb4e99fbd80e931dcdbb860b4e598182830ac7b310d7cd9efcb2a66d8",
+                "5e1429c0750845a2bd09b47029c3ae47ce8fa4dbc0effb92740d91ea7076dd4b"
+            ]
         },
         "arm64": {
-            "url": "https://github.com/microsoft/terminal/releases/download/v1.18.2681.0/Microsoft.WindowsTerminal_1.18.2681.0_arm64.zip",
-            "hash": "c4d3d18a184fd0b6a246f2307a0d3fa6b869f9d5670b3161e490f2e520f569e7"
+            "url": [
+                "https://github.com/microsoft/terminal/releases/download/v1.18.2681.0/Microsoft.WindowsTerminal_1.18.2681.0_arm64.zip",
+                "https://raw.githubusercontent.com/brave-simpletons/scoop-the-business/main/assets/windows-terminal/install-context.reg",
+                "https://raw.githubusercontent.com/brave-simpletons/scoop-the-business/main/assets/windows-terminal/uninstall-context.reg"
+            ],
+            "hash": [
+                "c4d3d18a184fd0b6a246f2307a0d3fa6b869f9d5670b3161e490f2e520f569e7",
+                "baf11f7fb4e99fbd80e931dcdbb860b4e598182830ac7b310d7cd9efcb2a66d8",
+                "5e1429c0750845a2bd09b47029c3ae47ce8fa4dbc0effb92740d91ea7076dd4b"
+            ]
         }
     },
     "extract_dir": "terminal-1.18.2681.0",
-    "pre_install": [
-        "# Remove this hint in 2023-12-01",
-        "$settings_path = \"$env:LOCALAPPDATA\\Packages\\Microsoft.WindowsTerminal_8wekyb3d8bbwe\\LocalState\"",
-        "if (!(Test-Path \"$persist_dir\\settings\") -and (Test-Path $settings_path)) {",
-        "  $current_setings = $dir.Replace($version, 'current') + \"\\settings\"",
-        "  warn \"Portable mode is enabled from version 1.17.11391.0, please migrate the settings manually:\"",
-        "  warn \"Original settings dir: `'$settings_path`'\"",
-        "  warn \"Portable settings dir: `'$current_setings`'\"",
-        "}"
-    ],
     "installer": {
         "script": [
             "$winVer = [Environment]::OSVersion.Version",
@@ -41,13 +58,21 @@
     },
     "post_install": [
         "'install-context', 'uninstall-context' | ForEach-Object {",
-        "    if (Test-Path \"$bucketsdir\\zault\\scripts\\windows-terminal\\$_.reg\") {",
+        "    if (Test-Path \"$dir\\$_.reg\") {",
         "        $wtPath = \"$dir\\wt.exe\".Replace('\\', '\\\\')",
-        "        $content = (Get-Content \"$bucketsdir\\zault\\scripts\\windows-terminal\\$_.reg\").Replace('$wt', $wtPath)",
-        "        if ($global) { $content = $content.Replace('HKEY_CURRENT_USER', 'HKEY_LOCAL_MACHINE') }",
-        "        Set-Content \"$dir\\$_.reg\" $content -Encoding Ascii -Force",
+        "        $content = (Get-Content \"$dir\\$_.reg\").Replace('$wt', $wtPath)",
+        "        if ($global) {",
+        "            $content = $content.Replace('HKEY_CURRENT_USER', 'HKEY_LOCAL_MACHINE')",
+        "        }",
+        "        $content | Set-Content -Path \"$dir\\$_.reg\" -Encoding unicode -Force",
         "    }",
-        "}"
+        "}",
+        "Write-Host Registering Windows Terminal as a context menu option with \"$dir\\install-context.reg\"",
+        "reg import \"$dir\\install-context.reg\""
+    ],
+    "pre_uninstall": [
+        "Write-Host UnRegistering Windows Terminal as a context menu option with \"$dir\\uninstall-context.reg\"",
+        "reg import \"$dir\\uninstall-context.reg\""
     ],
     "bin": [
         "WindowsTerminal.exe",
@@ -63,7 +88,6 @@
         ".portable",
         "settings"
     ],
-    "pre_uninstall": "if ($cmd -eq 'uninstall') { reg import \"$dir\\uninstall-context.reg\" }",
     "checkver": "github",
     "autoupdate": {
         "architecture": {
