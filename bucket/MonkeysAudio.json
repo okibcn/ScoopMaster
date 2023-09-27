@@ -1,21 +1,26 @@
 {
+    "version": "10.23",
+    "description": "Monkey’s Audio is a fast and easy way to compress digital music.",
     "homepage": "https://monkeysaudio.com/",
-    "version": "10.22",
-    "license": "",
+    "license": {
+        "identifier": "Freeware",
+        "url": "https://monkeysaudio.com/license.html"
+    },
     "architecture": {
         "64bit": {
-            "url": "https://monkeysaudio.com/files/MAC_1022_x64.exe",
-            "hash": "5becafc368107260a32e43910502a207a517510ebc7970d1328695dc3678f73a"
+            "url": "https://monkeysaudio.com/files/MAC_1023_x64.exe#/dl.7z",
+            "hash": "af4ad35469ac72f0789fe6bc56ef49ef89ea4bb0aad24b7638f43fe364943c99"
         },
         "32bit": {
-            "url": "https://monkeysaudio.com/files/MAC_1022.exe",
-            "hash": "b742886ac28c05f6ed67f59f82e7daa9e21a094e512de7e6e03742e98af0929e"
+            "url": "https://monkeysaudio.com/files/MAC_1023.exe#/dl.7z",
+            "hash": "2dcec258e350d9002fff245a6490ea63f1f9f25172cf43393f3dedf7fb2867f8"
         }
     },
-    "innosetup": true,
-    "bin": [
-        "MAC.exe",
-        "Monkey's Audio.exe"
+    "persist": "File Lists",
+    "bin": "MAC.exe",
+    "post_install": [
+        "Move-Item \"$dir\\`$SYSDIR\\*\" \"$dir\"",
+        "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\`$SYSDIR\", \"$dir\\Uninstall*\" -Force -Recurse"
     ],
     "shortcuts": [
         [
@@ -23,14 +28,17 @@
             "Monkey's Audio"
         ]
     ],
-    "checkver": "([\\d.]+) <small>",
+    "checkver": {
+        "url": "https://monkeysaudio.com/versionhistory.html",
+        "regex": "Version\\s*([\\d.-]+)"
+    },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://monkeysaudio.com/files/MAC_$cleanVersion_x64.exe"
+                "url": "https://monkeysaudio.com/files/MAC_$cleanVersion_x64.exe#/dl.7z"
             },
             "32bit": {
-                "url": "https://monkeysaudio.com/files/MAC_$cleanVersion.exe"
+                "url": "https://monkeysaudio.com/files/MAC_$cleanVersion.exe#/dl.7z"
             }
         }
     }
