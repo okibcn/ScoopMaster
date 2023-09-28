@@ -1,6 +1,6 @@
 {
     "version": "1.8-20230927-5074dc",
-    "description": "Modified Spotify client. Blocks ads, updates and more. (fixed up-to-date version). This variant prevents the loss of your user data when updating.",
+    "description": "Modified Spotify client. Blocks ads, updates and more. (fixed up-to-date version)",
     "homepage": "https://github.com/amd64fox/SpotX",
     "license": "MIT",
     "url": "https://raw.githubusercontent.com/amd64fox/SpotX/main/Install.ps1",
@@ -10,13 +10,16 @@
             "# older versions of Powershell 5 requires BOM to recognize UTF8 scripts",
             "$cont = Get-Content \"$dir\\Install.ps1\" -Encoding utf8",
             "Set-Content \"$dir\\Install.ps1\" $cont -Encoding utf8",
-            "& \"$dir\\Install.ps1\" -confirm_uninstall_ms_spoti -confirm_spoti_recomended_over -podcasts_off -cache_limit 500 -block_update_on -new_theme"
+            "& \"$dir\\Install.ps1\" -confirm_uninstall_ms_spoti -confirm_spoti_recomended_over -podcasts_off -cache_limit 500 -block_update_on -exp_spotify -smartShuffle_off -enhance_playlist_off -enhance_like_off -new_theme"
         ]
     },
     "uninstaller": {
         "script": [
             "if ($cmd -ne 'uninstall') { return }",
-            "Invoke-ExternalCommand \"$Env:Appdata\\Spotify\\Spotify.exe\" -ArgumentList @('/uninstall', '/silent') | Out-Null"
+            "Stop-Process -ErrorAction Ignore -Name Spotify",
+            "Start-Process -Wait \"$dir\\Spotify.exe\" -ArgumentList '/Uninstall', '/Silent'",
+            "icacls \"$env:LOCALAPPDATA\\Spotify\\Update\" /grant Everyone:R | Out-Null",
+            "Remove-Item -ErrorAction Ignore -Recurse -Force \"$env:LOCALAPPDATA\\Spotify\""
         ]
     },
     "checkver": {
