@@ -1,20 +1,18 @@
 {
-    "version": "2.2.0",
-    "description": "Collaborative note taking",
-    "homepage": "https://www.notion.so/",
-    "license": {
-        "identifier": "Proprietary",
-        "url": "https://www.notion.so/Terms-and-Privacy-28ffdd083dc3473e9c2da6ec011b58ac"
-    },
-    "architecture": {
-        "64bit": {
-            "url": "https://desktop-release.notion-static.com/Notion%20Setup%202.2.0.exe#/dl.7z",
-            "hash": "sha512:f6b43519e51919d5ad7ec5b38f5e21a7844f9fc32064d78960bfe48eb4cf2c93248252c5a1d38f7ec6bd0eac03e8d2cbe5f5f8281eae8cb8b65e107a44a54436",
-            "pre_install": [
-                "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\"",
-                "Remove-Item \"$dir\\`$*\" -Recurse"
-            ]
-        }
+    "version": "2.2.1",
+    "description": "The all-in-one workspace for your notes, tasks, wikis, and databases.",
+    "homepage": "https://www.notion.so",
+    "license": "Proprietary",
+    "notes": "Your Notion data are storaged in '%LOCALAPPDATA%\\Notion'.",
+    "url": "https://desktop-release.notion-static.com/Notion%20Setup%202.2.1.exe#/dl.7z",
+    "hash": "sha512:7da9a12879c239486b37a90d67108e21b6e10a80b1a93d3e52b05005cfde72cc55e06fc17131d9eb2471ea0f969100db9ca23cffbcb6f55936865da3dc4d000e",
+    "extract_dir": "$PLUGINSDIR",
+    "installer": {
+        "script": [
+            "Remove-Item \"$dir\\*\" -Exclude \"app-64.7z\"",
+            "Expand-7zipArchive \"$dir\\app-64.7z\" \"$dir\"",
+            "Remove-Item \"$dir\\app-64.7z\""
+        ]
     },
     "shortcuts": [
         [
@@ -27,11 +25,7 @@
         "regex": "version:\\s+([\\d.]+)"
     },
     "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://desktop-release.notion-static.com/Notion%20Setup%20$version.exe#/dl.7z"
-            }
-        },
+        "url": "https://desktop-release.notion-static.com/Notion%20Setup%20$version.exe#/dl.7z",
         "hash": {
             "url": "$baseurl/latest.yml",
             "regex": "sha512:\\s+$base64"
