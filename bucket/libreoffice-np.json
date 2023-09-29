@@ -17,22 +17,24 @@
         ]
     },
     "post_install": [
-        "$jumpListPath = \"$env:AppData\\Microsoft\\Windows\\Recent\"",
+        "$jumpListPathAutomaticDestinations = \"$env:AppData\\Microsoft\\Windows\\Recent\\AutomaticDestinations\"",
+        "$jumpListPathCustomDestinations = \"$env:AppData\\Microsoft\\Windows\\Recent\\CustomDestinations\"",
         "$backupPath = $env:temp",
         "if (Test-Path $backupPath\\AutomaticDestinations.7z) {",
-        "  7z x $backupPath\\AutomaticDestinations.7z -o$jumpListPath\\AutomaticDestinations -aoa | Out-Null",
+        "  7z x $backupPath\\AutomaticDestinations.7z -o$jumpListPathAutomaticDestinations -aoa | Out-Null",
         "}",
         "if (Test-Path $backupPath\\CustomDestinations.7z) {",
-        "  7z x $backupPath\\CustomDestinations.7z -o$jumpListPath\\CustomDestinations -aoa | Out-Null",
+        "  7z x $backupPath\\CustomDestinations.7z -o$jumpListPathCustomDestinations -aoa | Out-Null",
         "}"
     ],
     "pre_uninstall": [
         "if (!(is_admin)) { error \"$app requires admin rights to $cmd\"; break }",
-        "$jumpListPath = \"$env:AppData\\Microsoft\\Windows\\Recent\"",
+        "$jumpListPathAutomaticDestinations = \"$env:AppData\\Microsoft\\Windows\\Recent\\AutomaticDestinations\"",
+        "$jumpListPathCustomDestinations = \"$env:AppData\\Microsoft\\Windows\\Recent\\CustomDestinations\"",
         "$backupPath = $env:temp",
         "Remove-Item -Path $backupPath\\*Destinations.7z",
-        "7z a -t7z $backupPath\\AutomaticDestinations.7z $jumpListPath\\AutomaticDestinations\\*.* | Out-Null",
-        "7z a -t7z $backupPath\\CustomDestinations.7z $jumpListPath\\CustomDestinations\\*.* | Out-Null"
+        "7z a -t7z $backupPath\\AutomaticDestinations.7z $jumpListPathAutomaticDestinations\\*.* | Out-Null",
+        "7z a -t7z $backupPath\\CustomDestinations.7z $jumpListPathCustomDestinations\\*.* | Out-Null"
     ],
     "uninstaller": {
         "script": "Start-Process 'msiexec' -ArgumentList @('/x', \"$dir\\setup.msi_\", '/qn', '/norestart') -Wait -Verb 'RunAs'"
