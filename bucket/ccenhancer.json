@@ -1,20 +1,26 @@
 {
-    "homepage": "https://singularlabs.com/software/ccenhancer/",
-    "license": "unknown",
     "version": "4.5.7",
     "url": "https://singularlabs.com/download/10320/#/dl.7z",
+    "homepage": "https://singularlabs.com/software/ccenhancer/",
     "hash": "2a737d7997caf3f1ee67dc5d92a8ccd9f25df12439b23415c95e3d090e2412db",
-    "extract_dir": "CCEnhancer-multilingual-4.5.7",
     "bin": "CCEnhancer.exe",
+    "suggest": {
+        "ccleaner": "extra/ccleaner"
+    },
     "shortcuts": [
         [
             "CCEnhancer.exe",
-            "CCleaner Enhancer"
+            "CCEnhancer"
         ]
     ],
+    "extract_dir": "CCEnhancer-multilingual-4.5.7",
+    "pre_install": [
+        "if (!(Test-Path \"$persist_dir\\cc_config.ini\")) {",
+        "    New-Item -Path \"$dir\\cc_config.ini\" -ItemType File | Out-Null",
+        "}"
+    ],
     "persist": [
-        "cc_config.ini",
-        "custom.ini"
+        "cc_config.ini"
     ],
     "checkver": {
         "url": "https://singularlabs.com/software/ccenhancer/download-ccenhancer/",
