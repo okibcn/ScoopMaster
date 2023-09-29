@@ -1,13 +1,18 @@
 {
-    "version": "112207",
-    "description": "A complete, cross-platform solution to record, convert and stream audio and video.",
+    "version": "112229",
+    "description": "A complete, cross-platform solution to record, convert and stream audio and video. (yt-dlp build)",
     "homepage": "https://ffmpeg.org",
     "license": "GPL-3.0-or-later",
     "architecture": {
         "64bit": {
-            "url": "https://github.com/BtbN/FFmpeg-Builds/releases/download/autobuild-2023-09-28-12-49/ffmpeg-N-112207-g8eb094adb2-win64-gpl-shared.zip",
-            "hash": "1d7b9b0c135d7d1685c003295445350e6bf58c8be80ce9d4987066e21b6e5695",
-            "extract_dir": "ffmpeg-N-112207-g8eb094adb2-win64-gpl-shared"
+            "url": "https://github.com/yt-dlp/FFmpeg-Builds/releases/download/autobuild-2023-09-29-15-58/ffmpeg-N-112229-g40aa451154-win64-gpl-shared.zip",
+            "hash": "735dae3946df84b8521292c32d90d85a97ee58e6f338d9291c885bdf7c5e7c3e",
+            "extract_dir": "ffmpeg-N-112229-g40aa451154-win64-gpl-shared"
+        },
+        "32bit": {
+            "url": "https://github.com/yt-dlp/FFmpeg-Builds/releases/download/autobuild-2023-09-29-15-58/ffmpeg-N-112229-g40aa451154-win32-gpl-shared.zip",
+            "hash": "adb594f543c6c20a11c67debb31ddab8d99f46305702ac432fced70a8fd6329d",
+            "extract_dir": "ffmpeg-N-112229-g40aa451154-win32-gpl-shared"
         }
     },
     "bin": [
@@ -16,15 +21,18 @@
         "bin\\ffprobe.exe"
     ],
     "checkver": {
-        "url": "https://api.github.com/repos/BtbN/FFmpeg-Builds/releases",
-        "jsonpath": "$..browser_download_url",
-        "regex": "autobuild-(?<time>[\\d-]+)/ffmpeg-N-(\\d+)-g(?<hash>[a-z\\d]+)-win64-gpl-shared\\.zip"
+        "url": "https://api.github.com/repos/yt-dlp/FFmpeg-Builds/releases?per_page=2",
+        "regex": "/autobuild-(?<time>[\\d-]+)/ffmpeg-N-(\\d+)-g(?<hash>[a-z\\d]+)-win64-gpl-shared\\.zip"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://github.com/BtbN/FFmpeg-Builds/releases/download/autobuild-$matchTime/ffmpeg-N-$version-g$matchHash-win64-gpl-shared.zip",
+                "url": "https://github.com/yt-dlp/FFmpeg-Builds/releases/download/autobuild-$matchTime/ffmpeg-N-$version-g$matchHash-win64-gpl-shared.zip",
                 "extract_dir": "ffmpeg-N-$version-g$matchHash-win64-gpl-shared"
+            },
+            "32bit": {
+                "url": "https://github.com/yt-dlp/FFmpeg-Builds/releases/download/autobuild-$matchTime/ffmpeg-N-$version-g$matchHash-win32-gpl-shared.zip",
+                "extract_dir": "ffmpeg-N-$version-g$matchHash-win32-gpl-shared"
             }
         }
     }
