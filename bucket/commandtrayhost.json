@@ -1,0 +1,38 @@
+{
+    "version": "2.3-b450",
+    "description": "A command line program monitor systray for Windows",
+    "homepage": "https://github.com/rexdf/CommandTrayHost",
+    "license": "MIT",
+    "url": [
+        "https://github.com/rexdf/CommandTrayHost/releases/download/2.3-b450/CommandTrayHost-2.3-b450.zip",
+        "https://raw.githubusercontent.com/Youxikong/selfscoop/master/scripts/config.conf#/config.json"
+    ],
+    "hash": "7D3AD1CA241BFD0DDB8BA48F7E85DC983F912D5881B22271CA9585129355AD87",
+    "architecture": {
+        "64bit": {
+            "extract_dir": "CommandTrayHost-x64"
+        },
+        "32bit": {
+            "extract_dir": "CommandTrayHost-x86"
+        }
+    },
+    "pre_install": [
+        "'config.json', 'command_tray_host.cache' | ForEach-Object { if (!(Test-Path \"$persist_dir\\$_\")) { New-Item \"$dir\\$_\" -ItemType File -Force | Out-Null } }"
+    ],
+    "shortcuts": [
+        [
+            "CommandTrayHost.exe",
+            "CommandTrayHost"
+        ]
+    ],
+    "persist": [
+        "config.json",
+        "command_tray_host.cache"
+    ],
+    "checkver": {
+        "github": "https://github.com/rexdf/CommandTrayHost"
+    },
+    "autoupdate": {
+        "url": "https://github.com/rexdf/CommandTrayHost/releases/download/$version/CommandTrayHost-$version.zip"
+    }
+}

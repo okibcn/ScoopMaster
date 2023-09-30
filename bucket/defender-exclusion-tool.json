@@ -1,0 +1,28 @@
+{
+    "version": "1.3",
+    "homepage": "https://www.sordum.org/defender-exclusion-tool",
+    "description": "Easier way to add files or folders to exclusions list.",
+    "license": {
+        "identifier": "Freeware",
+        "url": "https://www.sordum.org/eula/"
+    },
+    "url": "https://www.sordum.org/files/download/defender-exclusion-tool/ExcTool.zip",
+    "hash": "AFBB2984CE2BC00341ADC93CA20460BF55F22F032A146107734CDEB5FA6B1C4C",
+    "extract_dir": "ExcTool_v1.3",
+    "shortcuts": [
+        [
+            "ExcTool.exe",
+            "Defender Exclusion Tool"
+        ]
+    ],
+    "pre_uninstall": [
+        "sudo reg delete 'HKEY_LOCAL_MACHINE\\SOFTWARE\\Classes\\Directory\\shell\\XYZ-DefenderExclusionTool' /f | Out-Null",
+        "sudo reg delete 'HKEY_LOCAL_MACHINE\\SOFTWARE\\Classes\\*\\shell\\XYZ-DefenderExclusionTool' /f | Out-Null"
+    ],
+    "persist": "ExcTool.ini",
+    "checkver": "Defender\\sExclusion\\sTool\\sv([\\d.]+)",
+    "autoupdate": {
+        "url": "https://www.sordum.org/files/download/defender-exclusion-tool/ExcTool.zip",
+        "extract_dir": "ExcTool_v$version"
+    }
+}

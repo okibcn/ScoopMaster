@@ -1,0 +1,26 @@
+{
+    "version": "1.0.0",
+    "description": "Launches programs before Windows Explorer when opening a session.",
+    "homepage": "https://github.com/sylveon/EarlyStart",
+    "license": "GPL-3.0",
+    "url": "https://github.com/sylveon/EarlyStart/releases/download/1.0.0/EarlyStart.zip",
+    "hash":"6c4d092b1e5c988c208649911f0aca527aa7d4ddc2247875c50b0a11c746aa89",
+    "installer": {
+        "script": [
+            "if (-not ((Get-Command sudo) -or $global) ) {Write-Host \"Install globally please\"}",
+            "sudo $env:windir\\Microsoft.NET\\Framework\\v4.0.30319\\InstallUtil.exe $dir\\EarlyStart.exe"
+        ]
+    },
+    "uninstaller": {
+        "script": [
+            "if (-not ((Get-Command sudo) -or $global) ) {Write-Host \"Install globally please\"}",
+            "sudo $env:windir\\Microsoft.NET\\Framework\\v4.0.30319\\InstallUtil.exe /u $dir\\EarlyStart.exe"
+        ]
+    },
+    "checkver": {
+        "github": "https://github.com/sylveon/EarlyStart"
+    },
+    "autoupdate": {
+        "url": "https://github.com/sylveon/EarlyStart/releases/download/$version/EarlyStart.zip"
+    }
+}
