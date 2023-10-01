@@ -1,16 +1,21 @@
 {
-    "version": "5.0-20166",
-    "description": "A Nintendo GameCube and Wii emulator, with enhancements and Netplay. (development version)",
+    "version": "5.0-20177",
+    "description": "A Nintendo GameCube and Wii emulator",
     "homepage": "https://dolphin-emu.org/",
     "license": {
-        "identifier": "GPL-2.0-or-later",
-        "url": "https://github.com/dolphin-emu/dolphin/blob/master/COPYING"
+        "url": "https://github.com/dolphin-emu/dolphin/blob/master/COPYING",
+        "identifier": "GPL-2.0-or-later"
     },
     "suggest": {
-        "Microsoft Visual C++ Runtime 2022": "extras/vcredist2022"
+        "Microsoft Visual C++ Runtime 2019": "extras/vcredist2019"
     },
-    "url": "https://dl.dolphin-emu.org/builds/5f/ae/dolphin-master-5.0-20166-x64.7z",
-    "hash": "037538eb903db0c2b0c3ee0879681baf841d7ea8b4247262d7f5696af6003175",
+    "architecture": {
+        "64bit": {
+            "url": "https://dl.dolphin-emu.org/builds/bc/d8/dolphin-master-5.0-20177-x64.7z",
+            "hash": "d31e185af8b55fb730a4728750822ebfe618d6bffdaf012c1aa90c93221f2cc1",
+            "extract_dir": "Dolphin-x64"
+        }
+    },
     "extract_dir": "Dolphin-x64",
     "pre_install": [
         "if (!(Test-Path \"$persist_dir\")) {",
@@ -33,7 +38,7 @@
     "shortcuts": [
         [
             "Dolphin.exe",
-            "Dolphin (Development)"
+            "Dolphin (dev)"
         ]
     ],
     "persist": "User",
@@ -43,6 +48,10 @@
         "replace": "${major}-${build}"
     },
     "autoupdate": {
-        "url": "https://dl.dolphin-emu.org/builds/$matchRand1/$matchRand2/dolphin-master-$matchMajor-$matchBuild-x64.7z"
+        "architecture": {
+            "64bit": {
+                "url": "https://dl.dolphin-emu.org/builds/$matchRand1/$matchRand2/dolphin-master-$version-x64.7z"
+            }
+        }
     }
 }
