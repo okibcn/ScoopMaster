@@ -1,10 +1,14 @@
 {
     "homepage": "https://github.com/Jvcon/EhAria2",
     "description": "A aira2 GUI made by Autohotkey.",
-    "version": "0.2.3",
+    "version": "0.2.2",
     "license": "GPL-2.0",
-    "url": "https://github.com/Jvcon/EhAria2/archive/refs/tags/v0.2.3.zip",
-    "hash": "66cd5867ed5dfd91302419f2a74094d8eb80594f7070de4bf169f83dde888eb4",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/Jvcon/EhAria2/releases/download/v0.2.2/EhAria2_v0.2.2.zip",
+            "hash": "32d74e500b83e3ab1f1d5952769507f1f928ec1043c871c89ce0d4ccea123a75"
+        }
+    },
     "pre_install": [
         "'EhAria2.ini', 'aria2.conf' | ForEach-Object { if (!(Test-Path \"$persist_dir\\$_\")) { New-Item \"$dir\\$_\" -ItemType File -Force | Out-Null } }",
         "if(Test-Path \"$persist_dir\\aria2.session\") { Copy-Item \"$persist_dir\\aria2.session\" \"$dir\\aria2.session\"  | Out-Null }"
@@ -16,6 +20,10 @@
         [
             "EhAria2.exe",
             "EhAria2"
+        ],
+        [
+            "EhAria2Torrent.exe",
+            "EhAria2Torrent"
         ]
     ],
     "persist": [
@@ -25,6 +33,10 @@
     ],
     "checkver": "github",
     "autoupdate": {
-        "url": "https://github.com/Jvcon/EhAria2/archive/refs/tags/v$version.zip"
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/Jvcon/EhAria2/releases/download/v$version/EhAria2_v$version.zip"
+            }
+        }
     }
 }
