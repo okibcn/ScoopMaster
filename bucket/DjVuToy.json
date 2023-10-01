@@ -1,10 +1,16 @@
 {
     "version": "3.15",
-    "description": "DjVuToy是一个处理DjVu的工具集",
-    "homepage": "https://www.cnblogs.com/stronghorse/",
-    "license": "Friendware",
-    "url": "https://scoop-lemon.4everland.store/djvutoy/DjVuToy_chn_3.15.zip",
+    "description": "A handy toolkit to merge, split and analyze DjVu files.(Chinese version)",
+    "homepage": "https://www.cnblogs.com/stronghorse",
+    "license": "Freeware",
+    "url": "https://raw.githubusercontent.com/sqliuchang/strnghrs_packages/main/DjVuToy_chn.zip",
     "hash": "eb8e9ade46e7fc50e9a1c0a1999fd33c4837d1f2d6ce5f6fe13d6f0aac80ed6a",
+    "pre_install": [
+    "# Create initial config files",
+    "if (!(Test-Path -Path \"$dir\\DjVuToy.ini\")) {",
+    "    (New-Item -ItemType \"file\" -Path \"$dir\" -Name \"DjVuToy.ini\") | Out-Null",
+    "}"
+    ],
     "bin": "DjVuToy.exe",
     "shortcuts": [
         [
@@ -12,9 +18,5 @@
             "DjVuToy"
         ]
     ],
-    "pre_install": "if (!(Test-Path \"$persist_dir\\DjVuToy.ini\")) { Set-Content -Encoding ASCII -Path \"$dir\\DjVuToy.ini\" -Value $null }",
-    "persist": [
-        "DjVuToy.ini",
-        "djvu_temp"
-    ]
+    "persist": "DjVuToy.ini"
 }
