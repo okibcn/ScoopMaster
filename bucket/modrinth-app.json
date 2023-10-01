@@ -2,24 +2,27 @@
     "version": "0.5.4",
     "homepage": "https://modrinth.com/app",
     "description": "A unique, open source Minecraft launcher that allows you to play your favorite mods, and keep them up to date, all in one neat little package.",
-    "license": "GPL-3.0-or-later",
+    "license": "GPL-3.0-only",
     "architecture": {
         "64bit": {
-            "url": "https://launcher-files.modrinth.com/versions/0.5.4/windows/Modrinth%20App_0.5.4_x64_en-US.msi#/setup.msi_",
+            "url": "https://launcher-files.modrinth.com/versions/0.5.4/windows/Modrinth%20App_0.5.4_x64_en-US.msi",
             "hash": "1e76d65929976fe4f9e0b45487b4f559be1760c70510e94ef336deb068c3b950"
         }
     },
-    "installer": {
-        "script": "Start-Process msiexec -ArgumentList @('/i', \"`\"$dir\\setup.msi_`\"\", '/qn', '/norestart') -Wait -Verb RunAs"
-    },
+    "shortcuts": [
+        [
+            "PFiles\\Modrinth App\\Modrinth App.exe",
+            "Modrinth App"
+        ]
+    ],
     "checkver": {
-        "url": "https://launcher-files.modrinth.com/versions/latest/windows/Modrinth%20App",
-        "regex": "href=\"[^\"]+/versions/([\\d.]+)/windows/Modrinth%20App"
+        "github": "https://github.com/modrinth/theseus"
     },
     "autoupdate": {
-        "url": "https://launcher-files.modrinth.com/versions/$version/windows/Modrinth%20App_$version_x64_en-US.msi#/setup.msi_"
-    },
-    "uninstaller": {
-        "script": "Start-Process msiexec -ArgumentList @('/x', \"`\"$dir\\setup.msi_`\"\", '/qn', '/norestart') -Wait -Verb RunAs"
+        "architecture": {
+            "64bit": {
+                "url": "https://launcher-files.modrinth.com/versions/$version/windows/Modrinth%20App_$version_x64_en-US.msi"
+            }
+        }
     }
 }
