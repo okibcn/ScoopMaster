@@ -1,24 +1,28 @@
 {
-    "homepage": "https://bbs.itzmx.com/thread-7413-1-1.html",
-    "description": "ShanaEncoder is audio/video encoding program based on FFmpeg. 中文版由sakura_小樱(@1265578519)翻译",
     "version": "6.0.1.4",
+    "homepage": "https://shana.pe.kr/",
+    "description": "ShanaEncoder is audio/video encoding program based on FFmpeg.",
     "license": "Freeware",
-    "url": "https://github.itzmx.com/1265578519/ShanaEncoder/master/6.0.1.4/ShanaEncoder%20V6.0.1.4%20%E5%AE%8C%E6%95%B4%E7%89%88%E7%BB%BF%E8%89%B2%E5%8E%8B%E7%BC%A9%E5%8C%85.7z",
-    "hash": "5114e60b59cd6d163fb1a7b4e68766baaef213a9c27b35235acbc77015bc8a32",
-    "extract_dir": "ShanaEncoder",
+    "url": "https://downloads.sourceforge.net/project/shanaencoder/ShanaEncoder6.0.1.4.exe#/dl.7z",
+    "hash": "5ab1790dc4aa7722cc0324c17dbfade9247915fe65a7ec6cfb30c9e4b9e71a9a",
+    "script": [
+        "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\*\" \"$dir\"",
+        "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\Uninst*\" -Force -Recurse"
+    ],
     "shortcuts": [
         [
             "ShanaEncoder.exe",
             "ShanaEncoder"
         ]
     ],
-    "persist": "settings",
     "checkver": {
-        "url": "https://bbs.itzmx.com/thread-7413-1-1.html",
-        "regex": "github.itzmx.com/1265578519/ShanaEncoder/master/(?<version>[\\d.]+?)/(?<filename>ShanaEncoder.*?\\.7z)\"",
-        "replace": "${version}"
+        "url": "https://sourceforge.net/projects/shanaencoder/files/",
+        "regex": "\"/projects/shanaencoder/files/latest/download\" title=\"/ShanaEncoder([\\d\\w\\.]+)\\.exe"
     },
     "autoupdate": {
-        "url": "https://github.itzmx.com/1265578519/ShanaEncoder/master/$matchVersion/$matchFilename"
+        "url": "https://downloads.sourceforge.net/project/shanaencoder/ShanaEncoder$version.exe#/dl.7z",
+        "hash": {
+            "mode": "sourceforge"
+        }
     }
 }
