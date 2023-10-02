@@ -13,8 +13,9 @@
     "hash": "449336a9320a25af8a1bc77f5d1670cd823839714a2cafc7322099a9a69d7c2a",
     "pre_install": "Rename-Item -Path \"$dir\\gitalias.txt\" -NewName \".gitalias\" -Force | Out-Null",
     "checkver": {
-        "script": "try { Get-Date (Invoke-RestMethod https://api.github.com/repos/GitAlias/gitalias/commits?path=gitalias.txt)[0].commit.committer.date } catch { '' }",
-        "regex": "\\A(\\d+)\\Z"
+        "url": "https://github.com/GitAlias/gitalias/commits/main.atom",
+        "regex": "(?s)>(\\d+)-(\\d+)-(\\d+)T.*?/(?<sha>(?<short>[0-9a-f]{7})[0-9a-f]{33})",
+        "replace": "0.${1}.${2}.${3}.${short}"
     },
     "autoupdate": {
         "url": "https://github.com/GitAlias/gitalias/raw/main/gitalias.txt"
