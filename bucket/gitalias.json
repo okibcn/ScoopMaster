@@ -13,8 +13,8 @@
     "hash": "449336a9320a25af8a1bc77f5d1670cd823839714a2cafc7322099a9a69d7c2a",
     "pre_install": "Rename-Item -Path \"$dir\\gitalias.txt\" -NewName \".gitalias\" -Force | Out-Null",
     "checkver": {
-        "script": "try { Get-Date (Invoke-RestMethod https://api.github.com/repos/GitAlias/gitalias/commits?path=gitalias.txt)[0].commit.committer.date -UFormat %s } catch { '' }",
-        "regex": "\\A(\\d+)\\Z"
+        "script": "try { Get-Date (Invoke-RestMethod https://api.github.com/repos/GitAlias/gitalias/commits?path=gitalias.txt)[0].commit.committer.date -Format 'yyyy-MM-dd_HH-mm-ss' } catch { '' }",
+        "regex": "(\\d-_)"
     },
     "autoupdate": {
         "url": "https://github.com/GitAlias/gitalias/raw/main/gitalias.txt"
