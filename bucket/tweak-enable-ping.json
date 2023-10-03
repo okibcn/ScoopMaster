@@ -10,14 +10,14 @@
             "if ([environment]::OSVersion.Version.Major -lt 10) { error 'This package is only applicable to Win10 or above'; break }",
             "if (!(is_admin)) { \"$app requires admin rights to $cmd\"; break }",
             "netsh advfirewall firewall add rule name=\"ICMP Allow V4 incoming echo request\" protocol=icmpv4:8,any dir=in action=allow",
-            "Write-Host 'Inbound ping connections is now allowed.' -ForegroundColor Green"
+            "Write-Host 'Inbound ping connection is now allowed.' -ForegroundColor Green"
         ]
     },
     "uninstaller": {
         "script": [
             "if (!(is_admin)) { \"$app requires admin rights to $cmd\"; break }",
-            "netsh advfirewall firewall add rule name=\"ICMP Allow V4 incoming echo request\" protocol=icmpv4:8,any dir=in action=block",
-            "Write-Host 'Inbound ping connections is now disabled.' -ForegroundColor Green"
+            "netsh advfirewall firewall delete rule name=\"ICMP Allow V4 incoming echo request\"",
+            "Write-Host 'Inbound ping connection is now disabled.' -ForegroundColor Green"
         ]
     }
 }
