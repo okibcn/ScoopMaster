@@ -3,33 +3,52 @@
     "description": "A fully packaged, easy-to-use version of the mpv with a complete solution (Lazy Bag)",
     "homepage": "https://github.com/hooke007/MPV_lazy",
     "license": "GPL-2.0-only",
-    "notes": "使用前务必完整阅读 《新快速说明》(https://github.com/hooke007/MPV_lazy/discussions/194)",
     "architecture": {
         "64bit": {
-            "url": "https://github.com/hooke007/MPV_lazy/releases/download/20230630/mpv-lazy-20230630.exe#/dl.7z",
-            "hash": "b866a2b2c411ec05495f4210d807b11416953b58530420b83eb12165a7ccd14b",
-            "extract_dir": "mpv-lazy"
+            "url": [
+                "https://github.com/hooke007/MPV_lazy/releases/download/20230630/mpv-lazy-20230630.exe#/core.7z",
+                "https://github.com/hooke007/MPV_lazy/releases/download/20230630/mpv-lazy-20230630-hook.7z#/hook.7z",
+                "https://github.com/hooke007/MPV_lazy/releases/download/20230630/mpv-lazy-20230630-vsLite.7z#/vsLite.7z",
+                "https://github.com/hooke007/MPV_lazy/releases/download/20230630/mpv-lazy-20230630-vsMega.7z#/vsMega.7z"
+            ],
+            "hash": [
+                "b866a2b2c411ec05495f4210d807b11416953b58530420b83eb12165a7ccd14b",
+                "0245188164e754f0849025e52a70be5c07310afb2ee21d1cecb9e11726713128",
+                "ece2f268a04c706e4e96991f1ab8bf0aeab4dd9b2b25bedd05d6e1ca5d3485eb",
+                "394948dd263a53b82eb943fa3e7fdf4afc4fa845e271c34137c0f2d0b2e710bd"
+            ],
+            "extract_dir": [
+                "mpv-lazy",
+                "mpv-lazy",
+                "mpv-lazy",
+                "mpv-lazy"
+            ]
         }
     },
-    "bin": [
+    "persist": [
+        "portable_config/script-opts.conf",
+        "portable_config/profiles.conf",
+        "portable_config/mpv.conf",
+        "portable_config/input_uosc.conf"
+    ],
+    "bin": "mpv.exe",
+    "shortcuts": [
         [
             "mpv.exe",
-            "mpvlazy"
+            "MPV"
         ]
     ],
-    "persist": "portable_config",
-    "checkver": {
-        "github": "https://github.com/hooke007/MPV_lazy"
-    },
+    "checkver": "github",
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://github.com/hooke007/MPV_lazy/releases/download/$version/mpv-lazy-$version.exe#/dl.7z",
-                "extract_dir": "mpv-lazy"
+                "url": [
+                    "https://github.com/hooke007/MPV_lazy/releases/download/$version/mpv-lazy-$version.exe#/core.7z",
+                    "https://github.com/hooke007/MPV_lazy/releases/download/$version/mpv-lazy-$version-hook.7z#/hook.7z",
+                    "https://github.com/hooke007/MPV_lazy/releases/download/$version/mpv-lazy-$version-vsLite.7z#/vsLite.7z",
+                    "https://github.com/hooke007/MPV_lazy/releases/download/$version/mpv-lazy-$version-vsMega.7z#/vsMega.7z"
+                ]
             }
-        },
-        "hash": {
-            "url": "$url.sha256"
         }
     }
 }
