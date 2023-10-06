@@ -1,0 +1,40 @@
+{
+    "version": "2023-08-14",
+    "description": "Web SSH & Telnet (WebSSH & WebTelnet client) 🔮",
+    "homepage": "https://sshwifty-demo.nirui.org/",
+    "license": {
+        "identifier": "AGPL-3.0 license",
+        "url": "https://github.com/nirui/sshwifty/blob/master/LICENSE.md"
+    },
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/Tohrusky/Final2x/releases/download/2023-08-14/Final2x-windows-x64-setup.exe#/dl.7z",
+            "hash": "3937df95aaea9ba54f3afd881122a9c7f14e7aac7ac6e19a441c49bf25a192f2"
+        },
+        "32bit": {
+            "url": "https://github.com/Tohrusky/Final2x/releases/download/2023-08-14/Final2x-windows-arm64-setup.exe#/dl.7z",
+            "hash": "e159d53cd07d105d01003015b3345a03aa901df298473619c7ff7848b2cf2d66"
+        }
+    },
+    "pre_install": "Get-ChildItem \"$dir\\sshwifty*.exe\" | Rename-Item -NewName 'sshwifty.exe'",
+    "bin": [
+        [
+            "sshwifty.exe",
+            "sshwifty"
+        ]
+    ],
+    "checkver": {
+        "url": "https://api.github.com/repos/nirui/sshwifty/releases/latest",
+        "regex": "(?sm)releases/download/([\\w.-]+)/(?<x86>sshwifty.*?windows_386.tar.gz).*?(?<x64>sshwifty.*?windows_amd64.tar.gz)"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/nirui/sshwifty/releases/download/$version/$matchX64"
+            },
+            "32bit": {
+                "url": "https://github.com/nirui/sshwifty/releases/download/$version/$matchX86"
+            }
+        }
+    }
+}
