@@ -1,32 +1,27 @@
 {
-    "version": "22621.2361.58.3",
-    "description": "Explorer Patcher. This project aims to bring back a productive working environment on Windows 11",
+    "version": "22621.2361.58.4_b157aba",
+    "description": "This project aims to enhance the working environment on Windows.",
     "homepage": "https://github.com/valinet/ExplorerPatcher",
-    "license": "GPL 2.0",
-    "changelog": "https://github.com/valinet/ExplorerPatcher/releases",
-    "url": "https://github.com/valinet/ExplorerPatcher/releases/latest/download/ep_setup.exe#/setup.exe",
-    "hash": "9b5bf9b03d470f3851e765a9f579da4323e130ab566ea4ca9a6b447b82c8303a",
-    "pre_download": "Assert-Administrator",
+    "license": {
+        "identifier": "GPL-2.0-only",
+        "url": "https://github.com/valinet/ExplorerPatcher/raw/master/LICENSE"
+    },
+    "notes": "Wiki: <https://github.com/valinet/ExplorerPatcher/wiki>",
+    "depends": "sudo",
+    "url": "https://github.com/valinet/ExplorerPatcher/releases/download/22621.2361.58.4_b157aba/ep_setup.exe",
+    "hash": "186a49e45181bd76e91fa6b4f1ea265373cb81cecadc2d07c788a97715acc9b9",
     "installer": {
-        "script": [
-            "$programname = \"programname*\"",
-            "$ProgramFiles = [Environment]::GetFolderPath(\"ProgramFiles\")",
-            "$filepath = \"$ProgramFiles\\ExplorerPatcher\\ep_setup.exe\"",
-            "if(((Test-Path -Path $filepath -PathType Leaf) -eq $false) -or ((Get-Command $filepath).Version -lt [System.Version]\"$version\"))",
-            "{",
-            "   &\"$dir\\setup.exe\" /S | Out-Null",
-            "   if(((Test-Path -Path $filepath -PathType Leaf) -eq $false) -or ((Get-Command $filepath).Version -lt [System.Version]\"$version\"))",
-            "   {",
-            "       exit 1",
-            "   }",
-            "}",
-            "if (Test-Path -Path \"$dir\\setup.exe\") { Remove-Item \"$dir\\setup.exe\" -Force }"
-        ]
+        "script": "Start-Process \"$dir\\ep_setup.exe\" -WorkingDirectory \"$dir\" -Wait"
+    },
+    "uninstaller": {
+        "file": "ep_setup.exe",
+        "args": "/uninstall"
     },
     "checkver": {
-        "github": "https://github.com/valinet/ExplorerPatcher"
+        "url": "https://api.github.com/repos/valinet/ExplorerPatcher/releases",
+        "regex": "/releases/tag/([\\w.-]+)"
     },
     "autoupdate": {
-        "url": "https://github.com/valinet/ExplorerPatcher/releases/latest/download/ep_setup.exe#/setup.exe"
+        "url": "https://github.com/valinet/ExplorerPatcher/releases/download/$version/ep_setup.exe"
     }
 }
