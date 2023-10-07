@@ -1,32 +1,41 @@
 {
-    "version": "4.1.0",
-    "description": "新一代效率工具平台，自由组合插件应用，打造专属你的趁手工具集",
     "homepage": "https://u.tools/",
-    "license": "Freeware",
+    "description": "Cross-platform productivity tools",
+    "version": "4.1.0",
     "architecture": {
         "64bit": {
             "url": "https://res.u-tools.cn/version2/uTools-4.1.0.exe#/dl.7z",
-            "hash": "39a6c3d52c35b4288858ea8ca43342b74bf6ffb735f71d059364c72c5859e672",
+            "hash": "39A6C3D52C35B4288858EA8CA43342B74BF6FFB735F71D059364C72C5859E672",
             "installer": {
-                "script": "Expand-7zipArchive \"$dir\\`$PLUGINSDIR/app-64.7z\" \"$dir\""
+                "script": [
+                    "7z x \"$dir\\`$PLUGINSDIR\\app-64.7z\" $(\"-o\" + $dir)",
+                    "Remove-Item \"$dir\\`$PLUGINSDIR\" -Recurse",
+                    "Remove-Item \"$dir\\`$R0\" -Recurse"
+                ]
             }
         },
         "32bit": {
             "url": "https://res.u-tools.cn/version2/uTools-4.1.0-ia32.exe#/dl.7z",
-            "hash": "6f56ce1fb31c409cb4b626dd67fd360f4591ed50c38decd830fa64aa5e5b177c",
+            "hash": "6F56CE1FB31C409CB4B626DD67FD360F4591ED50C38DECD830FA64AA5E5B177C",
             "installer": {
-                "script": "Expand-7zipArchive \"$dir\\`$PLUGINSDIR/app-32.7z\" \"$dir\""
+                "script": [
+                    "7z x \"$dir\\`$PLUGINSDIR\\app-32.7z\" $(\"-o\" + $dir)",
+                    "Remove-Item \"$dir\\`$PLUGINSDIR\" -Recurse",
+                    "Remove-Item \"$dir\\`$R0\" -Recurse"
+                ]
             }
         }
     },
-    "post_install": "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\`$R0\" -Force -Recurse",
     "shortcuts": [
         [
             "uTools.exe",
             "uTools"
         ]
     ],
-    "checkver": "version: 'V([\\d.]+)'",
+    "checkver": {
+        "url": "https://u.tools/",
+        "regex": "V([\\d.]+)"
+    },
     "autoupdate": {
         "architecture": {
             "64bit": {
