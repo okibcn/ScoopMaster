@@ -1,10 +1,4 @@
 {
-    "version": "3.0.7251",
-    "description": "A powerful, multi-purpose tool that helps you monitor system resources, debug software and detect malware.",
-    "homepage": "https://systeminformer.sourceforge.io",
-    "license": "MIT",
-    "url": "https://github.com/winsiderss/si-builds/releases/download/3.0.7251/systeminformer-3.0.7251-bin.zip",
-    "hash": "fe77f573efa29155c6c40a1b5310a334dbe9c7f913e8968f4be5dc7c8e92b600",
     "architecture": {
         "32bit": {
             "extract_dir": "i386"
@@ -16,16 +10,17 @@
             "extract_dir": "arm64"
         }
     },
-    "pre_install": [
-        "ensure \"$persist_dir\" | Out-Null",
-        "'SystemInformer.exe.settings.xml', 'usernotesdb.xml' | ForEach-Object { Copy-Item \"$persist_dir\\$_\" \"$dir\\$_\" -ErrorAction 'SilentlyContinue' }"
-    ],
-    "shortcuts": [
-        [
-            "SystemInformer.exe",
-            "System Informer"
-        ]
-    ],
+    "autoupdate": {
+        "url": "https://github.com/winsiderss/si-builds/releases/download/$version/systeminformer-$version-bin.zip"
+    },
+    "checkver": {
+        "regex": "/tag/([\\d.]+)",
+        "url": "https://github.com/winsiderss/si-builds/releases"
+    },
+    "description": "A powerful, multi-purpose tool that helps you monitor system resources, debug software and detect malware.",
+    "hash": "1a13fc515d9993538c0dfada40828289b713f8754552709965058cb074b48624",
+    "homepage": "https://systeminformer.sourceforge.io",
+    "license": "MIT",
     "post_install": [
         "# Clear icon GUIDs",
         "$settings = Get-ChildItem \"$dir\\SystemInformer.exe.settings.xml\"",
@@ -34,12 +29,17 @@
         "($settingsXml.settings.ChildNodes | Where-Object { $_.name.Contains(\"IconGuids\") }) | ForEach-Object { [void]$_.ParentNode.RemoveChild($_) }",
         "$settingsXml.Save($settings)"
     ],
+    "pre_install": [
+        "ensure \"$persist_dir\" | Out-Null",
+        "'SystemInformer.exe.settings.xml', 'usernotesdb.xml' | ForEach-Object { Copy-Item \"$persist_dir\\$_\" \"$dir\\$_\" -ErrorAction 'SilentlyContinue' }"
+    ],
     "pre_uninstall": "'SystemInformer.exe.settings.xml', 'usernotesdb.xml' | ForEach-Object { Copy-Item \"$dir\\$_\" \"$persist_dir\\$_\" -ErrorAction 'SilentlyContinue' }",
-    "checkver": {
-        "url": "https://github.com/winsiderss/si-builds/releases",
-        "regex": "/tag/([\\d.]+)"
-    },
-    "autoupdate": {
-        "url": "https://github.com/winsiderss/si-builds/releases/download/$version/systeminformer-$version-bin.zip"
-    }
+    "shortcuts": [
+        [
+            "SystemInformer.exe",
+            "System Informer"
+        ]
+    ],
+    "url": "https://github.com/winsiderss/si-builds/releases/download/3.0.7254/systeminformer-3.0.7254-bin.zip",
+    "version": "3.0.7254"
 }
