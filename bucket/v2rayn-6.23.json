@@ -3,7 +3,7 @@
     "description": "A V2Ray client for Windows, support Xray & v2fly core",
     "homepage": "https://github.com/2dust/v2rayN",
     "license": "GPL-3.0-only",
-    "depends": [ "xray", "maoyeedy_scoop/tuic-client" ],
+    "depends": [ "maoyeedy_scoop/xray", "maoyeedy_scoop/tuic-client", "maoyeedy_scoop/hysteria2" ],
     "suggest": {
         ".NET Desktop Runtime": "extras/windowsdesktop-runtime-lts"
     },
@@ -24,7 +24,8 @@
     "extract_dir": "v2rayN",
     "pre_install": [
         "New-Item -ItemType SymbolicLink -Path \"$dir\\bin\\Xray\\xray.exe\" -Target \"$(appdir xray $global)\\current\\xray.exe\" | Out-Null ",
-        "New-Item -ItemType SymbolicLink -Path \"$dir\\bin\\tuic\\tuic-client.exe\" -Target \"$(appdir tuic-client $global)\\current\\tuic-client.exe\" | Out-Null"
+        "New-Item -ItemType SymbolicLink -Path \"$dir\\bin\\tuic\\tuic-client.exe\" -Target \"$(appdir tuic-client $global)\\current\\tuic-client.exe\" | Out-Null",
+        "New-Item -ItemType SymbolicLink -Path \"$dir\\bin\\hysteria\\hysteria.exe\" -Target \"$(appdir hysteria2 $global)\\current\\hysteria.exe\" | Out-Null"
     ],
     "post_install": [
         "Remove-Item -Path \"$dir\\guiConfigs.original\" -Recurse -Force"
