@@ -1,0 +1,55 @@
+{
+  "version": "1.0.0",
+  "description": "Beaver Notes - A note-taking application",
+  "homepage": "https://www.Beavernotes.com",
+  "license": "MIT",
+  "architecture": {
+    "64bit": {
+      "url": "https://github.com/Daniele-rolli/Beaver-Notes/releases/download/1.0.0/Beaver-notes.Setup.1.0.0.exe",
+      "hash": "a470ccfdd744fb77503d8a4fd0746864c62b9905cb8987d3d22c459e709f3ebb",
+      "installer": {
+        "script": [
+          "& \"$dir\\Beaver-notes.Setup.1.0.0.exe\" /S"
+        ]
+      }
+    }
+  },
+  "pre_install": [
+    "$processname = \"Beaver-Notes\"",
+    "$process = Get-Process $processname -ErrorAction SilentlyContinue",
+    "if ($process) {",
+    "   $process.CloseMainWindow()",
+    "   Start-Sleep -Seconds 5",
+    "   if (!$process.HasExited) {",
+    "       Start-Sleep -Seconds 25",
+    "       $process | Stop-Process -Force",
+    "   }",
+    "}"
+  ],
+  "post_install": [
+    "$programname = \"Beaver-Notes\"",
+    "$CommonDesktopPath = [Environment]::GetFolderPath(\"CommonDesktopDirectory\")",
+    "if (Test-Path \"$CommonDesktopPath\\$programname.lnk\") {Remove-Item \"$CommonDesktopPath\\$programname.lnk\" -Force}"
+  ],
+"uninstaller": {
+  "script": [
+    "$uninstallCommand = Get-ItemProperty 'HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\*' | Where-Object { $_.DisplayName -eq 'Beaver Notes' } | Select-Object -ExpandProperty UninstallString",
+    "if ($uninstallCommand) {",
+    "   Invoke-Expression $uninstallCommand",
+    "} else {",
+    "   Write-Host 'Uninstaller not found.'",
+    "}"
+  ]
+},
+  "checkver": {
+    "url": "https://github.com/Daniele-rolli/Beaver-Notes/releases",
+    "regex": "Beaver-Notes ([\\d.]+)"
+  },
+  "autoupdate": {
+    "architecture": {
+      "64bit": {
+        "url": "https://github.com/Daniele-rolli/Beaver-Notes/releases/download/$version/Beaver-notes.Setup.$version.exe"
+      }
+    }
+  }
+}
