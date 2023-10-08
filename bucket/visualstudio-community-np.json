@@ -33,7 +33,10 @@
             "    $installDir = (Get-ChildItem \"$env:ProgramFiles\\Microsoft Visual Studio\" -Filter 'Community' -Recurse).FullName",
             "    Start-Process $setupFile -Wait -Verb 'RunAs' -Args @('uninstall', '--installPath', \"`\"$installDir`\"\", '-q', '--norestart')",
             "    Start-Sleep -Seconds 2; Start-Process $setupFile -Wait -Verb 'RunAs' -Args @('/uninstall', '-q')",
-            "    if ($purge) { Remove-Item \"$env:LOCALAPPDATA\\Microsoft\\VisualStudio\", 'HKCU:\\SOFTWARE\\Microsoft\\VisualStudio' -Recurse }",
+            "    if ($purge) { ",
+            "        Remove-Item \"$env:ProgramFiles\\Microsoft Visual Studio\", 'Remove-Item \"$env:LOCALAPPDATA\\Microsoft\\VisualStudio\", `",
+            "            'HKCU:\\SOFTWARE\\Microsoft\\VisualStudio' -Recurse -Force",
+            "    }",
             "}"
         ]
     },
