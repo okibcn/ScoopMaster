@@ -55,8 +55,9 @@
             "$cont -match '/releases/(?<Year>[\\d]+)' | Out-Null; $year = $Matches.Year",
             "$uri = \"https://learn.microsoft.com/visualstudio/releases/$year/release-history\"",
             "(Invoke-RestMethod $uri) -match 'tr\\>\\n\\<tr\\>\\n.*?Current\\</td\\>\\n.*?\\>(?<Version>[\\d.]+)\\<' | Out-Null",
-            "$version = $Matches.Version; $majorVersion = $version.Split('.')[0]; $uri = \"https://aka.ms/vs/$majorVersion/release/vs_community.exe\"",
-            "$response = (Invoke-WebRequest \"https://aka.ms/vs/$majorVersion/release/vs_community.exe\").BaseResponse.RequestMessage.RequestUri.AbsolutePath",
+            "$version = $Matches.Version; $majorVersion = $version.Split('.')[0]",
+            "$uri2 = \"https://aka.ms/vs/$majorVersion/release/vs_community.exe\"",
+            "$response = (Invoke-WebRequest $uri2).BaseResponse.RequestMessage.RequestUri.AbsolutePath",
             "Write-Output \"$version $response\""
         ],
         "regex": "([\\d.]+)\\s/download/pr/(?<Uuid>[\\w-]+)/(?<Hash>[\\w]+)/"
