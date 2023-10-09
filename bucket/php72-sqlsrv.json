@@ -1,0 +1,26 @@
+{
+    "version": "5.8",
+    "description": "Microsoft Drivers for PHP for SQL Server",
+    "homepage": "https://learn.microsoft.com/en-us/sql/connect/php/download-drivers-php-sql-server",
+    "license": "MICROSOFT SOFTWARE LICENSE TERMS",
+    "depends": [ "php72" ],
+    "url": "https://download.microsoft.com/download/2/6/a/26a631f3-24e3-4a99-83a3-882ae78f3503/SQLSRV58.EXE#dl.zip",
+    "hash": "7c952de7f94a324107a562869c7f02a7791f1085afb4884326b946e8bacd3ad6",
+    "post_install": [
+        "$phpDir = \"${dir}\".Replace('php72-sqlsrv', 'php72')",
+        "$extDir = \"${phpDir}\\ext\"",
+        "Copy-Item \"$dir\\php_pdo_sqlsrv_72_ts_x64.dll\" \"$extDir\" -PassThru",
+        "Copy-Item \"$dir\\php_sqlsrv_72_ts_x64.dll\" \"$extDir\" -PassThru",
+        "(Get-Content \"$phpDir\\cli\\php.ini\").Replace(\"extension=xsl\", \"extension=xsl\nextension=pdo_sqlsrv_72_ts_x64\nextension=sqlsrv_72_ts_x64\n\") -join \"`n\"  | Set-Content -NoNewLine \"$phpDir\\cli\\php-new.ini\"",
+        "Move-Item -Force \"$phpDir\\cli\\php-new.ini\" \"$phpDir\\cli\\php.ini\"",
+        "Remove-Item \"$dir\\*\" -Include *.dll -Exclude *_72_ts_x64*"
+    ],
+    "pre_uninstall": [
+        "$phpDir = \"${dir}\".Replace('php72-sqlsrv', 'php72')",
+        "$extDir = \"${phpDir}\\ext\"",
+        "(Get-Content \"$phpDir\\cli\\php.ini\").Replace(\"extension=pdo_sqlsrv_72_ts_x64\nextension=sqlsrv_72_ts_x64\n\", \"\") -join \"`n\"  | Set-Content -NoNewLine \"$phpDir\\cli\\php-new.ini\"",
+        "Move-Item -Force \"$phpDir\\cli\\php-new.ini\" \"$phpDir\\cli\\php.ini\"",
+        "Remove-Item \"$dir\\php_pdo_sqlsrv_72_ts_x64.dll\"",
+        "Remove-Item \"$dir\\php_sqlsrv_72_ts_x64.dll\""
+    ]
+}
