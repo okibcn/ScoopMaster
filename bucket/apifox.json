@@ -1,26 +1,39 @@
 {
     "version": "2.3.20",
-    "description": "Apifox 是 API 文档、API 调试、API Mock、API 自动化测试一体化协作平台，定位 Postman + Swagger + Mock + JMeter。",
     "homepage": "https://www.apifox.cn/",
     "license": "Freeware",
+    "description": "",
     "architecture": {
-        "32bit": {
-            "url": "https://cdn.apifox.cn/download/2.1.25/Apifox-windows-x86-2.1.25.exe#/dl.7z",
-            "hash": "80412de1c7bcdd668d7064f1001c4439d587e36267756e799d5c7a152ac5399c",
+        "64bit": {
+            "url": "https://cdn.apifox.cn/download/Apifox-windows-latest.zip",
+            "hash": "0dfe966ee204701fbc1fb520e9becae6fb92aabf3a9376fa14d742326807e67b",
             "pre_install": [
-                "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-32.7z\" \"$dir\"",
-                "Remove-Item \"$dir\\`$*\", \"$dir\\Uninstall*\" -Force -Recurse"
+                "Move-Item \"$dir/*.exe\" \"$dir/Setup.7z\"",
+                "Expand-7zipArchive \"$dir\\Setup.7z\" \"$dir\"",
+                "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\"",
+                "Remove-Item \"$dir/`$PLUGINSDIR\", \"$dir/Setup.7z\" -Recurse -Force"
             ]
         },
-        "64bit": {
-            "url": "https://cdn.apifox.cn/download/2.1.25/Apifox-2.1.25.exe#/dl.7z",
-            "hash": "b545cdf256712b06b3c6e0b680f16b1fb53c8a4bc4cd4e4b18eec7fc9ea994d4",
+        "32bit": {
+            "url": "https://cdn.apifox.cn/download/Apifox-win32-latest.zip",
+            "hash": "079bbdfb3b69ef822a29d750b9c00625b7191f7e731ed156bbcd737acb102608",
             "pre_install": [
-                "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\"",
-                "Remove-Item \"$dir\\`$*\", \"$dir\\Uninstall*\" -Force -Recurse"
+                "Move-Item \"$dir/*.exe\" \"$dir/Setup.7z\"",
+                "Expand-7zipArchive \"$dir\\Setup.7z\" \"$dir\"",
+                "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-32.7z\" \"$dir\"",
+                "Remove-Item \"$dir/`$PLUGINSDIR\", \"$dir\\Setup.7z\" -Recurse -Force"
             ]
         }
     },
+    "uninstaller": {
+        "file": "Uninstall Apifox.exe"
+    },
+    "bin": [
+        [
+            "Apifox.exe",
+            "Apifox"
+        ]
+    ],
     "shortcuts": [
         [
             "Apifox.exe",
@@ -28,15 +41,17 @@
         ]
     ],
     "checkver": {
-        "url": "https://cdn.apifox.cn/download/latest.yml",
-        "regex": "version: ([\\d.]+)"
+        "url": "https://apifox.com/help/app/changelog",
+        "re": ">([\\d.]+)<"
     },
     "autoupdate": {
-        "32bit": {
-            "url": "https://cdn.apifox.cn/download/$version/Apifox-windows-x86-$version.exe#/dl.7z"
-        },
-        "64bit": {
-            "url": "https://cdn.apifox.cn/download/$version/Apifox-$version.exe#/dl.7z"
+        "architecture": {
+            "64bit": {
+                "url": "https://cdn.apifox.cn/download/Apifox-windows-latest.zip"
+            },
+            "32bit": {
+                "url": "https://cdn.apifox.cn/download/Apifox-win32-latest.zip"
+            }
         }
     }
 }
