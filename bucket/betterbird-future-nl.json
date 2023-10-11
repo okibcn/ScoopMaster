@@ -3,7 +3,7 @@
     "description": "A a fine-tuned version of Mozilla Thunderbird with new features, bug fixes and telemetry turned off. This variant makes sure the Scoop profile is used by default. Dutch version.",
     "homepage": "https://www.betterbird.eu",
     "license": "MPL-2.0",
-    "notes": "After installation, Betterbird will be run to automatically set up the right default profile. The manifest \"schep/betterbird-future\" is now the same as \"schep/betterbird\", since v115 became the stable release.",
+    "notes": "After installation, the profile manager will be run to choose the right default profile. The manifest \"schep/betterbird-future\" is now the same as \"schep/betterbird\", since v115 became the stable release.",
     "architecture": {
         "64bit": {
             "url": "https://www.betterbird.eu/downloads/WindowsInstaller/betterbird-115.3.2-bb15.nl.win64.installer.exe#/dl.7z",
@@ -17,9 +17,8 @@
         "  info 'Copying additional items...'",
         "  Copy-Item -Path $Addition\\* -Destination $dir -Force -Recurse -ErrorAction SilentlyContinue",
         "}",
-        "if ($cmd -ne 'install') { return }",
         "betterbird -CreateProfile \"Scoop $persist_dir\\profile\"",
-        "start -NoNewWindow betterbird -ArgumentList '-P Scoop'"
+        "start -NoNewWindow betterbird -ArgumentList '-P'"
     ],
     "bin": "betterbird.exe",
     "shortcuts": [
