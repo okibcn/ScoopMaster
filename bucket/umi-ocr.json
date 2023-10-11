@@ -13,11 +13,16 @@
             "Umi-OCR"
         ]
     ],
-    "persist": ".settings",
+    "persist": "UmiOCR-data\\.settings",
     "pre_install": "if (-not (Test-Path \"$persist_dir\\.settings\")) { New-Item \"$dir\\UmiOCR-data\\.settings\" | Out-Null }",
     "checkver": {
         "url": "https://github.com/hiroi-sora/Umi-OCR_v2/releases/latest",
         "regex": "/releases/tag/v([\\d.]+)"
+    },
+    "uninstaller": {
+        "script": [
+            "if ((Test-Path \"$dir\\UmiOCR-data\\.settings\") -and !(Get-Item \"$dir\\UmiOCR-data\\.settings\").LinkType -and (Test-Path $persist_dir\\UmiOCR-data)) { Copy-Item \"$dir\\UmiOCR-data\\.settings\" $persist_dir\\UmiOCR-data -Force }"
+        ]
     },
     "autoupdate": {
         "architecture": {
