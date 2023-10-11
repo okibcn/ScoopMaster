@@ -1,32 +1,32 @@
 {
     "version": "6.6.1.631",
-    "description": "PC Cleaning and Speed up Tool",
-    "license": "https://www.wisecleaner.com",
-    "homepage": "https://www.wisecleaner.com",
-    "architecture": {
-        "64bit": {
-            "url": "https://downloads.wisecleaner.com/soft/WiseCare365_6.6.1.631.zip",
-            "hash": "f12ae32b5ab82bf1e332cffe5f0d0640b58e77ae145ea49d3b665b098795080b",
-            "extract_dir": "Wise Care 365"
-        }
+    "description": "Clean registry and junk files from your PCs. Protect your privacy and make your PCs more secure. Provide a better option of optimizing and accelerating your computer!",
+    "homepage": "https://www.wisecleaner.com/wise-care-365.html",
+    "license": "Freeware",
+    "url": "https://downloads.wisecleaner.com/soft/WiseCare365_6.6.1.631.exe",
+    "hash": "65e691f754bd44f0da59ac1ef115b21bd34555acdbe2bf4d04f3ef49c0341cac",
+    "innosetup": true,
+    "installer": {
+        "script": [
+            "$file = 'config.ini'",
+            "if (-not (Test-Path \"$persist_dir\\$file\")) { Set-Content \"$dir\\$file\" '[General]', 'checkNewVer=3' -Encoding Ascii }"
+        ]
     },
-    "bin": "WiseCare365.exe",
     "shortcuts": [
         [
             "WiseCare365.exe",
             "Wise Care 365"
         ]
     ],
+    "persist": [
+        "config.ini",
+        "DefragOptions.ini"
+    ],
     "checkver": {
         "url": "https://www.wisecleaner.com/download.html",
         "regex": "WiseCare365_(?<version>[\\d\\.]+)\\.zip"
     },
     "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://downloads.wisecleaner.com/soft/WiseCare365_$version.zip",
-                "extract_dir": "Wise Care 365"
-            }
-        }
+        "url": "https://downloads.wisecleaner.com/soft/WiseCare365_$version.exe"
     }
 }
