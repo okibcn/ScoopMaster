@@ -1,53 +1,25 @@
 {
     "version": "2.1.1",
     "description": "A GUI to manage Winget and Scoop packages",
-    "homepage": "https://github.com/martinet101/WingetUI",
+    "homepage": "https://www.marticliment.com/wingetui/",
     "license": "LGPL-2.1-or-later",
     "suggest": {
         "vcredist": "extras/vcredist"
     },
-    "architecture": {
-        "64bit": {
-            "url": "https://github.com/martinet101/WingetUI/releases/download/2.1.1/WingetUI.Installer.exe",
-            "hash": "1ee9c17c2c8c1a16ec7f83dff61cfcba83a8f6164e0c6490d93042d76ffc73aa"
-        }
-    },
+    "url": "https://github.com/martinet101/WingetUI/releases/download/2.1.1/WingetUI.Installer.exe",
+    "hash": "1ee9c17c2c8c1a16ec7f83dff61cfcba83a8f6164e0c6490d93042d76ffc73aa",
     "innosetup": true,
-    "post_install": [
-        "function Create-Junction { param ([string]$runtimeCache, [string]$runtimeCachePersist)",
-        "  if (-not (Test-Path $runtimeCache)) { return }",
-        "  if (Test-Path $runtimeCachePersist) {",
-        "    Remove-Item $runtimeCache -Force -Recurse -ErrorAction SilentlyContinue",
-        "    New-Item -Type Junction -Path $runtimeCache -Target $runtimeCachePersist | Out-Null",
-        "  } else {",
-        "    mkdir $runtimeCache -ErrorAction SilentlyContinue",
-        "    Move-Item $runtimeCache $runtimeCachePersist -Force",
-        "    New-Item -Type Junction -Path $runtimeCache -Target $runtimeCachePersist | Out-Null",
-        "  }",
-        "}",
-        "foreach ($folder in @('.wingetui')) {",
-        "  Create-Junction -runtimeCache \"$env:USERPROFILE\\$folder\" -runtimeCachePersist \"$persist_dir\\USERPROFILE\\$folder\"",
-        "  Create-Junction -runtimeCache \"$env:LOCALAPPDATA\\$folder\" -runtimeCachePersist \"$persist_dir\\LOCALAPPDATA\\$folder\"",
-        "  Create-Junction -runtimeCache \"$env:APPDATA\\$folder\" -runtimeCachePersist \"$persist_dir\\APPDATA\\$folder\"",
-        "}"
-    ],
     "shortcuts": [
         [
             "WingetUI.exe",
             "WingetUI"
         ]
     ],
-    "bin": [
-        "WingetUI.exe",
-        "choco-cli\\choco.exe",
-        [
-            "components\\gsudo.exe",
-            "sudo"
-        ],
-        "PackageManagers\\winget-cli_x64\\winget.exe"
-    ],
-    "persist": "choco-cli\\lib",
-    "checkver": "github",
+    "checkver": {
+        "url": "https://api.github.com/repos/marticliment/WingetUI/releases",
+        "jsonpath": "$[0].tag_name",
+        "regex": "(.*)"
+    },
     "autoupdate": {
         "url": "https://github.com/martinet101/WingetUI/releases/download/$version/WingetUI.Installer.exe",
         "hash": {
