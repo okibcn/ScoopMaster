@@ -3,27 +3,52 @@
     "description": "The new Windows Terminal, and the original Windows console host - all in the same place!",
     "homepage": "https://github.com/microsoft/terminal",
     "license": "MIT",
-    "notes": "Add Windows Terminal as a context menu option by running `reg import \"$dir\\install-context.reg\"`",
+    "notes": [
+        "This version may contain breaking changes. You can use app `windows-terminal-1-16` instead",
+        "For prior to Windows 10 20H1 (build 19041), use `windows-terminal-1-16` instead"
+    ],
     "suggest": {
         "vcredist": "extras/vcredist2022"
     },
     "architecture": {
         "64bit": {
-            "url": "https://github.com/microsoft/terminal/releases/download/v1.18.2822.0/Microsoft.WindowsTerminal_1.18.2822.0_x64.zip",
-            "hash": "73100b67225e2d9455bcf45baa775a32b8d0e3200826a70262c31567b76865da"
+            "url": [
+                "https://github.com/microsoft/terminal/releases/download/v1.18.2822.0/Microsoft.WindowsTerminal_1.18.2822.0_x64.zip",
+                "https://raw.githubusercontent.com/brave-simpletons/scoop-the-business/main/assets/windows-terminal/install-context.reg",
+                "https://raw.githubusercontent.com/brave-simpletons/scoop-the-business/main/assets/windows-terminal/uninstall-context.reg"
+            ],
+            "hash": [
+                "73100b67225e2d9455bcf45baa775a32b8d0e3200826a70262c31567b76865da",
+                "baf11f7fb4e99fbd80e931dcdbb860b4e598182830ac7b310d7cd9efcb2a66d8",
+                "5e1429c0750845a2bd09b47029c3ae47ce8fa4dbc0effb92740d91ea7076dd4b"
+            ]
+        },
+        "32bit": {
+            "url": [
+                "https://github.com/microsoft/terminal/releases/download/v1.18.2822.0/Microsoft.WindowsTerminal_1.18.2822.0_x86.zip",
+                "https://raw.githubusercontent.com/brave-simpletons/scoop-the-business/main/assets/windows-terminal/install-context.reg",
+                "https://raw.githubusercontent.com/brave-simpletons/scoop-the-business/main/assets/windows-terminal/uninstall-context.reg"
+            ],
+            "hash": [
+                "e3790fd27a0434e6ff97e7b5563f3329bd4151fc57e264602ef578b3baf953e5",
+                "baf11f7fb4e99fbd80e931dcdbb860b4e598182830ac7b310d7cd9efcb2a66d8",
+                "5e1429c0750845a2bd09b47029c3ae47ce8fa4dbc0effb92740d91ea7076dd4b"
+            ]
+        },
+        "arm64": {
+            "url": [
+                "https://github.com/microsoft/terminal/releases/download/v1.18.2822.0/Microsoft.WindowsTerminal_1.18.2822.0_arm64.zip",
+                "https://raw.githubusercontent.com/brave-simpletons/scoop-the-business/main/assets/windows-terminal/install-context.reg",
+                "https://raw.githubusercontent.com/brave-simpletons/scoop-the-business/main/assets/windows-terminal/uninstall-context.reg"
+            ],
+            "hash": [
+                "01a1f40d7defc772e8f63d6d137bd5b041629fc1c0b5ecbd7d559d0fbb88be15",
+                "baf11f7fb4e99fbd80e931dcdbb860b4e598182830ac7b310d7cd9efcb2a66d8",
+                "5e1429c0750845a2bd09b47029c3ae47ce8fa4dbc0effb92740d91ea7076dd4b"
+            ]
         }
     },
     "extract_dir": "terminal-1.18.2822.0",
-    "pre_install": [
-        "# Remove this hint in 2023-12-01",
-        "$settings_path = \"$env:LOCALAPPDATA\\Packages\\Microsoft.WindowsTerminal_8wekyb3d8bbwe\\LocalState\"",
-        "if (!(Test-Path \"$persist_dir\\settings\") -and (Test-Path $settings_path)) {",
-        "  $current_setings = $dir.Replace($version, 'current') + \"\\settings\"",
-        "  warn \"Portable mode is enabled from version 1.17.11391.0, please migrate the settings manually:\"",
-        "  warn \"Original settings dir: `'$settings_path`'\"",
-        "  warn \"Portable settings dir: `'$current_setings`'\"",
-        "}"
-    ],
     "installer": {
         "script": [
             "$winVer = [Environment]::OSVersion.Version",
@@ -33,13 +58,21 @@
     },
     "post_install": [
         "'install-context', 'uninstall-context' | ForEach-Object {",
-        "    if (Test-Path \"$bucketsdir\\$bucket\\scripts\\windows-terminal\\$_.reg\") {",
+        "    if (Test-Path \"$dir\\$_.reg\") {",
         "        $wtPath = \"$dir\\wt.exe\".Replace('\\', '\\\\')",
-        "        $content = (Get-Content \"$bucketsdir\\$bucket\\scripts\\windows-terminal\\$_.reg\").Replace('$wt', $wtPath)",
-        "        if ($global) { $content = $content.Replace('HKEY_CURRENT_USER', 'HKEY_LOCAL_MACHINE') }",
-        "        Set-Content \"$dir\\$_.reg\" $content -Encoding Ascii -Force",
+        "        $content = (Get-Content \"$dir\\$_.reg\").Replace('$wt', $wtPath)",
+        "        if ($global) {",
+        "            $content = $content.Replace('HKEY_CURRENT_USER', 'HKEY_LOCAL_MACHINE')",
+        "        }",
+        "        $content | Set-Content -Path \"$dir\\$_.reg\" -Encoding unicode -Force",
         "    }",
-        "}"
+        "}",
+        "Write-Host Registering Windows Terminal as a context menu option with \"$dir\\install-context.reg\"",
+        "reg import \"$dir\\install-context.reg\""
+    ],
+    "pre_uninstall": [
+        "Write-Host UnRegistering Windows Terminal as a context menu option with \"$dir\\uninstall-context.reg\"",
+        "reg import \"$dir\\uninstall-context.reg\""
     ],
     "bin": [
         "WindowsTerminal.exe",
@@ -55,12 +88,17 @@
         ".portable",
         "settings"
     ],
-    "pre_uninstall": "if ($cmd -eq 'uninstall') { reg import \"$dir\\uninstall-context.reg\" }",
     "checkver": "github",
     "autoupdate": {
         "architecture": {
             "64bit": {
                 "url": "https://github.com/microsoft/terminal/releases/download/v$version/Microsoft.WindowsTerminal_$version_x64.zip"
+            },
+            "32bit": {
+                "url": "https://github.com/microsoft/terminal/releases/download/v$version/Microsoft.WindowsTerminal_$version_x86.zip"
+            },
+            "arm64": {
+                "url": "https://github.com/microsoft/terminal/releases/download/v$version/Microsoft.WindowsTerminal_$version_arm64.zip"
             }
         },
         "hash": {
