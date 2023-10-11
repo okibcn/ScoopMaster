@@ -1,35 +1,28 @@
 {
-    "version": "1.82.2.23257",
-    "description": "A community-driven, freely-licensed binary distribution of Microsoft’s editor VS Code.",
-    "homepage": "https://vscodium.com/",
+    "version": "1.83.0.23283",
+    "description": "Binary releases of VS Code without MS branding/telemetry/licensing.",
+    "homepage": "https://github.com/VSCodium/vscodium",
     "license": "MIT",
     "notes": [
-        "Add VSCodium as a context menu option by running 'reg import \"$dir\\install-context.reg\"'",
+        "Add VSCodium as a context menu option by running: 'reg import \"$dir\\install-context.reg\"'",
         "For file associations, run 'reg import \"$dir\\install-associations.reg\"'"
     ],
     "architecture": {
         "64bit": {
-            "url": "https://github.com/VSCodium/vscodium/releases/download/1.82.2.23257/VSCodium-win32-x64-1.82.2.23257.zip",
-            "hash": "2c4188ff559be4d31524f5a7eb6cec5d069e20ea96cb3524e6de022bc5fe6bde"
-        },
-        "32bit": {
-            "url": "https://github.com/VSCodium/vscodium/releases/download/1.82.2.23257/VSCodium-win32-ia32-1.82.2.23257.zip",
-            "hash": "b4da09a7b9265ae38632c2a2e69bcbfe80330c038805be6b516f580defd06775"
+            "url": "https://github.com/VSCodium/vscodium/releases/download/1.83.0.23283/VSCodium-win32-x64-1.83.0.23283.zip",
+            "hash": "1a99e585daa8f76b58dd204a531a95f21c093d9e2b2501e089d883f5dacbbdbb"
         },
         "arm64": {
-            "url": "https://github.com/VSCodium/vscodium/releases/download/1.82.2.23257/VSCodium-win32-arm64-1.82.2.23257.zip",
-            "hash": "15b9a38fc6ec669cba95a97c191c0b1981a374a4f18f1ff2a76392c3b28e8202"
+            "url": "https://github.com/VSCodium/vscodium/releases/download/1.83.0.23283/VSCodium-win32-arm64-1.83.0.23283.zip",
+            "hash": "972b04ac1b8effeae3abdc42c6fd4146a83c416c80100c941ae1b6568b6f2b7e"
         }
     },
-    "pre_install": [
-        "$product_path = \"$dir\\resources\\app\\product.json\"",
-        "if (Test-Path -Path $product_path) {",
-        "    $product = Get-Content -Path $product_path -Raw -Encoding UTF8 | ConvertFrom-Json",
-        "    if (![string]::IsNullOrEmpty($product.updateUrl)) {",
-        "        Get-Content -Path $product_path | Where-Object {$_ -notmatch \"updateurl\"} | Set-Content temp.json",
-        "        Move-Item -Path temp.json -Destination $product_path -Force",
-        "    }",
-        "}"
+    "env_add_path": "bin",
+    "shortcuts": [
+        [
+            "VSCodium.exe",
+            "VSCodium"
+        ]
     ],
     "post_install": [
         "$dirpath = \"$dir\".Replace('\\', '\\\\')",
@@ -58,32 +51,23 @@
         "if ((Test-Path \"$extensions_file\")) {",
         "    info 'Adjusting path in extensions file...'",
         "    (Get-Content \"$extensions_file\") -replace '(?<=vscodium(/|\\\\\\\\)).*?(?=(/|\\\\\\\\)data(/|\\\\\\\\)extensions)', $version | Set-Content \"$extensions_file\"",
+        "}",
+        "$product_file = \"$dir\\resources\\app\\product.json\"",
+        "if ((Test-Path \"$product_file\")) {",
+        "    info 'patching in VS marketplace'",
+        "    $content = Get-Content \"$product_file\"",
+        "    $content = $content -replace '( )*\"serviceUrl\":.*','    \"serviceUrl\": \"https://marketplace.visualstudio.com/_apis/public/gallery\",    \"cacheUrl\": \"https://vscode.blob.core.windows.net/gallery/index\",'",
+        "    $content = $content -replace '( )*\"itemUrl\":.*','    \"itemUrl\": \"https://marketplace.visualstudio.com/items\"'",
+        "    $content = $content -replace '( )*\"linkProtectionTrustedDomains.*',''",
+        "    $content | Set-Content -Path \"$product_file\"",
         "}"
     ],
-    "env_add_path": "bin",
-    "bin": [
-        [
-            "bin/codium.cmd",
-            "vscodium"
-        ]
-    ],
-    "shortcuts": [
-        [
-            "VSCodium.exe",
-            "VSCodium"
-        ]
-    ],
     "persist": "data",
-    "checkver": {
-        "github": "https://github.com/VSCodium/vscodium"
-    },
+    "checkver": "github",
     "autoupdate": {
         "architecture": {
             "64bit": {
                 "url": "https://github.com/VSCodium/vscodium/releases/download/$version/VSCodium-win32-x64-$version.zip"
-            },
-            "32bit": {
-                "url": "https://github.com/VSCodium/vscodium/releases/download/$version/VSCodium-win32-ia32-$version.zip"
             },
             "arm64": {
                 "url": "https://github.com/VSCodium/vscodium/releases/download/$version/VSCodium-win32-arm64-$version.zip"
