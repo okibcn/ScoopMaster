@@ -1,19 +1,10 @@
 {
-    "homepage": "https://im.qq.com/pcqq/index.shtml",
-    "description": "An instant messaging software service developed by Tencent",
-    "license": "Freeware",
+    "url": "https://dldir1.qq.com/qqfile/qq/QQNT/e4559146/QQ9.9.3.17260_x64.exe#/dl.7z",
+    "hash": "8cfd7546385c15d84239f22c3b300e364d4b626c50a33d161a3612aa661ab38a",
     "version": "9.9.3.17260",
-    "architecture": {
-        "64bit": {
-            "url": "https://dldir1.qq.com/qqfile/qq/QQNT/e4559146/QQ9.9.3.17260_x64.exe#/dl.7z",
-            "hash": "8cfd7546385c15d84239f22c3b300e364d4b626c50a33d161a3612aa661ab38a"
-        },
-        "32bit": {
-            "url": "https://dldir1.qq.com/qqfile/qq/QQNT/909dcf5c/QQ9.9.3.17260_x86.exe#/dl.7z",
-            "hash": "be0a6bd579e9a1e876638ddb6fc15ee3e827888f2b414cbbe71938801df8c1a8"
-        }
-    },
     "extract_dir": "Files",
+    "homepage": "https://im.qq.com/pcqq/index.shtml",
+    "license": "Unlicense",
     "shortcuts": [
         [
             "QQ.exe",
@@ -22,16 +13,15 @@
     ],
     "checkver": {
         "url": "https://cdn-go.cn/qq-web/im.qq.com_new/latest/rainbow/windowsDownloadUrl.js",
-        "regex": "ntDownload.*?/(?<commit86>\\w+)/QQ([\\d.]+)_x86.*?NT/(?<commit64>\\w+)/QQ(?<version64>[\\d.]+)_x64"
+        "regex": "https://dldir1.qq.com/qqfile/qq/QQNT/(?<sha>[0-9a-f]+)/QQ([\\d.]+)_x64.exe",
+        "replace": "${1}"
     },
     "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://dldir1.qq.com/qqfile/qq/QQNT/$matchCommit64/QQ$version_x64.exe#/dl.7z"
-            },
-            "32bit": {
-                "url": "https://dldir1.qq.com/qqfile/qq/QQNT/$matchCommit86/QQ$version_x86.exe#/dl.7z"
-            }
-        }
-    }
+        "url": "https://dldir1.qq.com/qqfile/qq/QQNT/$matchSha/QQ$version_x64.exe#/dl.7z"
+    },
+    "notes": [
+        "Scoop doesn't persist your QQNT data, by default they are stored in: ",
+        "'%UserProfile%\\Documents\\Tencent Files\\qq_nt'.",
+        "Files produced at runtime leaves in '%AppData%\\QQ'."
+    ]
 }

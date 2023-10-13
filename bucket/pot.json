@@ -4,31 +4,22 @@
     "homepage": "https://pot-app.com",
     "license": "GPL-3.0-or-later",
     "notes": [
-        "Scoop doesn't persist your pot data, by default they are stored in: ",
-        "Config&log files: '%AppData%\\com.pot-app.desktop'",
-        "WebView files: '%LocalAppData%\\com.pot-app.desktop'"
+        "config location: C:\\Users\\<your username>\\AppData\\Local\\com.pot-app.desktop",
+        "config location: C:\\Users\\<your username>\\AppData\\Roaming\\com.pot-app.desktop",
+        "- https://github.com/ViCrack/scoop-bucket/blob/master/bucket/pot.json"
     ],
     "architecture": {
         "64bit": {
-            "url": "https://github.com/pot-app/pot-desktop/releases/download/2.6.3/pot_2.6.3_x64-setup.nsis.zip",
-            "hash": "49dcd68e8fbae1ea21363754bfcf9f81f8d03abf8f326df06eeafc2a8d0dfe15"
-        },
-        "32bit": {
-            "url": "https://github.com/pot-app/pot-desktop/releases/download/2.6.3/pot_2.6.3_x86-setup.nsis.zip",
-            "hash": "f1116a80ca6cc29d6e1c5fc6a64ab333ecd3829f7e6f724b88f4846ca762a6c8"
+            "url": "https://github.com/pot-app/pot-desktop/releases/download/2.6.3/pot_2.6.3_x64-setup.exe#/dl.7z",
+            "hash": "114912ec0fc00b17ddd5611a4a72572484b8bf355738e76edacb0574415ef3c9",
+            "pre_install": "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\Uninstall*\" -Force -Recurse"
         }
     },
     "shortcuts": [
         [
             "pot.exe",
-            "pot"
+            "Pot"
         ]
-    ],
-    "extract_to": "_EXTRACTED",
-    "pre_install": [
-        "Expand-7zipArchive (Get-ChildItem \"$dir\\_EXTRACTED\\pot_*.exe\").FullName \"$dir\"",
-        "Remove-Item \"$dir\\_EXTRACTED\" -Force -Recurse",
-        "Remove-Item \"$dir\" -Include 'Uninstall.exe', '$PLUGINSDIR' -Recurse"
     ],
     "checkver": {
         "github": "https://github.com/pot-app/pot-desktop"
@@ -36,10 +27,7 @@
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://github.com/pot-app/pot-desktop/releases/download/$version/pot_$version_x64-setup.nsis.zip"
-            },
-            "32bit": {
-                "url": "https://github.com/pot-app/pot-desktop/releases/download/$version/pot_$version_x86-setup.nsis.zip"
+                "url": "https://github.com/pot-app/pot-desktop/releases/download/$version/pot_$version_x64-setup.exe#/dl.7z"
             }
         }
     }
