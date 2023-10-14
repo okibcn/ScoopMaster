@@ -1,38 +1,41 @@
 {
-    "version": "2.6.3",
-    "description": "A cross-platform software for text translation.",
     "homepage": "https://pot-app.com/",
+    "description": "A cross-platform translation software",
     "license": "GPL-3.0-only",
+    "version": "2.6.3",
     "architecture": {
         "64bit": {
-            "url": "https://github.com/pot-app/pot-desktop/releases/download/2.6.3/pot_2.6.3_x86-setup.exe#/dl.7z",
-            "hash": "e5dd9c41f89acd7edf56fff4930daa10ca54a5b7e4f8bdff0144557cf7bda8b6"
-        },
-        "32bit": {
             "url": "https://github.com/pot-app/pot-desktop/releases/download/2.6.3/pot_2.6.3_x64-setup.exe#/dl.7z",
             "hash": "114912ec0fc00b17ddd5611a4a72572484b8bf355738e76edacb0574415ef3c9"
+        },
+        "32bit": {
+            "url": "https://github.com/pot-app/pot-desktop/releases/download/2.6.3/pot_2.6.3_x86-setup.exe#/dl.7z",
+            "hash": "e5dd9c41f89acd7edf56fff4930daa10ca54a5b7e4f8bdff0144557cf7bda8b6"
         }
     },
-    "post_install": "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\uninstall*\" -Force -Recurse",
-    "bin": "pot.exe",
+    "post_install": "Remove-Item \"$dir\\`$PLUGINSDIR\" -Force -Recurse",
     "shortcuts": [
         [
             "pot.exe",
             "Pot"
         ]
     ],
+    "persist": "config.toml",
     "checkver": {
         "github": "https://github.com/pot-app/pot-desktop"
     },
-    "notes": "Pot is NOT portable.",
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://github.com/pot-app/pot-desktop/releases/download/$version/pot_$version_x86-setup.exe#/dl.7z"
+                "url": "https://github.com/pot-app/pot-desktop/releases/download/$version/pot_$version_x64-setup.exe#/dl.7z"
             },
             "32bit": {
-                "url": "https://github.com/pot-app/pot-desktop/releases/download/$version/pot_$version_x64-setup.exe#/dl.7z"
+                "url": "https://github.com/pot-app/pot-desktop/releases/download/$version/pot_$version_x86-setup.exe#/dl.7z"
             }
         }
-    }
+    },
+    "notes": [
+        "You may need to install Edge WebView2 Runtime to use Pot.",
+        "A installer of Edge WebView2 Runtime is available under the 'redist' folder of the Pot installation directory."
+    ]
 }
