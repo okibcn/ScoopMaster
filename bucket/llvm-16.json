@@ -18,5 +18,29 @@
         }
     },
     "pre_install": "Remove-Item \"$dir\\`$*\", \"$dir\\Uninstall.exe\" -Recurse",
-    "env_add_path": "bin"
+    "env_add_path": "bin",
+    "checkver": {
+        "script": [
+            "$requestResponse = Invoke-WebRequest -Headers @{'Accept' = 'application/vnd.github+json'; 'X-Github-Api-Version' = '2022-11-28' } -Uri 'https://api.github.com/repos/llvm/llvm-project/releases'",
+            "$responseContent = $requestResponse.Content | ConvertFrom-Json",
+            "$tags = $responseContent | Select-Object -Property tag_name",
+            "$versionList = $tags | ForEach-Object { $_.tag_name -match '^llvmorg-([\\d.]+)$' ? [System.Version]$Matches.1 : $false } | Where-Object { $_ -ne $false }",
+            "$latest16 = ($versionList | Where-Object { $_.Major -eq 16 } | Measure-Object -Maximum).Maximum",
+            "Write-Output $latest16.ToString()"
+        ],
+        "regex": "^([\\d.]+)$"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/llvm/llvm-project/releases/download/llvmorg-$version/LLVM-$version-win64.exe#/dl.7z"
+            },
+            "32bit": {
+                "url": "https://github.com/llvm/llvm-project/releases/download/llvmorg-$version/LLVM-$version-win32.exe#/dl.7z"
+            },
+            "arm64": {
+                "url": "https://github.com/llvm/llvm-project/releases/download/llvmorg-$version/LLVM-$version-woa64.exe#/dl.7z"
+            }
+        }
+    }
 }
