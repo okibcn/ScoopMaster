@@ -1,18 +1,19 @@
 {
-    "version": "0.35.2",
+    "version": "0.35.4",
     "description": "Anytype is a local-first, P2P and open-source note-taking application",
-    "homepage": "https://anytype.io/",
-    "license": "Proprietary",
+    "homepage": "https://anytype.io",
+    "license": {
+        "identifier": "Any Source Available License 1.0",
+        "url": "https://github.com/anyproto/anytype-ts/blob/main/LICENSE.md"
+    },
+    "url": "https://github.com/anyproto/anytype-ts/releases/download/v0.35.4/Anytype.Setup.0.35.4.exe#/dl.7z",
+    "hash": "7b4acff0662420b38d20fc16c22c5715abcf47874cf39bbdf0b5ad1042ea2807",
     "architecture": {
         "64bit": {
-            "url": "https://anytype-release.fra1.cdn.digitaloceanspaces.com/Anytype%20Setup%200.35.2.exe#/dl.7z",
-            "hash": "b6a926c8f4f8d0c3bc474a6b2227a9f38d5d36a5c06499bd5453b582f9078a46",
-            "pre_install": [
-                "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app*.7z\" \"$dir\"",
-                "Remove-Item \"$dir\\`$R0\", \"$dir\\`$PLUGINSDIR\" -Force -Recurse"
-            ]
+            "pre_install": "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\""
         }
     },
+    "post_install": "Remove-Item \"$dir\\`$R0\", \"$dir\\`$PLUGINSDIR\" -Force -Recurse",
     "bin": "Anytype.exe",
     "shortcuts": [
         [
@@ -21,14 +22,9 @@
         ]
     ],
     "checkver": {
-        "url": "https://download.anytype.io/",
-        "regex": "Desktop \\n\\s+?<span class=\"version\">v(\\d+?\\.\\d+?\\.\\d+?)<"
+        "github": "https://github.com/anyproto/anytype-ts"
     },
     "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://anytype-release.fra1.cdn.digitaloceanspaces.com/Anytype%20Setup%20$version.exe#/dl.7z"
-            }
-        }
+        "url": "https://github.com/anyproto/anytype-ts/releases/download/v$version/Anytype.Setup.$version.exe#/dl.7z"
     }
 }

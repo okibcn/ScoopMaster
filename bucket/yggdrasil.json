@@ -1,0 +1,68 @@
+{
+    "version": "0.4.7",
+    "description": "An experiment in scalable routing as an encrypted IPv6 overlay network",
+    "homepage": "https://yggdrasil-network.github.io",
+    "license": "LGPL-3.0-or-later",
+    "notes": "Use add-service.ps1 to add Yggdrasil service and remove-service.ps1 to remove Yggdrasil service",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/yggdrasil-network/yggdrasil-go/releases/download/v0.4.7/yggdrasil-0.4.7-x64.msi",
+            "hash": "9882d4d1773a91d26ea32287ccc1d169d0b3751b6db2f165ae5529d6b750da5f"
+        },
+        "32bit": {
+            "url": "https://github.com/yggdrasil-network/yggdrasil-go/releases/download/v0.4.7/yggdrasil-0.4.7-x86.msi",
+            "hash": "83fe0bb7bb351e13cfcab534aa715e7dd5cf4c2ee8b531c38ee83b47a7403f78"
+        },
+        "arm64": {
+            "url": "https://github.com/yggdrasil-network/yggdrasil-go/releases/download/v0.4.7/yggdrasil-0.4.7-arm64.msi",
+            "hash": "4b92503d8d416b93d5ffbb51f65638cb06ff3efed4fa045cb1b6576f428e5f48"
+        }
+    },
+    "extract_dir": "PFiles\\Yggdrasil",
+    "pre_install": [
+        "$manifest.persist | ForEach-Object {",
+        "    if (!(Test-Path \"$persist_dir\\$_\")) { New-Item \"$dir\\$_\" | Out-Null }",
+        "}"
+    ],
+    "post_install": [
+        "if (!(Get-Content -Path \"$persist_dir\\yggdrasil.conf\")) {",
+        "    yggdrasil.exe -genconf > \"$dir\\yggdrasil.conf\"",
+        "}",
+        "New-Item \"$dir\\add-service.ps1\" -Value @\"",
+        "sc.exe create 'Yggdrasil' binpath= \"$dir\\yggdrasil.exe -useconffile $dir\\yggdrasil.conf -logto $dir\\yggdrasil.log\" start= auto group= NetworkProvider displayname= 'Yggdrasil Service'",
+        "sc.exe description 'Yggdrasil' 'Yggdrasil Network router process'",
+        "\"@ | Out-Null",
+        "New-Item \"$dir\\remove-service.ps1\" -Value \"sc.exe delete 'Yggdrasil'\" | Out-Null"
+    ],
+    "pre_uninstall": [
+        "if (Get-Service -Name 'Yggdrasil' -ErrorAction 'SilentlyContinue') {",
+        "   if (!(is_admin)) {error \"$app requires admin rights to $cmd\"; break}",
+        "   Stop-Service -Name 'Yggdrasil' -Verbose -ErrorAction 'SilentlyContinue' -Force",
+        "   sc.exe delete 'Yggdrasil'",
+        "}"
+    ],
+    "bin": [
+        "yggdrasil.exe",
+        "yggdrasilctl.exe"
+    ],
+    "persist": [
+        "yggdrasil.conf",
+        "yggdrasil.log"
+    ],
+    "checkver": {
+        "github": "https://github.com/yggdrasil-network/yggdrasil-go"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/yggdrasil-network/yggdrasil-go/releases/download/v$version/yggdrasil-$version-x64.msi"
+            },
+            "32bit": {
+                "url": "https://github.com/yggdrasil-network/yggdrasil-go/releases/download/v$version/yggdrasil-$version-x86.msi"
+            },
+            "arm64": {
+                "url": "https://github.com/yggdrasil-network/yggdrasil-go/releases/download/v$version/yggdrasil-$version-arm64.msi"
+            }
+        }
+    }
+}

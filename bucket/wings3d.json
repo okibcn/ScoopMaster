@@ -1,0 +1,40 @@
+{
+    "version": "2.3",
+    "description": "Wings3D is an advanced sub-division 3D modeller.",
+    "homepage": "http://www.wings3d.com",
+    "license": "BSD-3-Clause",
+    "suggest": {
+        "vcredist": "extras/vcredist2022"
+    },
+    "architecture": {
+        "64bit": {
+            "url": "https://sourceforge.net/projects/wings/files/wings/2.3/wings-x64-2.3.exe#/dl.7z",
+            "hash": "sha1:b63fd0646437cb7a6c3e9ab6f4401a49fc669b05"
+        },
+        "32bit": {
+            "url": "https://sourceforge.net/projects/wings/files/wings/2.3/wings-2.3.exe#/dl.7z",
+            "hash": "sha1:5b9290a43d1c88cbd65e07f992ca4d79e092680a"
+        }
+    },
+    "post_install": "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\Unins*\", \"$dir\\vcredist_*\" -Force -Recurse",
+    "bin": "Wings3D.exe",
+    "shortcuts": [
+        [
+            "Wings3D.exe",
+            "Wings3D"
+        ]
+    ],
+    "checkver": {
+        "sourceforge": "wings"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://sourceforge.net/projects/wings/files/wings/$version/wings-x64-$version.exe#/dl.7z"
+            },
+            "32bit": {
+                "url": "https://sourceforge.net/projects/wings/files/wings/$version/wings-$version.exe#/dl.7z"
+            }
+        }
+    }
+}
