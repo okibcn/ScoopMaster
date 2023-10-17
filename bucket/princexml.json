@@ -1,49 +1,49 @@
 {
-  "homepage": "https://www.princexml.com/download/",
-  "version": "15.1",
-  "description": "Convert HTML to PDF.  Beautiful printing with simple CSS.",
-  "checkver": {
-    "url": "https://www.princexml.com/download/",
-    "re": ">Download Prince (.*?)<"
-  },
-  "architecture": {
-    "64bit": {
-      "url": "https://www.princexml.com/download/prince-15.1-win64-setup.exe#/prince.ex_",
-      "hash": "947cf3e6e7c3fcaa4d3939431bd8a28f5d7290d3bd466b7cfb9910a109644a67"
+    "homepage": "https://www.princexml.com/download/",
+    "version": "15.2",
+    "description": "Convert HTML to PDF.  Beautiful printing with simple CSS.",
+    "checkver": {
+        "url": "https://www.princexml.com/download/",
+        "re": ">Download Prince (.*?)<"
     },
-    "32bit": {
-      "url": "https://www.princexml.com/download/prince-15.1-win32-setup.exe#/prince.ex_",
-      "hash": "a3d7855acd71a8fb0f867bc7694068db8063cbdea60adbf6f40323eab4f9c778"
-    }
-  },
-  "autoupdate": {
     "architecture": {
-      "64bit": {
-        "url": "https://www.princexml.com/download/prince-$version-win64-setup.exe#/prince.ex_"
-      },
-      "32bit": {
-        "url": "https://www.princexml.com/download/prince-$version-win32-setup.exe#/prince.ex_"
-      }
-    }
-  },
-  "installer": {
-    "keep": "false",
-    "script": [
-      "Move-Item -Path \"$dir\\prince.ex_\" -Destination \"$dir\\prince.exe\"",
-      "&\"$dir\\prince.exe\" /s /x /b\"$dir\" /v\"\"/qn\"\"",
-      "Start-Sleep -Seconds 1",
-      "lessmsi x \"$dir\\Prince.msi\" \"$dir\\\" | Out-Null",
-      "Get-ChildItem \"$dir\\SourceDir\\program files\\Prince\" | Move-Item -Destination \"$dir\"",
-      "Remove-Item \"$dir\\prince.exe\"",
-      "Remove-Item \"$dir\\Prince.msi\"",
-      "Remove-Item -Recurse -Force \"$dir\\SourceDir\""
+        "64bit": {
+            "url": "https://www.princexml.com/download/prince-15.2-win64-setup.exe#/prince.ex_",
+            "hash": "fc5c639ac09da00a031e05a36d3b53c76f2cd840bfebc7a29ff7c3536179f984"
+        },
+        "32bit": {
+            "url": "https://www.princexml.com/download/prince-15.2-win32-setup.exe#/prince.ex_",
+            "hash": "074327dde5e1c54c7e85f161ffa8df18e233b19c6887a706faaea62dc5c9768b"
+        }
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://www.princexml.com/download/prince-$version-win64-setup.exe#/prince.ex_"
+            },
+            "32bit": {
+                "url": "https://www.princexml.com/download/prince-$version-win32-setup.exe#/prince.ex_"
+            }
+        }
+    },
+    "installer": {
+        "keep": "false",
+        "script": [
+            "Move-Item -Path \"$dir\\prince.ex_\" -Destination \"$dir\\prince.exe\"",
+            "&\"$dir\\prince.exe\" /s /x /b\"$dir\" /v\"\"/qn\"\"",
+            "Start-Sleep -Seconds 1",
+            "lessmsi x \"$dir\\Prince.msi\" \"$dir\\\" | Out-Null",
+            "Get-ChildItem \"$dir\\SourceDir\\program files\\Prince\" | Move-Item -Destination \"$dir\"",
+            "Remove-Item \"$dir\\prince.exe\"",
+            "Remove-Item \"$dir\\Prince.msi\"",
+            "Remove-Item -Recurse -Force \"$dir\\SourceDir\""
+        ]
+    },
+    "bin": "engine\\bin\\prince.exe",
+    "shortcuts": [
+        [
+            "prince-gui.exe",
+            "Prince XML"
+        ]
     ]
-  },
-  "bin": "engine\\bin\\prince.exe",
-  "shortcuts": [
-    [
-      "prince-gui.exe",
-      "Prince XML"
-    ]
-  ]
 }
