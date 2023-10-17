@@ -3,14 +3,16 @@
     "description": "OCS 浏览器自动化神器，一键浏览器多开，用户脚本环境一键配置。",
     "homepage": "https://docs.ocsjs.com/docs/app",
     "license": "MIT",
-    "url": "https://cdn.ocsjs.com/app/download/ocs-2.4.2-setup-win-x64.exe#/dl.7z",
-    "hash": "19f19961fe528340e56a5ea34cd0788eb77f321e6d5c827e34b4d9377c812499",
     "architecture": {
         "64bit": {
-            "pre_install": "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\""
+            "url": "https://cdn.ocsjs.com/app/download/ocs-2.4.2-setup-win-x64.exe#/dl.7z",
+            "hash": "19f19961fe528340e56a5ea34cd0788eb77f321e6d5c827e34b4d9377c812499",
+            "pre_install": [
+                "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\"",
+                "Remove-Item \"$dir\\`$R0\", \"$dir\\`$PLUGINSDIR\" -Force -Recurse"
+            ]
         }
     },
-    "post_install": "Remove-Item \"$dir\\`$R0\", \"$dir\\`$PLUGINSDIR\" -Force -Recurse",
     "shortcuts": [
         [
             "OCS Desktop.exe",
@@ -22,6 +24,10 @@
         "regex": "/releases/tag/(?:v|V)?([\\d.]+)"
     },
     "autoupdate": {
-        "url": "https://cdn.ocsjs.com/app/download/ocs-$version-setup-win-x64.exe#/dl.7z"
+        "architecture": {
+            "64bit": {
+                "url": "https://cdn.ocsjs.com/app/download/ocs-$version-setup-win-x64.exe#/dl.7z"
+            }
+        }
     }
 }
