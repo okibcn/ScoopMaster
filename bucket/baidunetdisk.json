@@ -1,26 +1,27 @@
 {
-    "homepage": "https://pan.baidu.com/download",
-    "description": "百度网盘PC版 ",
-    "version": "7.33.0.7",
-    "url": "http://issuecdn.baidupcs.com/issue/netdisk/yunguanjia/BaiduNetdisk_7.33.0.7.exe#dl.7z",
-    "hash": "278ebbde872e0801cb8375933cccc6fcded79c7194cb6d6dd0ea7619e24fe37b",
-    "bin": "BaiduNetdisk.exe",
-    "persist": "users",
-    "post_install": [
-        "Remove-Item \"$dir\\`$PLUGINSDIR\" -Recurse",
-        "Remove-Item \"$dir\\`$TEMP\" -Recurse"
-    ],
-    "checkver": {
-        "url": "https://pan.baidu.com/disk/cmsdata?do=client",
-        "regex": "BaiduNetdisk_(\\d+.\\d+.\\d+.\\d+).exe"
+    "version": "7.33.0",
+    "description": "Gendloop's app",
+    "homepage": "https://github.com/gendloop/BaiduNetDisk",
+    "license": "LGPL-2.1-or-later",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/gendloop/BaiduNetDisk/releases/download/v7.33.0/BaiduNetDisk-7.33.0-win64.7z",
+            "hash": "1adac58e01d80b345cebb43f93d02090b4994c00cd9ac2f37cd84d4740ffce41"
+        }
     },
-    "autoupdate": {
-        "url": "http://issuecdn.baidupcs.com/issue/netdisk/yunguanjia/BaiduNetdisk_$version.exe#dl.7z"
-    },
-    "shortcuts": [
-        [
-            "BaiduNetdisk.exe",
-            "百度网盘"
+    "installer": {
+        "script": [
+            "Push-Location \"$dir\"",
+            "Start-Process BaiduNetDisk-$version-win64.exe",
+            "Pop-Location"
         ]
-    ]
+    },
+    "checkver": "github",
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/gendloop/BaiduNetDisk/releases/download/v$version/BaiduNetDisk-$version-win64.7z"
+            }
+        }
+    }
 }
