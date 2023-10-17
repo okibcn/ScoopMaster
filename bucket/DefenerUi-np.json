@@ -1,0 +1,31 @@
+{
+    "version": "1.14",
+    "description": "DefenderUI: A better UI for Microsoft Defender",
+    "homepage": "https://www.defenderui.com/",
+    "license": "Proprietary",
+    "url": "https://www.defenderui.com/Download/InstallDefenderUI.exe",
+    "hash": "16730ae03acb6f16b444a5f2db47764c42a8bf5a962cfc04ea020207a5833f42",
+    "installer": {
+        "args": [
+            "/SP-",
+            "/verysilent",
+            "/suppressmsgboxes",
+            "/nocancel",
+            "/norestart",
+            "/norun"
+        ]
+    },
+    "pre_uninstall": [
+        "if (!(is_admin)) { error \"$app requires admin rights to $cmd\"; break }",
+        "Start-Process 'taskkill' -Verb 'RunAs' -WindowStyle 'Hidden' -ArgumentList ('/F', '/IM', 'defenerui.exe')"
+    ],
+    "uninstaller": {
+        "script": "Start-Process \"$env:ProgramFiles\\DefenderUI\\unins000.exe\" -ArgumentList ('/verysilent', '/suppressmsgboxes', '/norestart') -Wait -Verb RunAs"
+    },
+    "checkver": {
+        "regex": "Version [\\d.]+"
+    },
+        "autoupdate": {
+        "url": "https://www.defenderui.com/Download/InstallDefenderUI.exe"
+    }
+}
