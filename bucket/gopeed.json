@@ -1,13 +1,29 @@
 {
-    "homepage": "https://github.com/GopeedLab/gopeed",
-    "description": "A high-speed downloader developed by Golang + Flutter, supports (HTTP, BitTorrent, Magnet) protocol, and supports all platforms.",
-    "license": "GPL-3.0-only",
+    "##": "The installer is made with InnoSetup.",
     "version": "1.4.0",
+    "description": "High speed downloader that supports all platforms.",
+    "homepage": "https://github.com/GopeedLab/gopeed",
+    "license": "GPL-3.0-only",
     "architecture": {
         "64bit": {
-            "url": "https://github.com/GopeedLab/gopeed/releases/download/v1.4.0/Gopeed-v1.4.0-windows-amd64-portable.zip",
-            "hash": "4be58f09742d91f6d82fdace5c0cc5080dec6054258660089cae18e15285f63b"
+            "url": "https://github.com/GopeedLab/gopeed/releases/download/v1.4.0/Gopeed-v1.4.0-windows-amd64.zip",
+            "hash": "8c4e0f18790d3b74c8611fada09c885a081d0a54266757bf8124e70570dd5107"
         }
+    },
+    "pre_install": "Get-ChildItem \"$dir\" 'Gopeed*.exe' | Rename-Item -NewName 'setup.exe'",
+    "installer": {
+        "script": [
+            "Start-Process -Wait \"$dir\\setup.exe\" -ArgumentList @('/SP-', '/VERYSILENT', '/PORTABLE', \"/DIR=`\"$dir`\"\")",
+            "Remove-Item \"$dir\\setup.exe\""
+        ]
+    },
+    "uninstaller": {
+        "file": "unins000.exe",
+        "args": [
+            "/verysilent",
+            "/nocancel",
+            "/norestart"
+        ]
     },
     "shortcuts": [
         [
@@ -15,11 +31,14 @@
             "Gopeed"
         ]
     ],
-    "checkver": "github",
+    "checkver": {
+        "url": "https://api.github.com/repos/GopeedLab/gopeed/releases",
+        "regex": "/releases/tag/v([\\d.]+)"
+    },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://github.com/GopeedLab/gopeed/releases/download/v$version/Gopeed-v$version-windows-amd64-portable.zip"
+                "url": "https://github.com/GopeedLab/gopeed/releases/download/v$version/Gopeed-v$version-windows-amd64.zip"
             }
         }
     }
