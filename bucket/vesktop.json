@@ -1,32 +1,34 @@
 {
     "version": "0.3.3",
-    "description": "Vesktop is a cross platform desktop app aiming to give you a snappier Discord experience with Vencord pre-installed",
+    "description": "A cross platform electron-based desktop app aiming to give you a snappier Discord experience with Vencord pre-installed",
     "homepage": "https://github.com/Vencord/Vesktop",
-    "license": "GPL-3.0",
-    "notes": [
-        "This scoop package is unofficial and not maintained by official Vencord Developers",
-        "Please, do not request support there for the scoop package"
-    ],
+    "license": "GPL-3.0-only",
     "architecture": {
         "64bit": {
-            "url": "https://github.com/Vencord/Vesktop/releases/download/v0.3.3/Vesktop-0.3.3-win.zip",
-            "hash": "sha1:5b96f13dea6a561fbb70b5a16daadb2de1c83257"
+            "url": "https://github.com/Vencord/Vesktop/releases/download/v0.3.3/Vesktop-Setup-0.3.3.exe#/dl.7z",
+            "hash": "sha512:7c31ed57c0bc087caed3003cee21f15c74dbb848d9911cc25d60a47b23cb3e935f85b190058370525f5ac10cf8a9dfb7eefcb1b3a76afade7fd76af5db9639c7"
         }
     },
+    "extract_dir": "$PLUGINSDIR",
+    "pre_install": "Expand-7zipArchive \"$dir\\app-64.7z\" -Removal",
     "shortcuts": [
         [
-        "vesktop.exe",
-        "Vesktop"
+            "Vesktop.exe",
+            "Vesktop"
         ]
     ],
-"checkver": {
-    "github": "https://github.com/Vencord/Vesktop"
-},
-"autoupdate": {
-    "architecture": {
-        "64bit": {
-            "url": "https://github.com/Vencord/Vesktop/releases/download/v$version/Vesktop-$version-win.zip"
+    "checkver": {
+        "github": "https://github.com/Vencord/Vesktop"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/Vencord/Vesktop/releases/download/v$version/Vesktop-Setup-$version.exe#/dl.7z",
+                "hash": {
+                    "url": "$baseurl/latest.yml",
+                    "regex": "sha512: $base64"
+                }
+            }
         }
     }
-}
 }

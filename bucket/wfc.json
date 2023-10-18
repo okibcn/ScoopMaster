@@ -1,22 +1,21 @@
 {
-    "##": "Don't forget to update exe name hardcoded in installer/script",
+    "_comment": "Don't forget to update exe name hardcoded in installer/script",
     "version": "6.9.5.0",
     "description": "Powerful tool which extends the functionality of Windows Firewall and provides new extra features which makes Windows Firewall better",
     "homepage": "https://www.binisoft.org/wfc.php",
     "license": "Freeware",
+    "depends": "sudo",
     "url": "https://www.binisoft.org/download/wfc6setup.exe",
     "hash": "9d49fcb5f3e7bc05db4da11ebfc793d71699762a1015ddcd7db19141dba9d5d4",
-    "pre_install": "if (!(is_admin)) { error \"$app requires admin rights to $cmd\"; break }",
     "installer": {
-        "script": "cmd.exe /c start /WAIT \"$dir\\wfc6setup.exe\" -install -close \"$dir\""
+        "script": "sudo cmd.exe /c start /WAIT \"$dir\\wfc6setup.exe\" -install -close \"$dir\""
     },
-    "pre_uninstall": "if (!(is_admin)) { error \"$app requires admin rights to $cmd\"; break }",
     "uninstaller": {
         "script": [
-            "taskkill.exe /f /im wfc.exe",
-            "sc.exe stop wfcs",
-            "sc.exe delete wfcs",
-            "reg.exe delete \"HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\Windows Firewall Control\" /f"
+            "sudo taskkill.exe /f /im wfc.exe",
+            "sudo sc.exe stop wfcs",
+            "sudo sc.exe delete wfcs",
+            "sudo reg.exe delete \"HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\Windows Firewall Control\" /f"
         ]
     },
     "checkver": {
