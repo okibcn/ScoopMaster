@@ -1,27 +1,35 @@
 {
-  "version": "2306.40000.4.0",
-  "description": "Windows Subsystem For Android™ (WSA) with Google Play Services and (or) Magisk",
-  "homepage": "https://github.com/MustardChef/WSABuilds",
-  "architecture": {
-    "64bit": {
-      "url": "https://ghproxy.net/https://github.com/MustardChef/WSABuilds/releases/download/Windows_10_2306.40000.4.0/WSA_2306.40000.4.0_x64_Release-Nightly-MindTheGapps-13.0-RemovedAmazon_Windows_10.zip",
-      "hash": "e723472fe48e8771281bda0ea9521486cb6cc9fbd5d55504afd6cb9c7bc6e8fa"
-    }
-  },
-  "installer": {
-    "file": "Install.ps1"
-  },
-  "extract_dir": "WSA_2306.40000.4.0_x64_Release-Nightly-MindTheGapps-13.0-RemovedAmazon",
-  "checkver": {
-    "url": "https://github.com/MustardChef/WSABuilds/releases/",
-    "regex": "Windows_10_WSA_(?<version>[\\d.]+)_x64"
-  },
-  "autoupdate": {
+    "version": "2309.40000.2.0",
+    "description": "Windows Subsystem For Android™ (WSA) with Google Play Services and (or) Magisk",
+    "homepage": "https://github.com/MustardChef/WSABuilds",
     "architecture": {
-      "64bit": {
-        "url": "https://ghproxy.net/https://github.com/MustardChef/WSABuilds/releases/download/Windows_10_$version/WSA_$version_x64_Release-Nightly-MindTheGapps-13.0-RemovedAmazon_Windows_10.zip"
-      }
+        "64bit": {
+            "url": "https://github.com/MustardChef/WSABuilds/releases/download/Windows_10_2309.40000.2.0/WSA_2309.40000.2.0_x64_Release-Nightly-with-magisk-d4e552d0.26301.-canary-MindTheGapps-13.0-RemovedAmazon_Windows_10.7z",
+            "hash": "cd85c6fa56081a3bcdc83b9bd44cf160116f25e5fa2bd6ee9d3621a3dc887cd9"
+        }
     },
-    "extract_dir": "WSA_$version_x64_Release-Nightly-MindTheGapps-13.0-RemovedAmazon"
-  }
+    "installer": {
+        "file": "Install.ps1"
+    },
+    "extract_dir": "WSA_2309.40000.2.0_x64_Release-Nightly-with-magisk-d4e552d0.26301.-canary-MindTheGapps-13.0-RemovedAmazon",
+    "checkver": {
+        "script": [
+            "$latestVerUrl = Invoke-WebRequest -Uri 'https://github.com/MustardChef/WSABuilds/releases/latest' -UseBasicParsing",
+            "$latestVerWSA = $latestVerUrl.ToString() -match 'Windows_\\d+_([\\d.]+)'",
+            "$exUrl = 'https://github.com/MustardChef/WSABuilds/releases/expanded_assets/Windows_10_' + $Matches[1]",
+            "$latestVer = Invoke-WebRequest -Uri $exUrl -UseBasicParsing",
+            "$latestVerWSA = $latestVer.ToString() -match 'WSA_([0-9.]+)_x64_Release-Nightly-with-magisk-([a-z0-9]+).([a-z0-9]+).-canary'",
+            "$str = $matches[1] + '-' + $matches[2] + '.' + $matches[3]",
+            "echo $str"
+        ],
+        "regex": "(?<version>[0-9.]+)-(?<VERY>[a-z0-9.]+)"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/MustardChef/WSABuilds/releases/download/Windows_10_$version/WSA_$version_x64_Release-Nightly-with-magisk-$matchVERY.-canary-MindTheGapps-13.0-RemovedAmazon_Windows_10.7z"
+            }
+        },
+        "extract_dir": "WSA_$version_x64_Release-Nightly-with-magisk-$matchVERY.-canary-MindTheGapps-13.0-RemovedAmazon"
+    }
 }
