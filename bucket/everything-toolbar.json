@@ -1,18 +1,26 @@
 {
+    "homepage": "https://github.com/stnkl/EverythingToolbar",
     "version": "1.2.0",
-    "homepage": "https://github.com/srwi/EverythingToolbar",
-    "description": "Everything integration for the Windows taskbar",
-    "url": "https://github.com/stnkl/EverythingToolbar/releases/download/1.2.0/EverythingToolbar-1.2.0.msi#/setup.msi_",
+    "description": "替换 Win10/11 任务栏系统搜索框",
     "license": "MIT",
+    "url": "https://github.com/srwi/EverythingToolbar/releases/download/1.2.0/EverythingToolbar-1.2.0.msi",
     "hash": "70d925a7cd9abf009d532462d8ae2da7282abcf063ce56e9e5710de3f496cf12",
+    "depends": "winapps/everything",
     "installer": {
-        "script": "Start-Process -Wait msiexec \"/i `\"$dir\\setup.msi_`\"/norestart /qn INSTALLFOLDER=`\"$dir`\"\" -Verb RunAs"
+        "script": [
+            "Move-Item \"$dir\\EverythingToolbar\\*\" \"$dir\\\"",
+            "Remove-Item -Recurse \"$dir\\EverythingToolbar\""
+        ]
     },
-    "uninstaller": {
-        "script": "Start-Process -Wait msiexec \"/x `\"$dir\\setup.msi_`\" /qn /norestart\" -Verb RunAs"
-    },
+    "bin": "EverythingToolbar.Launcher.exe",
+    "shortcuts": [
+        [
+            "EverythingToolbar.Launcher.exe",
+            "EverythingToolbar"
+        ]
+    ],
     "checkver": "github",
     "autoupdate": {
-        "url": "https://github.com/stnkl/EverythingToolbar/releases/download/$version/EverythingToolbar-$version.msi#/setup.msi_"
+        "url": "https://github.com/srwi/EverythingToolbar/releases/download/$version/EverythingToolbar-$version.msi"
     }
 }
