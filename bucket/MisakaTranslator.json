@@ -1,31 +1,27 @@
 {
-    "homepage": "https://github.com/hanmin0822/MisakaTranslator",
-    "description": "御坂翻译器—Galgame/文字游戏/漫画多语种实时机翻工具",
-    "license": "GPL-3.0",
     "version": "2.12.2",
+    "description": "御坂翻译器—Galgame/文字游戏/漫画多语种实时机翻工具",
+    "homepage": "https://github.com/hanmin0822/MisakaTranslator",
+    "license": "GPL-3.0-only",
     "url": "https://github.com/hanmin0822/MisakaTranslator/releases/download/2.12.2/MisakaTranslator.2.12.2.zip",
-    "hash": "a64dab9cba7e076add52b9afcc4411198fcc3169b5ab906cc9ddcd3abb6d7dfe",
+    "hash": "md5:b61d71119d9c21ade19073329971fcaf",
     "extract_dir": "Debug",
-    "pre_install": "if(Test-Path \"$persist_dir\\MisakaGameLibrary.sqlite\") { Copy-Item \"$persist_dir\\MisakaGameLibrary.sqlite\" \"$dir\\MisakaGameLibrary.sqlite\"  | Out-Null }",
+    "pre_install": "if (!(Test-Path \"$persist_dir\\MisakaGameLibrary.sqlite\")) { New-Item \"$dir\\MisakaGameLibrary.sqlite\" | Out-Null }",
     "shortcuts": [
         [
             "MisakaTranslator-WPF.exe",
-            "Misaka Translator"
+            "MisakaTranslator"
         ]
     ],
-    "uninstaller": {
-        "script": "if(Test-Path \"$dir\\MisakaGameLibrary.sqlite\") { Copy-Item \"$dir\\MisakaGameLibrary.sqlite\" \"$persist_dir\\MisakaGameLibrary.sqlite\" | Out-Null }"
-    },
-    "checkver": {
-        "github": "https://github.com/hanmin0822/MisakaTranslator"
-    },
     "persist": [
         "ArtificialTranslation",
-        "logs",
         "settings",
-        "TransOptimization"
+        "TransOptimization",
+        "MisakaGameLibrary.sqlite"
     ],
+    "checkver": "github",
     "autoupdate": {
-        "url": "https://github.com/hanmin0822/MisakaTranslator/releases/download/$version/MisakaTranslator.$version.zip"
+        "url": "https://github.com/hanmin0822/MisakaTranslator/releases/download/$version/MisakaTranslator.$version.zip",
+        "extract_dir": "Debug"
     }
 }
