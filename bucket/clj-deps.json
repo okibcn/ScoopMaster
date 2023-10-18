@@ -11,11 +11,12 @@
             "java/oraclejdk"
         ]
     },
+    "depends": "extras/vcredist2022",
     "architecture": {
         "64bit": {
             "url": [
                 "https://github.com/borkdude/deps.clj/releases/download/v1.11.1.1413/deps.clj-1.11.1.1413-windows-amd64.zip",
-                "https://download.clojure.org/install/clojure-tools-1.11.1.1413.zip"
+                "https://github.com/clojure/brew-install/releases/download/1.11.1.1413/clojure-tools.zip"
             ],
             "hash": [
                 "cb2c56b85ccc0bb9fd09c0c3a85238886226b7f827753edaf387b343eb49446b",
@@ -45,14 +46,16 @@
         ]
     ],
     "checkver": {
-        "github": "https://github.com/borkdude/deps.clj"
+        "url": "https://github.com/borkdude/deps.clj/releases",
+        "regex": "tag/v([\\d.]+)(-[\\d]+)?",
+        "replace": "${1}${2}"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
                 "url": [
                     "https://github.com/borkdude/deps.clj/releases/download/v$version/deps.clj-$version-windows-amd64.zip",
-                    "https://download.clojure.org/install/clojure-tools-$version.zip"
+                    "https://github.com/clojure/brew-install/releases/download/$matchHead$matchTail/clojure-tools.zip"
                 ]
             }
         }
