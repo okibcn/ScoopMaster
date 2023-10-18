@@ -1,23 +1,27 @@
 {
     "version": "6.5.2",
     "description": "All-in-one messaging apps for various services",
-    "homepage": "https://github.com/ferdium/ferdium-app",
+    "homepage": "https://ferdium.org/",
     "license": "Apache-2.0",
-    "url": "https://github.com/ferdium/ferdium-app/releases/download/v6.5.2/Ferdium-win-AutoSetup-6.5.2.exe#/dl.7z",
-    "hash": "sha512:929c85d876dac6bc9687f91c214393f045505990b3142e8e1eb4b8d8dd4e704452f7605faef3e8ae180cda7c71f013a56ee32e5f256f3e71fa5b23de2d2ae994",
     "architecture": {
         "64bit": {
-            "installer": {
-                "script": "Expand-7zipArchive -Path \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\""
-            }
+            "url": "https://github.com/ferdium/ferdium-app/releases/download/v6.5.2/Ferdium-win-AutoSetup-6.5.2-x64.exe#/dl.7z",
+            "hash": "sha512:95aba9b868fe0976eec5fa33d0ad1e4d41859e14b2d76ccd7fc3984e8e2a8921ddd2c730e2f169696c0a87b907aad02dfb548691913407687fcd178c963af5db"
         },
         "32bit": {
-            "installer": {
-                "script": "Expand-7zipArchive -Path \"$dir\\`$PLUGINSDIR\\app-32.7z\" \"$dir\""
-            }
+            "url": "https://github.com/ferdium/ferdium-app/releases/download/v6.5.2/Ferdium-win-AutoSetup-6.5.2-ia32.exe#/dl.7z",
+            "hash": "sha512:3d4370b3499b98afb5cd78c9b3ffda4e24058feca20ea6999510ebb50b76c6d0ffc521f68a1048591b5cc2b3cab47062748869b479d592531af6cb0a09ecf4c8"
+        },
+        "arm64": {
+            "url": "https://github.com/ferdium/ferdium-app/releases/download/v6.5.2/Ferdium-win-AutoSetup-6.5.2-arm64.exe#/dl.7z",
+            "hash": "sha512:6a82e821d91e7eb6f74540f221b0209533254b93434ec043953bdaab90cbc57b91dc99f5e46166cb6aaeeac02005c3cca76df3d529f91aaaed801314acccffdc"
         }
     },
-    "post_install": "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\Uninstall*.exe\" -Recurse -Force",
+    "pre_install": [
+        "Get-ChildItem \"$dir\\`$PLUGINSDIR\\app-*.7z\" | Rename-Item -NewName 'app.7z'",
+        "Expand-7zipArchive -Path \"$dir\\`$PLUGINSDIR\\app.7z\" \"$dir\"",
+        "Remove-Item \"$dir\\`$*\" -Force -Recurse"
+    ],
     "shortcuts": [
         [
             "Ferdium.exe",
@@ -28,10 +32,20 @@
         "github": "https://github.com/ferdium/ferdium-app"
     },
     "autoupdate": {
-        "url": "https://github.com/ferdium/ferdium-app/releases/download/v$version/Ferdium-win-AutoSetup-$version.exe#/dl.7z",
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/ferdium/ferdium-app/releases/download/v$version/Ferdium-win-AutoSetup-$version-x64.exe#/dl.7z"
+            },
+            "32bit": {
+                "url": "https://github.com/ferdium/ferdium-app/releases/download/v$version/Ferdium-win-AutoSetup-$version-ia32.exe#/dl.7z"
+            },
+            "arm64": {
+                "url": "https://github.com/ferdium/ferdium-app/releases/download/v$version/Ferdium-win-AutoSetup-$version-arm64.exe#/dl.7z"
+            }
+        },
         "hash": {
             "url": "$baseurl/latest.yml",
-            "regex": "sha512:\\s+$base64"
+            "regex": "$basename\\s+sha512:\\s+$base64"
         }
     }
 }
