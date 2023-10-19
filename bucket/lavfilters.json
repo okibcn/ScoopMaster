@@ -1,11 +1,16 @@
 {
-    "homepage": "https://1f0.de/",
-    "description": "Open-Source DirectShow Media Splitter and Decoders.",
     "version": "0.77.2",
+    "description": "FFmpeg based DirectShow splitter and decoders",
+    "homepage": "https://github.com/Nevcairiel/LAVFilters",
     "license": {
         "identifier": "GPL-2.0-only",
         "url": "https://github.com/Nevcairiel/LAVFilters/blob/master/COPYING"
     },
+    "notes": [
+        "Please do not move or delete this app manually!",
+        "If you want to reset the settings, you can just delete the item \"LAV\" at \"HKCU\\Software\" in the registry."
+    ],
+    "depends": "sudo",
     "architecture": {
         "64bit": {
             "url": "https://github.com/Nevcairiel/LAVFilters/releases/download/0.77.2/LAVFilters-0.77.2-x64.zip",
@@ -16,40 +21,19 @@
             "hash": "cb4875fb50806b4ef599905a5d18026cca2a967d698dd08e25a7784b71ed66ff"
         }
     },
-    "depends": "sudo",
+    "pre_install": [
+        "if (-not $global) {",
+        "    Write-Host -Foreground Red \"$app should be installed globally.\"",
+        "    break",
+        "}"
+    ],
     "installer": {
-        "script": [
-            "sudo \"$env:COMSPEC\" /c \"regsvr32 /s `\"$dir\\LAVAudio.ax`\" & regsvr32 /s `\"$dir\\LAVSplitter.ax`\" & regsvr32 /s `\"$dir\\LAVVideo.ax`\"\"",
-            "@('LAVAudio', 'LAVSplitter', 'LAVVideo') | %{",
-            "    $s = (New-Object -ComObject WScript.Shell).CreateShortcut(\"$dir\\$_.lnk\")",
-            "    $s.TargetPath = \"rundll32.exe\"",
-            "    $s.Arguments = \"`\"$dir\\$_.ax`\",OpenConfiguration\"",
-            "    $s.WorkingDirectory = \"$dir\"",
-            "    $s.IconLocation = \"$dir\\$_.ax\"",
-            "    $s.Save()",
-            "}"
-        ]
+        "script": "\"$env:COMSPEC\" /c \"regsvr32 /s `\"$dir\\LAVAudio.ax`\" & regsvr32 /s `\"$dir\\LAVSplitter.ax`\" & regsvr32 /s `\"$dir\\LAVVideo.ax`\"\""
     },
     "uninstaller": {
-        "script": "sudo \"$env:COMSPEC\" /c \"regsvr32 /u /s `\"$dir\\LAVAudio.ax`\" & regsvr32 /u /s `\"$dir\\LAVSplitter.ax`\" & regsvr32 /u /s `\"$dir\\LAVVideo.ax`\"\""
+        "script": "\"$env:COMSPEC\" /c \"regsvr32 /u /s `\"$dir\\LAVAudio.ax`\" & regsvr32 /u /s `\"$dir\\LAVSplitter.ax`\" & regsvr32 /u /s `\"$dir\\LAVVideo.ax`\"\""
     },
-    "shortcuts": [
-        [
-            "LAVAudio.lnk",
-            "LAV Audio Configuration"
-        ],
-        [
-            "LAVSplitter.lnk",
-            "LAV Splitter Configuration"
-        ],
-        [
-            "LAVVideo.lnk",
-            "LAV Video Configuration"
-        ]
-    ],
-    "checkver": {
-        "github": "https://github.com/Nevcairiel/LAVFilters"
-    },
+    "checkver": "github",
     "autoupdate": {
         "architecture": {
             "64bit": {
