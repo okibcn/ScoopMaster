@@ -1,20 +1,29 @@
 {
-    "version": "4061386689",
+    "version": "6537161350",
     "description": "Free Form Data Organizer",
     "homepage": "https://strlen.com/treesheets/",
     "license": "Zlib",
-    "url": "https://github.com/aardappel/treesheets/releases/download/4061386689/Treesheets_Setup.exe#/dl.7z",
-    "hash": "63a4519f6660a2c84e9d41eaa552a1e1157bc2fe59dd75dff7c66b7d3dff432f",
+    "url": "https://github.com/aardappel/treesheets/releases/download/6537161350/windows_treesheets_no_installer.zip",
+    "hash": "08e8b1bdcca57ca2bb73a2193432ee298e34fd6a8958ce4fb257a4cfbf3aa30d",
+    "extract_dir": "TS",
+    "pre_install": [
+        "ensure \"$persist_dir\" | Out-Null",
+        "if (Test-Path \"$persist_dir\\TreeSheets.ini\") {",
+        "    Copy-Item \"$persist_dir\\TreeSheets.ini\" \"$dir\"",
+        "}"
+    ],
+    "pre_uninstall": "if (Test-Path \"$dir\\TreeSheets.ini\") { Copy-Item \"$dir\\TreeSheets.ini\" \"$persist_dir\" }",
     "shortcuts": [
         [
             "TreeSheets.exe",
-            "TreeSheets"
+            "TreeSheets",
+            "-p"
         ]
     ],
     "checkver": {
         "github": "https://github.com/aardappel/treesheets"
     },
     "autoupdate": {
-        "url": "https://github.com/aardappel/treesheets/releases/download/$version/Treesheets_Setup.exe#/dl.7z"
+        "url": "https://github.com/aardappel/treesheets/releases/download/$version/windows_treesheets_no_installer.zip"
     }
 }
