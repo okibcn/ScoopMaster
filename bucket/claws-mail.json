@@ -14,13 +14,21 @@
         }
     },
     "pre_install": "Remove-Item \"$dir\\`$*\", \"$dir\\claws-mail-uninstall.exe\" -Force -Recurse",
-    "bin": "claws-mail.exe",
+    "bin": [
+        [
+            "claws-mail.exe",
+            "claws-mail",
+            "--alternate-config-dir \"$dir\\config\""
+        ]
+    ],
     "shortcuts": [
         [
             "claws-mail.exe",
-            "Claws Mail"
+            "Claws Mail",
+            "--alternate-config-dir \"$dir\\config\""
         ]
     ],
+    "persist": "config",
     "checkver": {
         "url": "https://www.claws-mail.org/win32/",
         "regex": "claws-mail-([\\d.-]+)-32bit\\.exe",
