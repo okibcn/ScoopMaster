@@ -1,17 +1,22 @@
 {
-    "version": "4.0-beta1",
+    "version": "4.2-beta2",
     "description": "A feature-packed, cross-platform game engine to create 2D and 3D games from a unified interface.",
     "homepage": "https://godotengine.org/",
     "license": "MIT",
     "architecture": {
         "64bit": {
-            "url": "https://downloads.tuxfamily.org/godotengine/4.0/beta1/Godot_v4.0-beta1_win64.exe.zip"
+            "url": "https://downloads.tuxfamily.org/godotengine/4.2/beta2/Godot_v4.2-beta2_win64.exe.zip",
+            "hash": "sha512:bae4971ad7938684c786feae1a01a312ed780bfaaf36e8630c35637e6fc84a292579a6f1625eb5cb1769cc56aa8be2311a047b7fb34efddd81e9ea907a4c29c3"
         },
         "32bit": {
-            "url": "https://downloads.tuxfamily.org/godotengine/4.0/beta1/Godot_v4.0-beta1_win32.exe.zip"
+            "url": "https://downloads.tuxfamily.org/godotengine/4.2/beta2/Godot_v4.2-beta2_win32.exe.zip",
+            "hash": "sha512:5893f84c2e232cb2a5c44add547a70e70710524b5fb02f9870126e7ad45b1e7cb35a15e9f0474d23814d0d2c5bd6177dddecadecc08687f1a01bb341462ae13c"
         }
     },
-    "pre_install": "Get-ChildItem \"$dir\\Godot_*.exe\" | Rename-Item -NewName \"$dir\\godot.exe\"",
+    "pre_install": [
+        "Remove-Item \"$dir\\Godot_*_console.*\"",
+        "Get-Item \"$dir\\Godot_*.exe\" | Rename-Item -NewName 'godot.exe'"
+    ],
     "bin": "godot.exe",
     "shortcuts": [
         [
@@ -20,17 +25,21 @@
         ]
     ],
     "checkver": {
-        "url": "https://downloads.tuxfamily.org/godotengine/$majorVersion.$minorVersion/",
-        "regex": "beta(?<beta>[\\d.]+)"
+        "url": "https://godotengine.org/blog/pre-release/",
+        "regex": "Dev snapshot: Godot (?<ver>[\\d.]+) beta (?<beta>[\\d.]+)",
+        "replace": "${1}-beta${2}"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://downloads.tuxfamily.org/godotengine/$majorVersion.$minorVersion/beta$matchbeta/Godot_v$majorVersion.$minorVersion_win64.exe.zip"
+                "url": "https://downloads.tuxfamily.org/godotengine/$matchVer/beta$matchBeta/Godot_v$version_win64.exe.zip"
             },
             "32bit": {
-                "url": "https://downloads.tuxfamily.org/godotengine/$majorVersion.$minorVersion/beta$matchbeta/Godot_v$majorVersion.$minorVersion_win32.exe.zip"
+                "url": "https://downloads.tuxfamily.org/godotengine/$matchVer/beta$matchBeta/Godot_v$version_win32.exe.zip"
             }
+        },
+        "hash": {
+            "url": "$baseurl/SHA512-SUMS.txt"
         }
     }
 }
