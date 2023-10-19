@@ -1,43 +1,37 @@
 {
     "version": "5.4.12.3",
-    "description": "C# application with primary purpose of idling Steam cards from multiple accounts simultaneously.",
+    "description": "C# Farming Steam cards from multiple accounts simultaneously.",
     "homepage": "https://github.com/JustArchiNET/ArchiSteamFarm",
     "license": "Apache-2.0",
+    "suggest": {
+        ".NET Desktop Runtime": "extras/windowsdesktop-runtime-lts",
+        "vcredist": "extras/vcredist2022"
+    },
+    "notes": [
+        "ArchiSteamFarm has a built-in updater, So you should DISABLE it in configuration file,",
+        "Or run 'scoop hold archisteamfarm' to disable updates via Scoop.",
+        "ASF Config Generator:",
+        "https://justarchinet.github.io/ASF-WebConfigGenerator/"
+    ],
     "architecture": {
         "64bit": {
             "url": "https://github.com/JustArchiNET/ArchiSteamFarm/releases/download/5.4.12.3/ASF-win-x64.zip",
-            "hash": "sha512:bb8723491af280980f4dcd5e4bad38499d00767762dd2f6418e81b740fa75f062d1e57d4b2714890565194da0d527e2320534ec11556ff16fee065aeb276d19d"
+            "hash": "1430bebe7f3f2199d68a0fb9faa8592e1312e95dde25505b6d9807b8c066cbd0"
         }
     },
-    "suggest": {
-        "dotnet-runtime": "windowsdesktop-runtime"
-    },
-    "bin": [
-        "ArchiSteamFarm.exe",
-        [
-            "ArchiSteamFarm.exe",
-            "ASF"
-        ]
-    ],
+    "bin": "ArchiSteamFarm.exe",
     "shortcuts": [
         [
             "ArchiSteamFarm.exe",
             "ArchiSteamFarm"
         ]
     ],
-    "persist": [
-        "plugins",
-        "config"
-    ],
+    "persist": "config",
     "checkver": "github",
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://github.com/JustArchiNET/ArchiSteamFarm/releases/download/$version/ASF-win-x64.zip",
-                "hash": {
-                    "url": "$baseurl/SHA512SUMS",
-                    "regex": "$sha512\\s*$basename"
-                }
+                "url": "https://github.com/JustArchiNET/ArchiSteamFarm/releases/download/$version/ASF-win-x64.zip"
             }
         }
     }
