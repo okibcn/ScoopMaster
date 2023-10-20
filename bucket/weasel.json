@@ -6,15 +6,93 @@
     "hash": "21b2b3ba19f11b308db3c50ce343a14a42ce10331e3c0b7021850ec6726dcd10",
     "installer": {
         "script": [
+            "# prompt for setting user folder path",
             "& \"$dir\\WeaselSetup.exe\" /i",
+            "# run install",
             "& \"$dir\\WeaselDeployer.exe\" /install",
+            "# start server",
             "& \"$dir\\WeaselServer.exe\""
         ]
     },
-    "post_install": "Remove-Item \"$dir\\`$PLUGINSDIR\" -Recurse",
+    "post_install": [
+        "Remove-Item \"$dir\\`$PLUGINSDIR\" -Recurse",
+        "# set autorun on Windows startup",
+        "if ($global) {",
+        "    $exists = (Get-Item HKLM:\\Software\\Microsoft\\Windows\\CurrentVersion\\Run).Property -contains \"WeaselServer\"",
+        "    if (!$exists) {",
+        "        New-ItemProperty -Path HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run -Name WeaselServer -PropertyType String -Value $dir\\WeaselServer.exe",
+        "    }",
+        "} else {",
+        "    # if install for current user, create .lnk file to autorun instead of Registry",
+        "    $wsShell = New-Object -ComObject WScript.Shell",
+        "    $wsShell = $wsShell.CreateShortcut(\"$($env:APPDATA)\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\\WeaselServer.lnk\")",
+        "    $wsShell.TargetPath = \"$dir\\WeaselServer.exe\"",
+        "    $wsShell.WorkingDirectory = $dir",
+        "    $wsShell.Save()",
+        "}"
+    ],
+    "shortcuts": [
+        [
+            "README.txt",
+            "【小狼毫】说明书"
+        ],
+        [
+            "WeaselDeployer.exe",
+            "【小狼毫】输入法设定"
+        ],
+        [
+            "WeaselDeployer.exe",
+            "【小狼毫】用户词典管理",
+            "/dict"
+        ],
+        [
+            "WeaselDeployer.exe",
+            "【小狼毫】用户资料同步",
+            "/sync"
+        ],
+        [
+            "WeaselDeployer.exe",
+            "【小狼毫】重新部署",
+            "/deploy"
+        ],
+        [
+            "WeaselServer.exe",
+            "小狼毫算法服务"
+        ],
+        [
+            "WeaselServer.exe",
+            "【小狼毫】用户文件夹",
+            "/userdir"
+        ],
+        [
+            "WeaselServer.exe",
+            "【小狼毫】程序文件夹",
+            "/weaseldir"
+        ],
+        [
+            "WeaselServer.exe",
+            "【小狼毫】检查新版本",
+            "/update"
+        ],
+        [
+            "WeaselSetup.exe",
+            "【小狼毫】安装选项"
+        ]
+    ],
     "uninstaller": {
-        "script": "Invoke-ExternalCommand \"$dir/uninstall.exe\" -ArgumentList '/S' -RunAs | Out-Null"
+        "file": "uninstall.exe"
     },
+    "post_uninstall": [
+        "# remove autorun",
+        "# if install globally, the uninstall.exe will remove the Registry",
+        "if (!$global) {",
+        "    $lnkPath = \"$($env:APPDATA)\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\\WeaselServer.lnk\"",
+        "    $lnkExists = Test-Path $lnkPath",
+        "    if ($lnkExists) {",
+        "        Remove-Item $lnkPath",
+        "    }",
+        "}"
+    ],
     "checkver": {
         "github": "https://github.com/rime/weasel"
     },
