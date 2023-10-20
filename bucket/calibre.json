@@ -1,19 +1,15 @@
 {
-    "version": "6.28.1",
+    "version": "6.29.0",
     "description": "Powerful and easy to use e-book manager",
     "homepage": "https://calibre-ebook.com",
     "license": "GPL-3.0-only",
-    "architecture": {
-        "64bit": {
-            "url": "https://download.calibre-ebook.com/6.28.1/calibre-portable-installer-6.28.1.exe",
-            "hash": "sha512:d3016a3fa6746b8c8bfd48502a49dc162f40f6ceb1406e15972293f7a1182732b1fe848fd8cf6667d26e35ff38b7b6c44306943bc517519521b339e2a89cd109"
-        }
-    },
+    "url": "https://github.com/kovidgoyal/calibre/releases/download/v6.29.0/calibre-portable-installer-6.29.0.exe",
+    "hash": "eba8954cce2314256acb8f4975a9e59859a4a88093a72ae9e1c160b07f8440c8",
     "installer": {
         "script": [
-            "Start-Process \"$dir\\calibre-portable-installer-$version.exe\" @(\"$dir\") -Wait",
-            "Move-Item \"$dir\\Calibre Portable\\**\" \"$dir\"",
-            "Remove-Item \"$dir\\Calibre Portable\""
+            "start \"$dir\\calibre-portable-installer-$version.exe\" @(\"$dir\") -wait",
+            "mv \"$dir\\Calibre Portable\\**\" \"$dir\"",
+            "rm \"$dir\\Calibre Portable\""
         ]
     },
     "bin": [
@@ -22,11 +18,9 @@
             "calibre"
         ],
         "calibre-portable.exe",
-        "Calibre\\calibre-complete.exe",
         "Calibre\\calibre-customize.exe",
         "Calibre\\calibredb.exe",
         "Calibre\\calibre-debug.exe",
-        "Calibre\\calibre-parallel.exe",
         "Calibre\\calibre-server.exe",
         "Calibre\\calibre-smtp.exe",
         "Calibre\\ebook-convert.exe",
@@ -68,13 +62,6 @@
         "github": "https://github.com/kovidgoyal/calibre"
     },
     "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://download.calibre-ebook.com/$version/calibre-portable-installer-$version.exe",
-                "hash": {
-                    "url": "https://calibre-ebook.com/signatures/calibre-portable-installer-$version.exe.sha512"
-                }
-            }
-        }
+        "url": "https://github.com/kovidgoyal/calibre/releases/download/v$version/calibre-portable-installer-$version.exe"
     }
 }
