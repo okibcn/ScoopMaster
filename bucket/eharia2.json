@@ -1,21 +1,39 @@
 {
-    "homepage": "https://github.com/Jvcon/EhAria2",
-    "description": "A aira2 GUI made by Autohotkey.",
     "version": "0.2.3",
-    "license": "GPL-2.0",
+    "description": "Ehanced Aria2.",
+    "homepage": "https://github.com/Jvcon/EhAria2",
+    "license": "GPL-2.0 license",
     "architecture": {
         "64bit": {
-            "url": "https://github.com/Jvcon/EhAria2/releases/download/v0.2.3/EhAria2_v0.2.3.zip",
-            "hash": "3de6cd3a9b693e7acc04e277ee68d99eda48c64ed3781dab2596309149f41b23"
+            "url": [
+                "https://github.com/Jvcon/EhAria2/releases/download/v0.2.3/EhAria2_v0.2.3.zip",
+                "https://github.com/P3TERX/aria2.conf/raw/master/dht.dat",
+                "https://github.com/P3TERX/aria2.conf/raw/master/dht6.dat"
+            ],
+            "hash": [
+                "3de6cd3a9b693e7acc04e277ee68d99eda48c64ed3781dab2596309149f41b23",
+                "C80023968EC6DF359BE576C82C772793910E6768B8169E2D90C8FAA3D6AD7D08",
+                "2DD69993CDAFD891BCE2D7F933F43F55110A8294A9DDF1C38F1B5D7B8A9C6182"
+            ]
         }
     },
-    "pre_install": [
-        "'EhAria2.ini', 'aria2.conf' | ForEach-Object { if (!(Test-Path \"$persist_dir\\$_\")) { New-Item \"$dir\\$_\" -ItemType File -Force | Out-Null } }",
-        "if(Test-Path \"$persist_dir\\aria2.session\") { Copy-Item \"$persist_dir\\aria2.session\" \"$dir\\aria2.session\"  | Out-Null }"
-    ],
-    "uninstaller": {
-        "script": "if(Test-Path \"$dir\\aria2.session\") { Copy-Item \"$dir\\aria2.session\" \"$persist_dir\\aria2.session\" | Out-Null }"
+    "installer": {
+        "script": [
+            "if (!(Test-Path \"$persist_dir\\aria2.conf\")) {",
+            "   New-Item -Force -Path \"$persist_dir\\aria2.conf\" -ItemType file -Value $null ",
+            "}",
+            "if (!(Test-Path \"$persist_dir\\aria2.session\")) {",
+            "   New-Item -Force -Path \"$persist_dir\\aria2.session\" -ItemType file -Value $null ",
+            "}",
+            "if (!(Test-Path \"$persist_dir\\EhAria2.ini\")) {",
+            "   New-Item -Force -Path \"$persist_dir\\EhAria2.ini\" -ItemType file -Value $null ",
+            "}"
+        ]
     },
+    "bin": [
+        "EhAria2Torrent.exe",
+        "EhAria2Extension.exe"
+    ],
     "shortcuts": [
         [
             "EhAria2.exe",
@@ -27,11 +45,16 @@
         ]
     ],
     "persist": [
-        "aria2.conf",
         "EhAria2.ini",
-        "lang"
+        "aria2.conf",
+        "aria2.session",
+        "dht.dat",
+        "dht6.dat"
     ],
-    "checkver": "github",
+    "checkver": {
+        "url": "https://api.github.com/repos/Jvcon/EhAria2/releases",
+        "regex": "/releases/tag/(?:v|V)?([\\w.-]+)"
+    },
     "autoupdate": {
         "architecture": {
             "64bit": {

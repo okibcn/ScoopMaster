@@ -1,20 +1,41 @@
 {
+    "homepage": "https://pot-app.com/",
+    "description": "A cross-platform translation software",
+    "license": "GPL-3.0-only",
     "version": "2.6.4",
-    "description": "一个跨平台的划词翻译软件 | A cross-platform translation software",
-    "homepage": "https://pot.pylogmon.com/",
-    "license": "MIT",
-    "url": "https://github.com/pot-app/pot-desktop/releases/download/2.6.4/pot_2.6.4_x64-setup.exe#/dl.7z",
-    "hash": "2a492b0cccad42d0740723721c9d622da0269acc22f0dfa422530f47a63caa15",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/pot-app/pot-desktop/releases/download/2.6.4/pot_2.6.4_x64-setup.exe#/dl.7z",
+            "hash": "2a492b0cccad42d0740723721c9d622da0269acc22f0dfa422530f47a63caa15"
+        },
+        "32bit": {
+            "url": "https://github.com/pot-app/pot-desktop/releases/download/2.6.4/pot_2.6.4_x86-setup.exe#/dl.7z",
+            "hash": "22b7415cf0d6f7d42e71b6ad24412189b1ec2efc2d20ddbf371aca95bf38a2b4"
+        }
+    },
+    "post_install": "Remove-Item \"$dir\\`$PLUGINSDIR\" -Force -Recurse",
     "shortcuts": [
         [
             "pot.exe",
             "Pot"
         ]
     ],
+    "persist": "config.toml",
     "checkver": {
         "github": "https://github.com/pot-app/pot-desktop"
     },
     "autoupdate": {
-        "url": "https://github.com/pot-app/pot-desktop/releases/download/$version/pot_$version_x64-setup.exe"
-    }
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/pot-app/pot-desktop/releases/download/$version/pot_$version_x64-setup.exe#/dl.7z"
+            },
+            "32bit": {
+                "url": "https://github.com/pot-app/pot-desktop/releases/download/$version/pot_$version_x86-setup.exe#/dl.7z"
+            }
+        }
+    },
+    "notes": [
+        "You may need to install Edge WebView2 Runtime to use Pot.",
+        "A installer of Edge WebView2 Runtime is available under the 'redist' folder of the Pot installation directory."
+    ]
 }
