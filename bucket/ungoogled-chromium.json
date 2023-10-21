@@ -1,38 +1,65 @@
 {
-    "version": "118.0.5993.70-2.1",
-    "description": "Google Chromium, sans integration with Google.",
+    "version": "118.0.5993.88-1.1",
+    "description": "Chromium, sans Google integration (downloads Widevine & cert. revocation lists separately, stored passwords/profile not encrypted)",
     "homepage": "https://ungoogled-software.github.io/ungoogled-chromium-binaries/",
     "license": "BSD-3-Clause",
+    "depends": [
+        "scoop-alts/widevinecdm",
+        "scoop-alts/chromium-crlset"
+    ],
     "architecture": {
         "64bit": {
-            "url": "https://github.com/ungoogled-software/ungoogled-chromium-windows/releases/download/118.0.5993.70-2.1/ungoogled-chromium_118.0.5993.70-2.1_windows_x64.zip",
-            "hash": "6f739da816ef7c277dc31c30698c2fbb9cf7d363ec02c121a027c0569f334549"
+            "url": "https://github.com/ungoogled-software/ungoogled-chromium-windows/releases/download/118.0.5993.88-1.1/ungoogled-chromium_118.0.5993.88-1.1_windows_x64.zip",
+            "hash": "8ad65ac51edb80403f47503c65b6ca1d0a7ae9779b78ccd48cc4c69362287939"
         },
         "32bit": {
-            "url": "https://github.com/ungoogled-software/ungoogled-chromium-windows/releases/download/118.0.5993.70-2.1/ungoogled-chromium_118.0.5993.70-2.1_windows_x86.zip",
-            "hash": "d265391de967b33370cbfb68fb3e0b636f02307d6d2947cff6d7180454ba1b82"
+            "url": "https://github.com/ungoogled-software/ungoogled-chromium-windows/releases/download/118.0.5993.88-1.1/ungoogled-chromium_118.0.5993.88-1.1_windows_x86.zip",
+            "hash": "b7fd2d5e53b286f13627645421a584407aca7a8f752b8136ec3706788b5a21af"
         }
     },
-    "extract_dir": "ungoogled-chromium_118.0.5993.70-2.1_windows",
+    "extract_dir": "ungoogled-chromium_118.0.5993.88-1.1_windows",
     "bin": [
         [
             "chrome.exe",
             "chromium",
-            "--user-data-dir=\"$dir\\User Data\""
+            "--user-data-dir=\"$dir\\User Data\" --disable-machine-id --disable-encryption --no-default-browser-check"
         ]
     ],
     "shortcuts": [
         [
             "chrome.exe",
             "Chromium",
-            "--user-data-dir=\"$dir\\User Data\""
+            "--user-data-dir=\"$dir\\User Data\" --disable-machine-id --disable-encryption --no-default-browser-check"
         ]
     ],
-    "persist": "User Data",
+    "persist": [
+        "User Data",
+        "Dictionaries",
+        "hyphen-data",
+        "initial_preferences"
+    ],
     "checkver": {
         "github": "https://github.com/ungoogled-software/ungoogled-chromium-windows",
         "regex": "releases/tag/((?<main>[\\d.]+-\\d).(?<release>\\d))"
     },
+    "pre_install": [
+        "if (-not (Test-Path \"$persist_dir\\initial_preferences\")) { New-Item \"$dir\\initial_preferences\" -Force -ItemType File | Out-Null }",
+        "$manifest.persist | ForEach-Object {",
+        "    $dest = \"$dir\\$_\"",
+        "    if ((-not (Test-Path \"$persist_dir\\$_\")) -and (-not (Test-Path $dest -PathType Leaf))) {",
+        "       New-Item $dest -Force -ItemType Directory | Out-Null",
+        "    }",
+        "}"
+    ],
+    "post_install": [
+        "$componentPackage = @{",
+        "    'WidevineCdm' = 'widevinecdm'",
+        "    'CertificateRevocation' = 'chromium-crlset'",
+        "}",
+        "$componentPackage.GetEnumerator() | ForEach-Object {",
+        "    New-Item -Path \"$dir\\$($_.Key)\" -Target \"$(versiondir $_.Value 'current' $global)\\$($_.Key)\" -ItemType Junction -Force | Out-Null",
+        "}"
+    ],
     "autoupdate": {
         "architecture": {
             "64bit": {
