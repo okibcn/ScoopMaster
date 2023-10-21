@@ -2,10 +2,7 @@
     "version": "2.12.19",
     "description": "A note taking and to-do application with synchronization capabilities",
     "homepage": "https://joplinapp.org",
-    "license": {
-        "identifier": "MIT",
-        "url": "https://github.com/laurent22/joplin/blob/dev/LICENSE"
-    },
+    "license": "MIT",
     "url": "https://github.com/laurent22/joplin/releases/download/v2.12.19/Joplin-Setup-2.12.19.exe#/dl.7z",
     "hash": "sha512:f132b8703c5e0b28dd2925deb10e92752666232880f494cfc516d6663fcef9e47de8aa42417396ceadc9cb152e1c30ce69f49e950a46f0bdc807d0419f4310f1",
     "architecture": {
@@ -17,20 +14,6 @@
         }
     },
     "post_install": "Remove-Item \"$dir\\`$*\", \"$dir\\Uninstall*\" -Recurse",
-    "installer": {
-        "script": [
-            "ensure \"$persist_dir\\appdata\" | Out-Null",
-            "New-Item \"$env:APPDATA\\Joplin\" -ItemType Junction -Target \"$persist_dir\\appdata\" | Out-Null",
-            "ensure \"$persist_dir\\.config\\joplin-desktop\" | Out-Null",
-            "New-Item \"$env:USERPROFILE\\.config\\joplin-desktop\" -ItemType Junction -Target \"$persist_dir\\.config\\joplin-desktop\" | Out-Null"
-        ]
-    },
-    "uninstaller": {
-        "script": [
-            "Remove-Item \"$env:APPDATA\\Joplin\" -Recurse -Force -ErrorAction 'SilentlyContinue'",
-            "Remove-Item \"$env:USERPROFILE\\.config\\joplin-desktop\" -Recurse -Force -ErrorAction 'SilentlyContinue'"
-        ]
-    },
     "bin": "Joplin.exe",
     "shortcuts": [
         [
@@ -39,8 +22,7 @@
         ]
     ],
     "checkver": {
-        "url": "https://api.github.com/repos/laurent22/joplin/releases/latest",
-        "regex": "/releases/tag/v([\\d.]+)"
+        "github": "https://github.com/laurent22/joplin"
     },
     "autoupdate": {
         "url": "https://github.com/laurent22/joplin/releases/download/v$version/Joplin-Setup-$version.exe#/dl.7z",
