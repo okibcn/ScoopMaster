@@ -1,29 +1,13 @@
 {
-    "##": "The installer is made with InnoSetup.",
-    "version": "1.4.2",
-    "description": "High speed downloader that supports all platforms.",
     "homepage": "https://github.com/GopeedLab/gopeed",
+    "description": "A high-speed downloader developed by Golang + Flutter, supports (HTTP, BitTorrent, Magnet) protocol, and supports all platforms.",
     "license": "GPL-3.0-only",
+    "version": "1.4.2",
     "architecture": {
         "64bit": {
-            "url": "https://github.com/GopeedLab/gopeed/releases/download/v1.4.2/Gopeed-v1.4.2-windows-amd64.zip",
-            "hash": "22672b389fd990987c3b554a6cf8ca2f65add9db8012f787ad19bd379209ec71"
+            "url": "https://github.com/GopeedLab/gopeed/releases/download/v1.4.2/Gopeed-v1.4.2-windows-amd64-portable.zip",
+            "hash": "43ace899fa42e17a5a162b82603c1eb7ea67a7000641f79b3a7ad09c4aaf47e4"
         }
-    },
-    "pre_install": "Get-ChildItem \"$dir\" 'Gopeed*.exe' | Rename-Item -NewName 'setup.exe'",
-    "installer": {
-        "script": [
-            "Start-Process -Wait \"$dir\\setup.exe\" -ArgumentList @('/SP-', '/VERYSILENT', '/PORTABLE', \"/DIR=`\"$dir`\"\")",
-            "Remove-Item \"$dir\\setup.exe\""
-        ]
-    },
-    "uninstaller": {
-        "file": "unins000.exe",
-        "args": [
-            "/verysilent",
-            "/nocancel",
-            "/norestart"
-        ]
     },
     "shortcuts": [
         [
@@ -31,14 +15,11 @@
             "Gopeed"
         ]
     ],
-    "checkver": {
-        "url": "https://api.github.com/repos/GopeedLab/gopeed/releases",
-        "regex": "/releases/tag/v([\\d.]+)"
-    },
+    "checkver": "github",
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://github.com/GopeedLab/gopeed/releases/download/v$version/Gopeed-v$version-windows-amd64.zip"
+                "url": "https://github.com/GopeedLab/gopeed/releases/download/v$version/Gopeed-v$version-windows-amd64-portable.zip"
             }
         }
     }
