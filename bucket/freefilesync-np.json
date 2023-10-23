@@ -1,30 +1,28 @@
 {
-    "version": "13.0",
+    "version": "13.1",
     "description": "FreeFileSync. Folder comparison and synchronization",
     "homepage": "https://freefilesync.org",
     "license": {
-      "identifier": "Freeware",
-      "url": "https://freefilesync.org/faq.php#commercial-usage"
+        "identifier": "Freeware",
+        "url": "https://freefilesync.org/faq.php#commercial-usage"
     },
-    "url": "https://freefilesync.org/download/FreeFileSync_13.0_Windows_Setup.exe#/setup.exe",
-    "hash": "bf23340b2268fcd302195e3207d68930da6119f7bbdb56464c06f50a5eca0cd6",
+    "url": "https://freefilesync.org/download/FreeFileSync_13.1_Windows_Setup.exe#/setup.exe",
+    "hash": "f839d946109427a7a7489f1d3e2e21079fe1ad7bedfd4857db52b5f8c1cf9f90",
     "notes": "Need interaction.",
     "installer": {
-      "script": [
-          "Start-Process \"$dir\\setup.exe\"  -Wait -Verb RunAs | Out-Null",
-          "Remove-Item \"$dir\\setup.exe\""
-      ]
+        "script": [
+            "Start-Process \"$dir\\setup.exe\"  -Wait -Verb RunAs | Out-Null",
+            "Remove-Item \"$dir\\setup.exe\""
+        ]
     },
     "uninstaller": {
-      "script": [
-          "Start-Process \"Uninstall\\unins000.exe\" -ArgumentList @('/VERYSILENT' , '/CLOSEAPPLICATIONS' , '/FORCECLOSEAPPLICATIONS') -Wait -Verb RunAs | Out-Null"
-      ]
-  },
+        "script": "Start-Process \"Uninstall\\unins000.exe\" -ArgumentList @('/VERYSILENT' , '/CLOSEAPPLICATIONS' , '/FORCECLOSEAPPLICATIONS') -Wait -Verb RunAs | Out-Null"
+    },
     "checkver": {
-      "url": "https://freefilesync.org/download.php",
-      "regex": "FreeFileSync ([\\d.]+) Windows"
+        "url": "https://freefilesync.org/download.php",
+        "regex": "FreeFileSync ([\\d.]+) Windows"
     },
     "autoupdate": {
-      "url": "https://freefilesync.org/download/FreeFileSync_$version_Windows_Setup.exe#/setup.exe"
+        "url": "https://freefilesync.org/download/FreeFileSync_$version_Windows_Setup.exe#/setup.exe"
     }
 }
