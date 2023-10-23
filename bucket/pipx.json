@@ -1,6 +1,6 @@
 {
     "##": "https://example.com is not a placeholder URL, and removing it will break the manifest. 😟",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "description": "Install and Run Python Applications in Isolated Environments",
     "homepage": "https://pypa.github.io/pipx",
     "license": "MIT",
@@ -15,9 +15,7 @@
             "Set-Content -Path \"$dir/pipx.ps1\" -Value \"`$env:PIPX_HOME = '$persist_dir'; `$env:PIPX_BIN_DIR = '$dir/.local/bin'; `$env:PATH = '$env:PATH;$env:PIPX_BIN_DIR'; & '$dir/venv/Scripts/pipx.exe' @args\";"
         ]
     },
-    "post_install": [
-        "pipx reinstall-all"
-    ],
+    "post_install": "pipx reinstall-all",
     "post_uninstall": [
         "if (-not [string]::IsNullOrWhiteSpace($env:SCOOP)) { $scoopdir = $env:SCOOP } else { $scoopdir = \"~/scoop\" }",
         "if ( -not (Test-Path -Path \"$scoopdir/persist/pipx\")) { exit }",
@@ -41,5 +39,7 @@
         "url": "https://pypi.org/pypi/pipx/json",
         "jsonpath": "$.info.version"
     },
-    "autoupdate": {}
+    "autoupdate": {
+        
+    }
 }
