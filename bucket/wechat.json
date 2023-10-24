@@ -1,23 +1,44 @@
 {
-    "homepage": "https://pc.weixin.qq.com/",
-    "description": "Free messaging and calling app.",
     "version": "3.9.7",
+    "description": "Free messaging and calling app by Tencent",
+    "homepage": "https://pc.weixin.qq.com/",
     "license": {
-        "identifier": "EULA",
-        "url": "https://weixin.qq.com/cgi-bin/readtemplate?lang=zh_CN&t=weixin_agreement&s=default"
+        "identifier": "Proprietary",
+        "url": "https://www.wechat.com/en/service_terms.html"
     },
     "url": "https://dldir1.qq.com/weixin/Windows/WeChatSetup.exe#/dl.7z",
-    "hash": "7ac88213c2b3c5f1f38e787350a73ed5458c17f161cfa9b1ba89e8d07ffa1872",
+    "hash": "bf1f0a79013b1f253ef47a606e20ab636cae80a8aa42c3ab4f01f0b40893a5d0",
+    "installer": {
+        "script": [
+            "Remove-Item \"$dir\\`$PLUGINSDIR\", -Force -Recurse",
+            "$configpath = \"$env:APPDATA\\Tencent\\WeChat\\All Users\\config\"",
+            "ensure \"$configpath\" | Out-Null",
+            "Set-Content -NoNewline -Path \"$configpath\\3ebffe94.ini\" -Value \"$persist_dir\"",
+            "$regpath = \"HKCU:Software\\Tencent\\WeChat\"",
+            "if (!(Test-Path \"$regpath\")) {",
+            "    New-Item -Path \"$regpath\" -Type Directory -Force | Out-Null",
+            "}",
+            "New-ItemProperty -Path $regpath -Name \"FileSavePath\" -Value \"$persist_dir\" -Force | Out-Null"
+        ]
+    },
     "shortcuts": [
         [
             "wechat.exe",
             "WeChat"
         ]
     ],
-    "post_install": "Remove-Item \"$dir\\`$PLUGINSDIR\" -Force -Recurse",
-    "checkver": "<span class=\"download-version\">([\\d.]+)</span>",
+    "persist": "WeChat Files",
+    "uninstaller": {
+        "script": [
+            "Remove-Item -Path \"$env:APPDATA\\Tencent\\WeChat\\All Users\\config\\3ebffe94.ini\" -Force | Out-Null",
+            "Remove-ItemProperty -Path \"HKCU:Software\\Tencent\\WeChat\" -Name \"FileSavePath\" -Force | Out-Null"
+        ]
+    },
+    "checkver": {
+        "url": "https://pc.weixin.qq.com/",
+        "regex": "([\\d+\\.]+)</div>"
+    },
     "autoupdate": {
         "url": "https://dldir1.qq.com/weixin/Windows/WeChatSetup.exe#/dl.7z"
-    },
-    "notes": "We don't persist your WeChat data, they are still storaged in '%APPDATA%\\Tencent\\WeChat'."
+    }
 }
