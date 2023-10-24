@@ -1,33 +1,38 @@
 {
-    "version": "3.82.10.2310233gbexn77y",
-    "homepage": "https://www.beeper.com/",
+    "version": "3.82.10",
     "description": "An universal chat application that unifies all your chat applications into one.",
-    "license": {
-        "identifier": "Freeware",
-        "url": "https://www.beeper.com/terms"
-    },
+    "homepage": "https://www.beeper.com",
+    "license": "Freeware",
     "architecture": {
         "64bit": {
-            "url": "https://download.beeper.com/windows/nsis/x64#/beeper.zip",
-            "hash": "0ad4fc66a4de91f0e3070801686af0efe5d4d6db353e89a93b2ae09d6a38441c"
+            "url": "https://download.todesktop.com/2003241lzgn20jd/Beeper Setup 3.82.10 - Build 2310233gbexn77y-x64.exe#/dl.7z",
+            "hash": "sha512:e0f4db7d7b4110270d9f7b1ecda9b512b1cf897a33ec9775b95f0ede358c084d0a8626b14843b35594207715d662a759ceb815f91bf473cf03ee364bcd794b06",
+            "pre_install": [
+                "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\"",
+                "Remove-Item \"$dir\\`$*\" -Recurse"
+            ]
         }
     },
-    "pre_install": "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" $dir; Remove-Item \"$dir\\`$*\" -Recurse",
     "shortcuts": [
         [
             "Beeper.exe",
-            "Beeper"
+            "Beeper",
+            "--user-data-dir=\"$dir\\UserData\""
         ]
     ],
+    "persist": "UserData",
     "checkver": {
-        "script": "(Invoke-WebRequest 'https://download.beeper.com/windows/nsis/x64' -MaximumRedirection 1).Headers.'Content-Disposition'",
-        "regex": "Beeper\\sSetup\\s([\\d.]+)\\s\\-\\sBuild\\s([\\w]+)\\-x64",
-        "replace": "$1.$2"
+        "url": "https://download.todesktop.com/2003241lzgn20jd/latest.yml",
+        "regex": "version: ([\\d.]+)\\nfiles:\\n.*url: (?<url>.+)"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://download.beeper.com/windows/nsis/x64#/beeper.zip"
+                "url": "https://download.todesktop.com/2003241lzgn20jd/$matchUrl#/dl.7z",
+                "hash": {
+                    "url": "https://download.todesktop.com/2003241lzgn20jd/latest.yml",
+                    "regex": "sha512: $base64"
+                }
             }
         }
     }
