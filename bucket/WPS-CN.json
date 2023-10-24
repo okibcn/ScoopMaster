@@ -1,45 +1,38 @@
 {
-    "homepage": "https://platform.wps.cn",
-    "description": "Complete office suite",
-    "version": "11.2.0.12763",
-    "license": {
-        "identifier": "Freeware",
-        "url": "https://www.wps.com/eula"
+    "version": "15712",
+    "description": "金山文档,全新一代云Office办公软件,支持多人在线协同办公,实时协作，并设置文档访问、编辑权限。独有内容级安全，全程留痕可追溯.PC/移动双端覆盖,随时随地在线协同办公,在线文档即写即存统一管理,高效共享文档、表格。",
+    "homepage": "https://www.wps.cn/",
+    "license": "https://www.wps.cn/privacy/full_account/",
+    "architecture": {
+        "32bit": {
+            "url": "https://official-package.wpscdn.cn/wps/download/WPS_Setup_15712.exe",
+            "hash": "8d178293ffc93eec054e1eb19d9c9f708519119ea050a455b0b04e73e8bb2341"
+        }
     },
-    "url": "https://official-package.wpscdn.cn/wps/download/WPS_Setup_12598.exe#/dl.7z",
-    "hash": "e83ecd5a62991ce3018004329bcfc61f5733b3d29191338ea3e5539b3c5b86a4",
-    "extract_dir": "$_11_",
     "pre_install": [
-        "Expand-7zipArchive \"$dir\\`$EXEFILE\" -Switches '-t#'",
-        "Remove-Item \"$dir\\*\" -Exclude '4.7z','2.7z' -Recurse",
-        "Expand-7zipArchive \"$dir\\4.7z\" -ExtractDir 'office6' -Removal",
-        "Expand-7zipArchive \"$dir\\2.7z\" -ExtractDir 'CONTROL\\office6' -Removal"
+        "Expand-7zipArchive \"$dir\\$fname\"",
+        "Expand-7zipArchive \"$dir\\`$_11_\\`$EXEFILE\" -Switches '-t#'",
+        "Move-Item \"$dir\\`$_11_\\*.7z\" \"$dir\"",
+        "Remove-Item \"$dir\\*\" -Exclude '4.7z', '2.7z' -Recurse",
+        "Expand-7zipArchive \"$dir\\2.7z\" -ExtractDir 'CONTROL\\office6' -Removal",
+        "Expand-7zipArchive \"$dir\\4.7z\" -ExtractDir 'office6' -Removal"
     ],
+    "bin": "wpsoffice.exe",
     "shortcuts": [
         [
             "wpsoffice.exe",
             "WPS Office"
-        ],
-        [
-            "wps.exe",
-            "WPS 文字"
-        ],
-        [
-            "et.exe",
-            "WPS 表格"
-        ],
-        [
-            "wpp.exe",
-            "WPS 演示"
-        ],
-        [
-            "ksomisc.exe",
-            "WPS 配置工具"
         ]
     ],
-    "checkver": "WPS_Setup_(?<num>\\d+).exe",
+    "checkver": {
+        "url": "https://ai.wps.cn",
+        "regex": "https://pc-package.wpscdn.cn/wps/download/WPS_Setup_AI_(?<version>[\\d]+).exe"
+    },
     "autoupdate": {
-        "url": "https://official-pacakge.wpscdn.cn/wps/download/WPS_Setup_$matchNum.exe#/dl.7z",
-        "extract_dir": "$_$majorVersion_"
+        "architecture": {
+            "32bit": {
+                "url": "https://official-package.wpscdn.cn/wps/download/WPS_Setup_$version.exe"
+            }
+        }
     }
 }
