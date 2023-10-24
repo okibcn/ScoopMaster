@@ -1,28 +1,33 @@
 {
-    "version": "0.25.0",
-    "description": "A toolkit for working with your public key infrastructure (PKI).",
-    "homepage": "https://smallstep.com/cli",
-    "license": "Apache-2.0",
+    "version": "23.08.2-454",
+    "description": "Step is an interactive physical simulator. It allows you to explore the physical world through simulations.",
+    "homepage": "https://apps.kde.org/step/",
+    "license": "LGPL-2.0-only",
     "architecture": {
         "64bit": {
-            "url": "https://github.com/smallstep/cli/releases/download/v0.25.0/step_windows_0.25.0_amd64.zip",
-            "hash": "837e2d0c09909daa3fa49c8d33fc7dec6cd58e3433ecb1743d8f92c5cdbaece2"
+            "url": "https://binary-factory.kde.org/job/Step_Stable_win64/lastSuccessfulBuild/artifact/step-23.08.2-454-windows-cl-msvc2019-x86_64.7z",
+            "hash": "9e1ea57d281c84c90b37277798760d694e0d80e2ff989fb3cd7b6036d76b55f2"
         }
     },
-    "extract_dir": "step_0.25.0\\bin",
-    "bin": "step.exe",
+    "bin": "bin\\step.exe",
+    "shortcuts": [
+        [
+            "bin\\step.exe",
+            "Step"
+        ]
+    ],
     "checkver": {
-        "github": "https://github.com/smallstep/cli"
+        "url": "https://binary-factory.kde.org/job/Step_Stable_win64/",
+        "regex": "step-([\\d.-]+)-windows-cl-msvc2019-x86_64\\.7z"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://github.com/smallstep/cli/releases/download/v$version/step_windows_$version_amd64.zip"
+                "url": "https://binary-factory.kde.org/job/Step_Stable_win64/lastSuccessfulBuild/artifact/step-$version-windows-cl-msvc2019-x86_64.7z",
+                "hash": {
+                    "url": "$url.sha256"
+                }
             }
-        },
-        "extract_dir": "step_$version\\bin",
-        "hash": {
-            "url": "$baseurl/checksums.txt"
         }
     }
 }

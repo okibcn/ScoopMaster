@@ -1,51 +1,44 @@
 {
     "version": "119.0",
-    "description": "Popular open source web browser. Cross-platform and available in many languages.",
-    "homepage": "https://www.mozilla.org/zh-CN/firefox/new/",
+    "description": "Firefox 浏览器中文版本",
+    "homepage": "https://www.mozilla.org/firefox/",
     "license": "MPL-2.0",
     "architecture": {
         "64bit": {
-            "url": "https://download-installer.cdn.mozilla.net/pub/firefox/releases/119.0/win64/zh-CN/Firefox%20Setup%20119.0.exe#/firefox.7z",
+            "url": "https://archive.mozilla.org/pub/firefox/releases/119.0/win64/zh-CN/Firefox%20Setup%20119.0.exe#/dl.7z",
             "hash": "sha512:faafb02fd17be38dbeb4f5cea35fd950b1703cf3a50917f4c08b5bcda37bb8cbe1f2b68cec38e2db840355baf945475f1ac40ee4626e68fac792bce31826d2f4"
         },
         "32bit": {
-            "url": "https://download-installer.cdn.mozilla.net/pub/firefox/releases/119.0/win32/zh-CN/Firefox%20Setup%20119.0.exe#/firefox.7z",
+            "url": "https://archive.mozilla.org/pub/firefox/releases/119.0/win32/zh-CN/Firefox%20Setup%20119.0.exe#/dl.7z",
             "hash": "sha512:b9ed59c055dc2b4dbb649d9115437b49e84a3f03f7bdf6baa2135008b4b29360b639abc0e7157d5cc3b0e949abb0d2d38138713764cd9086d0b7eb1a8b06b329"
         }
     },
     "extract_dir": "core",
-    "bin": [
-        [
-            "firefox.exe",
-            "firefox",
-            "-profile \"$dir\\profile\""
-        ]
-    ],
+    "bin": "firefox.exe",
     "shortcuts": [
         [
             "firefox.exe",
-            "Mozilla Firefox",
-            "-profile \"$dir\\profile\""
+            "Firefox"
         ]
     ],
-    "persist": "profile",
+    "persist": "distribution",
     "checkver": {
-        "url": "https://www.mozilla.org/zh-CN/firefox/all/",
-        "regex": "data-latest-firefox=\"([\\d.]+)\""
+        "url": "https://www.mozilla.org/en-US/firefox/notes/",
+        "regex": "<div class=\"c-release-version\">([\\d.]+)</div>"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://download-installer.cdn.mozilla.net/pub/firefox/releases/$version/win64/zh-CN/Firefox%20Setup%20$version.exe#/firefox.7z",
+                "url": "https://archive.mozilla.org/pub/firefox/releases/$version/win64/zh-CN/Firefox%20Setup%20$version.exe#/dl.7z",
                 "hash": {
-                    "url": "https://download-installer.cdn.mozilla.net/pub/firefox/releases/$version/SHA512SUMS",
+                    "url": "https://archive.mozilla.org/pub/firefox/releases/$version/SHA512SUMS",
                     "regex": "$sha512\\s+win64/zh-CN/$basename"
                 }
             },
             "32bit": {
-                "url": "https://download-installer.cdn.mozilla.net/pub/firefox/releases/$version/win32/zh-CN/Firefox%20Setup%20$version.exe#/firefox.7z",
+                "url": "https://archive.mozilla.org/pub/firefox/releases/$version/win32/zh-CN/Firefox%20Setup%20$version.exe#/dl.7z",
                 "hash": {
-                    "url": "https://download-installer.cdn.mozilla.net/pub/firefox/releases/$version/SHA512SUMS",
+                    "url": "https://archive.mozilla.org/pub/firefox/releases/$version/SHA512SUMS",
                     "regex": "$sha512\\s+win32/zh-CN/$basename"
                 }
             }
