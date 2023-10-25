@@ -5,7 +5,7 @@
     "license": "GPL-2.0-only WITH Classpath-exception-2.0",
     "architecture": {
         "64bit": {
-            "url": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21+35/OpenJDK21U-jre_x64_windows_hotspot_21_35.zip",
+            "url": "https://mirrors.ustc.edu.cn/adoptium/releases/temurin21-binaries/jdk-21+35/OpenJDK21U-jre_x64_windows_hotspot_21_35.zip",
             "hash": "3753e9b1d7186191766954f7957cc0c3c4de9633366dbfdfa573e30b371b7ab7"
         }
     },
@@ -15,7 +15,7 @@
         "JAVA_HOME": "$dir"
     },
     "checkver": {
-        "url": "https://api.adoptium.net/v3/assets/feature_releases/21/ga?jvm_impl=hotspot&heap_size=normal&os=windows&architecture=x64&image_type=jre&project=jdk&vendor=eclipse&page_size=1&sort_order=DESC",
+        "url": "https://api.adoptium.net/v3/assets/version/%5B8%2C%29?release_type=ga&jvm_impl=hotspot&heap_size=normal&os=windows&architecture=x64&image_type=jre&project=jdk&vendor=eclipse&page_size=1&sort_order=DESC",
         "script": [
             "$ver = (json_path $page $..version_data.semver).replace('+', '-')",
             "$link = (json_path $page $..release_link).replace('%2B', '+')",
@@ -28,13 +28,13 @@
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://github.com/$matchLink/download/$matchTag/$matchName"
+                "url": "https://mirrors.ustc.edu.cn/adoptium/releases/temurin21-binaries/$matchTag/$matchName"
             }
         },
         "hash": {
             "url": "$url.sha256.txt",
             "find": "^([a-fA-F0-9]+)\\s"
         },
-        "extract_dir": "$matchTag-jre"
+        "extract_dir": "$matchTag"
     }
 }
