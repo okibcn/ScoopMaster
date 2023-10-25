@@ -3,14 +3,18 @@
     "description": "Microsoft Xbox 360 emulator",
     "homepage": "https://xenia.jp",
     "license": {
-        "identifier": "BSD-3-Clause",
-        "url": "https://github.com/xenia-canary/xenia-canary/blob/canary_pr/LICENSE"
+        "url": "https://github.com/xenia-canary/xenia-canary/blob/canary_pr/LICENSE",
+        "identifier": "BSD-3-Clause"
     },
-    "url": "https://github.com/xenia-canary/xenia-canary/releases/download/ebdea6b/xenia_canary.zip",
-    "hash": "c0c4287601b9ab44b2890ea11c8067a4cbfccb5634adbb9492f274047af27c4a",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/xenia-canary/xenia-canary/releases/download/ebdea6b/xenia_canary.zip",
+            "hash": "c0c4287601b9ab44b2890ea11c8067a4cbfccb5634adbb9492f274047af27c4a"
+        }
+    },
     "pre_install": [
         "if (!(Test-Path \"$persist_dir\")) {",
-        "   New-Item \"$persist_dir\" -ItemType Directory | Out-Null",
+        "   New-item \"$persist_dir\" -ItemType Directory | Out-Null",
         "   New-item \"$persist_dir\\portable.txt\" -ItemType File | Out-Null",
         "   New-item \"$persist_dir\\xenia-canary.config.toml\" -ItemType File | Out-Null",
         "   if (Test-Path \"$env:USERPROFILE\\Documents\\Xenia\") {",
@@ -31,8 +35,7 @@
         "portable.txt",
         "xenia-canary.config.toml",
         "content",
-        "cache",
-        "patches"
+        "cache"
     ],
     "checkver": {
         "url": "https://github.com/xenia-canary/xenia-canary/releases.atom",
@@ -46,6 +49,10 @@
         "replace": "${year}${month}${day}${hour}${minute}${second}-${commit}"
     },
     "autoupdate": {
-        "url": "https://github.com/xenia-canary/xenia-canary/releases/download/$matchCommit/xenia_canary.zip"
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/xenia-canary/xenia-canary/releases/download/$matchCommit/xenia_canary.zip"
+            }
+        }
     }
 }
