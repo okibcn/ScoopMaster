@@ -1,0 +1,27 @@
+{
+    "version": "1.0.5",
+    "description": "A vedio player just for learning English.",
+    "homepage": "https://github.com/solidSpoon/DashPlayer",
+    "license": "MIT",
+    "url": "https://github.com/solidSpoon/DashPlayer/releases/download/v1.0.5/DashPlayer-setup-1.0.5.exe",
+    "hash": "d0aaf17f6e9a0d62e0910c24d4d02cba7c534d088196d5f90ff2b124ed797f28",
+    "installer": {
+        "script": [
+            "Expand-7zipArchive -Path \"$dir\\$fname\" -Removal",
+            "Expand-7zipArchive -Path \"$dir\\`$PLUGINSDIR\\app-64.7z\" -DestinationPath $dir"
+        ]
+    },
+    "post_install": "Remove-Item \"$dir\\`$PLUGINSDIR\" -Force -Recurse",
+    "bin": "DashPlayer.exe",
+    "shortcuts": [
+        [
+            "DashPlayer.exe",
+            "DashPlayer"
+        ]
+    ],
+    "checkver": "github",
+    "autoupdate": {
+        "url": "https://github.com/solidSpoon/DashPlayer/releases/download/v$version/DashPlayer-setup-$version.exe"
+    },
+    "notes": "See homepage for how to use it."
+}
