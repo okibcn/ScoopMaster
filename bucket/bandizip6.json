@@ -6,20 +6,16 @@
         "identifier": "Freeware",
         "url": "https://en.bandisoft.com/bandizip/eula/"
     },
-    "url": "https://dl.bandisoft.com/bandizip.old/BANDIZIP6-PORTABLE.ZIP",
-    "hash": "FB3F9DB5E0A93AECA35F975CB54893BBC46EECEDECF4D9B1088DBB1C378569B1",
-    "architecture": {
-        "64bit": {
-            "pre_install": "Rename-Item \"$dir\\Bandizip64.exe\" 'Bandizip.exe'"
-        },
-        "32bit": {
-            "pre_install": "Rename-Item \"$dir\\Bandizip32.exe\" 'Bandizip.exe'"
-        }
-    },
+    "url": "https://en.bandisoft.com/bandizip/dl.php?old#/setup.exe",
+    "hash": "37d68f273d0479adec08db3a75bd229c6fad121894ae9bd456fedd8b5f2d2ede",
     "installer": {
         "script": [
-            "Get-ChildItem \"$dir\\Bandizip.x*.exe\" | Remove-Item",
-            "if (!(Test-Path \"$persist_dir\\Bandizip.ini\")) { New-Item \"$dir\\Bandizip.ini\" | Out-Null }"
+            "Start-Process -Wait -Verb RunAs \"$dir\\setup.exe\" -ArgumentList @('/D:\"'+$dir+'\"', '/S')"
+        ]
+    },
+    "uninstaller": {
+        "script": [
+            "Start-Process -Wait \"$dir\\Uninstall.exe\""
         ]
     },
     "bin": "Bandizip.exe",
@@ -30,7 +26,11 @@
         ]
     ],
     "persist": "Bandizip.ini",
+    "checkver": {
+        "url": "https://en.bandisoft.com/bandizip/old/6/",
+        "regex": ">Download Bandizip v([\\d.]+)</a>"
+    },
     "autoupdate": {
-        "url": "https://dl.bandisoft.com/bandizip.old/BANDIZIP6-PORTABLE.ZIP"
+        "url": "https://en.bandisoft.com/bandizip/dl.php?old#/setup.exe"
     }
 }
