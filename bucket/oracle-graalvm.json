@@ -1,15 +1,15 @@
 {
-    "version": "21",
-    "description": "High-performance, embeddable, polyglot Virtual Machine for JVM-langs (Java, Scala, Kotlin), JavaScript/NodeJS, Python, Ruby, R, and LLVM-langs (C, C++, Rust)",
-    "homepage": "https://www.graalvm.org/",
+    "version": "21.0.1",
+    "description": "GraalVM is a high performance JDK that speeds up the performance of Java and JVM-based applications and simplifies the building and running of Java cloud native services.",
+    "homepage": "https://www.oracle.com/java/graalvm/",
     "license": {
         "identifier": "Freeware",
         "url": "https://www.oracle.com/downloads/licenses/graal-free-license.html"
     },
     "architecture": {
         "64bit": {
-            "url": "https://download.oracle.com/graalvm/21/archive/graalvm-jdk-21_windows-x64_bin.zip",
-            "hash": "392acacbdae30487050968892b22ef05d2dc29b7e25816e16c5080795a813c82"
+            "url": "https://download.oracle.com/graalvm/21/archive/graalvm-jdk-21.0.1_windows-x64_bin.zip",
+            "hash": "16ec0dbd1d4707870410bd59212186087a5bc126c31917e9836daed8018053c8"
         }
     },
     "pre_install": "Move-Item -Path \"$dir\\graalvm-jdk*\\*\" \"$dir\" | Remove-Item \"$dir\\graalvm-jdk*\" -Force",
@@ -21,17 +21,17 @@
     "checkver": {
         "script": [
             "$releases = 'https://docs.oracle.com/en/graalvm/'",
-            "$verRegex = 'Oracle GraalVM for JDK ([\\d-]+)'",
+            "$verRegex = 'Oracle GraalVM for JDK ([\\d.]+)'",
             "$relRes = $(Invoke-WebRequest $releases).Content",
             "$relRes -match $verRegex",
             "$major = $matches[1]",
             "$verRes = $(Invoke-WebRequest \"https://docs.oracle.com/en/graalvm/jdk/$major/docs/release-notes/\").Content",
-            "$verRes -match $verRegex",
+            "$verRes -match \"${verRegex}</h1>\"",
             "$version = $matches[1]",
             "$latest = \"${version}-${major}\"",
             "Write-Output $latest"
         ],
-        "regex": "([\\d.-]+)-(?<jdk>[\\d.]+)"
+        "regex": "([\\d.]+)-(?<jdk>\\d+)"
     },
     "autoupdate": {
         "architecture": {
