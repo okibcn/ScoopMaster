@@ -1,29 +1,66 @@
 {
-    "version": "4.4.4",
-    "description": "文件比较工具",
-    "homepage": "https://tmioe.com/95.html",
-    "license": "GPL-3.0-or-later",
-    "url": "https://pan.transnull.cn/d/Software/BeyondCompare_v4.4.4.zip",
-    "hash": "5f02cfecb3e1293234002e8dc43ad0cde1e9fb02b9b37f65dea9d817fbfa850c",
-    "bin": [
-        "BCompare.exe",
-        "BCClipboard.exe"
+    "version": "4.4.7.28397",
+    "description": "Beyond Compare 4",
+    "homepage": "https://www.scootersoftware.com",
+    "license": "Proprietary",
+    "url": "https://www.scootersoftware.com/files/BCompare-4.4.7.28397.exe",
+    "hash": "5b14f35bf4219fdcc138a4a6ed8f20605d455027a94a50ab37db64e53153d141",
+    "depends": "innounp",
+    "pre_install": [
+        "function New-PersistFile([String] $path) {",
+        "  if (!(Test-Path $path) -or !(Get-Item $path).Length) {",
+        "    New-Item $path -ItemType File -Force | Out-Null",
+        "  }",
+        "}",
+        "New-PersistFile \"$persist_dir\\BCFileFormats.xml\"",
+        "New-PersistFile \"$persist_dir\\BCFileFormats.xml.bak\"",
+        "New-PersistFile \"$persist_dir\\BCPreferences.xml\"",
+        "New-PersistFile \"$persist_dir\\BCPreferences.xml.bak\"",
+        "New-PersistFile \"$persist_dir\\BCProfiles.xml\"",
+        "New-PersistFile \"$persist_dir\\BCProfiles.xml.bak\"",
+        "New-PersistFile \"$persist_dir\\BCSessions.xml\"",
+        "New-PersistFile \"$persist_dir\\BCSessions.xml.bak\"",
+        "New-PersistFile \"$persist_dir\\BCState.xml\"",
+        "New-PersistFile \"$persist_dir\\BCState.xml.bak\"",
+        "Expand-InnoArchive -Path \"$dir\\$fname\" -Switches \"-a\" -Removal"
     ],
+    "architecture": {
+        "64bit": {
+            "installer": {
+                "script": [
+                    "@('7z,1.dll', 'BCompare,1.exe', 'BCompare,1.tr', 'BCUnRAR,1.dll', 'mscoree,1.dll', 'PdfToText,1.exe') | ForEach-Object {",
+                    "  Remove-Item \"$dir\\$_\" -Force",
+                    "}",
+                    "@('7z,2.dll', 'BCompare,2.exe', 'BCompare,2.tr', 'BCUnRAR,2.dll', 'mscoree,2.dll', 'PdfToText,2.exe') | ForEach-Object {",
+                    "  $newName = $_.Replace(',2','')",
+                    "  Rename-Item \"$dir\\$_\" \"$dir\\$newName\"",
+                    "}"
+                ]
+            }
+        }
+    },
+    "bin": "BCompare.exe",
     "shortcuts": [
-        [
-            "BCompare.exe",
-            "Beyond Compare 4"
-        ],
-        [
-            "BCClipboard.exe",
-            "Clipboard Compare"
-        ]
+        ["BCompare.exe", "Beyond Compare 4"],
+        ["BCClipboard.exe", "Clipboard Compare"]
+    ],
+    "persist": [
+        "BCFileFormats.xml",
+        "BCFileFormats.xml.bak",
+        "BCPreferences.xml",
+        "BCPreferences.xml.bak",
+        "BCProfiles.xml",
+        "BCProfiles.xml.bak",
+        "BCSessions.xml",
+        "BCSessions.xml.bak",
+        "BCState.xml",
+        "BCState.xml.bak"
     ],
     "checkver": {
-        "url": "https://pan.transnull.cn/d/Software/",
-        "regex": "BeyondCompare ([\\d.]+)"
+        "url": "https://www.scootersoftware.com/download",
+        "regex": "/files/BCompare-(?<version>[\\d.]+).exe"
     },
     "autoupdate": {
-        "url": "https://pan.transnull.cn/d/Software/BeyondCompare_v$version.7z"
+        "url": "https://www.scootersoftware.com/files/BCompare-$version.exe"
     }
 }
