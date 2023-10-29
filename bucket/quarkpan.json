@@ -1,46 +1,40 @@
 {
     "version": "2.5.46",
-    "description": "夸克网盘",
-    "homepage": "https://pan.quark.cn/",
-    "license": "Proprietary",
+    "description": "夸克网盘是夸克推出的一款云服务产品，功能包括云存储、高清看剧、文件在线解压、PDF一键转换等。通过夸克网盘可随时随地管理和使用照片、文档、手机资料，目前支持Android、iOS、PC、iPad。",
+    "homepage": "https://pan.quark.cn",
+    "license": "https://b.quark.cn/apps/quark_icloud_pay/routes/service_help",
     "url": "https://webcdn.m.qq.com/spcmgr/download/QuarkCloudDrive-v2.5.46-release-pckk@tencent_daily-20230822152717.exe#/dl.7z",
     "hash": "529c24ff3fd9a160491267536e7131c5d9c4c8bb5e418478daa3ef1a76efdd66",
     "innosetup": true,
     "installer": {
         "script": [
-            "if (!(Test-Path \"$persist_dir\\Cache\")) {",
-            "    New-Item \"$persist_dir\\Cache\" -Type Directory -Force | Out-Null",
-            "}",
-            "$runtimeCache = \"$env:APPDATA\\quark-cloud-drive\"",
-            "$runtimeCachePersist = \"$persist_dir\\Cache\"",
-            "if (Test-Path $runtimeCachePersist) {",
-            "    Remove-Item $runtimeCache -Force -Recurse -ErrorAction SilentlyContinue",
-            "    New-Item -Type Junction -Path $runtimeCache -Target $runtimeCachePersist | Out-Null",
-            "} else {",
-            "    if (Test-Path $runtimeCache) {",
-            "        Move-Item $runtimeCache $runtimeCachePersist -Force",
-            "        New-Item -Type Junction -Path $runtimeCache -Target $runtimeCachePersist | Out-Null",
+            "$PersistCache = \"$persist_dir\\Cache\"",
+            "$AppCache = \"$env:APPDATA\\quark-cloud-drive\"",
+            "if(!(Test-Path $PersistCache)) { New-Item $PersistCache -Type Directory -Force | Out-Null }",
+            "if(Test-Path $AppCache) {",
+            "    $AppDir = Get-Item $AppCache",
+            "    if($AppDir.Attributes -ne \"Directory, ReparsePoint\") { ",
+            "        Move-Item $AppCache $PersistCache -Force",
+            "        Remove-Item $AppCache -Force -Recurse -ErrorAction SilentlyContinue",
+            "        New-Item -Type Junction -Path $AppCache -Target $PersistCache | Out-Null",
             "    }",
-            "}"
-        ]
-    },
-    "uninstaller": {
-        "script": [
-            "$runtimeCache = \"$env:APPDATA\\quark-cloud-drive\"",
-            "$runtimeCachePersist = \"$persist_dir\\Cache\"",
-            "if (!(Test-Path $runtimeCachePersist)) {",
-            "    Move-Item $runtimeCache $runtimeCachePersist -Force",
             "} else {",
-            "    Remove-Item $runtimeCache -Force -Recurse -ErrorAction SilentlyContinue",
+            "    New-Item -Type Junction -Path $AppCache -Target $PersistCache | Out-Null",
             "}"
         ]
     },
-    "shortcuts": [["QuarkCloudDrive.exe", "QuarkCloudDrive"]],
+    "bin": "QuarkCloudDrive.exe",
+    "shortcuts": [
+        [
+            "QuarkCloudDrive.exe",
+            "QuarkCloudDrive"
+        ]
+    ],
     "checkver": {
         "url": "https://pc.qq.com/detail/13/detail_24833.html",
-        "regex": "QuarkCloudDrive-v(?<version>[\\d.]+)-release-pckk@other_ch-(?<build>[\\d]+).exe"
+        "regex": "QuarkCloudDrive-v(?<version>[\\d.]+)-release-pckk@(?<ver>[\\w\\d_-]+).exe"
     },
     "autoupdate": {
-        "url": "https://webcdn.m.qq.com/spcmgr/download/QuarkCloudDrive-v$matchVersion-release-pckk@other_ch-$matchBuild.exe#/dl.7z"
+        "url": "https://webcdn.m.qq.com/spcmgr/download/QuarkCloudDrive-v$version-release-pckk@$matchVer.exe#/dl.7z"
     }
 }
