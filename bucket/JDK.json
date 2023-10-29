@@ -1,28 +1,40 @@
 {
-  "homepage": "https://portableapps.com/apps/utilities/jdkPortable",
-  "description": "Portable Java Development Kit",
-  "version": "8_Update_241",
-  "license": "",
-  "url": "https://downloads.sourceforge.net/portableapps/jdkPortable_8_Update_241_online.paf.exe",
-  "hash": "md5:3a226ffc9bcbcabe5107ad0945edeb85",
-  "bin": "JDK/JDK.exe",
-  "shortcuts": [
-    [
-      "JDK/JDK.exe",
-      "JDK"
-    ]
-  ],
-  "persist": "Data",
-  "checkver": {
-    "url": "https://portableapps.com/apps/utilities/jdkPortable",
-    "re": "Version \\s+([\\w\\.]* for Win"
-  },
-  "autoupdate": {
-    "url": "https://downloads.sourceforge.net/portableapps/jdkPortable_$underscoreVersion_online.paf.exe",
-    "hash": {
-      "url": "https://portableapps.com/apps/utilities/jdkPortable",
-      "regex": "MD5 Hash: +[\\w]{32}"
+    "description": "Eclipse Temurin is a runtime provided by Eclipse Adoptium for general use across the Java ecosystem",
+    "homepage": "https://adoptium.net",
+    "version": "17.0.9-9.1",
+    "license": "GPL-2.0-only WITH Classpath-exception-2.0",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.9+9.1/OpenJDK17U-jdk_x64_windows_hotspot_17.0.9_9.zip",
+            "hash": "d1b2bb5a074ba33a0cf4e84aa558f7a563b827f999a71c8e47bdb0dd02af6b9c"
+        }
+    },
+    "extract_dir": "jdk-17.0.9+9.1",
+    "env_add_path": "bin",
+    "env_set": {
+        "JAVA_HOME": "$dir"
+    },
+    "checkver": {
+        "url": "https://api.adoptium.net/v3/assets/feature_releases/17/ga?jvm_impl=hotspot&heap_size=normal&os=windows&architecture=x64&image_type=jdk&project=jdk&vendor=eclipse&page_size=1&sort_order=DESC",
+        "script": [
+            "$ver = (json_path $page $..version_data.semver).replace('+', '-')",
+            "$link = (json_path $page $..release_link).replace('%2B', '+')",
+            "$name = json_path $page $..binaries[0].package.name",
+            "Write-Output \"$ver $link $name\""
+        ],
+        "regex": "(?<ver>.*?) https://github.com/(?<link>.*?)/tag/(?<tag>.*?) (?<name>(?<prefix>OpenJDK[\\dU]*-[dejkr]{3})_x64_(?<suffix>.*))",
+        "replace": "${ver}"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/$matchLink/download/$matchTag/$matchName"
+            }
+        },
+        "hash": {
+            "url": "$url.sha256.txt",
+            "find": "^([a-fA-F0-9]+)\\s"
+        },
+        "extract_dir": "$matchTag"
     }
-  },
-  "installer": {}
 }
