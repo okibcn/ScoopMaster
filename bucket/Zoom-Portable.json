@@ -1,56 +1,56 @@
 {
-  "version": "5.16.5.24296",
-  "description": "Zoom. Video and audio conferencing, chat, and webinars",
-  "homepage": "https://zoom.us",
-  "license": {
-    "identifier": "Proprietary",
-    "url": "https://zoom.us/terms"
-  },
-  "architecture": {
-    "64bit": {
-      "url": "https://www.zoom.us/client/5.16.5.24296/ZoomInstallerFull.msi?archType=x64",
-      "hash": "c21162c2423d5466a1002b84ab0ef9549d47aefd37ff3d2f48c63e71a04fa202",
-      "extract_dir": "Program Files (64-bit) Folder\\Zoom\\bin"
+    "version": "5.16.6.24712",
+    "description": "Zoom. Video and audio conferencing, chat, and webinars",
+    "homepage": "https://zoom.us",
+    "license": {
+        "identifier": "Proprietary",
+        "url": "https://zoom.us/terms"
     },
-    "32bit": {
-      "url": "https://www.zoom.us/client/5.16.5.24296/ZoomInstallerFull.msi",
-      "hash": "1b5b96b18fc0b6887d4165b2b9d3d7f72a201627fe07a4da2164b9f71391d272",
-      "extract_dir": "Program Files (32-bit) Folder\\Zoom\\bin"
-    }
-  },
-  "extract_dir": "Program Files (64-bit) Folder\\Zoom\\bin",
-  "post_install": [
-    "Write-Host \"Registering zoommtg:// protocol handler\"",
-    "$regpath = \"HKCU:\\SOFTWARE\\Classes\\zoommtg\"",
-    "New-Item -Path $regpath -Value \"Zoom (Application Name)\" -Force | Out-Null",
-    "New-ItemProperty -Path $regpath -Name \"URL Protocol\" -PropertyType String -Force | Out-Null",
-    "New-Item -Path \"$regpath\\shell\\open\\command\" -Value \"`\"$dir\\Zoom.exe`\" --url=`\"%1`\"\" -Force| Out-Null"
-  ],
-  "uninstaller": {
-    "script": [
-      "Write-Host \"Unregistering zoommtg:// protocol handler\"",
-      "Remove-Item \"HKCU:\\SOFTWARE\\Classes\\zoommtg\" -Recurse -Force"
-    ]
-  },
-  "bin": "Zoom.exe",
-  "shortcuts": [
-    [
-      "Zoom.exe",
-      "Zoom"
-    ]
-  ],
-  "checkver": {
-    "url": "https://launcher.zoom.us/upgrade?os=win",
-    "regex": "Current-version=([\\d.]+)"
-  },
-  "autoupdate": {
     "architecture": {
-      "64bit": {
-        "url": "https://www.zoom.us/client/$version/ZoomInstallerFull.msi?archType=x64"
-      },
-      "32bit": {
-        "url": "https://www.zoom.us/client/$version/ZoomInstallerFull.msi"
-      }
+        "64bit": {
+            "url": "https://www.zoom.us/client/5.16.6.24712/ZoomInstallerFull.msi?archType=x64",
+            "hash": "a465ff2bd9124f153d9c1f1c71486e2385dfdc9685b1da5432708956090036ff",
+            "extract_dir": "Program Files (64-bit) Folder\\Zoom\\bin"
+        },
+        "32bit": {
+            "url": "https://www.zoom.us/client/5.16.6.24712/ZoomInstallerFull.msi",
+            "hash": "ae280c37a84a4674bf281aae15aa8fcd3fa2e73ce033e4d159ce21c9e5017f52",
+            "extract_dir": "Program Files (32-bit) Folder\\Zoom\\bin"
+        }
+    },
+    "extract_dir": "Program Files (64-bit) Folder\\Zoom\\bin",
+    "post_install": [
+        "Write-Host \"Registering zoommtg:// protocol handler\"",
+        "$regpath = \"HKCU:\\SOFTWARE\\Classes\\zoommtg\"",
+        "New-Item -Path $regpath -Value \"Zoom (Application Name)\" -Force | Out-Null",
+        "New-ItemProperty -Path $regpath -Name \"URL Protocol\" -PropertyType String -Force | Out-Null",
+        "New-Item -Path \"$regpath\\shell\\open\\command\" -Value \"`\"$dir\\Zoom.exe`\" --url=`\"%1`\"\" -Force| Out-Null"
+    ],
+    "uninstaller": {
+        "script": [
+            "Write-Host \"Unregistering zoommtg:// protocol handler\"",
+            "Remove-Item \"HKCU:\\SOFTWARE\\Classes\\zoommtg\" -Recurse -Force"
+        ]
+    },
+    "bin": "Zoom.exe",
+    "shortcuts": [
+        [
+            "Zoom.exe",
+            "Zoom"
+        ]
+    ],
+    "checkver": {
+        "url": "https://launcher.zoom.us/upgrade?os=win",
+        "regex": "Current-version=([\\d.]+)"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://www.zoom.us/client/$version/ZoomInstallerFull.msi?archType=x64"
+            },
+            "32bit": {
+                "url": "https://www.zoom.us/client/$version/ZoomInstallerFull.msi"
+            }
+        }
     }
-  }
 }
