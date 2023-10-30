@@ -1,24 +1,31 @@
 {
-    "homepage": "https://yank-note.vercel.app/",
-    "license": "AGPL-3.0-or-later",
-    "description": "A Hackable Markdown Note Application for Programmers.",
     "version": "3.63.2",
+    "description": "A Hackable Markdown Note Application for Programmers.",
+    "homepage": "https://github.com/purocean/yn",
+    "license": "AGPL-3.0",
     "architecture": {
         "64bit": {
             "url": "https://github.com/purocean/yn/releases/download/v3.63.2/Yank-Note-win-x64-3.63.2.zip",
             "hash": "f7e7d58fae254c641764a817e7c7789c2ee248bdfd6894a7b38691ca3e64fe0c"
         }
     },
-    "bin": "Yank Note.exe",
+    "pre_install": "Remove-Item \"$dir\\resources\\app-update.yml\"  -Force -Recurse",
+    "bin": [
+        [
+            "Yank Note.exe",
+            "Yank Note",
+            "--user-data-dir=\"$dir\\User Data\""
+        ]
+    ],
     "shortcuts": [
         [
             "Yank Note.exe",
-            "Yank Note"
+            "Yank Note",
+            "--user-data-dir=\"$dir\\User Data\""
         ]
     ],
-    "checkver": {
-        "github": "https://github.com/purocean/yn"
-    },
+    "persist": "User Data",
+    "checkver": "github",
     "autoupdate": {
         "architecture": {
             "64bit": {
