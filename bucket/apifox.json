@@ -1,39 +1,43 @@
 {
     "version": "2.3.23",
-    "homepage": "https://www.apifox.cn/",
-    "license": "Freeware",
-    "description": "",
-    "architecture": {
-        "64bit": {
-            "url": "https://cdn.apifox.cn/download/Apifox-windows-latest.zip",
-            "hash": "8616f8fff7c126526ef0aec4b26861b7ab0e96ba324174416adc4a75493c3025",
-            "pre_install": [
-                "Move-Item \"$dir/*.exe\" \"$dir/Setup.7z\"",
-                "Expand-7zipArchive \"$dir\\Setup.7z\" \"$dir\"",
-                "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\"",
-                "Remove-Item \"$dir/`$PLUGINSDIR\", \"$dir/Setup.7z\" -Recurse -Force"
-            ]
-        },
-        "32bit": {
-            "url": "https://cdn.apifox.cn/download/Apifox-win32-latest.zip",
-            "hash": "c02bc4aa1b71eb1cb8645c5327e2a36380696183cb7806fbabb02198a7757397",
-            "pre_install": [
-                "Move-Item \"$dir/*.exe\" \"$dir/Setup.7z\"",
-                "Expand-7zipArchive \"$dir\\Setup.7z\" \"$dir\"",
-                "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-32.7z\" \"$dir\"",
-                "Remove-Item \"$dir/`$PLUGINSDIR\", \"$dir\\Setup.7z\" -Recurse -Force"
-            ]
-        }
+    "description": "API 文档、API 调试、API Mock、API 自动化测试",
+    "homepage": "https://www.apifox.cn",
+    "license": "Unknown",
+    "url": "http://cdn.apifox.cn/download/2.3.23/Apifox-2.3.23.exe#/dl.7z",
+    "hash": "sha512:7de525c8f4184b04b9d3b22488ca75fa9ed1a6898918df01ee6ee6e0dffccdb60720d62a929a661e37e22fec377c94b2a2706db52e2ad81acefbf7e774ebe6ed",
+    "installer": {
+        "script": [
+            "# Expand-7zipArchive",
+            "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\" -Removal",
+            "Remove-Item \"$dir\\`$PLUGINSDIR\" -Force -Recurse",
+            "# handle runtime cache",
+            "if (!(Test-Path $persist_dir)) {",
+            "    New-Item $persist_dir -Type Directory -Force | Out-Null",
+            "}",
+            "$runtimeCache = \"$env:APPDATA\\apifox\"",
+            "$runtimeCachePersist = \"$persist_dir\\appdata\"",
+            "if (Test-Path $runtimeCachePersist) {",
+            "    Remove-Item $runtimeCache -Force -Recurse -ErrorAction SilentlyContinue",
+            "    New-Item -Type Junction -Path $runtimeCache -Target $runtimeCachePersist | Out-Null",
+            "} else {",
+            "    if (Test-Path $runtimeCache) {",
+            "        Move-Item $runtimeCache $runtimeCachePersist -Force",
+            "        New-Item -Type Junction -Path $runtimeCache -Target $runtimeCachePersist | Out-Null",
+            "    }",
+            "}"
+        ]
     },
     "uninstaller": {
-        "file": "Uninstall Apifox.exe"
-    },
-    "bin": [
-        [
-            "Apifox.exe",
-            "Apifox"
+        "script": [
+            "$runtimeCache = \"$env:APPDATA\\apifox\"",
+            "$runtimeCachePersist = \"$persist_dir\\appdata\"",
+            "if (!(Test-Path $runtimeCachePersist)) {",
+            "    Move-Item $runtimeCache $runtimeCachePersist -Force",
+            "} else {",
+            "    Remove-Item $runtimeCache -Force -Recurse -ErrorAction SilentlyContinue",
+            "}"
         ]
-    ],
+    },
     "shortcuts": [
         [
             "Apifox.exe",
@@ -41,17 +45,14 @@
         ]
     ],
     "checkver": {
-        "url": "https://apifox.com/help/app/changelog",
-        "re": ">([\\d.]+)<"
+        "url": "http://cdn.apifox.cn/download/latest.yml",
+        "regex": "Apifox-([\\d.]+).exe"
     },
     "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://cdn.apifox.cn/download/Apifox-windows-latest.zip"
-            },
-            "32bit": {
-                "url": "https://cdn.apifox.cn/download/Apifox-win32-latest.zip"
-            }
+        "url": "http://cdn.apifox.cn/download/$version/Apifox-$version.exe#/dl.7z",
+        "hash": {
+            "url": "http://cdn.apifox.cn/download/latest.yml",
+            "regex": "sha512.*?$base64"
         }
     }
 }
