@@ -11,6 +11,14 @@
         "64bit": {
             "url": "https://pkgs.tailscale.com/stable/tailscale-setup-1.52.0-amd64.msi",
             "hash": "f2faacc693e38a829cebde895b8a4c70a82b1324f4a1e7fb3ce0768ab1ca07bf"
+        },
+        "32bit": {
+            "url": "https://pkgs.tailscale.com/stable/tailscale-setup-1.52.0-x86.msi",
+            "hash": "1cae13792edd8051ea466ba964b4dc904dd049bdd445fdc67ecd91487337eeb6"
+        },
+        "arm64": {
+            "url": "https://pkgs.tailscale.com/stable/tailscale-setup-1.52.0-arm64.msi",
+            "hash": "1122440211ca5e2722e7df891bd7816727d2e896740569d64175bd0b4e1006da"
         }
     },
     "pre_install": "if (!(is_admin)) {error 'This package requires admin rights to install'; break}",
@@ -18,8 +26,8 @@
         "tailscale-ipn.exe /install",
         "$dirpath = $dir.Replace('\\', '\\\\')",
         "'add-startup.reg', 'remove-startup.reg' | ForEach-Object {",
-        "    if (Test-Path \"$bucketsdir\\$bucket\\scripts\\$app\\$_\") {",
-        "        $content = Get-Content \"$bucketsdir\\$bucket\\scripts\\$app\\$_\"",
+        "    if (Test-Path \"$bucketsdir\\extras\\scripts\\$app\\$_\") {",
+        "        $content = Get-Content \"$bucketsdir\\extras\\scripts\\$app\\$_\"",
         "        $content = $content.Replace('$dir', $dirpath)",
         "        if ($global) { $content = $content.Replace('HKEY_CURRENT_USER', 'HKEY_LOCAL_MACHINE') }",
         "        $content | Set-Content -Path \"$dir\\$_\"",
@@ -57,6 +65,12 @@
         "architecture": {
             "64bit": {
                 "url": "https://pkgs.tailscale.com/stable/tailscale-setup-$version-amd64.msi"
+            },
+            "32bit": {
+                "url": "https://pkgs.tailscale.com/stable/tailscale-setup-$version-x86.msi"
+            },
+            "arm64": {
+                "url": "https://pkgs.tailscale.com/stable/tailscale-setup-$version-arm64.msi"
             }
         },
         "hash": {
