@@ -2,10 +2,7 @@
     "version": "2.13.4",
     "description": "A note taking and to-do application with synchronization capabilities",
     "homepage": "https://joplinapp.org",
-    "license": {
-        "identifier": "MIT",
-        "url": "https://github.com/laurent22/joplin/blob/dev/LICENSE"
-    },
+    "license": "MIT",
     "url": "https://github.com/laurent22/joplin/releases/download/v2.13.4/Joplin-Setup-2.13.4.exe#/dl.7z",
     "hash": "sha512:788c21045a99b6fc7dd3a3d7a39dace9c7d3da1cafe05fd452cdcd75028b40734e4f6400341ea8234190f26ce54d541b1c4d47d4672dbb3d38503cea75d81895",
     "architecture": {
@@ -17,30 +14,16 @@
         }
     },
     "post_install": "Remove-Item \"$dir\\`$*\", \"$dir\\Uninstall*\" -Recurse",
-    "installer": {
-        "script": [
-            "ensure \"$persist_dir\\appdata\" | Out-Null",
-            "New-Item \"$env:APPDATA\\Joplin\" -ItemType Junction -Target \"$persist_dir\\appdata\" | Out-Null",
-            "ensure \"$persist_dir\\.config\\joplin-desktop\" | Out-Null",
-            "New-Item \"$env:USERPROFILE\\.config\\joplin-desktop\" -ItemType Junction -Target \"$persist_dir\\.config\\joplin-desktop\" | Out-Null"
-        ]
-    },
-    "uninstaller": {
-        "script": [
-            "Remove-Item \"$env:APPDATA\\Joplin\" -Recurse -Force -ErrorAction 'SilentlyContinue'",
-            "Remove-Item \"$env:USERPROFILE\\.config\\joplin-desktop\" -Recurse -Force -ErrorAction 'SilentlyContinue'"
-        ]
-    },
     "bin": "Joplin.exe",
     "shortcuts": [
         [
             "Joplin.exe",
-            "Joplin"
+            "Joplin-Pre"
         ]
     ],
     "checkver": {
-        "url": "https://api.github.com/repos/laurent22/joplin/releases",
-        "regex": "(?sm)prerelease\".*?true.*?browser_download_url.*?releases/download/v([\\d.]+)/Joplin-Setup-([\\d.]+)\\.exe"
+        "url": "https://github.com/laurent22/joplin/tags",
+        "regex": "/laurent22/joplin/releases/tag/v([\\d.]+)"
     },
     "autoupdate": {
         "url": "https://github.com/laurent22/joplin/releases/download/v$version/Joplin-Setup-$version.exe#/dl.7z",
