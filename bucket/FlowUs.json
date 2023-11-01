@@ -1,29 +1,24 @@
 {
-    "homepage": "https://flowus.cn/",
-    "description": "A new generation of knowledge management and collaboration platform.",
+    "homepage": "https://flowus.cn/download",
+    "license": "unknown",
     "version": "1.1.6",
-    "license": "Proprietary",
     "architecture": {
         "64bit": {
             "url": "https://desktopdownload.flowus.cn/production/windows/x64/FlowUs%20Setup%201.1.6.exe#/dl.7z",
-            "hash": "003476c8361b595ab49aec1130b6f418e57b0447749d2bd9be1649204ecc6d5f",
-            "installer": {
-                "script": "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\""
-            }
+            "hash": "003476c8361b595ab49aec1130b6f418e57b0447749d2bd9be1649204ecc6d5f"
         },
         "32bit": {
             "url": "https://desktopdownload.flowus.cn/production/windows/ia32/FlowUs%20Setup%201.1.6.exe#/dl.7z",
-            "hash": "8b12cb1b3b57b96be90fb8420e201600135af84407baf670be12d59fd3f51ba8",
-            "installer": {
-                "script": "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-32.7z\" \"$dir\""
-            }
+            "hash": "8b12cb1b3b57b96be90fb8420e201600135af84407baf670be12d59fd3f51ba8"
         }
     },
-    "post_install": [
-        "@('$PLUGINSDIR', '$R0') | ForEach-Object {",
-        "    Remove-Item \"$dir\\$_\" -Recurse -Force",
-        "}"
-    ],
+    "installer": {
+        "script": [
+            "Expand-7ZipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\" -Removal",
+            "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\`$R0\"  -Force -Recurse"
+        ]
+    },
+    "bin": "FlowUs.exe",
     "shortcuts": [
         [
             "FlowUs.exe",
@@ -32,7 +27,7 @@
     ],
     "checkver": {
         "url": "https://flowus.cn/download",
-        "regex": "winVersion\":\"([\\d.]+)\""
+        "regex": "\"win64Version\":\"([\\d.]+)\""
     },
     "autoupdate": {
         "architecture": {
