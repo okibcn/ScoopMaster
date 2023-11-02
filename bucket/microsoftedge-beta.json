@@ -1,7 +1,7 @@
 {
-    "homepage": "https://www.microsoft.com/en-us/edge",
-    "description": "The chromium based Microsoft Edge browser (Beta Channel)",
     "version": "119.0.2151.42",
+    "description": "The chromium based Microsoft Edge browser (Beta Channel)",
+    "homepage": "https://www.microsoft.com/en-us/edge",
     "license": "Freeware",
     "architecture": {
         "64bit": {
@@ -23,9 +23,22 @@
     "shortcuts": [
         [
             "msedge.exe",
-            "Microsoft Edge Beta"
+            "Microsoft Edge Beta",
+            "--force-device-scale-factor=1.5"
         ]
     ],
+    "post_install": [
+        "## 用户数据貌似无法复用, 安装后会重置, 故暂时不迁移用户数据",
+        "Import-Module $(Join-Path $(Find-BucketDirectory -Root -Name scoop-private) scripts/Utils-private.psm1)",
+        "Mount-ExternalRuntimeData -Source \"$persist_dir\\User Data\" -Target \"$env:LocalAppData\\Microsoft\\Edge Beta\\User Data\"",
+        "Remove-Module -Name Utils-private"
+    ],
+    "post_uninstall": [
+        "Import-Module $(Join-Path $(Find-BucketDirectory -Root -Name scoop-private) scripts/Utils-private.psm1)",
+        "Dismount-ExternalRuntimeData -Target \"$env:LocalAppData\\Microsoft\\Edge Beta\\User Data\"",
+        "Remove-Module -Name Utils-private"
+    ],
+    "persist": "User Data",
     "checkver": {
         "url": "https://dorado-api.deno.dev/edge?arch=64&channel=beta",
         "jsonpath": "$.Version"
