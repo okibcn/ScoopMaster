@@ -5,15 +5,32 @@
     "license": "MIT",
     "architecture": {
         "64bit": {
-            "url": "https://github.com/pnpm/pnpm/releases/download/v8.10.2/pnpm-win-x64.exe#/pnpm.exe",
+            "url": "https://gh.ddlc.top/https://github.com/pnpm/pnpm/releases/download/v8.10.2/pnpm-win-x64.exe#/pnpm.exe",
             "hash": "60b96954b3314fbc93ae8dac900f27935b502ac5f138a11b12a3f9557e924d43"
         }
     },
     "bin": "pnpm.exe",
     "checkver": {
-        "github": "https://github.com/pnpm/pnpm"
+        "script": [
+            "# Using checkver script to check through all release tags",
+            "$auth = Get-GitHubToken",
+            "$head = @{}",
+            "if($auth) { $head.add('authorization', \"Bearer $auth\") }",
+            "$url = 'https://api.github.com/repos/pnpm/pnpm/releases'",
+            "$latest_ver = [Version]::new(0,0,0,0) # note: Powershell 5 does not support casting 'int' or 'float' to 'System.Version'",
+            "$releases = $(Invoke-WebRequest -Headers $head $url).Content | ConvertFrom-Json",
+            "$releases | ForEach-Object {",
+            "    if (!($_.tag_name -match '([\\d.]+)')) { return }",
+            "    if ($_.prerelease) { return }",
+            "    $ver = [Version]::new($matches[1])",
+            "    if ($ver -gt $latest_ver) { $latest_ver = $ver }",
+            "}",
+            "if ($latest_ver -eq [Version]::new(0,0,0,0)) { error \"Could not match version string in '$url'\"; continue }",
+            "Write-Output $latest_ver"
+        ],
+        "regex": "([\\d.]+)"
     },
     "autoupdate": {
-        "url": "https://github.com/pnpm/pnpm/releases/download/v$version/pnpm-win-x64.exe#/pnpm.exe"
+        "url": "https://gh.ddlc.top/https://github.com/pnpm/pnpm/releases/download/v$version/pnpm-win-x64.exe#/pnpm.exe"
     }
 }
