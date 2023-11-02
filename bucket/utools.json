@@ -1,45 +1,50 @@
 {
     "homepage": "https://u.tools/",
-    "description": "新一代效率工具平台，自由组合丰富插件，打造随手可取的终极神器",
-    "license": "Unknown",
+    "description": "Cross-platform productivity tools",
     "version": "4.2.0",
-    "checkver": {
-        "url": "https://u.tools/",
-        "regex": "uTools-([\\d.]+)\\.exe"
-    },
-    "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://res.u-tools.cn/version2/uTools-$version.exe#/uTools.7z"
-            },
-            "32bit": {
-                "url": "https://res.u-tools.cn/version2/uTools-$version-ia32.exe#/uTools.7z"
-            }
-        }
-    },
+    "license": "Freeware",
     "architecture": {
         "64bit": {
-            "url": "https://res.u-tools.cn/version2/uTools-4.2.0.exe#/uTools.7z",
+            "url": "https://res.u-tools.cn/version2/uTools-4.2.0.exe#/dl.7z",
             "hash": "a0f953d425e02a8bc6a041b747f06a19415aeb102febfffa6b388a85a7d4aa4e",
             "installer": {
-                "script": "7z x $original_dir/PLUGINSDIR/app-64.7z -o\"$original_dir\""
+                "script": [
+                    "7z x \"$dir\\`$PLUGINSDIR\\app-64.7z\" $(\"-o\" + $dir)",
+                    "Remove-Item \"$dir\\`$PLUGINSDIR\" -Recurse",
+                    "Remove-Item \"$dir\\`$R0\" -Recurse"
+                ]
             }
         },
         "32bit": {
-            "url": "https://res.u-tools.cn/version2/uTools-4.2.0-ia32.exe#/uTools.7z",
+            "url": "https://res.u-tools.cn/version2/uTools-4.2.0-ia32.exe#/dl.7z",
             "hash": "9d4f8d54f45e76d91d4cf02d5b59d2a103331ef5528b8ae49b1e29caf8effbaf",
             "installer": {
-                "script": "7z x $original_dir/PLUGINSDIR/app-32.7z -o\"$original_dir\""
+                "script": [
+                    "7z x \"$dir\\`$PLUGINSDIR\\app-32.7z\" $(\"-o\" + $dir)",
+                    "Remove-Item \"$dir\\`$PLUGINSDIR\" -Recurse",
+                    "Remove-Item \"$dir\\`$R0\" -Recurse"
+                ]
             }
         }
     },
-    "extract_dir": "$PLUGINSDIR",
-    "extract_to": "PLUGINSDIR",
-    "post_install": "rm $original_dir/PLUGINSDIR -recurse",
     "shortcuts": [
         [
             "uTools.exe",
             "uTools"
         ]
-    ]
+    ],
+    "checkver": {
+        "url": "https://u.tools/",
+        "regex": "V([\\d.]+)"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://res.u-tools.cn/version2/uTools-$version.exe#/dl.7z"
+            },
+            "32bit": {
+                "url": "https://res.u-tools.cn/version2/uTools-$version-ia32.exe#/dl.7z"
+            }
+        }
+    }
 }
