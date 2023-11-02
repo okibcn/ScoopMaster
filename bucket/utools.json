@@ -1,42 +1,43 @@
 {
-    "version": "4.2.0",
     "homepage": "https://u.tools/",
-    "checkver": {
-        "regex": "uTools-([\\d|\\.]+)\\.exe"
-    },
-    "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://res.u-tools.cn/version2/uTools-$version.exe#/uTools.7z"
-            },
-            "32bit": {
-                "url": "https://res.u-tools.cn/version2/uTools-$version-ia32.exe#/uTools.7z"
-            }
-        }
-    },
+    "description": "Your productive tools set and launcher.",
+    "license": "Freeware",
+    "version": "4.2.0",
     "architecture": {
         "64bit": {
-            "url": "https://res.u-tools.cn/version2/uTools-4.2.0.exe#/uTools.7z",
+            "url": "https://publish.u-tools.cn/version2/uTools-4.2.0.exe#/dl.7z",
             "hash": "a0f953d425e02a8bc6a041b747f06a19415aeb102febfffa6b388a85a7d4aa4e",
             "installer": {
-                "script": "7z x $original_dir/PLUGINSDIR/app-64.7z -o\"$original_dir\""
+                "script": "Expand-7zipArchive \"$dir\\`$PLUGINSDIR/app-64.7z\" \"$dir\""
             }
         },
         "32bit": {
-            "url": "https://res.u-tools.cn/version2/uTools-4.2.0-ia32.exe#/uTools.7z",
+            "url": "https://publish.u-tools.cn/version2/uTools-4.2.0-ia32.exe#/dl.7z",
             "hash": "9d4f8d54f45e76d91d4cf02d5b59d2a103331ef5528b8ae49b1e29caf8effbaf",
             "installer": {
-                "script": "7z x $original_dir/PLUGINSDIR/app-32.7z -o\"$original_dir\""
+                "script": "Expand-7zipArchive \"$dir\\`$PLUGINSDIR/app-32.7z\" \"$dir\""
             }
         }
     },
-    "extract_dir": "$PLUGINSDIR",
-    "extract_to": "PLUGINSDIR",
-    "post_install": "rm $original_dir/PLUGINSDIR -recurse",
+    "post_install": "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\Uninstall uTools.exe\" -Force -Recurse",
     "shortcuts": [
         [
             "uTools.exe",
             "uTools"
         ]
-    ]
+    ],
+    "checkver": {
+        "url": "https://u.tools/",
+        "regex": "uTools-([\\d.]+).exe"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://publish.u-tools.cn/version2/uTools-$version.exe#/dl.7z"
+            },
+            "32bit": {
+                "url": "https://publish.u-tools.cn/version2/uTools-$version-ia32.exe#/dl.7z"
+            }
+        }
+    }
 }
