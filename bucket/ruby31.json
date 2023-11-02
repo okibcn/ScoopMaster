@@ -1,0 +1,56 @@
+{
+    "##": "Based on versions/rubyXX",
+    "suggest": {
+        "MSYS2": "msys2"
+    },
+    "version": "3.1.4-1",
+    "description": "Ruby, a dynamic programming language with a focus on simplicity and productivity. (Version 3.1)",
+    "homepage": "https://rubyinstaller.org",
+    "license": {
+        "identifier": "BSD-3-Clause",
+        "url": "https://github.com/oneclick/rubyinstaller2/blob/master/LICENSE.txt"
+    },
+    "architecture": {
+        "32bit": {
+            "url": "https://github.com/oneclick/rubyinstaller2/releases/download/RubyInstaller-3.1.4-1/rubyinstaller-3.1.4-1-x86.7z",
+            "hash": "sha256:C334C485950E10E2B56BC0CAE342EF4265B7E7EA19992E696713FEBDA2873F7C",
+            "extract_dir": "rubyinstaller-3.1.4-1-x86"
+        },
+        "64bit": {
+            "url": "https://github.com/oneclick/rubyinstaller2/releases/download/RubyInstaller-3.1.4-1/rubyinstaller-3.1.4-1-x64.7z",
+            "hash": "sha256:6701088607EA4B587A31AF76D75CB3FE9F7BCD75FC175CFFCCA22369EBB6331D",
+            "extract_dir": "rubyinstaller-3.1.4-1-x64"
+        }
+    },
+    "post_install": "gem install rake",
+    "env_add_path": [
+        "bin",
+        "gems\\bin"
+    ],
+    "env_set": {
+        "GEM_HOME": "$dir\\gems",
+        "GEM_PATH": "$dir\\gems"
+    },
+    "persist": "gems",
+    "checkver": {
+        "url": "https://raw.githubusercontent.com/oneclick/rubyinstaller.org-website/master/_data/downloads.yaml",
+        "regex": "Ruby (3\\.1[\\d.-]+)"
+    },
+    "autoupdate": {
+        "hash": {
+            "url": "https://raw.githubusercontent.com/oneclick/rubyinstaller.org-website/master/_data/downloads.yaml",
+            "regex": "(?sm)$basename[^.].*?$sha256"
+        },
+        "architecture": {
+            "32bit": {
+                "url": "https://github.com/oneclick/rubyinstaller2/releases/download/RubyInstaller-$version/rubyinstaller-$version-x86.7z",
+                "extract_dir": "rubyinstaller-$version-x86"
+            },
+            "64bit": {
+                "url": "https://github.com/oneclick/rubyinstaller2/releases/download/RubyInstaller-$version/rubyinstaller-$version-x64.7z",
+                "extract_dir": "rubyinstaller-$version-x64"
+            }
+        }
+    },
+    "notes": "Install MSYS2 via 'scoop install msys2' and then run 'ridk install' to install the toolchain."
+}
