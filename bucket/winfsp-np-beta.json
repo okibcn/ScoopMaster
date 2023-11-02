@@ -15,7 +15,7 @@
         ]
     },
     "pre_uninstall": [
-        "'sshfs*', 'ssh' | ForEach-Object { Stop-Process -Force -Name $_ -ErrorAction SilentlyContinue }",
+        "if ($fsptool = where.exe fsptool.exe | Select -First 1) { & $fsptool unload }",
         "'WinFsp.Launcher', 'WinFsp', 'StorSvc' | ForEach-Object { sc.exe stop $_ | Out-Null }"
     ],
     "uninstaller": {
