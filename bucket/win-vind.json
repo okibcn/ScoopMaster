@@ -1,32 +1,38 @@
 {
     "version": "5.5.1",
-    "description": "You can operate Windows with key bindings like Vim.",
     "homepage": "https://github.com/pit-ray/win-vind",
+    "description": "A Vim-oriented toy box that allows the user to operate Windows with key bindings like Vim. The app consists of various useful features inspired by Vim and its plugins.",
     "license": "MIT",
     "architecture": {
         "64bit": {
             "url": "https://github.com/pit-ray/win-vind/releases/download/v5.5.1/win-vind_5.5.1_64bit_portable.zip",
             "hash": "ef6c91bd8c281ee5f79de4643e9fdc3817e8db4779f952943ed604d4a3f0393f"
+        },
+        "32bit": {
+            "url": "https://github.com/pit-ray/win-vind/releases/download/v5.5.1/win-vind_5.5.1_32bit_portable.zip",
+            "hash": "7165e48aab08acc258122ca1521076b65b131b65cb6a99a762e2263ac0007bb4"
         }
     },
-    "pre_install": [
-        "if (!(Test-Path \"$persist_dir\")) {",
-        "   New-Item -Path \"$dir\" -Name \"config\" -ItemType \"Directory\" | Out-Null",
-        "   New-Item -Path \"$dir\" -Name \"config\\.vindrc\" -ItemType \"File\" | Out-Null",
-        "}"
-    ],
-    "bin": "win-vind.exe",
-    "persist": "config\\.vindrc",
     "extract_dir": "win-vind",
-    "checkver": {
-        "url": "https://api.github.com/repos/pit-ray/win-vind/releases/latest",
-        "jp": "$.tag_name",
-        "re": "v([\\d.]+)"
-    },
+    "bin": "win-vind.exe",
+    "shortcuts": [
+        [
+            "win-vind.exe",
+            "win-vind"
+        ]
+    ],
+    "persist": [
+        "config",
+        "log"
+    ],
+    "checkver": "github",
     "autoupdate": {
         "architecture": {
             "64bit": {
                 "url": "https://github.com/pit-ray/win-vind/releases/download/v$version/win-vind_$version_64bit_portable.zip"
+            },
+            "32bit": {
+                "url": "https://github.com/pit-ray/win-vind/releases/download/v$version/win-vind_$version_32bit_portable.zip"
             }
         }
     }
