@@ -1,15 +1,15 @@
 {
     "version": "7.4.6+145",
-    "description": "A cross-platform app made for e-hentai & exhentai by Flutter",
+    "description": "An E-Hentai app for Android & iOS & Windows & MacOS & Linux.",
     "homepage": "https://github.com/jiangtian616/JHenTai",
     "license": "Apache-2.0",
-    "notes": [
-        "Config and data are stored in %USERPROFILE%\\AppData\\Roaming\\top.jtmonster\\jhentai",
-        "They will not be automatically removed during uninstallation even with -p flag. Delete them manually if needed."
-    ],
     "url": "https://github.com/jiangtian616/JHenTai/releases/download/v7.4.6+145/JHenTai_7.4.6+145_Windows.zip",
     "hash": "1f24e67618f0d7b4b7872731bd8b558285fa0090cf58e1a8a8455c5563f1b374",
-    "extract_dir": "JHenTai_7.4.6+145",
+    "bin": "jhentai.exe",
+    "pre_install": [
+        "Move-Item -Path \"$dir\\JHenTai_*\\*\" -Destination \"$dir\"",
+        "Remove-Item \"$dir\\JHenTai_*\" -Force -Recurse"
+    ],
     "shortcuts": [
         [
             "jhentai.exe",
@@ -18,10 +18,9 @@
     ],
     "checkver": {
         "url": "https://github.com/jiangtian616/JHenTai/releases/latest",
-        "regex": "/releases/tag/(?:v|V)?([\\d.+]+)"
+        "regex": "v(\\d+\\.\\d+\\.\\d+\\+\\d+)"
     },
     "autoupdate": {
-        "url": "https://github.com/jiangtian616/JHenTai/releases/download/v$version/JHenTai_$version_Windows.zip",
-        "extract_dir": "JHenTai_$version"
+        "url": "https://github.com/jiangtian616/JHenTai/releases/download/v$version/JHenTai_$version_Windows.zip"
     }
 }
