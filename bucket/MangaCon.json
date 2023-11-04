@@ -1,15 +1,15 @@
 {
-    "version": "3.0.10.41",
+    "version": "3.0.10.42",
     "description": "MangaCon is a tool that can help you parsing and downloading manga from online-manga websites. It is powerful, and easy to use!",
     "homepage": "http://www.mangacon.net.cn/",
     "license": "Freeware",
     "url": "http://dl.mangacon.net.cn/v3/mangacon_v3.0.10.42.zip",
     "hash": "42ebafada7418bd947c8a4d0014071c755a6d116398846a3ad38151dad50b681",
     "pre_install": [
-    "# Create license file",
-    "if (!(Test-Path -Path \"$dir\\McUser.key\")) {",
-    "    (New-Item -ItemType \"file\" -Path \"$dir\" -Name \"McUser.key\") | Out-Null",
-    "}"
+        "# Create license file",
+        "if (!(Test-Path -Path \"$dir\\McUser.key\")) {",
+        "    (New-Item -ItemType \"file\" -Path \"$dir\" -Name \"McUser.key\") | Out-Null",
+        "}"
     ],
     "bin": "MangaCon.exe",
     "shortcuts": [
@@ -18,6 +18,12 @@
             "MangaCon"
         ]
     ],
-    "persist": "McUser.key"
+    "persist": "McUser.key",
+    "checkver": {
+        "url": "http://dl.mangacon.net.cn/v3",
+        "regex": "href=\"mangacon_v(3.[\\d.]+).zip"
+    },
+    "autoupdate": {
+        "url": "http://dl.mangacon.net.cn/v3/mangacon_v$version.zip"
+    }
 }
-
