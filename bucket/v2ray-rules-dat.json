@@ -1,47 +1,38 @@
 {
     "version": "202311032208",
-    "description": "Data files from Loyalsoldier/v2ray-rules-dat, works for v2ray and Xray.",
+    "description": "Enhanced ruleset for V2Ray (unofficial)",
     "homepage": "https://github.com/Loyalsoldier/v2ray-rules-dat",
-    "license": {
-        "identifier": "GPL-3.0-or-later",
-        "url": "https://github.com/Loyalsoldier/v2ray-rules-dat/raw/master/LICENSE"
-    },
+    "license": "GPL-3.0-only",
     "depends": "v2ray",
-    "url": [
-        "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/download/202311032208/geoip.dat",
-        "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/download/202311032208/geosite.dat"
-    ],
-    "hash": [
-        "62ff09896903045df5fdff2d36cef83b78caa43879cb37c707317c512892fa0e",
-        "728c8e2a4ea3d991922ade05673918f1e1d224eb648c62872cac04c2ae4d41c6"
-    ],
+    "url": "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/download/202311032208/rules.zip",
+    "hash": "689106a9adfd18828563c6ebc96455061ea805ace6a316329a436357965baff0",
     "installer": {
         "script": [
-            "@('LoyalsoldierSite.dat', 'LoyalsoldierGeoIP.dat', 'geosite.dat', 'geoip.dat') | ForEach-Object { Remove-Item \"$(appdir v2ray $global)\\current\\$_\" -Force -ErrorAction SilentlyContinue }",
-            "New-Item \"$(appdir v2ray $global)\\current\\LoyalsoldierSite.dat\" -ItemType HardLink -Target \"$dir\\geosite.dat\" | Out-Null",
-            "New-Item \"$(appdir v2ray $global)\\current\\LoyalsoldierIP.dat\" -ItemType HardLink -Target \"$dir\\geoip.dat\" | Out-Null",
-            "New-Item \"$(appdir v2ray $global)\\current\\geosite.dat\" -ItemType HardLink -Target \"$dir\\geosite.dat\" | Out-Null",
-            "New-Item \"$(appdir v2ray $global)\\current\\geoip.dat\" -ItemType HardLink -Target \"$dir\\geoip.dat\" | Out-Null",
-            "Write-Host \"v2ray-rules-dat installation finished, it's suggested to restart your applications using v2ray-rules-dat now.\" -ForegroundColor Magenta"
+            "if (-not (Test-Path \"$persist_dir\\v2ray-rules-dat\")) {",
+            "    Copy-Item \"$(appdir v2ray $global)\\current\\geoip.dat\" -Destination \"$dir\\geoip.dat.bak\"",
+            "    Copy-Item \"$(appdir v2ray $global)\\current\\geosite.dat\" -Destination \"$dir\\geosite.dat.bak\"",
+            "}",
+            "function LinkFile([String] $file, [String] $source = $file) {",
+            "    Write-Host \"Creating hardlink for $file\"",
+            "    New-Item -Force -ItemType HardLink -Path \"$(appdir v2ray $global)\\current\" -Name $file -Target \"$dir\\$source\" | Out-Null",
+            "}",
+            "LinkFile 'geoip.dat'",
+            "LinkFile 'geosite.dat'"
         ]
     },
     "uninstaller": {
         "script": [
-            "Remove-Item \"$(appdir v2ray $global)\\current\\LoyalsoldierIP.dat\" -Force -ErrorAction 'SilentlyContinue'",
-            "Remove-Item \"$(appdir v2ray $global)\\current\\LoyalsoldierSite.dat\" -Force -ErrorAction 'SilentlyContinue'",
-            "Remove-Item \"$(appdir v2ray $global)\\current\\geosite.dat\" -Force -ErrorAction 'SilentlyContinue'",
-            "Remove-Item \"$(appdir v2ray $global)\\current\\geoip.dat\" -Force -ErrorAction 'SilentlyContinue'"
+            "Copy-Item \"$dir\\geoip.dat.bak\" -Destination \"$(appdir v2ray $global)\\current\\geoip.dat\" -Force",
+            "Copy-Item \"$dir\\geosite.dat.bak\" -Destination \"$(appdir v2ray $global)\\current\\geosite.dat\" -Force"
         ]
     },
-    "env_set": {
-        "V2RAY_LOCATION_ASSET": "$(scoop prefix v2ray)"
-    },
+    "persist": [
+        "geoip.dat.bak",
+        "geosite.dat.bak"
+    ],
     "checkver": "github",
     "autoupdate": {
-        "url": [
-            "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/download/$version/geoip.dat",
-            "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/download/$version/geosite.dat"
-        ],
+        "url": "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/download/$version/rules.zip",
         "hash": {
             "url": "$url.sha256sum"
         }
