@@ -21,7 +21,7 @@
     },
     "pre_uninstall": [
         "if (!(is_admin)) { error \"$app requires admin rights to $cmd\"; break }",
-        "Start-Process 'taskkill' -Verb 'RunAs' -WindowStyle 'Hidden' -ArgumentList ('/F', '/IM', 'DeepL.exe')"
+        "Start-Process 'taskkill' -Verb 'RunAs' -WindowStyle 'Hidden' -ArgumentList @('/F', '/IM', 'DeepL.exe')"
     ],
     "uninstaller": {
         "script": "Start-Process \"$env:AppData\\Programs\\Zero Install\\0install-win.exe\" -ArgumentList @('remove https://appdownload.deepl.com/windows/0install/deepl.xml', '--batch', '--background') -Wait -Verb RunAs | Out-Null"
