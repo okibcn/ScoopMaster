@@ -1,48 +1,59 @@
 {
-    "$schema": "https://raw.githubusercontent.com/ScoopInstaller/Scoop/master/schema.json",
     "version": "1.84.0",
-    "description": "A lightweight but powerful source code editor.",
+    "description": "Lightweight but powerful source code editor",
     "homepage": "https://code.visualstudio.com/",
     "license": {
-        "identifier": "Proprietary|MIT",
-        "url": "https://code.visualstudio.com/License"
+        "identifier": "Freeware",
+        "url": "https://code.visualstudio.com/License/"
     },
+    "notes": "Add Visual Studio Code as a context menu option by running: \"$dir\\install-context.reg\"",
     "architecture": {
         "64bit": {
-            "url": "https://update.code.visualstudio.com/1.84.0/win32-x64-archive/stable#/dl.7z",
-            "hash": "455f9467ae70369e6c265b7ea2fbe8b53c1f8e53298712ae5bd75f963d1a5652"
-        },
-        "arm64": {
-            "url": "https://update.code.visualstudio.com/1.84.0/win32-arm64-archive/stable#/dl.7z",
-            "hash": "9f845496aa3cf2557c6929fdc0a7d1748fd094d2f7b74f1f12c91061110bc039"
+            "url": [
+                "https://az764295.vo.msecnd.net/stable/d037ac076cee195194f93ce6fe2bdfe2969cc82d/VSCode-win32-x64-1.84.0.zip",
+                "https://raw.githubusercontent.com/ScoopInstaller/Extras/master/scripts/vscode/install-context.reg",
+                "https://raw.githubusercontent.com/ScoopInstaller/Extras/master/scripts/vscode/uninstall-context.reg"
+            ],
+            "hash": [
+                "455f9467ae70369e6c265b7ea2fbe8b53c1f8e53298712ae5bd75f963d1a5652",
+                "8ef94c82319b69754bdae0099af266d184d179a37af8b8beb11334c6ab639752",
+                "df2a5162e72e2518e2b75b4337c8e7b46c136554872af90fa0de1cf6ebef376f"
+            ]
         }
     },
     "env_add_path": "bin",
-    "shortcuts": [
-        [
-            "code.exe",
-            "Visual Studio Code"
-        ]
+    "shortcuts": [["code.exe", "Visual Studio Code"]],
+    "post_install": [
+        "if (Test-Path \"$dir\\install-context.reg\") {",
+        "  $codepath = \"$dir\\Code.exe\".Replace('\\', '\\\\')",
+        "  $content = Get-Content \"$dir\\install-context.reg\"",
+        "  $content = $content.Replace('$code', $codepath)",
+        "  if ($global) {",
+        "    $content = $content.Replace('HKEY_CURRENT_USER', 'HKEY_LOCAL_MACHINE')",
+        "  }",
+        "  $content | Set-Content -Path \"$dir\\install-context.reg\"",
+        "}",
+        "if (Test-Path \"$dir\\uninstall-context.reg\") {",
+        "  $content = Get-Content \"$dir\\uninstall-context.reg\"",
+        "  if ($global) {",
+        "    $content = $content.Replace('HKEY_CURRENT_USER', 'HKEY_LOCAL_MACHINE')",
+        "  }",
+        "  $content | Set-Content -Path \"$dir\\uninstall-context.reg\"",
+        "}"
     ],
-    "persist": "data",
     "checkver": {
         "url": "https://code.visualstudio.com/sha?build=stable",
-        "jsonpath": "$.products[?(@.platform.os == 'win32-x64-archive')].name"
+        "jsonpath": "$.products[?(@.platform.os == 'win32-x64-archive')].url",
+        "regex": "^https?://(?<domain>.*)/stable/(?<release>\\w+)/VSCode-win32-x64-(?<version>[\\d.]+).zip",
+        "replace": "${3}"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://update.code.visualstudio.com/$version/win32-x64-archive/stable#/dl.7z",
+                "url": "https://$matchDomain/stable/$matchRelease/VSCode-win32-x64-$matchVersion.zip",
                 "hash": {
                     "url": "https://code.visualstudio.com/sha?build=stable",
                     "jsonpath": "$.products[?(@.platform.os == 'win32-x64-archive')].sha256hash"
-                }
-            },
-            "arm64": {
-                "url": "https://update.code.visualstudio.com/$version/win32-arm64-archive/stable#/dl.7z",
-                "hash": {
-                    "url": "https://code.visualstudio.com/sha?build=stable",
-                    "jsonpath": "$.products[?(@.platform.os == 'win32-arm64-archive')].sha256hash"
                 }
             }
         }

@@ -1,31 +1,37 @@
 {
     "version": "117.0.5938.157",
     "description": "Chromium fork for linux named after radioactive element No. 90.",
-    "homepage": "https://thorium.rocks/",
-    "license": "BSD-3-Clause",
-    "url": "https://github.com/Alex313031/Thorium-Win-AVX2/releases/download/M117.0.5938.157/Thorium_AVX2_117.0.5938.157.zip",
-    "hash": "c9fde8a85e050ef62afe1238dbd215aea01fa0fcc330b0006ccfa855c3ac2fad",
-    "extract_dir": "BIN",
+    "license": "GNU General Public License v3.0",
+    "homepage": "https://alex313031.blogspot.com/",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/Alex313031/Thorium-AVX2/releases/download/M117.0.5938.157/Thorium_AVX2_117.0.5938.157.zip",
+            "hash": "c9fde8a85e050ef62afe1238dbd215aea01fa0fcc330b0006ccfa855c3ac2fad"
+        }
+    },
     "bin": [
         [
-            "thorium.exe",
-            "thorium",
-            "--user-data-dir=\"$dir\\User Data\" --allow-outdated-plugins --disable-logging --disable-breakpad"
+            "THORIUM.BAT",
+            "Thorium-AVX2"
         ]
     ],
     "shortcuts": [
         [
-            "thorium.exe",
-            "Thorium",
-            "--user-data-dir=\"$dir\\User Data\" --allow-outdated-plugins --disable-logging --disable-breakpad"
+            "THORIUM.BAT",
+            "Thorium-AVX2"
         ]
     ],
-    "persist": "User Data",
+    "persist": "USER_DATA",
     "checkver": {
-        "github": "https://github.com/Alex313031/Thorium-Win-AVX2",
-        "regex": "releases/tag/M([\\d.]+)"
+        "url": "https://api.github.com/repos/Alex313031/Thorium-AVX2/releases/latest",
+        "jsonpath": "$.tag_name",
+        "regex": "M(?<version>[\\d]+\\.[\\d]+\\.[\\d]+\\.[\\d]+)"
     },
     "autoupdate": {
-        "url": "https://github.com/gitextensions/gitextensions/releases/download/M$version/Thorium_AVX2_$version.zip"
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/Alex313031/Thorium-AVX2/releases/download/M$version/Thorium_AVX2_$version.zip"
+            }
+        }
     }
 }
