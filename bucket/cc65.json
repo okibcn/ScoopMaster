@@ -1,10 +1,19 @@
 {
-    "##": "This file is a template. Fill the blanks and add or remove fields as necessary.",
-    "version": "snapshot",
-    "description": "cc65 is a complete cross development package for 65(C)02 systems, including a powerful macro assembler, a C compiler, linker, librarian and several other tools.",
+    "version": "6760770800",
+    "description": "cc65 - a freeware C compiler for 6502 based systems",
     "homepage": "https://cc65.github.io/",
-    "license": "Zlib",
-    "url": "https://sourceforge.net/projects/cc65/files/cc65-snapshot-win32.zip",
+    "license": "zlib-acknowledgement",
+    "architecture": {
+        "64bit": {
+            "url": "https://nightly.link/cc65/cc65/workflows/snapshot-on-push-master/master/cc65-snapshot-win64.zip#/_.zip",
+            "hash": "3a56d23c53916ee300f6beae0014dde39992ec7e4b294cb9e03281e93a0a6eed"
+        },
+        "32bit": {
+            "url": "https://nightly.link/cc65/cc65/workflows/snapshot-on-push-master/master/cc65-snapshot-win32.zip#/_.zip",
+            "hash": "06e5c3783608ce38dcc361abc0b1d716ff02d707d36133ddc93ebd3ae95bddce"
+        }
+    },
+    "pre_install": "Expand-7zipArchive -Removal \"$dir/cc65-snapshot-win$($architecture.Substring(0, 2)).zip\" \"$dir\"",
     "bin": [
         "bin/ar65.exe",
         "bin/ca65.exe",
@@ -18,5 +27,24 @@
         "bin/od65.exe",
         "bin/sim65.exe",
         "bin/sp65.exe"
-    ]
+    ],
+    "env_set": {
+        "CC65_HOME": "$dir",
+        "LD65_LIB": "$dir\\lib",
+        "LD65_CFG": "$dir\\cfg"
+    },
+    "checkver": {
+        "script": "try { (Invoke-RestMethod 'https://api.github.com/repositories/8932489/actions/workflows/snapshot-on-push-master.yml/runs?branch=master&status=success').workflow_runs[0].id } catch { '' }",
+        "regex": "\\A(\\d+)\\Z"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://nightly.link/cc65/cc65/workflows/snapshot-on-push-master/master/cc65-snapshot-win64.zip#/_.zip"
+            },
+            "32bit": {
+                "url": "https://nightly.link/cc65/cc65/workflows/snapshot-on-push-master/master/cc65-snapshot-win32.zip#/_.zip"
+            }
+        }
+    }
 }
