@@ -1,31 +1,21 @@
 {
     "version": "5.10.1",
-    "description": "The extra resources of v2ray",
-    "homepage": "https://github.com/v2fly/v2ray-core",
+    "description": "A platform for building proxies to bypass network restrictions.",
+    "homepage": "https://www.v2fly.org/en_US/",
     "license": "MIT",
     "depends": "v2ray",
     "url": "https://github.com/v2fly/v2ray-core/releases/download/v5.10.1/v2ray-extra.zip",
     "hash": "ff795e1fe7eb7a5f2119473c446d3b460804809ab416d20a819d6a759c683aec",
-    "installer": {
-        "script": [
-            "function LinkDir([String] $destination, [String] $source = $destination) {",
-            "    Write-Host \"Creating Junction for $destination\"",
-            "    New-Item -Force -ItemType Junction -Path \"$(appdir v2ray $global)\\current\\$destination\" -Target \"$dir\\$source\" | Out-Null",
-            "}",
-            "LinkDir 'browserforwarder'"
-        ]
+    "checkver": {
+        "github": "https://github.com/v2fly/v2ray-core"
     },
-    "uninstaller": {
-        "script": [
-            "function DelDir([String] $destination) {",
-            "    if(Test-Path -Path \"$(appdir v2ray $global)\\current\\$destination\"){",
-            "        Remove-Item \"$(appdir v2ray $global)\\current\\$destination\" -Recurse -Force",
-            "    }",
-            "}",
-            "DelDir 'browserforwarder'"
-        ]
-    },
-    "checkver": "github",
+    "post_install": [
+        "if (Test-Path \\$(appdir v2ray)\\current\\v2ray.exe\\) {",
+        "    foreach ($obj in Get-ChildItem $dir) {",
+        "        New-Item -Path \\$(appdir v2ray)\\current\\$($obj.Name)\\ -ItemType SymbolicLink -Value $obj\\",
+        "    }",
+        "}"
+    ],
     "autoupdate": {
         "url": "https://github.com/v2fly/v2ray-core/releases/download/v$version/v2ray-extra.zip"
     }
