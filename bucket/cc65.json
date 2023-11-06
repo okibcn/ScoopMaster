@@ -6,14 +6,14 @@
     "architecture": {
         "64bit": {
             "url": "https://nightly.link/cc65/cc65/workflows/snapshot-on-push-master/master/cc65-snapshot-win64.zip#/_.zip",
-            "hash": "3a56d23c53916ee300f6beae0014dde39992ec7e4b294cb9e03281e93a0a6eed"
+            "hash": "3a56d23c53916ee300f6beae0014dde39992ec7e4b294cb9e03281e93a0a6eed",
+            "pre_install": "Expand-7zipArchive -Removal \"$dir/cc65-snapshot-win64.zip\" \"$dir\""
         },
         "32bit": {
-            "url": "https://nightly.link/cc65/cc65/workflows/snapshot-on-push-master/master/cc65-snapshot-win32.zip#/_.zip",
-            "hash": "06e5c3783608ce38dcc361abc0b1d716ff02d707d36133ddc93ebd3ae95bddce"
+            "url": "https://downloads.sourceforge.net/project/cc65/cc65-snapshot-win32.zip",
+            "hash": "sha1:6fa27dd54ad58315e519dc5ce603105dac277ba0"
         }
     },
-    "pre_install": "Expand-7zipArchive -Removal \"$dir/cc65-snapshot-win$($architecture.Substring(0, 2)).zip\" \"$dir\"",
     "bin": [
         "bin/ar65.exe",
         "bin/ca65.exe",
@@ -34,8 +34,8 @@
         "LD65_CFG": "$dir\\cfg"
     },
     "checkver": {
-        "script": "try { (Invoke-RestMethod 'https://api.github.com/repositories/8932489/actions/workflows/snapshot-on-push-master.yml/runs?branch=master&status=success').workflow_runs[0].id } catch { '' }",
-        "regex": "\\A(\\d+)\\Z"
+        "url": "https://api.github.com/repositories/8932489/actions/workflows/snapshot-on-push-master.yml/runs?branch=master&status=success",
+        "jsonpath": "$.workflow_runs[0].id"
     },
     "autoupdate": {
         "architecture": {
@@ -43,7 +43,10 @@
                 "url": "https://nightly.link/cc65/cc65/workflows/snapshot-on-push-master/master/cc65-snapshot-win64.zip#/_.zip"
             },
             "32bit": {
-                "url": "https://nightly.link/cc65/cc65/workflows/snapshot-on-push-master/master/cc65-snapshot-win32.zip#/_.zip"
+                "url": "https://downloads.sourceforge.net/project/cc65/cc65-snapshot-win32.zip",
+                "hash": {
+                    "mode": "sourceforge"
+                }
             }
         }
     }
