@@ -1,0 +1,68 @@
+{
+  "version": "119.0.6045.106",
+  "description": "Fast, secure, and free web browser, built for the modern web.",
+  "homepage": "https://www.google.com/chrome/",
+  "license": {
+      "identifier": "Freeware",
+      "url": "https://www.google.com/chrome/privacy/eula_text.html"
+  },
+  "architecture": {
+      "64bit": {
+          "url": "https://dl.google.com/release2/chrome/adso5ghb57labynkadlfo2ukplhq_119.0.6045.106/119.0.6045.106_chrome_installer.exe#dl.7z",
+          "hash": "c255b493ce939b874d0f338799aab5053d7b21be126c724fdd2324a4dca52abd"
+      },
+      "32bit": {
+          "url": "https://dl.google.com/release2/chrome/hidxab2rg5rn2v3ohn5t3n62va_119.0.6045.106/119.0.6045.106_chrome_installer.exe#/dl.7z",
+          "hash": "e36ca68a39d643d16146b1c02318f48cd76bde8c327ff3a912632eec6e907ac0"
+      }
+  },
+  "installer": {
+      "script": "Expand-7zipArchive \"$dir\\chrome.7z\" -ExtractDir 'Chrome-bin' -Removal"
+  },
+  "bin": [
+      [
+          "chrome.exe",
+          "chrome",
+          "--user-data-dir=\"$dir\\User Data\""
+      ]
+  ],
+  "shortcuts": [
+      [
+          "chrome.exe",
+          "Google Chrome",
+          "--user-data-dir=\"$dir\\User Data\""
+      ]
+  ],
+  "post_install": [
+      "if (!(Test-Path \"$dir\\User Data\\*\") -and (Test-Path \"$env:LocalAppData\\Google\\Chrome\\User Data\")) {",
+      "    info '[Portable Mode]: Copying user data...'",
+      "    Copy-Item \"$env:LocalAppData\\Google\\Chrome\\User Data\\*\" \"$dir\\User Data\" -Recurse",
+      "}"
+  ],
+  "env_set": {
+      "CHROME_EXECUTABLE": "$dir\\chrome.exe"
+  },
+  "persist": "User Data",
+  "checkver": {
+      "url": "https://scoopinstaller.github.io/UpdateTracker/googlechrome/chrome.min.xml",
+      "regex": "(?sm)<stable32><version>(?<version>[\\d.]+)</version>.+release2/chrome/(?<32>[\\w-]+)_.+<stable64>.+release2/chrome/(?<64>[\\w-]+)_.+</stable64>"
+  },
+  "autoupdate": {
+      "architecture": {
+          "64bit": {
+              "url": "https://dl.google.com/release2/chrome/$match64_$version/$version_chrome_installer.exe#/dl.7z",
+              "hash": {
+                  "url": "https://scoopinstaller.github.io/UpdateTracker/googlechrome/chrome.min.xml",
+                  "xpath": "/chromechecker/stable64[version='$version']/sha256"
+              }
+          },
+          "32bit": {
+              "url": "https://dl.google.com/release2/chrome/$match32_$version/$version_chrome_installer.exe#/dl.7z",
+              "hash": {
+                  "url": "https://scoopinstaller.github.io/UpdateTracker/googlechrome/chrome.min.xml",
+                  "xpath": "/chromechecker/stable32[version='$version']/sha256"
+              }
+          }
+      }
+  }
+}

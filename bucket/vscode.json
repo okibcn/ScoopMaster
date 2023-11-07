@@ -16,10 +16,6 @@
         "64bit": {
             "url": "https://update.code.visualstudio.com/1.84.1/win32-x64-archive/stable#/dl.7z",
             "hash": "af24cde1f60286bbd69b6bbb4ab8ddcd78edd2acdd4d8d260acc41db84e5a940"
-        },
-        "arm64": {
-            "url": "https://update.code.visualstudio.com/1.84.1/win32-arm64-archive/stable#/dl.7z",
-            "hash": "5d063fab941395439159a5bcf7a84854b6b1f854864b83653a09c0d62c4a48b9"
         }
     },
     "env_add_path": "bin",
@@ -33,8 +29,8 @@
         "$dirpath = \"$dir\".Replace('\\', '\\\\')",
         "$exepath = \"$dir\\Code.exe\".Replace('\\', '\\\\')",
         "'install-associations', 'uninstall-associations', 'install-context', 'uninstall-context' | ForEach-Object {",
-        "  if (Test-Path \"$bucketsdir\\extras\\scripts\\vscode\\$_.reg\") {",
-        "    $content = Get-Content \"$bucketsdir\\extras\\scripts\\vscode\\$_.reg\"",
+        "  if (Test-Path \"$bucketsdir\\$bucket\\scripts\\vscode\\$_.reg\") {",
+        "    $content = Get-Content \"$bucketsdir\\$bucket\\scripts\\vscode\\$_.reg\"",
         "    $content = $content.Replace('$codedir', $dirpath)",
         "    $content = $content.Replace('$code', $exepath)",
         "    if ($global) {",
@@ -72,13 +68,6 @@
                 "hash": {
                     "url": "https://code.visualstudio.com/sha?build=stable",
                     "jsonpath": "$.products[?(@.platform.os == 'win32-x64-archive')].sha256hash"
-                }
-            },
-            "arm64": {
-                "url": "https://update.code.visualstudio.com/$version/win32-arm64-archive/stable#/dl.7z",
-                "hash": {
-                    "url": "https://code.visualstudio.com/sha?build=stable",
-                    "jsonpath": "$.products[?(@.platform.os == 'win32-arm64-archive')].sha256hash"
                 }
             }
         }
