@@ -1,6 +1,6 @@
 {
     "version": "0.7.2.8",
-    "description": "a modern personal remote session manager and launcher.",
+    "description": "One Remote Access Manager to Rule Them All",
     "homepage": "https://github.com/1Remote/1Remote",
     "license": "GPL-3.0",
     "url": "https://github.com/1Remote/1Remote/releases/download/0.7.2.8/PRemoteM.zip",
@@ -9,12 +9,17 @@
     "shortcuts": [
         [
             "PRemoteM.exe",
-            "1Remote"
+            "PRemoteM"
         ]
     ],
+    "persist": "PRemoteM.db",
+    "pre_install": [
+        "if (!(Test-Path \"$persist_dir\\PRemoteM.db\")) {",
+        "    New-Item -Force -Path \"$dir\" -Name 'PRemoteM.db' -Value '' | Out-Null",
+        "}"
+    ],
     "checkver": {
-        "url": "https://github.com/1Remote/1Remote/releases",
-        "regex": "tree/([\\d+.]+)"
+        "url": "https://github.com/1Remote/1Remote/releases"
     },
     "autoupdate": {
         "url": "https://github.com/1Remote/1Remote/releases/download/$version/PRemoteM.zip"
