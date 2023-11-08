@@ -9,7 +9,8 @@
             "hash": "66ccb395c9184dce6822dfbb9970c877383b3ead6d9417b5106a844aac512989"
         }
     },
-    "pre_install": [
+  "pre_install": [
+    "Get-Item \"$dir\\SumatraPDF*.exe\" | Rename-Item -NewName 'SumatraPDF.exe'",
         "$file = 'SumatraPDF-settings.txt'",
         "if (-not (Test-Path \"$persist_dir\\$file\")) {",
         "    Write-Host 'File' $file 'does not exists. Creating.' -f Yellow",
@@ -17,7 +18,6 @@
         "    Set-Content \"$dir\\$file\" ($CONT -join \"`r`n\") -Encoding Ascii",
         "}"
     ],
-    "installer": "Get-Item \"$dir\\SumatraPDF*.exe\" | Rename-Item -NewName 'SumatraPDF.exe'",
     "bin": "SumatraPDF.exe",
     "shortcuts": [
         [
