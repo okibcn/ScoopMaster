@@ -1,36 +1,54 @@
 {
-    "version": "5.8.21",
+    "version": "5.9.22",
+    "description": "A password management solution for a secure digital life.",
     "homepage": "https://nordpass.com/",
-    "description": "A password manager and generator app with an encrypted vault for secure passwords, created by the developers of NordVPN.",
-    "license": {
-        "identifier": "Freeware",
-        "url": "https://my.nordaccount.com/legal/terms-of-service/nordpass/"
-    },
+    "license": "Shareware",
     "architecture": {
         "64bit": {
             "url": "https://downloads.npass.app/windows/NordPassSetup.exe#/dl.7z",
-            "hash": "sha512:027cbe6312f07cf5b9edb1b5b5fc9d748468a1f701245f7249be476892ca44f1e8816bf9dbcdd1f8495739570002b866bfcc2e8bfff765faa424064167a744c1",
-            "pre_install": "Expand-7zipArchive \"$dir\\app-64.7z\" $dir -Removal"
+            "hash": "sha512:e6f02a2e36685bed3eacd5cb72a227d234e716f679dcde63c973dc5979b6892891f7814ae789e980ad8388975be5e70781df9ffa857a8dd56b11b952c2d2dad8",
+            "pre_install": "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\""
+        },
+        "32bit": {
+            "url": "https://downloads.npass.app/windows_x86/NordPassSetup_x86.exe#/dl.7z",
+            "hash": "sha512:281c9e2941a555f56d87400d5eb2c82305218e8aac281000996853cddfae52ab19d108b05b9d3201bdbb5abba7500160cf1775c131dcc5203ecca6adc3218860",
+            "pre_install": "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-32.7z\" \"$dir\""
         }
     },
-    "extract_dir": "$PLUGINSDIR",
+    "post_install": "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\Uninstall*\", \"$dir\\resources\\app-update.yml\"  -Force -Recurse",
+    "bin": [
+        [
+            "NordPass.exe",
+            "NordPass",
+            "--user-data-dir=\"$dir\\User Data\""
+        ]
+    ],
     "shortcuts": [
         [
             "NordPass.exe",
-            "NordPass"
+            "NordPass",
+            "--user-data-dir=\"$dir\\User Data\""
         ]
     ],
+    "persist": "User Data",
     "checkver": {
         "url": "https://downloads.npass.app/windows/latest.yml",
-        "regex": "version:\\s([\\d.]+)"
+        "regex": "version: ([\\d.]+)"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
                 "url": "https://downloads.npass.app/windows/NordPassSetup.exe#/dl.7z",
                 "hash": {
-                    "url": "$baseurl/latest.yml",
-                    "regex": "sha512:\\s$base64"
+                    "url": "https://downloads.npass.app/windows/latest.yml",
+                    "regex": "sha512:\\s*$base64"
+                }
+            },
+            "32bit": {
+                "url": "https://downloads.npass.app/windows_x86/NordPassSetup_x86.exe#/dl.7z",
+                "hash": {
+                    "url": "https://downloads.npass.app/windows_x86/latest.yml",
+                    "regex": "sha512:\\s*$base64"
                 }
             }
         }
