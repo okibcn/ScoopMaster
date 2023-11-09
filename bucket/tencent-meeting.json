@@ -1,5 +1,5 @@
 {
-    "version": "3.19.30.495",
+    "version": "3.20.5.478",
     "description": "Video conferencing app by Tencent.",
     "homepage": "https://ke.qq.com",
     "license": {
@@ -13,8 +13,8 @@
             "Remove-Item \"$dir\\`$TEMP\",\"$dir\\`$WINDIR\",\"$dir\\`$PLUGINSDIR\" -Force -Recurse"
         ]
     },
-    "url": "https://webcdn.m.qq.com/spcmgr/download/TencentMeeting_0300000000_3.19.30.495.publish.officialwebsite.exe#/dl.7z",
-    "hash": "ca509feed984e6570c506a4f6ee4ad52017b04b9e9538941f78637b265c8afd2",
+    "url": "https://webcdn.m.qq.com/spcmgr/download/TencentMeeting_0300000000_3.20.5.478.publish.officialwebsite.exe#/dl.7z",
+    "hash": "07ea0ff527e5864a7e95f3c90c8943c036475f851c254a96ecac8b17b1e7d918",
     "bin": "wemeetapp.exe",
     "shortcuts": [
         [
@@ -24,13 +24,15 @@
     ],
     "checkver": {
         "url": "https://pc.qq.com/detail/18/detail_26218.html",
-        "regex": "_([\\d+.]+).publish.officialwebsite.exe"
+        "regex": "(?<ver>\\.\\d+\\.\\d+\\.\\d+)</li>",
+        "replace": "3${ver}"
     },
     "autoupdate": {
         "url": "https://webcdn.m.qq.com/spcmgr/download/TencentMeeting_0300000000_$version.publish.officialwebsite.exe#/dl.7z"
     },
     "notes": [
         "We don't persist your Tencent Meeting data, they are still storaged in \"$env:APPDATA\\Tencent\\WeMeet\".",
+        "It's hard to get major version when it is preceding unicode characters. So manually set it.",
         "The program should be run from its version directory but not current.",
         "You'd better create a shortcut pointing to it."
     ]
