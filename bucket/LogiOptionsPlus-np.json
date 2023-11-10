@@ -1,0 +1,61 @@
+{
+    "version": "1.44",
+    "description": "Logi Options+. Enhance your experience. Logi Options+ is the powerful, easy-to-use, next-gen application that enables customization for Logitech mice and keyboards so you can work how you want.",
+    "homepage": "https://www.logitech.com/en-au/software/logi-options-plus.html",
+    "license": "Proprietary",
+    "url": "https://download01.logi.com/web/ftp/pub/techsupport/optionsplus/logioptionsplus_installer.exe",
+    "hash": "ddb1ca6b7042ce4ba86ca61c4a6bae159fa9233562d797d06b9d56e3f60b1981",
+    "pre_install": [
+        "if (!(is_admin)) { error \"$app requires admin rights to $cmd\"; break }",
+        "if ($process) {",
+        "   $process.CloseMainWindow()",
+        "   Start-Sleep -Seconds 5",
+        "   if (!$process.HasExited) {",
+        "       Start-Sleep -Seconds 25",
+        "       $process | Stop-Process -Force",
+        "   }",
+        "}"
+    ],
+    "##": [
+        "Installation options",
+        "  /quiet      needs to be specified for silent installation",
+        "  /analytics  with/without sharing app users and diagnostic data (Yes or No)",
+        "  /flow       show/hide the Flow feature (Yes or No)",
+        "  /sso        show/hide users to sign into the Logi Options+ App (Yes or No)",
+        "  /update     enable/disable updates (Yes or No)",
+        "  /log        add installation log file"
+    ],
+    "installer": {
+        "script": [
+            "$logFileName=\"$dir\\logioptionsplus_installer-install.log\"",
+            "Start-Process \"$dir\\logioptionsplus_installer.exe\" -ArgumentList @('/quiet', '/analytics No', '/flow Yes', '/sso Yes', '/update No', '/log $logFileName') -Wait -NoNewWindow"
+        ],
+        "keep": true
+    },
+    "pre_uninstall": [
+        "if (!(is_admin)) { error \"$app requires admin rights to $cmd\"; break }",
+        "$processName = \"LogiOptions\"",
+        "$process = Get-Process $processName -ErrorAction SilentlyContinue",
+        "if ($process) {",
+        "   $process.CloseMainWindow()",
+        "   Start-Sleep -Seconds 5",
+        "   if (!$process.HasExited) {",
+        "       Start-Sleep -Seconds 25",
+        "       $process | Stop-Process -Force",
+        "   }",
+        "}"
+    ],
+    "uninstaller": {
+        "script": [
+            "$logFileName=\"$dir\\logioptionsplus_installer-uninstall.log\"",
+            "Start-Process \"$dir\\logioptionsplus_installer.exe\" -ArgumentList @('uninstall', '/quiet', '/log $logFileName') -Wait -NoNewWindow"
+        ]
+    },
+    "checkver": {
+        "url": "https://support.logi.com/hc/en-us/articles/1500005516462",
+        "regex": "target=\"_self\">([\\d.]+)"
+    },
+    "autoupdate": {
+        "url": "https://download01.logi.com/web/ftp/pub/techsupport/optionsplus/logioptionsplus_installer.exe#/setup.exe"
+    }
+}
