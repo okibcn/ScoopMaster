@@ -8,13 +8,13 @@
     "installer": {
         "script": [
             "if (!(is_admin)) { error \"$app requires admin rights to $cmd\"; break }",
-            "Start-Process 'msiexec' -Wait -Verb 'RunAs' --ArgumentList @('/i', \"$dir\\setup.msi_\", '/qn', '/norestart')"
+            "Start-Process 'msiexec' -ArgumentList @('/i', \"$dir\\setup.msi_\", '/qn', '/norestart') -Wait -Verb 'RunAs'"
         ]
     },
     "uninstaller": {
         "script": [
             "if (!(is_admin)) { error \"$app requires admin rights to $cmd\"; break }",
-            "Start-Process 'msiexec' -Wait -Verb 'RunAs' --ArgumentList @('/x', \"$dir\\setup.msi_\", '/qn', '/norestart')"
+            "Start-Process 'msiexec' -ArgumentList @('/x', \"$dir\\setup.msi_\", '/qn', '/norestart') -Wait -Verb 'RunAs'"
         ]
     },
     "checkver": {
