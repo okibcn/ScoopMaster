@@ -19,12 +19,24 @@
     "installer": {
         "script": "Expand-7zipArchive \"$dir\\chrome.7z\" -ExtractDir 'Chrome-bin' -Removal"
     },
-    "bin": [["chrome.exe", "chrome"]],
-    "shortcuts": [["chrome.exe", "Google Chrome"]],
+    "bin": [
+        [
+            "chrome.exe",
+            "chrome",
+            "--user-data-dir=\"$dir\\User Data\""
+        ]
+    ],
+    "shortcuts": [
+        [
+            "chrome.exe",
+            "Google Chrome",
+            "--user-data-dir=\"$dir\\User Data\""
+        ]
+    ],
     "post_install": [
         "if (!(Test-Path \"$dir\\User Data\\*\") -and (Test-Path \"$env:LocalAppData\\Google\\Chrome\\User Data\")) {",
-        "    info '[Portable Mode]: SymbolicLink user data...'",
-        "    New-Item -ItemType SymbolicLink -Target \"$dir\\User Data\" -Path \"$env:LocalAppData\\Google\\Chrome\\User Data\"",
+        "    info '[Portable Mode]: Copying user data...'",
+        "    Copy-Item \"$env:LocalAppData\\Google\\Chrome\\User Data\\*\" \"$dir\\User Data\" -Recurse",
         "}"
     ],
     "env_set": {
