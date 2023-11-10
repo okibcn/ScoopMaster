@@ -1,8 +1,8 @@
 {
     "version": "1.5.9",
-    "description": "DownKyi is a bilibili video download tool. DownKyi是一个B站(bilibili)视频下载工具。",
+    "description": "DownKyi is a bilibili video download tool.",
     "homepage": "https://github.com/leiurayer/downkyi/blob/main/README.md",
-    "license": " GPL-3.0",
+    "license": "GPL",
     "architecture": {
         "64bit": {
             "url": "https://github.com/leiurayer/downkyi/releases/download/v1.5.9/DownKyi-1.5.9.zip",
@@ -16,15 +16,7 @@
         ]
     ],
     "bin": "DownKyi.exe",
-    "post_install": [
-        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-        "persist @(\"$dir\\config\") @(\"$persist_dir\\config\")"
-    ],
-    "pre_uninstall": [
-        "$_bucket=(scoop bucket list | where-Object {$_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
-        ". \"$bucketsdir\\$_bucket\\bin\\utils.ps1\"",
-        "stop_process"
-    ],
+    "persist": "Config",
     "checkver": {
         "github": "https://github.com/leiurayer/downkyi"
     },
