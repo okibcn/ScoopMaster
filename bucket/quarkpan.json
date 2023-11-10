@@ -1,51 +1,40 @@
 {
     "version": "2.5.55",
-    "description": "夸克网盘",
-    "homepage": "https://pan.quark.cn/",
-    "license": "Proprietary",
-    "url": "https://pdds.quark.cn/download/stfile/ppvrwquuypqtprxrg/QuarkCloudDrive-v2.5.55-release-pckk@other_ch-20231020100530.exe#/dl.7z",
-    "hash": "sha512:c899edf686f79e2a91c0ee371c8ff034725a7a457d4bd7d010358f3d1a26b2581617cc4671b1bcd70472b67dfb7971d14bd0e64284e16061c652579f572225b3",
+    "description": "夸克网盘是夸克推出的一款云服务产品，功能包括云存储、高清看剧、文件在线解压、PDF一键转换等。通过夸克网盘可随时随地管理和使用照片、文档、手机资料，目前支持Android、iOS、PC、iPad。",
+    "homepage": "https://pan.quark.cn",
+    "license": "https://b.quark.cn/apps/quark_icloud_pay/routes/service_help",
+    "url": "https://pdds.quark.cn/download/stfile/eekglgnjgefiegmgg/QuarkCloudDrive-v2.5.55-release-pckk@360_daily-20231023163723.exe#/dl.7z",
+    "hash": "ed34bd28f2d9a889c28c7aed4face3406411f92c57f79abbc3c6f650d0c0e055",
     "innosetup": true,
     "installer": {
         "script": [
-            "if (!(Test-Path \"$persist_dir\\Cache\")) {",
-            "    New-Item \"$persist_dir\\Cache\" -Type Directory -Force | Out-Null",
-            "}",
-            "$runtimeCache = \"$env:APPDATA\\quark-cloud-drive\"",
-            "$runtimeCachePersist = \"$persist_dir\\Cache\"",
-            "if (Test-Path $runtimeCachePersist) {",
-            "    Remove-Item $runtimeCache -Force -Recurse -ErrorAction SilentlyContinue",
-            "    New-Item -Type Junction -Path $runtimeCache -Target $runtimeCachePersist | Out-Null",
-            "} else {",
-            "    if (Test-Path $runtimeCache) {",
-            "        Move-Item $runtimeCache $runtimeCachePersist -Force",
-            "        New-Item -Type Junction -Path $runtimeCache -Target $runtimeCachePersist | Out-Null",
+            "$PersistCache = \"$persist_dir\\Cache\"",
+            "$AppCache = \"$env:APPDATA\\quark-cloud-drive\"",
+            "if(!(Test-Path $PersistCache)) { New-Item $PersistCache -Type Directory -Force | Out-Null }",
+            "if(Test-Path $AppCache) {",
+            "    $AppDir = Get-Item $AppCache",
+            "    if($AppDir.Attributes -ne \"Directory, ReparsePoint\") { ",
+            "        Move-Item $AppCache $PersistCache -Force",
+            "        Remove-Item $AppCache -Force -Recurse -ErrorAction SilentlyContinue",
+            "        New-Item -Type Junction -Path $AppCache -Target $PersistCache | Out-Null",
             "    }",
-            "}"
-        ]
-    },
-    "uninstaller": {
-        "script": [
-            "$runtimeCache = \"$env:APPDATA\\quark-cloud-drive\"",
-            "$runtimeCachePersist = \"$persist_dir\\Cache\"",
-            "if (!(Test-Path $runtimeCachePersist)) {",
-            "    Move-Item $runtimeCache $runtimeCachePersist -Force",
             "} else {",
-            "    Remove-Item $runtimeCache -Force -Recurse -ErrorAction SilentlyContinue",
+            "    New-Item -Type Junction -Path $AppCache -Target $PersistCache | Out-Null",
             "}"
         ]
     },
-    "shortcuts": [["QuarkCloudDrive.exe", "QuarkCloudDrive"]],
+    "bin": "QuarkCloudDrive.exe",
+    "shortcuts": [
+        [
+            "QuarkCloudDrive.exe",
+            "QuarkCloudDrive"
+        ]
+    ],
     "checkver": {
-        "url": "https://pan.quark.cn/api/client_version",
-        "jsonpath": "$.data.winInstallerUrl",
-        "re": "^https?://pdds.quark.cn/download/stfile/(?<release>\\w+)/QuarkCloudDrive-v(?<version>[\\d.]+)-release-pckk@other_ch-(?<build>[\\d]+).exe",
-        "replace": "${2}"
+        "url": "https://baoku.360.cn/soft/show/appid/2000003876",
+        "regex": "https://pdds.quark.cn/download/stfile/(?<pathx>[a-zA-Z0-9]+)/QuarkCloudDrive-v(?<version>[0-9.]+)-release-pckk@360_daily-(?<verx>[0-9]+).exe"
     },
     "autoupdate": {
-        "url": "https://pdds.quark.cn/download/stfile/$matchRelease/QuarkCloudDrive-v$matchVersion-release-pckk@other_ch-$matchBuild.exe#/dl.7z",
-        "hash": {
-            "jsonpath": "$.data.packages[?(@.platform == 'win32' @.appch == 'pckk@other_ch')].sha512"
-        }
+        "url": "https://pdds.quark.cn/download/stfile/$matchPathx/QuarkCloudDrive-v$matchVersion-release-pckk@360_daily-$matchVerx.exe#/dl.7z"
     }
 }
