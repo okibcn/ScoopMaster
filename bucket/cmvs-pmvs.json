@@ -1,0 +1,59 @@
+{
+    "description": "This software (CMVS) takes the output of a structure-from-motion (SfM) software as input, then decomposes the input images into a set of image clusters of managable size.",
+    "homepage": "https://github.com/pmoulon/CMVS-PMVS",
+    "license": "GPL-3.0-only",
+    "version": "101c2ee",
+    "checkver": {
+        "url": "https://api.github.com/repos/pmoulon/CMVS-PMVS/commits/master",
+        "jsonpath": "$.sha",
+        "regex": "^(.{7})"
+    },
+    "depends": "visualsfm-cuda",
+    "url": "https://github.com/pmoulon/CMVS-PMVS/archive/refs/heads/master.zip",
+    "extract_dir": "CMVS-PMVS-master",
+    "installer": {
+        "script": [
+            "$visualsfm_extra = \"$(persistdir 'visualsfm-cuda' $global)\\extra\"",
+            "$visualsfm_current = \"$(versiondir 'visualsfm-cuda' 'current')\"",
+            "$cmvspmvs_bin = Get-ChildItem -Path \"$dir\\binariesWin-Linux\\Win64-*\" -Directory",
+            "if ($cmvspmvs_bin.Count -eq 0) {",
+            "   error 'The directory structure is not recognized. Please contact bucket maintainer to resolve the problem.'",
+            "}",
+            "$cmvspmvs_bin = $cmvspmvs_bin[0]",
+            "if (-not (Test-Path \"$visualsfm_extra\")) {",
+            "   New-Item -Path \"$visualsfm_extra\" -ItemType Directory | Out-Null",
+            "   New-Item -Path \"$visualsfm_current\\extra\" -Value \"$visualsfm_extra\" -ItemType Junction | Out-Null",
+            "}",
+            "Copy-Item -Path \"$cmvspmvs_bin\\*\" -Destination \"$visualsfm_current\\\" -Recurse -Force -ErrorAction SilentlyContinue",
+            "Copy-Item -Path \"$cmvspmvs_bin\\*\" -Destination \"$visualsfm_extra\\\" -Recurse -Force -ErrorAction SilentlyContinue"
+        ]
+    },
+    "hash": "d0ec1679bfeb9e2a8abf27b7730952853f0f23352262d39f9923dde07064b4a8",
+    "autoupdate": {
+        "url": "https://github.com/pmoulon/CMVS-PMVS/archive/refs/heads/master.zip",
+        "hash": {
+            "mode": "download"
+        }
+    },
+    "pre_uninstall": [
+        "$visualsfm_extra = \"$(persistdir 'visualsfm-cuda' $global)\\extra\"",
+        "$visualsfm_current = \"$(versiondir 'visualsfm-cuda' 'current')\"",
+        "$cmvspmvs_bin = Get-ChildItem -Path \"$dir\\binariesWin-Linux\\Win64-*\" -Directory",
+        "if ($cmvspmvs_bin.Count -eq 0) {",
+        "   error 'The directory structure is not recognized. Please contact bucket maintainer to resolve the problem.'",
+        "}",
+        "$cmvspmvs_bin = $cmvspmvs_bin[0]",
+        "$srcItems = Get-ChildItem -Path \"$cmvspmvs_bin\"",
+        "foreach ($item in $srcItems) {",
+        "   $currentItem = Join-Path -Path \"$visualsfm_current\" -ChildPath $item.Name",
+        "   $extraItem = Join-Path -Path \"$visualsfm_extra\" -ChildPath $item.Name",
+        "   if (Test-Path -Path $currentItem) {",
+        "       Remove-Item -Path $currentItem -Recurse -Force",
+        "   }",
+        "   if (Test-Path -Path $extraItem) {",
+        "       Remove-Item -Path $extraItem -Recurse -Force",
+        "   }",
+        "}",
+        "Write-Host 'CMVS-PMVS is removed from the current and any future version of VisualSFM, but not past versions if there are any.'"
+    ]
+}
