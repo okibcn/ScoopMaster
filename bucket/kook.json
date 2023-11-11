@@ -1,39 +1,39 @@
 {
-    "autoupdate": {
-        "url": "$matchUrl#/dl.7z"
-    },
-    "checkver": {
-        "script": [
-            "$script:ver = json_path $page '$.number'",
-            "$script:matchesHashtable = @{'url' = json_path $page '$.url'}",
-            "$script:regexp = $null"
-        ],
-        "url": "https://www.kookapp.cn/api/v2/updates/latest-version?platform=windows"
-    },
-    "description": "A useful voice communication tool.",
-    "extract_to": "tmp",
-    "hash": "b9349d4926909a8600214566832dd063169dd5f89b68a09358ab35c120d58bdf",
-    "homepage": "https://www.kookapp.cn",
-    "license": {
-        "identifier": "Proprietary",
-        "url": "https://www.kookapp.cn/protocol.html"
-    },
-    "persist": "User Data",
-    "post_install": [
-        "Remove-Item \"$dir\\tmp\" -ErrorAction SilentlyContinue -Recurse -Force",
-        "if (!(Test-Path \"$dir\\User Data\\*\") -and (Test-Path \"$env:AppData\\kook\")) {",
-        "    info '[Portable Mode]: Copying user data...'",
-        "    ensure \"$dir\\User Data\" | Out-Null",
-        "    Copy-Item \"$env:AppData\\kook\\*\" \"$dir\\User Data\" -Recurse -Force -ErrorAction SilentlyContinue",
-        "}"
+  "autoupdate": {
+    "url": "$matchUrl#/dl.7z"
+  },
+  "checkver": {
+    "script": [
+      "$script:ver = json_path $page '$.number'",
+      "$script:matchesHashtable = @{'url' = json_path $page '$.url'}",
+      "$script:regexp = $null"
     ],
-    "pre_install": [
-        "Expand-7zipArchive \"$dir\\tmp\\`$1\\SquirrelTemp\\app.7z\" \"$dir\"",
-        "Expand-Archive \"$dir\\KOOK-$version-full.nupkg\" \"$dir\""
-    ],
-    "shortcuts": [
-        ["lib\\net45\\KOOK.exe", "KOOK", "--user-data-dir=\"$dir\\User Data\""]
-    ],
-    "url": "https://dl2.kookapp.cn/assets/release/html_pc/kook_563/Kook_PC_Setup_v0.76.3.0_b2ZmaWNpYWwuc2l0ZS4uLi5wYw==.exe#/dl.7z",
-    "version": "0.76.3"
+    "url": "https://www.kookapp.cn/api/v2/updates/latest-version?platform=windows"
+  },
+  "description": "A useful voice communication tool.",
+  "extract_to": "tmp",
+  "hash": "b9349d4926909a8600214566832dd063169dd5f89b68a09358ab35c120d58bdf",
+  "homepage": "https://www.kookapp.cn",
+  "license": {
+    "identifier": "Proprietary",
+    "url": "https://www.kookapp.cn/protocol.html"
+  },
+  "persist": "User Data",
+  "post_install": [
+    "Remove-Item \"$dir\\tmp\" -ErrorAction SilentlyContinue -Recurse -Force",
+    "if (!(Test-Path \"$dir\\User Data\\*\") -and (Test-Path \"$env:AppData\\kook\")) {",
+    "    info '[Portable Mode]: Copying user data...'",
+    "    ensure \"$dir\\User Data\" | Out-Null",
+    "    Copy-Item \"$env:AppData\\kook\\*\" \"$dir\\User Data\" -Recurse -Force -ErrorAction SilentlyContinue",
+    "}"
+  ],
+  "pre_install": [
+    "Expand-7zipArchive \"$dir\\tmp\\`$1\\SquirrelTemp\\app.7z\" \"$dir\"",
+    "Expand-Archive \"$dir\\KOOK-$version-full.nupkg\" \"$dir\""
+  ],
+  "shortcuts": [
+    ["lib\\net45\\KOOK.exe", "KOOK", "--user-data-dir=\"$dir\\User Data\""]
+  ],
+  "url": "https://dl2.kookapp.cn/assets/release/html_pc/kook_563/Kook_PC_Setup_v0.76.3.0_b2ZmaWNpYWwuc2l0ZS4uLi5wYw==.exe#/dl.7z",
+  "version": "0.76.3"
 }
