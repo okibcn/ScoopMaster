@@ -1,0 +1,52 @@
+{
+    "##": "Multiple components under various open source licenses. Included HTTPS Everywhere extension is the strictest.",
+    "version": "13.0.1",
+    "description": "Web browser that connects to the internet via the Tor anonymity network",
+    "homepage": "https://tor.calyxinstitute.org",
+    "license": "GPL-3.0-or-later",
+    "architecture": {
+        "64bit": {
+            "url": "https://tor.calyxinstitute.org/dist/torbrowser/13.0.1/tor-browser-windows-x86_64-portable-13.0.1.exe#/dl.7z",
+            "hash": "920b0907a65b7cf63076fdc80a605283cf51d9742e5726e7b48fb53e3a0071af"
+        },
+        "32bit": {
+            "url": "https://tor.calyxinstitute.org/dist/torbrowser/13.0.1/tor-browser-windows-i686-portable-13.0.1.exe#/dl.7z",
+            "hash": "dcbda0cffcdcd2126af1a21707a971303ef0fe31dad7db492b3ecdd54cd8ae26"
+        }
+    },
+    "extract_dir": "Browser",
+    "pre_install": [
+        "# Update extensions in persisted profile",
+        "movedir \"$dir\\TorBrowser\\Data\\Browser\\profile.default\" \"$persist_dir\\TorBrowser\\Data\\Browser\\profile.default\" | Out-Null"
+    ],
+    "persist": [
+        "TorBrowser\\Data\\Browser\\profile.default",
+        "TorBrowser\\Data\\Tor"
+    ],
+    "bin": [
+        [
+            "firefox.exe",
+            "tor-browser"
+        ]
+    ],
+    "shortcuts": [
+        [
+            "firefox.exe",
+            "Tor Browser"
+        ]
+    ],
+    "checkver": {
+        "url": "https://tor.calyxinstitute.org/download/",
+        "regex": "torbrowser/([\\d.]+)/tor-browser-windows-x86_64-portable"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://tor.calyxinstitute.org/dist/torbrowser/$version/tor-browser-windows-x86_64-portable-$version.exe#/dl.7z"
+            },
+            "32bit": {
+                "url": "https://tor.calyxinstitute.org/dist/torbrowser/$version/tor-browser-windows-i686-portable-$version.exe#/dl.7z"
+            }
+        }
+    }
+}
