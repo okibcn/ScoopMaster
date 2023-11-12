@@ -20,7 +20,14 @@
         "script": "Expand-7zipArchive \"$dir\\chrome.7z\" -ExtractDir 'Chrome-bin' -Removal"
     },
     "bin": [["chrome.exe", "chrome"]],
-    "shortcuts": [["chrome.exe", "Google Chrome"]],
+    "shortcuts": [
+        ["chrome.exe", "Google Chrome"],
+        [
+            "chrome.exe",
+            "Google Chrome Proxy",
+            "--proxy-server='socks5://127.0.0.1:1080'"
+        ]
+    ],
     "post_install": [
         "if ((Test-Path \"$dir\\User Data\") -and !(Test-Path \"$env:LocalAppData\\Google\\Chrome\\User Data\")) {",
         "    info \"[Portable Mode]: SymbolicLink user data...\"",
