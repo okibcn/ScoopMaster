@@ -1,5 +1,5 @@
 {
-    "version": "1.56.474970",
+    "version": "1.56",
     "description": "Logi Options+. Enhance your experience. Logi Options+ is the powerful, easy-to-use, next-gen application that enables customization for Logitech mice and keyboards so you can work how you want.",
     "homepage": "https://www.logitech.com/en-au/software/logi-options-plus.html",
     "license": "Proprietary",
@@ -27,6 +27,10 @@
             "if(((Test-Path -Path $filepath -PathType Leaf) -eq $false) -or ((Get-Command $filepath).Version -lt [System.Version]\"$version\"))",
             "{",
             "   &\"$dir\\setup.exe\" /quiet | Out-Null",
+            "   if(((Test-Path -Path $filepath -PathType Leaf) -eq $false) -or ((Get-Command $filepath).Version -lt [System.Version]\"$version\"))",
+            "   {",
+            "       exit 1",
+            "   }",
             "}",
             "if (Test-Path -Path \"$dir\\setup.exe\") { Remove-Item \"$dir\\setup.exe\" -Force }"
         ]
@@ -37,8 +41,8 @@
         "if (Test-Path \"$CommonDesktopPath\\$programname.lnk\") {Remove-Item \"$CommonDesktopPath\\$programname.lnk\" -Force}"
     ],
     "checkver": {
-        "url": "https://support.logi.com/api/v2/help_center/en-us/articles.json?label_names=webcontent=productdownload,webproduct=8e72fd48-b41b-11ec-a7c1-5d4cabdc9b43&per_page=1",
-        "regex": "Software Version: \\\\u003c/span\\\\u003e\\\\u003c/b\\\\u003e([\\d.]+)"
+        "url": "https://support.logi.com/hc/en-us/articles/1500005516462",
+        "regex": "><strong>Version ([\\d]+.[\\d]+)"
     },
     "autoupdate": {
         "url": "https://download01.logi.com/web/ftp/pub/techsupport/optionsplus/logioptionsplus_installer.exe#/setup.exe"
