@@ -8,7 +8,10 @@
     "shortcuts": [["ChromeGo\\singbox.cmd", "ChromeGo"]],
     "pre_install": [
         "Copy-Item -Path \"$dir\\ChromeGo\\4.singbox翻墙.cmd\" -Destination \"$dir\\ChromeGo\\singbox.cmd\"",
-        "reg add \"HKLM\\SOFTWARE\\Microsoft\\Command Processor\" /v autorun /t REG_SZ /d \"chcp 936\" /f"
+        "reg add \"HKLM\\SOFTWARE\\Microsoft\\Command Processor\" /v autorun /t REG_SZ /d \"chcp 65001\" /f",
+        "Get-ChildItem -Path \"$dir\" -Include *.cmd, *.bat -Recurse -File | ForEach-Object {",
+        "    [void][System.IO.File]::WriteAllBytes($_.FullName,[System.Text.Encoding]::Convert([System.Text.Encoding]::GetEncoding('GBK'),[System.Text.Encoding]::GetEncoding('UTF-8'),[System.IO.File]::ReadAllBytes($_.FullName)))",
+        "}"
     ],
     "checkver": "github",
     "autoupdate": {
