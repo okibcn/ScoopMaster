@@ -13,20 +13,14 @@
                 "https://cygwin.com/setup-x86_64.exe#/cygwin-setup.exe",
                 "https://raw.githubusercontent.com/Mosklia/gcc-hentai/main/gcc.po"
             ],
-            "hash": [
-                "a17217e66dd7c40fa4851a433335c1f3f003cd627116c708b2f6e66eba886ea9",
-                "affc9e84a28dcc04802d622eff5f8c7074db065c7b63c83603c93a9c63546a79"
-            ]
+            "hash": "a17217e66dd7c40fa4851a433335c1f3f003cd627116c708b2f6e66eba886ea9"
         },
         "32bit": {
             "url": [
                 "https://cygwin.com/setup-x86.exe#/cygwin-setup.exe",
                 "https://raw.githubusercontent.com/Mosklia/gcc-hentai/main/gcc.po"
             ],
-            "hash": [
-                "b6ee008d97379c9d22f0b412d1a99972e9eae32c8c10cf7ae3520aa27f9ac47b",
-                "affc9e84a28dcc04802d622eff5f8c7074db065c7b63c83603c93a9c63546a79"
-            ]
+            "hash": "b6ee008d97379c9d22f0b412d1a99972e9eae32c8c10cf7ae3520aa27f9ac47b"
         }
     },
     "installer": {
@@ -77,14 +71,12 @@
         "LC_MESSAGES": "zh_CN.UTF-8"
     },
     "env_add_path": "root\\bin",
-    "persist": [
-      "packages",
-      "root"
-    ],
+    "pre_install": "persist_data @{persist = @('packages', 'root')} $original_dir $persist_dir",
     "post_install": [
         "Rename-Item -Path \"$dir\\root\\usr\\share\\locale\\zh_CN\\LC_MESSAGES\\gcc.mo\" -NewName \"$dir\\root\\usr\\share\\locale\\zh_CN\\LC_MESSAGES\\gcc.mo.bak\" -ErrorAction SilentlyContinue",
         "msgfmt $dir\\gcc.po -o \"$dir\\root\\usr\\share\\locale\\zh_CN\\LC_MESSAGES\\gcc.mo\""
     ],
+    "pre_uninstall": "unlink_persist_data @{persist = @('packages', 'root')} $dir",
     "checkver": {
         "url": "https://cygwin.com/git/?p=cygwin-apps/setup.git;a=tags",
         "regex": ">release_([\\d.]+)<"
