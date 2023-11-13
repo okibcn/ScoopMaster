@@ -1,59 +1,53 @@
 {
-    "$schema": "https://raw.githubusercontent.com/ScoopInstaller/Scoop/master/schema.json",
     "version": "6.1.0",
-    "description": "ShadowsocksR for Windows (C#).",
+    "description": "An Internet censorship circumventing tunnel tool, forked from shadowsocksR, maintained now by HMBSbige.",
     "homepage": "https://github.com/HMBSbige/ShadowsocksR-Windows",
-    "license": {
-        "identifier": "GPL-3.0-only",
-        "url": "https://github.com/HMBSbige/ShadowsocksR-Windows/blob/master/LICENSE"
-    },
-    "architecture": {
-        "64bit": {
-            "url": "https://github.com/HMBSbige/ShadowsocksR-Windows/releases/download/6.1.0/ShadowsocksR-Win64-6.1.0.7z",
-            "hash": "d62593da0aa39970213997694cb811a19a68341b4b10c42e9040064f4fdf1e48"
-        },
-        "32bit": {
-            "url": "https://github.com/HMBSbige/ShadowsocksR-Windows/releases/download/6.1.0/ShadowsocksR-Win32-6.1.0.7z",
-            "hash": "52b3ecadd8f4063ebb7121b7a84caee490cc0e630977f226e933d62b2784dde5"
-        }
-    },
+    "license": "GNU General Public License v3.0",
+    "url": "https://github.com/HMBSbige/ShadowsocksR-Windows/releases/download/6.1.0/ShadowsocksR-6.1.0.7z",
+    "hash": "adbe1e1bd5d71896fd70000551798b77173abd50de56395b11b4bb05e7f8e937",
     "extract_dir": "ShadowsocksR",
+    "pre_install": [
+        "#Create placeholder files",
+        "function CreateFile([String] $file, [String] $content = $null) {",
+        "    if(!(Test-Path \"$persist_dir\\$file\")) {",
+        "        Write-Host \"Create placeholder for shadowsocksR: $file\"",
+        "        if($file -eq 'chn_ip.txt'){",
+        "            Invoke-WebRequest -Uri \"https://raw.githubusercontent.com/HMBSbige/ShadowsocksR-Windows/master/shadowsocks-csharp/Data/chn_ip.txt\" -OutFile $original_dir\\chn_ip.txt",
+        "        }elseif($file -eq 'pac.txt'){",
+        "            Invoke-WebRequest -Uri \"https://raw.githubusercontent.com/HMBSbige/ShadowsocksR-Windows/master/shadowsocks-csharp/Data/proxy.pac.txt\" -OutFile $original_dir\\pac.txt",
+        "        }else{",
+        "            New-Item -Force -Path \"$persist_dir\\$file\" -ItemType file -Value $content | Out-Null",
+        "        }",
+        "    }",
+        "}",
+        "CreateFile 'chn_ip.txt'",
+        "CreateFile 'pac.txt'",
+        "CreateFile 'gui-config.json' '{}'",
+        "CreateFile 'transfer_log.json' '{}'",
+        "CreateFile 'user.rule'",
+        "CreateFile 'user-rule.txt' \"! Put user rules line by line in this file.`r`n! See https://adblockplus.org/en/filter-cheatsheet`r`n\""
+    ],
+    "bin": "ShadowsocksR.exe",
     "shortcuts": [
         [
             "ShadowsocksR.exe",
             "ShadowsocksR"
         ]
     ],
-    "pre_install": [
-        "@('gui-config.json', 'pac.txt', 'transfer_log.json', 'user-rule.txt') | ForEach-Object {",
-        "  if (!(Test-Path \"$persist_dir\\$_\")) {",
-        "    if ($_ -match '.json$') {",
-        "      Set-Content -Encoding Ascii -Path \"$dir\\$_\" -Value '{}'",
-        "    } else {",
-        "      New-Item \"$dir\\$_\" | Out-Null",
-        "    }",
-        "  }",
-        "}"
-    ],
     "persist": [
-        "gui-config.json",
+        "chn_ip.txt",
         "pac.txt",
+        "gui-config.json",
         "transfer_log.json",
+        "user.rule",
         "user-rule.txt"
     ],
     "checkver": "github",
     "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://github.com/HMBSbige/ShadowsocksR-Windows/releases/download/$version/ShadowsocksR-Win64-$version.7z"
-            },
-            "32bit": {
-                "url": "https://github.com/HMBSbige/ShadowsocksR-Windows/releases/download/$version/ShadowsocksR-Win32-$version.7z"
-            }
-        },
+        "url": "https://github.com/HMBSbige/ShadowsocksR-Windows/releases/download/$version/ShadowsocksR-$version.7z",
         "hash": {
-            "url": "https://api.github.com/repos/HMBSbige/ShadowsocksR-Windows/releases/latest",
-            "regex": "(?sm)<sub>$basename</sub> \\| <sub>$sha256</sub>"
+            "url": "https://github.com/HMBSbige/ShadowsocksR-Windows/releases",
+            "find": "(?s)$basename.*?$sha256"
         }
     }
 }
