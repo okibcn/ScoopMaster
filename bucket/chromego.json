@@ -1,18 +1,22 @@
 {
     "version": "ChromeGo-latest",
-    "description": "ChromeGo",
+    "description": "翻墙工具",
     "homepage": "https://github.com/bannedbook/fanqiang",
-    "license": "MIT",
     "url": "https://hub.gitmirror.com/https://github.com/bannedbook/fanqiang/releases/download/ChromeGo-latest/ChromeGo.7z",
     "hash": "8399b54d61f114a477baf12c39c0e49421c3af29f3be9e12d027985a57bb5d02",
-    "shortcuts": [["ChromeGo\\ChromeGo.ps1", "ChromeGo"]],
+    "extract_dir": "ChromeGo",
     "pre_install": [
-        "$file = \"$env:USERPROFILE\\Documents\\WindowsPowerShell\\Microsoft.PowerShell_profile.ps1\"",
-        "if(!(Get-Content $file | Where-Object {$_ -like '$OutputEncoding*'})){",
-        "    Add-Content -Path $file -Value '$OutputEncoding = [console]::InputEncoding = [console]::OutputEncoding = New-Object System.Text.UTF8Encoding'",
+        "$user = \"$env:USERPROFILE\\Documents\\WindowsPowerShell\"",
+        "$shell = \"$user\\Microsoft.PowerShell_profile.ps1\"",
+        "New-Item -ItemType Directory -Force -Path \"$user\"",
+        "if (!(Test-Path \"$shell\")) {",
+        "    Add-Content -Path $shell -Value '$OutputEncoding = [console]::InputEncoding = [console]::OutputEncoding = New-Object System.Text.UTF8Encoding'",
+        "} elseif (!(Get-Content $shell | Where-Object {$_ -like '$OutputEncoding*'})) {",
+        "    Add-Content -Path $shell -Value '$OutputEncoding = [console]::InputEncoding = [console]::OutputEncoding = New-Object System.Text.UTF8Encoding'",
         "}",
-        "Copy-Item -Path \"$bucketsdir\\rainte\\scripts\\chromego\\ChromeGo.ps1\" -Destination \"$dir\\ChromeGo\\ChromeGo.ps1\""
+        "Copy-Item -Path \"$bucketsdir\\rainte\\scripts\\chromego\\ChromeGo.ps1\" -Destination \"$dir\\ChromeGo.ps1\""
     ],
+    "shortcuts": [["ChromeGo.ps1", "ChromeGo"]],
     "checkver": "github",
     "autoupdate": {
         "url": "https://hub.gitmirror.com/https://github.com/bannedbook/fanqiang/releases/download/ChromeGo-latest/ChromeGo.7z"
