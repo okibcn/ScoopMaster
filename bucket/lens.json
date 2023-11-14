@@ -1,23 +1,17 @@
 {
-    "version": "2023.11.81519-latest",
+    "version": "2023.11.131420-latest",
     "description": "IDE for Kubernetes clusters",
     "homepage": "https://k8slens.dev",
     "license": {
         "identifier": "Proprietary",
-        "url": "https://k8slens.dev/licenses/eula"
+        "url": "https://github.com/lensapp/lensapp.github.io/blob/master/licenses/eula.md"
     },
-    "url": "https://api.k8slens.dev/binaries/Lens%20Setup%202023.11.81519-latest.exe#/dl.7z",
-    "hash": "778dd42bd856a30638fefd2b74526aaf46bc3e909d16e1242e6504156c0effc9",
     "architecture": {
         "64bit": {
+            "url": "https://api.k8slens.dev/binaries/Lens%20Setup%202023.11.131420-latest.exe#/dl.7z",
+            "hash": "sha512:6718d199833142a147303434a91b67ffed6277e7872294b91ba0a3d51fc575f4e465e66ac751d7aae9ad531b6bcfcd03f51b656a9a8399ac4ab43af5e4a4744a",
             "pre_install": [
                 "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\"",
-                "Remove-Item \"$dir\\`$*\", \"$dir\\Uninstall*\" -Recurse"
-            ]
-        },
-        "32bit": {
-            "pre_install": [
-                "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-32.7z\" \"$dir\"",
                 "Remove-Item \"$dir\\`$*\", \"$dir\\Uninstall*\" -Recurse"
             ]
         }
@@ -29,14 +23,18 @@
         ]
     ],
     "checkver": {
-        "url": "https://api.k8slens.dev/binaries/latest.yml",
-        "regex": "version:\\s*([\\w.-]+)"
+        "url": "https://api.k8slens.dev/binaries/latest.json",
+        "jsonpath": "$.version"
     },
     "autoupdate": {
-        "url": "https://api.k8slens.dev/binaries/Lens%20Setup%20$version.exe#/dl.7z",
-        "hash": {
-            "url": "$baseurl/latest.yml",
-            "regex": "sha512:\\s+$base64"
+        "architecture": {
+            "64bit": {
+                "url": "https://api.k8slens.dev/binaries/Lens%20Setup%20$version.exe#/dl.7z",
+                "hash": {
+                    "url": "$baseurl/latest.json",
+                    "regex": "\"sha512\":\\s*\"$base64\""
+                }
+            }
         }
     }
 }
