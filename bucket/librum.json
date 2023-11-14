@@ -1,0 +1,26 @@
+{
+    "version": "0.10.1",
+    "description": "Librum is an application designed to make reading enjoyable and straightforward for everyone.",
+    "homepage": "https://librumreader.com",
+    "license": "GPL-3.0-or-later",
+    "url": "https://librumstorageaccount.blob.core.windows.net/releases/librum-windows-0.10.1-installer.exe",
+    "hash": "md5:36badb3785365bd670eb269548096a20",
+    "innosetup": true,
+    "shortcuts": [
+        [
+            "librum.exe",
+            "Librum"
+        ]
+    ],
+    "checkver": {
+        "url": "https://api.librumreader.com/appinfo/latest-version",
+        "regex": "(?:v|V)?([\\d.]+)"
+    },
+    "autoupdate": {
+        "url": "https://librumstorageaccount.blob.core.windows.net/releases/librum-windows-$version-installer.exe",
+        "hash": {
+            "url": "https://librumstorageaccount.blob.core.windows.net/releases/?restype=container&comp=list&maxresults=5&prefix=$basename",
+            "regex": "$basename.*?Content-MD5>$base64<"
+        }
+    }
+}
