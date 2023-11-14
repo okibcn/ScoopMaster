@@ -9,14 +9,14 @@
         ["scoop-search-multisource.exe", "scoops"]
     ],
     "post_install": [
-        "$user = \"$env:USERPROFILE\\Documents\\WindowsPowerShell\"",
-        "New-Item -ItemType Directory -Force -Path \"$user\"",
-        "Add-Content -Path \"$user\\Microsoft.PowerShell_profile.ps1\" -Value \"Invoke-Expression (&scoop-search-multisource.exe --hook)\""
+        "if (!(Test-Path $PROFILE)) {",
+        "    New-Item $PROFILE -ItemType File -Force",
+        "}",
+        "Add-Content -Path $PROFILE -Value \"Invoke-Expression (&scoop-search-multisource.exe --hook)\""
     ],
     "uninstaller": {
         "script": [
-            "$shell = \"$env:USERPROFILE\\Documents\\WindowsPowerShell\\Microsoft.PowerShell_profile.ps1\"",
-            "(Get-Content \"$shell\" | Where-Object {$_ -notmatch \"Invoke-Expression (&scoop-search-multisource.exe --hook)\"}) | Out-File \"$shell\""
+            "(Get-Content $PROFILE | Where-Object {$_ -notmatch \"Invoke-Expression (&scoop-search-multisource.exe --hook)\"}) | Out-File $PROFILE"
         ]
     },
     "checkver": "github",

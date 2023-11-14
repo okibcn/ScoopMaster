@@ -6,13 +6,11 @@
     "hash": "8399b54d61f114a477baf12c39c0e49421c3af29f3be9e12d027985a57bb5d02",
     "extract_dir": "ChromeGo",
     "pre_install": [
-        "$user = \"$env:USERPROFILE\\Documents\\WindowsPowerShell\"",
-        "$shell = \"$user\\Microsoft.PowerShell_profile.ps1\"",
-        "New-Item -ItemType Directory -Force -Path \"$user\"",
-        "if (!(Test-Path \"$shell\")) {",
-        "    Add-Content -Path $shell -Value '$OutputEncoding = [console]::InputEncoding = [console]::OutputEncoding = New-Object System.Text.UnicodeEncoding'",
-        "} elseif (!(Get-Content $shell | Where-Object {$_ -like '$OutputEncoding*'})) {",
-        "    Add-Content -Path $shell -Value '$OutputEncoding = [console]::InputEncoding = [console]::OutputEncoding = New-Object System.Text.UnicodeEncoding'",
+        "if (!(Test-Path $PROFILE)) {",
+        "    New-Item $PROFILE -ItemType File -Force",
+        "}",
+        "if (!(Get-Content $PROFILE | Where-Object {$_ -like '$OutputEncoding*'})) {",
+        "    Add-Content -Path $PROFILE -Value '$OutputEncoding = [console]::InputEncoding = [console]::OutputEncoding = [System.Text.Encoding]::GetEncoding(936)'",
         "}",
         "Copy-Item -Path \"$bucketsdir\\rainte\\scripts\\chromego\\ChromeGo.ps1\" -Destination \"$dir\\ChromeGo.ps1\""
     ],
