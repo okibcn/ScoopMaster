@@ -1,20 +1,43 @@
 {
-    "$schema": "https://raw.githubusercontent.com/ScoopInstaller/Scoop/master/schema.json",
     "version": "1.5.14",
-    "description": "Powerful Bash-style command line editing for cmd.exe.",
+    "description": "Powerful Bash-style command line editing for cmd.exe",
     "homepage": "https://chrisant996.github.io/clink/",
-    "license": {
-        "identifier": "GPL-3.0-only",
-        "url": "https://github.com/chrisant996/clink/blob/master/LICENSE"
-    },
+    "license": "GPL-3.0-only",
+    "notes": [
+        "Run 'clink inject' to start clink on the current cmd",
+        "Run 'clink autorun install' to auto start clink"
+    ],
     "url": "https://github.com/chrisant996/clink/releases/download/v1.5.14/clink.1.5.14.430a69.zip",
     "hash": "560ba37f8be3582fcc6dbe6d5638310b142c60607b31a67ce1cf9a4692c3a2ae",
-    "bin": "clink.bat",
+    "bin": [
+        [
+            "portable.bat",
+            "clink"
+        ]
+    ],
+    "pre_install": [
+        "$portable = \"portable.bat\"",
+        "$portableContent = ",
+        "'@echo off",
+        "rem -- Do any other desired configuration here, such as loading a doskey macro file.",
+        "call \"%~dp0clink.bat\" inject --profile \"%~dp0clink_profile\" %1 %2 %3 %4 %5 %6 %7 %8 %9'",
+        "if (!(Test-Path \"$persist_dir\\$portable\")) { New-Item -ItemType File -Path \"$dir\\$portable\" -Value $portableContent | Out-Null } else {",
+        "Set-Content -Path $dir\\$portable -Value (Get-Content -Path $persist_dir\\$portable ) | Out-Null }"
+    ],
+    "post_install": [
+        "$inputrc = \"clink_profile\\_inputrc\"",
+        "if (!(Test-Path \"$persist_dir\\clink_profile\")) { New-Item -Path \"$dir\\clink_profile\" -ItemType Directory | Out-Null }",
+        "if (!(Test-Path \"$persist_dir\\$inputrc\")) { New-Item -Path \"$dir\\$inputrc\" -ItemType File | Out-Null }"
+    ],
+    "persist": [
+        "portable.bat",
+        "clink_profile"
+    ],
     "checkver": {
         "github": "https://github.com/chrisant996/clink",
-        "regex": "/v([\\d.]+)/clink\\.([\\d.]+)\\.(?<commit>[\\w.]+)\\.zip"
+        "regex": "/v(?<tag>[\\d.]+)/clink\\.([\\d.]+)\\.(?<commit>[\\w.]+)\\.zip"
     },
     "autoupdate": {
-        "url": "https://github.com/chrisant996/clink/releases/download/v$version/clink.$version.$matchCommit.zip"
+        "url": "https://github.com/chrisant996/clink/releases/download/v$matchTag/clink.$version.$matchCommit.zip"
     }
 }
