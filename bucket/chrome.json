@@ -1,53 +1,68 @@
 {
     "version": "119.0.6045.160",
-    "description": "谷歌浏览器",
-    "homepage": "https://www.google.com/chrome",
-    "url": "https://dl.google.com/release2/chrome/ad6yu5cjlwmibvcbyfvev7hpdo2a_119.0.6045.160/119.0.6045.160_chrome_installer.exe#/dl.7z",
-    "hash": "ed1b1936e61268bed6fa633b71d82bf3bfeb4690196f610d8e30ce24e7243480",
+    "description": "Fast, secure, and free web browser, built for the modern web.",
+    "homepage": "https://www.google.com/chrome/",
+    "license": {
+        "identifier": "Freeware",
+        "url": "https://www.google.com/chrome/privacy/eula_text.html"
+    },
+    "architecture": {
+        "64bit": {
+            "url": "https://dl.google.com/release2/chrome/ad6yu5cjlwmibvcbyfvev7hpdo2a_119.0.6045.160/119.0.6045.160_chrome_installer.exe#/dl.7z",
+            "hash": "ed1b1936e61268bed6fa633b71d82bf3bfeb4690196f610d8e30ce24e7243480"
+        },
+        "32bit": {
+            "url": "https://dl.google.com/release2/chrome/lfyaw2rbcddkq3qvr5xecplopu_119.0.6045.160/119.0.6045.160_chrome_installer.exe#/dl.7z",
+            "hash": "0aecc4bad198637b9fcbc9268744a8af4cc3cb6d5b1406913fb2bab18fc54b30"
+        }
+    },
     "installer": {
         "script": "Expand-7zipArchive \"$dir\\chrome.7z\" -ExtractDir 'Chrome-bin' -Removal"
     },
     "bin": [
         [
             "chrome.exe",
-            "chrome"
+            "chrome",
+            "--user-data-dir=\"$dir\\User Data\""
         ]
     ],
     "shortcuts": [
         [
             "chrome.exe",
-            "Google Chrome"
-        ],
-        [
-            "chrome.exe",
-            "Google Chrome Proxy",
-            "--proxy-server=\"socks5://127.0.0.1:1080\""
+            "Google Chrome",
+            "--user-data-dir=\"$dir\\User Data\""
         ]
+    ],
+    "post_install": [
+        "if (!(Test-Path \"$dir\\User Data\\*\") -and (Test-Path \"$env:LocalAppData\\Google\\Chrome\\User Data\")) {",
+        "    info '[Portable Mode]: Copying user data...'",
+        "    Copy-Item \"$env:LocalAppData\\Google\\Chrome\\User Data\\*\" \"$dir\\User Data\" -Recurse",
+        "}"
     ],
     "env_set": {
         "CHROME_EXECUTABLE": "$dir\\chrome.exe"
     },
     "persist": "User Data",
-    "post_install": [
-        "$user = \"$env:LocalAppData\\Google\\Chrome\"",
-        "New-Item -ItemType Directory -Force -Path \"$user\"",
-        "if ((Test-Path \"$dir\\User Data\") -and !(Test-Path \"$user\\User Data\")) {",
-        "    New-Item -ItemType SymbolicLink -Target \"$dir\\User Data\" -Path \"$user\\User Data\"",
-        "}"
-    ],
-    "notes": "SwitchySharp: https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt",
-    "uninstaller": {
-        "script": "[Environment]::SetEnvironmentVariable('CHROME_EXECUTABLE', '', 'User')"
-    },
     "checkver": {
         "url": "https://scoopinstaller.github.io/UpdateTracker/googlechrome/chrome.min.xml",
         "regex": "(?sm)<stable32><version>(?<version>[\\d.]+)</version>.+release2/chrome/(?<32>[\\w-]+)_.+<stable64>.+release2/chrome/(?<64>[\\w-]+)_.+</stable64>"
     },
     "autoupdate": {
-        "url": "https://dl.google.com/release2/chrome/$match64_$version/$version_chrome_installer.exe#/dl.7z",
-        "hash": {
-            "url": "https://scoopinstaller.github.io/UpdateTracker/googlechrome/chrome.min.xml",
-            "xpath": "/chromechecker/stable64[version='$version']/sha256"
+        "architecture": {
+            "64bit": {
+                "url": "https://dl.google.com/release2/chrome/$match64_$version/$version_chrome_installer.exe#/dl.7z",
+                "hash": {
+                    "url": "https://scoopinstaller.github.io/UpdateTracker/googlechrome/chrome.min.xml",
+                    "xpath": "/chromechecker/stable64[version='$version']/sha256"
+                }
+            },
+            "32bit": {
+                "url": "https://dl.google.com/release2/chrome/$match32_$version/$version_chrome_installer.exe#/dl.7z",
+                "hash": {
+                    "url": "https://scoopinstaller.github.io/UpdateTracker/googlechrome/chrome.min.xml",
+                    "xpath": "/chromechecker/stable32[version='$version']/sha256"
+                }
+            }
         }
     }
 }

@@ -1,44 +1,30 @@
 {
-    "version": "3.5.5",
-    "description": "A multi-functional, cross-platform Minecraft Launcher.",
-    "homepage": "https://hmcl.huangyuhui.net/",
-    "license": "GPL-3.0-only",
-    "suggest": {
-        "JRE" : [
-            "java/oraclejre8",
-            "java/zulufx17-jre"
-        ]
-    },
-    "url": "https://maven.aliyun.com/repository/central/org/glavo/hmcl/hmcl-stable/3.5.5/hmcl-stable-3.5.5.exe#/HMCL.exe",
+    "url": "http://repo.huaweicloud.com/repository/maven/org/glavo/hmcl/hmcl-stable/3.5.5/hmcl-stable-3.5.5.exe#/hmcl.exe",
+    "homepage": "https://hmcl.huangyuhui.net/download",
     "hash": "sha1:b416350bd1f6d23e69b7b7ef7a4b69b7110d79bd",
-    "pre_install": [
-        "function ensureFile([String] $name) {",
-        "    if (!(Test-Path \"$persist_dir\\$name\") -and !(Test-Path \"$dir\\$name\")) {",
-        "        Add-Content -Path \"$dir\\$name\" -Value $null",
-        "    }",
-        "}",
-        "ensureFile 'hmcl.json'"
-    ],
-    "bin": "HMCL.exe",
+    "version": "3.5.5",
+    "license": "GPL-3.0-or-later",
     "shortcuts": [
         [
-            "HMCL.exe",
-            "HMCL"
+            "hmcl.exe",
+            "Hello Minecraft Launcher"
         ]
     ],
     "persist": [
         "hmcl.json",
         ".minecraft"
     ],
+    "pre_install": "New-Item -Path \"$($dir)\\hmcl.json\"",
     "checkver": {
         "url": "https://hmcl.huangyuhui.net/api/update_link?channel=stable&download_link=true",
         "jsonpath": "$.version"
     },
     "autoupdate": {
-        "url": "https://maven.aliyun.com/repository/central/org/glavo/hmcl/hmcl-stable/$version/hmcl-stable-$version.exe#/HMCL.exe",
+        "url": "http://repo.huaweicloud.com/repository/maven/org/glavo/hmcl/hmcl-stable/$version/hmcl-stable-$version.exe#/hmcl.exe",
         "hash": {
             "url": "https://hmcl.huangyuhui.net/api/update_link?channel=stable&download_link=true",
-            "regex": "$.exesha1"
+            "mode": "json",
+            "jsonpath": "$.exesha1"
         }
     }
 }

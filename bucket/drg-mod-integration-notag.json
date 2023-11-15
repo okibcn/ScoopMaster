@@ -1,0 +1,37 @@
+{
+    "version": "0.2.10",
+    "description": "Deep Rock Galactic mod loader and integration, but without the \"MODDED\" tag in the lobby name",
+    "homepage": "https://github.com/Strappazzon/drg-mod-integration_notag",
+    "license": {
+        "identifier": "MIT",
+        "url": "https://github.com/Strappazzon/drg-mod-integration_notag/blob/master/LICENSE.txt"
+    },
+    "url": "https://github.com/Strappazzon/drg-mod-integration_notag/releases/download/0.2.10-notag/drg_mod_integration_notag-x86_64-pc-windows-msvc.zip",
+    "hash": "sha256:70B3A323C0673C828E650379984FB06996F4ACE004815370120E3066BA7576C2",
+    "post_install": [
+        "Remove-Item \"$dir\\LICENSE.txt\", \"$dir\\README.md\""
+    ],
+    "bin": "drg_mod_integration_notag.exe",
+    "shortcuts": [
+        [
+            "drg_mod_integration_notag.exe",
+            "DRG Mod Integration"
+        ]
+    ],
+    "post_uninstall": [
+        "If ($cmd -eq 'uninstall') {",
+        "  Remove-Item ${env:APPDATA}\\drg-mod-integration\\* -Force -Recurse",
+        "  Remove-Item ${env:LOCALAPPDATA}\\drg-mod-integration\\* -Force -Recurse",
+        "}"
+    ],
+    "checkver": {
+        "github": "https://github.com/Strappazzon/drg-mod-integration_notag"
+    },
+    "autoupdate": {
+        "url": "https://github.com/Strappazzon/drg-mod-integration_notag/releases/download/$version-notag/drg_mod_integration_notag-x86_64-pc-windows-msvc.zip",
+        "hash": {
+            "url": "https://github.com/Strappazzon/drg-mod-integration_notag/releases/download/$version-notag/drg_mod_integration_notag-x86_64-pc-windows-msvc.zip.sha256",
+            "regex": "$sha256\\s\\*$basename"
+        }
+    }
+}
