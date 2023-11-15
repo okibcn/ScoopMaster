@@ -1,28 +1,25 @@
 {
-    "version": "4.1.10.6007",
-    "description": "WeCom is a professional office management tool created by Tencent WeChat team for companies.",
+    "autoupdate": {
+        "url": "https://dldir1.qq.com/wework/work_weixin/WeCom_$version.exe#/dl.7z"
+    },
+    "checkver": {
+        "regex": "([\\d.]+)\\.exe",
+        "script": "(Invoke-WebRequest -Uri 'https://work.weixin.qq.com/wework_admin/commdownload?platform=win&from=wwindex' -MaximumRedirection 0 -SkipHttpErrorCheck -ErrorAction:SilentlyContinue).Headers.Location"
+    },
+    "description": "WeCom (企业微信) is a professional office management tool created by Tencent WeChat team for companies.",
+    "hash": "36437f023b76fa76e84498361d0388ec824ba9712d36d2e8624828f4f8a4d9f0",
     "homepage": "https://work.weixin.qq.com",
+    "installer": {
+        "script": [
+            "Remove-Item \"$dir\\`$*\" -Recurse -Force -ErrorAction SilentlyContinue",
+            "Remove-Item \"$dir\\Uninstall*\" -Force -ErrorAction SilentlyContinue"
+        ]
+    },
     "license": {
         "identifier": "Freeware",
         "url": "https://work.weixin.qq.com/nl/eula"
     },
+    "shortcuts": [["WXWork.exe", "WeChat Work"]],
     "url": "https://dldir1.qq.com/wework/work_weixin/WeCom_4.1.10.6007.exe#/dl.7z",
-    "hash": "36437f023b76fa76e84498361d0388ec824ba9712d36d2e8624828f4f8a4d9f0",
-    "shortcuts": [
-        [
-            "WXWork.exe",
-            "WeChat Work"
-        ]
-    ],
-    "post_install": [
-        "Remove-Item (Join-Path $dir '$PLUGINSDIR') -Force -Recurse",
-        "Remove-Item (Join-Path $dir Uninstall.exe) -Force"
-    ],
-    "checkver": {
-        "script": "(Invoke-WebRequest -Uri 'https://work.weixin.qq.com/wework_admin/commdownload?platform=win&from=wwindex' -MaximumRedirection 0 -SkipHttpErrorCheck -ErrorAction:SilentlyContinue).Headers.Location",
-        "regex": "([\\d.]+)\\.exe"
-    },
-    "autoupdate": {
-        "url": "https://dldir1.qq.com/wework/work_weixin/WeCom_$version.exe#/dl.7z"
-    }
+    "version": "4.1.10.6007"
 }
