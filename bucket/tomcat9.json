@@ -1,41 +1,47 @@
 {
-    "homepage": "https://tomcat.apache.org",
     "version": "9.0.83",
+    "description": "Tomcat, an open source implementation of the Java Servlet, JavaServer Pages, Java Expression Language and Java WebSocket technologies. (version 9)",
+    "homepage": "https://tomcat.apache.org/",
+    "license": "Apache-2.0",
+    "suggest": {
+        "JDK": "java/openjdk"
+    },
+    "architecture": {
+        "64bit": {
+            "url": "https://archive.apache.org/dist/tomcat/tomcat-9/v9.0.83/bin/apache-tomcat-9.0.83-windows-x64.zip",
+            "hash": "sha512:4c8e71761c0c827ebd5a6a59a74ce348aed04f1c8470f68a95b0dae3d68b7e3c4e942667f0f7c33ccbb3636e7df1432ac5d3fd5ae41f96d1908930bd413075dd"
+        },
+        "32bit": {
+            "url": "https://archive.apache.org/dist/tomcat/tomcat-9/v9.0.83/bin/apache-tomcat-9.0.83-windows-x86.zip",
+            "hash": "sha512:17616b58ff9665c64f726f922d11a696df71d0a772ef4a78002bee72e720f00f43b506df2808449c831e97bc90974af9706df2c06ef95b87dd2bf6855c2b0b90"
+        }
+    },
+    "extract_dir": "apache-tomcat-9.0.83",
+    "env_set": {
+        "CATALINA_BASE": "$dir",
+        "CATALINA_HOME": "$dir"
+    },
+    "bin": "bin\\catalina.bat",
+    "persist": [
+        "conf",
+        "webapps"
+    ],
     "checkver": {
-        "url": "https://www.apache.org/dist/tomcat/tomcat-9/?C=M;O=D",
-        "re": "v(?<version>[\\d.]+)"
+        "url": "https://archive.apache.org/dist/tomcat/tomcat-9/?C=M;O=D",
+        "regex": "v([\\d.]+)"
     },
     "autoupdate": {
-        "extract_dir": "apache-tomcat-$version",
         "architecture": {
-            "32bit": {
-                "url": "https://www.apache.org/dist/tomcat/tomcat-9/v$version/bin/apache-tomcat-$version-windows-x86.zip"
-            },
             "64bit": {
-                "url": "https://www.apache.org/dist/tomcat/tomcat-9/v$version/bin/apache-tomcat-$version-windows-x64.zip"
+                "url": "https://archive.apache.org/dist/tomcat/tomcat-$majorVersion/v$version/bin/apache-tomcat-$version-windows-x64.zip"
+            },
+            "32bit": {
+                "url": "https://archive.apache.org/dist/tomcat/tomcat-$majorVersion/v$version/bin/apache-tomcat-$version-windows-x86.zip"
             }
         },
         "hash": {
             "url": "$url.sha512"
-        }
-    },
-    "extract_dir": "apache-tomcat-9.0.83",
-    "bin": "bin\\catalina.bat",
-    "env_set": {
-        "CATALINA_HOME": "$dir",
-        "CATALINA_BASE": "$dir"
-    },
-    "suggest": {
-        "JRE": "java/openjdk"
-    },
-    "architecture": {
-        "64bit": {
-            "url": "https://www.apache.org/dist/tomcat/tomcat-9/v9.0.83/bin/apache-tomcat-9.0.83-windows-x64.zip",
-            "hash": "sha512:4c8e71761c0c827ebd5a6a59a74ce348aed04f1c8470f68a95b0dae3d68b7e3c4e942667f0f7c33ccbb3636e7df1432ac5d3fd5ae41f96d1908930bd413075dd"
         },
-        "32bit": {
-            "url": "https://www.apache.org/dist/tomcat/tomcat-9/v9.0.83/bin/apache-tomcat-9.0.83-windows-x86.zip",
-            "hash": "sha512:17616b58ff9665c64f726f922d11a696df71d0a772ef4a78002bee72e720f00f43b506df2808449c831e97bc90974af9706df2c06ef95b87dd2bf6855c2b0b90"
-        }
+        "extract_dir": "apache-tomcat-$version"
     }
 }
