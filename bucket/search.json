@@ -6,7 +6,10 @@
     "hash": "c3821aa16f41d7ba1fe95cd18b6fb03e62cc33b6ae986e556aa6aab8043e852e",
     "bin": [
         "scoop-search-multisource.exe",
-        ["scoop-search-multisource.exe", "scoops"]
+        [
+            "scoop-search-multisource.exe",
+            "scoops"
+        ]
     ],
     "post_install": [
         "if (!(Test-Path $PROFILE)) {",
@@ -15,9 +18,7 @@
         "Add-Content -Path $PROFILE -Value \"Invoke-Expression (&scoop-search-multisource.exe --hook)\""
     ],
     "uninstaller": {
-        "script": [
-            "(Get-Content $PROFILE | Where-Object {$_ -notmatch \"Invoke-Expression (&scoop-search-multisource.exe --hook)\"}) | Out-File $PROFILE"
-        ]
+        "script": "(Get-Content $PROFILE | Where-Object {$_ -notmatch \"Invoke-Expression (&scoop-search-multisource.exe --hook)\"}) | Out-File $PROFILE"
     },
     "checkver": "github",
     "autoupdate": {
