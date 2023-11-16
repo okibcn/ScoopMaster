@@ -1,0 +1,59 @@
+{
+    "version": "3.5.2",
+    "description": "PDF and eBook reader SumatraPDF pre-release builds",
+    "homepage": "https://www.sumatrapdfreader.org/prerelease",
+    "license": "GPL-3.0-only,BSD-2-Clause",
+    "architecture": {
+        "64bit": {
+            "url": "https://www.sumatrapdfreader.org/dl/prerel/15893/SumatraPDF-prerel-64-install.exe",
+            "hash": "62a0d069b44b12972fe9b9829f15143f4840afa7a4f2b3bf6b6c27e1ed5e4b27"
+        },
+        "arm64": {
+            "url": "https://www.sumatrapdfreader.org/dl/prerel/15893/SumatraPDF-prerel-arm64-install.exe",
+            "hash": "5c20a729093a0e0c9a00d9d02282af73aa1d2daf059767d9abe60e75403d53b4"
+        }
+    },
+    "pre_install": [
+        "$file = 'SumatraPDF-settings.txt'",
+        "if (-not (Test-Path \"$persist_dir\\$file\")) {",
+        "    Write-Host 'File' $file 'does not exists. Creating.' -f Yellow",
+        "    Set-Content \"$dir\\$file\" 'CheckForUpdates = false' -Encoding Ascii",
+        "}"
+    ],
+    "bin": [["SumatraPDF-prerel-64.exe", "pdf-pre"]],
+    "installer": {
+        "args": [
+            "-x",
+            "-d",
+			"$dir"
+        ]
+    },
+    "shortcuts": [
+        [
+            "SumatraPDF-prerel-64.exe",
+            "SumatraPDF pre"
+        ]
+    ],
+    "persist": [
+        "SumatraPDF-settings.txt",
+        "sumatrapdfcache"
+    ],
+    "post_install": "regsvr32 /s \"$dir\\pdfpreview.dll\"",
+    "pre_uninstall": {
+        "script": "regsvr32 /u /s \"$dir\\pdfpreview.dll\""
+    },
+    "checkver": {
+        "url": "https://files2.sumatrapdfreader.org/software/sumatrapdf/sumatralatest.js",
+        "regex": "var sumLatestVer ?= ?(?<version>\\d+);"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://www.sumatrapdfreader.org/dl/rel/$version/SumatraPDF-$version-64-install.exe"
+            },
+            "32bit": {
+                "url": "https://www.sumatrapdfreader.org/dl/rel/$version/SumatraPDF-$version-install.exe"
+            }
+        }
+    }
+}
