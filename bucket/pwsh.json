@@ -1,7 +1,7 @@
 {
-    "homepage": "https://github.com/PowerShell/PowerShell",
-    "description": "PowerShell Core, the cross-platform task automation and configuration management framework/tool.",
     "version": "7.4.0",
+    "description": "Cross-platform automation and configuration tool/framework, known as Powershell Core, that works well with existing tools and is optimized for dealing with structured data.",
+    "homepage": "https://github.com/PowerShell/PowerShell",
     "license": "MIT",
     "architecture": {
         "64bit": {
@@ -13,12 +13,22 @@
             "hash": "bccc24e1f1dfc5d837111f3894d0cba9a14cf9891ebc6645c63a7a584e54bc0a"
         }
     },
-    "env_add_path": "pwsh.exe",
+    "pre_install": [
+        "'Microsoft.PowerShell_profile.ps1', 'profile.ps1' | ForEach-Object {",
+        "    if (!(Test-Path \"$persist_dir\\$_\")) { New-Item \"$dir\\$_\" | Out-Null }",
+        "}"
+    ],
+    "bin": "pwsh.exe",
     "shortcuts": [
         [
             "pwsh.exe",
-            "PowerShell"
+            "PowerShell Core",
+            "-WorkingDirectory ~"
         ]
+    ],
+    "persist": [
+        "Microsoft.PowerShell_profile.ps1",
+        "profile.ps1"
     ],
     "checkver": "github",
     "autoupdate": {
@@ -32,8 +42,7 @@
         },
         "hash": {
             "url": "https://github.com/PowerShell/PowerShell/releases/tag/v$version/",
-            "find": "$basename\\s*<ul>\\s*<li>([A-Fa-f\\d]{64})"
+            "regex": "$basename\\s*<ul>\\s*<li>$sha256"
         }
-    },
-    "notes": "This version don't use a shim, but add pwsh to env."
+    }
 }
