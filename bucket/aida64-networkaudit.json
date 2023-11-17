@@ -1,0 +1,31 @@
+{
+    "version": "6.92.6600",
+    "homepage": "https://www.aida64.com",
+    "license": "",
+    "url": "http://download.aida64.com/aida64networkaudit692.zip",
+    "hash": "577fadb8165469518126f266f37364f7bbd356d80587139221e560fd9619af7b",
+    "pre_install": [
+        "$file = 'aida64.ini'",
+        "if (!(Test-Path \"$persist_dir\\$file\")) {",
+        "    Set-Content \"$dir\\$file\" @('[Generic]', '', 'NoRegistry=1', 'NetUpdateFreq=0') -Encoding Ascii",
+        "}",
+        "if (!(Test-Path \"$persist_dir\\pkey.txt\")) { New-Item \"$dir\\pkey.txt\" | Out-Null }"
+    ],
+    "persist": [
+        "aida64.ini",
+        "pkey.txt"
+    ],
+    "shortcuts": [
+        [
+            "aida64.exe",
+            "AIDA64 Network Audit"
+        ]
+    ],
+    "checkver": {
+        "url": "https://www.aida64.com/downloads/latesta64xe",
+        "regex": "Version:\\s+([\\d.]+)"
+    },
+    "autoupdate": {
+        "url": "http://download.aida64.com/aida64networkaudit$majorVersion$minorVersion.zip"
+    }
+}

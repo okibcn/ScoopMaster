@@ -1,0 +1,31 @@
+{
+    "version": "6.92.6600",
+    "homepage": "https://www.aida64.com",
+    "license": "",
+    "url": "http://download.aida64.com/aida64extreme692.zip",
+    "hash": "cde98c9d6121e789057a422458fc0354bcfd45291cfb3289e585324886caecc8",
+    "pre_install": [
+        "$file = 'aida64.ini'",
+        "if (!(Test-Path \"$persist_dir\\$file\")) {",
+        "    Set-Content \"$dir\\$file\" @('[Generic]', '', 'NoRegistry=1', 'NetUpdateFreq=0') -Encoding Ascii",
+        "}",
+        "if (!(Test-Path \"$persist_dir\\pkey.txt\")) { New-Item \"$dir\\pkey.txt\" | Out-Null }"
+    ],
+    "persist": [
+        "aida64.ini",
+        "pkey.txt"
+    ],
+    "shortcuts": [
+        [
+            "aida64.exe",
+            "AIDA64 Extreme"
+        ]
+    ],
+    "checkver": {
+        "url": "https://www.aida64.com/downloads/latesta64xe",
+        "regex": "Version:\\s+([\\d.]+)"
+    },
+    "autoupdate": {
+        "url": "http://download.aida64.com/aida64extreme$majorVersion$minorVersion.zip"
+    }
+}
