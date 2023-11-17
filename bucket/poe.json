@@ -1,11 +1,27 @@
 {
-    "version": "1.0",
-    "url": "https://github.com/a1311910148/scoop-bucket/releases/download/1.1/poe.zip",
-    "bin": "Poe.exe",
+    "version": "1.1.11",
+    "homepage": "https://poe.com",
+    "description": "Poe is a platform that have wide variety of AI-powered bots.",
+    "license": "Proprietary",
+    "url": "https://desktop-app.poecdn.net/downloads/PoeSetup.exe#dl.7z",
+    "hash": "EFB88603E00D751217E0758D533B1762C5327FCC3F0110E9DCB652D8B05C67D2",
+    "pre_install": [
+        "Expand-Archive -Path \"Poe-$version-full.nupkg\" -DestinationPath \"tmp\"",
+        "Move-Item -Path \"tmp\\lib\\net45\\*\" -Destination \"$dir\"",
+        "Remove-Item \"tmp\" -Force -Recurse",
+        "Remove-Item \"Poe-$version-full.nupkg\""
+    ],
     "shortcuts": [
         [
             "Poe.exe",
             "Poe"
         ]
-    ]
+    ],
+    "checkver": {
+        "url": "https://desktop-app.poecdn.net/updates/win32_x64/RELEASES",
+        "regex": "Poe-(\\d+\\.\\d+\\.\\d+)-full.nupkg"
+    },
+    "autoupdate": {
+        "url": "https://desktop-app.poecdn.net/downloads/PoeSetup.exe#dl.7z"
+    }
 }
