@@ -6,10 +6,11 @@
     "url": "https://desktop-app.poecdn.net/downloads/PoeSetup.exe#dl.7z",
     "hash": "EFB88603E00D751217E0758D533B1762C5327FCC3F0110E9DCB652D8B05C67D2",
     "pre_install": [
-        "Expand-Archive -Path \"Poe-$version-full.nupkg\" -DestinationPath \"tmp\"",
-        "Move-Item -Path \"tmp\\lib\\net45\\*\" -Destination \"$dir\"",
-        "Remove-Item \"tmp\" -Force -Recurse",
-        "Remove-Item \"Poe-$version-full.nupkg\""
+        "Rename-Item -Path \"$dir\\Poe-$version-full.nupkg\" -NewName \"$dir\\Poe-$version-full.zip\"",
+        "Expand-Archive -Path \"$dir\\Poe-$version-full.zip\" -DestinationPath \"$dir\\tmp\"",
+        "Move-Item -Path \"$dir\\tmp\\lib\\net45\\*\" -Destination \"$dir\"",
+        "Remove-Item \"$dir\\tmp\" -Force -Recurse",
+        "Remove-Item \"$dir\\Poe-$version-full.zip\""
     ],
     "shortcuts": [
         [
