@@ -1,18 +1,18 @@
 {
     "description": "Script for searching all of scoop for apps - Just like https://scoop.sh/",
     "homepage": "https://github.com/Jojo4GH/scoop-JojoIV",
-    "version": "1.1",
+    "version": "1.3",
     "url": "https://raw.githubusercontent.com/Jojo4GH/scoop-JojoIV/master/resources/scoopf.ps1",
+    "hash": "80eef6a75fe413dc084840d93b448255db4be3fb6f06dd487b376ec8b72f5357",
     "bin": "scoopf.ps1",
     "depends": [
-        "pwsh"
-    ],
-    "pre_install": [
-        "Install-PackageProvider -Name NuGet -Force > $null",
-        "Install-Module PSWriteColor -Scope CurrentUser -Force > $null"
+        "pwsh",
+        "PSWriteColor"
     ],
     "post_install": [
+        "scoop alias rm find 6> $null",
         "scoop alias add find 'pwsh -Command scoopf.ps1 @args'",
+        "scoop alias rm f 6> $null",
         "scoop alias add f 'pwsh -Command scoopf.ps1 @args'"
     ],
     "pre_uninstall": [
