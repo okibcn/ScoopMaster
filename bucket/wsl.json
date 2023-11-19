@@ -3,6 +3,7 @@
   "description": "WSL",
   "homepage": "https://github.com/microsoft/wsl",
   "license": "Apache-2.0",
+  "depends": "sudo",
   "architecture": {
     "64bit": {
       "url": "https://github.com/wez/wezterm/releases/download/nightly/WezTerm-windows-nightly.zip"
@@ -10,9 +11,16 @@
   },
   "installer": {
     "script": [
-      "Write-Host installing wsl",
-      "wsl --install --no-distribution | Out-Null ",
-      "Remove-Item -Recurse $dir\\WezTerm-windows-20231117-151105-60065258"
+ 
+      "Remove-Item -Recurse $dir\\WezTerm-windows-20231117-151105-60065258",
+      "Write-Host Installing WSL",
+      "wsl --install --no-distribution | Out-Null "
+    ]
+  },
+  "uninstaller": {
+    "script": [
+      "Write-Host Uninstalling WSL",
+      "Get-AppxPackage *windowssubsystemforlinux* | Remove-AppxPackage"
     ]
   }
 }
