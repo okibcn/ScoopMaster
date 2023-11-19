@@ -1,0 +1,25 @@
+{
+  "version": "22.05",
+  "description": "Nixos-WSL",
+  "homepage": "https://github.com/nix-community/nixos-wsl",
+  "license": "Apache-2.0",
+  "architecture": {
+    "64bit": {
+      "url": "https://github.com/wez/wezterm/releases/download/nightly/WezTerm-windows-nightly.zip"
+    }
+  },
+  "installer": {
+    "script": [
+      "Write-Host installing nixos-wsl",
+      "Invoke-WebRequest -Uri https://github.com/nix-community/NixOS-WSL/releases/download/22.05-5c211b47/nixos-wsl-x86_64-linux.tar.gz -OutFile $dir/nixos-wsl.tar.gz",
+      "wsl --import NixOS $dir/NixOS $dir/nixos-wsl.tar.gz --version 2",
+      "Remove-Item $dir\\nixos-wsl.tar.gz",
+      "Remove-Item -Recurse $dir\\WezTerm-windows-20231117-151105-60065258"
+    ]
+  },
+  "uninstaller": {
+    "script": [
+      "wslconfig /u NixOS"
+    ]
+  }
+}
