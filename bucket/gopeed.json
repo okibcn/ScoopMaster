@@ -1,18 +1,45 @@
 {
+    "##": "The installer is made with InnoSetup.",
     "version": "1.4.4",
-    "homepage": "https://github.com/GopeedLab/gopeed",
     "description": "High speed downloader that supports all platforms.",
-    "license": "GPL-3.0 license",
-    "url": "https://github.com/GopeedLab/gopeed/releases/download/v1.4.4/Gopeed-v1.4.4-windows-amd64-portable.zip",
-    "hash": "898e904d307f2dd8d4d109ec2fcb9bdebbadcd8a0cd2f5a383bffcd5baee3bf4",
-    "checkver": "github",
-    "autoupdate": {
-        "url": "https://github.com/GopeedLab/gopeed/releases/download/v$version/Gopeed-v$version-windows-amd64-portable.zip"
+    "homepage": "https://github.com/GopeedLab/gopeed",
+    "license": "GPL-3.0-only",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/GopeedLab/gopeed/releases/download/v1.4.4/Gopeed-v1.4.4-windows-amd64.zip",
+            "hash": "fb4d2288c903588a8ae33c042ee5b4628cbc45403558fd8fdf85da7998dacad1"
+        }
+    },
+    "pre_install": "Get-ChildItem \"$dir\" 'Gopeed*.exe' | Rename-Item -NewName 'setup.exe'",
+    "installer": {
+        "script": [
+            "Start-Process -Wait \"$dir\\setup.exe\" -ArgumentList @('/SP-', '/VERYSILENT', '/PORTABLE', \"/DIR=`\"$dir`\"\")",
+            "Remove-Item \"$dir\\setup.exe\""
+        ]
+    },
+    "uninstaller": {
+        "file": "unins000.exe",
+        "args": [
+            "/verysilent",
+            "/nocancel",
+            "/norestart"
+        ]
     },
     "shortcuts": [
         [
             "gopeed.exe",
             "Gopeed"
         ]
-    ]
+    ],
+    "checkver": {
+        "url": "https://api.github.com/repos/GopeedLab/gopeed/releases",
+        "regex": "/releases/tag/v([\\d.]+)"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/GopeedLab/gopeed/releases/download/v$version/Gopeed-v$version-windows-amd64.zip"
+            }
+        }
+    }
 }
