@@ -6,16 +6,18 @@
         "identifier": "GPL-3.0-or-later",
         "url": "https://raw.githubusercontent.com/modrinth/theseus/master/LICENSE"
     },
-    "url": "https://launcher-files.modrinth.com/versions/0.6.1/windows/Modrinth%20App_0.6.1_x64_en-US.msi",
+    "url": "https://launcher-files.modrinth.com/versions/0.6.1/windows/Modrinth%20App_0.6.1_x64_en-US.msi#/setup.msi_",
     "hash": "8bccceb284d4bccde6c7c411f4d1ae626026b762d28d51dd988337884a29b49a",
-    "shortcuts": [
-        [
-            "PFiles\\Modrinth App\\Modrinth App.exe",
-            "Modrinth App"
-        ]
+    "pre_install": [
+        "if (!(is_admin)) { error \"$app requires admin rights to $cmd\"; break }",
+        "Start-Process msiexec -ArgumentList @('/i', \"`\"$dir\\setup.msi_`\"\", '/qn', '/norestart') -Wait -Verb RunAs"
     ],
     "checkver": "href=\"[^\"]+/versions/([\\d.]+)/windows/Modrinth%20App",
     "autoupdate": {
-        "url": "https://launcher-files.modrinth.com/versions/$version/windows/Modrinth%20App_$version_x64_en-US.msi"
-    }
+        "url": "https://launcher-files.modrinth.com/versions/$version/windows/Modrinth%20App_$version_x64_en-US.msi#/setup.msi_"
+    },
+    "pre_uninstall": [
+        "if (!(is_admin)) { error \"$app requires admin rights to $cmd\"; break }",
+        "Start-Process msiexec -ArgumentList @('/x', \"`\"$dir\\setup.msi_`\"\", '/qn', '/norestart') -Wait -Verb RunAs"
+    ]
 }
