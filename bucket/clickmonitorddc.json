@@ -1,25 +1,20 @@
 {
-    "version": "7.2",
     "homepage": "https://github.com/nubix/ClickmonitorDDC",
-    "description": "ClickMonitorDDC",
-    "license": "Freeware",
+    "description": "Click taskbar notification icons to adjust the real monitor-backlight-brightness/contrast or use mouse wheel over notification icons to increase/decrease corresponding value, much more comfortable and faster than manually messing around with monitor buttons, works with external monitors (DDC-protocol) and Laptop-LCD-Display.",
+    "license": "Unlicense",
+    "version": "7.2",
     "url": "https://github.com/nubix/ClickmonitorDDC/raw/main/ClickMonitorDDC_7_2.zip",
-    "hash": "13aad46478bd8b57f411399aa6d07b74304650bb536cf470a722c6de1ddf5e61",
+    "hash": "13AAD46478BD8B57F411399AA6D07B74304650BB536CF470A722C6DE1DDF5E61",
     "pre_install": [
-        "function CreateFile ($name, $value = $null) {",
-        "    if (!(Test-Path \"$persist_dir\\$name\")) {",
-        "        Set-Content \"$dir\\$name\" $value -Encoding Ascii",
-        "    }",
-        "}",
-        "CreateFile 'ClickMonitorDDC.xml' ",
-        "Rename-Item \"$dir\\ClickMonitorDDC_*.exe\" \"$dir\\ClickMonitorDDC.exe\""
+        "New-Item -Path $dir/ClickMonitorDDC.xml -Value \"<?xml version=\"1.0\" encoding=\"UTF-8\"?><settings ClickMonitorDDC=\"7.2\"><set additional=\"N\"></set>/settings>\""
     ],
-    "persist": "ClickMonitorDDC.xml",
-    "bin": "ClickMonitorDDC.exe",
-    "shortcuts": [
-        [
-            "ClickMonitorDDC.exe",
-            "ClickMonitorDDC"
-        ]
+    "post_install": [
+        "Rename-Item $dir\\ClickMonitorDDC_7_2.exe ClickMonitorDDC.exe"
+    ],
+    "bin": [
+        "ClickMonitorDDC.exe"
+    ],
+    "persist": [
+        "ClickMonitorDDC.xml"
     ]
 }
