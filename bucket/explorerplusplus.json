@@ -1,15 +1,15 @@
 {
     "homepage": "https://explorerplusplus.com/",
-    "version": "1.4.0.2270",
+    "version": "1.4.0.2268",
     "license": "freeware",
     "architecture": {
         "64bit": {
-            "url": "https://ci.appveyor.com/api/projects/derceg/explorerplusplus/artifacts/explorerpp_x64.zip?branch=master&pr=false&job=Platform%3A%20x64",
-            "hash": "7ccdb9315343b034f0ccde849158341050b9bfbd9587743f09af31ee79aa3801"
+            "url": "https://download.explorerplusplus.com/dev/latest/explorerpp_x64.zip",
+            "hash": "7f7c8fd03d966f3add57991b1c151a0d4217b11f1f1d094a7674d56db2651fbf"
         },
         "32bit": {
-            "url": "https://ci.appveyor.com/api/projects/derceg/explorerplusplus/artifacts/explorerpp_x86.zip?branch=master&pr=false&job=Platform%3A%20Win32",
-            "hash": "167d681e5b833ab2d3d9c8f347eb5eb2e33f33feed6bea58ab2859278e914773"
+            "url": "https://download.explorerplusplus.com/dev/latest/explorerpp_x86.zip",
+            "hash": "281b8ec6d4b4043b024d7d2cec0583c882c3d8e7119fa29f0cf77fdc2b8974db"
         }
     },
     "bin": [
@@ -34,21 +34,21 @@
         "Copy-Item -Path \"$dir\\explorerplusplus\\plugins\" -Destination \"$dir\" -Recurse -Force -Confirm:$false",
         "Remove-Item -Path \"$dir\\explorerplusplus\" -Recurse -Force -Confirm:$false",
         "# translations",
-        "curl -L -o \"$dir\\explorer++_translations.zip\" \"https://ci.appveyor.com/api/projects/derceg/explorerplusplus/artifacts/explorerpp_translations.zip?branch=master&pr=false&job=Platform%3A%20Win32\"",
+        "curl -L -o \"$dir\\explorer++_translations.zip\" \"https://download.explorerplusplus.com/dev/latest/explorerpp_translations.zip\"",
         "if ($?) {Expand-Archive -Path \"$dir\\explorer++_translations.zip\" -DestinationPath \"$dir\"}",
         "Remove-Item -Path \"$dir\\explorer++_translations.zip\" -Recurse -Force -Confirm:$false"
     ],
     "checkver": {
-        "url": "https://ci.appveyor.com/api/projects/derceg/explorerplusplus",
-        "jsonpath": "$.build.version"
+        "url": "https://download.explorerplusplus.com/dev/latest_version.txt",
+        "regex": "([\\d\\.]+)"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://ci.appveyor.com/api/projects/derceg/explorerplusplus/artifacts/explorerpp_x64.zip?branch=master&pr=false&job=Platform%3A%20x64"
+                "url": "https://download.explorerplusplus.com/dev/latest/explorerpp_x64.zip"
             },
             "32bit": {
-                "url": "https://ci.appveyor.com/api/projects/derceg/explorerplusplus/artifacts/explorerpp_x86.zip?branch=master&pr=false&job=Platform%3A%20Win32"
+                "url": "https://download.explorerplusplus.com/dev/latest/explorerpp_x86.zip"
             }
         }
     }
