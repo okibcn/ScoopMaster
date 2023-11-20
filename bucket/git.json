@@ -1,5 +1,5 @@
 {
-    "version": "2.43.0.windows.1",
+    "version": "2.43.0",
     "description": "Distributed version control system",
     "homepage": "https://gitforwindows.org",
     "license": "GPL-2.0-only",
@@ -60,20 +60,21 @@
         "GIT_INSTALL_ROOT": "$dir"
     },
     "checkver": {
-        "github": "https://github.com/git-for-windows/git",
-        "regex": "tag/v([\\d.]+\\.windows\\.\\d)"
+        "url": "https://api.github.com/repositories/23216272/releases/latest",
+        "jsonpath": "$..browser_download_url",
+        "regex": "download/v(?<tag>[\\d.]+windows\\.\\d)/PortableGit-([\\d.]+)-64"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://github.com/git-for-windows/git/releases/download/v$version/PortableGit-$matchHead-64-bit.7z.exe#/dl.7z"
+                "url": "https://github.com/git-for-windows/git/releases/download/v$matchTag/PortableGit-$version-64-bit.7z.exe#/dl.7z"
             },
             "32bit": {
-                "url": "https://github.com/git-for-windows/git/releases/download/v$version/PortableGit-$matchHead-32-bit.7z.exe#/dl.7z"
+                "url": "https://github.com/git-for-windows/git/releases/download/v$matchTag/PortableGit-$version-32-bit.7z.exe#/dl.7z"
             }
         },
         "hash": {
-            "url": "https://github.com/git-for-windows/git/releases/tag/v$version",
+            "url": "https://github.com/git-for-windows/git/releases/tag/v$matchTag",
             "regex": "(?s)$basename.*?$sha256"
         }
     }
