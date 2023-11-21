@@ -1,0 +1,36 @@
+{
+    "##": "Tortoise Git non portable silent installation",
+    "version": "2.15.0.0",
+    "description": "Windows Shell Interface to Git based on TortoiseSVN.",
+    "homepage": "https://tortoisegit.org/",
+    "license": {
+        "identifier": "GPL-2.0-only"
+    },
+    "architecture": {
+        "64bit": {
+            "url": "https://download.tortoisegit.org/tgit/2.15.0.0/TortoiseGit-2.15.0.0-64bit.msi#/setup.msi_",
+            "hash": "481359c8773e1d098b98156ff44f0dd50304e97a866d44e6594c709ec5a61377"
+        }
+    },
+    "installer": {
+        "script": [
+            "Start-Process 'msiexec' -ArgumentList @('/i', \"$dir\\setup.msi_\", '/qn', '/norestart') -Wait -Verb 'RunAs'"
+        ]
+    },
+    "uninstaller": {
+        "script": [
+            "Start-Process 'msiexec' -ArgumentList @('/x', \"$dir\\setup.msi_\", '/qn', '/norestart') -Wait -Verb 'RunAs'"
+        ]
+    },
+    "checkver": {
+        "url": "https://download.tortoisegit.org/tgit/",
+        "regex": "TortoiseGit is: <a href=/tgit/([\\d\\.]+)/"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://download.tortoisegit.org/tgit/$version/TortoiseGit-$version-64bit.msi#/setup.msi_"
+            }
+        }
+    }
+}
