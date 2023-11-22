@@ -1,0 +1,76 @@
+{
+    "homepage": "https://github.com/AmusementClub/vs-mlrt",
+    "description": "Efficient CPU/GPU/Vulkan ML Runtimes for VapourSynth",
+    "license": "GPL-3.0-only",
+    "version": "v14.test2",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/AmusementClub/vs-mlrt/releases/download/v14.test2/vsmlrt-windows-x64-cuda.v14.test2.7z",
+            "hash": "cac8a139597376da0eb31b56eb0c9e86434a45b1082355928f1a8ee0816f9a19"
+        }
+    },
+    "checkver": {
+        "url": "https://api.github.com/repos/AmusementClub/vs-mlrt/tags",
+        "jsonpath": "$[0].name"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/AmusementClub/vs-mlrt/releases/download/$version/vsmlrt-windows-x64-cuda.$version.7z"
+            }
+        }
+    },
+    "post_install": [
+        "$output = python -m site",
+        "$match = Select-String -InputObject $output -Pattern \"USER_SITE: '(.+?)'\"",
+        "$site_packages = $match.matches.groups[1].Value.Replace('\\\\', '\\\\')",
+        "$site_packages_exists = Test-Path -Path $site_packages -PathType Container",
+        "$plugins = \"$env:APPDATA\\Vapoursynth\\plugins64\"",
+        "$plugins_exists = Test-Path -Path $plugins -PathType Container",
+        "",
+        "if(!$site_packages_exists){",
+        "  Write-Output \"User Site-Packages don't exist!\"",
+        "  Exit 1",
+        "}",
+        "",
+        "if(!$plugins_exists){",
+        "  Write-Output \"User Plugin folder doesn't exist!\"",
+        "  Exit 1",
+        "}",
+        "",
+        "# Main Plugins",
+        "",
+        "cmd /c mklink /H \"$site_packages\\\\vsmlrt.py\" \"$dir\\\\vsmlrt.py\"",
+        "cmd /c mklink /H \"$plugins\\\\vsncnn.dll\" \"$dir\\\\vsncnn.dll\"",
+        "cmd /c mklink /H \"$plugins\\\\vsort.dll\" \"$dir\\\\vsort.dll\"",
+        "cmd /c mklink /H \"$plugins\\\\vsov.dll\" \"$dir\\\\vsov.dll\"",
+        "cmd /c mklink /H \"$plugins\\\\vstrt.dll\" \"$dir\\\\vstrt.dll\"",
+        "",
+        "# Directories",
+        "",
+        "cmd /c mklink /J \"$plugins\\\\models\" \"$dir\\\\models\"",
+        "cmd /c mklink /J \"$plugins\\\\vsmlrt-cuda\" \"$dir\\\\vsmlrt-cuda\"",
+        "cmd /c mklink /J \"$plugins\\\\vsort\" \"$dir\\\\vsort\"",
+        "cmd /c mklink /J \"$plugins\\\\vsov\" \"$dir\\\\vsov\""
+    ],
+    "post_uninstall": [
+        "$output = python -m site",
+        "$match = Select-String -InputObject $output -Pattern \"USER_SITE: '(.+?)'\"",
+        "$site_packages = $match.matches.groups[1].Value.Replace('\\\\', '\\\\')",
+        "$plugins = \"$env:APPDATA\\Vapoursynth\\plugins64\"",
+        "",
+        "# Main Plugins",
+        "Remove-Item -Force -Path \"$site_packages\\\\vsmlrt.py\"",
+        "Remove-Item -Force -Path \"$plugins\\\\vsncnn.dll\"",
+        "Remove-Item -Force -Path \"$plugins\\\\vsort.dll\"",
+        "Remove-Item -Force -Path \"$plugins\\\\vsov.dll\"",
+        "Remove-Item -Force -Path \"$plugins\\\\vstrt.dll\"",
+        "",
+        "# Directories",
+        "",
+        "Remove-Item -Force -Recurse -Path \"$plugins\\\\models\"",
+        "Remove-Item -Force -Recurse -Path \"$plugins\\\\vsmlrt-cuda\"",
+        "Remove-Item -Force -Recurse -Path \"$plugins\\\\vsort\"",
+        "Remove-Item -Force -Recurse -Path \"$plugins\\\\vsov\""
+    ]
+}

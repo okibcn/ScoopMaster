@@ -1,0 +1,47 @@
+{
+    "homepage": "https://github.com/AmusementClub/vs-dfttest2",
+    "description": "DFTTest re-implemetation for VapourSynth (Main Python Script)",
+    "license": "GPL-3.0-only",
+    "version": "v6",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/AmusementClub/vs-dfttest2/releases/download/v6/dfttest2.py",
+            "hash": "c7f93967bbaa3b223a74f2540d6b1a4463b1ff39d0a116e599c209511a3dffde"
+        }
+    },
+    "checkver": {
+        "url": "https://api.github.com/repos/AmusementClub/vs-dfttest2/tags",
+        "jsonpath": "$[0].name"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/AmusementClub/vs-dfttest2/releases/download/$version/dfttest2.py"
+            }
+        }
+    },
+    "post_install": [
+        "$output = python -m site",
+        "$match = Select-String -InputObject $output -Pattern \"USER_SITE: '(.+?)'\"",
+        "$site_packages = $match.matches.groups[1].Value.Replace('\\\\', '\\\\')",
+        "$exists = Test-Path -Path $site_packages -PathType Container",
+        "if(!$exists){",
+        "  Write-Output \"User Site-Packages don't exist!\"",
+        "  Exit 1",
+        "}",
+        "",
+        "cmd /c mklink /H \"$site_packages\\\\dfttest2.py\" \"$dir\\\\dfttest2.py\""
+    ],
+    "post_uninstall": [
+        "$output = python -m site",
+        "$match = Select-String -InputObject $output -Pattern \"USER_SITE: '(.+?)'\"",
+        "$site_packages = $match.matches.groups[1].Value.Replace('\\\\', '\\\\')",
+        "",
+        "Remove-Item -Force -Path \"$site_packages\\\\dfttest2.py\""
+    ],
+    "suggest": {
+        "CPU Runtimes": "vs-dfttest2-cpu",
+        "CUDA Runtimes": "vs-dfttest2-cuda"
+    },
+    "notes": "You will need one of the recommended runtimes otherwise you cannot use this."
+}
