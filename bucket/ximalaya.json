@@ -1,20 +1,33 @@
 {
-    "version": "3.3.7",
+    "version": "4.0.0.394",
     "description": "喜马拉雅",
     "homepage": "https://ximalaya.com",
     "url": "https://webcdn.m.qq.com/spcmgr/download/GKwRIW4IbydWACAAAAIvIR_Q.exe#/dl.7z",
-    "hash": "180ce17541504177a96194d25a7175030023479c1bf47df788b1a82c4c3790d1",
+    "hash": "6ea4e1b30b2c05504d075dc542d4f79bc8f566dd51c9b613ab168bebc51eb8b2",
     "installer": {
-        "script": "Expand-7zipArchive \"$dir\\ximalaya-$version-ia32.nsis.7z\" \"$dir\""
+        "script": "Expand-7zipArchive \"$dir\\ximalaya-$matchVersion-ia32.nsis.7z\" \"$dir\""
     },
-    "bin": [["喜马拉雅.exe", "喜马拉雅"]],
-    "shortcuts": [["喜马拉雅.exe", "喜马拉雅"]],
+    "bin": [
+        [
+            "喜马拉雅.exe",
+            "喜马拉雅"
+        ]
+    ],
+    "shortcuts": [
+        [
+            "喜马拉雅.exe",
+            "喜马拉雅"
+        ]
+    ],
     "post_install": "Remove-Item \"$dir\\`$PLUGINSDIR\" -Force -Recurse",
     "checkver": {
         "url": "https://pc.qq.com/detail/4/detail_32624.html",
         "regex": "版本：([\\d.]+)"
     },
     "autoupdate": {
-        "url": "https://webcdn.m.qq.com/spcmgr/download/GKwRIW4IbydWACAAAAIvIR_Q.exe#/dl.7z"
+        "url": "https://webcdn.m.qq.com/spcmgr/download/GKwRIW4IbydWACAAAAIvIR_Q.exe#/dl.7z",
+        "installer": {
+            "script": "Expand-7zipArchive \"$dir\\ximalaya-$matchVersion-ia32.nsis.7z\" \"$dir\""
+        }
     }
 }
