@@ -5,19 +5,13 @@
     "architecture": {
         "64bit": {
             "url": "https://github.com/sunfish-shogi/electron-shogi/releases/download/v1.11.3/release-v1.11.3-win.zip",
-            "hash": "87a0d2034de9db9f7de3319466812e01dc0d6287386b6e06f55b06300f639db4"
+            "hash": "87a0d2034de9db9f7de3319466812e01dc0d6287386b6e06f55b06300f639db4",
+            "pre_install": [
+                "Expand-7zipArchive \"$dir\\ElectronShogi Setup 1.11.3.exe\" \"$dir\"",
+                "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\"",
+                "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\Uninstall*\" -Force -Recurse"
+            ]
         }
-    },
-    "installer": {
-        "script": [
-            "Push-Location -Path $dir",
-            "7z.exe x \"./ElectronShogi Setup 1.11.3.exe\"",
-            "Remove-Item \"./ElectronShogi Setup 1.11.3.exe\"",
-            "Rename-Item -Path \"?PLUGINSDIR\" -NewName \"_PLUGINSDIR\"",
-            "Move-Item \"_PLUGINSDIR\\app-64.7z\" .\\",
-            "7z.exe x \"./app-64.7z\"",
-            "Pop-Location"
-        ]
     },
     "shortcuts": [
         [
