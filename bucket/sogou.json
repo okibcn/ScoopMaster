@@ -5,9 +5,13 @@
     "url": "https://webcdn.m.qq.com/spcmgr/download/_sogou_pinyin_Release_13.10.0.8469_6990.exe#/installer.exe",
     "hash": "6526917ba94ac5d3120b645ac86975302813d464a4ad934449a09ce9585b9ecf",
     "installer": {
-        "script": "Start-Process -filepath \"$dir\\installer.exe\" -WorkingDirectory \"$dir\" -ArgumentList \"/S /D=$dir\" -Wait"
+        "script": [
+            "Start-Process -filepath \"$dir\\installer.exe\" -WorkingDirectory \"$dir\" -ArgumentList \"/S /D=$dir\" -Wait",
+            "icacls \"$dir\" /grant Everyone:F /T"
+        ]
     },
     "post_install": "Remove-Item \"$dir\\installer.exe\" -Force",
+    "notes": "卸载需要重启.",
     "uninstaller": {
         "script": "Start-Process -filepath \"$dir\\$version\\Uninstall\\Uninstall.exe\" -WorkingDirectory \"$dir\" -ArgumentList \"-y\" -PassThru -NoNewWindow | Wait-Process"
     },
