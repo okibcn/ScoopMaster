@@ -20,24 +20,10 @@
             "EmEditor"
         ]
     ],
-    "persist": [
-        "AppData",
-        "Help",
-        "User",
-        "eeCommon.ini",
-        "eeConfig.ini",
-        "eePlugins.ini",
-        "eeLM.ini"
-    ],
-    "pre_install": [
-        "if(!(Test-Path \"$persist_dir\\eeCommon.ini\")) { Add-Content \"$dir\\eeCommon.ini\" $null }",
-        "if(!(Test-Path \"$persist_dir\\eeConfig.ini\")) { Add-Content \"$dir\\eeConfig.ini\" $null }",
-        "if(!(Test-Path \"$persist_dir\\eeLM.ini\")) { Add-Content \"$dir\\eeLM.ini\" $null }",
-        "if(!(Test-Path \"$persist_dir\\eePlugins.ini\")) { Add-Content \"$dir\\eePlugins.ini\" $null }"
-    ],
+    "post_install": "Remove-Item \"$dir\\eeUseIni.ini\"",
     "checkver": {
-        "url": "https://support.emeditor.com/en/downloads",
-        "re": "<td>v((\\d+\\.){2}[0-8]\\d*)</td>"
+        "url": "https://www.emeditor.com/",
+        "re": "EmEditor v([\\d.]+) released"
     },
     "autoupdate": {
         "architecture": {
