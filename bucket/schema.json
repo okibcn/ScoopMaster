@@ -3,6 +3,106 @@
     "$schema": "http://json-schema.org/draft-07/schema#",
     "additionalProperties": false,
     "definitions": {
+        "hashPattern": {
+            "pattern": "^([a-fA-F0-9]{64}|(sha1|sha256|sha512|md5):([a-fA-F0-9]{32}|[a-fA-F0-9]{40}|[a-fA-F0-9]{64}|[a-fA-F0-9]{128}))$",
+            "type": "string"
+        },
+        "jsonPathPattern": {
+            "pattern": "^\\$[.\\[].*$",
+            "type": "string"
+        },
+        "hash": {
+            "anyOf": [
+                {
+                    "$ref": "#/definitions/hashPattern"
+                },
+                {
+                    "items": {
+                        "$ref": "#/definitions/hashPattern"
+                    },
+                    "minItems": 1,
+                    "type": "array",
+                    "uniqueItems": true
+                }
+            ]
+        },
+        "hashExtraction": {
+            "additionalProperties": false,
+            "properties": {
+                "find": {
+                    "format": "regex",
+                    "type": "string",
+                    "description": "Same as 'regex'"
+                },
+                "regex": {
+                    "format": "regex",
+                    "type": "string"
+                },
+                "jp": {
+                    "$ref": "#/definitions/jsonPathPattern",
+                    "description": "Same as 'jsonpath'"
+                },
+                "jsonpath": {
+                    "$ref": "#/definitions/jsonPathPattern"
+                },
+                "xpath": {
+                    "type": "string"
+                },
+                "mode": {
+                    "enum": [
+                        "download",
+                        "extract",
+                        "json",
+                        "xpath",
+                        "rdf",
+                        "metalink",
+                        "fosshub",
+                        "sourceforge"
+                    ]
+                },
+                "type": {
+                    "enum": [
+                        "md5",
+                        "sha1",
+                        "sha256",
+                        "sha512"
+                    ],
+                    "description": "Deprecated, hash type is determined automatically"
+                },
+                "url": {
+                    "anyOf": [
+                        {
+                            "format": "uri",
+                            "type": "string"
+                        },
+                        {
+                            "pattern": "^(\\$url|\\$baseurl).[\\w\\d]+$",
+                            "type": "string"
+                        },
+                        {
+                            "pattern": "^.*(\\$url|\\$baseurl).*$",
+                            "type": "string"
+                        }
+                    ]
+                }
+            },
+            "type": "object"
+        },
+        "hashExtractionOrArrayOfHashExtractions": {
+            "anyOf": [
+                {
+                    "$ref": "#/definitions/hashExtraction"
+                },
+                {
+                    "items": {
+                        "$ref": "#/definitions/hashExtraction"
+                    },
+                    "minItems": 1,
+                    "type": "array",
+                    "uniqueItems": false
+                }
+            ]
+        },
         "architecture": {
             "additionalProperties": false,
             "properties": {
@@ -66,10 +166,60 @@
             "minItems": 1,
             "type": "array"
         },
+        "shortcutsArray": {
+            "items": {
+                "items": {
+                    "type": "string"
+                },
+                "minItems": 2,
+                "maxItems": 4,
+                "type": "array"
+            },
+            "minItems": 1,
+            "type": "array"
+        },
+        "autoupdateArch": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "bin": {
+                    "$ref": "#/definitions/stringOrArrayOfStringsOrAnArrayOfArrayOfStrings"
+                },
+                "env_add_path": {
+                    "$ref": "#/definitions/stringOrArrayOfStrings"
+                },
+                "env_set": {
+                    "type": "object"
+                },
+                "extract_dir": {
+                    "$ref": "#/definitions/stringOrArrayOfStrings"
+                },
+                "hash": {
+                    "$ref": "#/definitions/hashExtractionOrArrayOfHashExtractions"
+                },
+                "installer": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                        "file": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "shortcuts": {
+                    "$ref": "#/definitions/shortcutsArray"
+                },
+                "url": {
+                    "$ref": "#/definitions/autoupdateUriOrArrayOfAutoupdateUris"
+                }
+            }
+        },
         "autoupdate": {
+            "type": "object",
             "additionalProperties": false,
             "properties": {
                 "architecture": {
+                    "type": "object",
                     "additionalProperties": false,
                     "properties": {
                         "32bit": {
@@ -81,8 +231,7 @@
                         "arm64": {
                             "$ref": "#/definitions/autoupdateArch"
                         }
-                    },
-                    "type": "object"
+                    }
                 },
                 "bin": {
                     "$ref": "#/definitions/stringOrArrayOfStringsOrAnArrayOfArrayOfStrings"
@@ -100,13 +249,13 @@
                     "$ref": "#/definitions/hashExtractionOrArrayOfHashExtractions"
                 },
                 "installer": {
+                    "type": "object",
                     "additionalProperties": false,
                     "properties": {
                         "file": {
                             "type": "string"
                         }
-                    },
-                    "type": "object"
+                    }
                 },
                 "license": {
                     "$ref": "#/definitions/license"
@@ -118,13 +267,13 @@
                     "$ref": "#/definitions/stringOrArrayOfStringsOrAnArrayOfArrayOfStrings"
                 },
                 "psmodule": {
+                    "type": "object",
                     "additionalProperties": false,
                     "properties": {
                         "name": {
                             "type": "string"
                         }
-                    },
-                    "type": "object"
+                    }
                 },
                 "shortcuts": {
                     "$ref": "#/definitions/shortcutsArray"
@@ -132,60 +281,7 @@
                 "url": {
                     "$ref": "#/definitions/autoupdateUriOrArrayOfAutoupdateUris"
                 }
-            },
-            "type": "object"
-        },
-        "autoupdateArch": {
-            "additionalProperties": false,
-            "properties": {
-                "bin": {
-                    "$ref": "#/definitions/stringOrArrayOfStringsOrAnArrayOfArrayOfStrings"
-                },
-                "env_add_path": {
-                    "$ref": "#/definitions/stringOrArrayOfStrings"
-                },
-                "env_set": {
-                    "type": "object"
-                },
-                "extract_dir": {
-                    "$ref": "#/definitions/stringOrArrayOfStrings"
-                },
-                "hash": {
-                    "$ref": "#/definitions/hashExtractionOrArrayOfHashExtractions"
-                },
-                "installer": {
-                    "additionalProperties": false,
-                    "properties": {
-                        "file": {
-                            "type": "string"
-                        }
-                    },
-                    "type": "object"
-                },
-                "shortcuts": {
-                    "$ref": "#/definitions/shortcutsArray"
-                },
-                "url": {
-                    "$ref": "#/definitions/autoupdateUriOrArrayOfAutoupdateUris"
-                }
-            },
-            "type": "object"
-        },
-        "autoupdateUriOrArrayOfAutoupdateUris": {
-            "anyOf": [
-                {
-                    "type": "string"
-                },
-                {
-                    "items": {
-                        "format": "uri",
-                        "type": "string"
-                    },
-                    "minItems": 1,
-                    "type": "array",
-                    "uniqueItems": true
-                }
-            ]
+            }
         },
         "checkver": {
             "anyOf": [
@@ -200,6 +296,19 @@
                             "format": "uri",
                             "type": "string"
                         },
+                        "re": {
+                            "format": "regex",
+                            "type": "string",
+                            "description": "Same as 'regex'"
+                        },
+                        "regex": {
+                            "format": "regex",
+                            "type": "string"
+                        },
+                        "url": {
+                            "format": "uri",
+                            "type": "string"
+                        },
                         "jp": {
                             "$ref": "#/definitions/jsonPathPattern",
                             "description": "Same as 'jsonpath'"
@@ -207,22 +316,19 @@
                         "jsonpath": {
                             "$ref": "#/definitions/jsonPathPattern"
                         },
-                        "re": {
-                            "description": "Same as 'regex'",
-                            "format": "regex",
-                            "type": "string"
-                        },
-                        "regex": {
-                            "format": "regex",
-                            "type": "string"
-                        },
-                        "replace": {
-                            "description": "Allows rearrange the regexp matches",
+                        "xpath": {
                             "type": "string"
                         },
                         "reverse": {
                             "description": "Reverse the order of regex matches",
                             "type": "boolean"
+                        },
+                        "replace": {
+                            "description": "Allows rearrange the regexp matches",
+                            "type": "string"
+                        },
+                        "useragent": {
+                            "type": "string"
                         },
                         "script": {
                             "$ref": "#/definitions/stringOrArrayOfStrings",
@@ -236,122 +342,21 @@
                                 {
                                     "additionalProperties": false,
                                     "properties": {
-                                        "path": {
+                                        "project": {
                                             "type": "string"
                                         },
-                                        "project": {
+                                        "path": {
                                             "type": "string"
                                         }
                                     },
                                     "type": "object"
                                 }
                             ]
-                        },
-                        "url": {
-                            "format": "uri",
-                            "type": "string"
-                        },
-                        "useragent": {
-                            "type": "string"
-                        },
-                        "xpath": {
-                            "type": "string"
                         }
                     },
                     "type": "object"
                 }
             ]
-        },
-        "hash": {
-            "anyOf": [
-                {
-                    "$ref": "#/definitions/hashPattern"
-                },
-                {
-                    "items": {
-                        "$ref": "#/definitions/hashPattern"
-                    },
-                    "minItems": 1,
-                    "type": "array",
-                    "uniqueItems": true
-                }
-            ]
-        },
-        "hashExtraction": {
-            "additionalProperties": false,
-            "properties": {
-                "find": {
-                    "description": "Same as 'regex'",
-                    "format": "regex",
-                    "type": "string"
-                },
-                "jp": {
-                    "$ref": "#/definitions/jsonPathPattern",
-                    "description": "Same as 'jsonpath'"
-                },
-                "jsonpath": {
-                    "$ref": "#/definitions/jsonPathPattern"
-                },
-                "mode": {
-                    "enum": [
-                        "download",
-                        "extract",
-                        "json",
-                        "xpath",
-                        "rdf",
-                        "metalink",
-                        "fosshub",
-                        "sourceforge"
-                    ]
-                },
-                "regex": {
-                    "format": "regex",
-                    "type": "string"
-                },
-                "type": {
-                    "description": "Deprecated, hash type is determined automatically",
-                    "enum": ["md5", "sha1", "sha256", "sha512"]
-                },
-                "url": {
-                    "anyOf": [
-                        {
-                            "format": "uri",
-                            "type": "string"
-                        },
-                        {
-                            "pattern": "^(\\$url|\\$baseurl).[\\w\\d]+$",
-                            "type": "string"
-                        },
-                        {
-                            "pattern": "^.*(\\$url|\\$baseurl).*$",
-                            "type": "string"
-                        }
-                    ]
-                },
-                "xpath": {
-                    "type": "string"
-                }
-            },
-            "type": "object"
-        },
-        "hashExtractionOrArrayOfHashExtractions": {
-            "anyOf": [
-                {
-                    "$ref": "#/definitions/hashExtraction"
-                },
-                {
-                    "items": {
-                        "$ref": "#/definitions/hashExtraction"
-                    },
-                    "minItems": 1,
-                    "type": "array",
-                    "uniqueItems": false
-                }
-            ]
-        },
-        "hashPattern": {
-            "pattern": "^([a-fA-F0-9]{64}|(sha1|sha256|sha512|md5):([a-fA-F0-9]{32}|[a-fA-F0-9]{40}|[a-fA-F0-9]{64}|[a-fA-F0-9]{128}))$",
-            "type": "string"
         },
         "installer": {
             "additionalProperties": false,
@@ -366,77 +371,14 @@
                 "file": {
                     "type": "string"
                 },
-                "keep": {
-                    "type": "boolean"
-                },
                 "script": {
                     "$ref": "#/definitions/stringOrArrayOfStrings"
+                },
+                "keep": {
+                    "type": "boolean"
                 }
             },
             "type": "object"
-        },
-        "jsonPathPattern": {
-            "pattern": "^\\$[.\\[].*$",
-            "type": "string"
-        },
-        "license": {
-            "anyOf": [
-                {
-                    "$ref": "#/definitions/licenseIdentifiers"
-                },
-                {
-                    "additionalProperties": false,
-                    "properties": {
-                        "identifier": {
-                            "$ref": "#/definitions/licenseIdentifiers"
-                        },
-                        "url": {
-                            "format": "uri",
-                            "type": "string"
-                        }
-                    },
-                    "required": ["identifier"],
-                    "type": "object"
-                }
-            ]
-        },
-        "licenseIdentifiers": {
-            "description": "License identifier based on SPDX License List https://spdx.org/licenses/",
-            "examples": [
-                "Apache-2.0",
-                "BSD-3-Clause",
-                "Freeware",
-                "GPL-2.0-only",
-                "GPL-2.0-or-later",
-                "GPL-3.0-only",
-                "GPL-3.0-or-later",
-                "ISC",
-                "LGPL-2.0-only",
-                "LGPL-2.0-or-later",
-                "LGPL-2.1-only",
-                "LGPL-2.1-or-later",
-                "LGPL-3.0-only",
-                "LGPL-3.0-or-later",
-                "MIT",
-                "MS-PL",
-                "Proprietary",
-                "Public Domain",
-                "Shareware",
-                "Unlicense"
-            ],
-            "type": "string"
-        },
-        "shortcutsArray": {
-            "items": {
-                "items": {
-                    "type": "string"
-                },
-                "maxItems": 4,
-                "minItems": 2,
-                "type": "array"
-            },
-            "minItems": 1,
-            "type": "array"
         },
         "stringOrArrayOfStrings": {
             "anyOf": [
@@ -467,14 +409,6 @@
             ]
         },
         "uninstaller": {
-            "oneOf": [
-                {
-                    "required": ["file"]
-                },
-                {
-                    "required": ["script"]
-                }
-            ],
             "properties": {
                 "args": {
                     "$ref": "#/definitions/stringOrArrayOfStrings"
@@ -486,6 +420,18 @@
                     "$ref": "#/definitions/stringOrArrayOfStrings"
                 }
             },
+            "oneOf": [
+                {
+                    "required": [
+                        "file"
+                    ]
+                },
+                {
+                    "required": [
+                        "script"
+                    ]
+                }
+            ],
             "type": "object"
         },
         "uriOrArrayOfUris": {
@@ -510,43 +456,86 @@
                     "uniqueItems": true
                 }
             ]
-        }
-    },
-    "if": {
-        "properties": {
-            "architecture": {
-                "properties": {
-                    "32bit": {
-                        "properties": {
-                            "url": false
-                        }
+        },
+        "autoupdateUriOrArrayOfAutoupdateUris": {
+            "anyOf": [
+                {
+                    "format": "uri",
+                    "type": "string"
+                },
+                {
+                    "items": {
+                        "format": "uri",
+                        "type": "string"
                     },
-                    "64bit": {
-                        "properties": {
-                            "url": false
-                        }
-                    },
-                    "arm64": {
-                        "properties": {
-                            "url": false
-                        }
-                    }
+                    "minItems": 1,
+                    "type": "array",
+                    "uniqueItems": true
                 }
-            }
+            ]
+        },
+        "licenseIdentifiers": {
+            "type": "string",
+            "description": "License identifier based on SPDX License List https://spdx.org/licenses/",
+            "examples": [
+                "Apache-2.0",
+                "BSD-3-Clause",
+                "Freeware",
+                "GPL-2.0-only",
+                "GPL-2.0-or-later",
+                "GPL-3.0-only",
+                "GPL-3.0-or-later",
+                "ISC",
+                "LGPL-2.0-only",
+                "LGPL-2.0-or-later",
+                "LGPL-2.1-only",
+                "LGPL-2.1-or-later",
+                "LGPL-3.0-only",
+                "LGPL-3.0-or-later",
+                "MIT",
+                "MS-PL",
+                "Proprietary",
+                "Public Domain",
+                "Shareware",
+                "Unlicense"
+            ]
+        },
+        "license": {
+            "anyOf": [
+                {
+                    "$ref": "#/definitions/licenseIdentifiers"
+                },
+                {
+                    "additionalProperties": false,
+                    "properties": {
+                        "url": {
+                            "format": "uri",
+                            "type": "string"
+                        },
+                        "identifier": {
+                            "$ref": "#/definitions/licenseIdentifiers"
+                        }
+                    },
+                    "required": [
+                        "identifier"
+                    ],
+                    "type": "object"
+                }
+            ]
         }
     },
     "properties": {
-        "##": {
-            "$ref": "#/definitions/stringOrArrayOfStrings",
-            "description": "A comment."
-        },
         "$schema": {
-            "format": "uri",
-            "type": "string"
+            "type": "string",
+            "format": "uri"
         },
         "_comment": {
-            "$ref": "#/definitions/stringOrArrayOfStrings",
-            "description": "Deprecated. Use ## instead."
+            "description": "Deprecated. Use ## instead.",
+            "$ref": "#/definitions/stringOrArrayOfStrings"
+        },
+        "##": {
+            "description": "A comment.",
+            "$ref": "#/definitions/stringOrArrayOfStrings"
         },
         "architecture": {
             "additionalProperties": false,
@@ -567,6 +556,9 @@
             "$ref": "#/definitions/autoupdate"
         },
         "bin": {
+            "$ref": "#/definitions/stringOrArrayOfStringsOrAnArrayOfArrayOfStrings"
+        },
+        "persist": {
             "$ref": "#/definitions/stringOrArrayOfStringsOrAnArrayOfArrayOfStrings"
         },
         "checkver": {
@@ -618,9 +610,6 @@
         "notes": {
             "$ref": "#/definitions/stringOrArrayOfStrings"
         },
-        "persist": {
-            "$ref": "#/definitions/stringOrArrayOfStringsOrAnArrayOfArrayOfStrings"
-        },
         "post_install": {
             "$ref": "#/definitions/stringOrArrayOfStrings"
         },
@@ -665,10 +654,39 @@
             "type": "string"
         }
     },
-    "required": ["version", "homepage", "license"],
-    "then": {
-        "required": ["url"]
+    "if": {
+        "properties": {
+            "architecture": {
+                "properties": {
+                    "64bit": {
+                        "properties": {
+                            "url": false
+                        }
+                    },
+                    "32bit": {
+                        "properties": {
+                            "url": false
+                        }
+                    },
+                    "arm64": {
+                        "properties": {
+                            "url": false
+                        }
+                    }
+                }
+            }
+        }
     },
+    "then": {
+        "required": [
+            "url"
+        ]
+    },
+    "required": [
+        "version",
+        "homepage",
+        "license"
+    ],
     "title": "scoop app manifest schema",
     "type": "object"
 }
