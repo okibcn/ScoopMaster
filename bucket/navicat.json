@@ -1,37 +1,26 @@
 {
     "version": "16.3.2",
-    "description": "Navicat Premium is a database development tool that allows you to simultaneously connect to MySQL, Redis, PostgreSQL, SQL Server, Oracle, MariaDB, SQLite, and MongoDB databases from a single application. Compatible with cloud databases like Amazon RDS, Amazon Aurora, Amazon Redshift, Amazon ElastiCache, Microsoft Azure, Oracle Cloud, Google Cloud, MongoDB Atlas and Redis Enterprise Cloud. You can quickly and easily build, manage and maintain your databases.",
-    "homepage": "https://www.navicat.com/en/products/navicat-premium",
-    "license": {
-        "identifier": "Proprietary",
-        "url": "https://www.navicat.com/en/store/navicat-premium-plan"
-    },
-    "architecture": {
-        "64bit": {
-            "url": "https://download3.navicat.com/download/navicat163_premium_en_x64.exe",
-            "hash": "ce11cde3ab322ffea904d54e67c8ef5a4ba0a0c439ef5d85982fadb0017a8696"
-        }
-    },
+    "description": "数据库工具",
+    "homepage": "https://navicat.com.cn",
+    "url": "https://download.navicat.com.cn/download/navicat163_premium_cs_x64.exe",
+    "hash": "3f4fc5fd93e5cafda2a2864aaf4b29004c440186b6be7363493838abc009305a",
     "innosetup": true,
-    "bin": "navicat.exe",
     "shortcuts": [
         [
             "navicat.exe",
-            "navicat"
+            "Navicat Premium"
         ]
     ],
+    "post_install": [
+        "$scriptdir = \"$bucketsdir\\rainte\\scripts\\navicat\"",
+        "cmd /c \"$scriptdir\\crack.bat\"",
+        "Copy-Item -Path \"$scriptdir\\winmm.dll\" -Destination \"$dir\\winmm.dll\""
+    ],
     "checkver": {
-        "url": "https://www.navicat.com/en/products/navicat-premium-release-note#W",
-        "regex": "Navicat Premium \\(Windows\\) version ([\\d.]+)"
+        "url": "https://navicat.com.cn/products/navicat-premium-release-note",
+        "re": "Navicat Premium \\(Windows\\) version ([\\d\\.]+)"
     },
     "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://download3.navicat.com/download/navicat$majorVersion$minorVersion_premium_en_x64.exe"
-            }
-        },
-        "hash": {
-            "url": "$url.sha256"
-        }
+        "url": "https://download.navicat.com.cn/download/navicat$majorVersion$minorVersion_premium_cs_x64.exe"
     }
 }
