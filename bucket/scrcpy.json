@@ -3,37 +3,40 @@
     "description": "Display and control your Android device",
     "homepage": "https://github.com/Genymobile/scrcpy",
     "license": "Apache-2.0",
-    "depends": "adb",
     "architecture": {
         "64bit": {
             "url": "https://github.com/Genymobile/scrcpy/releases/download/v2.3/scrcpy-win64-v2.3.zip",
-            "hash": "a2fdd2733bd337261bb493e77d990078a23e7a40149dd0c0dc45725c929a715f"
+            "hash": "a2fdd2733bd337261bb493e77d990078a23e7a40149dd0c0dc45725c929a715f",
+            "extract_dir": "scrcpy-win64-v2.3"
         },
         "32bit": {
             "url": "https://github.com/Genymobile/scrcpy/releases/download/v2.3/scrcpy-win32-v2.3.zip",
-            "hash": "dfdbb69a872d717aed5bcfe352e571564c357fdb7a9c172d69f450fdf5154a0a"
+            "hash": "dfdbb69a872d717aed5bcfe352e571564c357fdb7a9c172d69f450fdf5154a0a",
+            "extract_dir": "scrcpy-win32-v2.3"
         }
     },
-    "pre_install": "if (Test-Path \"$dir\\adb.exe\") { Remove-Item \"$dir\\adb.exe\" }",
     "bin": [
         "scrcpy.exe",
-        "scrcpy-console.bat",
-        "scrcpy-noconsole.vbs"
+        "scrcpy-console.bat"
     ],
     "shortcuts": [
         [
             "scrcpy-noconsole.vbs",
-            "scrcpy"
+            "scrcpy",
+            "",
+            "scrcpy.exe"
         ]
     ],
     "checkver": "github",
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://github.com/Genymobile/scrcpy/releases/download/v$version/scrcpy-win64-v$version.zip"
+                "url": "https://github.com/Genymobile/scrcpy/releases/download/v$version/scrcpy-win64-v$version.zip",
+                "extract_dir": "scrcpy-win64-v$version"
             },
             "32bit": {
-                "url": "https://github.com/Genymobile/scrcpy/releases/download/v$version/scrcpy-win32-v$version.zip"
+                "url": "https://github.com/Genymobile/scrcpy/releases/download/v$version/scrcpy-win32-v$version.zip",
+                "extract_dir": "scrcpy-win32-v$version"
             }
         },
         "hash": {
