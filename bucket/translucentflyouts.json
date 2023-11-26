@@ -3,66 +3,56 @@
     "description": "Translucent effect for most of the win32 flyouts",
     "homepage": "https://github.com/ALTaleX531/TranslucentFlyouts",
     "license": "LGPL-3.0",
-    "hash": "c5ae86da9a6b0cb4f19192f5b92bc1f31e1f86e51caf73af05254c0ee290682a",
     "architecture": {
-        "64bit": {
-            "url": [
-                "https://github.com/ALTaleX531/TranslucentFlyouts/releases/download/v2.1.0/TranslucentFlyoutsV2.x86.optional.rar",
-                "https://github.com/ALTaleX531/TranslucentFlyouts/releases/download/v2.1.0/TranslucentFlyoutsV2.x64.rar"
-            ],
-            "hash": [
-                "92B9371C61F37DDC8248A8CAADB076C5A52C544FF1CC921DC408C4491CAAD75E",
-                "0BF78E29EADB7E5ECC926560738BE4BE4A51FB841F27F1F3D90EC06497F40754"
-            ]
-        },
         "32bit": {
             "url": "https://github.com/ALTaleX531/TranslucentFlyouts/releases/download/v2.1.0/TranslucentFlyoutsV2.x86.optional.rar",
-            "hash": "92B9371C61F37DDC8248A8CAADB076C5A52C544FF1CC921DC408C4491CAAD75E"
+            "hash": "92b9371c61f37ddc8248a8caadb076c5a52c544ff1cc921dc408c4491caad75e",
+            "uninstaller": {
+                "script": [
+                    "if (!(is_admin)) { error \"$app requires admin rights to $cmd\"; break }",
+                    "Start-Process 'rundll32' -Wait -Verb 'RunAs' -Args @(\"`\"$dir\\TFMain32.dll`\",Main\", '/uninstall'); Stop-Process -Name 'explorer' -Force",
+                    "Start-Sleep -Seconds 2"
+                ]
+            }
+        },
+        "64bit": {
+            "url": "https://github.com/ALTaleX531/TranslucentFlyouts/releases/download/v2.1.0/TranslucentFlyoutsV2.x64.rar",
+            "hash": "0bf78e29eadb7e5ecc926560738be4be4a51fb841f27f1f3d90ec06497f40754",
+            "uninstaller": {
+                "script": [
+                    "if (!(is_admin)) { error \"$app requires admin rights to $cmd\"; break }",
+                    "Start-Process 'rundll32' -Wait -Verb 'RunAs' -Args @(\"`\"$dir\\TFMain64.dll`\",Main\", '/uninstall'); Stop-Process -Name 'explorer' -Force",
+                    "Start-Sleep -Seconds 2"
+                ]
+            }
         }
     },
-    "extract_to": [
-        "x86",
-        "x64"
+    "bin": [
+        [
+            "install.bat",
+            "install-translucentflyouts"
+        ],
+        [
+            "uninstall.bat",
+            "uninstall-translucentflyouts"
+        ],
+        [
+            "stop.bat",
+            "stop-translucentflyouts"
+        ],
+        [
+            "debug.bat",
+            "debug-translucentflyouts"
+        ]
     ],
-    "installer": {
-        "script": [
-            "if ( $architecture -eq \"64bit\" ) {",
-            "$Arg64 = \"$dir\\x64\\TFMain64.dll\" + \",Main /install\"",
-            "$Arg32 = \"$dir\\x86\\TFMain32.dll\" + \",Main /install\"",
-            "Start-Process Rundll32.exe -ArgumentList $Arg64 -WorkingDirectory $dir -Wait -Verb RunAs",
-            "Start-Process Rundll32.exe -ArgumentList $Arg32 -WorkingDirectory $dir -Wait -Verb RunAs",
-            "}",
-            "elseif ( $architecture -eq \"32bit\" ) {",
-            "$Arg = \"$dir\\x86\\TFMain32.dll\" + \",Main /install\"",
-            "Start-Process Rundll32.exe -ArgumentList $Arg -WorkingDirectory $dir",
-            "}"
-        ]
-    },
-    "uninstaller": {
-        "script": [
-            "if ( $architecture -eq \"64bit\" ) {",
-            "$Arg64 = \"$dir\\x64\\TFMain64.dll\" + \",Main /uninstall\"",
-            "$Arg32 = \"$dir\\x86\\TFMain32.dll\" + \",Main /uninstall\"",
-            "Start-Process Rundll32.exe -ArgumentList $Arg64 -WorkingDirectory $dir -Wait -Verb RunAs",
-            "Start-Process Rundll32.exe -ArgumentList $Arg32 -WorkingDirectory $dir -Wait -Verb RunAs",
-            "}",
-            "elseif ( $architecture -eq \"32bit\" ) {",
-            "$Arg = \"$dir\\x86\\TFMain32.dll\" + \",Main /uninstall\"",
-            "Start-Process Rundll32.exe -ArgumentList $Arg -WorkingDirectory $dir",
-            "}"
-        ]
-    },
-    "checkver": "github",
+    "checkver": "tag/v([\\w.?-]+)",
     "autoupdate": {
         "architecture": {
-            "64bit": {
-                "url": [
-                    "https://github.com/ALTaleX531/TranslucentFlyouts/releases/download/v$version/TranslucentFlyoutsV2.x86.optional.rar",
-                    "https://github.com/ALTaleX531/TranslucentFlyouts/releases/download/v$version/TranslucentFlyoutsV2.x64.rar"
-                ]
-            },
             "32bit": {
-                "url": "https://github.com/ALTaleX531/TranslucentFlyouts/releases/download/v$version/TranslucentFlyoutsV2.x86.optional.rar"
+                "url": "https://github.com/ALTaleX531/TranslucentFlyouts/releases/download/v$version/TranslucentFlyoutsV$majorVersion.x86.optional.rar"
+            },
+            "64bit": {
+                "url": "https://github.com/ALTaleX531/TranslucentFlyouts/releases/download/v$version/TranslucentFlyoutsV$majorVersion.x64.rar"
             }
         }
     }
