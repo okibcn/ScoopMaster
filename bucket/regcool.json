@@ -1,27 +1,20 @@
 {
     "version": "1.347",
+    "description": "Advanced registry editor for Windows",
     "homepage": "https://kurtzimmermann.com/",
-    "description": "An advanced Registry editor with many features. Developed by Kurt Zimmermann.",
-    "license": {
-        "identifier": "Freeware",
-        "url": "https://kurtzimmermann-com.translate.goog/datenschutz_en.html?_x_tr_sl=auto&_x_tr_tl=en-US&_x_tr_hl=en-US"
-    },
-    "notes": [
-        "For a guide on how to use this app, click the link below:",
-        "https://kurtzimmermann-com.translate.goog/rchelp_de.html?_x_tr_sl=auto&_x_tr_tl=en-US&_x_tr_hl=en-US"
-    ],
+    "license": "Freeware",
+    "notes": "RegCool Portable has an updating mechanism included, but it IS disabled by default.",
     "architecture": {
-        "32bit": {
-            "url": "https://kurtzimmermann.com/files/RegCoolX32.zip",
-            "hash": "df96f740596978c486c143d97f44a4215543cfd84c94fb9342fd2d1372704560"
-        },
         "64bit": {
             "url": "https://kurtzimmermann.com/files/RegCoolX64.zip",
             "hash": "2c25a90552fbdd6aa84dc6c0a795474cd98127c4acbdf676c1736ac211b0f6d3"
+        },
+        "32bit": {
+            "url": "https://kurtzimmermann.com/files/RegCoolX32.zip",
+            "hash": "df96f740596978c486c143d97f44a4215543cfd84c94fb9342fd2d1372704560"
         }
     },
-    "pre_install": "Remove-Item \"$dir\\Updater.exe\" | Out-Null",
-    "bin": "RegCool.exe",
+    "pre_install": "if (!(Test-Path \"$persist_dir\\Settings\")) { New-Item -ItemType Directory \"$dir\\Settings\" | Out-Null }",
     "shortcuts": [
         [
             "RegCool.exe",
@@ -31,15 +24,15 @@
     "persist": "Settings",
     "checkver": {
         "url": "https://www.majorgeeks.com/files/details/regcool.html",
-        "regex": "RegCool\\s([\\d.]+)"
+        "regex": "RegCool ([\\d.]+)"
     },
     "autoupdate": {
         "architecture": {
-            "32bit": {
-                "url": "https://kurtzimmermann.com/files/RegCoolX32.zip"
-            },
             "64bit": {
                 "url": "https://kurtzimmermann.com/files/RegCoolX64.zip"
+            },
+            "32bit": {
+                "url": "https://kurtzimmermann.com/files/RegCoolX32.zip"
             }
         }
     }
