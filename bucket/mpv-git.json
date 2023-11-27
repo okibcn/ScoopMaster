@@ -1,27 +1,19 @@
 {
-    "version": "20231126",
+    "version": "20231127",
     "description": "Video player based on MPlayer/mplayer2 (builds by shinchiro)",
     "homepage": "https://mpv.io",
     "license": "LGPL-2.1-or-later,GPL-2.0-or-later",
     "notes": [
-        "To set and unset file type associations and AutoPlay handlers, run '$dir\\installer\\mpv-install.bat' and '$dir\\installer\\mpv-uninstall.bat' as administrator, respectively.",
-        "You can use Icaros ('nonportable/icaros-np') to enable thumbnails for all media types."
+        "To set up file type associations and AutoPlay handlers run '$dir\\installer\\mpv-install.bat' as administrator.",
+        "This doesn't need to be done everytime you update mpv however, do keep in mind that if you want to uninstall mpv you'll need to run '$dir\\installer\\mpv-uninstall.bat' beforehand since this action will not be performed automatically.",
+        "You can use Icaros (https://www.majorgeeks.com/files/details/icaros.html) to enable thumbnails for all media types."
     ],
     "suggest": {
         "yt-dlp": "yt-dlp"
     },
-    "architecture": {
-        "64bit": {
-            "url": "https://downloads.sourceforge.net/project/mpv-player-windows/64bit/mpv-x86_64-20231126-git-6898d57.7z",
-            "hash": "sha1:3321cadbaaf46afbf6c214f36f9de3c55893f035"
-        },
-        "32bit": {
-            "url": "https://downloads.sourceforge.net/project/mpv-player-windows/32bit/mpv-i686-20231126-git-6898d57.7z",
-            "hash": "sha1:952ebbd444534a81d41cd969d18335eded46a29f"
-        }
-    },
-    "pre_install": "Remove-Item \"$dir\\updater.bat\"",
-    "env_add_path": ".",
+    "url": "https://github.com/shinchiro/mpv-winbuild-cmake/releases/download/20231127/mpv-x86_64-v3-20231127-git-dea512e.7z",
+    "hash": "b05b3bc07c5545650ee0cf23983eb22af9b04965892e8c727b698d15007caed0",
+    "bin": "mpv.com",
     "shortcuts": [
         [
             "mpv.exe",
@@ -30,17 +22,17 @@
     ],
     "persist": "portable_config",
     "checkver": {
-        "sourceforge": "mpv-player-windows/64bit",
-        "regex": "mpv-x86_64-(\\d+)-git-(?<commit>[\\da-f]+)\\.7z"
+        "script": [
+            "$gh_url = Invoke-WebRequest -Uri 'https://github.com/shinchiro/mpv-winbuild-cmake/releases/latest'",
+            "$gh_ass = $gh_url.Content | Select-String -Pattern 'https://github.com/shinchiro/mpv-winbuild-cmake/releases/expanded_assets/[\\d]+' | % { $_.Matches.Value }",
+            "$gh_ver = $gh_ass | Select-String -Pattern '[\\d]+' | % { $_.Matches.Value }",
+            "$gh_ur2 = Invoke-WebRequest -Uri $gh_ass",
+            "$gh_fil = $gh_ur2.Content | Select-String -Pattern 'mpv-x86_64-v3-[\\d]+-git-[\\da-f]+.7z' | % { $_.Matches.Value }",
+            "Write-Output $gh_ver $gh_fil"
+        ],
+        "regex": "(?<version>.+)\\s(?<filename>.+)"
     },
     "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://downloads.sourceforge.net/project/mpv-player-windows/64bit/mpv-x86_64-$version-git-$matchCommit.7z"
-            },
-            "32bit": {
-                "url": "https://downloads.sourceforge.net/project/mpv-player-windows/32bit/mpv-i686-$version-git-$matchCommit.7z"
-            }
-        }
+        "url": "https://github.com/shinchiro/mpv-winbuild-cmake/releases/download/$version/$matchFilename"
     }
 }
