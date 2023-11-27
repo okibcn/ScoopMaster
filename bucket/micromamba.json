@@ -64,6 +64,15 @@
     "notes": [
         "No shim is now exposed for micromamba, you have to add following hook to your PowerShell $PROFILE to use it:",
         "",
-        "(& micromamba 'shell' 'hook' -s 'powershell' -p $env:MAMBA_ROOT_PREFIX) | Out-String | Invoke-Expression"
+        "(& micromamba 'shell' 'hook' -s 'powershell' -p $env:MAMBA_ROOT_PREFIX) | Out-String | Invoke-Expression",
+        "",
+        "If you want to use it in Msys2 environment, you should manually insert following lines into your rc file",
+        "",
+        "# >>> mamba initialize >>>",
+        "# !! Contents within this block are managed by 'mamba init' !!",
+        "export MAMBA_EXE=\"$(cygpath $dir)/micromamba.exe\";",
+        "export MAMBA_ROOT_PREFIX=\"$(cygpath $persist_dir)/mamba\";",
+        "eval \"$(\"$MAMBA_EXE\" shell hook --shell ${SHELL##*/} --root-prefix \"$MAMBA_ROOT_PREFIX\"|tr -d '\r'|sed \"s#$(cygpath -w $MAMBA_EXE|sed 's|\\|\\\\|g')#$MAMBA_EXE#g\")\"",
+        "# <<< mamba initialize <<<"
     ]
 }
