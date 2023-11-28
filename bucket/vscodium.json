@@ -1,10 +1,10 @@
 {
     "version": "1.84.2.23319",
-    "description": "Binary releases of VS Code without MS branding/telemetry/licensing.",
-    "homepage": "https://github.com/VSCodium/vscodium",
+    "description": "A community-driven, freely-licensed binary distribution of Microsoft’s editor VS Code.",
+    "homepage": "https://vscodium.com/",
     "license": "MIT",
     "notes": [
-        "Add VSCodium as a context menu option by running: 'reg import \"$dir\\install-context.reg\"'",
+        "Add VSCodium as a context menu option by running 'reg import \"$dir\\install-context.reg\"'",
         "For file associations, run 'reg import \"$dir\\install-associations.reg\"'"
     ],
     "architecture": {
@@ -17,12 +17,15 @@
             "hash": "b3ec277001a7dd0dd7bc0f4790eb82c28dc3e6f0f09bc9eb06a0758e5b0f9df3"
         }
     },
-    "env_add_path": "bin",
-    "shortcuts": [
-        [
-            "VSCodium.exe",
-            "VSCodium"
-        ]
+    "pre_install": [
+        "$product_path = \"$dir\\resources\\app\\product.json\"",
+        "if (Test-Path -Path $product_path) {",
+        "    $product = Get-Content -Path $product_path -Raw -Encoding UTF8 | ConvertFrom-Json",
+        "    if (![string]::IsNullOrEmpty($product.updateUrl)) {",
+        "        Get-Content -Path $product_path | Where-Object {$_ -notmatch \"updateurl\"} | Set-Content temp.json",
+        "        Move-Item -Path temp.json -Destination $product_path -Force",
+        "    }",
+        "}"
     ],
     "post_install": [
         "$dirpath = \"$dir\".Replace('\\', '\\\\')",
@@ -51,19 +54,25 @@
         "if ((Test-Path \"$extensions_file\")) {",
         "    info 'Adjusting path in extensions file...'",
         "    (Get-Content \"$extensions_file\") -replace '(?<=vscodium(/|\\\\\\\\)).*?(?=(/|\\\\\\\\)data(/|\\\\\\\\)extensions)', $version | Set-Content \"$extensions_file\"",
-        "}",
-        "$product_file = \"$dir\\resources\\app\\product.json\"",
-        "if ((Test-Path \"$product_file\")) {",
-        "    info 'patching in VS marketplace'",
-        "    $content = Get-Content \"$product_file\"",
-        "    $content = $content -replace '( )*\"serviceUrl\":.*','    \"serviceUrl\": \"https://marketplace.visualstudio.com/_apis/public/gallery\",    \"cacheUrl\": \"https://vscode.blob.core.windows.net/gallery/index\",'",
-        "    $content = $content -replace '( )*\"itemUrl\":.*','    \"itemUrl\": \"https://marketplace.visualstudio.com/items\"'",
-        "    $content = $content -replace '( )*\"linkProtectionTrustedDomains.*',''",
-        "    $content | Set-Content -Path \"$product_file\"",
         "}"
     ],
+    "env_add_path": "bin",
+    "bin": [
+        [
+            "bin/codium.cmd",
+            "vscodium"
+        ]
+    ],
+    "shortcuts": [
+        [
+            "VSCodium.exe",
+            "VSCodium"
+        ]
+    ],
     "persist": "data",
-    "checkver": "github",
+    "checkver": {
+        "github": "https://github.com/VSCodium/vscodium"
+    },
     "autoupdate": {
         "architecture": {
             "64bit": {
