@@ -11,6 +11,10 @@
         "64bit": {
             "url": "https://github.com/VSCodium/vscodium/releases/download/1.84.2.23319/VSCodium-win32-x64-1.84.2.23319.zip",
             "hash": "c1882af058cbf4668346ece02e409156576228c7ae0556d2eee98fcc38b79104"
+        },
+        "arm64": {
+            "url": "https://github.com/VSCodium/vscodium/releases/download/1.84.2.23319/VSCodium-win32-arm64-1.84.2.23319.zip",
+            "hash": "b3ec277001a7dd0dd7bc0f4790eb82c28dc3e6f0f09bc9eb06a0758e5b0f9df3"
         }
     },
     "env_add_path": "bin",
@@ -24,8 +28,8 @@
         "$dirpath = \"$dir\".Replace('\\', '\\\\')",
         "$exepath = \"$dir\\VSCodium.exe\".Replace('\\', '\\\\')",
         "'install-associations', 'uninstall-associations', 'install-context', 'uninstall-context' | ForEach-Object {",
-        "  if (Test-Path \"$bucketsdir\\giflw\\scripts\\vscode\\$_.reg\") {",
-        "    $content = Get-Content \"$bucketsdir\\giflw\\scripts\\vscode\\$_.reg\"",
+        "  if (Test-Path \"$bucketsdir\\extras\\scripts\\vscode\\$_.reg\") {",
+        "    $content = Get-Content \"$bucketsdir\\extras\\scripts\\vscode\\$_.reg\"",
         "    $content = $content.Replace('$codedir', $dirpath)",
         "    $content = $content.Replace('$code', $exepath)",
         "    $content = $content.Replace('&Code', '&VSCodium')",
@@ -47,6 +51,15 @@
         "if ((Test-Path \"$extensions_file\")) {",
         "    info 'Adjusting path in extensions file...'",
         "    (Get-Content \"$extensions_file\") -replace '(?<=vscodium(/|\\\\\\\\)).*?(?=(/|\\\\\\\\)data(/|\\\\\\\\)extensions)', $version | Set-Content \"$extensions_file\"",
+        "}",
+        "$product_file = \"$dir\\resources\\app\\product.json\"",
+        "if ((Test-Path \"$product_file\")) {",
+        "    info 'patching in VS marketplace'",
+        "    $content = Get-Content \"$product_file\"",
+        "    $content = $content -replace '( )*\"serviceUrl\":.*','    \"serviceUrl\": \"https://marketplace.visualstudio.com/_apis/public/gallery\",    \"cacheUrl\": \"https://vscode.blob.core.windows.net/gallery/index\",'",
+        "    $content = $content -replace '( )*\"itemUrl\":.*','    \"itemUrl\": \"https://marketplace.visualstudio.com/items\"'",
+        "    $content = $content -replace '( )*\"linkProtectionTrustedDomains.*',''",
+        "    $content | Set-Content -Path \"$product_file\"",
         "}"
     ],
     "persist": "data",
@@ -55,6 +68,9 @@
         "architecture": {
             "64bit": {
                 "url": "https://github.com/VSCodium/vscodium/releases/download/$version/VSCodium-win32-x64-$version.zip"
+            },
+            "arm64": {
+                "url": "https://github.com/VSCodium/vscodium/releases/download/$version/VSCodium-win32-arm64-$version.zip"
             }
         },
         "hash": {
