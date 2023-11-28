@@ -1,10 +1,8 @@
 {
+    "version": "3.9.5",
+    "description": "iikira/BaiduPCS-Go 原版基础上集成了分享链接/秒传链接转存功能",
     "homepage": "https://github.com/qjfoidnh/BaiduPCS-Go",
     "license": "Apache-2.0",
-    "version": "3.9.5",
-    "suggest": {
-        "Icon": "nirsoft/iconsextract"
-    },
     "architecture": {
         "64bit": {
             "url": "https://github.com/qjfoidnh/BaiduPCS-Go/releases/download/v3.9.5/BaiduPCS-Go-v3.9.5-windows-x64.zip",
@@ -17,23 +15,21 @@
             "extract_dir": "BaiduPCS-Go-v3.9.5-windows-x86"
         }
     },
-    "pre_install": [
-        "if(!(Test-Path \"$persist_dir\\\")) { New-Item -Path \"$persist_dir\\\" -ItemType Directory | Out-Null }",
-        "if( Get-Command iconsext.exe ) { iconsext.exe /save $dir\\BaiduPCS-Go.exe $dir -icons",
-        "Rename-Item -Path $dir\\BaiduPCS-Go_2.ico -NewName BaiduPCS.ico}"
-    ],
-    "bin": [
+    "bin": "BaiduPCS-Go.exe",
+    "shortcuts": [
         [
             "BaiduPCS-Go.exe",
-            "BaiduPCS"
+            "BaiduPCS-Go"
         ]
     ],
+    "persist": [
+        "config",
+        "Downloads"
+    ],
     "env_set": {
-        "BAIDUPCS_GO_CONFIG_DIR": "$persist_dir"
+        "BAIDUPCS_GO_CONFIG_DIR": "$dir\\config"
     },
-    "checkver": {
-        "github": "https://github.com/qjfoidnh/BaiduPCS-Go"
-    },
+    "checkver": "github",
     "autoupdate": {
         "architecture": {
             "64bit": {
