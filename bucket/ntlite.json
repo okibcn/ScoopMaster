@@ -1,63 +1,45 @@
 {
     "version": "2023.11.9514",
-    "description": "Local control for updating and editing Windows images and deployments.",
+    "description": "",
     "homepage": "https://www.ntlite.com/",
-    "license": {
-        "identifier": "Proprietary",
-        "url": "https://www.ntlite.com/shop/"
-    },
+    "license": "",
+    "notes": "",
     "architecture": {
         "64bit": {
-            "url": "https://downloads.ntlite.com/files/NTLite_setup_x64.exe",
+            "url": "https://downloads.ntlite.com/files/NTLite_setup_x64.exe#/setup.exe",
             "hash": "cb68a7d56e31c62aecc96ddbf7c7ca5307660723be9efb75ced1a9b63a01f29d"
         },
         "32bit": {
-            "url": "https://downloads.ntlite.com/files/NTLite_setup_x86.exe",
-            "hash": "da478f43b21ea8529839339620695f81dd114de6febf047b5fc49df45d3ba896"
+            "url": "https://downloads.ntlite.com/files/NTLite_setup_x64.exe#/setup.exe",
+            "hash": "cb68a7d56e31c62aecc96ddbf7c7ca5307660723be9efb75ced1a9b63a01f29d"
         }
     },
-    "innosetup": true,
-    "pre_install": [
-        "$value = @'",
-        "<?xml version=\"1.0\" encoding=\"utf-8\"?>",
-        "<GeneralOptions xmlns=\"urn:schemas-nliteos-com:pn.v1\">",
-        "    <CheckUpdate>false</CheckUpdate>",
-        "    <AutoUpdate>false</AutoUpdate>",
-        "</GeneralOptions>",
-        "'@",
-        "if (!(Test-Path \"$persist_dir\\settings.xml\")) {",
-        "    Set-Content \"$dir\\settings.xml\" $value -Encoding $(if ($PSEdition -eq 'Core') { Write-Output 'utf8bom' } else { Write-Output 'utf8' })",
-        "}"
-    ],
-    "bin": "NTLite.exe",
-    "shortcuts": [
+    "installer": {
+        "script": [
+            "# Using Start-Process as a workaround because the installer will not work properly when args are quoted (e.g. \"`\"/S`\"\")",
+            "Start-Process \"$dir\\setup.exe\" -WorkingDirectory \"$dir\" -ArgumentList @(\"/DIR=$dir\") "
+        ]
+    },
+    "bin": [
+        "NTLite.exe",
         [
             "NTLite.exe",
-            "NTLite"
+            "ntlite"
         ]
     ],
-    "persist": [
-        "Cache",
-        "Presets",
-        "Updates",
-        "settings.xml"
-    ],
+    "persist": "Presets",
     "checkver": {
         "url": "https://www.ntlite.com/download/",
-        "regex": "\\>v([\\d.]+)\\<"
+        "regex": "v([\\d]+.[\\d]+.[\\d]+)"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://downloads.ntlite.com/files/NTLite_setup_x64.exe"
+                "url": "https://downloads.ntlite.com/files/NTLite_setup_x64.exe#/setup.exe"
             },
             "32bit": {
-                "url": "https://downloads.ntlite.com/files/NTLite_setup_x86.exe"
+                "url": "https://downloads.ntlite.com/files/NTLite_setup_x64.exe#/setup.exe"
             }
-        },
-        "hash": {
-            "url": "https://www.ntlite.com/download/",
-            "regex": "$basename.*?\\>SHA-256\\:\\s$sha256\\<"
         }
     }
 }
