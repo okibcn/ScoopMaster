@@ -1,0 +1,44 @@
+{
+    "version": "2.0.0",
+    "description": "Remix your favorite music with AI. In one click.",
+    "homepage": "https://www.tryreplay.io",
+    "license": "MIT",
+    "architecture": {
+        "64bit": {
+            "url": "https://www.tryreplay.io/download?platform=windows#/dl.7z",
+            "hash": "aefbc1a7c8c40c8745cdd11123c907e2cf5a269e3256becd54b4bb329d7a77af",
+            "pre_install": [
+                "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\"",
+                "Remove-Item \"$dir\\`$*\", \"$dir\\Uninstall*\" -Recurse"
+            ]
+        }
+    },
+	"post_install": [
+		"$S4UtilsPath = Find-BucketDirectory -Root -Name $bucket | Join-Path -ChildPath \"scripts\\S4Utils.psm1\"",
+		"if (Test-Path $S4UtilsPath) {",
+		"    Unblock-File $S4UtilsPath",
+		"    Import-Module $S4UtilsPath",
+		"    Mount-ExternalRuntimeData -Source \"$persist_dir\\Replay\" -AppData",
+		"    Remove-Module -Name S4Utils -ErrorAction SilentlyContinue",
+		"} else {",
+		"    Write-Host \"Missing files, please re-add Scoop4kariiin bucket and re-install this app.\" -ForegroundColor Red",
+		"}"
+	],
+	"uninstaller": {
+        "script": [
+            "$S4UtilsPath = Find-BucketDirectory -Root -Name $install.bucket | Join-Path -ChildPath \"scripts\\S4Utils.psm1\"",
+            "if (Test-Path $S4UtilsPath) {",
+            "    Unblock-File $S4UtilsPath",
+            "    Import-Module $S4UtilsPath",
+            "    Dismount-ExternalRuntimeData -Target \"Replay\" -AppData",
+            "    Remove-Module -Name S4Utils -ErrorAction SilentlyContinue",
+            "}"
+        ]
+    },
+    "shortcuts": [
+        [
+            "Replay.exe",
+            "Replay"
+        ]
+    ],
+}
