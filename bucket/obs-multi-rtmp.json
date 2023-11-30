@@ -1,0 +1,58 @@
+{
+    "architecture": {
+        "64bit": {
+            "hash": "97b712a7c3b664c266a872843cc90fbc1d7df981f1a5755826809d85df934cb6",
+            "url": "https://github.com/sorayuki/obs-multi-rtmp/releases/download/0.5.0.4/obs-multi-rtmp-0.5.0.4-windows-x64.zip"
+        }
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "hash": {
+                    "regex": "$basename: ([0-9a-f]{64})",
+                    "url": "https://github.com/sorayuki/obs-multi-rtmp/releases/tag/$version"
+                },
+                "url": "https://github.com/sorayuki/obs-multi-rtmp/releases/download/$version/obs-multi-rtmp-$version-windows-x64.zip"
+            }
+        }
+    },
+    "checkver": "github",
+    "description": "Multiple RTMP outputs plugin for OBS Studio.",
+    "homepage": "https://github.com/sorayuki/obs-multi-rtmp",
+    "installer": {
+        "script": [
+            "if (-not (Test-Path \"$(appdir obs-studio)\\current\")) {",
+            "    warn 'OBS Studio was not installed through scoop. You must copy this plugin into the OBS installation folder manually!'",
+            "    return",
+            "}",
+            "Get-ChildItem -Path \"$dir\\obs-plugins\\$architecture\" -File | ForEach-Object {",
+            "    New-Item -ItemType HardLink -Path \"$(appdir obs-studio)\\current\\obs-plugins\\$architecture\\$($_.Name)\" -Target $_.FullName -Force | Out-Null",
+            "}",
+            "Get-ChildItem -Path \"$dir\\data\\obs-plugins\" -Directory | ForEach-Object {",
+            "    New-Item -ItemType Junction -Path \"$(appdir obs-studio)\\current\\data\\obs-plugins\\$($_.Name)\" -Target $_.FullName -Force | Out-Null",
+            "}"
+        ]
+    },
+    "license": {
+        "identifier": "GPL-2.0-only",
+        "url": "https://github.com/sorayuki/obs-multi-rtmp/blob/master/LICENSE"
+    },
+    "suggest": {
+        "OBS Studio": "ox/obs-studio"
+    },
+    "uninstaller": {
+        "script": [
+            "if (-not (Test-Path \"$(appdir obs-studio)\\current\")) {",
+            "    warn 'OBS Studio was not installed through scoop. You must remove this plugin from the OBS installation folder manually!'",
+            "    return",
+            "}",
+            "Get-ChildItem -Path \"$dir\\obs-plugins\\$architecture\" -File | ForEach-Object {",
+            "    Remove-Item -Path \"$(appdir obs-studio)\\current\\obs-plugins\\$architecture\\$($_.Name)\" -Force -ErrorAction SilentlyContinue",
+            "}",
+            "Get-ChildItem -Path \"$dir\\data\\obs-plugins\" -Directory | ForEach-Object {",
+            "    Remove-Item -Path \"$(appdir obs-studio)\\current\\data\\obs-plugins\\$($_.Name)\" -Force -ErrorAction SilentlyContinue",
+            "}"
+        ]
+    },
+    "version": "0.5.0.4"
+}

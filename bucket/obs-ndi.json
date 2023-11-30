@@ -1,20 +1,60 @@
 {
-    "version": "4.11.1",
-    "homepage":"https://github.com/obs-ndi/obs-ndi",
-    "url":"https://github.com/obs-ndi/obs-ndi/releases/download/4.11.1/obs-ndi-4.11.1-windows-x64.zip",
-    "hash":"3e68fece3909cbdc8e4a076fb7629a4f4b5c46478516f857adab4b04f7c0d611",
-    "depands": {
-        "OBS Studio":"obs-studio",
-        "##":"別途NDI Toolsが必要"
+    "architecture": {
+        "64bit": {
+            "hash": "101dc8a7e4e84dccf2f89d3a56eeb4c18b9fe83eff54c3a23f2d104b3545e0c5",
+            "url": "https://github.com/obs-ndi/obs-ndi/releases/download/4.13.0/obs-ndi-4.13.0-windows-x64-Installer.exe"
+        }
     },
-    "post_install":[
-        "New-Item -Value \"$dir\\data\\obs-plugins\\obs-ndi\" -Path \"$scoopdir\\apps\\obs-studio\\current\\data\\obs-plugins\\obs-ndi\" -ItemType Junction",
-        "Get-ChildItem -Directory -Path \"$dir\\obs-plugins\\$architecture\" | ForEach-Object{New-Item -Value $_.FullName -Path \"$scoopdir\\apps\\obs-studio\\current\\obs-plugins\\$architecture\\$_\" -ItemType Junction}",
-        "Get-ChildItem -File -Path \"$dir\\obs-plugins\\$architecture\" | ForEach-Object{New-Item -Value $_.FullName -Path \"$scoopdir\\apps\\obs-studio\\current\\obs-plugins\\$architecture\\$_\" -ItemType hardlink}"
-    ],
-    "pre_uninstall":[
-        "Remove-Item \"$scoopdir\\apps\\obs-studio\\current\\data\\obs-plugins\\obs-ndi\" -recurse",
-        "Get-ChildItem -Directory -Path \"$dir\\obs-plugins\\$architecture\" | ForEach-Object{Remove-Item \"$scoopdir\\apps\\obs-studio\\current\\obs-plugins\\$architecture\\$_\" -recurse}",
-        "Get-ChildItem -File -Path \"$dir\\obs-plugins\\$architecture\" | ForEach-Object{Remove-Item \"$scoopdir\\apps\\obs-studio\\current\\obs-plugins\\$architecture\\$_\"}"
-    ]
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "hash": {
+                    "regex": "$basename: ([0-9a-f]{64})",
+                    "url": "https://github.com/obs-ndi/obs-ndi/releases/tag/$version"
+                },
+                "url": "https://github.com/obs-ndi/obs-ndi/releases/download/$version/obs-ndi-$version-windows-x64-Installer.exe"
+            }
+        }
+    },
+    "checkver": "github",
+    "description": "NewTek NDI integration for OBS Studio.",
+    "homepage": "https://github.com/obs-ndi/obs-ndi",
+    "innosetup": true,
+    "installer": {
+        "script": [
+            "if (-not (Test-Path \"$(appdir obs-studio)\\current\")) {",
+            "    warn 'OBS Studio was not installed through scoop. You must copy this plugin into the OBS installation folder manually!'",
+            "    return",
+            "}",
+            "Get-ChildItem -Path \"$dir\\obs-plugins\\$architecture\" -File | ForEach-Object {",
+            "    New-Item -ItemType HardLink -Path \"$(appdir obs-studio)\\current\\obs-plugins\\$architecture\\$($_.Name)\" -Target $_.FullName -Force | Out-Null",
+            "}",
+            "Get-ChildItem -Path \"$dir\\data\\obs-plugins\" -Directory | ForEach-Object {",
+            "    New-Item -ItemType Junction -Path \"$(appdir obs-studio)\\current\\data\\obs-plugins\\$($_.Name)\" -Target $_.FullName -Force | Out-Null",
+            "}"
+        ]
+    },
+    "license": {
+        "identifier": "GPL-2.0-only",
+        "url": "https://github.com/obs-ndi/obs-ndi/blob/master/LICENSE"
+    },
+    "suggest": {
+        "NDI Runtime": "ox/ndi-runtime",
+        "OBS Studio": "ox/obs-studio"
+    },
+    "uninstaller": {
+        "script": [
+            "if (-not (Test-Path \"$(appdir obs-studio)\\current\")) {",
+            "    warn 'OBS Studio was not installed through scoop. You must remove this plugin from the OBS installation folder manually!'",
+            "    return",
+            "}",
+            "Get-ChildItem -Path \"$dir\\obs-plugins\\$architecture\" -File | ForEach-Object {",
+            "    Remove-Item -Path \"$(appdir obs-studio)\\current\\obs-plugins\\$architecture\\$($_.Name)\" -Force -ErrorAction SilentlyContinue",
+            "}",
+            "Get-ChildItem -Path \"$dir\\data\\obs-plugins\" -Directory | ForEach-Object {",
+            "    Remove-Item -Path \"$(appdir obs-studio)\\current\\data\\obs-plugins\\$($_.Name)\" -Force -ErrorAction SilentlyContinue",
+            "}"
+        ]
+    },
+    "version": "4.13.0"
 }

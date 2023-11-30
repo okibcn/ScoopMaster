@@ -15,13 +15,13 @@
     "hash": "b9349d4926909a8600214566832dd063169dd5f89b68a09358ab35c120d58bdf",
     "homepage": "https://www.kookapp.cn",
     "license": {
-        "identifier": "Proprietary",
+        "identifier": "Freeware",
         "url": "https://www.kookapp.cn/protocol.html"
     },
     "persist": "User Data",
     "post_install": [
         "Remove-Item \"$dir\\tmp\" -ErrorAction SilentlyContinue -Recurse -Force",
-        "if (!(Test-Path \"$dir\\User Data\\*\") -and (Test-Path \"$env:AppData\\kook\")) {",
+        "if (-not (Test-Path \"$dir\\User Data\\*\") -and (Test-Path \"$env:AppData\\kook\")) {",
         "    info '[Portable Mode]: Copying user data...'",
         "    ensure \"$dir\\User Data\" | Out-Null",
         "    Copy-Item \"$env:AppData\\kook\\*\" \"$dir\\User Data\" -Recurse -Force -ErrorAction SilentlyContinue",
