@@ -1,7 +1,7 @@
 {
-    "version": "6.24",
-    "description": "Powerful archive manager - Japanese version",
     "homepage": "https://rarlab.com/",
+    "description": "Powerful archive manager",
+    "version": "6.24",
     "license": {
         "identifier": "Shareware",
         "url": "https://www.win-rar.com/gtb_priv.html?&L=0"
@@ -17,10 +17,7 @@
             "hash": "43345d46ab63d1f16134e65e1192d8cfb17eaeaffa1a233b145e79d7ca7f36b5"
         }
     },
-    "pre_install": [
-        "if (!(Test-Path \"$persist_dir\\rarreg.key\")) { New-Item \"$dir\\rarreg.key\" | Out-Null }",
-        "if (!(Test-Path \"$persist_dir\\WinRar.ini\")) { New-Item \"$dir\\WinRar.ini\" | Out-Null }"
-    ],
+    "pre_install": "if (!(Test-Path \"$persist_dir\\rarreg.key\")) { New-Item \"$dir\\rarreg.key\" | Out-Null }",
     "bin": [
         "Rar.exe",
         "UnRAR.exe",
@@ -32,12 +29,12 @@
             "WinRAR"
         ]
     ],
-    "persist": [
-        "rarreg.key",
-        "WinRar.ini",
-        "Themes"
-    ],
-    "checkver": "WinRAR and RAR ([\\d.]+) release",
+    "persist": "rarreg.key",
+    "checkver": {
+        "url": "https://www.winrarjapan.com/support/release-note",
+        "re": "WinRAR バージョン([\\d.]+)",
+        "##": "WinRAR and RAR ([\\d.]+) release"
+    },
     "autoupdate": {
         "architecture": {
             "64bit": {
