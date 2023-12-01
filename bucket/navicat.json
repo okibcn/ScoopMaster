@@ -1,38 +1,26 @@
 {
-    "version": "16.3.2",
-    "homepage": "https://www.navicat.com/",
-    "license": "https://help.navicat.com/hc/en-us/sections/204016338-License",
-    "description": "More powerful. Made to visualize data and insights. Enhanced for complete flexibility.",
-    "architecture": {
-        "64bit": {
-            "url": "https://download3.navicat.com/download/navicat150_premium_en_x64.exe#/dl.7z",
-            "hash": "d418de66099e165eeab21d7c3a2655802962a91574278b520dbae7016c38da0e"
-        },
-        "32bit": {
-            "url": "https://download3.navicat.com/download/navicat150_premium_en_x86.exe#/dl.7z",
-            "hash": "bb7dae5003430681d7e0c236aefee78147376d90d3e97ba059ce6f64b1f0092a"
-        }
-    },
+    "version": "16.3.3",
+    "description": "数据库工具",
+    "homepage": "https://navicat.com.cn",
+    "url": "https://download.navicat.com.cn/download/navicat163_premium_cs_x64.exe",
+    "hash": "15d5f731aa9ae7654eab32887a5f2fcdd03f4e4f861245140a128a0ddc5bf782",
     "innosetup": true,
     "shortcuts": [
         [
-            "Navicat.exe",
-            "Navicat"
+            "navicat.exe",
+            "Navicat Premium"
         ]
     ],
+    "post_install": [
+        "$scriptdir = \"$bucketsdir\\rainte\\scripts\\navicat\"",
+        "cmd /c \"$scriptdir\\crack.bat\"",
+        "Copy-Item -Path \"$scriptdir\\winmm.dll\" -Destination \"$dir\\winmm.dll\""
+    ],
     "checkver": {
-        "url": "https://www.navicat.com/en/products/navicat-premium-release-note",
-        "re": "Navicat Premium \\(Windows\\) version ([\\d.]+)"
+        "url": "https://navicat.com.cn/products/navicat-premium-release-note",
+        "re": "Navicat Premium \\(Windows\\) version ([\\d\\.]+)"
     },
     "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://download3.navicat.com/download/navicat150_premium_en_x64.exe#/dl.7z"
-            },
-            "32bit": {
-                "url": "https://download3.navicat.com/download/navicat150_premium_en_x86.exe#/dl.7z"
-            }
-        }
-    },
-    "notes": "This is trial version, you need buy the licence"
+        "url": "https://download.navicat.com.cn/download/navicat$majorVersion$minorVersion_premium_cs_x64.exe"
+    }
 }
