@@ -1,6 +1,6 @@
 {
     "version": "1.4.1",
-    "description": "A 接盘 Clash Meta GUI based on tauri.",
+    "description": "A Clash GUI based on Tauri.",
     "homepage": "https://github.com/wonfen/clash-verge-rev",
     "license": "GPL-3.0-only",
     "architecture": {
@@ -20,6 +20,10 @@
         "if (!(Test-Path \"$persist_dir\\.config\\PORTABLE\")) {",
         "    New-Item -Path \"$persist_dir\\.config\\PORTABLE\" -ItemType file | Out-Null",
         "}"
+    ],
+    "pre_uninstall": [
+        "if (!(is_admin)) { error \"$app requires admin rights to $cmd\"; break }",
+        "Start-Process \"$dir\\resources\\uninstall-service.exe\" -Wait -Verb 'RunAs' -WindowStyle 'Hidden'; Start-Sleep -Seconds 3"
     ],
     "checkver": "github",
     "autoupdate": {
