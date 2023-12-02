@@ -3,19 +3,55 @@
     "description": "Milkman - An Extensible Request/Response Workbench",
     "homepage": "https://github.com/warmuuh/milkman",
     "license": "MIT",
-    "url": "https://github.com/warmuuh/milkman/releases/download/5.7.1/milkman-dist-win64-bin.zip",
-    "hash": "1dce58cf97ff8ac19cd479b7aa75b578a32488bb018f989bbf30b2966eb9eed0",
-    "extract_dir": "milkman-5.7.1",
-    "bin": "milkman.exe",
+    "url": [
+        "https://github.com/warmuuh/milkman/releases/download/5.7.1/milkman-dist-win64-bin.zip",
+        "https://github.com/warmuuh/milkman/releases/download/5.7.1/milkman-dist-plugins-bin.zip"
+    ],
+    "hash": [
+        "1dce58cf97ff8ac19cd479b7aa75b578a32488bb018f989bbf30b2966eb9eed0",
+        "3a3c253cd2710dd981922b96feb10868725cf85d70513643b05865b1fd2b1b72"
+    ],
+    "extract_dir": [
+        "milkman-5.7.1",
+        "milkman-5.7.1"
+    ],
     "shortcuts": [
         [
             "milkman.exe",
             "Milkman"
         ]
     ],
-    "checkver": "github",
+    "persist": [
+        "sync",
+        "database.db",
+        "errors.log"
+    ],
+    "pre_install": [
+        "New-Item -Path $dir -Name database.db -ItemType File | Out-Null",
+        "New-Item -Path $dir -Name errors.log  -ItemType File | Out-Null"
+    ],
+    "checkver": {
+        "github": "https://github.com/warmuuh/milkman",
+        "regex": "releases/tag/([\\d.]+)"
+    },
     "autoupdate": {
-        "url": "https://github.com/warmuuh/milkman/releases/download/$version/milkman-dist-win64-bin.zip",
-        "extract_dir": "milkman-$version"
+        "url": [
+            "https://github.com/warmuuh/milkman/releases/download/$version/milkman-dist-win64-bin.zip",
+            "https://github.com/warmuuh/milkman/releases/download/$version/milkman-dist-plugins-bin.zip"
+        ],
+        "hash": [
+            {
+                "mode": "download",
+                "url": "https://github.com/warmuuh/milkman/releases/download/$version/milkman-dist-win64-bin.zip"
+            },
+            {
+                "mode": "download",
+                "url": "https://github.com/warmuuh/milkman/releases/download/$version/milkman-dist-plugins-bin.zip"
+            }
+        ],
+        "extract_dir": [
+            "milkman-$version",
+            "milkman-$version"
+        ]
     }
 }

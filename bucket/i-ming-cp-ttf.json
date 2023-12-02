@@ -1,0 +1,68 @@
+{
+    "version": "8.00",
+    "description": "A free Ming-style Unicode CJK font.",
+    "homepage": "https://github.com/ichitenfont/I.Ming",
+    "license": "IPA",
+    "url": [
+        "https://github.com/ichitenfont/I.Ming/raw/8.00/8.00/I.MingCP-8.00.ttf",
+        "https://github.com/ichitenfont/I.Ming/raw/8.00/8.00/I.MingVarCP-8.00.ttf",
+        "https://github.com/ichitenfont/I.Ming/raw/8.00/8.00/PMingI.U-8.00.ttf",
+        "https://github.com/ichitenfont/I.Ming/raw/8.00/8.00/PMingI.UVar-8.00.ttf"
+    ],
+    "hash": [
+        "23eb45cdf0ac71c8c57462c4ea2a99efc8de1fb81273064dbe0873a628b4e150",
+        "8d95346811e36c8f629bdd4c1f0f78684b6cbb394acedb8d0b551d737458e054",
+        "57c8c6c20a7adb5aee01b35ef21f50a9255d43f6d8316fdc3f8792b09bd86b0c",
+        "5f35c4c97eb276f3468743d3b782dba1f85e4c712906d2363c63dd8de2431fab"
+    ],
+    "checkver": "github",
+    "autoupdate": {
+        "url": [
+            "https://github.com/ichitenfont/I.Ming/raw/$version/$version/I.MingCP-$version.ttf",
+            "https://github.com/ichitenfont/I.Ming/raw/$version/$version/I.MingVarCP-$version.ttf",
+            "https://github.com/ichitenfont/I.Ming/raw/$version/$version/PMingI.U-$version.ttf",
+            "https://github.com/ichitenfont/I.Ming/raw/$version/$version/PMingI.UVar-$version.ttf"
+        ]
+    },
+    "installer": {
+        "script": [
+            "$currentBuildNumber = [int] (Get-ItemProperty \"HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\").CurrentBuildNumber",
+            "$windows1809BuildNumber = 17763",
+            "$isPerUserFontInstallationSupported = $currentBuildNumber -ge $windows1809BuildNumber",
+            "$isFontInstallationForAllUsers = $global -or !$isPerUserFontInstallationSupported",
+            "if ($isFontInstallationForAllUsers -and !(is_admin)) {",
+            "    error \"Administrator rights are required to install $app.\"",
+            "    exit 1",
+            "}",
+            "$fontInstallDir = if ($isFontInstallationForAllUsers) { \"$env:windir\\Fonts\" } else { \"$env:LOCALAPPDATA\\Microsoft\\Windows\\Fonts\" }",
+            "$registryRoot = if ($isFontInstallationForAllUsers) { \"HKLM\" } else { \"HKCU\" }",
+            "$registryKey = \"${registryRoot}:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\"",
+            "New-Item $fontInstallDir -ItemType Directory -ErrorAction SilentlyContinue | Out-Null",
+            "Get-ChildItem $dir -Filter '*.ttf' -Recurse | ForEach-Object {",
+            "    $value = if ($isFontInstallationForAllUsers) { $_.Name } else { \"$fontInstallDir\\$($_.Name)\" }",
+            "    New-ItemProperty -Path $registryKey -Name $_.Name.Replace($_.Extension, ' (TrueType)') -Value $value -Force | Out-Null",
+            "    Copy-Item $_.FullName -Destination $fontInstallDir",
+            "}"
+        ]
+    },
+    "uninstaller": {
+        "script": [
+            "$currentBuildNumber = [int] (Get-ItemProperty \"HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\").CurrentBuildNumber",
+            "$windows1809BuildNumber = 17763",
+            "$isPerUserFontInstallationSupported = $currentBuildNumber -ge $windows1809BuildNumber",
+            "$isFontInstallationForAllUsers = $global -or !$isPerUserFontInstallationSupported",
+            "if ($isFontInstallationForAllUsers -and !(is_admin)) {",
+            "    error \"Administrator rights are required to uninstall $app.\"",
+            "    exit 1",
+            "}",
+            "$fontInstallDir = if ($isFontInstallationForAllUsers) { \"$env:windir\\Fonts\" } else { \"$env:LOCALAPPDATA\\Microsoft\\Windows\\Fonts\" }",
+            "$registryRoot = if ($isFontInstallationForAllUsers) { \"HKLM\" } else { \"HKCU\" }",
+            "$registryKey = \"${registryRoot}:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\"",
+            "Get-ChildItem $dir -Filter '*.ttf' -Recurse | ForEach-Object {",
+            "    Remove-ItemProperty -Path $registryKey -Name $_.Name.Replace($_.Extension, ' (TrueType)') -Force -ErrorAction SilentlyContinue",
+            "    Remove-Item \"$fontInstallDir\\$($_.Name)\" -Force -ErrorAction SilentlyContinue",
+            "}",
+            "Write-Host \"The 'I. Ming Var' Font family has been uninstalled and will not be present after restarting your computer.\" -Foreground Magenta"
+        ]
+    }
+}
