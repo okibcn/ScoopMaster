@@ -6,8 +6,12 @@
         "identifier": "Unknown",
         "url": "https://github.com/arch1t3cht/Aegisub/blob/feature/LICENCE"
     },
-    "url": "https://github.com/arch1t3cht/Aegisub/releases/download/feature_11/Windows.MSVC.Release.wx.master.-.portable.zip",
-    "hash": "14b6fd29a5017154b1a382b30fe4ac6e54e872cebd55b12923b194c87824d474", 
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/arch1t3cht/Aegisub/releases/download/feature_11/Windows.MSVC.Release.wx.master.-.portable.zip",
+            "hash": "14b6fd29a5017154b1a382b30fe4ac6e54e872cebd55b12923b194c87824d474"
+        }
+    },
     "installer": {
         "script": [
             "New-Item \"$dir\\hotkey.json\", \"$dir\\mru.json\", \"$dir\\shift_history.json\" -Force -ErrorAction SilentlyContinue | Out-Null",
@@ -31,12 +35,16 @@
         "config",
         "crashdumps",
         "feedDump",
-        "log"        
+        "log"
     ],
     "bin": "aegisub.exe",
     "post_install": "Get-ChildItem -Path \"$dir\" -Force -Recurse -Include *.original | Remove-Item -Recurse -Force -Confirm:$false",
     "checkver": "releases/tag/([\\w_]+)",
     "autoupdate": {
-        "url": "https://github.com/arch1t3cht/Aegisub/releases/download/$version/Windows.MSVC.Release.wx.master.-.portable.zip"
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/arch1t3cht/Aegisub/releases/download/$version/Windows.MSVC.Release.wx.master.-.portable.zip"
+            }
+        }
     }
 }
