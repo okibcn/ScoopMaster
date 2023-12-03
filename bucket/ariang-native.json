@@ -1,6 +1,6 @@
 {
     "version": "1.3.7",
-    "description": "a desktop application built by Electron, containing full feature of AriaNg.",
+    "description": "A better aria2 desktop frontend than AriaNg, with all features of AriaNg and providing more features for desktop usage.",
     "homepage": "https://github.com/mayswind/AriaNg-Native",
     "license": "MIT",
     "architecture": {
@@ -13,14 +13,25 @@
             "hash": "753097ec2c7d6afc006a58dee3950424a4678f4dc988798fc550f7f4220110b4"
         }
     },
-    "bin": "AriaNg Native.exe",
+    "pre_install": [
+        "if (Test-Path \"$env:AppData\\ariang-native\") {",
+        "    info '[Persistent AppData]: Moving user data...'",
+        "    ensure \"$persist_dir\\UserData\" | Out-Null",
+        "    Copy-Item \"$env:AppData\\ariang-native\\*\" \"$persist_dir\\UserData\\\" -Recurse -Force -ErrorAction 'SilentlyContinue'",
+        "    Remove-Item \"$env:AppData\\ariang-native\" -Recurse -Force -ErrorAction 'SilentlyContinue'",
+        "}"
+    ],
     "shortcuts": [
         [
             "AriaNg Native.exe",
-            "AriaNg Native"
+            "AriaNg Native",
+            "--user-data-dir=\"$persist_dir\\UserData\""
         ]
     ],
-    "checkver": "github",
+    "persist": "UserData",
+    "checkver": {
+        "github": "https://github.com/mayswind/AriaNg-Native"
+    },
     "autoupdate": {
         "architecture": {
             "64bit": {
