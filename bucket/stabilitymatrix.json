@@ -1,0 +1,36 @@
+{
+    "version": "2.6.7",
+    "description": "Multi-Platform Package Manager for Stable Diffusion",
+    "homepage": "https://lykos.ai",
+    "license": "AGPL-3.0-or-later",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/LykosAI/StabilityMatrix/releases/download/v2.6.7/StabilityMatrix-win-x64.zip",
+            "hash": "fd9d4f09f0c473add6cfaad6d93935ccaad6ad44c0b0c6c5ae885bee2f742c33",
+            "extract_dir": "StabilityMatrix-win-x64"
+        }
+    },
+    "post_install": [
+        "if (!(Test-Path \"$persist_dir\\Data\\.sm-portable\")) {",
+        "    New-Item \"$persist_dir\\Data\\.sm-portable\" | Out-Null",
+        "}"
+    ],
+    "bin": "StabilityMatrix.exe",
+    "shortcuts": [
+        [
+            "StabilityMatrix.exe",
+            "StabilityMatrix"
+        ]
+    ],
+    "persist": "Data",
+    "checkver": {
+        "github": "https://github.com/LykosAI/StabilityMatrix"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/LykosAI/StabilityMatrix/releases/download/v$version/StabilityMatrix-win-x64.zip"
+            }
+        }
+    }
+}
