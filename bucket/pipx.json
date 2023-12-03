@@ -1,19 +1,45 @@
 {
-    "homepage": "https://github.com/pypa/pipx",
-    "description": "Install and Run Python Applications in Isolated Environments",
-    "license": "MIT",
+    "##": "https://example.com is not a placeholder URL, and removing it will break the manifest. 😟",
     "version": "1.3.1",
-    "url": "https://github.com/pypa/pipx/releases/download/1.3.1/pipx.pyz",
-    "hash": "1d5ac5512e7cef93890284e6253849c779cfb1a518014d8a9e3978e96ef36f85",
-    "bin": [
-        [
-            "py.exe",
-            "pipx",
-            "$dir\\pipx.pyz"
+    "description": "Install and Run Python Applications in Isolated Environments",
+    "homepage": "https://pypa.github.io/pipx",
+    "license": "MIT",
+    "depends": "python",
+    "innosetup": false,
+    "url": "https://example.com",
+    "hash": "ea8fac7c65fb589b0d53560f5251f74f9e9b243478dcb6b3ea79b5e36449c8d9",
+    "installer": {
+        "script": [
+            "& $scoopdir/apps/python/current/python -m venv $dir/venv",
+            "& $dir/venv/Scripts/python -m pip install pipx==$version --require-venv",
+            "Set-Content -Path \"$dir/pipx.ps1\" -Value \"`$env:PIPX_HOME = '$persist_dir'; `$env:PIPX_BIN_DIR = '$dir/.local/bin'; `$env:PATH = '$env:PATH;$env:PIPX_BIN_DIR'; & '$dir/venv/Scripts/pipx.exe' @args\";"
         ]
+    },
+    "post_install": "pipx reinstall-all",
+    "post_uninstall": [
+        "if (-not [string]::IsNullOrWhiteSpace($env:SCOOP)) { $scoopdir = $env:SCOOP } else { $scoopdir = \"~/scoop\" }",
+        "if ( -not (Test-Path -Path \"$scoopdir/persist/pipx\")) { exit }",
+        "$global:purge_pipx = 'Remove-Item -Path \"$scoopdir/persist/pipx\" -Recurse -Force; Write-Host \"[Kirigiri] pipx successfully purged.\" -ForegroundColor Green; Remove-Variable purge_pipx -Scope Global'",
+        "Write-Host \"`n[Kirigiri]\" -ForegroundColor Yellow",
+        "Write-Host \"If you just ran \" -ForegroundColor Yellow -NoNewline",
+        "Write-Host \"scoop uninstall\" -ForegroundColor Blue -NoNewline",
+        "Write-Host \" (without \" -ForegroundColor Yellow -NoNewline",
+        "Write-Host \"--purge\" -ForegroundColor Blue -NoNewline",
+        "Write-Host \"), know that apps you installed with pipx will be reinstalled the next time you install pipx from Kirigiri. To prevent this, run \" -ForegroundColor Yellow -NoNewline;",
+        "Write-Host \"iex `$purge_pipx\" -ForegroundColor Blue -NoNewline;",
+        "Write-Host \" now.\" -ForegroundColor Yellow",
+        "Write-Host \"`nIf you just ran \" -ForegroundColor Yellow -NoNewline",
+        "Write-Host \"scoop update\" -ForegroundColor Blue -NoNewline",
+        "Write-Host \" or\" -ForegroundColor Yellow -NoNewline",
+        "Write-Host \" scoop uninstall --purge\" -ForegroundColor Blue -NoNewline",
+        "Write-Host \", you can ignore this message.`n\" -ForegroundColor Yellow"
     ],
-    "checkver": "github",
+    "bin": "pipx.ps1",
+    "checkver": {
+        "url": "https://pypi.org/pypi/pipx/json",
+        "jsonpath": "$.info.version"
+    },
     "autoupdate": {
-        "url": "https://github.com/pypa/pipx/releases/download/$version/pipx.pyz"
+        
     }
 }
