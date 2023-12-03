@@ -1,14 +1,15 @@
 {
-    "version": "0.2.2",
-    "description": "Insomnium is a fast local API testing tool that is privacy-focused and 100% local. For testing GraphQL, REST, WebSockets and gRPC. This is a fork of Kong/insomnia    ",
-    "homepage": "https://archgpt.dev/insomnium",
+    "version": "0.2.3-a",
+    "description": "A 100% local and privacy-focused open-source API client for testing GraphQL, REST, WebSockets, Server-sent events and gRPC in development/production.",
+    "homepage": "https://github.com/ArchGPT/insomnium",
     "license": "MIT",
     "architecture": {
         "64bit": {
-            "url": "https://github.com/ArchGPT/insomnium/releases/download/core%400.2.2/insomnium-0.2.2-full.nupkg",
-            "hash": "sha1:722bfda6a46848070a7c3efa421e788de155c0fb"
+            "url": "https://github.com/ArchGPT/insomnium/releases/download/core%400.2.3-a/insomnium-0.2.3-a-full.nupkg#/dl.7z",
+            "hash": "sha1:8ef4d8dd233612afe8d5699ef0ccb1c3e130a062"
         }
     },
+    "post_install": "Remove-Item \"$dir\\Update*\" -Force",
     "extract_dir": "lib\\net45",
     "shortcuts": [
         [
@@ -16,18 +17,20 @@
             "Insomnium"
         ]
     ],
+    "notes": "Insomnium is NOT portable.",
     "checkver": {
-        "url": "https://api.github.com/repos/ArchGPT/insomnium/releases",
-        "regex": "\"core@([\\d.]+)\""
+        "url": "https://github.com/ArchGPT/insomnium/releases/latest",
+        "regex": "/insomnium/tree/core%40([^/]+?)\""
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://github.com/ArchGPT/insomnium/releases/download/core%40$version/insomnium-$version-full.nupkg"
+                "url": "https://github.com/ArchGPT/insomnium/releases/download/core%40$version/insomnium-$version-full.nupkg#/dl.7z"
             }
         },
         "hash": {
-            "url": "$baseurl/RELEASES"
+            "url": "$baseurl/RELEASES",
+            "regex": "$sha1"
         }
     }
 }
