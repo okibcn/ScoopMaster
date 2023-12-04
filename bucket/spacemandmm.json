@@ -1,0 +1,68 @@
+{
+	"$schema": "https://raw.githubusercontent.com/ScoopInstaller/Scoop/master/schema.json",
+	"version": "1.8",
+	"description": "SpacemanDMM is a suite of tools for working with DreamMaker codebases and map files. It features a full-size fancy map renderer, a language server, and a documentation generator for DM codebases.",
+	"homepage": "https://github.com/SpaceManiac/SpacemanDMM",
+	"license": "GPL-3.0",
+	"bin": [
+		"dm-langserver.exe",
+		"dmdoc.exe",
+		"dmm-tools.exe",
+		"dreamchecker.exe"
+	],
+	"suggest": {
+		"vcredist": "extras/vcredist",
+		"byond": "lucy/byond"
+	},
+	"architecture": {
+		"64bit": {
+			"url": [
+				"https://github.com/SpaceManiac/SpacemanDMM/releases/download/suite-1.8/dm-langserver.exe",
+				"https://github.com/SpaceManiac/SpacemanDMM/releases/download/suite-1.8/dmdoc.exe",
+				"https://github.com/SpaceManiac/SpacemanDMM/releases/download/suite-1.8/dmm-tools.exe",
+				"https://github.com/SpaceManiac/SpacemanDMM/releases/download/suite-1.8/dreamchecker.exe"
+			],
+			"hash": [
+				"1e620c51ea0677c7cfcfd405467777179e5fc028bb0e712528616bf94eb94529",
+				"4fe3d2971ef3db45fa66e0c06df9f9def8c9107f39adf04777f06d528c9461e4",
+				"40adc6ba3c1c0049f0abcddf1669e7ef00bea3c384547688e634b0bc5903ea09",
+				"8e9b05dd8b442d1a48a4b9273d91b93683b5e21bbee84d30270e0aef17ce2cc1"
+			]
+		}
+	},
+	"checkver": {
+		"url": "https://api.github.com/repositories/109318342/releases/latest",
+		"jsonpath": "$..browser_download_url",
+		"regex": "download/suite-(?<tag>[\\d.]+)/suite-([\\d.]+).sha256"
+	},
+	"autoupdate": {
+		"architecture": {
+			"64bit": {
+				"url": [
+					"https://github.com/SpaceManiac/SpacemanDMM/releases/download/suite-$matchTag/dm-langserver.exe",
+					"https://github.com/SpaceManiac/SpacemanDMM/releases/download/suite-$matchTag/dmdoc.exe",
+					"https://github.com/SpaceManiac/SpacemanDMM/releases/download/suite-$matchTag/dmm-tools.exe",
+					"https://github.com/SpaceManiac/SpacemanDMM/releases/download/suite-$matchTag/dreamchecker.exe"
+				],
+				"hash": [
+					{
+						"url": "https://github.com/SpaceManiac/SpacemanDMM/releases/download/suite-$matchTag/suite-$matchTag.sha256",
+						"find": "^$sha256\\s+[A-z\\/]+dm-langserver.exe$"
+					},
+					{
+						"url": "https://github.com/SpaceManiac/SpacemanDMM/releases/download/suite-$matchTag/suite-$matchTag.sha256",
+						"find": "^$sha256\\s+[A-z\\/]+dmdoc.exe$"
+					},
+					{
+						"url": "https://github.com/SpaceManiac/SpacemanDMM/releases/download/suite-$matchTag/suite-$matchTag.sha256",
+						"find": "^$sha256\\s+[A-z\\/]+dmm-tools.exe$"
+					},
+					{
+						"url": "https://github.com/SpaceManiac/SpacemanDMM/releases/download/suite-$matchTag/suite-$matchTag.sha256",
+						"find": "^$sha256\\s+[A-z\\/]+dreamchecker.exe$"
+					}
+				]
+			}
+		}
+	}
+}

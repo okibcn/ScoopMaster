@@ -5,7 +5,7 @@
 	"homepage": "https://secure.byond.com",
 	"license": "Proprietary",
 	"url": "https://www.byond.com/download/build/514/514.1589_byond.zip",
-	"hash": "sha256:3a6764c63e3ea0d4c5386ed0873fe999aa99a3fbbbec29dd18835391337a9864",
+	"hash": "3a6764c63e3ea0d4c5386ed0873fe999aa99a3fbbbec29dd18835391337a9864",
 	"extract_dir": "byond",
 	"bin": "bin\\byond.exe",
 	"suggest": {
@@ -17,11 +17,9 @@
 		["bin\\dreamseeker.exe", "Dream Seeker"],
 		["bin\\dreammaker.exe", "Dream Maker"]
 	],
-	"persist": ["data"],
+	"persist": "data",
 	"env_add_path": "bin",
-	"post_install": [
-		"New-ItemProperty -Path \"HKCU:\\Software\\Dantom\\BYOND\" -Name \"userpath\" -Value \"$persist_dir\\data\" -PropertyType String -Force"
-	],
+	"post_install": "New-ItemProperty -Path \"HKCU:\\Software\\Dantom\\BYOND\" -Name \"userpath\" -Value \"$persist_dir\\data\" -PropertyType String -Force",
 	"checkver": {
 		"url": "https://secure.byond.com/download/version.txt",
 		"regex": "^(?<stable_major>[0-9]{3})\\.(?<stable_minor>[0-9]{4})[\\n\\r]{1,2}(?<beta_major>[0-9]{3})\\.(?<beta_minor>[0-9]{4})$",
