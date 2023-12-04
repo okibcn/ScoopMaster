@@ -1,0 +1,33 @@
+{
+	"$schema": "https://raw.githubusercontent.com/ScoopInstaller/Scoop/master/schema.json",
+	"version": "514.1589",
+	"description": "BYOND is a free software suite for creating and playing online games.",
+	"homepage": "https://secure.byond.com",
+	"license": "Proprietary",
+	"url": "https://www.byond.com/download/build/514/514.1589_byond.zip",
+	"hash": "sha256:3a6764c63e3ea0d4c5386ed0873fe999aa99a3fbbbec29dd18835391337a9864",
+	"extract_dir": "byond",
+	"bin": "bin\\byond.exe",
+	"suggest": {
+		"vcredist": "extras/vcredist"
+	},
+	"shortcuts": [
+		["bin\\byond.exe", "BYOND"],
+		["bin\\dreamdaemon.exe", "Dream Daemon"],
+		["bin\\dreamseeker.exe", "Dream Seeker"],
+		["bin\\dreammaker.exe", "Dream Maker"]
+	],
+	"persist": ["data"],
+	"env_add_path": "bin",
+	"post_install": [
+		"New-ItemProperty -Path \"HKCU:\\Software\\Dantom\\BYOND\" -Name \"userpath\" -Value \"$persist_dir\\data\" -PropertyType String -Force"
+	],
+	"checkver": {
+		"url": "https://secure.byond.com/download/version.txt",
+		"regex": "^(?<stable_major>[0-9]{3})\\.(?<stable_minor>[0-9]{4})[\\n\\r]{1,2}(?<beta_major>[0-9]{3})\\.(?<beta_minor>[0-9]{4})$",
+		"replace": "${stable_major}.${stable_minor}"
+	},
+	"autoupdate": {
+		"url": "https://www.byond.com/download/build/$majorVersion/$version_byond.zip"
+	}
+}

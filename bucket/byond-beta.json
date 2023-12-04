@@ -1,0 +1,29 @@
+{
+	"$schema": "https://raw.githubusercontent.com/ScoopInstaller/Scoop/master/schema.json",
+	"version": "515.1620",
+	"description": "BYOND is a free software suite for creating and playing online games. (Beta version)",
+	"homepage": "https://secure.byond.com",
+	"license": "Proprietary",
+	"url": "https://www.byond.com/download/build/515/515.1620_byond.zip",
+	"hash": "sha256:a5705cbfd93d67997bedce78908a5da3e5c344be8977d5007c5eb7590c783d6d",
+	"extract_dir": "byond",
+	"bin": "bin\\byond.exe",
+	"notes": "This relies on the normal BYOND package, to avoid conflicting persistent data, as you cannot have separate BYOND userdirs for stable and beta versions.",
+	"suggest": {
+		"vcredist": "extras/vcredist"
+	},
+	"shortcuts": [
+		["bin\\byond.exe", "BYOND (Beta)"],
+		["bin\\dreamdaemon.exe", "Dream Daemon (Beta)"],
+		["bin\\dreamseeker.exe", "Dream Seeker (Beta)"],
+		["bin\\dreammaker.exe", "Dream Maker (Beta)"]
+	],
+	"checkver": {
+		"url": "https://secure.byond.com/download/version.txt",
+		"regex": "^(?<stable_major>[0-9]{3})\\.(?<stable_minor>[0-9]{4})[\\n\\r]{1,2}(?<beta_major>[0-9]{3})\\.(?<beta_minor>[0-9]{4})$",
+		"replace": "${beta_major}.${beta_minor}"
+	},
+	"autoupdate": {
+		"url": "https://www.byond.com/download/build/$majorVersion/$version_byond.zip"
+	}
+}
