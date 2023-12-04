@@ -1,42 +1,53 @@
 {
     "version": "4.3.2",
+    "description": "Your productive tools set and launcher.",
     "homepage": "https://u.tools/",
-    "checkver": {
-        "regex": "uTools-([\\d|\\.]+)\\.exe"
-    },
-    "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://res.u-tools.cn/version2/uTools-$version.exe#/uTools.7z"
-            },
-            "32bit": {
-                "url": "https://res.u-tools.cn/version2/uTools-$version-ia32.exe#/uTools.7z"
-            }
-        }
+    "license": {
+        "identifier": "Proprietary",
+        "url": "http://u.tools/agreement.html"
     },
     "architecture": {
         "64bit": {
-            "url": "https://res.u-tools.cn/version2/uTools-4.3.2.exe#/uTools.7z",
+            "url": "https://publish.u-tools.cn/version2/uTools-4.3.2.exe#/dl.7z",
             "hash": "127403d254be809d3bd43ff44cc789b05fdd22927761b3563dee5341960a1f5a",
             "installer": {
-                "script": "7z x $original_dir/PLUGINSDIR/app-64.7z -o\"$original_dir\""
+                "script": "Expand-7zipArchive \"$dir\\`$PLUGINSDIR/app-64.7z\" \"$dir\""
             }
         },
         "32bit": {
-            "url": "https://res.u-tools.cn/version2/uTools-4.3.2-ia32.exe#/uTools.7z",
+            "url": "https://publish.u-tools.cn/version2/uTools-4.3.2-ia32.exe#/dl.7z",
             "hash": "fca18a90546c3ff32c74869ddb28101e2d12a1f839f2ba4e26e68c045d44efe0",
             "installer": {
-                "script": "7z x $original_dir/PLUGINSDIR/app-32.7z -o\"$original_dir\""
+                "script": "Expand-7zipArchive \"$dir\\`$PLUGINSDIR/app-32.7z\" \"$dir\""
             }
         }
     },
-    "extract_dir": "$PLUGINSDIR",
-    "extract_to": "PLUGINSDIR",
-    "post_install": "rm $original_dir/PLUGINSDIR -recurse",
+    "post_install": [
+        "@('$PLUGINSDIR', '[NSIS].nsi', 'Uninstall uTools.exe') | ForEach-Object { Remove-Item \"$dir\\$_\" -Recurse -Force -ErrorAction SilentlyContinue }",
+        "if (!(Test-Path \"$dir\\User Data\\*\") -and (Test-Path \"$env:AppData\\uTools\")) {",
+        "    info '[Portable Mode]: Copying user data...'",
+        "    Copy-Item \"$env:AppData\\uTools\\*\" \"$dir\\User Data\" -Recurse",
+        "}"
+    ],
     "shortcuts": [
         [
             "uTools.exe",
             "uTools"
         ]
-    ]
+    ],
+    "persist": "User Data",
+    "checkver": {
+        "url": "https://u.tools/",
+        "regex": "uTools-([\\d.]+).exe"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://publish.u-tools.cn/version2/uTools-$version.exe#/dl.7z"
+            },
+            "32bit": {
+                "url": "https://publish.u-tools.cn/version2/uTools-$version-ia32.exe#/dl.7z"
+            }
+        }
+    }
 }
