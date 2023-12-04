@@ -1,59 +1,29 @@
 {
-    "$schema": "https://raw.githubusercontent.com/ScoopInstaller/Scoop/master/schema.json",
-    "version": "6.1.0",
-    "description": "ShadowsocksR for Windows (C#).",
-    "homepage": "https://github.com/HMBSbige/ShadowsocksR-Windows",
-    "license": {
-        "identifier": "GPL-3.0-only",
-        "url": "https://github.com/HMBSbige/ShadowsocksR-Windows/blob/master/LICENSE"
-    },
-    "architecture": {
-        "64bit": {
-            "url": "https://github.com/HMBSbige/ShadowsocksR-Windows/releases/download/6.1.0/ShadowsocksR-Win64-6.1.0.7z",
-            "hash": "d62593da0aa39970213997694cb811a19a68341b4b10c42e9040064f4fdf1e48"
+    "autoupdate": {
+        "hash": {
+            "regex": "(?s)$basename.*?$sha256",
+            "url": "https://github.com/HMBSbige/ShadowsocksR-Windows/releases"
         },
-        "32bit": {
-            "url": "https://github.com/HMBSbige/ShadowsocksR-Windows/releases/download/6.1.0/ShadowsocksR-Win32-6.1.0.7z",
-            "hash": "52b3ecadd8f4063ebb7121b7a84caee490cc0e630977f226e933d62b2784dde5"
-        }
+        "url": "https://github.com/HMBSbige/ShadowsocksR-Windows/releases/download/$matchVersion/$matchFilename"
     },
+    "bin": "ShadowsocksR.exe",
+    "checkver": {
+        "regex": "(?<filename>ShadowsocksR-(?<version>[\\d.]+)\\.7z)",
+        "replace": "${version}",
+        "url": "https://github.com/HMBSbige/ShadowsocksR-Windows/releases"
+    },
+    "depends": "dotnet-desktop-runtime",
+    "description": "HMBSbige/ShadowsocksR-Windows",
     "extract_dir": "ShadowsocksR",
+    "hash": "adbe1e1bd5d71896fd70000551798b77173abd50de56395b11b4bb05e7f8e937",
+    "homepage": "https://github.com/HMBSbige/ShadowsocksR-Windows",
+    "license": "GNU General Public License v3.0",
     "shortcuts": [
         [
             "ShadowsocksR.exe",
             "ShadowsocksR"
         ]
     ],
-    "pre_install": [
-        "@('gui-config.json', 'pac.txt', 'transfer_log.json', 'user-rule.txt') | ForEach-Object {",
-        "  if (!(Test-Path \"$persist_dir\\$_\")) {",
-        "    if ($_ -match '.json$') {",
-        "      Set-Content -Encoding Ascii -Path \"$dir\\$_\" -Value '{}'",
-        "    } else {",
-        "      New-Item \"$dir\\$_\" | Out-Null",
-        "    }",
-        "  }",
-        "}"
-    ],
-    "persist": [
-        "gui-config.json",
-        "pac.txt",
-        "transfer_log.json",
-        "user-rule.txt"
-    ],
-    "checkver": "github",
-    "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://github.com/HMBSbige/ShadowsocksR-Windows/releases/download/$version/ShadowsocksR-Win64-$version.7z"
-            },
-            "32bit": {
-                "url": "https://github.com/HMBSbige/ShadowsocksR-Windows/releases/download/$version/ShadowsocksR-Win32-$version.7z"
-            }
-        },
-        "hash": {
-            "url": "https://api.github.com/repos/HMBSbige/ShadowsocksR-Windows/releases/latest",
-            "regex": "(?sm)<sub>$basename</sub> \\| <sub>$sha256</sub>"
-        }
-    }
+    "url": "https://github.com/HMBSbige/ShadowsocksR-Windows/releases/download/6.1.0/ShadowsocksR-6.1.0.7z",
+    "version": "6.1.0"
 }
