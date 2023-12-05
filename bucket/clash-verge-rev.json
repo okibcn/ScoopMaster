@@ -1,16 +1,12 @@
 {
     "version": "1.4.2",
-    "description": "A Clash Meta GUI based on tauri.",
-    "homepage": "https://github.com/clash-verge-rev/clash-verge-rev",
+    "description": "A Clash GUI based on Tauri.",
+    "homepage": "https://github.com/wonfen/clash-verge-rev",
     "license": "GPL-3.0-only",
     "architecture": {
         "64bit": {
-            "url": "https://github.com/clash-verge-rev/clash-verge-rev/releases/download/v1.4.2/Clash.Verge_1.4.2_x64_portable.zip",
-            "hash": "5259ec0009a7b7f074acc2f400a0ce3582309ac48add06805071aa9fbf9e40eb"
-        },
-        "32bit": {
-            "url": "https://github.com/clash-verge-rev/clash-verge-rev/releases/download/v1.4.2/Clash.Verge_1.4.2_x86_portable.zip",
-            "hash": "2ece864a494e79a390a1e5e69d20dbd46b577e34a721211a3de4962d203d4ec1"
+            "url": "https://github.com/wonfen/clash-verge-rev/releases/download/v1.4.2/Clash.Verge_1.4.2_x64_portable.zip",
+            "hash": "690f32634c66b7d5c4670352ab13061926ee7083a80d79f5e06c998093ed4d1c"
         }
     },
     "shortcuts": [
@@ -25,14 +21,15 @@
         "    New-Item -Path \"$persist_dir\\.config\\PORTABLE\" -ItemType file | Out-Null",
         "}"
     ],
+    "pre_uninstall": [
+        "if (!(is_admin)) { error \"$app requires admin rights to $cmd\"; break }",
+        "Start-Process \"$dir\\resources\\uninstall-service.exe\" -Wait -Verb 'RunAs' -WindowStyle 'Hidden'; Start-Sleep -Seconds 3"
+    ],
     "checkver": "github",
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://github.com/clash-verge-rev/clash-verge-rev/releases/download/v$version/Clash.Verge_$version_x64_portable.zip"
-            },
-            "32bit": {
-                "url": "https://github.com/clash-verge-rev/clash-verge-rev/releases/download/v$version/Clash.Verge_$version_x86_portable.zip"
+                "url": "https://github.com/wonfen/clash-verge-rev/releases/download/v$version/Clash.Verge_$version_x64_portable.zip"
             }
         }
     }

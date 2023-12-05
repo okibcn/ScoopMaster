@@ -1,46 +1,104 @@
 {
-    "version": "0.15.0",
-    "description": "【小狼毫】Rime for Windows",
     "homepage": "https://rime.im/",
-    "license": "GPL-3.0-only",
+    "license": "GPL-3.0-or-later",
+    "version": "0.15.0",
     "url": "https://github.com/rime/weasel/releases/download/0.15.0/weasel-0.15.0.0-installer.exe#/dl.7z",
     "hash": "21b2b3ba19f11b308db3c50ce343a14a42ce10331e3c0b7021850ec6726dcd10",
-    "post_install": [
-        "Remove-Item \"$dir\\`$PLUGINSDIR\" -Force -Recurse",
-        "Add-Content -Path \"$dir\\rime-install-config.bat\" -Value \"
-
-set rime_dir=$persist_dir\""
-    ],
     "installer": {
         "script": [
-            "New-Item -Path \"HKCU:\\Software\\Rime\" | Out-Null",
-            "New-Item -Path \"HKCU:\\Software\\Rime\\Weasel\" | Out-Null",
-            "New-ItemProperty -Path \"HKCU:\\Software\\Rime\\Weasel\" -Name RimeUserDir -Value \"$persist_dir\" | Out-Null",
-            "New-Item -Path \"HKCU:\\Software\\Rime\\Weasel\\Updates\" | Out-Null",
-            "New-ItemProperty -Path \"HKCU:\\Software\\Rime\\Weasel\\Updates\" -Name CheckForUpdates -Value \"0\" | Out-Null",
-            "Start-Process -Wait \"$dir\\WeaselSetup.exe\" \"/s\"",
-            "New-ItemProperty -Path \"HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Run\" -Name WeaselServer -Value \"$dir\\WeaselServer.exe\" | Out-Null",
-            "Start-Process \"$dir\\WeaselServer.exe\""
+            "# prompt for setting user folder path",
+            "& \"$dir\\WeaselSetup.exe\" /i",
+            "# run install",
+            "& \"$dir\\WeaselDeployer.exe\" /install",
+            "# start server",
+            "& \"$dir\\WeaselServer.exe\""
         ]
     },
-    "uninstaller": {
-        "script": [
-            "Start-Process -Wait \"$dir\\WeaselServer.exe\"  \"/quit\"",
-            "Start-Process -Wait \"$dir\\WeaselSetup.exe\" \"/u\"",
-            "Remove-ItemProperty -Path \"HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Run\" -Name WeaselServer",
-            "Remove-Item -Path \"HKCU:\\Software\\Rime\" -Recurse"
-        ]
-    },
+    "post_install": [
+        "Remove-Item \"$dir\\`$PLUGINSDIR\" -Recurse",
+        "# set autorun on Windows startup",
+        "if ($global) {",
+        "    $exists = (Get-Item HKLM:\\Software\\Microsoft\\Windows\\CurrentVersion\\Run).Property -contains \"WeaselServer\"",
+        "    if (!$exists) {",
+        "        New-ItemProperty -Path HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run -Name WeaselServer -PropertyType String -Value $dir\\WeaselServer.exe",
+        "    }",
+        "} else {",
+        "    # if install for current user, create .lnk file to autorun instead of Registry",
+        "    $wsShell = New-Object -ComObject WScript.Shell",
+        "    $wsShell = $wsShell.CreateShortcut(\"$($env:APPDATA)\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\\WeaselServer.lnk\")",
+        "    $wsShell.TargetPath = \"$dir\\WeaselServer.exe\"",
+        "    $wsShell.WorkingDirectory = $dir",
+        "    $wsShell.Save()",
+        "}"
+    ],
     "shortcuts": [
         [
+            "README.txt",
+            "【小狼毫】说明书"
+        ],
+        [
+            "WeaselDeployer.exe",
+            "【小狼毫】输入法设定"
+        ],
+        [
+            "WeaselDeployer.exe",
+            "【小狼毫】用户词典管理",
+            "/dict"
+        ],
+        [
+            "WeaselDeployer.exe",
+            "【小狼毫】用户资料同步",
+            "/sync"
+        ],
+        [
+            "WeaselDeployer.exe",
+            "【小狼毫】重新部署",
+            "/deploy"
+        ],
+        [
             "WeaselServer.exe",
-            "小狼毫算法服務"
+            "小狼毫算法服务"
+        ],
+        [
+            "WeaselServer.exe",
+            "【小狼毫】用户文件夹",
+            "/userdir"
+        ],
+        [
+            "WeaselServer.exe",
+            "【小狼毫】程序文件夹",
+            "/weaseldir"
+        ],
+        [
+            "WeaselServer.exe",
+            "【小狼毫】检查新版本",
+            "/update"
+        ],
+        [
+            "WeaselSetup.exe",
+            "【小狼毫】安装选项"
         ]
     ],
+    "uninstaller": {
+        "file": "uninstall.exe"
+    },
+    "post_uninstall": [
+        "# remove autorun",
+        "# if install globally, the uninstall.exe will remove the Registry",
+        "if (!$global) {",
+        "    $lnkPath = \"$($env:APPDATA)\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\\WeaselServer.lnk\"",
+        "    $lnkExists = Test-Path $lnkPath",
+        "    if ($lnkExists) {",
+        "        Remove-Item $lnkPath",
+        "    }",
+        "}"
+    ],
     "checkver": {
-        "github": "https://github.com/rime/weasel"
+        "url": "https://api.github.com/repos/rime/weasel/releases/latest",
+        "jsonpath": "$..browser_download_url",
+        "regex": "download/([\\d.]+)/weasel-(?<buildVer>[\\d.]+)"
     },
     "autoupdate": {
-        "url": "https://github.com/rime/weasel/releases/download/$version/weasel-$version.0-installer.exe#/dl.7z"
+        "url": "https://github.com/rime/weasel/releases/download/$version/weasel-$matchBuildVer-installer.exe#/dl.7z"
     }
 }
