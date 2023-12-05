@@ -27,7 +27,7 @@
         ")",
         "if (Test-Path \"$persist_dir\\mozilla.cfg\") {",
         "    if (-not (Test-Path \"$dir\\defaults\\pref\\autoconfig.js\")) {",
-        "        Set-Content \"$dir\\defaults\\pref\\autoconfig.js\" $CONT",
+        "        Set-Content \"$dir\\defaults\\pref\\autoconfig.js\" (($CONT -join \"`n\") + \"`n\") -NoNewLine",
         "    }",
         "    Copy-Item -Path \"$persist_dir\\mozilla.cfg\" -Destination $dir -Force -ErrorAction SilentlyContinue",
         "}",
