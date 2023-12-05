@@ -3,8 +3,7 @@
     "description": "VMware Horizon Client for Windows allows you to connect to your VMware Horizon virtual desktop.",
     "homepage": "https://www.vmware.com/products/horizon.html",
     "license": "Proprietary",
-    "depends": "dark",
-	"notes": "To support launching VMware Horizon Client via the browser run the following command: reg import \"$dir\\install-browser-launch.reg\"",
+    "depends": "dark",	
     "architecture": {
         "64bit": {            
 			"url": "https://download3.vmware.com/software/CART24FQ4_WIN_2309.1/VMware-Horizon-Client-2309.1-8.11.1-22783278.exe#/VMware-Horizon-Client-Setup.exe",
@@ -44,22 +43,5 @@
             "vmware-view.exe",
             "VMware Horizon Client"
         ]
-    ],
-    "checkver": {
-        "url": "https://my.vmware.com/channel/public/api/v1.0/dlg/details?downloadGroup=CART21FQ4_WIN_2012&productId=1027",
-        "jsonpath": "$.downloadFiles..thirdPartyDownloadUrl",
-        "regex": "(?<downloadgroup>CART\\d+FQ\\d)/VMware-Horizon-Client-(?<version>[\\d.-]+).exe"
-    },
-    "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://download3.vmware.com/software/view/viewclients/$matchDownloadgroup/VMware-Horizon-Client-$version.exe#/VMware-Horizon-Client-Setup.exe",
-                "hash": {
-                    "mode": "json",
-                    "jsonpath": "$.downloadFiles..sha256checksum",
-                    "url": "https://my.vmware.com/channel/public/api/v1.0/dlg/details?downloadGroup=$matchDownloadgroup_WIN_800&productId=1027"
-                }
-            }
-        }
-    }
+    ]    
 }
