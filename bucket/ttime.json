@@ -1,20 +1,12 @@
 {
-    "version": "0.9.3",
-    "description": "🚀 A concise, efficient, good-looking input, screenshot, and word translation software",
+    "version": "0.9.4",
+    "description": "🚀 一款简洁高效的输入、截图、划词翻译软件",
     "homepage": "https://github.com/InkTimeRecord/TTime",
-    "license": {
-        "identifier": "Apache-2.0",
-        "url": "https://github.com/InkTimeRecord/TTime/blob/main/LICENSE.txt"
-    },
-    "architecture": {
-        "64bit": {
-            "url": "https://github.com/InkTimeRecord/TTime/releases/download/v0.9.3/TTime.0.9.3.exe#/dl.7z",
-            "hash": "983b2859e9258d3a049447e5777654c9a56b361524354d5d19bc91823c6928b4",
-            "pre_install": [
-                "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\"",
-                "Remove-Item \"$dir\\`$*\" -Recurse"
-            ]
-        }
+    "license": "MIT",
+    "url": "https://github.com/InkTimeRecord/TTime/releases/download/v0.9.4/TTime.0.9.4.exe",
+    "hash": "5ea3e652b7b7ef455e324a965a623cad829a474ca7e3b5dbd1370467f64192ea",
+    "installer": {
+        "script": "Rename-Item \"$dir\\TTime.$version.exe\" \"TTime.exe\""
     },
     "shortcuts": [
         [
@@ -23,13 +15,11 @@
         ]
     ],
     "checkver": {
-        "github": "https://github.com/InkTimeRecord/TTime"
+        "url": "https://api.github.com/repos/InkTimeRecord/TTime/releases",
+        "jsonpath": "$[0].tag_name",
+        "regex": "(?<tag>v([\\w.-]+))"
     },
     "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://github.com/InkTimeRecord/TTime/releases/download/v$version/TTime.$version.exe#/dl.7z"
-            }
-        }
+        "url": "https://github.com/InkTimeRecord/TTime/releases/download/v$version/TTime.$version.exe"
     }
 }
