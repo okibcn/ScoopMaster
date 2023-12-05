@@ -1,25 +1,67 @@
 {
     "version": "1.4.1",
-    "description": "Windhawk. The customization marketplace for Windows programs",
     "homepage": "https://windhawk.net/",
-    "license": "",
-    "changelog": "https://github.com/ramensoftware/windhawk/releases",
-    "url": "https://github.com/ramensoftware/windhawk/releases/download/v1.4.1/windhawk_setup.exe#/setup.exe",
-    "hash": "85dbfda445ba4b23c167e9c3767fb812366642c6f40d3b4d1ba00040595cec30",
-    "persist": "Windhawk\\AppData",
-    "installer": {
-        "script": "Start-Process -Wait \"$dir\\setup.exe\" -ArgumentList '/S /portable' -Verb RunAs"
-    },
+    "description": "The customization marketplace for Windows programs.",
+    "license": "GPL-3.0",
+    "url": "https://github.com/ramensoftware/windhawk/releases/download/v1.4.1/windhawk_setup_offline.exe#/dl.7z",
+    "hash": "664b34a30872d93b7136fe0bc814a4e28def58eb746fe43d152e92d52d6090bf",
+    "pre_install": [
+        "Remove-Item \"$dir\\`$PLUGINSDIR\" -Recurse",
+        "$cont_1 = @\"",
+        "[Storage]",
+        "Portable=1",
+        "CompilerPath=Compiler",
+        "EnginePath=\"Engine\\$version\"",
+        "UIPath=UI",
+        "AppDataPath=AppData",
+        "\"@",
+        "if (!(Test-Path \"$persist_dir\\windhawk.ini\")) {",
+        "    Set-Content \"$dir\\windhawk.ini\" $cont_1 -Encoding 'unicode'",
+        "}",
+        "",
+        "$cont_2 = @\"",
+        "[Storage]",
+        "Portable=1",
+        "AppDataPath=\"..\\..\\AppData\\Engine\"",
+        "\"@",
+        "if (!(Test-Path \"$persist_dir\\Engine\\$version\\engine.ini\")) {",
+        "    Set-Content \"$dir\\engine.ini\" $cont_2 -Encoding 'unicode'",
+        "}"
+    ],
+    "bin": "windhawk.exe",
     "shortcuts": [
         [
-            "Windhawk\\windhawk.exe",
+            "windhawk.exe",
             "Windhawk"
         ]
+    ],
+    "persist": [
+        "windhawk.ini",
+        "AppData",
+        "Engine\\1.4.1"
+    ],
+    "post_install": [
+        "$version = $manifest.version",
+        "Move-Item \"$dir\\Engine\\`$R1\\*\" \"$persist_dir\\Engine\\$version\"",
+        "Remove-item \"$dir\\Engine\\`$R1\"",
+        "if (Test-Path \"$dir\\engine.ini\") {",
+        "    Move-Item \"$dir\\engine.ini\" \"$persist_dir\\Engine\\$version\\engine.ini\"",
+        "}"
+    ],
+    "pre_uninstall": [
+        "if (Test-Path 'HKCU:\\Software\\Classes\\windhawk') {",
+        "    Remove-Item 'HKCU:\\Software\\Classes\\windhawk' -Recurse -Force",
+        "}"
     ],
     "checkver": {
         "github": "https://github.com/ramensoftware/windhawk"
     },
     "autoupdate": {
-        "url": "https://github.com/ramensoftware/windhawk/releases/download/v$version/windhawk_setup.exe#/setup.exe"
+        "url": "https://github.com/ramensoftware/windhawk/releases/download/v$version/windhawk_setup_offline.exe#/dl.7z",
+        "persist": [
+            "windhawk.ini",
+            "AppData",
+            "Engine\\$version"
+        ]
     }
 }
