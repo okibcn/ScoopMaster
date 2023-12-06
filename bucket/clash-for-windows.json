@@ -17,26 +17,6 @@
             "hash": "504acb6bee6f0eadb47b4f7787c3707ca58ddc8a8177802486cf15fad27f7f65"
         }
     },
-    "installer": {
-        "script": [
-            "if (!(Test-Path \"$persist_dir\\data\")) {",
-            "    New-Item \"$persist_dir\\data\" -Type Directory -Force | Out-Null",
-            "    if (Test-Path \"$env:USERPROFILE\\.config\\clash\") {",
-            "        Copy-Item -Path \"$env:USERPROFILE\\.config\\clash\\*\" -Destination \"$persist_dir\\data\" -Recurse -Container",
-            "    }",
-            "}",
-            "Import-Module $(Join-Path $(Find-BucketDirectory -Root -Name dorado) scripts/DoradoUtils.psm1)",
-            "Mount-ExternalRuntimeData -Source \"$persist_dir\\clash_win\" -Target \"$env:APPDATA\\clash_win\"",
-            "Remove-Module -Name DoradoUtils"
-        ]
-    },
-    "uninstaller": {
-        "script": [
-            "Import-Module $(Join-Path $(Find-BucketDirectory -Root -Name dorado) scripts/DoradoUtils.psm1)",
-            "Dismount-ExternalRuntimeData -Target \"$env:APPDATA\\clash_win\"",
-            "Remove-Module -Name DoradoUtils"
-        ]
-    },
     "shortcuts": [
         [
             "Clash for Windows.exe",
@@ -51,24 +31,21 @@
                 "url": "https://github.com/Fndroid/clash_for_windows_pkg/releases/download/$version/Clash.for.Windows-$version-win.7z",
                 "hash": {
                     "url": "https://github.com/Fndroid/clash_for_windows_pkg/releases/download/$version/sha256sum",
-                    "mode": "extract",
-                    "regex": "(?m)^7z: $sha256"
+                    "regex": "^7z: $sha256"
                 }
             },
             "32bit": {
                 "url": "https://github.com/Fndroid/clash_for_windows_pkg/releases/download/$version/Clash.for.Windows-$version-ia32-win.7z",
                 "hash": {
                     "url": "https://github.com/Fndroid/clash_for_windows_pkg/releases/download/$version/sha256sum",
-                    "mode": "extract",
-                    "regex": "(?m)^ia32-7z: $sha256"
+                    "regex": "^ia32-7z: $sha256"
                 }
             },
             "arm64": {
                 "url": "https://github.com/Fndroid/clash_for_windows_pkg/releases/download/$version/Clash.for.Windows-$version-arm64-win.7z",
                 "hash": {
                     "url": "https://github.com/Fndroid/clash_for_windows_pkg/releases/download/$version/sha256sum",
-                    "mode": "extract",
-                    "regex": "(?m)^arm64-7z: $sha256"
+                    "regex": "^arm64-7z: $sha256"
                 }
             }
         }
