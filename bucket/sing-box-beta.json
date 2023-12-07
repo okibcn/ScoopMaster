@@ -1,32 +1,47 @@
 {
     "version": "1.8.0-alpha.14",
-    "description": "The universal proxy platform",
+    "description": "The universal proxy platform.",
     "homepage": "https://sing-box.sagernet.org",
-    "license": "GPL-3.0-or-later",
+    "license": {
+        "identifier": "GPLv3 or later",
+        "url": "https://github.com/SagerNet/sing-box/blob/main/LICENSE"
+    },
     "architecture": {
         "64bit": {
-            "url": "https://github.com/SagerNet/sing-box/releases/download/v1.8.0-alpha.14/sing-box-1.8.0-alpha.14-windows-amd64v3.zip",
-            "hash": "78f1a8d30541476aac11f87f1a49e3c344ef72cd659dfbef1c5e92618da65083",
-            "extract_dir": "sing-box-1.8.0-alpha.14-windows-amd64v3"
+            "url": "https://github.com/SagerNet/sing-box/releases/download/v1.8.0-alpha.14/sing-box-1.8.0-alpha.14-windows-amd64.zip",
+            "extract_dir": "sing-box-1.8.0-alpha.14-windows-amd64",
+            "hash": "4bab2b2cc10dbfa5f8c616b9d795d80b1038fb696bc93ca8a4c63fa785536525"
+        },
+        "32bit": {
+            "url": "https://github.com/SagerNet/sing-box/releases/download/v1.8.0-alpha.14/sing-box-1.8.0-alpha.14-windows-386.zip",
+            "extract_dir": "sing-box-1.8.0-alpha.14-windows-386",
+            "hash": "8dc3281a9b3ddc3fe981c5c77388fc64321ecbb1d1b215cc31c66eb8e230b003"
+        },
+        "arm64": {
+            "url": "https://github.com/SagerNet/sing-box/releases/download/v1.8.0-alpha.14/sing-box-1.8.0-alpha.14-windows-arm64.zip",
+            "extract_dir": "sing-box-1.8.0-alpha.14-windows-arm64",
+            "hash": "aa4bb144f5c90e5945f80b8e5936f8847712c6973d5214a43c7379131c5d2c5e"
         }
     },
-    "bin": [
-        [
-            "sing-box.exe",
-            "sing-box-beta"
-        ]
-    ],
-    "persist": "config.json",
+    "bin": "sing-box.exe",
+    "persist": "config",
     "checkver": {
         "url": "https://api.github.com/repos/SagerNet/sing-box/releases",
-        "jsonpath": "$.[?(@.prerelease==true)].tag_name",
-        "regex": "v([-\\d.\\w]+)"
+        "regex": "/releases/tag/v(([\\d.]+)-([\\w.]+))"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://github.com/SagerNet/sing-box/releases/download/v$version/sing-box-$version-windows-amd64v3.zip",
-                "extract_dir": "sing-box-$version-windows-amd64v3"
+                "url": "https://github.com/SagerNet/sing-box/releases/download/v$version/sing-box-$version-windows-amd64.zip",
+                "extract_dir": "sing-box-$version-windows-amd64"
+            },
+            "32bit": {
+                "url": "https://github.com/SagerNet/sing-box/releases/download/v$version/sing-box-$version-windows-386.zip",
+                "extract_dir": "sing-box-$version-windows-386"
+            },
+            "arm64": {
+                "url": "https://github.com/SagerNet/sing-box/releases/download/v$version/sing-box-$version-windows-arm64.zip",
+                "extract_dir": "sing-box-$version-windows-arm64"
             }
         }
     }
