@@ -1,10 +1,10 @@
 {
-  "version": "3.1.1",
+  "version": "3.0.2",
   "description": "Nerd Fonts patched 'DroidSansMono' Font family. (Complete version)",
   "homepage": "https://github.com/ryanoasis/nerd-fonts",
   "license": "MIT",
-  "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.1.1/DroidSansMono.tar.xz",
-  "hash": "c7e16faafb3f2b091d2cbed313d6a076d9cd09ac022d00fde27e6faee85c9d09",
+  "url": "https://ghproxy.net/https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/DroidSansMono.tar.xz",
+  "hash": "8a5986ecc93b3835063bd05cf0e8af55e1769f50b002bb2cd70538fee8d3218f",
   "installer": {
     "script": [
       "$currentBuildNumber = [int] (Get-ItemProperty \"HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\").CurrentBuildNumber",
@@ -26,6 +26,7 @@
       "$fontInstallDir = if ($global) { \"$env:windir\\Fonts\" } else { \"$env:LOCALAPPDATA\\Microsoft\\Windows\\Fonts\" }",
       "if (-not $global) {",
       "    # Ensure user font install directory exists and has correct permission settings",
+      "    # See https://github.com/matthewjberger/scoop-nerd-fonts/issues/198#issuecomment-1488996737",
       "    New-Item $fontInstallDir -ItemType Directory -ErrorAction SilentlyContinue | Out-Null",
       "    $accessControlList = Get-Acl $fontInstallDir",
       "    $allApplicationPackagesAccessRule = New-Object System.Security.AccessControl.FileSystemAccessRule([System.Security.Principal.SecurityIdentifier]::new(\"S-1-15-2-1\"), \"ReadAndExecute\", \"ContainerInherit,ObjectInherit\", \"None\", \"Allow\")",
@@ -86,6 +87,6 @@
   },
   "checkver": "github",
   "autoupdate": {
-    "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v$version/DroidSansMono.tar.xz"
+    "url": "https://ghproxy.net/https://github.com/ryanoasis/nerd-fonts/releases/download/v$version/DroidSansMono.tar.xz"
   }
 }

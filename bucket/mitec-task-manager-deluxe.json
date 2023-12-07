@@ -1,43 +1,30 @@
 {
-    "version": "4.8.3",
-    "description": "MiTeC Task Manager DeLuxe. Full-featured task manager replacement",
+    "version": "4.8.1",
+    "description": "MiTeC Task Manager DeLuxe 32/64",
     "homepage": "https://www.mitec.cz/tmx.html",
     "license": "Proprietary",
-    "changelog": "https://www.mitec.cz/Data/XML/data_tmxvh.xml",
     "url": "https://www.mitec.cz/Downloads/TMX.zip",
-    "hash": "fcbb4bf493482e9540b1fe9295b140c472c66d9bc86c282c73a1fba17fd38939",
-    "uninstaller": {
-        "script": "shortcut_folder $global | Split-Path | Get-ChildItem -Filter 'TMX*' | Remove-Item -Force"
-    },
+    "hash": "7b1e9628db4a6edca3ce4e829485657af855916cd4b63c7e1cf9e467b175689a",
     "architecture": {
         "64bit": {
-            "bin": [
-                "TMX64.exe",
-                [
-                    "TMX64.exe",
-                    "TMX"
-                ]
-            ],
-            "shortcuts": [
-                [
-                    "TMX64.exe",
-                    "MiTeC\\Task Manager DeLuxe"
-                ]
+            "pre_install": [
+                "Remove-Item \"$dir\\TMX.exe\" -Force",
+                "Get-ChildItem $dir 'TMX*exe' | Rename-Item -NewName 'TMX.exe' -Force"
             ]
         },
         "32bit": {
-            "bin": "TMX.exe",
-            "shortcuts": [
-                [
-                    "TMX.exe",
-                    "MiTeC\\Task Manager DeLuxe"
-                ]
-            ]
+            "pre_install": "Remove-Item \"$dir\\TMX64.exe\" -Force"
         }
     },
+    "shortcuts": [
+        [
+            "TMX.exe",
+            "MiTeC\\Task Manager DeLuxe"
+        ]
+    ],
     "checkver": {
-        "url": "https://www.mitec.cz/Data/XML/data_tmxvh.xml",
-        "regex": "VERSION>([\\d.]+)"
+        "url": "https://www.mitec.cz/Data/XML/data_downloads.xml",
+        "regex": "<NAME>MiTeC Task Manager DeLuxe 32/64\\s+([\\d.]+)<"
     },
     "autoupdate": {
         "url": "https://www.mitec.cz/Downloads/TMX.zip"

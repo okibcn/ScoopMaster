@@ -1,10 +1,10 @@
 {
-  "version": "3.1.1",
+  "version": "3.0.2",
   "description": "Nerd Fonts patched 'FiraMono' Font family. (Complete version)",
   "homepage": "https://github.com/ryanoasis/nerd-fonts",
   "license": "MIT",
-  "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.1.1/FiraMono.tar.xz",
-  "hash": "22b294b02941242507b3e21ab5ebe9c114890a99de062aea94708cff53dbc23d",
+  "url": "https://ghproxy.net/https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/FiraMono.tar.xz",
+  "hash": "8bd1aca6c2abf629d25e1ccf34a92d2ae8d48b2ff21ace473ac7ac0c2d2b3fc6",
   "installer": {
     "script": [
       "$currentBuildNumber = [int] (Get-ItemProperty \"HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\").CurrentBuildNumber",
@@ -26,6 +26,7 @@
       "$fontInstallDir = if ($global) { \"$env:windir\\Fonts\" } else { \"$env:LOCALAPPDATA\\Microsoft\\Windows\\Fonts\" }",
       "if (-not $global) {",
       "    # Ensure user font install directory exists and has correct permission settings",
+      "    # See https://github.com/matthewjberger/scoop-nerd-fonts/issues/198#issuecomment-1488996737",
       "    New-Item $fontInstallDir -ItemType Directory -ErrorAction SilentlyContinue | Out-Null",
       "    $accessControlList = Get-Acl $fontInstallDir",
       "    $allApplicationPackagesAccessRule = New-Object System.Security.AccessControl.FileSystemAccessRule([System.Security.Principal.SecurityIdentifier]::new(\"S-1-15-2-1\"), \"ReadAndExecute\", \"ContainerInherit,ObjectInherit\", \"None\", \"Allow\")",
@@ -86,6 +87,6 @@
   },
   "checkver": "github",
   "autoupdate": {
-    "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v$version/FiraMono.tar.xz"
+    "url": "https://ghproxy.net/https://github.com/ryanoasis/nerd-fonts/releases/download/v$version/FiraMono.tar.xz"
   }
 }

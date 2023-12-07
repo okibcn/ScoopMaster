@@ -1,10 +1,10 @@
 {
-  "version": "3.1.1",
+  "version": "3.0.2",
   "description": "Nerd Fonts patched 'Overpass' Font family. (Complete version)",
   "homepage": "https://github.com/ryanoasis/nerd-fonts",
   "license": "MIT",
-  "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.1.1/Overpass.tar.xz",
-  "hash": "d8e2aba3ee67ec0535e7ffeb63cd35f7c10265f13ab83ebd2f67ec106b92d146",
+  "url": "https://ghproxy.net/https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/Overpass.tar.xz",
+  "hash": "44f19447908b0f65eefea9b78f70433e2ac6478c884824625a9d422d31368661",
   "installer": {
     "script": [
       "$currentBuildNumber = [int] (Get-ItemProperty \"HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\").CurrentBuildNumber",
@@ -26,6 +26,7 @@
       "$fontInstallDir = if ($global) { \"$env:windir\\Fonts\" } else { \"$env:LOCALAPPDATA\\Microsoft\\Windows\\Fonts\" }",
       "if (-not $global) {",
       "    # Ensure user font install directory exists and has correct permission settings",
+      "    # See https://github.com/matthewjberger/scoop-nerd-fonts/issues/198#issuecomment-1488996737",
       "    New-Item $fontInstallDir -ItemType Directory -ErrorAction SilentlyContinue | Out-Null",
       "    $accessControlList = Get-Acl $fontInstallDir",
       "    $allApplicationPackagesAccessRule = New-Object System.Security.AccessControl.FileSystemAccessRule([System.Security.Principal.SecurityIdentifier]::new(\"S-1-15-2-1\"), \"ReadAndExecute\", \"ContainerInherit,ObjectInherit\", \"None\", \"Allow\")",
@@ -86,6 +87,6 @@
   },
   "checkver": "github",
   "autoupdate": {
-    "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v$version/Overpass.tar.xz"
+    "url": "https://ghproxy.net/https://github.com/ryanoasis/nerd-fonts/releases/download/v$version/Overpass.tar.xz"
   }
 }
