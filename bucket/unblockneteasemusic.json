@@ -1,41 +1,49 @@
 {
-  "version": "0.27.4",
-  "description": "Revive unavailable songs for Netease Cloud Music (Refactored & Enhanced version)",
-  "homepage": "https://github.com/UnblockNeteaseMusic/server",
-  "license": {
-    "identifier": "LGPL-3.0-only",
-    "url": "https://github.com/UnblockNeteaseMusic/server/blob/enhanced/COPYING"
-  },
-  "architecture": {
-    "64bit": {
-      "url": "https://ghproxy.com/https://github.com/UnblockNeteaseMusic/server/releases/download/v0.27.4/unblockneteasemusic-win-x64.exe#/unblockneteasemusic.exe",
-      "hash": "dcfbad68b55d120e29ee625c84497db1de95dbd187575c415ebfeaefebd4146e"
+    "version": "0.27.4",
+    "description": "解锁网易云音乐客户端变灰歌曲",
+    "homepage": "https://github.com/UnblockNeteaseMusic/server",
+    "license": "LGPL-3.0, GPL-3.0",
+    "url": "https://github.com/UnblockNeteaseMusic/server/archive/refs/tags/v0.27.4.zip",
+    "hash": "0975d166a6e55b8a21e78056d17f52550f2fcc714ba8fd7ed1e33692ee95cdb0",
+    "installer": {
+        "script": [
+            "Move-Item -Path $dir\\server-$version\\* -Destination $dir\\ -Force",
+            "Remove-Item -Path $dir\\server-$version -Force -Recurse"
+        ]
     },
-    "arm64": {
-      "url": "https://ghproxy.com/https://github.com/UnblockNeteaseMusic/server/releases/download/v0.27.4/unblockneteasemusic-win-arm64.exe#/unblockneteasemusic.exe",
-      "hash": "983539c268380d48e79b04a3070aab84794f5afb1deeea1c81bc47f77d0686db"
+    "post_install": [
+        "$scriptdir = \"$bucketsdir\\mtchaoyi\\scripts\\unblockneteasemusic\"",
+        "Copy-Item -Path \"$scriptdir\\nw.js\" -Destination \"$dir\\nw.js\"",
+        "if (Get-Command node) {",
+        "   if (Get-Command yarn) {",
+        "       $currentDir = Get-Location",
+        "       Set-Location -Path $dir",
+        "       yarn install",
+        "       npm install -g node-windows",
+        "       npm link node-windows",
+        "       Write-Host \"依赖安装结束  开始注册 Windows 服务\"",
+        "       node .\\nw.js",
+        "       Set-Location -Path $currentDir",
+        "   } else {",
+        "       Write-Host \"请先安装yarn\"",
+        "   }",
+        "} else {",
+        "   Write-Host \"请先安装nodejs\"",
+        "}"
+    ],
+    "uninstaller": {
+        "script": "node $dir\\nw.js"
+    },
+    "notes": [
+        "如果安装失败  请手动安装 node 和 yarn",
+        "然后在 $dir 中逐个执行下列命令",
+        "yarn install",
+        "npm install -g node-windows",
+        "npm link node-windows",
+        "node .\\nw.js"
+    ],
+    "checkver": "github",
+    "autoupdate": {
+        "url": "https://github.com/UnblockNeteaseMusic/server/archive/refs/tags/v$version.zip"
     }
-  },
-  "bin": "unblockneteasemusic.exe",
-  "shortcuts": [
-    [
-      "unblockneteasemusic.exe",
-      "UnblockNeteaseMusic"
-    ]
-  ],
-  "checkver": {
-    "url": "https://api.github.com/repos/UnblockNeteaseMusic/server/releases/latest",
-    "jsonpath": "$.tag_name",
-    "regex": "v([\\w.-]+)"
-  },
-  "autoupdate": {
-    "architecture": {
-      "64bit": {
-        "url": "https://ghproxy.com/https://github.com/UnblockNeteaseMusic/server/releases/download/v$version/unblockneteasemusic-win-x64.exe#/unblockneteasemusic.exe"
-      },
-      "arm64": {
-        "url": "https://ghproxy.com/https://github.com/UnblockNeteaseMusic/server/releases/download/v$version/unblockneteasemusic-win-arm64.exe#/unblockneteasemusic.exe"
-      }
-    }
-  }
 }
