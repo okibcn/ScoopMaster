@@ -2,8 +2,9 @@
     "version": "16.3.3",
     "description": "数据库工具",
     "homepage": "https://navicat.com.cn",
+    "license": "Proprietary",
     "url": "https://download.navicat.com.cn/download/navicat163_premium_cs_x64.exe",
-    "hash": "15d5f731aa9ae7654eab32887a5f2fcdd03f4e4f861245140a128a0ddc5bf782",
+    "hash": "7b6202187ff25facef1cbcfb4f56aebfcb081887ecc0b1c3d068eb0f81b5d3e7",
     "innosetup": true,
     "shortcuts": [
         [
@@ -12,9 +13,14 @@
         ]
     ],
     "post_install": [
-        "$scriptdir = \"$bucketsdir\\rainte\\scripts\\navicat\"",
-        "cmd /c \"$scriptdir\\crack.bat\"",
-        "Copy-Item -Path \"$scriptdir\\winmm.dll\" -Destination \"$dir\\winmm.dll\""
+        "$scriptdir = \"$bucketsdir\\mtchaoyi\\scripts\\navicat\"",
+        "Copy-Item -Path \"$scriptdir\\reset.bat\" -Destination \"$dir\\reNavicat.bat\"",
+        "Copy-Item -Path \"$dir\\reNavicat.bat\" -Destination \"$env:USERPROFILE\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\""
+    ],
+    "notes": [
+        "已默认将重置试用脚本 reNavicat.bat 添加到开机自启菜单",
+        "Win+R 打开运行窗口  输入 shell:startup 查看",
+        "如果添加失败或被安全软件拦截  请自行添加应用根目录下的 reNavicat.bat 到开机自启菜单"
     ],
     "checkver": {
         "url": "https://navicat.com.cn/products/navicat-premium-release-note",
