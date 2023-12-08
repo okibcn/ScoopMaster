@@ -1,15 +1,15 @@
 {
     "version": "5.2.2",
-    "description": "A free digital painting application.",
+    "description": "A free digital painting application",
     "homepage": "https://krita.org/",
-    "license": "GPL-3.0-only",
+    "license": "GPL-3.0-or-later",
     "architecture": {
         "64bit": {
-            "url": "https://download.kde.org/stable/krita/5.2.2/krita-x64-5.2.2.zip",
-            "hash": "ac92067b8bc64be24f501589712203147d0d65b88be8e8ea19d90983511abd1a",
-            "extract_dir": "krita-x64-5.2.2"
+            "url": "https://download.kde.org/stable/krita/5.2.2/krita-x64-5.2.2-setup.exe#/dl.7z",
+            "hash": "f4fe0a3edf163d7154a6f6b7e9634494be84a666a465dd59751e27659dfe3c50"
         }
     },
+    "pre_install": "Remove-Item \"$dir\\`$*\", \"$dir\\uninstall.exe.nsis\" -Recurse -Force",
     "bin": [
         "bin\\krita.exe",
         "bin\\kritarunner.exe"
@@ -27,9 +27,11 @@
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://download.kde.org/stable/krita/$version/krita-x64-$version.zip",
-                "extract_dir": "krita-x64-$version"
+                "url": "https://download.kde.org/stable/krita/$version/krita-x64-$version-setup.exe#/dl.7z"
             }
+        },
+        "hash": {
+            "url": "$url.sha256"
         }
     }
 }
