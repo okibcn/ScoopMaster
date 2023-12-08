@@ -1,18 +1,46 @@
 {
-    "homepage": "https://github.com/lyswhut/lx-music-desktop",
-    "description": "一个基于 Electron + Vue 开发的音乐软件",
     "version": "2.5.0",
+    "description": "An electron-based music player. 一个基于 electron 的音乐软件",
+    "homepage": "https://github.com/lyswhut/lx-music-desktop",
     "license": "Apache-2.0",
-    "url": "https://github.com/lyswhut/lx-music-desktop/releases/download/v2.5.0/lx-music-desktop-v2.5.0-win_x64-green.7z",
-    "hash": "49d6c449718dad540add3134442c3e9e8d02f5c9a7cb12951aa60fe08505d621",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/lyswhut/lx-music-desktop/releases/download/v2.5.0/lx-music-desktop-v2.5.0-win_x64-green.7z",
+            "hash": "49d6c449718dad540add3134442c3e9e8d02f5c9a7cb12951aa60fe08505d621"
+        }
+    },
     "shortcuts": [
         [
             "lx-music-desktop.exe",
-            "洛雪音乐助手"
+            "lx-music"
         ]
+    ],
+    "post_install": [
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "$data=@(\"$env:APPData\\lx-music-desktop\\LxDatas\")",
+        "$persist=@(\"$persist_dir\\LxDatas\")",
+        "persist $data $persist"
+    ],
+    "pre_uninstall": [
+        "$_bucket=(scoop bucket list | where-Object {$_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
+        ". \"$bucketsdir\\$_bucket\\bin\\utils.ps1\"",
+        "stop_process"
+    ],
+    "post_uninstall": [
+        "$data=@(\"$env:APPData\\lx-music-desktop\")",
+        "$data | ForEach-Object {",
+        "   if (Test-Path($_)) {",
+        "       Remove-Item -Force -Recurse $_",
+        "       Write-Host \"Removing $_\" -f Yellow",
+        "   }",
+        "}"
     ],
     "checkver": "github",
     "autoupdate": {
-        "url": "https://github.com/lyswhut/lx-music-desktop/releases/download/v$version/lx-music-desktop-v$version-win_x64-green.7z"
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/lyswhut/lx-music-desktop/releases/download/v$version/lx-music-desktop-v$version-win_x64-green.7z"
+            }
+        }
     }
 }
