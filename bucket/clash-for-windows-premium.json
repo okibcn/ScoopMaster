@@ -1,0 +1,47 @@
+{
+    "version": "2.1",
+    "description": "A Windows GUI based on Clash (modified version)",
+    "homepage": "https://github.com/AiKirito/Clash_For_Windows_Ultra",
+    "license": "MIT",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/AiKirito/Clash_For_Windows_Ultra/releases/latest/download/Clash.For.Windows.v3.0.Ultra.x86_64.Premium.zip",
+            "hash": "88db22840497c067c073ab2415fff6fe71f633d64af2fca62c37859ffba1640c"
+        }
+    },
+    "installer": {
+        "script": [
+            "if (!(Test-Path \"$persist_dir\\data\")) {",
+            "    New-Item \"$persist_dir\\data\" -Type Directory -Force | Out-Null",
+            "    if (Test-Path \"$env:USERPROFILE\\.config\\clash\") {",
+            "        Copy-Item -Path \"$env:USERPROFILE\\.config\\clash\\*\" -Destination \"$persist_dir\\data\" -Recurse -Container",
+            "    }",
+            "}",
+            "Import-Module $(Join-Path $(Find-BucketDirectory -Root -Name dorado) scripts/DoradoUtils.psm1)",
+            "Mount-ExternalRuntimeData -Source \"$persist_dir\\clash_win\" -Target \"$env:APPDATA\\clash_win\"",
+            "Remove-Module -Name DoradoUtils"
+        ]
+    },
+    "uninstaller": {
+        "script": [
+            "Import-Module $(Join-Path $(Find-BucketDirectory -Root -Name dorado) scripts/DoradoUtils.psm1)",
+            "Dismount-ExternalRuntimeData -Target \"$env:APPDATA\\clash_win\"",
+            "Remove-Module -Name DoradoUtils"
+        ]
+    },
+    "shortcuts": [
+        [
+            "Clash for Windows.exe",
+            "Clash for Windows"
+        ]
+    ],
+    "persist": "data",
+    "checkver": "github",
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/AiKirito/Clash_For_Windows_Ultra/releases/latest/download/Clash.For.Windows.v$version.Ultra.x86_64.Premium.zip"
+            }
+        }
+    }
+}
