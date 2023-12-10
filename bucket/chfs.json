@@ -1,42 +1,30 @@
 {
-    "version": "3.1",
-    "description": "CuteHttpFileServer(chfs) is a free file sharing http server tool. CuteHttpFileServer(chfs)是一个免费的http服务器文件共享工具，通过局域网实现文件传输",
-    "homepage": "http://iscute.cn/chfs",
-    "license": "Freeware",
-    "architecture": {
-        "64bit": {
-            "url": "http://iscute.cn/tar/chfs/3.1/chfs-windows-x64-3.1.zip",
-            "hash": "252fd34b162bc92ab6a1d2f193831b0693efe8c22bc56bdf73e709ed05f1744a"
-        },
-        "32bit": {
-            "url": "http://iscute.cn/tar/chfs/3.1/chfs-windows-x86-3.1.zip",
-            "hash": "7aefd42c6e1e3c5970dfe4e0bc3793e88535b0876bba3cad9c67e801c1518cfc"
-        }
+  "homepage": "http://iscute.cn/chfs",
+  "description": "CuteHttpFileServer/chfs is a free file sharing http server tool.",
+  "license": "Freeware",
+  "version": "3.1",
+  "architecture": {
+    "64bit": {
+      "url": "http://iscute.cn/tar/chfs/3.1/chfs-windows-x64-3.1.zip",
+      "hash": "aa105ca307f74195a9d2364e415f3824738944bf3c8ddacc5be9d1e56702ef22"
     },
-    "post_install": [
-        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-        "if (!(Test-Path \"$persist_dir\\chfs.ini\")) {",
-        "    Set-Content \"$dir\\chfs.ini\" $null -Encoding Ascii",
-        "}",
-        "persist_file @(\"$dir\\chfs.ini\") @(\"$persist_dir\\chfs.ini\")"
-    ],
-    "pre_uninstall": [
-        "$_bucket=(scoop bucket list | where-Object {$_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
-        ". \"$bucketsdir\\$_bucket\\bin\\utils.ps1\"",
-        "stop_process"
-    ],
-    "bin": "chfs.exe",
-    "checkver": {
-        "regex": "chfs-windows-x64-([\\d.]+).zip"
-    },
-    "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "http://iscute.cn/tar/chfs/$version/chfs-windows-x64-$version.zip"
-            },
-            "32bit": {
-                "url": "http://iscute.cn/tar/chfs/$version/chfs-windows-x86-$version.zip"
-            }
-        }
+    "32bit": {
+      "url": "http://iscute.cn/tar/chfs/3.1/chfs-windows-x86-3.1.zip",
+      "hash": "a2dd1480bc7a3276a84c0583dcd799ae2c0d903398293a228e6babd956823228"
     }
+  },
+  "bin": "chfs.exe",
+  "checkver": {
+    "regex": "chfs-windows-x64-([\\d.]+).zip"
+  },
+  "autoupdate": {
+    "architecture": {
+      "64bit": {
+        "url": "http://iscute.cn/tar/chfs/$version/chfs-windows-x64-$version.zip"
+      },
+      "32bit": {
+        "url": "http://iscute.cn/tar/chfs/$version/chfs-windows-x86-$version.zip"
+      }
+    }
+  }
 }
