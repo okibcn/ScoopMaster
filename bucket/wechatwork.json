@@ -1,25 +1,36 @@
 {
+    "version": "4.1.15",
     "homepage": "https://work.weixin.qq.com/",
-    "description": "Messaging and calling application for business",
-    "version": "4.1.15.6007",
+    "description": "Connection Makes a Smarter Business",
     "license": {
-        "identifier": "Proprietary",
-        "url": "https://work.weixin.qq.com/eula"
+        "identifier": "EULA",
+        "url": "https://work.weixin.qq.com/nl/eula"
     },
-    "url": "https://dldir1.qq.com/wework/work_weixin/WeCom_4.1.15.6007.exe#/dl.7z",
-    "hash": "2c62ae786dd9c003a5c213aafb3c783ffe3c6b7b65326a6316d6e9621424ed38",
-    "post_install": "Remove-Item \"$dir\\`$PLUGINSDIR\",\"$dir\\Uninstall*\" -Force -Recurse",
+    "architecture": {
+        "64bit": {
+            "url": "https://work.weixin.qq.com/wework_admin/commdownload?platform=win&from=wwindex#/dl.7z",
+            "hash": "2c62ae786dd9c003a5c213aafb3c783ffe3c6b7b65326a6316d6e9621424ed38"
+        }
+    },
     "shortcuts": [
         [
             "WXWork.exe",
-            "企业微信"
+            "WeChat Work"
         ]
     ],
+    "post_install": [
+        "Remove-Item \"$dir\\`$PLUGINSDIR\" -Force -Recurse",
+        "Remove-Item \"$dir\\Uninstall.exe\" -Force -Recurse"
+    ],
     "checkver": {
-        "script": "return (iwr -useb 'https://work.weixin.qq.com/wework_admin/commdownload?platform=win&from=wwindex' -Method HEAD -MaximumRedirection 0 -SkipHttpErrorCheck -ErrorAction:SilentlyContinue).Headers['Location']",
-        "regex": "WeCom_([\\d.]+).exe"
+        "url": "https://work.weixin.qq.com",
+        "regex": "企业微信 ([\\d.]+)"
     },
     "autoupdate": {
-        "url": "https://dldir1.qq.com/wework/work_weixin/WeCom_$version.exe#/dl.7z"
+        "architecture": {
+            "64bit": {
+                "url": "https://work.weixin.qq.com/wework_admin/commdownload?platform=win&from=wwindex#/dl.7z"
+            }
+        }
     }
 }
