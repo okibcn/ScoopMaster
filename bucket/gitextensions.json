@@ -6,7 +6,10 @@
     "url": "https://github.com/gitextensions/gitextensions/releases/download/v4.2.1/GitExtensions-4.2.1.17611-b0c0b2848.msi",
     "hash": "dbf66a494bda70686c1eb4f5d5acaa0bd870a91342d3ea8c2fb4acb2e194e310",
     "extract_dir": "GitExtensions",
-    "pre_install": "if (!(Test-Path \"$persist_dir\\GitExtensions.settings\")) { New-Item \"$dir\\GitExtensions.settings\" | Out-Null }",
+    "pre_install": [
+        "if (!(Test-Path \"$persist_dir\\GitExtensions.settings\")) { New-Item \"$dir\\GitExtensions.settings\" | Out-Null }",
+        "if (!(Test-Path \"$persist_dir\\WindowPositions.xml\")) { New-Item \"$dir\\WindowPositions.xml\" | Out-Null }"
+    ],
     "bin": [
         "GitExtensions.exe",
         [
@@ -20,7 +23,11 @@
             "Git Extensions"
         ]
     ],
-    "persist": "GitExtensions.settings",
+    "persist": [
+        "GitExtensions.settings",
+        "WindowPositions.xml",
+        "Themes"
+    ],
     "checkver": {
         "url": "https://api.github.com/repos/gitextensions/gitextensions/releases",
         "regex": "download/v(?<version>.+?)/(?<file>.+?)\""
