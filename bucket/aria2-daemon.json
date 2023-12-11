@@ -46,5 +46,18 @@
         "  New-Item -ItemType File -Path \"$dir\\aria2.log\"",
         "  New-Item -ItemType File -Path \"$dir\\aria2.session\"",
         "}"
+    ],
+    "post_install": [
+        "Set-Content -Path \"$dir\\HideRun.vbs\" -Value \"CreateObject(`\"WScript.Shell`\").Run `\"$dir\\aria2c.exe --conf-path=aria2.conf`\",0\"",
+        "$shell = New-Object -ComObject WScript.Shell",
+        "$shortcut = $shell.CreateShortcut(\"$dir\\HideRun.lnk\")",
+        "$shortcut.TargetPath = \"$dir\\HideRun.vbs\"",
+        "$shortcut.Save()",
+        "Move-Item \"$dir\\HideRun.lnk\" \"$env:APPDATA\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\\aria2.lnk\"",
+        "Start-Process -FilePath \"$dir\\HideRun.vbs\""
+    ],
+    "post_uninstall": [
+        "Get-Process -Name \"aria2c.exe\" | Stop-Process",
+        "Remove-Item \"$env:APPDATA\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\\aria2.lnk\""
     ]
 }
