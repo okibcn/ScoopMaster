@@ -48,16 +48,19 @@
         "}"
     ],
     "post_install": [
-        "Set-Content -Path \"$dir\\HideRun.vbs\" -Value \"CreateObject(`\"WScript.Shell`\").Run `\"$dir\\aria2c.exe --conf-path=aria2.conf`\",0\"",
+        "Set-Content -Path \"$dir\\HideRun.vbs\" -Value \"CreateObject(`\"WScript.Shell`\").Run `\"$dir\\aria2c.exe --conf-path=$dir\\aria2.conf`\",0\"",
         "$shell = New-Object -ComObject WScript.Shell",
         "$shortcut = $shell.CreateShortcut(\"$dir\\HideRun.lnk\")",
         "$shortcut.TargetPath = \"$dir\\HideRun.vbs\"",
+        "$shortcut.WorkingDirectory = \"$dir\"",
         "$shortcut.Save()",
-        "Move-Item \"$dir\\HideRun.lnk\" \"$env:APPDATA\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\\aria2.lnk\"",
-        "Start-Process -FilePath \"$dir\\HideRun.vbs\""
+        "Copy-Item \"$dir\\HideRun.lnk\" \"$env:APPDATA\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\\aria2.lnk\"",
+        "Start-Process \"$dir\\HideRun.lnk\""
+    ],
+    "pre_uninstall": [
+        "Get-Process -Name \"aria2c\" | Stop-Process"
     ],
     "post_uninstall": [
-        "Get-Process -Name \"aria2c.exe\" | Stop-Process",
         "Remove-Item \"$env:APPDATA\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\\aria2.lnk\""
     ]
 }
