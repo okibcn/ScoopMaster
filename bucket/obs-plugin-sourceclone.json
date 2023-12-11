@@ -1,0 +1,47 @@
+{
+    "version": "0.1.4",
+    "homepage": "https://github.com/exeldro/obs-source-clone",
+    "description": "Add source to OBS that lets you clone sources to allow different filters than the original",
+    "license": "GPL-2.0",
+    "notes": "If you don't have any obs-studio version installed in your computer, please install one of the following below. Then uninstall this app and install it again.",
+    "suggest": {
+        "OBS": [
+            "extras/obs-studio",
+            "extras/obs-studio-small",
+            "versions/obs-studio-pre"
+        ]
+    },
+    "url": "https://obsproject.com/forum/resources/source-clone.1632/version/4881/download?file=93640#/dl.zip",
+    "hash": "b27fe7e4b2d6b69b8fe2d7441fa1303249d2a737f6eb9312592b1dde30284225",
+    "pre_install": [
+        "    if ($architecture -eq '64bit') {",
+        "        Remove-Item \"$dir\\obs-plugins\\32bit\" -Recurse",
+        "    }",
+        "    elseif ($architecture -eq '32bit') {",
+        "        Remove-Item \"$dir\\obs-plugins\\64bit\" -Recurse",
+        "    }",
+        "'obs-studio', 'obs-studio-small', 'obs-studio-pre' | ForEach-Object {",
+        "    $obs = \"$(appdir $_ $global)\"",
+        "    if (Test-Path $obs) {",
+        "       info \"Install for $_\"",
+        "       Copy-Item \"$dir\\data\" \"$obs\\current\" -Recurse -ErrorAction SilentlyContinue",
+        "       Copy-Item \"$dir\\obs-plugins\" \"$obs\\current\" -Recurse -ErrorAction SilentlyContinue",
+        "   }",
+        "}"
+    ],
+    "pre_uninstall": [
+        "'obs-studio', 'obs-studio-small', 'obs-studio-pre' | ForEach-Object {",
+        "    $obs = \"$(appdir $_ $global)\"",
+        "    if (Test-Path $obs) {",
+        "        info \"Uninstall for $_\"",
+        "        Remove-Item \"$obs\\current\\data\\obs-plugins\\source-clone\" -Force -Recurse -ErrorAction SilentlyContinue",
+        "        Remove-Item \"$obs\\current\\obs-plugins\\32bit\\source-clone.*\" -Force -ErrorAction SilentlyContinue",
+        "        Remove-Item \"$obs\\current\\obs-plugins\\64bit\\source-clone.*\" -Force -ErrorAction SilentlyContinue",
+        "    }",
+        "}"
+    ],
+    "checkver": "github",
+    "autoupdate": {
+        "url": "https://obsproject.com/forum/resources/source-clone.1632/version/4881/download?file=93640#/dl.zip"
+    }
+}

@@ -1,0 +1,49 @@
+{
+    "version": "1.7.0",
+    "homepage": "https://github.com/phandasm/waveform",
+    "description": "Audio spectral analysis plugin for OBS",
+    "license": "GPL-3.0-only",
+    "notes": "If you don't have any obs-studio version installed in your computer, please install one of the following below. Then uninstall this app and install it again.",
+    "suggest": {
+        "OBS": [
+            "extras/obs-studio",
+            "extras/obs-studio-small",
+            "versions/obs-studio-pre",
+            "versions/obs-studio27"
+        ]
+    },
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/phandasm/waveform/releases/download/v1.7.0/Waveform_v1.7.0_x86_64.zip",
+            "hash": "9a692a5bfbce9870cfd2f91c1321b38d353dd78c2b0ca953b9977c5702734ba2"
+        }
+    },
+    "pre_install": [
+        "'obs-studio', 'obs-studio-small', 'obs-studio27', 'obs-studio-pre' | ForEach-Object {",
+        "    $obs = \"$(appdir $_ $global)\"",
+        "    if (Test-Path $obs) {",
+        "       info \"Install for $_\"",
+        "       Copy-Item \"$dir\\data\" \"$obs\\current\" -Recurse -ErrorAction SilentlyContinue",
+        "       Copy-Item \"$dir\\obs-plugins\" \"$obs\\current\" -Recurse -ErrorAction SilentlyContinue",
+        "   }",
+        "}"
+    ],
+    "pre_uninstall": [
+        "'obs-studio', 'obs-studio-small', 'obs-studio27', 'obs-studio-pre' | ForEach-Object {",
+        "    $obs = \"$(appdir $_ $global)\"",
+        "    if (Test-Path $obs) {",
+        "        info \"Uninstall for $_\"",
+        "        Remove-Item \"$obs\\current\\data\\obs-plugins\\waveform\" -Force -Recurse -ErrorAction SilentlyContinue",
+        "        Remove-Item \"$obs\\current\\obs-plugins\\64bit\\waveform.*\" -Force -ErrorAction SilentlyContinue",
+        "    }",
+        "}"
+    ],
+    "checkver": "github",
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/phandasm/waveform/releases/download/v$version/Waveform_v$version_x86_64.zip"
+            }
+        }
+    }
+}

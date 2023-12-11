@@ -1,0 +1,47 @@
+{
+    "version": "1.0.6",
+    "homepage": "https://github.com/FiniteSingularity/obs-composite-blur",
+    "description": "A comprehensive blur plugin for OBS",
+    "license": "GPL-2.0",
+    "notes": "If you don't have any obs-studio version installed in your computer, please install one of the following below. Then uninstall this app and install it again.",
+    "suggest": {
+        "OBS": [
+            "extras/obs-studio",
+            "extras/obs-studio-small",
+            "versions/obs-studio-pre"
+        ]
+    },
+    "url": "https://github.com/FiniteSingularity/obs-composite-blur/releases/download/v1.0.6/obs-composite-blur-1.0.6-windows.zip",
+    "hash": "1e1a57ee831e5b34a97c0c673c76973fdc6a7f3647b6bb21181d6949cf9a2791",
+    "pre_install": [
+        "    if ($architecture -eq '64bit') {",
+        "        Remove-Item \"$dir\\obs-plugins\\32bit\" -Recurse",
+        "    }",
+        "    elseif ($architecture -eq '32bit') {",
+        "        Remove-Item \"$dir\\obs-plugins\\64bit\" -Recurse",
+        "    }",
+        "'obs-studio', 'obs-studio-small', 'obs-studio-pre' | ForEach-Object {",
+        "    $obs = \"$(appdir $_ $global)\"",
+        "    if (Test-Path $obs) {",
+        "       info \"Install for $_\"",
+        "       Copy-Item \"$dir\\data\" \"$obs\\current\" -Recurse -ErrorAction SilentlyContinue",
+        "       Copy-Item \"$dir\\obs-plugins\" \"$obs\\current\" -Recurse -ErrorAction SilentlyContinue",
+        "   }",
+        "}"
+    ],
+    "pre_uninstall": [
+        "'obs-studio', 'obs-studio-small', 'obs-studio-pre' | ForEach-Object {",
+        "    $obs = \"$(appdir $_ $global)\"",
+        "    if (Test-Path $obs) {",
+        "        info \"Uninstall for $_\"",
+        "        Remove-Item \"$obs\\current\\data\\obs-plugins\\obs-composite-blur\" -Force -Recurse -ErrorAction SilentlyContinue",
+        "        Remove-Item \"$obs\\current\\obs-plugins\\32bit\\obs-composite-blur.*\" -Force -ErrorAction SilentlyContinue",
+        "        Remove-Item \"$obs\\current\\obs-plugins\\64bit\\obs-composite-blur.*\" -Force -ErrorAction SilentlyContinue",
+        "    }",
+        "}"
+    ],
+    "checkver": "github",
+    "autoupdate": {
+        "url": "https://github.com/FiniteSingularity/obs-composite-blur/releases/download/v$version/obs-composite-blur-$version-windows.zip"
+    }
+}
