@@ -1,30 +1,41 @@
 {
-    "version": "4.6.0",
-    "description": "Allows USB devices to be used remotely over a network just as if they were locally connected (server-side app)",
-    "homepage": "https://www.virtualhere.com/windows_server_software",
+    "version": "4.6.1",
+    "description": "Share USB devices over a network for remote use by another computer",
+    "homepage": "https://virtualhere.com/windows_server_software",
     "license": {
         "identifier": "Proprietary",
-        "url": "https://www.virtualhere.com/client_license"
+        "url": "https://www.virtualhere.com/windows_server_license"
+    },
+    "suggest": {
+        "Client": "nikkoura/virtualhere-client"
     },
     "architecture": {
         "64bit": {
-            "url": "https://www.virtualhere.com/sites/default/files/usbserver/vhusbdwin64.exe",
-            "hash": "9146e45b5ec7f4b266b1932a047978caf30742b392e327b43bd46081033ccef5"
+            "url": "https://virtualhere.com/sites/default/files/usbserver/vhusbdwin64.exe",
+            "hash": "a0b105a5efe20dda044193c4758991ea083d0d10613d815ffbfed25e092a686d",
+            "bin": [
+                [
+                    "vhusbdwin64.exe",
+                    "virtualhere-server"
+                ]
+            ],
+            "shortcuts": [
+                [
+                    "vhusbdwin64.exe",
+                    "VirtualHere Server"
+                ]
+            ]
         }
     },
-    "pre_install": "if (!(Test-Path \"$persist_dir\\config.ini\")) { New-Item \"$dir\\config.ini\" | Out-Null }",
-    "shortcuts": [
-        [
-            "vhusbdwin64.exe",
-            "VirtualHere USB Server"
-        ]
-    ],
+    "pre_install": "$null = New-Item -Path $dir -Name config.ini -ItemType File",
     "persist": "config.ini",
-    "checkver": "version ([\\d.]+) Changes</a>",
+    "checkver": {
+        "regex": "version ([\\d.]+)"
+    },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://www.virtualhere.com/sites/default/files/usbserver/vhusbdwin64.exe"
+                "url": "https://virtualhere.com/sites/default/files/usbserver/vhusbdwin64.exe"
             }
         }
     }
