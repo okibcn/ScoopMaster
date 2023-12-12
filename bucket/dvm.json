@@ -1,6 +1,6 @@
 {
     "version": "1.8.8",
-    "description": "Deno Version Manager - Easy way to manage multiple active deno versions.",
+    "description": "🦕Deno Version Manager - Easy way to manage multiple active deno versions.",
     "homepage": "https://github.com/justjavac/dvm",
     "license": "MIT",
     "architecture": {
@@ -9,27 +9,39 @@
             "hash": "89b1ca27c234e7b173446b3ba7b599f58946f2e2dc9d3985721d91390e3dff51"
         }
     },
-    "post_install": [
-        "",
-        "[Environment]::SetEnvironmentVariable('DVM_DIR', \"$dir/.dvm\", 'Process')",
-        "[Environment]::SetEnvironmentVariable('DENO_INSTALL', \"$dir/.dvm/deno\", 'Process')",
-        "Invoke-ExternalCommand -Path \"$dir/dvm.exe\" -Args 'use latest' | Out-Null",
-        "Write-Output \"Done.\"",
-        "",
-        ""
+    "installer": {
+        "script": [
+            "if (Test-Path \"$persist_dir\\.dvm\") {",
+            "    ensure \"$persist_dir\\.dvm\\bin\" | Out-Null",
+            "    $targetPath = \"$persist_dir\\.dvm\\bin\"",
+            "} else {",
+            "    ensure \"$dir\\.dvm\\bin\" | Out-Null",
+            "    $targetPath = \"$dir\\.dvm\\bin\"",
+            "}",
+            "if (!(Test-Path \"$persist_dir\\.deno\")) {",
+            "    ensure \"$dir\\.deno\" | Out-Null",
+            "}",
+            "Copy-Item \"$dir\\dvm.exe\" \"$targetPath\" -Force | Out-Null",
+            "Invoke-ExternalCommand -Path \"$persist_dir\\.dvm\\bin\\dvm.exe\" -Args \"completions powershell\" -LogPath \"$dir\\dvm-completion.psm1\" | Out-Null",
+            "info \"To activate completions, invoke 'Import-Module dvm-completion'\""
+        ]
+    },
+    "psmodule": {
+        "name": "dvm-completion"
+    },
+    "env_add_path": [
+        ".dvm\\bin",
+        ".deno\\bin"
     ],
-    "bin": "dvm.exe",
-    "env_add_path": ".dvm/bin",
     "env_set": {
-        "DVM_DIR": "$dir/.dvm",
-        "DENO_INSTALL": "$dir/.dvm/bin",
-        "DENO_INSTALL_ROOT": "$dir/.dvm",
-        "DENO_DIR": "$dir/.dvm/data"
+        "DVM_DIR": "$dir\\.dvm",
+        "DENO_INSTALL_ROOT": "$dir\\.deno"
     },
-    "persist": ".dvm",
-    "checkver": {
-        "github": "https://github.com/justjavac/dvm"
-    },
+    "persist": [
+        ".dvm",
+        ".deno"
+    ],
+    "checkver": "github",
     "autoupdate": {
         "architecture": {
             "64bit": {
