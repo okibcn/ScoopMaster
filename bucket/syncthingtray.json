@@ -1,5 +1,5 @@
 {
-    "version": "1.4.10",
+    "version": "1.4.11",
     "description": "Tray application for Syncthing",
     "homepage": "https://github.com/Martchus/syncthingtray",
     "license": {
@@ -8,18 +8,35 @@
     },
     "architecture": {
         "64bit": {
-            "url": "https://github.com/Martchus/syncthingtray/releases/download/v1.4.10/syncthingtray-1.4.10-x86_64-w64-mingw32.exe.zip",
-            "hash": "2f6452356a3457fdb67a930d9fa536ce7de1add2e9ba140a2b54928d3d68b632"
+            "url": "https://github.com/Martchus/syncthingtray/releases/download/v1.4.11/syncthingtray-1.4.11-x86_64-w64-mingw32.exe.zip",
+            "hash": "84bb58505df4e9de5653352a8357359e8b46d8376e0d6e7e197b0c6786f1c8fb"
         },
         "32bit": {
-            "url": "https://github.com/Martchus/syncthingtray/releases/download/v1.4.10/syncthingtray-1.4.10-i686-w64-mingw32.exe.zip",
-            "hash": "bed993b90d2ad9ffe6a841efbe271d5a0d1b4d0905bac041c4a657304c5f2a58"
+            "url": "https://github.com/Martchus/syncthingtray/releases/download/v1.4.11/syncthingtray-1.4.11-i686-w64-mingw32.exe.zip",
+            "hash": "81cb3551c39c5bfb1689b84d310920ec2d74233062576d01bcc2072fd74ded3f"
         }
     },
     "pre_install": [
         "Move-Item \"$dir\\syncthingtray-*-mingw32.exe\" \"$dir\\syncthingtray.exe\"",
-        "Move-Item \"$dir\\syncthingtray-*-mingw32-cli.exe\" \"$dir\\syncthingtray-cli.exe\""
+        "Move-Item \"$dir\\syncthingtray-*-mingw32-cli.exe\" \"$dir\\syncthingtray-cli.exe\"",
+        "if (Test-Path $persist_dir\\syncthingtray.ini){",
+        "    Move-Item -Path $persist_dir\\syncthingtray.ini -Destination $dir",
+        "} else {",
+        "$Content = @\"",
+        "[startup]",
+        "useLibSyncthing=true",
+        "libSyncthingConfigDir=$persist_dir/config",
+        "libSyncthingDataDir=$persist_dir/config",
+        "libSyncthingLogLevel=3",
+        "syncthingAutostart=true",
+        "\"@",
+        "    New-Item -Path $dir\\syncthingtray.ini -ItemType File -Value $Content.replace('\\','/') | Out-Null",
+        "    New-Item -Path $persist_dir\\config -ItemType Directory | Out-Null",
+        "}"
     ],
+    "uninstaller": {
+        "script": "Move-Item -Path $dir\\syncthingtray.ini -Destination $persist_dir"
+    },
     "bin": "syncthingtray-cli.exe",
     "shortcuts": [
         [
