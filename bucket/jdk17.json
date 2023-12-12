@@ -1,10 +1,10 @@
 {
-    "version": "17.0.2-8",
-    "description": "OpenJDK 17",
-    "homepage": "https://jdk.java.net/archive",
-    "url": "https://download.java.net/java/GA/jdk17.0.2/dfd4a8d0985749f896bed50d7138ee7f/8/GPL/openjdk-17.0.2_windows-x64_bin.zip",
-    "hash": "b2208206bda47f2e0c971a39e057a5ec32c40b503d71e486790cb728d926b615",
-    "extract_dir": "jdk-17.0.2",
+    "version": "17.0.9-9.1",
+    "description": "Temurin17",
+    "homepage": "https://adoptium.net",
+    "url": "https://hub.gitmirror.com/https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.9+9.1/OpenJDK17U-jdk_x64_windows_hotspot_17.0.9_9.zip",
+    "hash": "d1b2bb5a074ba33a0cf4e84aa558f7a563b827f999a71c8e47bdb0dd02af6b9c",
+    "extract_dir": "jdk-17.0.9+9.1",
     "env_add_path": "bin",
     "env_set": {
         "JAVA17": "$dir",
@@ -14,14 +14,22 @@
         "script": "[Environment]::SetEnvironmentVariable('JAVA17', '', 'User')"
     },
     "checkver": {
-        "re": "/(?<type>GA)/(?<path>jdk17([\\d.]+)?/(.*)?/(?<build>[\\d]+)/GPL)/(?<file>openjdk-(?<version>17([\\d.]+)?)_windows-x64_bin.(zip|tar.gz))",
-        "replace": "${version}-${build}"
+        "url": "https://api.adoptium.net/v3/assets/feature_releases/17/ga?jvm_impl=hotspot&heap_size=normal&os=windows&architecture=x64&image_type=jdk&project=jdk&vendor=eclipse&page_size=1&sort_order=DESC",
+        "script": [
+            "$ver = (json_path $page $..version_data.semver).replace('+', '-')",
+            "$link = (json_path $page $..release_link).replace('%2B', '+')",
+            "$name = json_path $page $..binaries[0].package.name",
+            "Write-Output \"$ver $link $name\""
+        ],
+        "regex": "(?<ver>.*?) https://github.com/(?<link>.*?)/tag/(?<tag>.*?) (?<name>(?<prefix>OpenJDK[\\dU]*-[dejkr]{3})_x64_(?<suffix>.*))",
+        "replace": "${ver}"
     },
     "autoupdate": {
-        "url": "https://download.java.net/java/$matchType/$matchPath/$matchFile",
+        "url": "https://hub.gitmirror.com/https://github.com/$matchLink/download/$matchTag/$matchName",
         "hash": {
-            "url": "$url.sha256"
+            "url": "$url.sha256.txt",
+            "find": "^([a-fA-F0-9]+)\\s"
         },
-        "extract_dir": "jdk-$matchVersion"
+        "extract_dir": "$matchTag"
     }
 }
