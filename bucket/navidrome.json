@@ -1,44 +1,37 @@
 {
+    "description": "Navidrome is an open source web-based music collection server and streamer.",
     "homepage": "https://github.com/navidrome/navidrome",
-    "description": "Modern Music Server and Streamer compatible with Subsonic/Airsonic",
+    "license": "GPL-3.0-only",
     "version": "0.50.1",
-    "license": {
-        "identifier": "GPL-3.0",
-        "url": "https://github.com/navidrome/navidrome/blob/master/LICENSE"
-    },
-    "architecture": {
-        "64bit": {
-            "url": "https://github.com/navidrome/navidrome/releases/download/v0.50.1/navidrome_0.50.1_Windows_amd64.zip",
-            "hash": "058706b70d67fa20c73d3902d62b32e9b4c3cf61415c4cfbde44a9d11818908e"
-        },
-        "32bit": {
-            "url": "https://github.com/navidrome/navidrome/releases/download/v0.50.1/navidrome_0.50.1_Windows_386.zip",
-            "hash": "dbb6714839a3bb72641a6c3dbe6263a1757b49f054c2171fa0874ac62f11a8ec"
-        }
-    },
-    "pre_install": [
-        "if (!(Test-Path \"$persist_dir\\navidrome.toml\"))",
-        "{ $MusicFolder = [Environment]::GetFolderPath('MyMusic')",
-        "New-Item \"$persist_dir\\navidrome.toml\" -ItemType File -Value \"DataFolder = 'C:\\Users\\onetwo\\scoop\\persist\\navidrome'`r`nMusicFolder = '$MusicFolder'\" -Force | Out-Null ",
-        "}"
-    ],
-    "bin": "navidrome.exe",
-    "env_set": {
-        "ND_CONFIGFILE": "$persist_dir\\navidrome.toml"
-    },
-    "notes": "Edit $persist_dir\\navidrom.toml to config navidrome.",
     "checkver": "github",
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://github.com/navidrome/navidrome/releases/download/v$version/navidrome_$version_Windows_amd64.zip"
+                "url": "https://github.com/navidrome/navidrome/releases/download/v$version/navidrome_$version_windows_amd64.zip",
+                "hash": {
+                    "mode": "download"
+                }
             },
             "32bit": {
-                "url": "https://github.com/navidrome/navidrome/releases/download/v$version/navidrome_$version_Windows_386.zip"
+                "url": "https://github.com/navidrome/navidrome/releases/download/v$version/navidrome_$version_windows_386.zip",
+                "hash": {
+                    "mode": "download"
+                }
             }
-        },
-        "hash": {
-            "url": "https://github.com/navidrome/navidrome/releases/download/v$version/navidrome_checksums.txt"
         }
-    }
+    },
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/navidrome/navidrome/releases/download/v0.50.1/navidrome_0.50.1_windows_amd64.zip",
+            "hash": "058706b70d67fa20c73d3902d62b32e9b4c3cf61415c4cfbde44a9d11818908e"
+        },
+        "32bit": {
+            "url": "https://github.com/navidrome/navidrome/releases/download/v0.50.1/navidrome_0.50.1_windows_386.zip",
+            "hash": "dbb6714839a3bb72641a6c3dbe6263a1757b49f054c2171fa0874ac62f11a8ec"
+        }
+    },
+    "notes": [
+        "The config file and the database will be created in the working directory on the first run.",
+        "They will not be automatically removed during uninstallation even with -p flag. Please take care of them manually."
+    ]
 }
