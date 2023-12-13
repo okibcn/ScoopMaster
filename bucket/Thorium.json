@@ -2,7 +2,7 @@
     "version": "117.0.5938.157",
     "description": "Google Chromium with additional performance optimization patches and new features.",
     "homepage": "https://thorium.rocks/",
-    "license": "BSD-3-Clause",
+    "license": "GPL-3.0-only",
     "architecture": {
         "64bit": {
             "url": "https://github.com/Alex313031/Thorium-Win/releases/download/M117.0.5938.157/Thorium_117.0.5938.157.zip",
@@ -14,18 +14,18 @@
         [
             "thorium.exe",
             "thorium",
-            "--user-data-dir=\"$dir\\User Data\" --allow-outdated-plugins --disable-logging --disable-breakpad"
+            "--user-data-dir=\"$dir\\User Data\" --allow-outdated-plugins --disable-logging --disable-breakpad --enable-experimental-web-platform-features --new-canvas-2d-api"
         ]
     ],
     "shortcuts": [
         [
             "thorium.exe",
             "Thorium",
-            "--user-data-dir=\"$dir\\User Data\" --allow-outdated-plugins --disable-logging --disable-breakpad"
+            "--user-data-dir=\"$dir\\User Data\" --allow-outdated-plugins --disable-logging --disable-breakpad --enable-experimental-web-platform-features --new-canvas-2d-api"
         ]
     ],
     "post_install": [
-        "if (!(Test-Path \"$dir\\UserData\\*\") -and (Test-Path \"$env:LocalAppData\\Thorium\\User Data\")) {",
+        "if (!(Test-Path \"$dir\\User Data\\*\") -and (Test-Path \"$env:LocalAppData\\Thorium\\User Data\")) {",
         "    info '[Portable Mode]: Copying user data...'",
         "    Copy-Item \"$env:LocalAppData\\Thorium\\User Data\\*\" \"$dir\\User Data\" -Recurse",
         "}"
