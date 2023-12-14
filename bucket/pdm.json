@@ -1,7 +1,6 @@
 {
     "homepage": "http://pdm.fming.dev",
     "version": "2.11.0",
-    "description": "Python Development Master",
     "license": "MIT",
     "url": "https://files.pythonhosted.org/packages/78/94/6d1e611676d31a93017a2cb561f56ae572cf0d3d0d1d239c43d0bf40da6c/pdm-2.11.0-py3-none-any.whl",
     "depends": "python",
@@ -17,10 +16,8 @@
     "uninstaller": {
         "script": [
             "$oldPath = [Environment]::GetEnvironmentVariable(\"PYTHONPATH\", [System.EnvironmentVariableTarget]::User)",
-            "If (-not [string]::IsNullOrWhiteSpace($oldPath)) {",
-            "    $newPath = ($oldPath.Split(';') | Where { $_ -notlike \"$dir\\venv\\*\" }) -join ';'",
-            "    [Environment]::SetEnvironmentVariable(\"PYTHONPATH\", $newPath, [System.EnvironmentVariableTarget]::User)",
-            "}"
+            "$newPath = ($oldPath.Split(';') | Where { $_ -notlike \"$dir\\venv\\*\" }) -join ';'",
+            "[Environment]::SetEnvironmentVariable(\"PYTHONPATH\", $newPath, [System.EnvironmentVariableTarget]::User)"
         ]
     },
     "checkver": {
