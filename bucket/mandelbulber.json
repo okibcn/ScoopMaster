@@ -1,0 +1,37 @@
+{
+    "version": "2.30",
+    "description": "Mandelbulber creatively generates three-dimensional fractals.",
+    "homepage": "https://mandelbulber.org",
+    "license": "GPL-3.0-or-later",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/buddhi1980/mandelbulber2/releases/download/2.30/Mandelbulber2-v2.30.0.0-Setup.exe",
+            "hash": "8794c422845745202e9647e5f567954bb92587c9b0f3cf16b53dfd0c9d592505"
+        }
+    },
+    "uninstaller": {
+        "script": [
+            "if ($purge) {",
+            "   Remove-Item \"HKCU:\\SOFTWARE\\Mandelbulber\" -ErrorAction 'SilentlyContinue' -Force -Recurse",
+            "   Remove-Item \"$home\\mandelbulber\" -Force -Recurse",
+            "}"
+        ]
+    },
+    "innosetup": true,
+    "shortcuts": [
+        [
+            "mandelbulber2.exe",
+            "Mandelbulber"
+        ]
+    ],
+    "checkver": {
+        "github": "https://github.com/buddhi1980/mandelbulber2"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/buddhi1980/mandelbulber2/releases/download/$version/Mandelbulber2-v$version.0.0-Setup.exe"
+            }
+        }
+    }
+}
