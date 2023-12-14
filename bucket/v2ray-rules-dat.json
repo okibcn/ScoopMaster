@@ -1,32 +1,26 @@
 {
-    "version": "202312132209",
+    "version": "202312142209",
+    "description": "Enhanced ruleset for V2Ray (unofficial)",
     "homepage": "https://github.com/Loyalsoldier/v2ray-rules-dat",
-    "description": "Enhanced edition of V2Ray rules dat files.",
-    "license": "GPL-3.0-or-later",
-    "url": [
-        "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/download/202312132209/rules.zip",
-        "https://github.com/CALMorACT/hola_bucket/raw/master/scripts/v2ray-rules-search.ps1"
-    ],
-    "hash": [
-        "7fa5cca60e5eff72ac14e325f55c5cacd2acd70cbf4359d862d31048eb7c45b5",
-        "c189578c79940f3ab935df8c27d0e2e1ca9773acc7ef61f772f83e7c2523e700"
-    ],
+    "license": "GPL-3.0-only",
     "depends": "v2ray",
-    "post_install": [
-        "Copy-Item \"$dir/geoip.dat\" \"$dir/../../v2ray/current\" -Force",
-        "Copy-Item \"$dir/geosite.dat\" \"$dir/../../v2ray/current\" -Force"
-    ],
-    "bin": [
-        [
-            "v2ray-rules-search.ps1",
-            "v2rulesearch"
+    "url": "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/download/202312142209/rules.zip",
+    "hash": "88c84ed85e4a642f0f78553478e179c246070b7a21eee2eb82163253745ab04a",
+    "installer": {
+        "script": [
+            "function LinkFile([String] $file, [String] $source = $file) {",
+            "    Write-Host \"Creating SymbolicLink for $file\"",
+            "    New-Item -Force -ItemType SymbolicLink -Path \"$(appdir v2ray $global)\\current\" -Name $file -Target \"$dir\\$source\" | Out-Null",
+            "}",
+            "LinkFile 'geoip.dat'",
+            "LinkFile 'geosite.dat'"
         ]
-    ],
+    },
     "checkver": "github",
     "autoupdate": {
         "url": "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/download/$version/rules.zip",
         "hash": {
-            "url": "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/download/$version/rules.zip.sha256sum"
+            "url": "$url.sha256sum"
         }
     }
 }
