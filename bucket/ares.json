@@ -1,31 +1,16 @@
 {
     "version": "134",
     "description": "Multi-system emulator focused on accuracy and preservation",
-    "homepage": "https://ares-emu.net",
+    "homepage": "https://ares-emulator.github.io/",
     "license": "ISC",
-    "notes": "Configuration file cannot be persisted, but will be retained during the update",
     "architecture": {
         "64bit": {
             "url": "https://github.com/ares-emulator/ares/releases/download/v134/ares-windows.zip",
             "hash": "8083d3486368abf13a456c41d315edf3c5c51f4d845415b53e456e6f0c3863c3"
-        },
-        "arm64": {
-            "url": "https://github.com/ares-emulator/ares/releases/download/v134/ares-windows-msvc-arm64.zip",
-            "hash": "0866930c6020079390ea3c0a1eee8ae4c1e78ec6344307b1782ce40f9454c3a3"
         }
     },
     "extract_dir": "ares-v134",
-    "post_install": [
-        "if (!(Test-Path \"$persist_dir\\settings.bml.bak\")) {",
-        "   New-Item -ItemType File \"$dir\\settings.bml\" | Out-Null",
-        "   Set-Content \"$dir\\settings.bml\" 'Paths'",
-        "   Add-Content \"$dir\\settings.bml\" \"  Home`:` $persist_dir\\Systems\\\" ",
-        "   'Saves', 'Screenshots', 'Debugging' | ForEach-Object {",
-        "   Add-Content \"$dir\\settings.bml\" \"  $_`:` $persist_dir\\$_\\\" }",
-        "} else {",
-        "   Copy-Item \"$persist_dir\\settings.bml.bak\" \"$dir\\settings.bml\" -Force",
-        "}"
-    ],
+    "pre_install": "if (!(Test-Path \"$persist_dir\\settings.bml\")) { New-Item -ItemType File \"$dir\\settings.bml\" | Out-Null }",
     "bin": "ares.exe",
     "shortcuts": [
         [
@@ -34,30 +19,21 @@
         ]
     ],
     "persist": [
+        "settings.bml",
         "Systems",
         "Saves",
         "Screenshots",
         "Debugging"
     ],
-    "uninstaller": {
-        "script": [
-            "'settings.bml' | ForEach-Object {",
-            "    Copy-Item \"$dir\\$_\" \"$persist_dir\\$_.bak\" -Force",
-            "}"
-        ]
-    },
     "checkver": {
         "github": "https://github.com/ares-emulator/ares/"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://github.com/ares-emulator/ares/releases/download/v$cleanVersion/ares-windows.zip"
-            },
-            "arm64": {
-                "url": "https://github.com/ares-emulator/ares/releases/download/v$cleanVersion/ares-windows-msvc-arm64.zip"
+                "url": "https://github.com/ares-emulator/ares/releases/download/v$version/ares-windows.zip"
             }
         },
-        "extract_dir": "ares-v$cleanVersion"
+        "extract_dir": "ares-v$version"
     }
 }

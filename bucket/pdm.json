@@ -1,11 +1,11 @@
 {
     "homepage": "http://pdm.fming.dev",
-    "version": "2.10.4",
-    "description": "Python Development Master",
+    "version": "2.11.0",
+    "description": "Python package and dependency manager supporting the latest PEP standards",
     "license": "MIT",
-    "url": "https://files.pythonhosted.org/packages/90/76/50b9d7d67aa5845d280c6bd017efdd88cf855845d8df997a36dbcfe87bb1/pdm-2.10.4-py3-none-any.whl",
+    "url": "https://files.pythonhosted.org/packages/78/94/6d1e611676d31a93017a2cb561f56ae572cf0d3d0d1d239c43d0bf40da6c/pdm-2.11.0-py3-none-any.whl",
     "depends": "python",
-    "hash": "b7caf7d94435440b1d5e19789c4bd651f994ada254fee71c7274629d408a3764",
+    "hash": "925569ab173d08a6cc171e0d3dd50e04016a0ef622e0799fa1bdbc283782213a",
     "bin": "venv\\Scripts\\pdm.exe",
     "installer": {
         "script": [
@@ -13,14 +13,25 @@
             "& \"$dir\\venv\\Scripts\\python.exe\" -m pip install \"$dir\\$fname\""
         ]
     },
-    "post_install": "& \"$dir\\venv\\Scripts\\pdm.exe\" --pep582",
+    "post_install": [
+        "if (-not (Test-Path -Path $PROFILE\\..\\Completions -PathType Container)) {",
+        "    mkdir $PROFILE\\..\\Completions",
+        "    echo @'",
+        "Get-ChildItem \"$PROFILE\\..\\Completions\\\" | ForEach-Object {",
+        "    . $_.FullName",
+        "}",
+        "'@ | Out-File -Append -Encoding utf8 $PROFILE",
+        "}",
+        "& \"$dir\\venv\\Scripts\\pdm.exe\" completion powershell | Out-File -Encoding utf8 $PROFILE\\..\\Completions\\pdm_completion.ps1"
+    ],
     "uninstaller": {
         "script": [
             "$oldPath = [Environment]::GetEnvironmentVariable(\"PYTHONPATH\", [System.EnvironmentVariableTarget]::User)",
             "If (-not [string]::IsNullOrWhiteSpace($oldPath)) {",
             "    $newPath = ($oldPath.Split(';') | Where { $_ -notlike \"$dir\\venv\\*\" }) -join ';'",
             "    [Environment]::SetEnvironmentVariable(\"PYTHONPATH\", $newPath, [System.EnvironmentVariableTarget]::User)",
-            "}"
+            "}",
+            "Remove-Item -Path $PROFILE\\..\\Completions\\pdm_completion.ps1 -ErrorAction SilentlyContinue"
         ]
     },
     "checkver": {
