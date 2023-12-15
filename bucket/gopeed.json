@@ -1,18 +1,28 @@
 {
     "version": "1.5.2",
-    "homepage": "https://github.com/GopeedLab/gopeed",
-    "description": "High speed downloader that supports all platforms.",
-    "license": "GPL-3.0 license",
-    "url": "https://github.com/GopeedLab/gopeed/releases/download/v1.5.2/Gopeed-v1.5.2-windows-amd64-portable.zip",
-    "hash": "15893d3f5c7c6bace5caf14dbdec08e706c75a81c513e4e3c8db9f828a678fe6",
-    "checkver": "github",
-    "autoupdate": {
-        "url": "https://github.com/GopeedLab/gopeed/releases/download/v$version/Gopeed-v$version-windows-amd64-portable.zip"
+    "description": "A high-speed downloader developed by Golang+Flutter, which supports (HTTP, BitTorrent, Magnet) protocol.",
+    "homepage": "https://github.com/monkeyWie/gopeed",
+    "license": "GPL-3.0-only",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/monkeyWie/gopeed/releases/download/v1.5.2/Gopeed-v1.5.2-windows-amd64-portable.zip",
+            "hash": "0d95ef818eda8d2c0b55d937d9d31b53149080a24a09b2ce331e81d2dcc12385"
+        }
     },
     "shortcuts": [
         [
             "gopeed.exe",
             "Gopeed"
         ]
-    ]
+    ],
+    "pre_install": "if (!(Test-Path \"$persist_dir\\gopeed.db\")) { Set-Content -Encoding ASCII -Path \"$dir\\gopeed.db\" -Value $null }",
+    "persist": "gopeed.db",
+    "checkver": "github",
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/monkeyWie/gopeed/releases/download/v$version/Gopeed-v$version-windows-amd64-portable.zip"
+            }
+        }
+    }
 }
