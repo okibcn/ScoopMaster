@@ -1,20 +1,20 @@
 {
     "version": "4.2.1",
-    "description": "A standalone UI tool for managing Git repositories",
+    "description": "A graphical user interface for Git that allows you to control Git without using the commandline.",
     "homepage": "https://gitextensions.github.io/",
-    "license": "GPL-3.0-or-later",
-    "url": "https://github.com/gitextensions/gitextensions/releases/download/v4.2.1/GitExtensions-Portable-4.2.1.17611-b0c0b2848.zip",
-    "hash": "372c9cef9b2b19c8bba9ea9424b9262f68edfbe61e4711d6d5f0f904462f871b",
+    "license": "GPL-3.0-only",
+    "url": "https://github.com/gitextensions/gitextensions/releases/download/v4.2.1/GitExtensions-4.2.1.17611-b0c0b2848.msi",
+    "hash": "dbf66a494bda70686c1eb4f5d5acaa0bd870a91342d3ea8c2fb4acb2e194e310",
+    "extract_dir": "GitExtensions",
     "pre_install": [
-        "\"GitExtensions.settings\", \"WindowPositions.xml\" | ForEach-Object {",
-        "    if (!(Test-Path \"$persist_dir\\$_\")) { New-Item \"$dir\\$_\" | Out-Null }",
-        "}"
+        "if (!(Test-Path \"$persist_dir\\GitExtensions.settings\")) { New-Item \"$dir\\GitExtensions.settings\" | Out-Null }",
+        "if (!(Test-Path \"$persist_dir\\WindowPositions.xml\")) { New-Item \"$dir\\WindowPositions.xml\" | Out-Null }"
     ],
     "bin": [
         "GitExtensions.exe",
         [
             "GitExtensions.exe",
-            "gitex"
+            "gite"
         ]
     ],
     "shortcuts": [
@@ -25,24 +25,14 @@
     ],
     "persist": [
         "GitExtensions.settings",
-        "WindowPositions.xml"
+        "WindowPositions.xml",
+        "Themes"
     ],
     "checkver": {
-        "script": [
-            "try {",
-            "    $res = Invoke-WebRequest -Uri https://github.com/gitextensions/gitextensions/releases/latest -Method Head -MaximumRedirection 0 -ErrorAction Ignore",
-            "} catch [Microsoft.PowerShell.Commands.HttpResponseException] {",
-            "    $releaseUrl = $_.Exception.Response.Headers.Location.ToString()",
-            "}",
-            "$releaseUrl = if ($null -eq $releaseUrl) { $res.Headers['Location'] } else { $releaseUrl }",
-            "$releaseUrl -match \"https://github.com/gitextensions/gitextensions/releases/tag/(?<tag>.*)\" | Out-Null",
-            "$tag = $Matches.tag",
-            "$res = Invoke-WebRequest -Uri https://github.com/gitextensions/gitextensions/releases/expanded_assets/$tag",
-            "$res.Content"
-        ],
-        "regex": "/v([\\d.]+)/GitExtensions-Portable-(?<version2>[\\d.]+)-(?<commit>\\w+)\\.zip"
+        "url": "https://api.github.com/repos/gitextensions/gitextensions/releases",
+        "regex": "download/v(?<version>.+?)/(?<file>.+?)\""
     },
     "autoupdate": {
-        "url": "https://github.com/gitextensions/gitextensions/releases/download/v$version/GitExtensions-Portable-$matchVersion2-$matchCommit.zip"
+        "url": "https://github.com/gitextensions/gitextensions/releases/download/v$version/$matchFile"
     }
 }
