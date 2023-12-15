@@ -9,18 +9,15 @@
     },
     "url": "https://updatecdn.meeting.qq.com/cos/b8f21e12a9e1a2109c779fa62919d404/TencentMeeting_0300000000_3.21.10.456.publish.officialwebsite.exe#/dl.7z",
     "hash": "md5:b8f21e12a9e1a2109c779fa62919d404",
-    "installer": {
-        "script": [
-            "$folderName = Get-ChildItem -Directory \"$dir\" | Where-Object { $_.Name -match '_\\d+_' } | Select-Object -ExpandProperty Name",
-            "Rename-Item -Path \"$dir\\$folderName\" -NewName \"$version\"",
-            "Move-Item \"$dir\\wemeetapp_new.exe\" \"$dir\\WeMeet.exe\"",
-            "Remove-Item -R -Path \"$dir\\`$WINDIR\",\"$dir\\`$PLUGINSDIR\",\"$dir\\`$TEMP\",\"$dir\\wemeetapp.exe\""
-        ]
-    },
-    
+    "post_install": [
+        "Rename-Item \"$dir\\`$_*_\" \"$dir\\$version\"",
+        "Remove-Item \"$dir\\$*\" -Recurse -Force -ErrorAction SilentlyContinue",
+        "Remove-Item \"$dir\\wemeetapp_new.exe\", \"$dir\\$version\\WeMeetUninstall.exe\" -Force -ErrorAction SilentlyContinue",
+        "create_startmenu_shortcuts $manifest \"$original_dir\" $global $architecture *>$null"
+    ],
     "shortcuts": [
         [
-            "WeMeet.exe",
+            "wemeetapp.exe",
             "WeMeet"
         ]
     ],
