@@ -1,45 +1,24 @@
 {
-    "homepage": "http://pdm.fming.dev",
     "version": "2.11.1",
-    "description": "Python package and dependency manager supporting the latest PEP standards",
+    "description": "A modern Python package and dependency manager supporting the latest PEP standards",
+    "homepage": "https://pdm.fming.dev",
     "license": "MIT",
     "url": "https://files.pythonhosted.org/packages/4b/19/615e732d8258df2def02c89a10eba0df9755b34995c90a80c65c6062f357/pdm-2.11.1-py3-none-any.whl",
-    "depends": "python",
     "hash": "6e18eab6f92ca7a31c68ea078d09d0a64b5f2aebf4f0e60ae81b1c5ca84a4189",
-    "bin": "venv\\Scripts\\pdm.exe",
-    "installer": {
-        "script": [
-            "python -m venv \"$dir\\venv\"",
-            "& \"$dir\\venv\\Scripts\\python.exe\" -m pip install \"$dir\\$fname\""
-        ]
-    },
-    "post_install": [
-        "if (-not (Test-Path -Path $PROFILE\\..\\Completions -PathType Container)) {",
-        "    mkdir $PROFILE\\..\\Completions",
-        "    echo @'",
-        "Get-ChildItem \"$PROFILE\\..\\Completions\\\" | ForEach-Object {",
-        "    . $_.FullName",
-        "}",
-        "'@ | Out-File -Append -Encoding utf8 $PROFILE",
-        "}",
-        "& \"$dir\\venv\\Scripts\\pdm.exe\" completion powershell | Out-File -Encoding utf8 $PROFILE\\..\\Completions\\pdm_completion.ps1"
+    "bin": "venv\\scripts\\pdm.exe",
+    "pre_install": [
+        "$bpath = if ($app.LocalPath) { $app.LocalPath.Directory.Parent.FullName } else { \"$bucketsdir\\$bucket\" }",
+        "& (Join-Path \"$bpath\" \"scripts\\Install-WithVirtualEnv.ps1\") \"/$fname\""
     ],
-    "uninstaller": {
-        "script": [
-            "$oldPath = [Environment]::GetEnvironmentVariable(\"PYTHONPATH\", [System.EnvironmentVariableTarget]::User)",
-            "If (-not [string]::IsNullOrWhiteSpace($oldPath)) {",
-            "    $newPath = ($oldPath.Split(';') | Where { $_ -notlike \"$dir\\venv\\*\" }) -join ';'",
-            "    [Environment]::SetEnvironmentVariable(\"PYTHONPATH\", $newPath, [System.EnvironmentVariableTarget]::User)",
-            "}",
-            "Remove-Item -Path $PROFILE\\..\\Completions\\pdm_completion.ps1 -ErrorAction SilentlyContinue"
-        ]
-    },
     "checkver": {
-        "url": "https://pypi.org/project/pdm/#files",
-        "re": "https://files.pythonhosted.org/(packages/.*/pdm-(?<version>[\\d.]+)-.*\\.whl)",
-        "replace": "${version}"
+        "url": "https://pypi.org/project/pdm/",
+        "regex": "(?sm)https:\\/\\/files\\.pythonhosted\\.org\\/(?<path>[\\w\\-\\/\\.]+-py3-none-any\\.whl).+?(?<version>[\\d\\.]+)-py3-none-any\\.whl"
     },
     "autoupdate": {
-        "url": "https://files.pythonhosted.org/$match1"
+        "url": "https://files.pythonhosted.org/$matchPath",
+        "hash": {
+            "url": "https://pypi.org/project/pdm/",
+            "regex": "(?sm)Hashes for $basename.*?$sha256"
+        }
     }
 }
