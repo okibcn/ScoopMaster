@@ -13,9 +13,18 @@
             "hash": "2b7fd9c01a3522513a441ed77cb418bf5d93c0a0798f22a5ce41ab78b58f879c"
         }
     },
+    "installer": {
+        "script": [
+            "Start-Process \"$dir\\$fname\" \"/S /D=$dir\" -PassThru -NoNewWindow | Wait-Process",
+            "Remove-Item \"$dir\\$fname\""
+        ]
+    },
+    "uninstaller": {
+        "script": "Start-Process \"$dir\\uninstall.exe\" -ArgumentList '/S' -Wait | Out-Null"
+    },
     "checkver": {
         "url": "https://api.github.com/repos/SleipnirGroup/Choreo/releases",
-        "regex": "/releases/tag/v(\\d{4}\\.\\d+\\.\\d+(?:-\\w+)*)"
+        "regex": "/releases/tag/v(\\d{4}\\.\\d+\\.\\d+(?:-\\w+\\.)*)"
     },
     "autoupdate": {
         "architecture": {
