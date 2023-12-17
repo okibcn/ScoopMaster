@@ -1,41 +1,30 @@
 {
-    "version": "5.5.0.11",
-    "description": "Farm Steam cards from multiple accounts simultaneously.",
     "homepage": "https://github.com/JustArchiNET/ArchiSteamFarm",
+    "description": "Idling Steam cards from multiple accounts simultaneously.",
+    "version": "5.5.0.11",
     "license": "Apache-2.0",
     "architecture": {
         "64bit": {
-            "url": "https://github.com/JustArchiNET/ArchiSteamFarm/releases/download/5.5.0.11/ASF-win-x64.zip#/dl",
-            "hash": "a29eb3b5482dff254addb48bd0b115b301cb0a971914ebcad1568d3155e5b2e4",
-            "pre_install": [
-                "if (Test-Path \"$persist_dir\\plugins\") {",
-                "  Expand-7zipArchive \"$dir\\$fname\" \"$dir\\_temp\" -ExtractDir plugins",
-                "  Get-ChildItem \"$persist_dir\\plugins\" *OfficialPlugins* | Remove-Item -Recurse",
-                "  Get-ChildItem \"$dir\\_temp\" -Exclude .gitkeep | % { Move-Item \"$dir\\_temp\\$($_.Name)\" \"$persist_dir\\plugins\\$($_.Name)\" }",
-                "  Remove-Item \"$dir\\_temp\" -Recurse -Force",
-                "}"
-            ],
-            "installer": {
-                "script": "Expand-7zipArchive \"$dir\\$fname\" \"$dir\" -Removal"
-            }
+            "url": "https://github.com/JustArchiNET/ArchiSteamFarm/releases/download/5.5.0.11/ASF-win-x64.zip",
+            "hash": "a29eb3b5482dff254addb48bd0b115b301cb0a971914ebcad1568d3155e5b2e4"
         }
     },
-    "bin": "ArchiSteamFarm.exe",
+    "suggest": {
+        ".NET Desktop Runtime": "dotnet-desktop-runtime",
+        "Visual C++ Redistributable": "extras/vcredist2019"
+    },
     "shortcuts": [
         [
             "ArchiSteamFarm.exe",
             "ArchiSteamFarm"
         ]
     ],
-    "persist": [
-        "config",
-        "plugins"
-    ],
+    "persist": "config",
     "checkver": "github",
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://github.com/JustArchiNET/ArchiSteamFarm/releases/download/$version/ASF-win-x64.zip#/dl"
+                "url": "https://github.com/JustArchiNET/ArchiSteamFarm/releases/download/$version/ASF-win-x64.zip"
             }
         }
     }
