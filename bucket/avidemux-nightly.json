@@ -1,40 +1,36 @@
 {
-    "version": "231210",
-    "description": "Video editor designed for simple cutting, filtering and encoding tasks",
-    "homepage": "http://fixounet.free.fr/avidemux/",
+    "version": "231217",
+    "description": "A video editor designed for simple cutting, filtering and encoding tasks.",
+    "homepage": "http://avidemux.sourceforge.net/",
     "license": "GPL-2.0-only",
     "architecture": {
         "64bit": {
-            "url": "https://www.avidemux.org/nightly/win64/avidemux_2.8.2%20r231210_win64.exe#/dl.7z",
-            "hash": "378ad509df971cbe5571f4992f7a6a75fe6ceed2e596841623bc6f70e86dc1f9"
+            "url": "http://www.avidemux.org/nightly/win64/avidemux_r231217_win64Qt5_19.zip",
+            "hash": "a2c531c192f58b97927fcc5ba16c13bb1c059176e9e7102c0eb4adf7d9e2dc8e",
+            "extract_dir": "avidemux_64"
         }
     },
     "bin": [
         [
             "avidemux_cli.exe",
-            "avidemux"
+            "avidemux_cli_nightly"
         ]
     ],
-    "post_install": "'$PLUGINSDIR', 'uninstall.exe' | ForEach-Object { Remove-Item \"$dir\\$_\" -Recurse -Force }",
     "shortcuts": [
         [
             "avidemux.exe",
             "Avidemux Nightly"
-        ],
-        [
-            "avidemux_jobs.exe",
-            "Avidemux Nightly Jobs"
         ]
     ],
     "checkver": {
-        "url": "https://www.avidemux.org/nightly/win64/",
-        "regex": "(?<win64bit>avidemux_[\\d.]+) r(?<version>\\d+)_win64.exe",
+        "url": "http://www.avidemux.org/nightly/win64/",
+        "regex": "avidemux_r([\\d.]+)_win64Qt5_(?<count>\\d+).zip",
         "reverse": true
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://www.avidemux.org/nightly/win64/$matchWin64bit%20r$version_win64.exe#/dl.7z"
+                "url": "http://www.avidemux.org/nightly/win64/avidemux_r$version_win64Qt5_$matchCount.zip"
             }
         }
     }
