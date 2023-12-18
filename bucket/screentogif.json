@@ -1,21 +1,35 @@
 {
     "version": "2.40",
-    "description": "Screen, webcam and sketchboard recorder with an integrated editor.(Scoop bucket by arch3rpro)",
+    "description": "Screen, webcam and sketchboard recorder with an integrated editor.",
     "homepage": "https://www.screentogif.com/",
     "license": "MS-PL",
     "suggest": {
-        "FFmpeg": "ffmpeg"
+        "ffmpeg": "ffmpeg"
     },
     "architecture": {
+        "64bit": {
+            "url": "https://github.com/NickeManarin/ScreenToGif/releases/download/2.40/ScreenToGif.2.40.Portable.x64.zip",
+            "hash": "823dc5ba1609294433042cd835281a9acd1159fa4b030ad1f14efd2eb20cae15"
+        },
         "32bit": {
             "url": "https://github.com/NickeManarin/ScreenToGif/releases/download/2.40/ScreenToGif.2.40.Portable.x86.zip",
             "hash": "09fa973121114cd2d5dfee0c1e2ab15a81f7056e86430f64ea26b644364cc10c"
         },
-        "64bit": {
-            "url": "https://github.com/NickeManarin/ScreenToGif/releases/download/2.40/ScreenToGif.2.40.Portable.x64.zip",
-            "hash": "823dc5ba1609294433042cd835281a9acd1159fa4b030ad1f14efd2eb20cae15"
+        "arm64": {
+            "url": "https://github.com/NickeManarin/ScreenToGif/releases/download/2.40/ScreenToGif.2.40.Portable.Arm64.zip",
+            "hash": "ff6d96000368d10e988fbafdc99a7ea41859db29065fd6e0b7409a15da0feb32"
         }
     },
+    "pre_install": [
+        "if (!(Test-Path \"$persist_dir\\Settings.xaml\")) {",
+        "    if (Test-Path \"$env:AppData\\ScreenToGif\\Settings.xaml\") {",
+        "        info \"[Portable Mode]: Copying existing settings file %AppData%\\ScreenToGif\\Settings.xaml...\"",
+        "        Copy-Item \"$env:AppData\\ScreenToGif\\Settings.xaml\" \"$dir\"",
+        "    } else {",
+        "        Set-Content \"$dir\\Settings.xaml\" '<ResourceDictionary></ResourceDictionary>' -Encoding ascii | Out-Null",
+        "    }",
+        "}"
+    ],
     "bin": "ScreenToGif.exe",
     "shortcuts": [
         [
@@ -23,16 +37,20 @@
             "ScreenToGif"
         ]
     ],
+    "persist": "Settings.xaml",
     "checkver": {
         "github": "https://github.com/NickeManarin/ScreenToGif"
     },
     "autoupdate": {
         "architecture": {
+            "64bit": {
+                "url": "https://github.com/NickeManarin/ScreenToGif/releases/download/$version/ScreenToGif.$version.Portable.x64.zip"
+            },
             "32bit": {
                 "url": "https://github.com/NickeManarin/ScreenToGif/releases/download/$version/ScreenToGif.$version.Portable.x86.zip"
             },
-            "64bit": {
-                "url": "https://github.com/NickeManarin/ScreenToGif/releases/download/$version/ScreenToGif.$version.Portable.x64.zip"
+            "arm64": {
+                "url": "https://github.com/NickeManarin/ScreenToGif/releases/download/$version/ScreenToGif.$version.Portable.Arm64.zip"
             }
         }
     }
