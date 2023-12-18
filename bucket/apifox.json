@@ -1,12 +1,17 @@
 {
     "version": "2.4.5",
-    "description": "All-in-one collaboration platform for API documentation, API debugging, API Mock and API test automation.",
+    "description": "Apifox 是 API 文档、API 调试、API Mock、API 自动化测试一体化协作平台，定位 Postman + Swagger + Mock + JMeter。",
     "homepage": "https://apifox.com",
+    "notes": "https://github.com/ViCrack/scoop-bucket/blob/master/bucket/apifox.json",
     "license": "Freeware",
     "architecture": {
+        "32bit": {
+            "url": "https://cdn.apifox.cn/download/2.4.5/Apifox-windows-x86-2.4.5.exe#/dl.7z",
+            "hash": "be9246a909fd72e116dda9f2efbe1a6d6daea0f8eaa98f05dc618eb0e406daac"
+        },
         "64bit": {
             "url": "https://cdn.apifox.cn/download/2.4.5/Apifox-2.4.5.exe#/dl.7z",
-            "hash": "sha512:42e83007cddba790decbbfcb451fe0ec4e46bb57b8a0dbfa5da145c2fd4b35b19ef8626d219cdef1f7b2dfd06d1ccdb7955eabcb6f3600f7a58ac341eb53304e"
+            "hash": "c649faec73ff765cfd0a80951777d27d24c33c234a63983015ccd8bfc72f94a6"
         }
     },
     "pre_install": [
@@ -26,17 +31,16 @@
         "Wait-Process -Name 'ApifoxAppAgent' -ErrorAction SilentlyContinue -Timeout 30"
     ],
     "checkver": {
-        "url": "https://apifox.com/help/app/changelog",
-        "regex": ">([\\d.]+)<"
+        "url": "https://apifox.com/help/app/changelog/",
+        "regex": "\\d\">([\\d.]+)<a href=\"#_"
     },
     "autoupdate": {
         "architecture": {
+            "32bit": {
+                "url": "https://cdn.apifox.cn/download/$version/Apifox-windows-x86-$version.exe#/dl.7z"
+            },
             "64bit": {
-                "url": "https://cdn.apifox.cn/download/$version/Apifox-$version.exe#/dl.7z",
-                "hash": {
-                    "url": "$baseurl/latest.yml",
-                    "regex": "sha512: $base64"
-                }
+                "url": "https://cdn.apifox.cn/download/$version/Apifox-$version.exe#/dl.7z"
             }
         }
     }
