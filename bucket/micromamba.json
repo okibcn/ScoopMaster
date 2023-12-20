@@ -1,17 +1,78 @@
 {
-    "##": "This file is a template. Fill the blanks and add or remove fields as necessary.",
-    "version": "1.5.5-0",
-    "description": "A C++ conda implementation",
     "homepage": "https://github.com/mamba-org/mamba",
+    "description": "Micromamba is a tiny version of mamba, the fast conda package installer.",
+    "version": "1.5.5-0",
     "license": "BSD-3-Clause",
-    "url": "https://github.com/mamba-org/micromamba-releases/releases/download/1.5.5-0/micromamba-win-64#/micromamba.exe",
-    "hash": "b2fefc07e9273c9c2aa36a72d2f9ebe0e67d3b882e0157ea010ed8cba48a4848",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/mamba-org/micromamba-releases/releases/download/1.5.5-0/micromamba-win-64#/micromamba.exe",
+            "hash": "b2fefc07e9273c9c2aa36a72d2f9ebe0e67d3b882e0157ea010ed8cba48a4848"
+        }
+    },
+    "post_install": [
+        "@\"",
+        "auto_activate_base: false",
+        "channels: ",
+        "  - defaults",
+        "show_channel_urls: true",
+        "default_channels: ",
+        "  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main",
+        "  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/r",
+        "  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/msys2",
+        "custom_channels: ",
+        "  conda-forge: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud",
+        "  msys2: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud",
+        "  bioconda: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud",
+        "  menpo: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud",
+        "  pytorch: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud",
+        "  pytorch-lts: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud",
+        "  simpleitk: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud",
+        "  deepmodeling: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/",
+        "  nvidia: https://mirrors.sustech.edu.cn/anaconda-extra/cloud/",
+        "\"@ | Set-Content -Path \"$dir\\mamba\\.condarc\" -Force",
+        "New-Item -Path \"$HOME\\pip\" -ItemType Directory -Force | Out-Null",
+        "@\"",
+        "[global]",
+        "index-url=https://pypi.tuna.tsinghua.edu.cn/simple",
+        "cache-dir=$dir\\pip-cache",
+        "[install]",
+        "trusted-host=pypi.tuna.tsinghua.edu.cn",
+        "\"@ | Set-Content -Path \"$HOME\\pip\\pip.ini\" -Force"
+    ],
+    "env_set": {
+        "MAMBA_ROOT_PREFIX": "$dir\\mamba"
+    },
     "bin": "micromamba.exe",
+    "persist": [
+        "mamba",
+        "pip-cache"
+    ],
     "checkver": {
-        "github": "https://github.com/mamba-org/micromamba-releases",
-        "regex": "micromamba ([\\d.-]+)"
+        "url": "https://api.anaconda.org/release/conda-forge/micromamba/latest",
+        "regex": "win-64/micromamba-([\\d.-]+).tar.bz2"
     },
     "autoupdate": {
-        "url": "https://github.com/mamba-org/micromamba-releases/releases/download/$version/micromamba-win-64"
-    }
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/mamba-org/micromamba-releases/releases/download/$version/micromamba-win-64#/micromamba.exe",
+                "hash": {
+                    "url": "$url.sha256"
+                }
+            }
+        }
+    },
+    "notes": [
+        "No shim is now exposed for micromamba, you have to add following hook to your PowerShell $PROFILE to use it:",
+        "",
+        "(& micromamba 'shell' 'hook' -s 'powershell' -p $env:MAMBA_ROOT_PREFIX) | Out-String | Invoke-Expression",
+        "",
+        "If you want to use it in Msys2 environment, you should manually insert following lines into your rc file",
+        "",
+        "# >>> mamba initialize >>>",
+        "# !! Contents within this block are managed by 'mamba init' !!",
+        "export MAMBA_EXE=\"$(cygpath '$dir')/micromamba.exe\";",
+        "export MAMBA_ROOT_PREFIX=\"$(cygpath '$persist_dir')/mamba\";",
+        "eval \"$(\"$MAMBA_EXE\" shell hook --shell ${SHELL##*/} --root-prefix \"$MAMBA_ROOT_PREFIX\" | tr -d '\\r' | sed \"s#$(cygpath -w $MAMBA_EXE|sed 's|\\\\|\\\\\\\\|g')#$MAMBA_EXE#g\")\"",
+        "# <<< mamba initialize <<<"
+    ]
 }
