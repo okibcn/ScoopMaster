@@ -1,0 +1,33 @@
+{
+    "version": "1.0.0",
+    "description": "Gendloop's app",
+    "homepage": "https://github.com/gendloop/keepass-plugins",
+    "license": "LGPL-2.1-or-later",
+    "depends": "extras/keepass",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/gendloop/keepass-plugins/releases/download/v1.0.0/keepass-plugins-$version-win64.7z",
+            "hash": ""
+        }
+    },
+    "installer": {
+        "script":[
+            "Get-ChildItem -Path \"$dir\" -Filter *.dll | Copy-Item -Destination \"$(appdir keepass $global)\\current\\Plugins\" -Force",
+            "Get-ChildItem -Path \"$dir\" -Filter *.plgx | Copy-Item -Destination \"$(appdir keepass $global)\\current\\Plugins\" -Force"
+        ]
+    },
+    "uninstaller": {
+        "script":[
+            "Get-ChildItem -Path \"$(appdir keepass $global)\\current\\Plugins\" -Filter *.dll | Remove-Item -Force",
+            "Get-ChildItem -Path \"$(appdir keepass $global)\\current\\Plugins\" -Filter *.plgx | Remove-Item -Force"
+        ]
+    },
+    "checkver": "github",
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/gendloop/keepass-plugins/releases/download/v$version/keepass-plugins-$version-win64.7z"
+            }
+        }
+    }
+}
