@@ -14,7 +14,6 @@
         "  更纱黑体 UI SC：常规, 半粗体",
         "  等距更纱黑体 SC：常规, 粗体, 粗斜体, 斜体"
     ],
-    "depends": "sudo",
     "installer": {
         "script": [
             "# 仅提取指定的字体文件                              ",
@@ -49,6 +48,31 @@
         "            $fontName = \"$familyName $faceName (TrueType)\"",
         "            Set-ItemProperty -Path $registryKey -Name \"$fontName\" -Value $fontPath -Force",
         "        }",
+        "    }",
+        "}"
+    ],
+    "pre_uninstall": [
+        "$current_dir = \"$(appdir $app $global)\\current\"",
+        "Get-ChildItem $current_dir -Filter '*.ttf' | ForEach-Object {",
+        "    try {",
+        "        Rename-Item $_.FullName $_.FullName -ErrorVariable LockError -ErrorAction Stop",
+        "    } catch {",
+        "        Write-Host \"\"",
+        "        Write-Host \" Error \" -Background DarkRed -Foreground White -NoNewline",
+        "        Write-Host \"\"",
+        "        Write-Host \" Cannot uninstall '$app' font.\" -Foreground DarkRed",
+        "        Write-Host \"\"",
+        "        Write-Host \" Reason \" -Background DarkCyan -Foreground White -NoNewline",
+        "        Write-Host \"\"",
+        "        Write-Host \" The '$app' font is currently being used by another application,\" -Foreground DarkCyan",
+        "        Write-Host \" so it cannot be deleted.\" -Foreground DarkCyan",
+        "        Write-Host \"\"",
+        "        Write-Host \" Suggestion \" -Background Magenta -Foreground White -NoNewline",
+        "        Write-Host \"\"",
+        "        Write-Host \" Close all applications that are using '$app' font (e.g. vscode),\" -Foreground Magenta",
+        "        Write-Host \" and then try again.\" -Foreground Magenta",
+        "        Write-Host \"\"",
+        "        exit 1",
         "    }",
         "}"
     ],
