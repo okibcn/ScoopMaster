@@ -1,0 +1,76 @@
+{
+    "version": "0.42.6",
+    "description": "CJK programming font based on Iosevka and Source Han Sans",
+    "license": "OFL-1.1",
+    "homepage": "https://github.com/be5invis/Sarasa-Gothic",
+    "url": "https://mirrors.tuna.tsinghua.edu.cn/github-release/be5invis/Sarasa-Gothic/LatestRelease/sarasa-gothic-ttf-0.42.6.7z#dl",
+    "hash": "fb1961079b0e1128c18fa21f2a6cd889b8902febaa4277304de7ff2db9366cdc",
+    "checkver": "github",
+    "autoupdate": {
+        "url": "https://github.com/be5invis/Sarasa-Gothic/releases/download/v$version/sarasa-gothic-ttf-$version.7z"
+    },
+    "notes": [
+        "仅节选了以下字体：",
+        "  更纱黑体 UI SC：常规, 半粗体",
+        "  等距更纱黑体 SC：常规, 粗体, 粗斜体, 斜体"
+    ],
+    "depends": "sudo",
+    "installer": {
+        "script": [
+            "# 仅提取指定的字体文件                              ",
+            "$7zPath = Get-HelperPath -Helper 7zip               ",
+            "$ArgList = @(                                       ",
+            "    'e', \"$dir\\sarasa-gothic-ttf-$version.7z#dl\",",
+            "    'sarasa-mono-sc-bold.ttf',                      ",
+            "    'sarasa-mono-sc-bolditalic.ttf',                ",
+            "    'sarasa-mono-sc-regular.ttf',                   ",
+            "    'sarasa-mono-sc-italic.ttf',                    ",
+            "    'sarasa-ui-sc-regular.ttf',                     ",
+            "    'sarasa-ui-sc-semibold.ttf',                    ",
+            "    \"-o$dir\", '-y', '-aos'                        ",
+            ")                                                   ",
+            "Invoke-ExternalCommand $7zPath $ArgList             ",
+            "Remove-Item -Path \"$dir\\sarasa-gothic-ttf-$version.7z#dl\" -Force -ErrorAction SilentlyContinue"
+        ]
+    },
+    "post_install": [
+        "# 注册字体",
+        "$current_dir = \"$(appdir $app $global)\\current\"",
+        "$registryRoot = if ($global) { \"HKLM\" } else { \"HKCU\" }",
+        "$registryKey = \"${registryRoot}:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\"",
+        "Add-Type -AssemblyName PresentationCore",
+        "Get-ChildItem -Path $current_dir -Filter '*.ttf' -File | ForEach-Object {",
+        "    $fontPath = $_.FullName",
+        "    $fontInfo = New-Object -TypeName Windows.Media.GlyphTypeface -ArgumentList $fontPath",
+        "    $familyNames = $fontInfo.FamilyNames.Values",
+        "    $faceNames = $fontInfo.FaceNames.Values",
+        "    foreach ($familyName in $familyNames) {",
+        "        foreach ($faceName in $faceNames) {",
+        "            $fontName = \"$familyName $faceName (TrueType)\"",
+        "            Set-ItemProperty -Path $registryKey -Name \"$fontName\" -Value $fontPath -Force",
+        "        }",
+        "    }",
+        "}"
+    ],
+    "uninstaller": {
+        "script": [
+            "# 反注册字体",
+            "$current_dir = \"$(appdir $app $global)\\current\"",
+            "$registryRoot = if ($global) { \"HKLM\" } else { \"HKCU\" }",
+            "$registryKey = \"${registryRoot}:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\"",
+            "Add-Type -AssemblyName PresentationCore",
+            "Get-ChildItem -Path $current_dir -Filter '*.ttf' -File | ForEach-Object {",
+            "    $fontPath = $_.FullName",
+            "    $fontInfo = New-Object -TypeName Windows.Media.GlyphTypeface -ArgumentList $fontPath",
+            "    $familyNames = $fontInfo.FamilyNames.Values",
+            "    $faceNames = $fontInfo.FaceNames.Values",
+            "    foreach ($familyName in $familyNames) {",
+            "        foreach ($faceName in $faceNames) {",
+            "            $fontName = \"$familyName $faceName (TrueType)\"",
+            "            Remove-ItemProperty -Path $registryKey -Name \"$fontName\" -Force -ErrorAction SilentlyContinue",
+            "        }",
+            "    }",
+            "}"
+        ]
+    }
+}
