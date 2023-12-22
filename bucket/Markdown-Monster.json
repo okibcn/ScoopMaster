@@ -1,26 +1,38 @@
 {
-    "version": "3.1.10",
-    "description": "Markdown editing and weblog publishing tool",
     "homepage": "https://markdownmonster.west-wind.com",
+    "description": "Markdown editing and weblog publishing tool",
+    "version": "3.1.11",
     "license": {
         "identifier": "Proprietary",
         "url": "https://markdownmonster.west-wind.com/purchase.aspx#License"
     },
-    "url": "https://github.com/RickStrahl/MarkdownMonsterReleases/raw/master/CurrentRelease/MarkdownMonsterPortable.zip",
-    "hash": "1dceb2c022be5897b76134f573f46b3602e86df5b42eab1270442711757d894c",
-    "bin": "mmcli.exe",
+    "url": "https://west-wind.com/files/MarkdownMonsterPortable.zip",
+    "hash": "4e3f066d4ada87e8d4ddfe21b43ab7f347a36cba044f417a3919c0c62d8c57c2",
+    "pre_install": [
+        "if (!(Test-Path \"$dir\\_IsPortable\")) { New-Item \"$dir\\_IsPortable\" -Force | Out-Null }",
+        "if (!(Test-Path \"$persist_dir\\Registered.key\")) { New-Item \"$dir\\Registered.key\" | Out-Null }"
+    ],
+    "bin": [
+        "mm.exe",
+        "MarkdownMonster.exe",
+        "mmcli.exe"
+    ],
     "shortcuts": [
         [
             "MarkdownMonster.exe",
             "Markdown Monster"
         ]
     ],
-    "persist": "PortableSettings",
+    "persist": [
+        "PortableSettings",
+        "Registered.key"
+    ],
     "checkver": {
-        "url": "https://raw.githubusercontent.com/RickStrahl/MarkdownMonsterReleases/master/CurrentRelease/MarkdownMonster_Version.xml",
-        "regex": "<Version>([\\d.]+)</Version>"
+        "url": "https://markdownmonster.west-wind.com/download",
+        "regex": "<dd><b>([\\d.-]+)",
+        "reverse": "false"
     },
     "autoupdate": {
-        "url": "https://github.com/RickStrahl/MarkdownMonsterReleases/raw/master/CurrentRelease/MarkdownMonsterPortable.zip"
+        "url": "https://west-wind.com/files/MarkdownMonsterPortable.zip"
     }
 }
