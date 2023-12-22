@@ -1,17 +1,12 @@
 {
-    "version": "2.4.5",
-    "description": "Apifox 是 API 文档、API 调试、API Mock、API 自动化测试一体化协作平台，定位 Postman + Swagger + Mock + JMeter。",
+    "version": "2.4.8",
+    "description": "All-in-one collaboration platform for API documentation, API debugging, API Mock and API test automation.",
     "homepage": "https://apifox.com",
-    "notes": "https://github.com/ViCrack/scoop-bucket/blob/master/bucket/apifox.json",
     "license": "Freeware",
     "architecture": {
-        "32bit": {
-            "url": "https://cdn.apifox.cn/download/2.4.5/Apifox-windows-x86-2.4.5.exe#/dl.7z",
-            "hash": "be9246a909fd72e116dda9f2efbe1a6d6daea0f8eaa98f05dc618eb0e406daac"
-        },
         "64bit": {
-            "url": "https://cdn.apifox.cn/download/2.4.5/Apifox-2.4.5.exe#/dl.7z",
-            "hash": "c649faec73ff765cfd0a80951777d27d24c33c234a63983015ccd8bfc72f94a6"
+            "url": "https://cdn.apifox.cn/download/2.4.8/Apifox-2.4.8.exe#/dl.7z",
+            "hash": "sha512:be34daa10f594cbf3bd7bd567f9b8a41dcd1e18d910971e45394f8abb8da43b1cf798112299e7ed5f23d8389bec7626cebe8cd56a7892f39b08ee97b640d5e1a"
         }
     },
     "pre_install": [
@@ -31,16 +26,17 @@
         "Wait-Process -Name 'ApifoxAppAgent' -ErrorAction SilentlyContinue -Timeout 30"
     ],
     "checkver": {
-        "url": "https://apifox.com/help/app/changelog/",
-        "regex": "\\d\">([\\d.]+)<a href=\"#_"
+        "url": "https://apifox.com/help/app/changelog",
+        "regex": ">([\\d.]+)<"
     },
     "autoupdate": {
         "architecture": {
-            "32bit": {
-                "url": "https://cdn.apifox.cn/download/$version/Apifox-windows-x86-$version.exe#/dl.7z"
-            },
             "64bit": {
-                "url": "https://cdn.apifox.cn/download/$version/Apifox-$version.exe#/dl.7z"
+                "url": "https://cdn.apifox.cn/download/$version/Apifox-$version.exe#/dl.7z",
+                "hash": {
+                    "url": "$baseurl/latest.yml",
+                    "regex": "sha512: $base64"
+                }
             }
         }
     }
