@@ -10,12 +10,27 @@
             "hash": "e493e886fbf96972de7274fae632b63f6606ec6d0e95025034a302a444dc3b38"
         }
     },
+    "pre_install": [
+        "$configFileExists = Test-Path -Path $dir\\config.xml",
+        "if (-not $configFileExists) { New-Item -Path $dir -Name 'config.xml' -ItemType File -Force }"
+    ],
+    "post_install": [
+        "$unicodiaXml = Get-Content -Path $dir\\Unicodia.xml",
+        "$xmlFile = [xml]$unicodiaXml",
+        "$programConfigNode = $xmlFile.SelectSingleNode('/program')",
+        "$programConfigNode.SetAttribute('portable', '1')",
+        "$path = Join-Path -Path $dir -ChildPath 'unicodia.xml'",
+        "$xmlFile.Save($path)"
+    ],
     "bin": "Unicodia.exe",
     "shortcuts": [
         [
             "Unicodia.exe",
             "Unicodia"
         ]
+    ],
+    "persist": [
+        "config.xml"
     ],
     "checkver": {
         "github": "https://github.com/Mercury13/unicodia/"
