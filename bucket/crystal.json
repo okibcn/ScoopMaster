@@ -1,23 +1,30 @@
 {
-    "autoupdate": {
-        "url": "https://github.com/crystal-lang/crystal/releases/download/$version/crystal-$version-windows-x86_64-msvc-unsupported.zip"
-    },
-    "bin": [
+  "description": "The Crystal Programming Language.",
+  "license": "Apache-2.0",
+  "homepage": "https://crystal-lang.org/",
+  "version": "1.10.1",
+  "architecture": {
+    "64bit": {
+      "hash": "deabeaa431cd52fb709c3520a9e2a1835f4c26273bd859bfecd09a4af47c93e8",
+      "url": "https://github.com/crystal-lang/crystal/releases/download/1.10.1/crystal-1.10.1-windows-x86_64-msvc-unsupported.zip",
+      "bin": [
         "crystal.exe",
         "shards.exe"
-    ],
-    "checkver": {
-        "github": "https://github.com/crystal-lang/crystal"
-    },
-    "depends": "vswhere",
-    "description": "Crystal for Windows Preview",
-    "hash": "deabeaa431cd52fb709c3520a9e2a1835f4c26273bd859bfecd09a4af47c93e8",
-    "homepage": "https://crystal-lang.org/",
-    "license": {
-        "identifier": "Apache-2.0",
-        "url": "https://github.com/crystal-lang/crystal/blob/master/LICENSE"
-    },
-    "post_install": "If (Test-Path $env:LOCALAPPDATA\\crystal\\cache) { rm -r -fo $env:LOCALAPPDATA\\crystal\\cache}",
-    "url": "https://github.com/crystal-lang/crystal/releases/download/1.10.1/crystal-1.10.1-windows-x86_64-msvc-unsupported.zip",
-    "version": "1.10.1"
+      ]
+    }
+  },
+  "checkver": {
+    "github": "https://github.com/crystal-lang/crystal"
+  },
+  "autoupdate": {
+    "architecture": {
+      "64bit": {
+        "url": "https://github.com/crystal-lang/crystal/releases/download/$version/crystal-$version-windows-x86_64-msvc-unsupported.zip",
+        "hash": {
+          "url": "$baseurl/latest.yml",
+          "regex": "sha512:\\s+$base64"
+        }
+      }
+    }
+  }
 }
