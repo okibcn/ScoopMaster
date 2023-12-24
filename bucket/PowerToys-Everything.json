@@ -1,0 +1,45 @@
+{
+  "version": "0.76.2",
+  "description": "This plugin adds Everything search results to PowerToys Run.",
+  "homepage": "https://github.com/lin-ycv/EverythingPowerToys",
+  "license": "GPL-3.0",
+  "notes": [
+    "复制本插件到以下任一位置(默认复制到scoop版PowerToys):",
+    " 1. C:\\Program Files\\PowerToys\\RunPlugins",
+    " 2. %LOCALAPPDATA%\\Microsoft\\PowerToys\\PowerToys Run\\Plugins",
+    " 3. (scoop prefix PowerToys)\\RunPlugins",
+    "Restart PowerToys"
+  ],
+  "depends": [
+    "Everything"
+  ],
+  "architecture": {
+    "64bit": {
+      "url": "https://github.com/lin-ycv/EverythingPowerToys/releases/download/v0.76.2/Everything-0.76.2-x64.zip",
+      "hash": "67D33A58390C8D87A9B0F710E20085F5E0144CA53700239CDC205A022F831E7F"
+    }
+  },
+  "post_install": [
+    "if ((scoop prefix PowerToys)) {",
+    "  $powertoys_path = (scoop prefix PowerToys)",
+    "  if (Test-Path \"$powertoys_path\\RunPlugins\\Everything\"){",
+    "    Write-Host '删除 Everything'",
+    "    Remove-Item $powertoys_path\\RunPlugins\\Everything -Force",
+    "  }",
+    "  Write-Host '移动 Everything 到 PowerToys\\RunPlugins 目录'",
+    "  Copy-Item -Path \"$dir\\Everything\" -Destination \"$powertoys_path\\RunPlugins\" -Recurse",
+    "} else {",
+    "  Write-Host '未使用 scoop 安装 PowerToys, 请手动复制到对应位置.' -ForegroundColor DarkYellow",
+    "}"
+  ],
+  "checkver": {
+    "url": "https://github.com/lin-ycv/EverythingPowerToys"
+  },
+  "autoupdate": {
+    "architecture": {
+      "64bit": {
+        "url": "https://github.com/lin-ycv/EverythingPowerToys/releases/download/v$version/Everything-$version-x64.zip"
+      }
+    }
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "version": "7.2.0",
+  "description": "让 Calibre 不要把中文路径翻译成拼音",
+  "homepage": "https://github.com/Cirn09/calibre-do-not-translate-my-path",
+  "license": "GPL-3.0",
+  "notes": [
+    "如果你已经创建了书库，希望将已有的书库改成非英文路径：",
+    " 0. 备份你的书库（可选，建议）",
+    " 1. 打开书库，按下 Ctrl+A 选中所有书籍",
+    " 2. 右键 - 编辑元数据 - 批量编辑元数据 - 【查找替换】页",
+    " 3. 查找模式：正则表达式，查找的字段：title，搜索：$，替换为：__DELME__",
+    " 4. 点击【应用】，等待 Calibre 完成（点击前注意看一下下面的替换预阅，新书名应当是原书名+__DELME__）",
+    " 5. 查找模式：字符匹配，查找的字段：title，搜索：__DELME__，【替换为】保持为空（",
+    " 6. 点击【确定】，等待 Calibre 完成（点击前注意看一下下面的替换预阅，此时的新书名应当是原本的书名）"
+  ],
+  "depends": [
+    "ScoopBucket/Calibre"
+  ],
+  "architecture": {
+    "64bit": {
+      "url": "https://github.com/Cirn09/calibre-do-not-translate-my-path/releases/download/v7.2.0/win-patch-backend-v7.2.0.zip",
+      "hash": "C72F42A558C4CFC75DA30766796B780CBA0A77104E1B17615FE6A41BD43DC48B",
+      "extract_dir": "Calibre2\\app\\bin"
+    }
+  },
+  "post_install": [
+    "if ((scoop prefix Calibre)) {",
+    "  $calibre_path = (scoop prefix Calibre)",
+    "  $backend_path = \"$calibre_path\\Calibre\\app\\bin\\python-lib.bypy.frozen\"",
+    "  Write-Host '备份原 python-lib.bypy.frozen 文件'",
+    "  Move-Item \"$backend_path\" \"$backend_path.bak\"",
+    "  Write-Host '移动文件到 Calibre 目录'",
+    "  Copy-Item \"$dir\\python-lib.bypy.frozen\" $backend_path",
+    "} else {",
+    "  Write-Host '未安装Calibre，请安装Calibre (scoop install Calibre)' -ForegroundColor DarkYellow",
+    "}"
+  ],
+  "checkver": "github",
+  "autoupdate": {
+    "architecture": {
+      "64bit": {
+        "url": "https://github.com/Cirn09/calibre-do-not-translate-my-path/releases/download/v$version/win-patch-backend-v$version.zip"
+      }
+    }
+  }
+}
