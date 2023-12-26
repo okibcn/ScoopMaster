@@ -1,19 +1,41 @@
 {
     "version": "1.4.2.1",
-    "description": "A multi-platform GUI for nexttrace.",
+    "description": "A cross-platform GUI wrapper for NextTrace. Bringing you the familiar traceroute experience.",
     "homepage": "https://github.com/Archeb/opentrace",
-    "license": "GPLv3",
-    "url": "https://github.com/Archeb/opentrace/releases/download/v1.4.2.1/win-x64.zip",
-    "hash": "b6fd63c4bb2c1bf31eb8abbcc45f10c484bc979968ab653920bc1f5d551442af",
-    "bin": "opentrace.exe",
-    "shortcuts": [
+    "license": {
+        "identifier": "GPL-3.0 license",
+        "url": "https://github.com/Archeb/opentrace/blob/master/LICENSE.txt"
+    },
+    "depends": "ntrace-core",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/Archeb/opentrace/releases/download/v1.4.2.1/win-x64.zip",
+            "hash": "b6fd63c4bb2c1bf31eb8abbcc45f10c484bc979968ab653920bc1f5d551442af"
+        }
+    },
+    "pre_install": "if (Test-Path \"$persist_dir\\log.txt\") { Copy-Item \"$persist_dir\\log.txt\" \"$dir\\\" }",
+    "pre_uninstall": "if (Test-Path \"$dir\\log.txt\") { Copy-Item \"$dir\\log.txt\" \"$persist_dir\\\" }",
+    "bin": [
         [
-            "opentrace.exe",
-            "opentrace"
+            "OpenTrace.exe",
+            "OpenTrace"
         ]
     ],
-    "checkver": "github",
+    "shortcuts": [
+        [
+            "OpenTrace.exe",
+            "OpenTrace"
+        ]
+    ],
+    "persist": "OpenTrace.pdb",
+    "checkver": {
+        "github": "https://github.com/Archeb/opentrace"
+    },
     "autoupdate": {
-        "url": "https://github.com/Archeb/opentrace/releases/download/v$version/win-x64.zip"
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/Archeb/opentrace/releases/download/v$version/win-x64.zip"
+            }
+        }
     }
 }

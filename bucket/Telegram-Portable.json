@@ -1,28 +1,28 @@
 {
-    "version": "4.13.1",
-    "description": "Telegram. A messaging app with a focus on speed and security",
+    "version": "4.13.0",
+    "description": "A messaging app with a focus on speed and security",
     "homepage": "https://telegram.org",
     "license": "GPL-3.0-only",
-    "changelog": "https://github.com/telegramdesktop/tdesktop/releases",
     "architecture": {
         "64bit": {
-            "url": "https://updates.tdesktop.com/tx64/tportable-x64.4.13.1.zip",
-            "hash": "08adba90498e5877dbd121010b7fbd0adf3c4f4130edc51211d30dccb695234c"
+            "url": "https://updates.tdesktop.com/tx64/tportable-x64.4.13.0.zip",
+            "hash": "41320e179a85cefcfa88c6f7aecd8e414ae36e5568f87772556b8b0d586a69f6"
         },
         "32bit": {
-            "url": "https://updates.tdesktop.com/tsetup/tportable.4.13.1.zip",
-            "hash": "300815bd9d9d729ef0e616748c444d86a4e360f3b666934a277940597c3ca92a"
+            "url": "https://updates.tdesktop.com/tsetup/tportable.4.13.0.zip",
+            "hash": "19d38f3d1e3cf1eaa51e539f30f5d8c8d1f65e952efbbc830339239bce1d21f6"
         }
     },
     "extract_dir": "Telegram",
-    "bin": "telegram.exe",
-    "persist": "tdata",
+    "pre_install": "Set-Content \"$dir\\telegram.cmd\" '@start \"Telegram\" /D \"%~dp0\" \"%~dp0Telegram.exe\" %*' -Encoding Ascii",
+    "bin": "telegram.cmd",
     "shortcuts": [
         [
             "Telegram.exe",
             "Telegram"
         ]
     ],
+    "persist": "tdata",
     "checkver": {
         "github": "https://github.com/telegramdesktop/tdesktop"
     },

@@ -1,37 +1,47 @@
 {
-  "version": "4.10",
-  "description": "Altirra is the 8-bit Atari emulator focusing on high-quality emulation, sometimes over speed and polish",
-  "homepage": "http://www.virtualdub.org/altirra.html",
-  "license": "GPL-2.0-only",
-  "architecture": {
-    "64bit": {
-      "url": "http://www.virtualdub.org/downloads/Altirra-4.10.zip",
-      "hash": "98e59243dca8cf571d3cde4caeb7ba13e7fec9c0cb480e45b1fd45af25c1165e",
-      "bin": "Altirra64.exe",
-      "shortcuts": [
-        [
-          "Altirra64.exe",
-          "Altirra"
-        ]
-      ]
+    "version": "4.10",
+    "description": "Altirra is the 8-bit Atari emulator focusing on high-quality emulation, sometimes over speed and polish",
+    "homepage": "http://www.virtualdub.org/altirra.html",
+    "license": "GPL-2.0-only",
+    "url": "http://www.virtualdub.org/downloads/Altirra-4.10.zip",
+    "hash": "98e59243dca8cf571d3cde4caeb7ba13e7fec9c0cb480e45b1fd45af25c1165e",
+    "architecture": {
+        "64bit": {
+            "bin": "Altirra64.exe",
+            "shortcuts": [
+                [
+                    "Altirra64.exe",
+                    "Altirra"
+                ]
+            ],
+            "post_install": [
+                "Remove-Item \"$dir\\Altirra.exe\""
+            ]
+        },
+        "32bit": {
+            "bin": "Altirra.exe",
+            "shortcuts": [
+                [
+                    "Altirra.exe",
+                    "Altirra"
+                ]
+            ],
+            "post_install": [
+                "Remove-Item \"$dir\\Altirra64.exe\""
+            ]
+        }
     },
-    "32bit": {
-      "url": "http://www.virtualdub.org/downloads/Altirra-4.10.zip",
-      "hash": "98e59243dca8cf571d3cde4caeb7ba13e7fec9c0cb480e45b1fd45af25c1165e",
-      "bin": "Altirra.exe",
-      "shortcuts": [
-        [
-          "Altirra.exe",
-          "Altirra"
-        ]
-      ]
+    "pre_install": [
+        "if (!(Test-Path \"$persist_dir\\Altirra.ini\")) { New-Item \"$dir\\Altirra.ini\" | Out-Null }"
+    ],
+    "persist": [
+        "Altirra.ini"
+    ],
+    "checkver": {
+        "url": "http://www.virtualdub.org/altirra.html",
+        "regex": "Version ([\\d.]+): \\["
+    },
+    "autoupdate": {
+        "url": "http://www.virtualdub.org/downloads/Altirra-$version.zip"
     }
-  },
-  "checkver": {
-    "url": "http://www.virtualdub.org/altirra.html",
-    "regex": "Version ([\\d.]+): \\["
-  },
-  "autoupdate": {
-    "url": "http://www.virtualdub.org/downloads/Altirra-$version.zip"
-  }
 }
