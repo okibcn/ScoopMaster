@@ -1,34 +1,33 @@
 {
     "version": "0.37.0",
     "description": "Anytype is a local-first, P2P and open-source note-taking application",
-    "homepage": "https://anytype.io/",
-    "license": "Proprietary",
+    "homepage": "https://anytype.io",
+    "license": {
+        "identifier": "Any Source Available License 1.0",
+        "url": "https://github.com/anyproto/anytype-ts/blob/main/LICENSE.md"
+    },
+    "url": "https://github.com/anyproto/anytype-ts/releases/download/v0.37.0/Anytype.Setup.0.37.0.exe#/dl.7z",
+    "hash": "8d0d3464b673ce599aa61df5c9aadbe4ac56284f70ee2032dd6920098ca0c00f",
     "architecture": {
         "64bit": {
-            "url": "https://anytype-release.fra1.cdn.digitaloceanspaces.com/Anytype%20Setup%200.37.0.exe#/dl.7z",
-            "hash": "8d0d3464b673ce599aa61df5c9aadbe4ac56284f70ee2032dd6920098ca0c00f",
-            "pre_install": [
-                "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app*.7z\" \"$dir\"",
-                "Remove-Item \"$dir\\`$R0\", \"$dir\\`$PLUGINSDIR\" -Force -Recurse"
-            ]
+            "pre_install": "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\""
         }
     },
+    "post_install": "Remove-Item \"$dir\\`$R0\", \"$dir\\`$PLUGINSDIR\" -Force -Recurse",
     "bin": "Anytype.exe",
     "shortcuts": [
         [
             "Anytype.exe",
-            "Anytype"
+            "Anytype",
+            "--user-data-dir=\"$dir\\User Data\""
         ]
     ],
+    "persist": "User Data",
     "checkver": {
-        "url": "https://download.anytype.io/",
-        "regex": "Desktop \\n\\s+?<span class=\"version\">v(\\d+?\\.\\d+?\\.\\d+?)<"
+        "url": "https://github.com/anyproto/anytype-ts/releases.atom",
+        "regex": "/releases/tag/v([\\d.]+(?!-alpha))\""
     },
     "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://anytype-release.fra1.cdn.digitaloceanspaces.com/Anytype%20Setup%20$version.exe#/dl.7z"
-            }
-        }
+        "url": "https://github.com/anyproto/anytype-ts/releases/download/v$version/Anytype.Setup.$version.exe#/dl.7z"
     }
 }
