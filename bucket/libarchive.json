@@ -1,15 +1,16 @@
 {
     "version": "3.7.2",
-    "description": "Multi-format archive and compression library.",
-    "notes": "This installation will bring `bsdtar.exe`, `bsdcpio.exe` and `bsdcat.exe` to your PATH.\nIf the binaries cannot run because `libcrypto-1_1-x64.dll` is absent, grab that dll file from an OpenSSL 1 installation and put it together with these binaries.",
-    "homepage": "https://www.libarchive.org",
-    "license": "https://raw.githubusercontent.com/libarchive/libarchive/master/COPYING",
-    "url": "https://github.com/libarchive/libarchive/releases/download/v3.7.2/libarchive-v3.7.2-amd64.zip",
-    "hash": "e06f10043b1b148eb38ad06cff678af05beade0bdd2edd8735a198c521fa3993",
-    "pre_install": [
-        "Move-Item -Path $dir\\libarchive\\* -Destination $dir\\",
-        "Remove-Item -Recurse $dir\\libarchive"
-    ],
+    "description": "Multi-format archive and compression library",
+    "homepage": "https://www.libarchive.org/",
+    "license": "https://github.com/libarchive/libarchive/blob/master/COPYING",
+    "notes": "",
+    "architecture": {
+        "64bit": {
+            "url": "https://www.libarchive.org/downloads/libarchive-v3.7.2-amd64.zip",
+            "hash": "e06f10043b1b148eb38ad06cff678af05beade0bdd2edd8735a198c521fa3993"
+        }
+    },
+    "extract_dir": "libarchive",
     "bin": [
         "bin\\bsdtar.exe",
         "bin\\bsdcpio.exe",
@@ -19,9 +20,10 @@
         "github": "https://github.com/libarchive/libarchive"
     },
     "autoupdate": {
-        "url": "https://github.com/libarchive/libarchive/releases/download/v$version/libarchive-v$version-amd64.zip",
-        "hash": {
-            "url": "https://www.libarchive.org/downloads/sha256sums"
+        "architecture": {
+            "64bit": {
+                "url": "https://www.libarchive.org/downloads/libarchive-v$version-amd64.zip"
+            }
         }
     }
 }
