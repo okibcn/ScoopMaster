@@ -1,42 +1,47 @@
 {
-    "version": "2.3.16",
+    "version": "2.4.8",
     "description": "Apifox 是 API 文档、API 调试、API Mock、API 自动化测试一体化协作平台，定位 Postman + Swagger + Mock + JMeter。",
-    "homepage": "https://www.apifox.cn/",
+    "homepage": "https://apifox.com",
+    "notes": "https://github.com/ViCrack/scoop-bucket/blob/master/bucket/apifox.json",
     "license": "Freeware",
     "architecture": {
         "32bit": {
-            "url": "https://cdn.apifox.cn/download/2.1.25/Apifox-windows-x86-2.1.25.exe#/dl.7z",
-            "hash": "80412de1c7bcdd668d7064f1001c4439d587e36267756e799d5c7a152ac5399c",
-            "pre_install": [
-                "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-32.7z\" \"$dir\"",
-                "Remove-Item \"$dir\\`$*\", \"$dir\\Uninstall*\" -Force -Recurse"
-            ]
+            "url": "https://cdn.apifox.cn/download/2.4.8/Apifox-windows-x86-2.4.8.exe#/dl.7z",
+            "hash": "7e43f9db12b9fb36410b2fdcff92fba2a5067e76edc53c331c3e6ebfd085cdb5"
         },
         "64bit": {
-            "url": "https://cdn.apifox.cn/download/2.1.25/Apifox-2.1.25.exe#/dl.7z",
-            "hash": "b545cdf256712b06b3c6e0b680f16b1fb53c8a4bc4cd4e4b18eec7fc9ea994d4",
-            "pre_install": [
-                "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\"",
-                "Remove-Item \"$dir\\`$*\", \"$dir\\Uninstall*\" -Force -Recurse"
-            ]
+            "url": "https://cdn.apifox.cn/download/2.4.8/Apifox-2.4.8.exe#/dl.7z",
+            "hash": "9aa42899d074e26f48b590b1f0b7b30059d263ecd8fed4d8a0da5443613180c2"
         }
     },
+    "pre_install": [
+        "Get-Item \"$dir\\`$PLUGINSDIR\\app*.7z\" | Expand-7zipArchive -DestinationPath \"$dir\"",
+        "Remove-Item \"$dir\\`$*\", \"$dir\\Uninstall*\" -Force -Recurse"
+    ],
     "shortcuts": [
         [
             "Apifox.exe",
-            "Apifox"
+            "Apifox",
+            "--user-data-dir=\"$dir\\UserData\""
         ]
     ],
+    "persist": "UserData",
+    "pre_uninstall": [
+        "Stop-Process -Name 'ApifoxAppAgent' -ErrorAction SilentlyContinue",
+        "Wait-Process -Name 'ApifoxAppAgent' -ErrorAction SilentlyContinue -Timeout 30"
+    ],
     "checkver": {
-        "url": "https://cdn.apifox.cn/download/latest.yml",
-        "regex": "version: ([\\d.]+)"
+        "url": "https://apifox.com/help/app/changelog/",
+        "regex": "\\d\">([\\d.]+)<a href=\"#_"
     },
     "autoupdate": {
-        "32bit": {
-            "url": "https://cdn.apifox.cn/download/$version/Apifox-windows-x86-$version.exe#/dl.7z"
-        },
-        "64bit": {
-            "url": "https://cdn.apifox.cn/download/$version/Apifox-$version.exe#/dl.7z"
+        "architecture": {
+            "32bit": {
+                "url": "https://cdn.apifox.cn/download/$version/Apifox-windows-x86-$version.exe#/dl.7z"
+            },
+            "64bit": {
+                "url": "https://cdn.apifox.cn/download/$version/Apifox-$version.exe#/dl.7z"
+            }
         }
     }
 }
