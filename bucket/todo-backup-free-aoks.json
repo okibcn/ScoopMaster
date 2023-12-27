@@ -1,0 +1,37 @@
+{
+    "version": "20231129",
+    "description": "Best free backup software for Windows. Always keep your PC protected with the highest level of data security!",
+    "homepage": "https://www.easeus.de/backup-software/todo-backup-free.html",
+    "license": "Freeware",
+    "architecture": {
+        "64bit": {
+            "url": "https://down.easeus.com/product/tb_free?ref=/backup-software/tb-free.html#/todobackup.exe",
+            "hash": "7898acfcc553e78206fa6ef705bf1f1eabe04f3a37f774b03ea57d11163d669e"
+        }
+    },
+    "installer": {
+        "script": "Invoke-ExternalCommand -FilePath \"$dir\\todobackup.exe\" -Args @(\"/VERYSILENT\", \"/SP-\", \"/SUPPRESSMSGBOXES\", \"/NORESTART\", \"/NOCLOSEAPPLICATIONS\", \"/MERGETASKS=!collectdata,!desktopicon\", \"/LOG=${dir}\\sm-free.log\", \"/DIR=${dir}\") -RunAs | Out-Null"
+    },
+    "uninstaller": {
+        "script": "Invoke-ExternalCommand -FilePath \"$dir\\unins000.exe\" -Args @(\"/VERYSILENT\", \"/SUPPRESSMSGBOXES\", \"/NORESTART\", \"/CLOSEAPPLICATIONS\") -RunAs | Out-Null"
+    },
+    "bin": "todobackup.exe",
+    "checkver": {
+        "script": [
+            "# Using script to get version number",
+            "$url = 'https://www.easeus.com/backup-software/version-update-history.html'",
+            "$regex = '<div class=\"version\">\\n<p class=\"t\">Version.\\d+<br>\\((\\d+)\\)</p>[\\n\\s\\w<=\\\">/]+<li>EaseUS Todo Backup Home \\d+</li>\\n</ul>\\n'",
+            "$cont = $(Invoke-WebRequest $url).Content",
+            "if(!($cont -match $regex)) { error \"Could match '$regex' on '$url'\"; return }",
+            "Write-Output $matches[1]"
+        ],
+        "regex": "([\\d.]+)"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://down.easeus.com/product/tb_free?ref=/backup-software/tb-free.html#/todobackup.exe"
+            }
+        }
+    }
+}

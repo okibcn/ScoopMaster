@@ -1,25 +1,34 @@
 {
     "version": "5.1.3",
-    "description": "Updates WeakAuras installed from Wago.",
-    "homepage": "https://weakauras.wtf/",
+    "description": "Provide the missing link between Wago and the WeakAuras World of Warcraft addon.",
+    "homepage": "https://weakauras.wtf",
     "license": {
         "identifier": "GPL-2.0-or-later",
-        "url": "https://raw.githubusercontent.com/WeakAuras/WeakAuras-Companion/main/LICENSE"
+        "url": "https://github.com/WeakAuras/WeakAuras-Companion/blob/main/LICENSE"
     },
-    "url": "https://github.com/WeakAuras/WeakAuras-Companion/releases/download/v5.1.3/WeakAuras-Companion-Setup-5.1.3.exe#/setup.exe",
-    "hash": "24a1904175e3079882771aacd512d9c7e194be0e84bed04f61e177e9d367cad1",
+    "url": "https://github.com/WeakAuras/WeakAuras-Companion/releases/download/v5.1.3/WeakAuras-Companion-Setup-5.1.3.exe#/dl.7z",
+    "hash": "sha512:f45913c9db24a973a51cafc16813fbd4c35a841222764efb47a0941b4e4d8ac543965a20cb6b7b9d7301fdb7c70a1860d4e48c30210d84488781a5ee6d96bb8b",
+    "extract_dir": "$PLUGINSDIR",
     "installer": {
         "script": [
-            "Start-Process \"$dir\\setup.exe\" -ArgumentList '/S' -Wait -Verb RunAs | Out-Null",
-            "Remove-Item \"$dir\\setup.exe\""
+            "Remove-Item \"$dir\\*\" -Exclude 'app-64.7z'",
+            "Expand-7zipArchive \"$dir\\app-64.7z\" \"$dir\" -Removal"
         ]
     },
+    "shortcuts": [
+        [
+            "WeakAuras Companion.exe",
+            "WeakAuras Companion"
+        ]
+    ],
     "checkver": {
-        "url": "https://api.github.com/repos/WeakAuras/WeakAuras-Companion/releases",
-        "jsonpath": "$[0].tag_name",
-        "regex": "(?!v)(.+)"
+        "github": "https://github.com/WeakAuras/WeakAuras-Companion"
     },
     "autoupdate": {
-        "url": "https://github.com/WeakAuras/WeakAuras-Companion/releases/download/v$version/WeakAuras-Companion-Setup-$version.exe#/setup.exe"
+        "url": "https://github.com/WeakAuras/WeakAuras-Companion/releases/download/v$version/WeakAuras-Companion-Setup-$version.exe#/dl.7z",
+        "hash": {
+            "url": "$baseurl/latest.yml",
+            "regex": "sha512:\\s*(.+)"
+        }
     }
 }
