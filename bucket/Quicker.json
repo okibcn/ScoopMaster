@@ -1,36 +1,48 @@
 {
+    "##": "This package is not ported to the official buckets because ReadMe file written in English is not available. Extracting the .msi using 7-zip (which is by default in Scoop) causes path error. Therefore renaming it to .msi_.",
     "homepage": "https://getquicker.net/",
+    "description": "Make key shortcuts for programs, folders, URLs, and commands",
     "version": "1.40.23.0",
-    "license": "freeware",
+    "license": {
+        "identifier": "Shareware",
+        "url": "https://getquicker.net/Forum/ViewTopic/341"
+    },
+    "depends": "uniextract2",
     "architecture": {
-        "64bit": {
-            "url": "https://files.getquicker.net/_productfiles/202312/Quicker.x64.1.40.23.0.msi",
-            "hash": "424f9ddb5d7593c32583346681a818ef78b31e7602b985afad456c0ba8c4412a"
-        },
         "32bit": {
-            "url": "https://files.getquicker.net/_productfiles/202312/Quicker.x86.1.40.23.0.msi",
-            "hash": "63e624eb358bcb8c226494ad36b29c6c70a7ce1a74cbfb9471928f2426433d50"
+            "url": "https://getquicker.net/download/item/win_x86#/quicker.msi",
+            "hash": "2776d97f528008eb67e1f28106c27d89233957b63a320d61fcdf038cff9e60c1"
+        },
+        "64bit": {
+            "url": "https://getquicker.net/download/item/win_x64#/quicker.msi",
+            "hash": "92fd938b420b7b755612dbb6e85d995e18a3c9fda9645e3884cdde600b32179c"
         }
     },
-    "extract_dir": "Quicker",
-    "checkver": {
-        "url": "https://getquicker.net/Download",
-        "regex": "快速通道[\\w\\W]*?(\\d.[\\d.]+)"
+    "installer": {
+        "script": [
+            "uniextract \"$original_dir\\quicker.msi_\" \"$dir\"",
+            "Start-Sleep 10"
+        ]
     },
-    "bin": "Quicker.exe",
+    "persist": "Quicker\\Quicker.exe.config",
+    "bin": "Quicker\\Quicker.exe",
     "shortcuts": [
         [
-            "Quicker.exe",
+            "Quicker\\Quicker.exe",
             "Quicker"
         ]
     ],
+    "checkver": {
+        "url": "https://getquicker.net/Download",
+        "regex": "(?sm)<h5>.*?<small.*?>.*?</small>.*?<h5>.*?<small.*?>.*?([\\d.]+).*?</small>"
+    },
     "autoupdate": {
         "architecture": {
-            "64bit": {
-                "url": "https://files.getquicker.net/_productfiles/202312/Quicker.x64.$version.msi"
-            },
             "32bit": {
-                "url": "https://files.getquicker.net/_productfiles/202312/Quicker.x86.$version.msi"
+                "url": "https://getquicker.net/download/item/win_x86#/quicker.msi"
+            },
+            "64bit": {
+                "url": "https://getquicker.net/download/item/win_x64#/quicker.msi"
             }
         }
     }

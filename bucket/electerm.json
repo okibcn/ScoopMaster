@@ -1,10 +1,22 @@
 {
-    "homepage": "https://electerm.html5beta.com/",
-    "description": "electerm is a terminal/ssh/sftp client(linux, mac, win) based on electron/ssh2/node-pty/xterm/antd and many other libs.",
     "version": "1.37.93",
+    "description": "Terminal/ssh/serial port/sftp client",
+    "homepage": "https://electerm.github.io/electerm/",
     "license": "MIT",
-    "url": "https://github.com/electerm/electerm/releases/download/v1.37.93/electerm-1.37.93-win-x64.tar.gz",
-    "hash": "02df43f7b2a0176e6d893c5b8f369c45444771f3e05e51445e2f81438192ab16",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/electerm/electerm/releases/download/v1.37.93/electerm-1.37.93-win-x64-portable.tar.gz",
+            "hash": "128c08b47f1a71b10c9a3fbedc2125b2274c1aaf50902b04ca8c67f39dffbf7a",
+            "extract_dir": "electerm-1.37.93-win-x64-portable"
+        }
+    },
+    "pre_install": [
+        "# copy config from non-portable version",
+        "if (!(Test-Path \"$persist_dir\\electerm\") -and (Test-Path \"$env:Appdata\\electerm\")) {",
+        "    if (!(Test-Path \"$dir\\electerm\")) { New-Item \"$dir\\electerm\" -ItemType Directory | Out-Null }",
+        "    Copy-Item \"$env:Appdata\\electerm\\*\" \"$dir\\electerm\\\" -Recurse -Force",
+        "}"
+    ],
     "bin": "electerm.exe",
     "shortcuts": [
         [
@@ -12,12 +24,16 @@
             "Electerm"
         ]
     ],
-    "extract_dir": "electerm-1.37.93-win-x64",
+    "persist": "electerm",
     "checkver": {
-        "github": "https://github.com/electerm/electerm/"
+        "github": "https://github.com/electerm/electerm"
     },
     "autoupdate": {
-        "url": "https://github.com/electerm/electerm/releases/download/v$version/electerm-$version-win-x64.tar.gz",
-        "extract_dir": "electerm-$version-win-x64"
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/electerm/electerm/releases/download/v$version/electerm-$version-win-x64-portable.tar.gz",
+                "extract_dir": "electerm-$version-win-x64-portable"
+            }
+        }
     }
 }
