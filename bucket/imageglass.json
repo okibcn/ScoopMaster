@@ -1,12 +1,9 @@
 {
     "version": "9.0.9.1230",
     "description": "A lightweight, versatile image viewer",
-    "homepage": "https://imageglass.org/",
-    "license": "https://github.com/d2phap/ImageGlass/blob/develop/LICENSE",
-    "notes": [
-        "If this app does not work maybe you need to clean '$dir\\igconfig.json' file or clear default themes in '$dir\\Themes' directory.",
-        "To access EXIF data, you need to install 'exiftool' and 'ExifGlass' packages."
-    ],
+    "homepage": "https://imageglass.org",
+    "license": "GPL-3.0-only",
+    "notes": "If this app doesn't work maybe you need to clean '$dir\\igconfig.json' and reinstall '$dir\\Themes'.",
     "architecture": {
         "64bit": {
             "url": "https://github.com/d2phap/ImageGlass/releases/download/9.0.9.1230/ImageGlass_9.0.9.1230_x64.zip",
@@ -19,18 +16,10 @@
             "extract_dir": "ImageGlass_9.0.9.1230_arm64"
         }
     },
-    "suggest": {
-        "dotnet": "main/dotnet-sdk",
-        "exiftool": "main/exiftool",
-        "exifglass": "capella-bucket/exifglass"
-    },
     "pre_install": [
-        "$configFileExists = Test-Path $dir\\igconfig.json",
-        "if (-not $configFileExists) { New-Item -Type File -Path $dir -Name igconfig.json }"
-    ],
-    "post_install": [
-        "",
-        ""
+        "if (!(Test-Path \"$persist_dir\\igconfig.json\")) {",
+        "    Add-Content \"$dir\\igconfig.json\" '{\"AutoUpdate\": \"0\"}' -Encoding utf8",
+        "}"
     ],
     "bin": [
         "ImageGlass.exe",
@@ -43,14 +32,11 @@
         ]
     ],
     "persist": [
-        "igconfig.json",
-        "ThumbnailCache",
-        "WebUIData",
-        "Themes"
+        "Themes",
+        "igconfig.json"
     ],
     "checkver": {
-        "github": "https://github.com/d2phap/ImageGlass",
-        "regex": "ImageGlass (?<version>[\\d\\w.]+)"
+        "github": "https://github.com/d2phap/ImageGlass"
     },
     "autoupdate": {
         "architecture": {
