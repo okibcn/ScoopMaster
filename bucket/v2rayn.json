@@ -1,37 +1,69 @@
 {
     "version": "6.32",
-    "description": "A GUI client for Windows, support Xray core and v2fly core and others.",
+    "description": "A V2Ray client for Windows, support Xray & v2fly core",
     "homepage": "https://github.com/2dust/v2rayN",
-    "license": "GPL-3",
-    "notes": "",
+    "license": "GPL-3.0-only",
+    "depends": "xray",
+    "suggest": {
+        ".NET Desktop Runtime": "windowsdesktop-runtime-lts",
+        "v2fly-core": "v2ray"
+    },
     "architecture": {
         "64bit": {
             "url": "https://github.com/2dust/v2rayN/releases/download/6.32/v2rayN.zip",
             "hash": "9169c60507a9a073bd6544d251d6310cf79d5f72fcfbd84fb6cbcf2b4b71212e"
+        },
+        "32bit": {
+            "url": "https://github.com/2dust/v2rayN/releases/download/6.32/v2rayN-32.zip",
+            "hash": "703b37b7190d6129828a2286f41392edb562f40453f3a0f75f0489c5136c30c4"
+        },
+        "arm64": {
+            "url": "https://github.com/2dust/v2rayN/releases/download/6.32/v2rayN-arm64.zip",
+            "hash": "33d2d3fdfe68af133a05dc96554d7bc1d13bd360911d91c31fc9066ad7cc1aad"
         }
     },
-    "checkver": {
-        "url": "https://api.github.com/repos/2dust/v2rayN/releases",
-        "jsonpath": "$.[0].tag_name",
-        "regex": "([\\d.]+)"
-    },
-    "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://github.com/2dust/v2rayN/releases/download/$version/v2rayN.zip"
-            }
-        }
-    },
-    "persist": [
-        "bin",
-        "guiConfigs"
-    ],
     "extract_dir": "v2rayN",
+    "pre_install": [
+        "foreach ($form in @('*.exe', '*.dat')) {",
+        "    foreach ($_ in Get-ChildItem \"$(appdir xray $global)\\current\" -File) {",
+        "        $name = $_.Name",
+        "        if ($name -Like $form) {",
+        "            Write-Host \"Creating hardlink for $name\"",
+        "            New-Item -ItemType HardLink -Path \"$dir\\bin\\Xray\" -Name $name -Target \"$(appdir xray $global)\\current\\$name\" | Out-Null",
+        "        }",
+        "    }",
+        "}"
+    ],
     "bin": "v2rayN.exe",
     "shortcuts": [
         [
             "v2rayN.exe",
             "v2rayN"
         ]
-    ]
+    ],
+    "persist": "guiConfigs",
+    "uninstaller": {
+        "script": [
+            "if (Test-Path \"$dir\\guiConfigs\\config.json\") {",
+            "    Copy-Item \"$dir\\guiConfigs\\config.json\" \"$persist_dir\\guiConfigs\\config.json\" | Out-Null",
+            "}"
+        ]
+    },
+    "checkver": {
+        "url": "https://api.github.com/repos/2dust/v2rayN/releases?per_page=1",
+        "jsonpath": "$[0].tag_name"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/2dust/v2rayN/releases/download/$version/v2rayN.zip"
+            },
+            "32bit": {
+                "url": "https://github.com/2dust/v2rayN/releases/download/$version/v2rayN-32.zip"
+            },
+            "arm64": {
+                "url": "https://github.com/2dust/v2rayN/releases/download/$version/v2rayN-arm64.zip"
+            }
+        }
+    }
 }
