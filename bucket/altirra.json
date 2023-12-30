@@ -1,10 +1,10 @@
 {
-    "version": "4.10",
+    "version": "4.20",
     "description": "Altirra is the 8-bit Atari emulator focusing on high-quality emulation, sometimes over speed and polish",
-    "homepage": "http://www.virtualdub.org/altirra.html",
+    "homepage": "https://www.virtualdub.org/altirra.html",
     "license": "GPL-2.0-only",
-    "url": "http://www.virtualdub.org/downloads/Altirra-4.10.zip",
-    "hash": "98e59243dca8cf571d3cde4caeb7ba13e7fec9c0cb480e45b1fd45af25c1165e",
+    "url": "https://www.virtualdub.org/downloads/Altirra-4.20.zip",
+    "hash": "434b6fd3013f29eb4bebecc9913f5bc8c00c4163031e46db31718d8cdc3d0b83",
     "architecture": {
         "64bit": {
             "bin": "Altirra64.exe",
@@ -14,9 +14,7 @@
                     "Altirra"
                 ]
             ],
-            "post_install": [
-                "Remove-Item \"$dir\\Altirra.exe\""
-            ]
+            "post_install": "Remove-Item \"$dir\\Altirra.exe\""
         },
         "32bit": {
             "bin": "Altirra.exe",
@@ -26,22 +24,15 @@
                     "Altirra"
                 ]
             ],
-            "post_install": [
-                "Remove-Item \"$dir\\Altirra64.exe\""
-            ]
+            "post_install": "Remove-Item \"$dir\\Altirra64.exe\""
         }
     },
-    "pre_install": [
-        "if (!(Test-Path \"$persist_dir\\Altirra.ini\")) { New-Item \"$dir\\Altirra.ini\" | Out-Null }"
-    ],
-    "persist": [
-        "Altirra.ini"
-    ],
+    "pre_install": "if (!(Test-Path \"$persist_dir\\Altirra.ini\")) { New-Item \"$dir\\Altirra.ini\" | Out-Null }",
+    "persist": "Altirra.ini",
     "checkver": {
-        "url": "http://www.virtualdub.org/altirra.html",
-        "regex": "Version ([\\d.]+): \\["
+        "regex": "Altirra ([\\d.]+)"
     },
     "autoupdate": {
-        "url": "http://www.virtualdub.org/downloads/Altirra-$version.zip"
+        "url": "https://www.virtualdub.org/downloads/Altirra-$version.zip"
     }
 }
