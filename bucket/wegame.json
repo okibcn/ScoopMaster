@@ -1,13 +1,15 @@
 {
     "version": "5.6.5.12090",
-    "description": "游戏平台",
-    "homepage": "https://wegame.com.cn",
+    "description": "WeGame是国内最大的数字游戏发行平台，集游戏购买下载、游戏社区等功能于一身，为游戏开发者提供更好的服务，为游戏玩家提供更多优质游戏内容，构筑开发者和游戏玩家之间的沟通桥梁。",
+    "homepage": "https://www.wegame.com.cn/",
+    "license": "https://www.wegame.com.cn/contract",
     "url": "https://webcdn.m.qq.com/spcmgr/download/WeGameSetup5.6.5.12090_gjwegame_0_0.exe#/dl.7z",
     "hash": "b44813f8075ab355b4c1e33a1179cc317b5bf35165765632b763549e0d9d4e4e",
     "pre_install": [
         "Expand-7zipArchive \"$dir\\WeGameSetup.exe\" \"$dir\"",
         "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\`$SYSDIR\",\"$dir\\WeGameSetup.exe\" -Force -Recurse"
     ],
+    "bin": "wegame.exe",
     "shortcuts": [
         [
             "wegame.exe",
@@ -16,13 +18,16 @@
     ],
     "persist": [
         "downloads",
-        "games"
+        "games",
+        "data",
+        "config",
+        "client_config"
     ],
     "checkver": {
         "url": "https://pc.qq.com/detail/1/detail_23761.html",
-        "regex": "年最新([\\d.]+)"
+        "regex": "<div class=\"sys-info-value ellipsis\">\\n\\s+(?<version>[\\d.]+)"
     },
     "autoupdate": {
-        "url": "https://webcdn.m.qq.com/spcmgr/download/WeGameSetup$version_gjwegame_0_0.exe#/dl.7z"
+        "url": "https://webcdn.m.qq.com/spcmgr/download/WeGameSetup$matchVersion_gjwegame_0_0.exe#/dl.7z"
     }
 }
