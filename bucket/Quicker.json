@@ -1,48 +1,59 @@
 {
-    "##": "This package is not ported to the official buckets because ReadMe file written in English is not available. Extracting the .msi using 7-zip (which is by default in Scoop) causes path error. Therefore renaming it to .msi_.",
     "homepage": "https://getquicker.net/",
-    "description": "Make key shortcuts for programs, folders, URLs, and commands",
-    "version": "1.40.23.0",
-    "license": {
-        "identifier": "Shareware",
-        "url": "https://getquicker.net/Forum/ViewTopic/341"
-    },
-    "depends": "uniextract2",
+    "version": "1.40.30.0",
+    "license": "Freeware",
     "architecture": {
-        "32bit": {
-            "url": "https://getquicker.net/download/item/win_x86#/quicker.msi",
-            "hash": "2776d97f528008eb67e1f28106c27d89233957b63a320d61fcdf038cff9e60c1"
-        },
         "64bit": {
-            "url": "https://getquicker.net/download/item/win_x64#/quicker.msi",
-            "hash": "92fd938b420b7b755612dbb6e85d995e18a3c9fda9645e3884cdde600b32179c"
+            "url": "https://getquicker.net/download/item/fast_x64#.msi",
+            "hash": "053208fa9798993319ac08ba98c4d6a37c2db48ada44199f46742560dfc08455"
+        },
+        "32bit": {
+            "url": "https://getquicker.net/download/item/fast_x86#.msi",
+            "hash": "8b4997edbc81cdb39a87cb528c0a8a09fcee9e71b798b9f49dcf748cac31f630"
         }
+    },
+    "extract_dir": "Quicker",
+    "checkver": {
+        "url": "https://getquicker.net/Download",
+        "regex": "快速通道[\\w\\W]*?(\\d.[\\d.]+)"
     },
     "installer": {
         "script": [
-            "uniextract \"$original_dir\\quicker.msi_\" \"$dir\"",
-            "Start-Sleep 10"
+            "if (!(is_admin)) {",
+            "    error \"Administrator rights are required to uninstall $app.\"",
+            "    exit 1",
+            "}",
+            "New-Item Registry::HKEY_CLASSES_ROOT\\quicker -Force -ItemType String -Value 'URL:Quicker Protocol' | Out-Null",
+            "New-ItemProperty Registry::HKEY_CLASSES_ROOT\\quicker -Force -PropertyType string -Name 'URL Protocol' -Value '' | Out-Null",
+            "New-Item Registry::HKEY_CLASSES_ROOT\\quicker\\DefaultIcon -Force -ItemType String -Value 'Quicker.exe' | Out-Null",
+            "New-Item Registry::HKEY_CLASSES_ROOT\\quicker\\shell\\open\\command -Force -ItemType String -Value \"`\"$dir\\QuickerStarter.exe`\" `\"%1`\"\" | Out-Null"
         ]
     },
-    "persist": "Quicker\\Quicker.exe.config",
-    "bin": "Quicker\\Quicker.exe",
+    "uninstaller": {
+        "script": [
+            "if (!(is_admin)) {",
+            "    error \"Administrator rights are required to uninstall $app.\"",
+            "    exit 1",
+            "}",
+            "if (Test-Path Registry::HKEY_CLASSES_ROOT\\quicker) {",
+            "    Remove-Item Registry::HKEY_CLASSES_ROOT\\quicker -Force -Recurse | Out-Null",
+            "}"
+        ]
+    },
+    "bin": "Quicker.exe",
     "shortcuts": [
         [
-            "Quicker\\Quicker.exe",
+            "Quicker.exe",
             "Quicker"
         ]
     ],
-    "checkver": {
-        "url": "https://getquicker.net/Download",
-        "regex": "(?sm)<h5>.*?<small.*?>.*?</small>.*?<h5>.*?<small.*?>.*?([\\d.]+).*?</small>"
-    },
     "autoupdate": {
         "architecture": {
-            "32bit": {
-                "url": "https://getquicker.net/download/item/win_x86#/quicker.msi"
-            },
             "64bit": {
-                "url": "https://getquicker.net/download/item/win_x64#/quicker.msi"
+                "url": "https://getquicker.net/download/item/fast_x64#.msi"
+            },
+            "32bit": {
+                "url": "https://getquicker.net/download/item/fast_x86#.msi"
             }
         }
     }
