@@ -1,30 +1,26 @@
 {
-    "description": "A cross-platform app made for e-hentai & exhentai by Flutter",
+    "version": "7.4.9+148",
+    "description": "An E-Hentai app for Android & iOS & Windows & MacOS & Linux.",
     "homepage": "https://github.com/jiangtian616/JHenTai",
     "license": "Apache-2.0",
-    "version": "7.4.7",
-    "checkver": {
-        "url": "https://github.com/jiangtian616/JHenTai/releases/latest",
-        "regex": "<h1[^>]*>v(?<version>[\\d\\.]+)\\+(?<idx>\\d+)</h1>"
-    },
-    "autoupdate": {
-        "url": "https://github.com/jiangtian616/JHenTai/releases/download/v$matchVersion%2B$matchIdx/JHenTai_$matchVersion+$matchIdx_Windows.zip",
-        "extract_dir": "JHenTai_$matchVersion+$matchIdx",
-        "hash": {
-            "mode": "download"
-        }
-    },
-    "url": "https://github.com/jiangtian616/JHenTai/releases/download/v7.4.7%2B146/JHenTai_7.4.7+146_Windows.zip",
-    "hash": "87cc8fe095f59c9239714bc7268b7a0c9ef49913c2f21f70b83ecd667fd1347f",
-    "extract_dir": "JHenTai_7.4.7+146",
+    "url": "https://github.com/jiangtian616/JHenTai/releases/download/v7.4.9+148/JHenTai_7.4.9+148_Windows.zip",
+    "hash": "5a8023a27f921ab300f9616721abbdb20a3d8d69d360c6c9ad24b5cd32a77350",
+    "bin": "jhentai.exe",
+    "pre_install": [
+        "Move-Item -Path \"$dir\\JHenTai_*\\*\" -Destination \"$dir\"",
+        "Remove-Item \"$dir\\JHenTai_*\" -Force -Recurse"
+    ],
     "shortcuts": [
         [
             "jhentai.exe",
             "JHenTai"
         ]
     ],
-    "notes": [
-        "Config and data are stored in %USERPROFILE%\\AppData\\Roaming\\top.jtmonster\\jhentai",
-        "They will not be automatically removed during uninstallation even with -p flag. Delete them manually if needed."
-    ]
+    "checkver": {
+        "url": "https://github.com/jiangtian616/JHenTai/releases/latest",
+        "regex": "v(\\d+\\.\\d+\\.\\d+\\+\\d+)"
+    },
+    "autoupdate": {
+        "url": "https://github.com/jiangtian616/JHenTai/releases/download/v$version/JHenTai_$version_Windows.zip"
+    }
 }
