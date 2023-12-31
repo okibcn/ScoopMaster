@@ -1,0 +1,65 @@
+{
+    "version": "2023.5.21",
+    "description": "A program for editing data of genie (DAT and DLL) files of Age of Empires II",
+    "homepage": "https://aok.heavengames.com/blacksmith/showfile.php?fileid=11002",
+    "license": "Freeware",
+    "notes": [
+        "This program requires Age of Empires II, regardless of the original, HD or DE version.",
+        "",
+        "If you want to customize AGE3NamesV0005.ini filename, you can change it and it is recommended to put the file into CustomData folder to persist it."
+    ],
+    "suggest": {
+        "vcredist2022": "extras/vcredist2022"
+    },
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/Tapsa/AGE/releases/download/2023.5.21/AdvancedGenieEditor20230521x64.zip",
+            "hash": "971887d7007e0db7e7be2ab84f9b3fab50b3aab594403bbf526bbfb83174fbb7"
+        },
+        "32bit": {
+            "url": "https://github.com/Tapsa/AGE/releases/download/2023.5.21/AdvancedGenieEditor20230521x86.zip",
+            "hash": "09071133fed317bb7f032f6ff7143e513dc242fb43c79b8aa2789794898549c3"
+        }
+    },
+    "extract_dir": "",
+    "extract_to": "",
+    "pre_install": [
+        "if (-not (Test-Path -Path $persist_dir\\CustomData)) { New-Item -Path $dir -Name CustomData -ItemType Directory }",
+        "if (-not (Test-Path -Path $persist_dir\\CustomData\\Age3NamesV0005.ini)) { New-Item -Path $dir -Name Age3NamesV0005.ini -ItemType File }"
+    ],
+    "bin": "AdvancedGenieEditor3.exe",
+    "shortcuts": [
+        [
+            "AdvancedGenieEditor3.exe",
+            "Advanced Genie Editor 3"
+        ]
+    ],
+    "persist": [
+        "AGE3NamesV0005.ini",
+        "CustomData"
+    ],
+    "checkver": {
+        "script": [
+            "$regex = '/Tapsa/Age/releases/tag/(?<dotVersion>.[\\d.]+)'",
+            "$url = 'https://github.com/Tapsa/Age/releases/latest'",
+            "$response = Invoke-WebRequest -Uri $url",
+            "$response.Links | Where-Object href -Match $regex | Select-Object -First 1 -ExpandProperty href",
+            "$dotVersion = $Matches['dotVersion']",
+            "$dateTimeVersion = [datetime]::parseexact($dotVersion, 'yyyy.m.d', $null).ToString('yyyymmdd')",
+            "$dateTimeX86Version = $dateTimeVersion + 'x86'",
+            "$dateTimeX64Version = $dateTimeVersion + 'x64'",
+            "Write-Output $dotVersion $dateTimeX86Version $dateTimeX64Version"
+        ],
+        "regex": "(?<version>[\\d.]+)\\s(?<x86formatteddate>[\\w]+)\\s(?<x64formatteddate>[\\w]+)"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/Tapsa/AGE/releases/download/$version/AdvancedGenieEditor$matchX64formatteddate.zip"
+            },
+            "32bit": {
+                "url": "https://github.com/Tapsa/AGE/releases/download/$version/AdvancedGenieEditor$matchX86formatteddate.zip"
+            }
+        }
+    }
+}
