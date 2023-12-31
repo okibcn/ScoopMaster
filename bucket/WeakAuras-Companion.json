@@ -1,20 +1,16 @@
 {
     "version": "5.2.1",
-    "description": "Provide the missing link between Wago and the WeakAuras World of Warcraft addon.",
-    "homepage": "https://weakauras.wtf",
-    "license": {
-        "identifier": "GPL-2.0-or-later",
-        "url": "https://github.com/WeakAuras/WeakAuras-Companion/blob/main/LICENSE"
-    },
-    "url": "https://github.com/WeakAuras/WeakAuras-Companion/releases/download/v5.2.1/WeakAuras-Companion-Setup-5.2.1.exe#/dl.7z",
-    "hash": "sha512:1947980def2869136d0e381017007a9897a2fe2621945a0bd4ba7de632bd45e9af8ea319c3394b42e8dc851da5ee678b5d89cc16e3fc6d6fa629ded7a3a7f450",
-    "extract_dir": "$PLUGINSDIR",
+    "description": "The bridge between WeakAuras and wago.io",
+    "homepage": "https://weakauras.wtf/",
+    "license": "GPL-2",
     "installer": {
         "script": [
-            "Remove-Item \"$dir\\*\" -Exclude 'app-64.7z'",
-            "Expand-7zipArchive \"$dir\\app-64.7z\" \"$dir\" -Removal"
+            "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\"",
+            "Remove-Item \"$dir\\`$PLUGINSDIR\" -Force -Recurse"
         ]
     },
+    "url": "https://github.com/WeakAuras/WeakAuras-Companion/releases/download/v5.2.1/WeakAuras-Companion-Setup-5.2.1.exe#dl.7z",
+    "hash": "a70b384e8563c3202a99a6a6c3e9fd32a021c97d51075b2ff5b59527d1f2d7bf",
     "shortcuts": [
         [
             "WeakAuras Companion.exe",
@@ -25,10 +21,6 @@
         "github": "https://github.com/WeakAuras/WeakAuras-Companion"
     },
     "autoupdate": {
-        "url": "https://github.com/WeakAuras/WeakAuras-Companion/releases/download/v$version/WeakAuras-Companion-Setup-$version.exe#/dl.7z",
-        "hash": {
-            "url": "$baseurl/latest.yml",
-            "regex": "sha512:\\s*(.+)"
-        }
+        "url": "https://github.com/WeakAuras/WeakAuras-Companion/releases/download/v$version/WeakAuras-Companion-Setup-$version.exe#dl.7z"
     }
 }
