@@ -1,22 +1,26 @@
 {
     "version": "0.5.1",
-    "description": "Postcat 是一个可扩展的 API 工具平台。集合基础的 API 管理和测试功能，并且可以通过插件简化你的 API 开发工作，让你可以更快更好地创建 API。An extensible API tool.",
     "homepage": "https://github.com/Postcatlab/postcat",
-    "license": {
-        "identifier": "Apache-2.0",
-        "url": "https://github.com/Postcatlab/postcat#Apache-2.0-1-ov-file"
+    "checkver": "github",
+    "url": "https://github.com/Postcatlab/postcat/releases/download/v0.5.1/Postcat-0.5.1.exe#/dl.7z",
+    "hash": "8ff4458f79ac33b2af30985407b889022b2f43ddbed4f30a9c4ccb38499d6e90",
+    "autoupdate": {
+        "url": "https://github.com/Postcatlab/postcat/releases/download/v$version/Postcat-$version.exe#/dl.7z"
     },
-    "url": "https://github.com/Postcatlab/postcat/releases/download/v0.5.1/Postcat-Setup-0.5.1.exe#/dl.7z",
-    "hash": "936b6d3962df0905fb58917dca98de2cac4502c7c840013110bb802fdef7c232",
-    "bin": "Postcat.exe",
+    "architecture": {
+        "64bit": {
+            "installer": {
+                "script": "7z x $original_dir/PLUGINSDIR/app-64.7z -o\"$original_dir\""
+            }
+        }
+    },
+    "extract_dir": "$PLUGINSDIR",
+    "extract_to": "PLUGINSDIR",
+    "post_install": "rm $original_dir/PLUGINSDIR -recurse",
     "shortcuts": [
         [
             "Postcat.exe",
             "Postcat"
         ]
-    ],
-    "checkver": "github",
-    "autoupdate": {
-        "url": "https://github.com/Postcatlab/postcat/releases/download/v$version/Postcat-Setup-$version.exe#/dl.7z"
-    }
+    ]
 }
