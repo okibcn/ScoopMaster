@@ -13,13 +13,23 @@
             "hash": "78e3a4e580bceee892196899544b2ed370ff56bf289694eb3ee6aabfc06c7a85"
         }
     },
-    "post_install": "Remove-Item \"$dir\\`$PLUGINSDIR\" -Force -Recurse",
+    "post_install": [
+        "if (!(Test-Path \"$dir\\data\\*\") -and (Test-Path \"$env:APPDATA\\com.pot-app.desktop\")) {",
+        "    info '[Portable Mode]: Copying user config data . . .'",
+        "    Copy-Item \"$env:APPDATA\\com.pot-app.desktop\\*\" \"$persist_dir\\data\" -Recurse",
+        "}",
+        "Import-Module $(Join-Path $(Find-BucketDirectory -Root -Name scoop-private) scripts/Utils-private.psm1)",
+        "Mount-ExternalRuntimeData -Source \"$persist_dir\\data\" -Target \"$env:APPDATA\\com.pot-app.desktop\"",
+        "Remove-Module -Name Utils-private",
+        "Remove-Item \"$dir\\`$PLUGINSDIR\" -Force -Recurse"
+    ],
     "shortcuts": [
         [
             "pot.exe",
             "Pot"
         ]
     ],
+    "persist": "data",
     "checkver": {
         "github": "https://github.com/pot-app/pot-desktop"
     },
@@ -35,6 +45,6 @@
     },
     "notes": [
         "You may need to install Edge WebView2 Runtime to use Pot.",
-        "A installer of Edge WebView2 Runtime is available under the '$TEMP' folder of the Pot installation directory."
+        "A installer of Edge WebView2 Runtime is available under the 'redist' folder of the Pot installation directory."
     ]
 }
