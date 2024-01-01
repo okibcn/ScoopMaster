@@ -1,0 +1,37 @@
+{
+    "homepage": "https://github.com/gaozhangmin/aliyunpan",
+    "version": "3.12.3",
+    "description": "小白羊网盘 - Powered by 阿里云盘",
+    "license": "MIT",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/gaozhangmin/aliyunpan/releases/download/v3.12.3/XBYDriver-3.12.3-win-x64.exe",
+            "hash": "efd6fa716b2a4f503571191321bc22dea6a4fbac72e4a345c97f762f1995b726"
+        }
+    },
+    "post_install": [
+        "$CmdString = \"$dir\\XBYDriver-$version-win-x64.exe /S /D=$dir\"",
+        "Invoke-Expression $CmdString",
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+          "persist_file @(\"$env:APPData\\alixby3\\setting.config\") @(\"$persist_dir\\setting.config\")"
+    ],
+    "pre_uninstall": [
+        "$_bucket=(scoop bucket list | where-Object {$_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
+        ". \"$bucketsdir\\$_bucket\\bin\\utils.ps1\"",
+        "stop_process"
+    ],
+    "post_uninstall": [
+        "$data=@(\"C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\小白羊云盘.lnk\")",
+        "$data | ForEach-Object {",
+        "   if (Test-Path($_)) {",
+        "       Remove-Item -Force -Recurse $_",
+        "       Write-Host \"Removing $_\" -f Yellow",
+        "   }",
+        "}"
+    ],
+    "checkver": "github",
+    "autoupdate": {
+        "note": "Thanks for using autoupdate, please test your updates!",
+        "url": "https://github.com/gaozhangmin/aliyunpan/releases/download/$version/XBYDriver-$version-win-x64.exe"
+    }
+  }
