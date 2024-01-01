@@ -34,13 +34,6 @@
         }
     },
     "extract_dir": "Program Files\\TortoiseSVN",
-    "pre_install": [
-        "$escdir = \"$dir\" -replace '\\\\', '\\\\'",
-        "'install', 'install-tools' | ForEach-Object {",
-        "    (Get-Content \"$dir\\tortoisesvn-$_.reg.templ\") -replace '%TSVNHOME%', \"$escdir\" | Set-Content -LiteralPath \"$dir\\tortoisesvn-$_.reg\" -Encoding Ascii",
-        "    Remove-Item \"$dir\\tortoisesvn-$_.reg.templ\"",
-        "}"
-    ],
     "bin": [
         "bin\\svn.exe",
         "bin\\svnadmin.exe",
@@ -82,6 +75,14 @@
             "TortoiseSVN Settings",
             "/command:settings"
         ]
+    ],
+    "post_install": [
+        "$escdir = \"$dir\" -replace '\\\\', '\\\\'",
+        "'install', 'install-tools' | ForEach-Object {",
+        "    (Get-Content \"$dir\\tortoisesvn-$_.reg.templ\") -replace '%TSVNHOME%', \"$escdir\" | Set-Content -LiteralPath \"$dir\\tortoisesvn-$_.reg\" -Encoding Ascii",
+        "    Remove-Item \"$dir\\tortoisesvn-$_.reg.templ\"",
+        "}",
+        "sudo New-Item -Path \"$env:CommonProgramFiles\\TortoiseOverlays\" -Target \"$dir\\Common\\TortoiseOverlays\" -ItemType Junction | Out-Null"
     ],
     "uninstaller": {
         "script": [
