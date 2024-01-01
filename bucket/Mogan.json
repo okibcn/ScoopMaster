@@ -1,22 +1,34 @@
 {
-    "homepage": "https://mogan.app/",
-    "description": "A user-friendly distribution of GNU TeXmacs.",
+    "version": "1.2.2",
+    "description": "Mogan (based on GNU TeXmacs): Let us enjoy exploring science and technology!",
+    "homepage": "https://mogan.app",
     "license": "GPL-3.0-or-later",
-    "version": "1.2.1",
-    "url": "https://github.com/XmacsLabs/mogan/releases/download/v1.2.1/Mogan-v1.2.1-64bit-installer.exe",
-    "hash": "f066662bd525f9cb467f72436c1c116701afca1d0195b62904d21c3be5489170",
-    "innosetup": true,
-    "bin": "bin\\Mogan.exe",
-    "shortcuts": [
-        [
-            "bin\\Mogan.exe",
-            "Mogan"
-        ]
+    "url": "https://github.com/XmacsLabs/mogan/releases/download/v1.2.2/MoganResearch-v1.2.2-64bit-installer.exe#/setup.exe",
+    "hash": "8b8e2cc54c64436b965417c9f76beaded181d3c4a192f2eae62189d88b754e28",
+    "notes": [
+        "Data is stored in $persist_dir\\data",
+        "delete them manually if you want to purge the data"
     ],
+    "post_install": [
+        "if (!(is_admin)) { error \"$app requires admin rights to $cmd\"; break }",
+        "Start-Process \"$dir\\setup.exe\" -Wait -Verb 'RunAs' -WindowStyle 'Hidden' -ArgumentList @('in', '-c', '--am', '--al', '-t', \"$dir\")",
+        "Remove-Item \"$dir\\setup.exe\"",
+        "ensure \"$persist_dir\\data\" | Out-Null"
+    ],
+    "pre_uninstall": [
+        "if (!(is_admin)) { error \"$app requires admin rights to $cmd\"; break }",
+        "Start-Process \"$dir\\maintenancetool.exe\" -Wait -Verb 'RunAs' -WindowStyle 'Hidden' -ArgumentList @('pr', '-c', '--am', '--al')"
+    ],
+    "env_set": {
+        "TEXMACS_HOME_PATH": "$persist_dir\\data"
+    },
     "checkver": {
         "github": "https://github.com/XmacsLabs/mogan"
     },
     "autoupdate": {
-        "url": "https://github.com/XmacsLabs/mogan/releases/download/v$version/Mogan-v$version-64bit-installer.exe"
-   }
+        "url": "https://github.com/XmacsLabs/mogan/releases/download/v$version/MoganResearch-v$version-64bit-installer.exe#/setup.exe",
+        "hash": {
+            "url": "https://mogan.app/guide/Install.html"
+        }
+    }
 }
