@@ -16,19 +16,9 @@
         "   }",
         "}"
     ],
-    "##": [
-        "Installation options",
-        "  /quiet      needs to be specified for silent installation",
-        "  /analytics  with/without sharing app users and diagnostic data (Yes or No)",
-        "  /flow       show/hide the Flow feature (Yes or No)",
-        "  /sso        show/hide users to sign into the Logi Options+ App (Yes or No)",
-        "  /update     enable/disable updates (Yes or No)",
-        "  /log        add installation log file"
-    ],
     "installer": {
         "script": [
-            "$logFileName=\"$dir\\logioptionsplus_installer-install.log\"",
-            "Start-Process \"$dir\\logioptionsplus_installer.exe\" -ArgumentList @('/quiet', '/analytics No', '/flow Yes', '/sso Yes', '/update No', '/log $logFileName') -Wait -NoNewWindow"
+            "Start-Process \"$dir\\logioptionsplus_installer.exe\" -ArgumentList @('/quiet', '/analytics No', '/flow Yes', '/sso Yes', '/update No') -Wait -NoNewWindow"
         ],
         "keep": true
     },
@@ -47,8 +37,7 @@
     ],
     "uninstaller": {
         "script": [
-            "$logFileName=\"$dir\\logioptionsplus_installer-uninstall.log\"",
-            "Start-Process \"$dir\\logioptionsplus_installer.exe\" -ArgumentList @('uninstall', '/quiet', '/log $logFileName') -Wait -NoNewWindow"
+            "Start-Process \"C:\\Program Files\\LogiOptionsPlus\\logioptionsplus_updater.exe\" -ArgumentList @('--uninstall', '--full', '--shadow') -Wait -Verb 'RunAs'"
         ]
     },
     "checkver": {
