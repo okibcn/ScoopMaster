@@ -1,30 +1,28 @@
 {
+    "##": "Rename from zip to 7z is needed due to 'unsupported compression method' error.",
     "version": "5.5.1.2",
-    "description": "Farm Steam cards from multiple accounts simultaneously.",
+    "description": "ArchiSteamFarm. Farm steam cards using multiple steam accounts simultaneously.",
     "homepage": "https://github.com/JustArchiNET/ArchiSteamFarm",
-    "license": "Apache-2.0",
+    "license": {
+        "identifier": "Apache-2.0",
+        "url": "https://github.com/JustArchiNET/ArchiSteamFarm/blob/master/LICENSE-2.0.txt"
+    },
     "architecture": {
         "64bit": {
-            "url": "https://github.com/JustArchiNET/ArchiSteamFarm/releases/download/5.5.1.2/ASF-win-x64.zip#/dl",
-            "hash": "5e8aa0c96793a97060d47bbdcba178c93aaa097dba88ed46b7463fda3a57858e",
-            "pre_install": [
-                "if (Test-Path \"$persist_dir\\plugins\") {",
-                "  Expand-7zipArchive \"$dir\\$fname\" \"$dir\\_temp\" -ExtractDir plugins",
-                "  Get-ChildItem \"$persist_dir\\plugins\" *OfficialPlugins* | Remove-Item -Recurse",
-                "  Get-ChildItem \"$dir\\_temp\" -Exclude .gitkeep | % { Move-Item \"$dir\\_temp\\$($_.Name)\" \"$persist_dir\\plugins\\$($_.Name)\" }",
-                "  Remove-Item \"$dir\\_temp\" -Recurse -Force",
-                "}"
-            ],
-            "installer": {
-                "script": "Expand-7zipArchive \"$dir\\$fname\" \"$dir\" -Removal"
-            }
+            "url": "https://github.com/JustArchiNET/ArchiSteamFarm/releases/download/5.5.1.2/ASF-win-x64.zip",
+            "hash": "sha512:5e25031dfc5abdd330a2eb0c44fd0f196390f0dbb3f44d474cc7083c54b14ac4a7356d7f058c59b92baf29bd1588441db0b86c9dfaabca061ba08c9a09f18e5f"
         }
     },
-    "bin": "ArchiSteamFarm.exe",
+    "bin": [
+        [
+            "ArchiSteamFarm.exe",
+            "ASF"
+        ]
+    ],
     "shortcuts": [
         [
             "ArchiSteamFarm.exe",
-            "ArchiSteamFarm"
+            "ASF"
         ]
     ],
     "persist": [
@@ -35,7 +33,11 @@
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://github.com/JustArchiNET/ArchiSteamFarm/releases/download/$version/ASF-win-x64.zip#/dl"
+                "url": "https://github.com/JustArchiNET/ArchiSteamFarm/releases/download/$version/ASF-win-x64.zip",
+                "hash": {
+                    "url": "$baseurl/SHA512SUMS",
+                    "find": "$sha512[\\s]+?$basename"
+                }
             }
         }
     }
