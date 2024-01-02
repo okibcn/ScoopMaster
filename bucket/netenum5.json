@@ -1,10 +1,10 @@
 {
-    "version": "2023.09.12.0",
+    "version": "2023.10.26.0",
     "description": "It collects and lists the computer obtainable information on the network.",
     "homepage": "https://www.e-realize.com/netenum5.html",
     "license": "Freeware",
-    "url": "https://www.e-realize.com/netenum20230912.zip",
-    "hash": "78ba017b7d961e470836c153cd1b3f1d3661610060a321576fa448c38c2bddcf",
+    "url": "https://www.e-realize.com/netenum20231026.zip",
+    "hash": "ebc2ca67b5b57ec4386a54ede2b2896010cec03bb3eb3b14d31be79d5c897144",
     "pre_install": [
         "if(!(Test-Path(\"$persist_dir\"))) { New-Item \"$persist_dir\" -type directory | Out-Null }",
         "if(!(Test-Path(\"$persist_dir\\netenum5.ini\"))) { New-Item \"$persist_dir\\netenum5.ini\" -type file | Out-Null }"
@@ -17,7 +17,10 @@
             "NetEnum5"
         ]
     ],
-    "checkver": "Version ([\\d.]+)",
+    "checkver": {
+        "regex": "<p class=\"info_date\">(\\d+)/(\\d+)/(\\d+)</p>",
+        "replace": "${1}.${2}.${3}.0"
+    },
     "autoupdate": {
         "url": "https://www.e-realize.com/netenum$majorVersion$minorVersion$patchVersion.zip"
     }

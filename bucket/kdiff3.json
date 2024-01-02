@@ -1,18 +1,14 @@
 {
-    "version": "1.10.7",
-    "description": "Utility for comparing and merging files and directories",
+    "version": "1.11-1298",
+    "description": "KDiff3 is a file and folder diff and merge tool",
     "homepage": "https://apps.kde.org/kdiff3/",
-    "license": "GPL-2.0-only",
+    "license": "LGPL-2.0-only",
     "architecture": {
         "64bit": {
-            "url": "https://download.kde.org/stable/kdiff3/kdiff3-1.10.7-windows-x86_64.exe#/dl.7z",
-            "hash": "7f5564e7caba51f94b7fafda4112f8d85699f9a3d7ea647fa6954126ab754b86"
+            "url": "https://binary-factory.kde.org/job/KDiff3_Stable_win64/lastSuccessfulBuild/artifact/kdiff3-1.11-1298-windows-cl-msvc2019-x86_64.7z",
+            "hash": "a19028e705e54a096d780f93d009b735f73d07cd9bc1286ee8c3e296e2ee046f"
         }
     },
-    "pre_install": [
-        "Expand-7zipArchive \"$dir\\kdiff3*.7z\" -Removal",
-        "Remove-Item \"$dir\\`$*\", \"$dir\\uninst*\", \"$dir\\7za.exe\" -Recurse"
-    ],
     "bin": "bin\\kdiff3.exe",
     "shortcuts": [
         [
@@ -21,17 +17,17 @@
         ]
     ],
     "checkver": {
-        "url": "https://download.kde.org/stable/kdiff3/?C=M;O=D",
-        "regex": "(?<file>kdiff3-(?<version>[\\d.]+(\\w)?)-windows(-cl|-(x86_)?64)+)\\.exe"
+        "url": "https://binary-factory.kde.org/job/KDiff3_Stable_win64/",
+        "regex": "kdiff3-([\\d.-]+)-windows-cl-msvc2019-x86_64\\.7z"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://download.kde.org/stable/kdiff3/$matchFile.exe#/dl.7z"
+                "url": "https://binary-factory.kde.org/job/KDiff3_Stable_win64/lastSuccessfulBuild/artifact/kdiff3-$version-windows-cl-msvc2019-x86_64.7z",
+                "hash": {
+                    "url": "$url.sha256"
+                }
             }
-        },
-        "hash": {
-            "url": "$url.sha256"
         }
     }
 }
