@@ -1,19 +1,47 @@
 {
     "version": "0.4.9",
-    "description": "A search engine that does full text indexing. It is a lightweight alternative to Elasticsearch.",
-    "homepage": "https://github.com/zincsearch/zincsearch",
+    "description": "A lightweight alternative to elasticsearch that requires minimal resources, written in Go.",
+    "homepage": "https://docs.zinclabs.io/",
     "license": "Apache-2.0",
-    "url": "https://github.com/zincsearch/zincsearch/releases/download/v0.4.9/zincsearch_0.4.9_windows_x86_64.tar.gz",
-    "hash": "2eb2524584f5c4a9ec7183553ea968582b8dba7af2ca6478e79b725b66241600",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/prabhatsharma/zinc/releases/download/v0.4.9/zincsearch_0.4.9_Windows_x86_64.tar.gz",
+            "hash": "2eb2524584f5c4a9ec7183553ea968582b8dba7af2ca6478e79b725b66241600"
+        },
+        "arm64": {
+            "url": "https://github.com/prabhatsharma/zinc/releases/download/v0.4.9/zincsearch_0.4.9_Windows_arm64.tar.gz",
+            "hash": "7b117053468faadb9c74f6693e4ef97561c16afc9cf6b909f53ecc9210aab701"
+        }
+    },
     "bin": "zincsearch.exe",
-    "shortcuts": [
-        [
-            "zincsearch.exe",
-            "ZincSearch"
-        ]
+    "persist": "data",
+    "env_set": {
+        "ZINC_DATA_PATH": "$dir\\data"
+    },
+    "notes": [
+        "You would need ZINC_FIRST_ADMIN_USER and ZINC_FIRST_ADMIN_PASSWORD environment variables when you start zinc for the first time.",
+        "You don't need them on subsequent runs of zinc.",
+        "-----",
+        "$env:ZINC_FIRST_ADMIN_USER=\"admin\"",
+        "$env:ZINC_FIRST_ADMIN_PASSWORD=\"Complexpass#123\"",
+        "zincsearch.exe",
+        "-----",
+        "Now point your browser to http://localhost:4080 and login."
     ],
-    "checkver": "github",
+    "checkver": {
+        "github": "https://github.com/zincsearch/zincsearch"
+    },
     "autoupdate": {
-        "url": "https://github.com/zincsearch/zincsearch/releases/download/v$version/zincsearch_$version_windows_x86_64.tar.gz"
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/prabhatsharma/zinc/releases/download/v$version/zincsearch_$version_Windows_x86_64.tar.gz"
+            },
+            "arm64": {
+                "url": "https://github.com/prabhatsharma/zinc/releases/download/v$version/zincsearch_$version_Windows_arm64.tar.gz"
+            }
+        },
+        "hash": {
+            "url": "$baseurl/checksums.txt"
+        }
     }
 }
