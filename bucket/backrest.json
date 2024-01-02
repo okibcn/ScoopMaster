@@ -1,0 +1,38 @@
+{
+    "version": "0.9.2",
+    "description": "Backrest is a web UI and orchestrator for restic backup.",
+    "homepage": "https://github.com/garethgeorge/backrest",
+    "license": "GPL-3.0-or-later",
+    "depends": "restic",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/garethgeorge/backrest/releases/download/v0.9.2/backrest_Windows_x86_64.zip",
+            "hash": "5622c0d24ba3cfa05c379b463be05ce9c05dcbb2668335d945409d086e3007ab"
+        },
+        "arm64": {
+            "url": "https://github.com/garethgeorge/backrest/releases/download/v0.9.2/backrest_Windows_arm64.zip",
+            "hash": "5711fce20752c37e53b50fe5990b2b9670c7d59549c4c418dd1aa1ac9865d993"
+        }
+    },
+    "bin": "backrest.exe",
+    "env_set": {
+        "BACKREST_CONFIG": "$dir\\backrest\\config.json",
+        "BACKREST_DATA": "$dir\\backrest\\data",
+        "BACKREST_RESTIC_COMMAND": "$(appdir restic $global)\\current\\restic.exe"
+    },
+    "persist": "backrest",
+    "checkver": "github",
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/garethgeorge/backrest/releases/download/v$version/backrest_Windows_x86_64.zip"
+            },
+            "arm64": {
+                "url": "https://github.com/garethgeorge/backrest/releases/download/v$version/backrest_Windows_arm64.zip"
+            }
+        },
+        "hash": {
+            "url": "$baseurl/backrest_$version_checksums.txt"
+        }
+    }
+}
