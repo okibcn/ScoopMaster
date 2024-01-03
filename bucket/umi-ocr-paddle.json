@@ -1,30 +1,31 @@
 {
-    "homepage": "https://github.com/hiroi-sora/Umi-OCR",
-    "description": "Free, Open-source, Batch Offline OCR Software with PaddleOCR engine.",
-    "license": "MIT",
     "version": "2.0.1",
-    "url": "https://github.com/hiroi-sora/Umi-OCR/releases/download/release%2F2.0.1/Umi-OCR_Paddle_v2.0.1.7z.exe#dl.7z",
-    "hash": "cb51be5c37f69ef6a4a5288c591051d240cf233929daff233a6e957c5eea600d",
-    "extract_dir": "Umi-OCR_Paddle_v2.0.1",
+    "description": "OCR离线批量图片文字识别软件，带界面。可排除视频图片中的水印、游戏图片中的UI等干扰，提取干净的文本。基于 PaddleOCR 。",
+    "homepage": "https://github.com/hiroi-sora/Umi-OCR",
+    "license": "MIT",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/hiroi-sora/Umi-OCR/releases/download/release/2.0.1/Umi-OCR_Paddle_v2.0.1.7z.exe#/dl.7z",
+            "hash": "cb51be5c37f69ef6a4a5288c591051d240cf233929daff233a6e957c5eea600d",
+            "extract_dir": "Umi-OCR_Paddle_v2.0.1"
+        }
+    },
     "shortcuts": [
         [
             "Umi-OCR.exe",
             "Umi-OCR"
         ]
     ],
-    "installer": {
-        "script": [
-            "if (!(Test-Path \"$persist_dir\\UmiOCR-data\\.settings\")) { New-Item \"$dir\\UmiOCR-data\\.settings\" | Out-Null }"
-        ]
-    },
-    "persist": "UmiOCR-data\\.settings",
     "checkver": {
-        "github": "https://github.com/hiroi-sora/Umi-OCR",
-        "regex": "/releases/tag/release%2F([\\w.-]+)"
+        "url": "https://api.github.com/repos/hiroi-sora/Umi-OCR/releases",
+        "regex": "/releases/tag/release/([\\d.]+)"
     },
     "autoupdate": {
-        "url": "https://github.com/hiroi-sora/Umi-OCR/releases/download/release%2F$version/Umi-OCR_Paddle_v$version.7z.exe#dl.7z",
-        "extract_dir": "Umi-OCR_Paddle_v$version"
-    },
-    "notes": "Persist setting file doesn't work. I don't know why."
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/hiroi-sora/Umi-OCR/releases/download/release/$version/Umi-OCR_Paddle_v$version.7z.exe#/dl.7z",
+                "extract_dir": "Umi-OCR_Paddle_v$version"
+            }
+        }
+    }
 }
