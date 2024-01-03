@@ -1,24 +1,31 @@
 {
+    "homepage": "http://pdm.fming.dev",
     "version": "2.11.2",
-    "description": "A modern Python package and dependency manager supporting the latest PEP standards",
-    "homepage": "https://pdm.fming.dev",
     "license": "MIT",
     "url": "https://files.pythonhosted.org/packages/1b/43/822cf4673e1926cd905d3b076976a4781e85475966fe3d7d9aaf42dd7a40/pdm-2.11.2-py3-none-any.whl",
+    "depends": "python",
     "hash": "54d70b985f545ef6bab633ea78a2dfe1f967b94c02296097c0d8482aa4e7f819",
-    "bin": "venv\\scripts\\pdm.exe",
-    "pre_install": [
-        "$bpath = if ($app.LocalPath) { $app.LocalPath.Directory.Parent.FullName } else { \"$bucketsdir\\$bucket\" }",
-        "& (Join-Path \"$bpath\" \"scripts\\Install-WithVirtualEnv.ps1\") \"/$fname\""
-    ],
+    "bin": "venv\\Scripts\\pdm.exe",
+    "installer": {
+        "script": [
+            "python -m venv \"$dir\\venv\"",
+            "& \"$dir\\venv\\Scripts\\python.exe\" -m pip install \"$dir\\$fname\""
+        ]
+    },
+    "post_install": "& \"$dir\\venv\\Scripts\\pdm.exe\" --pep582",
+    "uninstaller": {
+        "script": [
+            "$oldPath = [Environment]::GetEnvironmentVariable(\"PYTHONPATH\", [System.EnvironmentVariableTarget]::User)",
+            "$newPath = ($oldPath.Split(';') | Where { $_ -notlike \"$dir\\venv\\*\" }) -join ';'",
+            "[Environment]::SetEnvironmentVariable(\"PYTHONPATH\", $newPath, [System.EnvironmentVariableTarget]::User)"
+        ]
+    },
     "checkver": {
-        "url": "https://pypi.org/project/pdm/",
-        "regex": "(?sm)https:\\/\\/files\\.pythonhosted\\.org\\/(?<path>[\\w\\-\\/\\.]+-py3-none-any\\.whl).+?(?<version>[\\d\\.]+)-py3-none-any\\.whl"
+        "url": "https://pypi.org/project/pdm/#files",
+        "re": "https://files.pythonhosted.org/(packages/.*/pdm-(?<version>[\\d.]+)-.*\\.whl)",
+        "replace": "${version}"
     },
     "autoupdate": {
-        "url": "https://files.pythonhosted.org/$matchPath",
-        "hash": {
-            "url": "https://pypi.org/project/pdm/",
-            "regex": "(?sm)Hashes for $basename.*?$sha256"
-        }
+        "url": "https://files.pythonhosted.org/$match1"
     }
 }

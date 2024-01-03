@@ -1,21 +1,34 @@
 {
-    "version": "1.0.9.0",
-    "description": "A visual implementation of TinyPNG that helps you quickly compress images.",
-    "homepage": "https://github.com/chenjing1294/TinyGUI",
-    "license": "Freeware",
-    "url": "https://github.com/chenjing1294/TinyGUI/releases/download/v1.0.9.0/TinyGUI-1.0.9.0.exe",
-    "hash": "1e29075564d9c283333f1be13868e5dcf45b4e4e7922aca72727e87e2b1a6cda",
+    "depends": "innounp",
     "suggest": {
-        "dotnet-runtime": "windowsdesktop-runtime"
+        ".NET Desktop Runtime": "windowsdesktop-runtime"
     },
-    "innosetup": true,
+    "version": "1.0.9.0",
+    "description": "Visual implementation of TinyPNG that helps you quickly compress images.",
+    "homepage": "https://github.com/chenjing1294/TinyGUI",
+    "license": {
+        "identifier": "MIT",
+        "url": "https://github.com/chenjing1294/TinyGUI/blob/main/licence.md"
+    },
+    "url": "https://github.com/chenjing1294/TinyGUI/releases/download/v1.0.9.0/TinyGUI-1.0.9.0.exe",
+    "hash": "sha256:1E29075564D9C283333F1BE13868E5DCF45B4E4E7922ACA72727E87E2B1A6CDA",
+    "installer": {
+        "script": [
+            "Expand-InnoArchive -Path \"$dir\\$fname\"",
+            "Expand-InnoArchive -Path \"$dir\\$fname\" -ExtractDir '{app}' -Removal"
+        ]
+    },
+    "bin": "",
     "shortcuts": [
         [
-            "TinyGUI.exe",
+            "TinyGui.exe",
             "TinyGUI"
         ]
     ],
-    "checkver": "github",
+    "post_uninstall": "If ($cmd -eq 'uninstall') { Remove-Item ${env:LOCALAPPDATA}\\TinyGUI\\* -Force -Recurse }",
+    "checkver": {
+        "github": "https://github.com/chenjing1294/TinyGUI"
+    },
     "autoupdate": {
         "url": "https://github.com/chenjing1294/TinyGUI/releases/download/v$version/TinyGUI-$version.exe"
     }
