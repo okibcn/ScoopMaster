@@ -1,19 +1,19 @@
 {
-    "##": "Rename from zip to 7z is needed due to 'unsupported compression method' error.",
-    "version": "5.5.1.2",
-    "description": "ArchiSteamFarm. Farm steam cards using multiple steam accounts simultaneously.",
+    "version": "5.5.1.4",
+    "description": "C# application with primary purpose of idling Steam cards from multiple accounts simultaneously.",
     "homepage": "https://github.com/JustArchiNET/ArchiSteamFarm",
-    "license": {
-        "identifier": "Apache-2.0",
-        "url": "https://github.com/JustArchiNET/ArchiSteamFarm/blob/master/LICENSE-2.0.txt"
-    },
+    "license": "Apache-2.0",
     "architecture": {
         "64bit": {
-            "url": "https://github.com/JustArchiNET/ArchiSteamFarm/releases/download/5.5.1.2/ASF-win-x64.zip",
-            "hash": "sha512:5e25031dfc5abdd330a2eb0c44fd0f196390f0dbb3f44d474cc7083c54b14ac4a7356d7f058c59b92baf29bd1588441db0b86c9dfaabca061ba08c9a09f18e5f"
+            "url": "https://github.com/JustArchiNET/ArchiSteamFarm/releases/download/5.5.1.4/ASF-win-x64.zip",
+            "hash": "sha512:b01311efc79f7eef6e14886738d1007e16a3c8c2dc9da074e3d68d225671faa43c74eca5201b85f1d040c098b1a32df694d6fab586a76c63bf72e70156ebcf77"
         }
     },
+    "suggest": {
+        "dotnet-runtime": "windowsdesktop-runtime"
+    },
     "bin": [
+        "ArchiSteamFarm.exe",
         [
             "ArchiSteamFarm.exe",
             "ASF"
@@ -22,12 +22,12 @@
     "shortcuts": [
         [
             "ArchiSteamFarm.exe",
-            "ASF"
+            "ArchiSteamFarm"
         ]
     ],
     "persist": [
-        "config",
-        "plugins"
+        "plugins",
+        "config"
     ],
     "checkver": "github",
     "autoupdate": {
@@ -36,7 +36,7 @@
                 "url": "https://github.com/JustArchiNET/ArchiSteamFarm/releases/download/$version/ASF-win-x64.zip",
                 "hash": {
                     "url": "$baseurl/SHA512SUMS",
-                    "find": "$sha512[\\s]+?$basename"
+                    "regex": "$sha512\\s*$basename"
                 }
             }
         }
