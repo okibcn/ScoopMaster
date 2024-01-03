@@ -1,28 +1,41 @@
 {
-    "homepage": "https://cemuhook.sshnuke.net/",
-    "version": "0.5.7.7",
-    "url": [
-        "https://files.sshnuke.net/cemuhook_1262d_0577.zip",
-        "https://github.com/comp500/scoop-comp500/raw/master/installers/cemuhook-uninstall.ps1",
-        "https://github.com/comp500/scoop-comp500/raw/master/installers/cemuhook-install.ps1"
-    ],
-    "hash": [
-        "62c47873eaa2f1f07f80e207ebbbf122648623ed2639ca137c6c1be1ac3172b7",
-        "fb1ea5f8a56f60d07230cc3d7d727bfc0a2f92b9468805ad8c84516bfe031831",
-        "aafc913ad9628cbb79d16f89dc859c0de8012208b54ce63c25d3f52e3e632704"
-    ],
-    "checkver": "cemuhook_(?<short>[\\da-z]+_[\\d]+).zip\">.*?Cemu hook (?<version>[\\d.]+)",
-    "autoupdate": {
-        "url": "https://files.sshnuke.net/cemuhook_$matchShort.zip"
-    },
-    "depends": "cemu",
-    "installer": {
-        "keep": true
-    },
-    "uninstaller": {
-        "file": "cemuhook-uninstall.ps1"
-    },
-    "notes": "When upgrading cemu, run cemuhook-install.ps1 or reinstall this package to fix cemuhook. If cemu is uninstalled before cemuhook, there will be errors in the uninstall, which you can safely ignore.",
-    "description": "Plugin for Cemu to add more features.",
-    "license": "Freeware"
+  "version": "0.5.7.7",
+  "description": "Plugin for the Cemu emulator enabling H.264 decoding, gamepad input source overrides and game code/data patching at load-time",
+  "homepage": "https://cemuhook.sshnuke.net/",
+  "license": {
+    "url": "https://cemuhook.sshnuke.net",
+    "identifier": "Freeware"
+  },
+  "depends": "cemu",
+  "architecture": {
+    "64bit": {
+      "url": "https://files.sshnuke.net/cemuhook_1262d_0577.zip",
+      "hash": "62c47873eaa2f1f07f80e207ebbbf122648623ed2639ca137c6c1be1ac3172b7"
+    }
+  },
+  "installer": {
+    "script": [
+      "Copy-Item \"$dir\\cemuhook.dll\" \"$(versiondir 'cemu' 'current' $global)\" -Force",
+      "Copy-Item \"$dir\\keystone.dll\" \"$(versiondir 'cemu' 'current' $global)\" -Force"
+    ]
+  },
+  "uninstaller": {
+    "script": [
+      "'cemuhook.dll', 'keystone.dll' | ForEach-Object {",
+      "   if (Test-Path \"$(versiondir 'cemu' 'current' $global)\\$_\") {",
+      "       Remove-Item \"$(versiondir 'cemu' 'current' $global)\\$_\"",
+      "   }",
+      "}"
+    ]
+  },
+  "checkver": {
+    "regex": "cemuhook_(?<cemu>[\\d_a-z]+).zip\">Cemu hook ([\\d.]+) for"
+  },
+  "autoupdate": {
+    "architecture": {
+      "64bit": {
+        "url": "https://files.sshnuke.net/cemuhook_$matchCemu.zip"
+      }
+    }
+  }
 }
