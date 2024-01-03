@@ -3,19 +3,50 @@
   "description": "Search is a UI to search file content with ripgrep.",
   "homepage": "https://github.com/reduf/search",
   "license": "MIT",
-  "url": "https://github.com/reduf/search/archive/master.zip",
-  "hash": "a8186890a252646195f1965dec62bc367537143fcad772a171090d07adb8e3c3",
-  "bin": "search.exe",
-  "shortcuts": [
+  "architecture": {
+    "64bit": {
+      "url": "https://github.com/reduf/search/releases/download/v0.8.0/search.exe#/search.exe",
+      "hash": "a8186890a252646195f1965dec62bc367537143fcad772a171090d07adb8e3c3"
+    }
+  },
+  "autoupdate": {
+    "url": "https://github.com/reduf/search/releases/download/v$version/search.exe#/search.exe"
+  },
+  "bin": [
     [
       "search.exe",
       "search"
+    ],
+    [
+      "search.exe",
+      "ripgrep-gui"
     ]
   ],
+  "installer": {
+    "keep": true,
+    "script": [
+      "# This script shouldn't be empty, otherwise search.exe will be running as an installer",
+      "if ((Test-Path \"$dir\\search.exe\")) { ",
+      "Write-Host \"$dir\\search.exe\" installed.",
+      "}"
+    ]
+  },
+  "uinstaller": {
+    "script": [
+      "if ((Test-Path \"$dir\\search.conf\")) { ",
+      "Copy-Item \"$dir\\search.conf\" $persist_dir ",
+      "}"
+    ]
+  },
+  "persist": "search.conf",
+  "shortcuts": [
+    [
+      "search.exe",
+      "Ripgrep Gui"
+    ]
+  ],
+  "depends": "ripgrep",
   "checkver": {
     "github": "https://github.com/reduf/search"
-  },
-  "autoupdate": {
-    "url": "https://github.com/reduf/search/releases/download/v$version/search.exe"
   }
 }
