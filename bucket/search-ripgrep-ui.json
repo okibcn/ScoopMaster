@@ -26,15 +26,9 @@
     "keep": true,
     "script": [
       "# This script shouldn't be empty, otherwise search.exe will be running as an installer",
-      "if ((Test-Path \"$dir\\search.exe\")) { ",
-      "Write-Host \"$dir\\search.exe\" installed.",
-      "}"
-    ]
-  },
-  "uinstaller": {
-    "script": [
-      "if ((Test-Path \"$dir\\search.conf\")) { ",
-      "Copy-Item \"$dir\\search.conf\" $persist_dir ",
+      "if (-not (Test-Path \"$dir\\search.conf\")) { ",
+      "New-Item -Path \"$dir\\search.conf\" | Out-Null",
+      "Write-Host \"$dir\\search.conf\" created.",
       "}"
     ]
   },
