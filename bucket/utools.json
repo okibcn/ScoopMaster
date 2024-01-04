@@ -1,75 +1,52 @@
 {
-    "description": "",
-    "homepage": "https://u.tools",
-    "license": "",
     "version": "4.4.1",
-    "notes": "",
+    "description": "Your productive tools set and launcher.",
+    "homepage": "https://u.tools/",
+    "license": {
+        "identifier": "Proprietary",
+        "url": "http://u.tools/agreement.html"
+    },
     "architecture": {
         "64bit": {
-            "url": "https://res.u-tools.cn/version2/uTools-4.4.1.exe#/dl.7z",
+            "url": "https://publish.u-tools.cn/version2/uTools-4.4.1.exe#/dl.7z",
             "hash": "61be90771bf3c7370f28c296836690edfbe4496c365f2fe22770f32065b0d61d",
             "installer": {
                 "script": "Expand-7zipArchive \"$dir\\`$PLUGINSDIR/app-64.7z\" \"$dir\""
             }
         },
         "32bit": {
-            "url": "https://res.u-tools.cn/version2/uTools-4.4.1-ia32.exe#/dl.7z",
+            "url": "https://publish.u-tools.cn/version2/uTools-4.4.1-ia32.exe#/dl.7z",
             "hash": "b0fdd677cc31946181bd72828dc28ddb0f561279e2ea3e5e07bf6d1edb031244",
             "installer": {
-                "script": [
-                    "Expand-7zipArchive \"$dir\\`$PLUGINSDIR/app-32.7z\" \"$dir\"",
-                    "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\`$R0\" -Recurse -Force"
-                ]
+                "script": "Expand-7zipArchive \"$dir\\`$PLUGINSDIR/app-32.7z\" \"$dir\""
             }
         }
     },
-    "pre_install": "",
     "post_install": [
-        "Remove-Item -Recurse -Force \"$dir\\`$PLUGINSDIR\"",
-        "$runtimeCache = \"$env:APPDATA\\uTools\"",
-        "$runtimeCachePersist = \"$persist_dir\\data\"",
-        "if (Test-Path $runtimeCachePersist) {",
-        "    Remove-Item $runtimeCache -Force -Recurse -ErrorAction SilentlyContinue",
-        "    New-Item -Type SymbolicLink -Path $runtimeCache -Target $runtimeCachePersist | Out-Null",
-        "} else {",
-        "    if (Test-Path $runtimeCache) {",
-        "        Move-Item $runtimeCache $runtimeCachePersist -Force",
-        "        New-Item -Type SymbolicLink -Path $runtimeCache -Target $runtimeCachePersist | Out-Null",
-        "    }",
+        "@('$PLUGINSDIR', '[NSIS].nsi', 'Uninstall uTools.exe') | ForEach-Object { Remove-Item \"$dir\\$_\" -Recurse -Force -ErrorAction SilentlyContinue }",
+        "if (!(Test-Path \"$dir\\User Data\\*\") -and (Test-Path \"$env:AppData\\uTools\")) {",
+        "    info '[Portable Mode]: Copying user data...'",
+        "    Copy-Item \"$env:AppData\\uTools\\*\" \"$dir\\User Data\" -Recurse",
         "}"
     ],
-    "uninstaller": {
-        "script": [
-            "$runtimeCache = \"$env:APPDATA\\uTools\"",
-            "$runtimeCachePersist = \"$persist_dir\\data\"",
-            "$tmp = \"$dir\\tmp\"",
-            "New-Item -Type SymbolicLink -Path $runtimeCache -Target $tmp -Force | Out-Null",
-            "Remove-Item $runtimeCache -Recurse -Force | Out-Null",
-            "Remove-Item $tmp -Recurse -Force | Out-Null"
-        ]
-    },
     "shortcuts": [
         [
-            "utools.exe",
+            "uTools.exe",
             "uTools"
         ]
     ],
-    "env_add_path": [
-        "",
-        ""
-    ],
-    "persist": "data",
+    "persist": "User Data",
     "checkver": {
-        "url": "https://u.tools",
-        "regex": "version: 'V(\\d\\.\\d\\.\\d)'"
+        "url": "https://u.tools/",
+        "regex": "uTools-([\\d.]+).exe"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://res.u-tools.cn/version2/uTools-$version.exe#/dl.7z"
+                "url": "https://publish.u-tools.cn/version2/uTools-$version.exe#/dl.7z"
             },
             "32bit": {
-                "url": "https://res.u-tools.cn/version2/uTools-$version-ia32.exe#/dl.7z"
+                "url": "https://publish.u-tools.cn/version2/uTools-$version-ia32.exe#/dl.7z"
             }
         }
     }

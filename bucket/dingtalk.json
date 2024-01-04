@@ -1,6 +1,6 @@
 {
     "version": "7.5.0.13039104",
-    "description": "钉钉。一体化的免费沟通和协作平台",
+    "description": "An all-in-one free communication and collaboration platform",
     "homepage": "https://www.dingtalk.com/",
     "license": {
         "identifier": "EULA",
@@ -9,6 +9,23 @@
     "url": "https://dtapp-pub.dingtalk.com/dingtalk-desktop/win_installer/Release/DingTalk_v7.5.0.13039104.exe#/dl.7z",
     "hash": "md5:aecb098187a2ff82b28dc38ee7ba2ef0",
     "post_install": "Remove-Item \"$dir\\`$PLUGINSDIR\" -Recurse",
+    "installer": {
+        "script": [
+            "# handle runtime cache",
+            "Import-Module $(Join-Path $(Find-BucketDirectory -Root -Name apps) scripts/AppsUtils.psm1)",
+            "Mount-ExternalRuntimeData -Source \"$persist_dir\\appdata\" -Target \"$env:LOCALAPPDATA\\DingTalk_91\"",
+            "Mount-ExternalRuntimeData -Source \"$persist_dir\\appdata\" -Target \"$env:APPDATA\\DingTalk\"",
+            "Remove-Module -Name AppsUtils"
+        ]
+    },
+    "uninstaller": {
+        "script": [
+            "Import-Module $(Join-Path $(Find-BucketDirectory -Root -Name apps) scripts/AppsUtils.psm1)",
+            "Dismount-ExternalRuntimeData -Target \"$env:LOCALAPPDATA\\DingTalk_91\"",
+            "Dismount-ExternalRuntimeData -Target \"$env:APPDATA\\DingTalk\"",
+            "Remove-Module -Name AppsUtils"
+        ]
+    },
     "shortcuts": [
         [
             "DingtalkLauncher.exe",
