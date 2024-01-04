@@ -1,16 +1,17 @@
 {
     "version": "5.2.2",
-    "description": "The bridge between WeakAuras and wago.io",
+    "description": "Updates WeakAuras installed from Wago.",
     "homepage": "https://weakauras.wtf/",
-    "license": "GPL-2",
+    "license": "GPL-2.0-or-later",
+    "url": "https://github.com/WeakAuras/WeakAuras-Companion/releases/download/v5.2.2/WeakAuras-Companion-Setup-5.2.2.exe#/dl.7z",
+    "hash": "sha512:a2855e5f35e93036356e93f8daeca0d8f505abbf913c42c2edb95c74c2731346816ad2b61b5eadbcc66da45b0afeb2cab7063bf77a9b7a6c673815f6cd780390",
+    "extract_dir": "$PLUGINSDIR",
     "installer": {
         "script": [
-            "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\"",
-            "Remove-Item \"$dir\\`$PLUGINSDIR\" -Force -Recurse"
+            "Remove-Item \"$dir\\*\" -Exclude 'app-64.7z'",
+            "Expand-7zipArchive \"$dir\\app-64.7z\" \"$dir\" -Removal"
         ]
     },
-    "url": "https://github.com/WeakAuras/WeakAuras-Companion/releases/download/v5.2.2/WeakAuras-Companion-Setup-5.2.2.exe#dl.7z",
-    "hash": "d7d896779107fb124ef5ac64c62681325d0ecb019fb67ab6b247d0cb0c81f297",
     "shortcuts": [
         [
             "WeakAuras Companion.exe",
@@ -21,6 +22,10 @@
         "github": "https://github.com/WeakAuras/WeakAuras-Companion"
     },
     "autoupdate": {
-        "url": "https://github.com/WeakAuras/WeakAuras-Companion/releases/download/v$version/WeakAuras-Companion-Setup-$version.exe#dl.7z"
+        "url": "https://github.com/WeakAuras/WeakAuras-Companion/releases/download/v$version/WeakAuras-Companion-Setup-$version.exe#/dl.7z",
+        "hash": {
+            "url": "$baseurl/latest.yml",
+            "find": "sha512:\\s+(.*)"
+        }
     }
 }
