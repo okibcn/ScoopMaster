@@ -1,34 +1,52 @@
 {
-    "homepage": "https://github.com/tindy2013/subconverter/",
+    "homepage": "https://github.com/tindy2013/subconverter",
     "description": "Utility to convert between various subscription format",
-    "version": "0.8.1",
     "license": "GPL-3.0",
-    "extract_dir": "subconverter",
+    "version": "0.8.1",
     "architecture": {
         "64bit": {
             "url": "https://github.com/tindy2013/subconverter/releases/download/v0.8.1/subconverter_win64.7z",
             "hash": "3c40053685a25d5a09cb89f8338c03523ba2e2c91caf412a96d81d9fe4911be9"
         },
         "32bit": {
-            "url": "https://github.com/tindy2013/subconverter/releases/download/v0.8.1/subconverter_win64.7z",
-            "hash": "3c40053685a25d5a09cb89f8338c03523ba2e2c91caf412a96d81d9fe4911be9"
+            "url": "https://github.com/tindy2013/subconverter/releases/download/v0.8.1/subconverter_win32.7z",
+            "hash": "105013d2c04511e4cef9ab0f61c07a045bddf3994212f120f0dff540800be100"
         }
     },
-    "persist": [
-        "profiles",
-        "generate.ini",
-        "gistconf.ini",
-        "pref.ini",
-        "pref-new.yml"
-    ],
+    "extract_dir": "subconverter",
     "bin": [
         [
             "subconverter.exe",
             "subconverter"
         ]
     ],
+    "pre_install": [
+        "'pref.ini', 'pref.toml', 'pref.yml' | ForEach-Object { if (!(Test-Path \"$persist_dir\\$_\")) {",
+        "$Ext = Split-Path -Path \"$persist_dir\\$_\" -Extension",
+        "Copy-Item -Path \"$dir\\pref.example$Ext\" -Destination \"$dir\\pref$Ext\" -Force | Out-Null } }"
+    ],
+    "persist": [
+        "base",
+        "cache",
+        "config",
+        "profiles",
+        "rules",
+        "snippets",
+        "generate.ini",
+        "gistconf.ini",
+        "pref.ini",
+        "pref.toml",
+        "pref.yml"
+    ],
     "checkver": "github",
     "autoupdate": {
-        "url": "https://github.com/tindy2013/subconverter/releases/download/v$version/subconverter_win64.7z"
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/tindy2013/subconverter/releases/download/v$version/subconverter_win64.7z"
+            },
+            "32bit": {
+                "url": "https://github.com/tindy2013/subconverter/releases/download/v$version/subconverter_win32.7z"
+            }
+        }
     }
 }
