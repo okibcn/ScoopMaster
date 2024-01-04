@@ -1,37 +1,38 @@
 {
+    "##": "This file is a template. Fill the blanks and add or remove fields as necessary.",
     "version": "117.0.5938.157",
-    "description": "Chromium fork for linux named after radioactive element No. 90.",
-    "license": "GNU General Public License v3.0",
-    "homepage": "https://alex313031.blogspot.com/",
-    "architecture": {
-        "64bit": {
-            "url": "https://github.com/Alex313031/Thorium-Win/releases/download/M117.0.5938.157/Thorium_117.0.5938.157.zip",
-            "hash": "0447f68d007180959f976468cf82e1089f3077699970e19094f7c9150411477a"
-        }
-    },
+    "description": "Chromium fork for Linux, Windows, MacOS, Android, and Raspberry Pi named after radioactive element No. 90.",
+    "homepage": "https://thorium.rocks",
+    "license": "BSD-3-Clause",
+
+    "url": "https://github.com/Alex313031/Thorium-Win/releases/download/M117.0.5938.157/Thorium_117.0.5938.157.zip",
+    "hash": "0447F68D007180959F976468CF82E1089F3077699970E19094F7C9150411477A",
+
     "bin": [
         [
-            "THORIUM.BAT",
-            "Thorium"
+            "BIN\\thorium.exe",
+            "thorium",
+            "--user-data-dir=\"$dir\\USER_DATA\" --allow-outdated-plugins --disable-logging --disable-breakpad"
         ]
     ],
+
     "shortcuts": [
         [
-            "THORIUM.BAT",
-            "Thorium"
+            "BIN\\thorium.exe",
+            "Thorium",
+            "--user-data-dir=\"$dir\\USER_DATA\" --allow-outdated-plugins --disable-logging --disable-breakpad"
         ]
     ],
-    "persist": "USER_DATA",
+
+    "persist": [
+        "USER_DATA"
+    ],
+
     "checkver": {
-        "url": "https://api.github.com/repos/Alex313031/Thorium-Win/releases/latest",
-        "jsonpath": "$.tag_name",
-        "regex": "M(?<version>[\\d]+\\.[\\d]+\\.[\\d]+\\.[\\d]+)"
+        "github": "https://github.com/Alex313031/Thorium-Win",
+        "regex": "M([\\d.]+)"
     },
     "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://github.com/Alex313031/Thorium-Win/releases/download/M$version/Thorium_$version.zip"
-            }
-        }
+        "url": "https://github.com/Alex313031/Thorium-Win/releases/download/M$version/Thorium_$version.zip"
     }
 }
