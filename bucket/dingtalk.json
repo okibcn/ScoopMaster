@@ -8,10 +8,7 @@
     },
     "url": "https://dtapp-pub.dingtalk.com/dingtalk-desktop/win_installer/Release/DingTalk_v7.5.0.13039104.exe#/dl.7z",
     "hash": "md5:aecb098187a2ff82b28dc38ee7ba2ef0",
-    "pre_install": [
-        "Move-Item -Path \"$dir\\build\\dist\\*\" -Destination \"$dir\" -Force",
-        "Remove-Item \"$dir\\build\", \"$dir\\setup.xml\", \"$dir\\uninst*\" -Force -Recurse"
-    ],
+    "post_install": "Remove-Item \"$dir\\`$PLUGINSDIR\" -Recurse",
     "installer": {
         "script": [
             "# handle runtime cache",
@@ -31,7 +28,7 @@
     },
     "shortcuts": [
         [
-            "Dingtalk.exe",
+            "DingtalkLauncher.exe",
             "DingTalk"
         ]
     ],
