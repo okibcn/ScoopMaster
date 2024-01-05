@@ -1,0 +1,60 @@
+{
+    "version": "0.2.8.1",
+    "description": "支持分享链接转存的 aliyunpan 修改版",
+    "homepage": "https://github.com/reveever/aliyunpan",
+    "license": "Apache-2.0",
+    "url": [
+        "https://github.com/reveever/aliyunpan-api/archive/148a473a58472647b28225993aaafe991fff7f63.zip#/aliyunpan-api.zip",
+        "https://github.com/reveever/aliyunpan/archive/bbff32c8c648156ae8390feda43ee6c4f17e832d.zip#/aliyunpan.zip"
+    ],
+    "hash": [
+        "E5F28646B043F1A4958DB67A12E9C2957120734A966450E04520B1E7F4731CA1",
+        "47391ADBC5DA46916D215DC36FD7052309EF9CBAB8A8088B918129D4DB778118"
+    ],
+    "extract_dir": [
+        "aliyunpan-api-148a473a58472647b28225993aaafe991fff7f63",
+        "aliyunpan-bbff32c8c648156ae8390feda43ee6c4f17e832d"
+    ],
+    "extract_to": [
+        "aliyunpan-api",
+        "aliyunpan"
+    ],
+    "depends": "go",
+    "installer": {
+        "script": [
+            "Push-Location $dir\\aliyunpan",
+            "if (-not(Get-Command goversioninfo -ErrorAction SilentlyContinue)) {",
+            "   go install github.com/josephspurrier/goversioninfo/cmd/goversioninfo@latest",
+            "}",
+            "$localLibPath = \"$(Join-Path -Path $dir -ChildPath 'aliyunpan-api')\".Replace(\"\\\",\"/\")",
+            "$goModPath = '.\\go.mod'",
+            "$oldContent = Get-Content $goModPath",
+            "$newContent = foreach ($line in $oldContent) {",
+            "   if ($line -match \"^//replace github.com/tickstep/aliyunpan-api\") {",
+            "       \"replace github.com/tickstep/aliyunpan-api => $(Join-Path -Path $dir -ChildPath 'aliyunpan-api')\"",
+            "   } else {",
+            "       $line",
+            "   }",
+            "}",
+            "Set-Content -Path $goModPath -Value $newContent",
+            ".\\win_build.bat v$version",
+            "Pop-Location",
+            "New-Item -Path $dir\\Downloads -ItemType Directory -Force | Out-Null"
+        ]
+    },
+    "architecture": {
+        "64bit": {
+            "bin": "aliyunpan/out/aliyunpan-v0.2.8.1-windows-x64/aliyunpan.exe"
+        },
+        "32bit": {
+            "bin": "aliyunpan/out/aliyunpan-v0.2.8.1-windows-x86/aliyunpan.exe"
+        }
+    },
+    "persist": [
+        "config",
+        "Downloads"
+    ],
+    "env_set": {
+        "ALIYUNPAN_CONFIG_DIR": "$dir\\config"
+    }
+}
