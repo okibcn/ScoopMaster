@@ -1,31 +1,47 @@
 {
     "version": "1.8.0",
     "description": "The universal proxy platform.",
-    "homepage": "https://github.com/SagerNet/sing-box",
-    "license": "GPL",
-    "notes": "",
+    "homepage": "https://sing-box.sagernet.org",
+    "license": {
+        "identifier": "Freeware",
+        "url": "https://github.com/SagerNet/sing-box/blob/main/LICENSE"
+    },
     "architecture": {
         "64bit": {
             "url": "https://github.com/SagerNet/sing-box/releases/download/v1.8.0/sing-box-1.8.0-windows-amd64.zip",
+            "extract_dir": "sing-box-1.8.0-windows-amd64",
             "hash": "e09707157caa5e6d35e33759d0a5ee188857d6b8c6a711a28087d40a70a39b88"
+        },
+        "32bit": {
+            "url": "https://github.com/SagerNet/sing-box/releases/download/v1.8.0/sing-box-1.8.0-windows-386.zip",
+            "extract_dir": "sing-box-1.8.0-windows-386",
+            "hash": "e970c463315dddfbf9d1e6622e30a794a0bd413be1ad19b31e311a47c4f63341"
+        },
+        "arm64": {
+            "url": "https://github.com/SagerNet/sing-box/releases/download/v1.8.0/sing-box-1.8.0-windows-arm64.zip",
+            "extract_dir": "sing-box-1.8.0-windows-arm64",
+            "hash": "2bde06ccd494afd541bb9ce20e479eb2fa191e76e5e47fbc86e6261a8d389dc2"
         }
     },
-    "checkver": "github",
+    "bin": "sing-box.exe",
+    "persist": "config",
+    "checkver": {
+        "github": "https://github.com/SagerNet/sing-box"
+    },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://github.com/SagerNet/sing-box/releases/download/v$version/sing-box-$version-windows-amd64.zip"
+                "url": "https://github.com/SagerNet/sing-box/releases/download/v$version/sing-box-$version-windows-amd64.zip",
+                "extract_dir": "sing-box-$version-windows-amd64"
+            },
+            "32bit": {
+                "url": "https://github.com/SagerNet/sing-box/releases/download/v$version/sing-box-$version-windows-386.zip",
+                "extract_dir": "sing-box-$version-windows-386"
+            },
+            "arm64": {
+                "url": "https://github.com/SagerNet/sing-box/releases/download/v$version/sing-box-$version-windows-arm64.zip",
+                "extract_dir": "sing-box-$version-windows-arm64"
             }
         }
-    },
-    "extract_to": "",
-    "pre_install": "if (!(Test-Path \"$persist_dir\\$config.json\")) { New-Item \"$dir\\config.json\" }",
-    "persist": "config.json",
-    "bin": "sing-box.exe",
-    "shortcuts": [
-        [
-            "sing-box.exe",
-            "sing-box"
-        ]
-    ]
+    }
 }

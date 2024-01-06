@@ -10,13 +10,16 @@
             "# older versions of Powershell 5 requires BOM to recognize UTF8 scripts",
             "$cont = Get-Content \"$dir\\run.ps1\" -Encoding utf8",
             "Set-Content \"$dir\\run.ps1\" $cont -Encoding utf8",
-            "& \"$dir\\run.ps1\" -confirm_uninstall_ms_spoti -confirm_spoti_recomended_over -podcasts_off -cache_limit 500 -block_update_on -new_theme"
+            "& \"$dir\\run.ps1\" -confirm_uninstall_ms_spoti -confirm_spoti_recomended_over -podcasts_off -adsections_off -cache_limit 500 -block_update_on -new_theme -no_shortcut -enhance_playlist_off -enhance_like_off -Plus -lyrics_stat spotify"
         ]
     },
     "uninstaller": {
         "script": [
             "if ($cmd -ne 'uninstall') { return }",
-            "Invoke-ExternalCommand \"$Env:Appdata\\Spotify\\Spotify.exe\" -ArgumentList @('/uninstall', '/silent') | Out-Null"
+            "Stop-Process -ErrorAction Ignore -Name Spotify",
+            "Invoke-ExternalCommand \"$Env:Appdata\\Spotify\\Spotify.exe\" -ArgumentList @('/uninstall', '/silent') | Out-Null",
+            "icacls \"$env:LOCALAPPDATA\\Spotify\\Update\" /grant Everyone:R | Out-Null",
+            "Remove-Item -ErrorAction Ignore -Recurse -Force \"$env:LOCALAPPDATA\\Spotify\""
         ]
     },
     "checkver": {
