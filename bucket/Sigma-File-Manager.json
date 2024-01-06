@@ -1,0 +1,51 @@
+{
+    "version": "1.7.0",
+    "homepage": "https://github.com/aleksey-hoffman/sigma-file-manager",
+    "description": "\"Sigma File Manager\" is a free, open-source, quickly evolving, modern file manager (explorer / browser) app. \"Sigma File Manager\"是一款免费、开源、快速发展的现代文件管理器",
+    "license": {
+        "identifier": "GNU GPLv3 or later",
+        "url": "https://github.com/aleksey-hoffman/sigma-file-manager/blob/main/LICENSE.md"
+    },
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/aleksey-hoffman/sigma-file-manager/releases/download/v1.7.0/Sigma-File-Manager-1.7.0-Windows-Setup.exe",
+            "hash": "418285100afe0b9a2624740b94f1fa7d483bd24d88327fb99d930aef26805a3f"
+        }
+    },
+    "post_install": [
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "$app_exe= Get-ChildItem \"$dir/\" | Where-Object {$_.Name -match 'Sigma-File-Manager.*.exe'} | ForEach-Object { $_.FullName }",
+        "$CmdString = \"& $app_exe /S /D=$dir\"",
+        "Invoke-Expression $CmdString",
+        "create_app_lnk \"$dir\\Sigma file manager.exe\" \"$scoop_apps_lnk\\Sigma file manager.lnk\"",
+        "persist -dir @(\"$env:APPData\\Sigma file manager\") @(\"$persist_dir\")",
+        "Write-Host \"There will be a delayed backend behavior soon: Delete redundant shortcuts after 10 seconds\n\" -f Yellow",
+        "$null=Start-Job -ScriptBlock {",
+        "   param($path1,$path2,$path3)",
+        "   Start-Sleep -Seconds 10",
+        "   @($path1,$path2,$path3) | ForEach-Object {",
+        "       if (Test-Path($_)) { Remove-Item -Force $_ }",
+        "   }",
+        "} -ArgumentList $app_exe,\"$env:UserProfile\\Desktop\\Sigma file manager.lnk\",\"$env:AppData\\Microsoft\\Windows\\Start Menu\\Programs\\Sigma file manager.lnk\""
+    ],
+    "pre_uninstall": [
+        "$_bucket=(scoop bucket list | where-Object {$_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
+        ". \"$bucketsdir\\$_bucket\\bin\\utils.ps1\"",
+        "stop_process"
+    ],
+    "post_uninstall": [
+        "$_bucket=(scoop bucket list | where-Object {$_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
+        ". \"$bucketsdir\\$_bucket\\bin\\utils.ps1\"",
+        "$data=@(\"$env:APPData\\Sigma file manager\",\"$scoop_apps_lnk\\Sigma file manager.lnk\")",
+        "$data | ForEach-Object {",
+        "   if (Test-Path($_)) {",
+        "       Remove-Item -Force -Recurse $_",
+        "       Write-Host \"Removing $_\" -f Yellow",
+        "   }",
+        "}"
+    ],
+    "checkver": "github",
+    "autoupdate": {
+        "url": "https://github.com/aleksey-hoffman/sigma-file-manager/releases/download/v1.7.0/Sigma-File-Manager-1.7.0-Windows-Setup.exe"
+    }
+}
