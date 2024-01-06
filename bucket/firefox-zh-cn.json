@@ -1,7 +1,7 @@
 {
-    "description": "流行的开源网络浏览器。跨平台并提供多种语言版本。",
-    "homepage": "https://www.mozilla.org/zh-CN/firefox/new/",
     "version": "121.0",
+    "description": "Popular open source web browser. Cross-platform and available in many languages.",
+    "homepage": "https://www.mozilla.org/zh-CN/firefox/new/",
     "license": "MPL-2.0",
     "architecture": {
         "64bit": {
@@ -14,17 +14,24 @@
         }
     },
     "extract_dir": "core",
-    "bin": "firefox.exe",
+    "bin": [
+        [
+            "firefox.exe",
+            "firefox",
+            "-profile \"$dir\\profile\""
+        ]
+    ],
     "shortcuts": [
         [
             "firefox.exe",
-            "Mozilla Firefox"
+            "Mozilla Firefox",
+            "-profile \"$dir\\profile\""
         ]
     ],
-    "persist": "profile-portable",
+    "persist": "profile",
     "checkver": {
         "url": "https://www.mozilla.org/zh-CN/firefox/all/",
-        "re": "data-latest-firefox=\"([\\d.]+)\""
+        "regex": "data-latest-firefox=\"([\\d.]+)\""
     },
     "autoupdate": {
         "architecture": {
@@ -43,6 +50,5 @@
                 }
             }
         }
-    },
-    "notes": "要恢复持久的配置文件，您需要使用“firefox -P”打开配置文件管理器，并通过选择可移植配置文件目录来创建。"
+    }
 }
