@@ -8,9 +8,7 @@
     "post_install": [
         ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
         "try{Invoke-Expression $dir\\install-pyenv-win.ps1}catch{throw 'Install error due to possible network issues.'}",
-        "$data=@(\"$env:userProfile\\.pyenv\\pyenv-win\\install_cache\")",
-        "$persist=@(\"$persist_dir\\install_cache\")",
-        "persist -dir $data $persist"
+        "persist -dir @(\"$env:userProfile\\.pyenv\") @(\"$persist_dir\\.pyenv\")"
     ],
     "pre_uninstall": [
         "Invoke-Expression \"$dir\\install-pyenv-win.ps1 -Uninstall\""
