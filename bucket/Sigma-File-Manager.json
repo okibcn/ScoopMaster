@@ -18,8 +18,8 @@
         "$CmdString = \"& $app_exe /S /D=$dir\"",
         "Invoke-Expression $CmdString",
         "create_app_lnk \"$dir\\Sigma file manager.exe\" \"$scoop_apps_lnk\\Sigma file manager.lnk\"",
-        "persist -dir @(\"$env:APPData\\Sigma file manager\") @(\"$persist_dir\")",
-        "Write-Host \"There will be a delayed backend behavior soon: Delete redundant shortcuts after 10 seconds\n\" -f Yellow",
+        "persist -dir @(\"$env:AppData\\Sigma file manager\") @(\"$persist_dir\")",
+        "Write-Host \"There will be a delayed backend behavior soon: Delete redundant files after 10 seconds\n\" -f Yellow",
         "$null=Start-Job -ScriptBlock {",
         "   param($path1,$path2,$path3)",
         "   Start-Sleep -Seconds 10",
@@ -36,7 +36,7 @@
     "post_uninstall": [
         "$_bucket=(scoop bucket list | where-Object {$_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
         ". \"$bucketsdir\\$_bucket\\bin\\utils.ps1\"",
-        "$data=@(\"$env:APPData\\Sigma file manager\",\"$scoop_apps_lnk\\Sigma file manager.lnk\")",
+        "$data=@(\"$env:AppData\\Sigma file manager\",\"$scoop_apps_lnk\\Sigma file manager.lnk\")",
         "$data | ForEach-Object {",
         "   if (Test-Path($_)) {",
         "       Remove-Item -Force -Recurse $_",
@@ -46,6 +46,6 @@
     ],
     "checkver": "github",
     "autoupdate": {
-        "url": "https://github.com/aleksey-hoffman/sigma-file-manager/releases/download/v1.7.0/Sigma-File-Manager-1.7.0-Windows-Setup.exe"
+        "url": "https://github.com/aleksey-hoffman/sigma-file-manager/releases/download/v$version/Sigma-File-Manager-$version-Windows-Setup.exe"
     }
 }
