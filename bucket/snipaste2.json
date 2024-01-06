@@ -1,7 +1,7 @@
 {
     "version": "2.8.5",
-    "description": "A snipping tool, which allows you to pin the screenshot back onto the screen. 一个剪切工具，可以让你把截图固定在屏幕上",
     "homepage": "https://www.snipaste.com/",
+    "description": "A snipping tool, which allows you to pin the screenshot back onto the screen. 一个剪切工具，可以让你把截图固定在屏幕上",
     "license": "Unknown",
     "suggest": {
         "vcredist": "extras/vcredist2022"
@@ -9,12 +9,19 @@
     "architecture": {
         "64bit": {
             "url": "https://bitbucket.org/liule/snipaste/downloads/Snipaste-2.8.5-Beta-x64.zip",
-            "hash":"c2ac49fc590493ef55b4967059ccae3c7d3b5037d768bd4d1fc9f821cc916659"
+            "hash": "c2ac49fc590493ef55b4967059ccae3c7d3b5037d768bd4d1fc9f821cc916659"
         },
         "32bit": {
             "url": "https://bitbucket.org/liule/snipaste/downloads/Snipaste-2.8.5-Beta-x86.zip"
         }
     },
+    "bin": "Snipaste.exe",
+    "shortcuts": [
+        [
+            "Snipaste.exe",
+            "Snipaste2"
+        ]
+    ],
     "post_install": [
         ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
         "$p1=\"$persist_dir\\config.ini\"",
@@ -26,16 +33,9 @@
         "echo \"[General]`nconfig=$($persist_dir.Replace('\\','/'))/config.ini\" > \"$dir\\config.ini\"",
         "explorer \"$dir\\Snipaste.exe\""
     ],
-    "pre_uninstall":[
+    "pre_uninstall": [
         "$_bucket=(scoop bucket list | where-Object {$_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
         ". \"$bucketsdir\\$_bucket\\bin\\utils.ps1\"",
         "stop_process"
-    ],
-    "bin": "Snipaste.exe",
-    "shortcuts": [
-        [
-            "Snipaste.exe",
-            "Snipaste2"
-        ]
     ]
 }
