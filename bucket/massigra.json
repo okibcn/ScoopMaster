@@ -1,11 +1,10 @@
 {
+    "homepage": "http://www.massigra.net/",
+    "description": "Simple and fast image viewer",
+    "license": "Freeware",
     "version": "0.45",
-    "description": "マウスホイールの回転で画像を次々と切り替えて表示できるシンプルな一画面・画像ビューア",
-    "homepage": "https://freesoft-100.com/review/massigra.php",
-    "url": "https://dl.freesoft-100.com/p/MassiGra045.zip",
-    "hash": "",
-    "depends": "",
-    "persist": "user",
+    "url": "https://www.dropbox.com/s/vhd2xni16qfcder/MassiGra045.zip?dl=1",
+    "hash": "76f28cf65e900778ae0f67d41ea324d35d0ec162624dcf50ada3e44ce831ca25",
     "bin": "MassiGra.exe",
     "shortcuts": [
         [
@@ -13,11 +12,20 @@
             "MassiGra"
         ]
     ],
+    "persist": [
+        "user",
+        "plugins"
+    ],
+    "post_install": [
+        "if ((Get-ChildItem \"$dir\\user\" | Measure-Object).Count -eq 0) {",
+        "    New-Item -Path \"$dir\\user\\SingleU.cfg\" -ItemType File | Out-Null",
+        "}"
+    ],
     "checkver": {
-        "url": "https://www.vector.co.jp/soft/dl/win95/art/se400675.html",
-        "regex": "<span class=.version.>([\\d.]+\\d+)</span>"
+        "url": "http://www.massigra.net/",
+        "re": "MassiGra Version (?<version>[\\d.]+)"
     },
     "autoupdate": {
-        "url": "https://dl.freesoft-100.com/p/MassiGra$cleanVersion.zip"
+        "url": "https://www.dropbox.com/s/vhd2xni16qfcder/MassiGra$cleanVersion.zip?dl=1"
     }
 }
