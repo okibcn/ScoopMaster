@@ -1,10 +1,13 @@
 {
-    "version": "2.13.11",
+    "version": "2.14.6",
     "description": "A note taking and to-do application with synchronization capabilities",
     "homepage": "https://joplinapp.org",
-    "license": "MIT",
-    "url": "https://github.com/laurent22/joplin/releases/download/v2.13.11/Joplin-Setup-2.13.11.exe#/dl.7z",
-    "hash": "sha512:2e288f1e86e9394881eafe57669137f48f10bea9dd8961b4b5190c770f3b2ab921d481506bfe1fb9f6ad44f268f00d49ac5b21f1c33713a9c79acc83d35d2594",
+    "license": {
+        "identifier": "MIT",
+        "url": "https://github.com/laurent22/joplin/blob/dev/LICENSE"
+    },
+    "url": "https://github.com/laurent22/joplin/releases/download/v2.14.6/Joplin-Setup-2.14.6.exe#/dl.7z",
+    "hash": "sha512:20b4e61cc1fb3c3c22ee7fc1e8b923014d156cff9d8e51d54b60c8bc9f960e3341f78ba830926e00b85b21ce7815ee775021caf54eea29a93125ad5cf0324811",
     "architecture": {
         "64bit": {
             "pre_install": "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\""
@@ -14,16 +17,30 @@
         }
     },
     "post_install": "Remove-Item \"$dir\\`$*\", \"$dir\\Uninstall*\" -Recurse",
+    "installer": {
+        "script": [
+            "ensure \"$persist_dir\\appdata\" | Out-Null",
+            "New-Item \"$env:APPDATA\\Joplin\" -ItemType Junction -Target \"$persist_dir\\appdata\" | Out-Null",
+            "ensure \"$persist_dir\\.config\\joplin-desktop\" | Out-Null",
+            "New-Item \"$env:USERPROFILE\\.config\\joplin-desktop\" -ItemType Junction -Target \"$persist_dir\\.config\\joplin-desktop\" | Out-Null"
+        ]
+    },
+    "uninstaller": {
+        "script": [
+            "Remove-Item \"$env:APPDATA\\Joplin\" -Recurse -Force -ErrorAction 'SilentlyContinue'",
+            "Remove-Item \"$env:USERPROFILE\\.config\\joplin-desktop\" -Recurse -Force -ErrorAction 'SilentlyContinue'"
+        ]
+    },
     "bin": "Joplin.exe",
     "shortcuts": [
         [
             "Joplin.exe",
-            "Joplin-Pre"
+            "Joplin"
         ]
     ],
     "checkver": {
-        "url": "https://github.com/laurent22/joplin/tags",
-        "regex": "/laurent22/joplin/releases/tag/v([\\d.]+)"
+        "url": "https://api.github.com/repos/laurent22/joplin/releases",
+        "regex": "(?sm)prerelease\".*?true.*?browser_download_url.*?releases/download/v([\\d.]+)/Joplin-Setup-([\\d.]+)\\.exe"
     },
     "autoupdate": {
         "url": "https://github.com/laurent22/joplin/releases/download/v$version/Joplin-Setup-$version.exe#/dl.7z",
