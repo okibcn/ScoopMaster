@@ -1,28 +1,38 @@
 {
     "version": "2.19",
-    "description": "A clash client for Windows, supports Clash core and Clash.Meta core",
+    "description": "A clash client for Windows, support clash core and Clash.Meta core.",
     "homepage": "https://github.com/2dust/clashN",
     "license": "GPL-3.0-only",
-    "suggest": {
-        ".NET Desktop Runtime": "extras/windowsdesktop-runtime-lts"
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/2dust/clashN/releases/download/2.19/clashN.zip",
+            "hash": "f864b6fc7fbbea71611e45bc1a568fc77ab703c10a1d0673009bb75becebfa34"
+        }
     },
-    "url": "https://github.com/2dust/clashN/releases/download/2.19/clashN.zip",
-    "hash": "f864b6fc7fbbea71611e45bc1a568fc77ab703c10a1d0673009bb75becebfa34",
+    "suggest": {
+        "dotnet-runtime": "windowsdesktop-runtime"
+    },
     "extract_dir": "clashN",
-    "bin": "clashN.exe",
+    "persist": [
+        "guiConfigs",
+        "guiBackups",
+        "guiLogs"
+    ],
     "shortcuts": [
         [
             "clashN.exe",
             "clashN"
         ]
     ],
-    "persist": [
-        "guiConfigs",
-        "guiBackups",
-        "guiLogs"
-    ],
-    "checkver": "github",
+    "checkver": {
+        "url": "https://github.com/2dust/clashN/releases/latest",
+        "regex": "/releases/tag/([\\d.]+)"
+    },
     "autoupdate": {
-        "url": "https://github.com/2dust/clashN/releases/download/$version/clashN.zip"
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/2dust/clashN/releases/download/$version/clashN.zip"
+            }
+        }
     }
 }
