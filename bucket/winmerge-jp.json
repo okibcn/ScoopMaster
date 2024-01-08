@@ -1,39 +1,70 @@
 {
-    "homepage": "https://winmergejp.bitbucket.io/",
-    "description": "An open source differencing and merging tool for Windows that compares both folders and files.",
-    "license": "GPL-2.0-only",
-    "version": "2.16.36-jp-2",
     "architecture": {
-        "32bit": {
-            "url": "https://download.sourceforge.net/winmerge-v2-jp/winmerge-2.16.36-jp-2-exe.zip#/dl.7z",
-            "hash": "3ac6dd2b01e7a71940196e3f576773088ee625680dc31a5516ce888c8d33681c"
-        },
         "64bit": {
-            "url": "https://download.sourceforge.net/winmerge-v2-jp/winmerge-2.16.36-jp-2-x64-exe.zip#/dl.7z",
+            "url": "https://download.sourceforge.net/winmerge-v2-jp/winmerge-2.16.36-jp-2-x64-exe.zip",
             "hash": "63fb00883b71efa51c9b1da85fca87407cb26aebfa4dfb1eb873be08199542e9"
         }
     },
+    "version": "2.16.36.2",
     "extract_dir": "WinMerge",
     "bin": "WinMergeU.exe",
+    "persist": [
+        "Filters",
+        "MergePlugins"
+    ],
+    "pre_install": [
+        "$ScoopPreservedDirPath = \"$env:TEMP\\__scoop__preserved\"",
+        "if (Test-Path $ScoopPreservedDirPath -PathType Container) {",
+        "  Write-Output \"  [pre_install] Removing temporary preserved folder\"",
+        "  Remove-Item $ScoopPreservedDirPath -Recurse -Force",
+        "}",
+        "Write-Output \"  [pre_install] Creating temporary preserved folder\"",
+        "New-Item $ScoopPreservedDirPath -ItemType Directory | Out-Null",
+        "Write-Output \"  [pre_install] Preserving original files\"",
+        "Copy-Item \"$dir\\*\" $ScoopPreservedDirPath -Recurse -Force"
+    ],
+    "installer": {
+        "script": [
+            "Push-Location $dir",
+            "Write-Output \"  [installer] Registering context menu\"",
+            "Cmd.exe /C Call RegisterPerUser.bat /s",
+            "Write-Output \"  [installer] Registering context menu for Windows 11\"",
+            "Add-AppxPackage WinMergeContextMenuPackage.msix -ExternalLocation $dir",
+            "Pop-Location"
+        ]
+    },
+    "pre_uninstall": [
+        "Push-Location $dir",
+        "Write-Output \"  [pre_uninstall] Unregistering context menu for Windows 11\"",
+        "Get-AppxPackage -name WinMerge | Remove-AppxPackage",
+        "Write-Output \"  [pre_uninstall] Unregistering context menu\"",
+        "Cmd.exe /C Call RegisterPerUser.bat /u /s",
+        "Pop-Location"
+    ],
+    "uninstaller": {
+        "script": [
+            "if (Test-Path \"$dir\" -PathType Container) {",
+            "  Write-Output \"  [uninstaller] Remove files\"",
+            "  Get-ChildItem \"$dir\\*\" -File -Recurse | ForEach-Object { Remove-Item $_.FullName -Force }",
+            "}"
+        ]
+    },
     "shortcuts": [
         [
             "WinMergeU.exe",
-            "WinMerge-JP"
+            "WinMerge日本語版"
         ]
     ],
-    "persist": "MergePlugins",
+    "license": "GPL-2.0",
+    "homepage": "https://winmergejp.bitbucket.io/",
     "checkver": {
-        "url": "https://winmergejp.bitbucket.io/",
-        "re": "<h3>\\d{4}/\\d{2}/\\d{2} (?<version>[\\d.]+)\\-jp-(?<build>[\\d]+)</h3>",
-        "replace": "${version}-jp-${build}"
+        "re": "WinMerge-(?<v1>[\\d.]+)-jp-(?<v2>[\\d]+)-Setup.exe",
+        "replace": "${v1}.${v2}"
     },
     "autoupdate": {
         "architecture": {
-            "32bit": {
-                "url": "https://download.sourceforge.net/winmerge-v2-jp/winmerge-$matchVersion-jp-$matchBuild-exe.zip#/dl.7z"
-            },
             "64bit": {
-                "url": "https://download.sourceforge.net/winmerge-v2-jp/winmerge-$matchVersion-jp-$matchBuild-x64-exe.zip#/dl.7z"
+                "url": "https://download.sourceforge.net/winmerge-v2-jp/winmerge-$matchV1-jp-$matchV2-x64-exe.zip"
             }
         }
     }
