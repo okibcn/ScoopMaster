@@ -1,16 +1,20 @@
 {
-    "description": "Popular open source web browser. Cross-platform and available in many languages.",
-    "homepage": "https://www.mozilla.org/zh-CN/firefox/new/",
     "version": "121.0",
+    "description": "Popular open source web browser.",
+    "homepage": "https://www.mozilla.org/firefox/",
     "license": "MPL-2.0",
     "architecture": {
         "64bit": {
-            "url": "https://download-installer.cdn.mozilla.net/pub/firefox/releases/121.0/win64/zh-CN/Firefox%20Setup%20121.0.exe#/firefox.7z",
+            "url": "https://archive.mozilla.org/pub/firefox/releases/121.0/win64/zh-CN/Firefox%20Setup%20121.0.exe#/dl.7z",
             "hash": "sha512:9cd72bfea0d896de6d33c74ae567d6843dcda20e728e083c9f7dbe18941610201c4cb40a134b7acc4c24586947f298b538d8e9b143117fd84bf22ad31ee8e28c"
         },
         "32bit": {
-            "url": "https://download-installer.cdn.mozilla.net/pub/firefox/releases/121.0/win32/zh-CN/Firefox%20Setup%20121.0.exe#/firefox.7z",
+            "url": "https://archive.mozilla.org/pub/firefox/releases/121.0/win32/zh-CN/Firefox%20Setup%20121.0.exe#/dl.7z",
             "hash": "sha512:00adba6e688bf8c66d1ceb1708318b35a1df6d5fa8be68da14400d6dac8f8dc1bc1dc3c6881304b6479cba39e27b35aacffff5124188836bc9fdf421a4eb59b7"
+        },
+        "arm64": {
+            "url": "https://archive.mozilla.org/pub/firefox/releases/121.0/win64-aarch64/zh-CN/Firefox%20Setup%20121.0.exe#/dl.7z",
+            "hash": "sha512:6b91d24ccca908938cdea94c55f908b9a393c30ef87d703e64962708958be37f9e13d2b65f1799c53f6dd98fb59c794cc23f11e611cf16569f10ec2f8d7af135"
         }
     },
     "extract_dir": "core",
@@ -18,31 +22,37 @@
     "shortcuts": [
         [
             "firefox.exe",
-            "Mozilla Firefox"
+            "Firefox"
         ]
     ],
-    "persist": "profile-portable",
+    "persist": "distribution",
     "checkver": {
         "url": "https://www.mozilla.org/zh-CN/firefox/all/",
-        "re": "data-latest-firefox=\"([\\d.]+)\""
+        "regex": "data-latest-firefox=\"([\\d.]+)\""
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://download-installer.cdn.mozilla.net/pub/firefox/releases/$version/win64/zh-CN/Firefox%20Setup%20$version.exe#/firefox.7z",
+                "url": "https://archive.mozilla.org/pub/firefox/releases/$version/win64/zh-CN/Firefox%20Setup%20$version.exe#/dl.7z",
                 "hash": {
-                    "url": "https://download-installer.cdn.mozilla.net/pub/firefox/releases/$version/SHA512SUMS",
+                    "url": "https://archive.mozilla.org/pub/firefox/releases/$version/SHA512SUMS",
                     "regex": "$sha512\\s+win64/zh-CN/$basename"
                 }
             },
             "32bit": {
-                "url": "https://download-installer.cdn.mozilla.net/pub/firefox/releases/$version/win32/zh-CN/Firefox%20Setup%20$version.exe#/firefox.7z",
+                "url": "https://archive.mozilla.org/pub/firefox/releases/$version/win32/zh-CN/Firefox%20Setup%20$version.exe#/dl.7z",
                 "hash": {
-                    "url": "https://download-installer.cdn.mozilla.net/pub/firefox/releases/$version/SHA512SUMS",
+                    "url": "https://archive.mozilla.org/pub/firefox/releases/$version/SHA512SUMS",
                     "regex": "$sha512\\s+win32/zh-CN/$basename"
+                }
+            },
+            "arm64": {
+                "url": "https://archive.mozilla.org/pub/firefox/releases/$version/win64-aarch64/zh-CN/Firefox%20Setup%20$version.exe#/dl.7z",
+                "hash": {
+                    "url": "https://archive.mozilla.org/pub/firefox/releases/$version/SHA512SUMS",
+                    "regex": "$sha512\\s+win64-aarch64/zh-CN/$basename"
                 }
             }
         }
-    },
-    "notes": "To recover persisted profile, you need to open the Profile Manager with `firefox -P` and create by selecting the portable profile directory."
+    }
 }
