@@ -1,51 +1,33 @@
 {
     "version": "4.2.1",
-    "homepage": "https://github.com/rubickCenter/rubick",
-    "description": "Electron based open source toolbox, free integration of rich plug-ins. 基于 electron 的开源工具箱，自由集成丰富插件",
-    "license": {
-        "identifier": "MIT",
-        "url": "https://github.com/rubickCenter/rubick/blob/master/LICENSE"
-    },
+    "description": "Electron based open source toolbox, free integration of rich plug-ins. 基于 electron 的开源工具箱，自由集成丰富插件。",
+    "homepage": "https://rubickcenter.github.io",
+    "license": "MIT",
+    "notes": "https://github.com/ViCrack/scoop-bucket/blob/master/bucket/rubick.json",
     "architecture": {
         "64bit": {
-            "url": "https://github.com/rubickCenter/rubick/releases/download/v4.2.1/rubick-Setup-4.2.1-x64.exe",
-            "hash": "0abf70b7efd8c855c270bcecc237809ba48b08c22f582f17bf33fb5c7f55d1b1"
+            "url": "https://github.com/rubickCenter/rubick/releases/download/v4.2.1/rubick-Setup-4.2.1-x64.exe#/dl.7z",
+            "hash": "0abf70b7efd8c855c270bcecc237809ba48b08c22f582f17bf33fb5c7f55d1b1",
+            "pre_install": [
+                "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\"",
+                "Remove-Item \"$dir\\`$*\", \"$dir\\Uninstall*\" -Force -Recurse"
+            ]
         }
     },
-    "post_install": [
-        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-        "$app_exe= Get-ChildItem \"$dir/\" | Where-Object {$_.Name -match 'rubick.*.exe'} | ForEach-Object { $_.FullName }",
-        "$CmdString = \"& $app_exe /S /D=$dir\"",
-        "Invoke-Expression $CmdString",
-        "create_app_lnk \"$dir\\rubick.exe\" \"$scoop_apps_lnk\\rubick.lnk\"",
-        "persist -dir @(\"$env:AppData\\rubick\") @(\"$persist_dir\")",
-        "Write-Host \"There will be a delayed backend behavior soon: Delete redundant files after 10 seconds\n\" -f Yellow",
-        "$null=Start-Job -ScriptBlock {",
-        "   param($path1,$path2,$path3)",
-        "   Start-Sleep -Seconds 10",
-        "   @($path1,$path2,$path3) | ForEach-Object {",
-        "       if (Test-Path($_)) { Remove-Item -Force $_ }",
-        "   }",
-        "} -ArgumentList $app_exe,\"$env:UserProfile\\Desktop\\rubick.lnk\",\"$env:AppData\\Microsoft\\Windows\\Start Menu\\Programs\\rubick.lnk\""
+    "shortcuts": [
+        [
+            "rubick.exe",
+            "Rubick"
+        ]
     ],
-    "pre_uninstall": [
-        "$_bucket=(scoop bucket list | where-Object {$_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
-        ". \"$bucketsdir\\$_bucket\\bin\\utils.ps1\"",
-        "stop_process"
-    ],
-    "post_uninstall": [
-        "$_bucket=(scoop bucket list | where-Object {$_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
-        ". \"$bucketsdir\\$_bucket\\bin\\utils.ps1\"",
-        "$data=@(\"$env:AppData\\rubick\",\"$env:LocalAppData\\Programs\\rubick\",\"$scoop_apps_lnk\\rubick.lnk\")",
-        "$data | ForEach-Object {",
-        "   if (Test-Path($_)) {",
-        "       Remove-Item -Force -Recurse $_",
-        "       Write-Host \"Removing $_\" -f Yellow",
-        "   }",
-        "}"
-    ],
-    "checkver": "github",
+    "checkver": {
+        "github": "https://github.com/rubickCenter/rubick"
+    },
     "autoupdate": {
-        "url": "https://github.com/rubickCenter/rubick/releases/download/v$version/rubick-Setup-$version-x64.exe"
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/rubickCenter/rubick/releases/download/v$version/rubick-Setup-$version-x64.exe#/dl.7z"
+            }
+        }
     }
 }
