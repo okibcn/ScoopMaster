@@ -1,51 +1,44 @@
 {
     "version": "1.9.15",
-    "homepage": "https://github.com/LokerL/tts-vue",
-    "description": "🎤 Microsoft speech synthesis tool, built using Electron + Vue + ElementPlus + Vite. 🎤 微软语音合成工具，使用 Electron + Vue + ElementPlus + Vite 构建。",
-    "license": {
-        "identifier": "MIT",
-        "url": "https://github.com/LokerL/tts-vue/blob/main/LICENSE"
-    },
+    "description": "微软语音合成工具，使用 Electron + Vue + ElementPlus + Vite 构建",
+    "homepage": "https://tts-doc.loker.vip/home.html",
+    "license": "MIT",
     "architecture": {
         "64bit": {
             "url": "https://github.com/LokerL/tts-vue/releases/download/1.9.15/tts-vue-windows-latest.zip",
-            "hash": "e8cd45a3f1ca1335723554e41ab06fd1f289bacad666ff8adbe9af74a07800de"
+            "extract_dir": "1.9.15",
+            "hash": "e8cd45a3f1ca1335723554e41ab06fd1f289bacad666ff8adbe9af74a07800de",
+            "pre_install": [
+                "Expand-7zipArchive -Path (Get-ChildItem \"$dir\" 'tts-vue*.exe' | Select-Object -First 1).FullName -DestinationPath \"$dir\" -Removal",
+                "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\"",
+                "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\`$R0\", \"$dir\\Uninstall*\", \"$dir\\resources\\app-update.yml\"  -Force -Recurse"
+            ]
         }
     },
-    "post_install": [
-        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-        "$CmdString = \"$dir\\$version\\tts-vue-$version.exe /S /D=$dir\"",
-        "Invoke-Expression $CmdString",
-        "create_app_lnk \"$dir\\tts-vue.exe\" \"$scoop_apps_lnk\\tts-vue.lnk\"",
-        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-        "persist -dir @(\"$env:APPData\\tts-vue\") @(\"$persist_dir\")",
-        "Write-Host \"There will be a delayed backend behavior soon: Delete redundant files after 10 seconds\n\" -f Yellow",
-        "$null=Start-Job -ScriptBlock {",
-        "   param($path1,$path2)",
-        "   Start-Sleep -Seconds 10",
-        "   @($path1,$path2) | ForEach-Object {",
-        "       if (Test-Path($_)) { Remove-Item -Force -Recurse $_ }",
-        "   }",
-        "} -ArgumentList \"$dir\\$version\",\"$env:UserProfile\\Desktop\\tts-vue.lnk\",\"$env:AppData\\Microsoft\\Windows\\Start Menu\\Programs\\tts-vue.lnk\""
+    "bin": [
+        [
+            "tts-vue.exe",
+            "tts-vue",
+            "--user-data-dir=\"$dir\\User Data\""
+        ]
     ],
-    "pre_uninstall": [
-        "$_bucket=(scoop bucket list | where-Object {$_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
-        ". \"$bucketsdir\\$_bucket\\bin\\utils.ps1\"",
-        "stop_process"
+    "shortcuts": [
+        [
+            "tts-vue.exe",
+            "TTS-Vue",
+            "--user-data-dir=\"$dir\\User Data\""
+        ]
     ],
-    "post_uninstall": [
-        "$_bucket=(scoop bucket list | where-Object {$_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
-        ". \"$bucketsdir\\$_bucket\\bin\\utils.ps1\"",
-        "$data=@(\"$env:APPData\\tts-vue\",\"$scoop_apps_lnk\\tts-vue.lnk\")",
-        "$data | ForEach-Object {",
-        "   if (Test-Path($_)) {",
-        "       Remove-Item -Force -Recurse $_",
-        "       Write-Host \"Removing $_\" -f Yellow",
-        "   }",
-        "}"
-    ],
-    "checkver": "github",
+    "persist": "User Data",
+    "checkver": {
+        "github": "https://github.com/LokerL/tts-vue"
+    },
     "autoupdate": {
-        "url": "https://github.com/LokerL/tts-vue/releases/download/$version/tts-vue-windows-latest.zip"
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/LokerL/tts-vue/releases/download/$version/tts-vue-windows-latest.zip",
+                "extract_dir": "$version"
+            }
+        }
     }
 }
