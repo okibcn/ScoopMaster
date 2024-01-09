@@ -11,7 +11,11 @@
         }
     },
     "installer": {
-        "script": "python.exe -m pip install --upgrade pip ; pip3 install determined"
+        "script": [
+            "python.exe -m pip install --upgrade pip",
+            "$version = python --version; if ($version -ge 'Python 3.12') { pip3 install setuptools }",
+            "pip3 install determined"
+        ]
     },
     "bin": "determined.exe",
     "uninstaller": {
