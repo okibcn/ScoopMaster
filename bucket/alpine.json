@@ -1,0 +1,50 @@
+{
+    "version": "2.26",
+    "description": "Alpine is a text-based email client, friendly for novices yet powerful.",
+    "homepage": "https://alpineapp.email",
+    "license": "Apache-2.0",
+    "architecture": {
+        "64bit": {
+            "url": "https://alpineapp.email/alpine/release/src/alpine-2.26.zip",
+            "hash": "d754c781f84e4034ddbc6e33188deef5b3566bdcd296945cad7ee955a070ae3b",
+            "extract_dir": "alpine2_26"
+        },
+        "32bit": {
+            "url": "https://alpineapp.email/alpine/release/src/alpine-2.26_32bits.zip",
+            "hash": "507aa9e54d02f4b588a5889e47632c71e796eb2bbb6023915de386f9ee6d0693",
+            "extract_dir": "alpine2_26_32bits"
+        }
+    },
+    "pre_install": "if (!(Test-Path \"$persist_dir\\pinerc\")) { New-Item \"$dir\\pinerc\" -ItemType File | Out-Null }",
+    "post_install": [
+        "if (!(Get-Content -Path \"$dir\\pinerc\")) {",
+        "    alpine.exe -pinerc $dir\\pinerc",
+        "}"
+    ],
+    "bin": "alpine.exe",
+    "shortcuts": [
+        [
+            "alpine.exe",
+            "Alpine"
+        ]
+    ],
+    "persist": "pinerc",
+    "checkver": {
+        "regex": "Latest Release Version ([\\d.]+)"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://alpineapp.email/alpine/release/src/alpine-$version.zip",
+                "extract_dir": "alpine$underscoreVersion"
+            },
+            "32bit": {
+                "url": "https://alpineapp.email/alpine/release/src/alpine-$version_32bits.zip",
+                "extract_dir": "alpine$underscoreVersion_32bits"
+            }
+        },
+        "hash": {
+            "regex": "$basename.*SHA256: $sha256"
+        }
+    }
+}

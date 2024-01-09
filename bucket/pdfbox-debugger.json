@@ -1,0 +1,37 @@
+{
+    "version": "3.0.1",
+    "description": "Apache PDFBox PDF Debugger App",
+    "homepage": "https://pdfbox.apache.org/",
+    "license": "Apache-2.0",
+    "suggest": {
+        "JDK": [
+            "java/oraclejdk",
+            "java/openjdk"
+        ]
+    },
+    "url": "https://archive.apache.org/dist/pdfbox/3.0.1/debugger-app-3.0.1.jar",
+    "hash": "sha512:3b13a04713deca20743a6047ec2a062ca01a0b31c4d0b0b18e6fd4b85d7100a387f7e350e0fec8ce589dd3473bd31b29e50e10bfd369b0cb8c76c6f8f06f77ef",
+    "pre_install": [
+        "Rename-Item \"$dir\\debugger-app*.jar\" 'debugger-app.jar'",
+        "Set-Content \"$dir\\pdfbox-debugger.bat\" '@start javaw.exe -jar \"%~dp0debugger-app.jar\" %*' -Encoding Ascii"
+    ],
+    "bin": "debugger-app.jar",
+    "shortcuts": [
+        [
+            "pdfbox-debugger.bat",
+            "PDFBox Debugger"
+        ]
+    ],
+    "checkver": {
+        "url": "https://archive.apache.org/dist/pdfbox/",
+        "regex": "([\\d.]+)/",
+        "useragent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.26 Safari/537.36",
+        "reverse": true
+    },
+    "autoupdate": {
+        "url": "https://archive.apache.org/dist/pdfbox/$version/debugger-app-$version.jar",
+        "hash": {
+            "url": "$url.sha512"
+        }
+    }
+}

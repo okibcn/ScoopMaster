@@ -1,5 +1,5 @@
 {
-    "version": "0.9.5",
+    "version": "nightly",
     "description": "Vim-fork focused on extensibility and usability",
     "homepage": "https://neovim.io/",
     "license": {
@@ -11,83 +11,20 @@
     },
     "architecture": {
         "64bit": {
-            "url": "https://github.com/neovim/neovim/releases/download/v0.9.5/nvim-win64.zip",
-            "hash": "de6dc1f0edb45f5f225ee24ce80a4fcbc3a337932037e98ae143975fca2556bf"
+            "url": "https://github.com/neovim/neovim/releases/download/nightly/nvim-win64.zip"
         }
     },
     "extract_dir": "nvim-win64",
-    "installer": {
-        "script": [
-            "if (!(Test-Path \"$persist_dir\\nvim-config\")) {",
-            "    New-Item \"$persist_dir\\nvim-config\" -Type Directory -Force | Out-Null",
-            "}",
-            "if (!(Test-Path \"$persist_dir\\nvim-data\")) {",
-            "    New-Item \"$persist_dir\\nvim-data\" -Type Directory -Force | Out-Null",
-            "}",
-            "$runtimeConfig = \"$env:LOCALAPPDATA\\nvim\"",
-            "$runtimeConfigPersist = \"$persist_dir\\nvim-config\"",
-            "if (Test-Path $runtimeConfigPersist) {",
-            "    Remove-Item $runtimeConfig -Force -Recurse -ErrorAction SilentlyContinue",
-            "    New-Item -Type Junction -Path $runtimeConfig -Target $runtimeConfigPersist | Out-Null",
-            "} else {",
-            "    if (Test-Path $runtimeConfig) {",
-            "        Move-Item $runtimeConfig $runtimeConfigPersist -Force",
-            "        New-Item -Type Junction -Path $runtimeConfig -Target $runtimeConfigPersist | Out-Null",
-            "    }",
-            "}",
-            "$runtimeCache = \"$env:LOCALAPPDATA\\nvim-data\"",
-            "$runtimeCachePersist = \"$persist_dir\\nvim-data\"",
-            "if (Test-Path $runtimeCachePersist) {",
-            "    Remove-Item $runtimeCache -Force -Recurse -ErrorAction SilentlyContinue",
-            "    New-Item -Type Junction -Path $runtimeCache -Target $runtimeCachePersist | Out-Null",
-            "} else {",
-            "    if (Test-Path $runtimeCache) {",
-            "        Move-Item $runtimeCache $runtimeCachePersist -Force",
-            "        New-Item -Type Junction -Path $runtimeCache -Target $runtimeCachePersist | Out-Null",
-            "    }",
-            "}"
-        ]
-    },
-    "uninstaller": {
-        "script": [
-            "$runtimeConfig = \"$env:LOCALAPPDATA\\nvim\"",
-            "$runtimeConfigPersist = \"$persist_dir\\nvim-config\"",
-            "if (!(Test-Path $runtimeConfigPersist)) {",
-            "    Move-Item $runtimeConfig $runtimeConfigPersist -Force",
-            "} else {",
-            "    Remove-Item $runtimeConfig -Force -Recurse -ErrorAction SilentlyContinue",
-            "}",
-            "$runtimeCache = \"$env:LOCALAPPDATA\\nvim-data\"",
-            "$runtimeCachePersist = \"$persist_dir\\nvim-data\"",
-            "if (!(Test-Path $runtimeCachePersist)) {",
-            "    Move-Item $runtimeCache $runtimeCachePersist -Force",
-            "} else {",
-            "    Remove-Item $runtimeCache -Force -Recurse -ErrorAction SilentlyContinue",
-            "}"
-        ]
-    },
-    "bin": [
-        "bin\\nvim.exe",
-        "bin\\nvim-qt.exe"
-    ],
-    "shortcuts": [
-        [
-            "bin\\nvim-qt.exe",
-            "Neovim"
-        ]
-    ],
-    "persist": [
-        "nvim-config",
-        "nvim-data"
-    ],
+    "bin": ["bin\\nvim.exe", "bin\\nvim-qt.exe"],
+    "shortcuts": [["bin\\nvim-qt.exe", "Neovim"]],
     "checkver": {
-        "url": "https://github.com/neovim/neovim/releases/latest",
+        "github": "https://github.com/neovim/neovim",
         "regex": "NVIM v([\\d.]+)"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://github.com/neovim/neovim/releases/download/v$version/nvim-win64.zip"
+                "url": "https://github.com/neovim/neovim/releases/download/nightly/nvim-win64.zip"
             }
         },
         "hash": {

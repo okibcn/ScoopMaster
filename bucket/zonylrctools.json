@@ -1,0 +1,36 @@
+{
+    "version": "2023122272",
+    "description": "ZonyLrcToolsX 是一个能够方便地下载歌词的小软件。",
+    "homepage": "https://soft.myzony.com",
+    "license": "MIT",
+    "notes": "Edit $dir//config.yaml and $dir//BlockWords.json for your pleasure.",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/real-zony/ZonyLrcToolsX/releases/download/ZonyLrcToolsX_Alpha.2023122272/ZonyLrcTools_win-x64_2023122272.zip",
+            "hash": "422d9a85914cdbf9d0c921c9c54ae58c1d5f4e4d8c52a449f6e3c943eb0077c0"
+        }
+    },
+    "bin": [
+        [
+            "ZonyLrcTools.Cli.exe",
+            "ZonyLrcTools.Cli"
+        ]
+    ],
+    "persist": [
+        "BlockWords.json",
+        "config.yaml",
+        "Logs"
+    ],
+    "checkver": {
+        "url": "https://api.github.com/repos/real-zony/ZonyLrcToolsX/tags",
+        "jsonpath": "$.[0].name",
+        "regex": "ZonyLrcToolsX_Alpha\\.([\\d]+)"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/real-zony/ZonyLrcToolsX/releases/download/ZonyLrcToolsX_Alpha.$version/ZonyLrcTools_win-x64_$version.zip"
+            }
+        }
+    }
+}

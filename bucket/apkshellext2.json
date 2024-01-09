@@ -1,0 +1,59 @@
+{
+    "version": "2.0.7",
+    "description": "Show app icons in windows explorer",
+    "homepage": "http://www.apkshellext.com/",
+    "license": "MIT",
+    "url": [
+        "https://github.com/kkguo/apkshellext/releases/download/v2.0.7/ApkShellext2.7z",
+        "https://github.com/kkguo/apkshellext/releases/download/v2.0.7/zh-CN.7z"
+    ],
+    "hash": [
+        "17529937DA2E89D19940E3273C2D166CC3A586020D9797FACF3E9BEAC1F8B33A",
+        "996EE6F718415ED1C30E2CCE64ABC4DB17D9CF6CA385F2773755BAA01AC115F9"
+    ],
+    "pre_install": [
+        "if ($architecture -eq \"arm64\") {",
+        "    Write-Host \"No approriate version\"",
+        "    break",
+        "}"
+    ],
+    "installer": {
+        "script": [
+            "if ($architecture -eq \"64bit\") {",
+            "    $Framework = \"$Env:windir\\Microsoft.NET\\Framework\" + \"64\"",
+            "}",
+            "else {",
+            "    $Framework = \"$Env:windir\\Microsoft.NET\\Framework\"",
+            "}",
+            "$DotNetVersion = \"v4.0.30319\"",
+            "$RegAsm = \"$Framework\\$DotNetVersion\\regasm.exe\"",
+            "$Arg = \"/codebase `\"\" + \"$dir\\apkshellext2.dll\" + \"`\"\"",
+            "Start-Process -FilePath $RegAsm -ArgumentList $Arg -Verb RunAs -Wait"
+        ]
+    },
+    "uninstaller": {
+        "script": [
+            "if ($architecture -eq \"64bit\") {",
+            "    $Framework = \"$Env:windir\\Microsoft.NET\\Framework\" + \"64\"",
+            "}",
+            "else {",
+            "    $Framework = \"$Env:windir\\Microsoft.NET\\Framework\"",
+            "}",
+            "$DotNetVersion = \"v4.0.30319\"",
+            "$RegAsm = \"$Framework\\$DotNetVersion\\regasm.exe\"",
+            "$Arg = \"/unregister `\"\" + \"$dir\\apkshellext2.dll\" + \"`\"\"",
+            "Start-Process -FilePath $RegAsm -ArgumentList $Arg -Verb RunAs -Wait"
+        ]
+    },
+    "checkver": {
+       "url": "https://api.github.com/repos/kkguo/apkshellext/tags",
+       "jsonpath": "$.[0].name",
+       "regex": "v([\\d.]+)"
+    },
+    "autoupdate": {
+        "url": [
+            "https://github.com/kkguo/apkshellext/releases/download/v$version/ApkShellext2.7z",
+            "https://github.com/kkguo/apkshellext/releases/download/v$version/zh-CN.7z"
+        ]
+    }
+}

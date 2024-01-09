@@ -24,25 +24,5 @@
         "hash": {
             "url": "https://github.com/binwiederhier/ntfy/releases/download/v$version/checksums.txt"
         }
-    },
-    "post_install": [
-        "# Create %AppData%\\ntfy\\client.yml if not exists",
-        "$configDir = Join-Path -Path $env:APPDATA -ChildPath 'ntfy'",
-        "$configPath = Join-Path -Path $configDir -ChildPath 'client.yml'",
-        "if (!(Test-Path -Path $configPath)) {",
-        "   New-Item -Path $configDir -ItemType Directory -Force | Out-Null",
-        "   Copy-Item -Path $(Join-Path -Path $dir -ChildPath 'client\\client.yml') -Destination $configPath -Force",
-        "}",
-        "Remove-Item -Path $(Join-Path -Path $dir -ChildPath 'client') -Force -Recurse",
-        "$xdgConfigMirror = Join-Path -Path $env:USERPROFILE -ChildPath '.config\\ntfy\\client.yml'",
-        "if (!(Test-Path -Path $xdgConfigMirror)) {",
-        "   New-Item -Path $(Split-Path -Path $xdgConfigMirror -Parent) -ItemType Directory -Force | Out-Null",
-        "   New-Item -Path $xdgConfigMirror -ItemType SymbolicLink -Value $configPath -Force | Out-Null",
-        "}"
-    ],
-    "notes": [
-        "The configuration file is located at %AppData%\\ntfy\\client.yml",
-        "It will not be automatically removed during uninstallation even with -p flag. Delete them manually if needed.",
-        "A symbolic link mirror of the configuration file is located at %USERPROFILE%\\.config\\ntfy\\client.yml"
-    ]
+    }
 }

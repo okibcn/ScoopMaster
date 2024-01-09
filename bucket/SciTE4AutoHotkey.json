@@ -1,8 +1,31 @@
 {
-    "url": "https://www.autohotkey.com/scite4ahk/dl/s4ahk-portable.zip",
     "version": "3.1.0",
-    "bin": [
-        ["scite\\scite.exe", "Scite4AutoHotkey", ""],
-        ["scite\\scite.exe", "Scite4Ahk", ""]
-    ]
+    "description": "SCIntilla based Text Editor designed for AutoHotkey",
+    "homepage": "https://www.autohotkey.com/scite4ahk/",
+    "license": "Freeware",
+    "url": "https://www.autohotkey.com/scite4ahk/dl/s4ahk-portable.zip",
+    "hash": "5803831c9dbcb08976922acb2a3688161770363bf50532a2f38d626b9d9b4410",
+    "depends": "autohotkey",
+    "pre_install": [
+        "$autohotkey = versiondir 'autohotkey' 'current'",
+        "If(Test-path \"$autohotkey\\SciTe\") {",
+        "    Remove-Item \"$autohotkey\\SciTe\" -Recurse -Force -ErrorAction SilentlyContinue",
+        "}",
+        "New-Item -Path \"$autohotkey\\SciTE\" -Value \"$dir\" -ItemType Junction | Out-Null"
+    ],
+    "extract_dir": "SciTE",
+    "bin": "SciTe.exe",
+    "shortcuts": [
+        [
+            "scite.exe",
+            "SciTe4AutoHotkey"
+        ]
+    ],
+    "checkver": "v([\\d.]+)",
+    "autoupdate": {
+        "url": "https://www.autohotkey.com/scite4ahk/dl/s4ahk-portable.zip",
+        "hash": {
+            "mode": "download"
+        }
+    }
 }

@@ -1,14 +1,18 @@
 {
-    "homepage": "https://mpc-hc.org/",
-    "version": "1.7.13",
-    "license": "https://github.com/mpc-hc/mpc-hc/blob/develop/COPYING.txt",
+    "version": "2.1.3",
+    "description": "An extremely light-weight, open source media player for Windows.",
+    "homepage": "https://github.com/clsid2/mpc-hc",
+    "license": "GPL-3.0-only",
     "architecture": {
         "64bit": {
-            "url": "https://binaries.mpc-hc.org/MPC%20HomeCinema%20-%20x64/MPC-HC_v1.7.13_x64/MPC-HC.1.7.13.x64.7z",
-            "hash": "1ce281b255ba4cd0762aed63c59e0cfa5be471422bd89676af07f2e3bfc6a5c4",
-            "extract_dir": "MPC-HC.1.7.13.x64",
+            "url": "https://github.com/clsid2/mpc-hc/releases/download/2.1.3/MPC-HC.2.1.3.x64.zip",
+            "hash": "b376129012923798aba4d2711480959f9f7f7c24908a717a76c29d5543dfad2f",
             "bin": [
-                "mpc-hc64.exe"
+                "mpc-hc64.exe",
+                [
+                    "mpc-hc64.exe",
+                    "mpc-hc"
+                ]
             ],
             "shortcuts": [
                 [
@@ -18,12 +22,9 @@
             ]
         },
         "32bit": {
-            "url": "https://binaries.mpc-hc.org/MPC%20HomeCinema%20-%20Win32/MPC-HC_v1.7.13_x86/MPC-HC.1.7.13.x86.7z",
-            "hash": "ae5f25f92f0586ce305fa909da98419e3ee3e0d55b08a7b7f246dec7b6a7d2f4",
-            "extract_dir": "MPC-HC.1.7.13.x86",
-            "bin": [
-                "mpc-hc.exe"
-            ],
+            "url": "https://github.com/clsid2/mpc-hc/releases/download/2.1.3/MPC-HC.2.1.3.x86.zip",
+            "hash": "7bccaad47805e9d39fd3551d4b73dbf685cadc2ac9d41eed5182fd9d5e3e1768",
+            "bin": "mpc-hc.exe",
             "shortcuts": [
                 [
                     "mpc-hc.exe",
@@ -32,19 +33,23 @@
             ]
         }
     },
-    "checkver": {
-        "url": "https://mpc-hc.org/downloads/",
-        "re": "latest stable build is v([\\d.]+) which"
-    },
+    "pre_install": [
+        "@('mpc-hc64.ini', 'mpc-hc.ini') | ForEach-Object {",
+        "    if (!(Test-Path \"$persist_dir\\$_\")) { New-Item \"$dir\\$_\" -ItemType File | Out-Null }",
+        "}"
+    ],
+    "persist": [
+        "mpc-hc64.ini",
+        "mpc-hc.ini"
+    ],
+    "checkver": "github",
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://binaries.mpc-hc.org/MPC%20HomeCinema%20-%20x64/MPC-HC_v$version_x64/MPC-HC.$version.x64.7z",
-                "extract_dir": "MPC-HC.$version.x64"
+                "url": "https://github.com/clsid2/mpc-hc/releases/download/$version/MPC-HC.$version.x64.zip"
             },
             "32bit": {
-                "url": "https://binaries.mpc-hc.org/MPC%20HomeCinema%20-%20Win32/MPC-HC_v$version_x86/MPC-HC.$version.x86.7z",
-                "extract_dir": "MPC-HC.$version.x86"
+                "url": "https://github.com/clsid2/mpc-hc/releases/download/$version/MPC-HC.$version.x86.zip"
             }
         }
     }

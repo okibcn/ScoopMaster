@@ -1,36 +1,39 @@
 {
-  "version": "1.5.6",
-  "description": "PC Hunter是一个Windows系统信息查看软件，同时也是一个手工杀毒辅助软件。 from: zzhaq/scoop-av",
-  "homepage": "http://www.xuetr.com/",
-  "license": "MIT",
-  "architecture": {
-      "64bit": {
-          "url": "http://www.xuetr.com/download/PCHunter_free.zip",
-          "hash": "d3f5c6c803f230ada1b99ceae7186ce2cd23612e9ceb2942b9a1b59aa9ada47d",
-          "extract_dir": "PCHunter_free",
-          "bin": [
-              "PCHunter64.exe"
-          ],
-          "shortcuts": [
-              [
-                  "PCHunter64.exe",
-                  "PCHunter64"
-              ]
-          ]
-      },
-      "32bit": {
-          "url": "https://github.com/zzhaq/Toolbox/releases/download/v0.2/ProcessDump.zip",
-          "hash": "d3f5c6c803f230ada1b99ceae7186ce2cd23612e9ceb2942b9a1b59aa9ada47d",
-          "extract_dir": "PCHunter_free",
-          "bin": [
-              "PCHunter32.exe"
-          ],
-          "shortcuts": [
-              [
-                  "PCHunter32.exe",
-                  "PCHunter32"
-              ]
-          ]
-      }
-  }
+    "##":  "This package is not in the official buckets because manual/reference written in English is not available.",
+    "version": "1.6",
+    "description": "Analyzing tool for executables/malicious softwares. Formerly known as Xuetr.",
+    "homepage": "http://www.xuetr.com",
+    "license": "Freeware",
+    "architecture": {
+        "64bit": {
+            "url": "http://www.xuetr.com/download/PCHunter%20V1.6.zip",
+            "hash": "0aad441c44f8d4aad4c111d32b1f2a5ae6df1df3bc6e9126e3d7ffc433b5e49f"
+        }
+    },
+    "extract_dir": "PCHunter",
+    "pre_install": [
+        "if (!(Test-Path \"$dir\\PCHunter64.cfg\")) {",
+        "    New-Item \"$dir\\PCHunter64.cfg\" | Out-Null",
+        "}",
+        "# Config (PCHunter64.cfg) may not be saved properly under junctions (apps\\pchunter\\current)",
+        "$manifest.shortcuts[0][0] = $manifest.shortcuts[0][0].Replace('$version', $version)"
+    ],
+    "shortcuts": [
+        [
+            "..\\$version\\PCHunter64.exe",
+            "PCHunter"
+        ]
+    ],
+    "checkver": {
+        "url": "http://www.xuetr.com/download/",
+        "regex": "PCHunter%20V([\\d.]+)\\.zip"
+    },
+    "persist": "PCHunter64.cfg",
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "http://www.xuetr.com/download/PCHunter%20V$version.zip"
+            }
+        }
+    }
 }

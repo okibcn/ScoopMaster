@@ -1,0 +1,56 @@
+{
+    "version": "2111.01",
+    "description": "Cascadia Code",
+    "homepage": "https://github.com/microsoft/cascadia-code",
+    "license": {
+        "identifier": "SIL OPEN FONT LICENSE Version 1.1",
+        "url": "https://github.com/microsoft/cascadia-code/blob/main/LICENSE"
+    },
+    "url": "https://github.com/microsoft/cascadia-code/releases/download/v2111.01/CascadiaCode-2111.01.zip",
+    "hash": "51fd68176dffb87e2fbc79381aef7f5c9488b58918dee223cd7439b5aa14e712",
+    "extract_dir": "ttf",
+    "installer": {
+        "script": [
+            "$scoopdir = \"${dir}\"",
+            "$FontExtension = '*.ttf'",
+            "$FontType = ' (TrueType)'",
+            "$windows10version1809buildnumber = 17763",
+            "$SystemCurrentBuildNumber = [int] (Get-ItemProperty \"HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\").CurrentBuildNumber",
+            "Write-Host \"Windows Buildnumber: $SystemCurrentBuildNumber\"",
+            "if ( $SystemCurrentBuildNumber -ge $windows10version1809buildnumber ) {",
+            "   $FontDirectory = \"$env:LocalAppData\\Microsoft\\Windows\\Fonts\"",
+            "   $registryrootkey = 'HKCU'",
+            "   $registrykey = \"${registryrootkey}:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\"",
+            "   New-Item -Path $FontDirectory -ItemType Directory -ErrorAction SilentlyContinue | Out-Null",
+            "   Get-ChildItem $scoopdir -filter $FontExtension | ForEach-Object {",
+            "       $FontPath = \"$FontDirectory\\$($_.Name)\"",
+            "       New-ItemProperty -Path $registrykey -Name $_.Name.Replace($_.Extension, $FontType) -Value $FontPath -Force | Out-Null",
+            "       Copy-Item $_.Fullname -destination $FontDirectory",
+            "   }",
+            "}"
+        ]
+    },
+    "uninstaller": {
+        "script": [
+            "$scoopdir = \"${dir}\"",
+            "$FontExtension = '*.ttf'",
+            "$FontType = ' (TrueType)'",
+            "$FontDirectory = \"$env:LocalAppData\\Microsoft\\Windows\\Fonts\"",
+            "$registryrootkey = 'HKCU'",
+            "$registrykey = \"${registryrootkey}:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts\"",
+            "Get-ChildItem $scoopdir -filter $FontExtension | ForEach-Object {",
+            "   $FontPath = \"$FontDirectory\\$($_.Name)\"",
+            "   Remove-ItemProperty -Path $registrykey -Name $_.Name.Replace($_.Extension, $FontType) -ErrorAction SilentlyContinue -Force",
+            "   while ( Test-Path $FontPath ) {",
+            "       Write-Host \"Remove ${FontPath}\"",
+            "       Remove-Item $FontPath -ErrorAction SilentlyContinue -Force",
+            "       Start-Sleep -Milliseconds 20",
+            "   }",
+            "}"
+        ]
+    },
+    "checkver": "github",
+    "autoupdate": {
+        "url": "https://github.com/microsoft/cascadia-code/releases/download/v$version/CascadiaCode-$version.zip"
+    }
+}

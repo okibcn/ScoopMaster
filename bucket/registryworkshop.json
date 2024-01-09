@@ -1,44 +1,49 @@
 {
+    "description": "An advanced registry editor.",
     "homepage": "http://www.torchsoft.com/en/rw_information.html",
-    "description": "Registry Workshop is an advanced registry editor. 中文版.",
     "license": "Shareware",
-    "version": "5.0.1",
-    "url": "https://sourceforge.net/projects/tomato-extra/files/apps/RegistryWorkshop-5.0.1.7z",
-    "hash": "eab156a71ca02b0f334c1139d57c4dd09038924a81c9beb2101d61d4a1bd0283",
-    "bin": "RegWorkshop.exe",
-    "shortcuts": [
-        [
-            "RegWorkshop.exe",
-            "RegWorkshop"
-        ]
-    ],
-    "persist": [
-        "RegWorkshop.ini",
-        "favorites.dat",
-        "undo.dat",
-        "undo.idx"
-    ],
+    "url": "http://www.torchsoft.com/download/RegistryWorkshop.exe#/dl.7z",
+    "version": "5.1.0",
+    "hash": "deb01b9d23f8b3da9dfdca87f5ca8e751abd803fc37b0927060500ac52d54a4c",
     "architecture": {
         "64bit": {
-            "post_install": [
-                "Remove-Item \"$dir\\RegWorkshop.exe\"",
-                "Rename-Item \"$dir\\RegWorkshopX64.exe\" \"RegWorkshop.exe\""
+            "bin": [
+                [
+                    "RegWorkshopX64.exe",
+                    "regworkshop"
+                ]
+            ],
+            "shortcuts": [
+                [
+                    "RegWorkshopX64.exe",
+                    "Registry Workshop"
+                ]
             ]
         },
         "32bit": {
-            "post_install": [
-                "Remove-Item \"$dir\\RegWorkshopX64.exe\""
+            "bin": "RegWorkshop.exe",
+            "shortcuts": [
+                [
+                    "RegWorkshop.exe",
+                    "Registry Workshop"
+                ]
             ]
         }
     },
+    "pre_install": [
+        "if (!(Test-Path \"$persist_dir\\RegWorkshop.ini\")) { New-Item \"$dir\\RegWorkshop.ini\" -ItemType File | Out-Null }",
+        "if (!(Test-Path \"$persist_dir\\favorites.dat\")) { New-Item \"$dir\\favorites.dat\" -ItemType File | Out-Null}"
+    ],
+    "post_install": "Remove-Item \"$dir\\`$PLUGINSDIR\" -Recurse",
+    "persist": [
+        "RegWorkshop.ini",
+        "favorites.dat"
+    ],
     "checkver": {
-        "url": "https://sourceforge.net/projects/tomato-extra/files/apps/",
-        "regex": "RegistryWorkshop-([\\d\\.]+)\\.7z"
+        "url": "http://www.torchsoft.com/node/12",
+        "regex": "Version ([\\w.]+)"
     },
     "autoupdate": {
-        "url": "https://sourceforge.net/projects/tomato-extra/files/apps/RegistryWorkshop-$version.7z",
-        "hash": {
-            "url": "https://master.dl.sourceforge.net/project/tomato-extra/apps/sha256sum.txt"
-        }
+        "url": "http://www.torchsoft.com/download/RegistryWorkshop.exe#/dl.7z"
     }
 }

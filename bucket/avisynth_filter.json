@@ -1,0 +1,39 @@
+{
+    "version": "1.4.6",
+    "description": "DirectShow filters that put AviSynth and VapourSynth into video playing",
+    "homepage": "https://github.com/CrendKing/avisynth_filter",
+    "license": "MIT",
+    "url": "https://github.com/CrendKing/avisynth_filter/releases/download/v1.4.6/SynthFilters.zip",
+    "hash": "56baf1e5ccaa89300809260ce5c2d6195890e18bf1dd503305d75871331f86dd",
+    "installer": {
+        "script": [
+            "if (-not ((Get-Command sudo) -or $global) ) {Write-Host \"Install globally please\"}",
+            "if ($architecture -eq \"64bit\") {",
+            "   sudo regsvr32 /s \"$dir\\avisynth_filter_64.ax\"",
+            "   sudo regsvr32 /s \"$dir\\vapoursynth_filter_64.ax\"",
+            "}",
+            "elseif ($architecture -eq \"32bit\") {",
+            "   sudo regsvr32 /s \"$dir\\avisynth_filter_32.ax\"",
+            "   sudo regsvr32 /s \"$dir\\vapoursynth_filter_32.ax\"",
+            "}",
+            "else {",
+            "   Write-Host \"No appropriate version\"",
+            "   break",
+            "}"
+        ]
+    },
+    "uninstaller": {
+        "script": [
+            "sudo regsvr32 /s /u \"$dir\\avisynth_filter_64.ax\"",
+            "sudo regsvr32 /s /u \"$dir\\vapoursynth_filter_64.ax\"",
+            "sudo regsvr32 /s /u \"$dir\\avisynth_filter_32.ax\"",
+            "sudo regsvr32 /s /u \"$dir\\vapoursynth_filter_32.ax\""
+        ]
+    },
+    "checkver": {
+        "github": "https://github.com/CrendKing/avisynth_filter"
+    },
+    "autoupdate": {
+        "url": "https://github.com/CrendKing/avisynth_filter/releases/download/v$version/SynthFilters.zip"
+    }
+}

@@ -1,0 +1,56 @@
+{
+    "version": "4.2.1-stable",
+    "description": "A feature-packed, cross-platform game engine to create 2D and 3D games from a unified interface.",
+    "homepage": "https://godotengine.org/",
+    "license": "MIT",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/godotengine/godot/releases/download/4.2.1-stable/Godot_v4.2.1-stable_win64.exe.zip",
+            "hash": "sha512:891a2ceef0560a51b75d9eba8f391f50f7a3521b65307c989dd3dd9dd547427aa8c092eec7e6f0e17791b117ff83222eab3bfb04626edf5df0f127940061a068"
+        },
+        "32bit": {
+            "url": "https://github.com/godotengine/godot/releases/download/4.2.1-stable/Godot_v4.2.1-stable_win32.exe.zip",
+            "hash": "sha512:704e6115eaadfbaff136b9ad91804c3012165ec4b78b2ae0a244be2a843fbe9866d6518567037f1a72b30c24d278d91a98262e9ec3558a9d4a065fcea43b8195"
+        }
+    },
+    "pre_install": [
+        "Remove-Item \"$dir\\Godot_*_console.*\"",
+        "Get-Item \"$dir\\Godot_*.exe\" | Rename-Item -NewName 'godot.exe'"
+    ],
+    "bin": [
+        [
+            "godot.exe",
+            "godot4"
+        ]
+    ],
+    "shortcuts": [
+        [
+            "godot.exe",
+            "Godot Engine 4"
+        ]
+    ],
+    "checkver": {
+        "script": [
+            "$requestResponse = Invoke-WebRequest -Headers @{'Accept' = 'application/vnd.github+json'; 'X-Github-Api-Version' = '2022-11-28' } -Uri 'https://api.github.com/repos/godotengine/godot/releases'",
+            "$responseContent = $requestResponse.Content | ConvertFrom-Json",
+            "$tags = $responseContent | Select-Object -Property tag_name",
+            "$versionList = $tags | ForEach-Object { [System.Management.Automation.SemanticVersion] $_.tag_name }",
+            "$latest4 = ($versionList | Where-Object { $_.Major -eq 4 } | Measure-Object -Maximum).Maximum",
+            "Write-Output $latest4.ToString()"
+        ],
+        "regex": "^(.+)$"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/godotengine/godot/releases/download/$version/Godot_v$version_win64.exe.zip"
+            },
+            "32bit": {
+                "url": "https://github.com/godotengine/godot/releases/download/$version/Godot_v$version_win32.exe.zip"
+            }
+        },
+        "hash": {
+            "url": "https://github.com/godotengine/godot/releases/download/$version/SHA512-SUMS.txt"
+        }
+    }
+}

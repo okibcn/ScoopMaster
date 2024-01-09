@@ -1,28 +1,47 @@
 {
-    "version": "2.77",
-    "description": "Globally set File Explorer folder views",
+    "version": "20231105014053+c71be52716",
+    "description": "Globally set File Explorer folder views (*nightly* build)",
     "homepage": "https://github.com/LesFerch/WinSetView",
-    "license": {
-        "identifier": "MIT",
-        "url": "https://github.com/LesFerch/WinSetView/blob/main/LICENSE"
+    "license": "MIT",
+    "url": "https://github.com/LesFerch/WinSetView/archive/c71be52716536dc33c6fb27e09a99e8c98e1cf96.zip",
+    "hash": "fa5a6bf70c7c969680f58407e24fdce2fd2e0a18b96ccd6b85d4c126b72a2633",
+    "extract_dir": "WinSetView-c71be52716536dc33c6fb27e09a99e8c98e1cf96",
+    "pre_install": "$manifest.persist | ForEach-Object { if (-not (Test-Path \"$persist_dir\\$_\")) { New-Item \"$dir\\$_\" -Force -ItemType \"Directory\" | Out-Null } }",
+    "post_install": [
+        "$mshta = \"C:\\Windows\\System32\\mshta.exe\"",
+        "$winsetviewhta = \"\"\"$dir\\WinSetView.hta\"\"\"",
+        "# Shim creation",
+        "shim $mshta $global \"WinSetView\" $winsetviewhta",
+        "# Shortcut creation",
+        "$scoop_startmenu_folder = shortcut_folder $global",
+        "$wsShell = (New-Object -ComObject WScript.Shell).CreateShortcut(\"$scoop_startmenu_folder\\WinSetView.lnk\")",
+        "$wsShell.TargetPath = \"$mshta\"",
+        "$wsShell.WorkingDirectory = \"\"\"$dir\"\"\"",
+        "$wsShell.Arguments = $winsetviewhta",
+        "$wsShell.IconLocation = \"$dir\\AppParts\\WinSetView.ico\"",
+        "$wsShell.Save()"
+    ],
+    "post_uninstall": [
+        "rm_shim WinSetView (shimdir $global) $app",
+        "$scoop_startmenu_folder = shortcut_folder $global",
+        "Remove-Item \"$scoop_startmenu_folder\\WinSetView.lnk\" -Force"
+    ],
+    "persist": [
+        "AppData\\Backup",
+        "Tools\\WinViewBak"
+    ],
+    "checkver": {
+        "script": [
+            "$cont = (Invoke-RestMethod -UseBasicParsing -Method Get -Headers @{'Accept-Encoding'='gzip'} -MaximumRedirection 0 -Uri 'https://github.com/LesFerch/WinSetView/commits/main.atom')[0]",
+            "$id = $cont.id",
+            "$commit_timestamp = ([DateTime]$cont.updated).ToUniversalTime().ToString('yyyyMMddHHmmss')",
+            "Write-Output ('id:\"' + $id + '\"') ('commit_timestamp:\"' + $commit_timestamp + '\"')"
+        ],
+        "regex": "id:\"(\\s*\\S+/(?<sha>(?<shortSha>[0-9a-f]{10})[0-9a-f]*)\\s*)\"\\scommit_timestamp:\"(?<commit_timestamp>\\d+)\"",
+        "replace": "${commit_timestamp}+${shortSha}"
     },
-    "notes": [
-        "\"Microsoft (R) HTML Application host\" is required to be the default \"Open with\" application for `.hta` files.",
-        "View full details on how to do this at https://github.com/LesFerch/WinSetView/blob/main/DownloadHelp.md#how-to-correct-the-hta-file-association"
-    ],
-    "url": "https://github.com/LesFerch/WinSetView/archive/refs/tags/2.77.zip",
-    "hash": "18af2e661ee381f02e902b1c53d6b0103ac9fc6ce95213a7d26f32a2683e971b",
-    "extract_dir": "WinSetView-2.77",
-    "bin": "WinSetView.hta",
-    "shortcuts": [
-        [
-            "WinSetView.hta",
-            "WinSetView"
-        ]
-    ],
-    "checkver": "github",
     "autoupdate": {
-        "url": "https://github.com/LesFerch/WinSetView/archive/refs/tags/$version.zip",
-        "extract_dir": "WinSetView-$version"
+        "url": "https://github.com/LesFerch/WinSetView/archive/$matchSha.zip",
+        "extract_dir": "WinSetView-$matchSha"
     }
 }

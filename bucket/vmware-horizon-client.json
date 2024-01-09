@@ -1,0 +1,47 @@
+{
+    "version": "2309.1-8.11.1-22783278",
+    "description": "VMware Horizon Client for Windows allows you to connect to your VMware Horizon virtual desktop.",
+    "homepage": "https://www.vmware.com/products/horizon.html",
+    "license": "Proprietary",
+    "depends": "dark",	
+    "architecture": {
+        "64bit": {            
+			"url": "https://download3.vmware.com/software/CART24FQ4_WIN_2309.1/VMware-Horizon-Client-2309.1-8.11.1-22783278.exe#/VMware-Horizon-Client-Setup.exe",
+            "hash": "59427a21383dc87ee5a1fe8faabcb1b472b4e44087951b4def81a6c84b8a7c74"
+        }
+    },
+    "installer": {
+        "script": [
+            "Expand-DarkArchive \"$dir\\$fname\" \"$dir\\tmp\" -Removal",
+            "$extract = if ($architecture -eq '64bit') { 'VMware Horizon View Client (x64).msi' } else { 'VMware Horizon View Client (x86).msi' }",
+            "Expand-MsiArchive \"$dir\\tmp\\AttachedContainer\\$extract\" \"$dir\" -ExtractDir \"VMware\\VMware Horizon View Client\" -Removal",
+            "Remove-Item \"$dir\\tmp\" -Recurse"
+        ]
+    },
+	"post_install": [
+        "'install-browser-launch', 'uninstall-browser-launch' | ForEach-Object {",
+        "    if (Test-Path \"$bucketsdir\\eastern\\scripts\\vmware-horizon-client\\$_.reg\") {",
+        "        $vmwareViewPath = \"$dir\\vmware-view.exe\".Replace('\\', '\\\\')",
+        "        $content = (Get-Content \"$bucketsdir\\eastern\\scripts\\vmware-horizon-client\\$_.reg\").Replace('$vmwareview', $vmwareViewPath)",
+        "        if ($global) { $content = $content.Replace('HKEY_CURRENT_USER', 'HKEY_LOCAL_MACHINE') }",
+        "        Set-Content \"$dir\\$_.reg\" $content -Encoding Ascii -Force",
+        "    }",
+        "}",
+		"reg import \"$dir\\install-browser-launch.reg\""
+    ],
+    "uninstaller": {
+        "script": [
+            "if ($cmd -eq 'uninstall') {",
+            "    reg import \"$dir\\uninstall-browser-launch.reg\"",
+            "}"
+        ]
+    },
+
+    "bin": "vmware-view.exe",
+    "shortcuts": [
+        [
+            "vmware-view.exe",
+            "VMware Horizon Client"
+        ]
+    ]    
+}

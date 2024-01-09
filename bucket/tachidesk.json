@@ -1,0 +1,36 @@
+{
+    "version": "0.7.0",
+    "description": "A manga reader compatible with Tachiyomi extensions and backups",
+    "homepage": "https://github.com/Suwayomi/Tachidesk-Server",
+    "license": {
+        "identifier": "MPL-2.0",
+        "url": "https://github.com/Suwayomi/Tachidesk-Server/blob/master/LICENSE"
+    },
+    "url": "https://github.com/Suwayomi/Tachidesk-Server/releases/download/v0.7.0/Tachidesk-Server-v0.7.0-r1197.jar#/Tachidesk-Server.jar",
+    "hash": "e033b55a2042bbff32a45809741984c105d0d716960256edf0de5310ba265550",
+    "installer": {
+        "script": [
+            "    $s = (New-Object -ComObject WScript.Shell).CreateShortcut(\"$dir\\Tachidesk.lnk\")",
+            "    $s.TargetPath = \"javaw.exe\"",
+            "    $s.Arguments = \"-jar `\"$dir\\Tachidesk-Server.jar`\"\"",
+            "    $s.WorkingDirectory = \"$dir\"",
+            "    $s.Save()"
+        ]
+    },
+    "shortcuts": [
+        [
+            "Tachidesk.lnk",
+            "Tachidesk"
+        ]
+    ],
+    "checkver": {
+        "github": "https://api.github.com/repos/Suwayomi/Tachidesk-Server",
+        "regex": "Tachidesk-Server-v([\\d.]+)-r(?<releasenumber>[\\d]+)\\.jar"
+    },
+    "autoupdate": {
+        "url": "https://github.com/Suwayomi/Tachidesk-Server/releases/download/v$version/Tachidesk-Server-v$version-r$matchReleasenumber.jar#/Tachidesk-Server.jar",
+        "hash": {
+            "url": "https://github.com/Suwayomi/Tachidesk-Server/releases/download/v$version/Checksums.sha256"
+        }
+    }
+}
