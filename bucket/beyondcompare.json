@@ -1,62 +1,44 @@
 {
-    "version": "4.4.7.28397",
-    "description": "Directory and file compare functions in one package",
-    "homepage": "https://www.scootersoftware.com",
-    "license": {
-        "identifier": "Shareware",
-        "url": "https://www.scootersoftware.com/index.php?zz=kb_licensev4"
-    },
-    "notes": "Add Beyond Compare as a context menu option by running: '$dir\\install-context.reg'",
+    "version": "5.0.0.28643",
+    "description": "Tool to compare, merge, and synchronize data",
+    "homepage": "https://www.scootersoftware.com/beta",
+    "license": "Proprietary",
     "architecture": {
         "64bit": {
-            "url": "https://www.scootersoftware.com/files/BCompare-4.4.7.28397_x64.msi",
-            "hash": "089b8acbe228e876f4847132ec71fe256b134703e2e6205619b28905cb69f881"
-        },
-        "32bit": {
-            "url": "https://www.scootersoftware.com/files/BCompare-4.4.7.28397_x86.msi",
-            "hash": "7d722749e18309212f7d483b80e992b1c0f35dc437b93be6133cfe6b03574307"
+            "url": "https://www.scootersoftware.com/files/BCompare-5.0.0.28643.exe",
+            "hash": "298cd6bb458a9cb6aa281c42859a94937d369ea73bb99a38213722301da80113"
         }
     },
-    "extract_dir": "Beyond Compare 4",
+    "installer": {
+        "args": [
+            "/PORTABLE",
+            "/VERYSILENT",
+            "/DIR=$dir",
+            "/DISABLEUPDATES"
+        ]
+    },
     "bin": [
-        "Bcomp.exe",
+        "BComp.com",
+        "BComp.exe",
         "BCompare.exe"
     ],
     "shortcuts": [
         [
             "BCompare.exe",
-            "Beyond Compare 4"
-        ],
-        [
-            "BCClipboard.exe",
-            "Clipboard Compare"
+            "Beyond Compare 5 Beta"
         ]
     ],
-    "post_install": [
-        "$dir_escaped = \"$dir\".Replace('\\', '\\\\')",
-        "\"install-context-$architecture\", \"uninstall-context\" | ForEach-Object {",
-        "  if (Test-Path \"$bucketsdir\\extras\\scripts\\beyondcompare\\$_.reg\") {",
-        "    $content = Get-Content \"$bucketsdir\\extras\\scripts\\beyondcompare\\$_.reg\"",
-        "    $content = $content.Replace('$install_dir', $dir_escaped)",
-        "    if ($global) {",
-        "      $content = $content.Replace('HKEY_CURRENT_USER', 'HKEY_LOCAL_MACHINE')",
-        "    }",
-        "    $outfile_no_arch = $_.Replace(\"-$architecture\", \"\")",
-        "    $content | Set-Content -Path \"$dir\\$outfile_no_arch.reg\"",
-        "  }",
-        "}"
-    ],
     "checkver": {
-        "url": "https://www.scootersoftware.com/kb/dl4_winalternate",
-        "regex": "BCompare-([\\d.]+)_x64\\.msi"
+        "url": "https://www.scootersoftware.com/beta/download",
+        "regex": "BCompare-([\\d.]+)\\.exe"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://www.scootersoftware.com/files/BCompare-$version_x64.msi"
-            },
-            "32bit": {
-                "url": "https://www.scootersoftware.com/files/BCompare-$version_x86.msi"
+                "url": "https://www.scootersoftware.com/files/BCompare-5.0.0.$version.exe",
+                "hash": {
+                    "url": "$url.sha256"
+                }
             }
         }
     }

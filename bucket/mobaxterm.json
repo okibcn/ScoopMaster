@@ -19,14 +19,6 @@
         "}",
         "@('MobaXterm backup.zip', 'MobaXterm.ini') | ForEach-Object { PersistsFile $_ }"
     ],
-    "pre_uninstall": [
-        "function UpdatesFile([string] $file) {",
-        "    if ((Get-ChildItem \"$dir\\$file\").LastWriteTime -gt (Get-ChildItem \"$persist_dir\\$file\").LastWriteTime) {",
-        "        [System.IO.File]::WriteAllBytes(\"$persist_dir\\$file\", [System.IO.File]::ReadAllBytes(\"$dir\\$file\"))",
-        "    }",
-        "}",
-        "@('MobaXterm backup.zip', 'MobaXterm.ini') | ForEach-Object { UpdatesFile $_ }"
-    ],
     "bin": "MobaXterm.exe",
     "shortcuts": [
         [
@@ -34,6 +26,9 @@
             "MobaXterm Personal"
         ]
     ],
+    "uninstaller": {
+        "script": "Copy-Item \"$dir\\*\" -Include 'Custom.mxtpro,MobaXterm.ini,MobaXterm backup.zip' -Destination \"$persist_dir\" -ErrorAction SilentlyContinue -Force"
+    },
     "persist": [
         "MobaXterm.ini",
         "MobaXterm backup.zip"

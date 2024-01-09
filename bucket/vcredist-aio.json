@@ -3,29 +3,32 @@
     "description": "All-in-one repack for latest Microsoft Visual C++ Redistributable Runtimes, without the original setup bloat payload.",
     "homepage": "https://github.com/abbodi1406/vcredist",
     "license": "Unlicense",
-    "url": "https://github.com/abbodi1406/vcredist/releases/download/v0.77.0/VisualCppRedist_AIO_x86_x64_77.zip",
+    "url": "https://github.com/abbodi1406/vcredist/releases/latest/download/VisualCppRedist_AIO_x86_x64_77.zip",
     "hash": "adf5bb032ef8f10277d7d832a98c6ede016ec02b1e16158c1d81fee038d011a8",
+    "pre_install": "if (!(is_admin)) {error 'This package requires admin rights to install'; break}",
     "installer": {
-        "script": [
-            "if (!(is_admin)) { error 'This package requires admin rights to install'; break }",
-            "Start-Process -Wait \"$dir\\VisualCppRedist_AIO_x86_x64.exe\" -ArgumentList @('/ai', '/gm2') -Verb RunAs"
-        ]
+        "file": "VisualCppRedist_AIO_x86_x64.exe",
+        "args": [
+            "/ai",
+            "/gm2"
+        ],
+        "keep": true
     },
     "bin": "VisualCppRedist_AIO_x86_x64.exe",
     "uninstaller": {
         "script": [
-            "if (!(is_admin)) { error 'This package requires admin rights to uninstall'; break }",
-            "Start-Process -Wait \"$dir\\VisualCppRedist_AIO_x86_x64.exe\" -ArgumentList @('/ai', '/gm2') -Verb RunAs"
+            "if (!(is_admin)) {error 'This package requires admin rights to uninstall'; break}",
+            "Invoke-ExternalCommand \"$dir\\VisualCppRedist_AIO_x86_x64.exe\" -ArgumentList @('/ai', '/gm2') | Out-Null"
         ]
     },
     "checkver": {
         "github": "https://github.com/abbodi1406/vcredist"
     },
     "autoupdate": {
-        "url": "https://github.com/abbodi1406/vcredist/releases/download/v$version/VisualCppRedist_AIO_x86_x64_$minorVersion.zip",
+        "url": "https://github.com/abbodi1406/vcredist/releases/latest/download/VisualCppRedist_AIO_x86_x64_$minorVersion.zip",
         "hash": {
-            "url": "https://github.com/abbodi1406/vcredist/releases/v$version",
-            "regex": "File: $basename[\\S\\s]*?SHA-256: $sha256"
+            "url": "https://github.com/abbodi1406/vcredist/releases/latest",
+            "find": "File: $basename[\\S\\s]*?SHA-256: $sha256"
         }
     }
 }

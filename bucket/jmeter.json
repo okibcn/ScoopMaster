@@ -3,12 +3,16 @@
     "description": "Application designed to load test functional behavior and measure performance.",
     "homepage": "https://jmeter.apache.org",
     "license": "Apache-2.0",
-    "url": "https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-5.6.3.zip",
-    "hash": "sha512:387fadca903ee0aa30e3f2115fdfedb3898b102e6b9fe7cc3942703094bd2e65b235df2b0c6d0d3248e74c9a7950a36e42625fd74425368342c12e40b0163076",
-    "extract_dir": "apache-jmeter-5.6.3",
+    "notes": "Download jmeter plugins from https://jmeter-plugins.org/install/Install/",
+    "architecture": {
+        "64bit": {
+            "url": "https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-5.6.3.zip",
+            "hash": "sha512:387fadca903ee0aa30e3f2115fdfedb3898b102e6b9fe7cc3942703094bd2e65b235df2b0c6d0d3248e74c9a7950a36e42625fd74425368342c12e40b0163076",
+            "extract_dir": "apache-jmeter-5.6.3"
+        }
+    },
     "bin": [
         "bin\\jmeter.bat",
-        "bin\\jmeterw.cmd",
         "bin\\jmeter-n.cmd",
         "bin\\jmeter-n-r.cmd",
         "bin\\jmeter-t.cmd",
@@ -26,26 +30,35 @@
     "env_set": {
         "JMETER_HOME": "$dir"
     },
-    "shortcuts": [
-        [
-            "bin\\jmeterw.cmd",
-            "JMeter"
-        ],
-        [
-            "bin\\jmeter.bat",
-            "JMeter (with console)"
-        ]
+    "pre_install": [
+        "if (!(Test-Path \"$persist_dir\\bin\\user.properties\")) {",
+        "  Copy-Item -Path \"$bucketsdir\\$bucket\\scripts\\$app\\user.properties\" -Destination \"$persist_dir\\bin\\user.properties\" -Force",
+        "}",
+        "Copy-Item -Path \"$dir\\bin\\jmeter.properties\" -Destination \"$dir\\bin\\jmeter.properties.original\" -Force",
+        "$contents = Get-Content \"$dir\\bin\\jmeter.properties\"",
+        "$contents = $contents.Replace(\"#language=en\", \"#language=en`nlanguage=zh_CN\")",
+        "Set-Content -Path \"$dir\\bin\\jmeter.properties\" -Value $contents -Force"
     ],
-    "persist": "lib",
+    "post_install": "Copy-Item -Path \"$dir\\lib.original\\*\" -Destination \"$dir\\lib\" -Recurse -Force",
+    "persist": [
+        "lib",
+        "bin\\user.properties",
+        "bin\\reportgenerator.properties",
+        "bin\\report-template-zh"
+    ],
     "checkver": {
         "url": "https://jmeter.apache.org/changes.html",
         "regex": ">Version ([\\d.]+)"
     },
     "autoupdate": {
-        "url": "https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-$version.zip",
-        "hash": {
-            "url": "$url.sha512"
-        },
-        "extract_dir": "apache-jmeter-$version"
+        "architecture": {
+            "64bit": {
+                "url": "https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-$version.zip",
+                "hash": {
+                    "url": "$url.sha512"
+                },
+                "extract_dir": "apache-jmeter-$version"
+            }
+        }
     }
 }

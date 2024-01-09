@@ -1,28 +1,24 @@
 {
     "version": "3.4.6",
-    "description": "Caret: Markdown editor for Mac, Windows and Linux",
-    "homepage": "https://caret.io/",
-    "license": {
-        "identifier": "Proprietary",
-        "url": "https://caret.io/terms"
-    },
-    "url": "https://github.com/careteditor/releases/releases/download/3.4.6/Caret-3.4.6-full.nupkg",
-    "hash": "797ebcb5c181ae68fa3365d422e533894aabbc2746b1060eae83449bbffd29da",
-    "extract_dir": "lib\\net45",
+    "description": "Caret is a concise and efficient Markdown editor.",
+    "homepage": "http://caret.io/",
+    "url": "https://github.com/careteditor/issues/releases/download/3.4.6/CaretSetup.exe#/dl.7z",
+    "hash": "29b9045ba70cd5576daa3b871cf08fcfa8811537e11cb9c62e54555cce327c3d",
+    "pre_install": [
+        "Expand-7zipArchive -Path \"$dir\\Caret-$version-full.nupkg\" -Removal",
+        "Get-ChildItem -Path \"$dir\\lib\\net45\\*\" -Recurse | Move-Item -Destination \"$dir\""
+    ],
+    "bin": "Caret.exe",
     "shortcuts": [
         [
-            "caret.exe",
+            "Caret.exe",
             "Caret"
         ]
     ],
     "checkver": {
-        "github": "https://github.com/careteditor/releases",
-        "regex": "tag/([\\w\\.-]+)"
+        "github": "https://github.com/careteditor/issues/"
     },
     "autoupdate": {
-        "url": "https://github.com/careteditor/releases/releases/download/$version/Caret-$version-full.nupkg",
-        "hash": {
-            "url": "$baseurl/RELEASES"
-        }
+        "url": "https://github.com/careteditor/issues/releases/download/$version/CaretSetup.exe#/dl.7z"
     }
 }

@@ -29,13 +29,13 @@
     ],
     "checkver": {
         "github": "https://github.com/shadowsocks/shadowsocks-windows",
-        "regex": "Shadowsocks-([\\d.]+)\\.zip"
+        "re": "Shadowsocks-(\\d.+)\\.zip"
     },
     "autoupdate": {
-        "url": "https://github.com/shadowsocks/shadowsocks-windows/releases/download/$matchHead.0/Shadowsocks-$version.zip",
+        "url": "https://github.com/shadowsocks/shadowsocks-windows/releases/download/$majorVersion.$minorVersion.$patchVersion.0/Shadowsocks-$version.zip",
         "hash": {
-            "url": "$url.hash",
-            "regex": "$sha512"
+            "url": "https://github.com/shadowsocks/shadowsocks-windows/releases/tag/$majorVersion.$minorVersion.$patchVersion.0",
+            "regex": "(?sm)$basename.*?$sha512"
         }
     }
 }

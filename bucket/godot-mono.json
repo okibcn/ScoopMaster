@@ -1,6 +1,6 @@
 {
     "version": "4.2.1",
-    "description": "a feature-packed, cross-platform game engine to create 2D and 3D games from a unified interface.",
+    "description": "A feature-packed, cross-platform game engine to create 2D and 3D games from a unified interface (with C# support)",
     "homepage": "https://godotengine.org/",
     "license": "MIT",
     "architecture": {
@@ -17,14 +17,20 @@
     },
     "pre_install": [
         "Remove-Item \"$dir\\Godot_*_console.*\"",
-        "Get-Item \"$dir\\Godot_*.exe\" | Rename-Item -NewName 'godot-mono.exe'"
+        "Get-Item \"$dir\\Godot_*.exe\" | Rename-Item -NewName 'godot.exe'",
+        "# Self contained mode",
+        "if (Test-Path \"$persist_dir\\_sc_\") { Copy-Item \"$persist_dir\\_sc_\" \"$dir\\_sc_\" }"
     ],
-    "bin": "godot-mono.exe",
+    "bin": "godot.exe",
     "shortcuts": [
         [
-            "godot-mono.exe",
-            "Godot Engine (Mono)"
+            "godot.exe",
+            "Godot Engine Mono"
         ]
+    ],
+    "pre_uninstall": [
+        "# Self contained mode",
+        "if (Test-Path \"$dir\\_sc_\") { Copy-Item \"$dir\\_sc_\" \"$persist_dir\\_sc_\" }"
     ],
     "checkver": {
         "url": "https://github.com/godotengine/godot/releases/latest",

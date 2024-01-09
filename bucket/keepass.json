@@ -5,10 +5,16 @@
     "license": "GPL-2.0-or-later",
     "url": "https://downloads.sourceforge.net/project/keepass/KeePass%202.x/2.55/KeePass-2.55.zip",
     "hash": "sha1:5078af3f20bb6cbb006b40610fb60f3eead79bc8",
-    "pre_install": "if (Test-Path \"$persist_dir\\KeePass.config.xml\") { Copy-Item \"$persist_dir\\KeePass.config.xml\" \"$dir\" }",
-    "uninstaller": {
-        "script": "if (Test-Path \"$dir\\KeePass.config.xml\") { Copy-Item \"$dir\\KeePass.config.xml\" \"$persist_dir\" -Force }"
-    },
+    "pre_install": [
+        "$config_default = '<?xml version=\"1.0\" encoding=\"utf-8\"?>
+<Configuration xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">
+</Configuration>'",
+        "@('KeePass.config.xml', 'KeePass.config.enforced.xml') | ForEach-Object {",
+        "    if (!(Test-Path \"$persist_dir\\$_\")) {",
+        "        New-Item \"$dir\\$_\" -ItemType File -Value $config_default | Out-Null",
+        "    }",
+        "}"
+    ],
     "bin": "KeePass.exe",
     "shortcuts": [
         [
@@ -17,6 +23,8 @@
         ]
     ],
     "persist": [
+        "KeePass.config.xml",
+        "KeePass.config.enforced.xml",
         "Plugins",
         "Languages"
     ],

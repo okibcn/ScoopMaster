@@ -7,7 +7,25 @@
     "url": "https://download.nirsoft.net/nirsoft_package_enc_1.30.9.zip#/nirlauncher.enc",
     "hash": "5ad22147623b9570b0f86f9c673b3e0106aeb52cb902de25fca5f39a730888c5",
     "pre_install": "Expand-7zipArchive \"$dir\\$fname\" -Switches \"-pnirsoft9876$\"",
-    "persist": "NirLauncher.cfg",
+    "post_install": [
+        "Write-Host Restore *.cfg",
+        "New-Item $persist_dir -ItemType Directory -Force",
+        "Get-ChildItem \"$persist_dir\\*.cfg\" -File -Recurse | ForEach-Object {",
+        "    $tmp = $_.DirectoryName.Substring($persist_dir.length, $_.DirectoryName.length - $persist_dir.length)",
+        "    $dst_dir = \"$dir$tmp\"",
+        "    If (!(Test-Path $dst_dir)) { New-Item $dst_dir -ItemType Directory }",
+        "    $_.CopyTo(\"$dst_dir\\$($_.Name)\", $true)",
+        "}"
+    ],
+    "pre_uninstall": [
+        "Write-Host backup *.cfg",
+        "Get-ChildItem \"$dir\\*.cfg\" -File -Recurse | ForEach-Object {",
+        "    $tmp = $_.DirectoryName.Substring($dir.length, $_.DirectoryName.length - $dir.length)",
+        "    $dst_dir = \"$persist_dir$tmp\"",
+        "    If (!(Test-Path $dst_dir)) { New-Item $dst_dir -ItemType Directory }",
+        "    $_.CopyTo(\"$dst_dir\\$($_.Name)\", $true)",
+        "}"
+    ],
     "checkver": {
         "url": "https://launcher.nirsoft.net/downloads/index.html",
         "regex": "nirsoft_package_enc_([\\d.]+)\\.zip"

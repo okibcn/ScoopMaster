@@ -1,55 +1,59 @@
 {
     "version": "7.68-5300",
-    "description": "Comprehensive Hardware Analysis, Monitoring and Reporting for Windows and DOS",
-    "homepage": "https://www.hwinfo.com",
-    "license": "Freeware",
-    "url": "https://www.fosshub.com/HWiNFO.html/hwi_768.zip",
-    "hash": "5e6c31ae957cd763caf044e3736f2df7dfe15c755ec932d7edb027bb0f1fd5df",
-    "pre_install": [
-        "foreach ($conf in 'HWiNFO64.INI', 'HWiNFO32.INI') {",
-        "    if (!(Test-Path \"$persist_dir\\$conf\")) { Set-Content \"$dir\\$conf\" '[Settings]', 'AutoUpdate=0' -Encoding ASCII }",
-        "}"
-    ],
+    "description": "HWiNFO. Comprehensive Hardware Analysis, Monitoring and Reporting for Windows and DOS.",
+    "homepage": "https://www.hwinfo.com/",
+    "license": "Unknown",
+    "changelog": "https://www.hwinfo.com/version-history/",
     "architecture": {
         "64bit": {
+            "url": "https://www.sac.sk/download/utildiag/hwi_768.zip",
+            "hash": "13e30c98f74968ddcd9e00b338ee3eff463ee3b501dad52f6158a7f646571d55",
             "bin": [
                 [
                     "HWiNFO64.exe",
-                    "HWiNFO"
+                    "HWiNFO64"
                 ]
             ],
             "shortcuts": [
                 [
                     "HWiNFO64.exe",
-                    "HWiNFO"
+                    "HWiNFO64"
                 ]
             ]
         },
         "32bit": {
+            "url": "https://www.sac.sk/download/utildiag/hwi_768.zip",
+            "hash": "13e30c98f74968ddcd9e00b338ee3eff463ee3b501dad52f6158a7f646571d55",
             "bin": [
                 [
                     "HWiNFO32.exe",
-                    "HWiNFO"
+                    "HWiNFO32"
                 ]
             ],
             "shortcuts": [
                 [
                     "HWiNFO32.exe",
-                    "HWiNFO"
+                    "HWiNFO32"
                 ]
             ]
         }
     },
     "persist": [
         "HWiNFO64.INI",
-        "HWiNFO32.INI",
-        "HWiNFO64_KEY.txt"
+        "HWiNFO32.INI"
     ],
     "checkver": {
         "url": "https://www.hwinfo.com/ver.txt",
-        "regex": "([\\d-.]+)"
+        "regex": "([\\d.]+-\\d+)"
     },
     "autoupdate": {
-        "url": "https://www.fosshub.com/HWiNFO.html/hwi_$majorVersion$minorVersion.zip"
+        "architecture": {
+            "64bit": {
+                "url": "https://www.sac.sk/download/utildiag/hwi_$majorVersion$minorVersion.zip"
+            },
+            "32bit": {
+                "url": "https://www.sac.sk/download/utildiag/hwi_$majorVersion$minorVersion.zip"
+            }
+        }
     }
 }
