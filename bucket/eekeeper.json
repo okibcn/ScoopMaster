@@ -5,7 +5,10 @@
     "license": "GPL-2.0-only",
     "url": "https://downloads.sourceforge.net/project/eekeeper/EEKeeper%201.0.4.0.zip",
     "hash": "sha1:f7503207f546520987cea920b7547865647b6bb4",
-    "pre_install": "if (!(Test-Path $persist_dir\\eekeeper.ini)) { New-Item $dir\\eekeeper.ini | Out-Null }",
+    "pre_install": [
+        "if (!(Test-Path $persist_dir\\eekeeper.ini)) { New-Item $dir\\eekeeper.ini | Out-Null }",
+        "Get-ChildItem $dir\\lang -Exclude en-US.dll | Remove-Item"
+    ],
     "shortcuts": [
         [
             "EEKeeper.exe",
