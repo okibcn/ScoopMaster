@@ -11,19 +11,20 @@
     },
     "pre_install": [
         "if (!(is_admin)) { error \"$app requires admin rights to $cmd\"; break }",
+        "Start-Process \"$dir\\fxsound_setup.exe\" -Wait -Verb 'RunAs' -Args @('/exenoui', '/qn')",
         "Start-Process \"$dir\\fxsound_setup.exe\" -Wait -Verb 'RunAs' -Args @('/extract', \"$dir\")",
-        "Remove-Item \"$dir\\fxsound_setup.exe\"",
-        "Start-Process 'msiexec' -Wait -Verb 'RunAs' `",
-        "  -Args @('/i', \"$dir\\fxsound.msi\", '/qn')"
+        "Remove-Item \"$dir\\fxsound_setup.exe\""
     ],
     "pre_uninstall": [
         "if (!(is_admin)) { error \"$app requires admin rights to $cmd\"; break }",
-        "Start-Process 'msiexec' -Wait -Verb 'RunAs' `",
-        "  -Args @('/x', \"$dir\\fxsound.x64.msi\", '/qn')"
+        "foreach ($f in (Get-ChildItem \"$dir\\*.msi\")) {",
+        "    Start-Process 'msiexec' -Wait -Verb 'RunAs' `",
+        "      -Args @('/x', \"$dir\\$f\", '/qn')",
+        "}"
     ],
     "checkver": {
         "script": "(Invoke-WebRequest 'https://download.fxsound.com/fxsoundlatest').BaseResponse.RequestMessage.RequestUri.AbsoluteUri",
-        "regex": "cs/(?<Id>[\\w]+)/downloads3.fxsound.com/fxsound/([\\d.]+)"
+        "regex": "cs/(?<Id>[\\w]+)/downloads3\\.fxsound\\.com/fxsound/([\\d.]+)"
     },
     "autoupdate": {
         "architecture": {
