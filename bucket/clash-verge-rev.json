@@ -1,35 +1,44 @@
 {
-    "version": "1.4.5",
-    "description": "Continuation of Clash Verge - A Clash Meta GUI based on Tauri.",
+    "version": "1.4.6",
+    "description": "A Clash Meta GUI based on Tauri.",
     "homepage": "https://github.com/clash-verge-rev/clash-verge-rev",
     "license": "GPL-3.0-only",
     "architecture": {
         "64bit": {
-            "url": "https://github.com/clash-verge-rev/clash-verge-rev/releases/download/v1.4.5/Clash.Verge_1.4.5_x64_portable.zip",
-            "hash": "c7d58cff60b5d81cad238f5ca6fcb70c96395cb49f22a63b575d648e39d0ec44"
+            "url": "https://github.com/clash-verge-rev/clash-verge-rev/releases/download/v1.4.6/Clash.Verge_1.4.6_x64_portable.zip",
+            "hash": "4254f9f1cc63032bf93e95af462ff812ad7eda72189537a92bfb9ddb20455baf"
+        },
+        "32bit": {
+            "url": "https://github.com/clash-verge-rev/clash-verge-rev/releases/download/v1.4.6/Clash.Verge_1.4.6_x86_portable.zip",
+            "hash": "8951b613c9a95cea2327bf3b69aca34c9baf51843ce6a8b6a183d7b28acf5df7"
+        },
+        "arm64": {
+            "url": "https://github.com/clash-verge-rev/clash-verge-rev/releases/download/v1.4.6/Clash.Verge_1.4.6_arm64_portable.zip",
+            "hash": "b3d11718ce60866583bbc4b99ba4aea439c5cb7fc1de587ae816d00fdaef6c5a"
         }
     },
     "shortcuts": [
         [
             "Clash Verge.exe",
             "Clash Verge"
+        ],
+        [
+            "resources\\enableLoopback.exe",
+            "UWP Loopback"
         ]
     ],
-    "persist": ".config",
-    "post_install": [
-        "if (!(Test-Path \"$persist_dir\\.config\\PORTABLE\")) {",
-        "    New-Item -Path \"$persist_dir\\.config\\PORTABLE\" -ItemType file | Out-Null",
-        "}"
-    ],
-    "pre_uninstall": [
-        "if (!(is_admin)) { error \"$app requires admin rights to $cmd\"; break }",
-        "Start-Process \"$dir\\resources\\uninstall-service.exe\" -Wait -Verb 'RunAs' -WindowStyle 'Hidden'; Start-Sleep -Seconds 3"
-    ],
+    "persist": ".config\\io.github.clash-verge-rev.clash-verge-rev",
     "checkver": "github",
     "autoupdate": {
         "architecture": {
             "64bit": {
                 "url": "https://github.com/clash-verge-rev/clash-verge-rev/releases/download/v$version/Clash.Verge_$version_x64_portable.zip"
+            },
+            "32bit": {
+                "url": "https://github.com/clash-verge-rev/clash-verge-rev/releases/download/v$version/Clash.Verge_$version_x86_portable.zip"
+            },
+            "arm64": {
+                "url": "https://github.com/clash-verge-rev/clash-verge-rev/releases/download/v$version/Clash.Verge_$version_arm64_portable.zip"
             }
         }
     }
