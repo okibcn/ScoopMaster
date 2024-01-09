@@ -1,0 +1,44 @@
+{
+    "version": "2024.1.9",
+    "description": "Set time server (NTP server) to tick.stdtime.gov.tw",
+    "homepage": "https://raw.githubusercontent.com/issaclin32/scoop-systemtweaks/",
+    "license": "Unlicense",
+    "notes": [
+        "The following time servers are also available (in Settings -> Date & Time):",
+        "    tock.stdtime.gov.tw",
+        "    time.stdtime.gov.tw",
+        "    watch.stdtime.gov.tw",
+        "    clock.stdtime.gov.tw"
+    ],
+    "url": [
+        "https://raw.githubusercontent.com/issaclin32/scoop-systemtweaks/master/scripts/time-server-taiwan/set.reg",
+        "https://raw.githubusercontent.com/issaclin32/scoop-systemtweaks/master/scripts/time-server-taiwan/restore.reg"
+    ],
+    "hash": [
+        "3c09142b044cc64e3735c5f1bf1d5ad889662ff031be33370877e2bbee37bb3c",
+        "637eeaf9137c4f387bf64390727e8951feaf3a4ca24b66e09fb4f06aea66def1"
+    ],
+    "installer": {
+        "script": [
+            "if (!(is_admin)) { \"$app requires admin rights to $cmd\"; break }",
+            "reg import \"$dir\\set.reg\"",
+            "# Service 'W32time' is required for time syncing",
+            "if ((Get-Service -Name 'W32time' -ErrorAction 'SilentlyContinue').Status -ne 'Running') {",
+            "    Start-Service -Name 'W32time'",
+            "}",
+            "W32tm /resync /force",
+            "Write-Host 'Time server has been set to tick.stdtime.gov.tw' -ForegroundColor Magenta"
+        ]
+    },
+    "uninstaller": {
+        "script": [
+            "if (!(is_admin)) { \"$app requires admin rights to $cmd\"; break }",
+            "reg import \"$dir\\restore.reg\"",
+            "if ((Get-Service -Name 'W32time' -ErrorAction 'SilentlyContinue').Status -ne 'Running') {",
+            "    Start-Service -Name 'W32time'",
+            "}",
+            "W32tm /resync /force",
+            "Write-Host 'Time server has been restored to default server (time.windows.com)' -ForegroundColor Magenta"
+        ]
+    }
+}
