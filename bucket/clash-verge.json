@@ -1,22 +1,20 @@
 {
     "version": "1.4.6",
-    "description": "A Clash Meta GUI based on tauri.",
+    "description": "A Clash GUI based on tauri.",
     "homepage": "https://github.com/clash-verge-rev/clash-verge-rev",
     "license": "GPL-3.0-only",
     "architecture": {
         "64bit": {
             "url": "https://github.com/clash-verge-rev/clash-verge-rev/releases/download/v1.4.6/Clash.Verge_1.4.6_x64_portable.zip",
             "hash": "4e4525c4f491e806d66ea81a8cec2bc78f5b0ffb84849698ff94e028bbdd0a56"
-        },
-        "32bit": {
-            "url": "https://github.com/clash-verge-rev/clash-verge-rev/releases/download/v1.4.6/Clash.Verge_1.4.6_x86_portable.zip",
-            "hash": "6b575a03748b8f367c1e1903430b4f5ac8d3f46ff800eb90ec74043ebb401569"
-        },
-        "arm64": {
-            "url": "https://github.com/clash-verge-rev/clash-verge-rev/releases/download/v1.4.6/Clash.Verge_1.4.6_arm64_portable.zip",
-            "hash": "8a91b646fa1100d6f4da6076f056ca953e1c52edd12d03cfcd01c5f8266619f9"
         }
     },
+    "post_install": [
+        "ensure \"$dir\\.config\" | Out-Null",
+        "if (!(Test-Path \"$dir\\.config\\PORTABLE\")) {",
+        "    New-Item -Path \"$dir\\.config\\PORTABLE\" -ItemType file | Out-Null",
+        "}"
+    ],
     "shortcuts": [
         [
             "Clash Verge.exe",
@@ -24,26 +22,11 @@
         ]
     ],
     "persist": ".config",
-    "post_install": [
-        "if (!(Test-Path \"$persist_dir\\.config\\PORTABLE\")) {",
-        "    New-Item -Path \"$persist_dir\\.config\\PORTABLE\" -ItemType file | Out-Null",
-        "}"
-    ],
-    "pre_uninstall": [
-        "if (!(is_admin)) { error \"$app requires admin rights to $cmd\"; break }",
-        "Start-Process \"$dir\\resources\\uninstall-service.exe\" -Wait -Verb 'RunAs' -WindowStyle 'Hidden'; Start-Sleep -Seconds 3"
-    ],
     "checkver": "github",
     "autoupdate": {
         "architecture": {
             "64bit": {
                 "url": "https://github.com/clash-verge-rev/clash-verge-rev/releases/download/v$version/Clash.Verge_$version_x64_portable.zip"
-            },
-            "32bit": {
-                "url": "https://github.com/clash-verge-rev/clash-verge-rev/releases/download/v$version/Clash.Verge_$version_x86_portable.zip"
-            },
-            "arm64": {
-                "url": "https://github.com/clash-verge-rev/clash-verge-rev/releases/download/v$version/Clash.Verge_$version_arm64_portable.zip"
             }
         }
     }

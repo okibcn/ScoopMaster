@@ -1,13 +1,14 @@
 {
-    "$schema": "https://raw.githubusercontent.com/ScoopInstaller/Scoop/master/schema.json",
     "version": "121.0",
     "description": "Popular open source web browser.",
     "homepage": "https://www.mozilla.org/firefox/",
-    "license": {
-        "identifier": "MPL-2.0",
-        "url": "https://www.mozilla.org/en-US/MPL/2.0/"
-    },
-    "notes": "For details about switching Firefox profiles, refer to https://support.mozilla.org/en-US/kb/profile-manager-create-remove-switch-firefox-profiles",
+    "license": "MPL-2.0",
+    "notes": [
+        "To set profile 'Scoop' as *DEFAULT*, or profiles/settings was lost after update:",
+        "  - Run 'Firefox Profile Manager', choose 'Scoop' then click 'Start Firefox'.",
+        "  - Visit 'about:profiles' page in Firefox to check *DEFAULT* profile.",
+        "For details: https://support.mozilla.org/en-US/kb/profile-manager-create-remove-switch-firefox-profiles"
+    ],
     "architecture": {
         "64bit": {
             "url": "https://archive.mozilla.org/pub/firefox/releases/121.0/win64/en-US/Firefox%20Setup%20121.0.exe#/dl.7z",
@@ -16,23 +17,34 @@
         "32bit": {
             "url": "https://archive.mozilla.org/pub/firefox/releases/121.0/win32/en-US/Firefox%20Setup%20121.0.exe#/dl.7z",
             "hash": "sha512:55e41ecee972d0919f3d06a43edb8f9366f17bcc4f84da3a932873189a8fa90c0b28fd5f6d921f46837794a8b9f6444c2fadca8cea55f05ba271c57f4922831d"
+        },
+        "arm64": {
+            "url": "https://archive.mozilla.org/pub/firefox/releases/121.0/win64-aarch64/en-US/Firefox%20Setup%20121.0.exe#/dl.7z",
+            "hash": "sha512:64a942fd9b2257ef6900f0a52bd84bb1e3722b48de380aff3f2aa337d31e869a822d2e7d80069bd72d9445b813c0400d2d1a4a70f6032b99bda0bed9acf83e27"
         }
     },
     "extract_dir": "core",
+    "post_install": [
+        "firefox -CreateProfile \"Scoop $persist_dir\\profile\"",
+        "$Addition = \"$persist_dir\\addition\"",
+        "if (Test-Path $Addition) {",
+        "  info 'Copying additional items...'",
+        "  Copy-Item -Path $Addition\\* -Destination $dir -Force -Recurse -ErrorAction SilentlyContinue",
+        "}"
+    ],
+    "bin": "firefox.exe",
     "shortcuts": [
         [
             "firefox.exe",
             "Firefox"
+        ],
+        [
+            "firefox.exe",
+            "Firefox Profile Manager",
+            "-P"
         ]
     ],
-    "pre_install": [
-        "if (!(Test-Path \"$persist_dir\\defaults\\pref\\channel-prefs.js\")) {",
-        "  Set-Content -Encoding Ascii -Path \"$dir\\defaults\\pref\\channel-prefs.js\" -Value 'pref(\"app.update.channel\", \"default\");'",
-        "  Write-Host -ForegroundColor Green \"The auto-update will be disabled. You can change the update channel in '$persist_dir\\defaults\\pref\\channel-prefs.js'.\"",
-        "}"
-    ],
     "persist": [
-        "defaults\\pref\\channel-prefs.js",
         "distribution",
         "profile"
     ],
@@ -54,6 +66,13 @@
                 "hash": {
                     "url": "https://archive.mozilla.org/pub/firefox/releases/$version/SHA512SUMS",
                     "regex": "$sha512\\s+win32/en-US/$basename"
+                }
+            },
+            "arm64": {
+                "url": "https://archive.mozilla.org/pub/firefox/releases/$version/win64-aarch64/en-US/Firefox%20Setup%20$version.exe#/dl.7z",
+                "hash": {
+                    "url": "https://archive.mozilla.org/pub/firefox/releases/$version/SHA512SUMS",
+                    "regex": "$sha512\\s+win64-aarch64/en-US/$basename"
                 }
             }
         }
