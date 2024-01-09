@@ -1,0 +1,36 @@
+{
+    "description": "CLI for creating QR codes",
+    "homepage": "https://github.com/carlosqsilva/vqrcode",
+    "license": "GPL-3.0-only",
+    "version": "77a054c",
+    "checkver": {
+        "url": "https://api.github.com/repos/carlosqsilva/vqrcode/commits/main",
+        "jsonpath": "$.sha",
+        "regex": "^(.{7})"
+    },
+    "depends": "vlang",
+    "url": "https://github.com/carlosqsilva/vqrcode/archive/refs/heads/master.zip",
+    "extract_dir": "vqrcode-main",
+    "installer": {
+        "script": [
+            "Push-Location $dir",
+            "$vsRegPath = \"HKLM:\\SOFTWARE\\WOW6432Node\\Microsoft\\VisualStudio\\\"",
+            "if ((Get-ChildItem $vsRegPath).Count -gt 0) {",
+            "   v -cc msvc -prod .",
+            "} else {",
+            "   v -prod .",
+            "}",
+            "$exe = $version + '.exe'",
+            "Move-Item $exe vqrcode.exe -Force -ErrorAction SilentlyContinue",
+            "Pop-Location"
+        ]
+    },
+    "bin": "vqrcode.exe",
+    "hash": "2b6c031d64ae50df038568303d21aec35275b3b4f28a51b3805eedd4ddf2721c",
+    "autoupdate": {
+        "url": "https://github.com/carlosqsilva/vqrcode/archive/refs/heads/master.zip",
+        "hash": {
+            "mode": "download"
+        }
+    }
+}
