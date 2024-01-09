@@ -1,17 +1,20 @@
 {
-    "homepage": "https://www.notion.so",
-    "description": "The all-in-one workspace for your notes, tasks, wikis, and databases.",
     "version": "3.1.0",
-    "license": "Proprietary",
-    "url": "https://desktop-release.notion-static.com/Notion%20Setup%203.1.0.exe#/dl.7z",
-    "hash": "sha512:5c6d026af8e893aa5f96fad9830f7ca488e4d0b9070bf8a394238de106d297e198a133554b13e917fe9f731992c3431beb74d5091116e5b2c88e14e5b82aa500",
-    "extract_dir": "$PLUGINSDIR",
-    "installer": {
-        "script": [
-            "Remove-Item \"$dir\\*\" -Exclude \"app-64.7z\"",
-            "Expand-7zipArchive \"$dir\\app-64.7z\" \"$dir\"",
-            "Remove-Item \"$dir\\app-64.7z\""
-        ]
+    "description": "Collaborative note taking",
+    "homepage": "https://www.notion.so/",
+    "license": {
+        "identifier": "Proprietary",
+        "url": "https://www.notion.so/Terms-and-Privacy-28ffdd083dc3473e9c2da6ec011b58ac"
+    },
+    "architecture": {
+        "64bit": {
+            "url": "https://desktop-release.notion-static.com/Notion%20Setup%203.1.0.exe#/dl.7z",
+            "hash": "sha512:5c6d026af8e893aa5f96fad9830f7ca488e4d0b9070bf8a394238de106d297e198a133554b13e917fe9f731992c3431beb74d5091116e5b2c88e14e5b82aa500",
+            "pre_install": [
+                "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\"",
+                "Remove-Item \"$dir\\`$*\" -Recurse"
+            ]
+        }
     },
     "shortcuts": [
         [
@@ -24,11 +27,14 @@
         "regex": "version:\\s+([\\d.]+)"
     },
     "autoupdate": {
-        "url": "https://desktop-release.notion-static.com/Notion%20Setup%20$version.exe#/dl.7z",
+        "architecture": {
+            "64bit": {
+                "url": "https://desktop-release.notion-static.com/Notion%20Setup%20$version.exe#/dl.7z"
+            }
+        },
         "hash": {
             "url": "$baseurl/latest.yml",
             "regex": "sha512:\\s+$base64"
         }
-    },
-    "notes": "Your Notion data are storaged in '%LOCALAPPDATA%\\Notion'."
+    }
 }

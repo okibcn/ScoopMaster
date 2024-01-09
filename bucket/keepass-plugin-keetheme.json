@@ -1,50 +1,19 @@
 {
     "version": "0.10.2",
-    "url": [
-        "https://github.com/xatupal/KeeTheme/releases/download/v0.10.2/KeeTheme.dll",
-        "https://github.com/xatupal/KeeTheme/releases/download/v0.10.2/KeeTheme.plgx"
-    ],
-    "description": "KeeTheme Plugin changes the appearance of KeePass, to make it look better at night.",
-    "hash": [
-        "14713cdd8da7ebd1414c635b23ea45367ddb37c0859d068508555631ad0a72f7",
-        "e3886e0f8955ae826e7ea95a4896e89a40cabdc0e4a493c8d32bd5aa622090c3"
-    ],
-    "checkver": {
-        "github": "https://github.com/xatupal/KeeTheme"
-    },
-    "autoupdate": {
-        "url": [
-            "https://github.com/xatupal/KeeTheme/releases/download/v$version/KeeTheme.dll",
-            "https://github.com/xatupal/KeeTheme/releases/download/v$version/KeeTheme.plgx"
-        ],
-        "hash": {
-            "find": "sha512:\\s+(.*)"
-        }
-    },
-    "depends": "extras/keepass",
+    "description": "A plugin for KeePass 2.x that changes the appearance to make it look better at night",
     "homepage": "https://github.com/xatupal/KeeTheme",
+    "license": "MIT",
+    "depends": "extras/keepass",
+    "url": "https://github.com/xatupal/KeeTheme/releases/download/v0.10.2/KeeTheme.plgx",
+    "hash": "e3886e0f8955ae826e7ea95a4896e89a40cabdc0e4a493c8d32bd5aa622090c3",
     "installer": {
-        "script": [
-            "$eap = $ErrorActionPreference",
-            "$ErrorActionPreference = 'SilentlyContinue'",
-            "$isRunning = (Get-Process -Name KeePass -ErrorAction SilentlyContinue) -ne $null",
-            "if ($isRunning){ Kill-Process $($IsRunning.Name) -Force -Verbose }",
-            "Copy-Item \"$dir\\Kee*\" \"$(appdir keepass $global)\\current\\Plugins\\\";",
-            "if ($isRunning){Start-Process Keepass -Verbose}",
-            "$isRunning = $null",
-            "$ErrorActionPreference = $eap"
-        ]
+        "script": "Copy-Item \"$dir\\KeeTheme.plgx\" \"$(appdir keepass $global)\\current\\Plugins\" -Recurse"
     },
     "uninstaller": {
-        "script": [
-            "$eap = $ErrorActionPreference",
-            "$ErrorActionPreference = 'SilentlyContinue'",
-            "$isRunning = (Get-Process -Name KeePass -ErrorAction SilentlyContinue) -ne $null",
-            "if ($isRunning){ Kill-Process $($IsRunning.Name) -Force -Verbose }",
-            "Get-Item \"$dir\\Kee*\" | Foreach-Object { Remove-Item $( $_.FullName -replace [regex]::Escape($dir), \"$(appdir keepass $global)\\current\\Plugins\" ) -Force -Verbose }; ",
-            "if ($isRunning){Start-Process Keepass -Verbose}",
-            "$isRunning = $null",
-            "$ErrorActionPreference = $eap"
-        ]
+        "script": "Remove-Item \"$(appdir keepass $global)\\current\\Plugins\\KeeTheme.plgx\" -Recurse"
+    },
+    "checkver": "github",
+    "autoupdate": {
+        "url": "https://github.com/xatupal/KeeTheme/releases/download/v$version/KeeTheme.plgx"
     }
 }

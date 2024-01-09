@@ -1,36 +1,71 @@
 {
     "version": "0.80",
-    "description": "PuTTY. PuTTY is a free implementation of SSH and Telnet for Windows and Unix platforms",
+    "description": "A free implementation of SSH and Telnet, along with an xterm terminal emulator.",
     "homepage": "https://www.chiark.greenend.org.uk/~sgtatham/putty/",
-    "license": "Freeware",
+    "license": "MIT",
     "architecture": {
         "64bit": {
-            "url": "https://the.earth.li/~sgtatham/putty/0.80/w64/putty.zip#/setup.7z",
-            "hash": "8201a7391c3439e6303bcb84fc4cf5ce5763afb8ca1858d4b424cadc133509b2"
+            "url": "https://the.earth.li/~sgtatham/putty/0.80/w64/putty.zip",
+            "hash": "sha512:99019c93a411a9d4c605c958411d09093f9d5550b000a8f60b771a6349fb257a7f7308cc608194d6ec898ce3440109cfb0f8f1464e14c7e5d66bf4633a18f100"
         },
         "32bit": {
-            "url": "https://the.earth.li/~sgtatham/putty/0.80/w32/putty.zip#/setup.7z",
-            "hash": "edfa44a1e74ec6685a4045c0d3d1a6271e888b86f6eeafa3a65f6c53ee27af07"
+            "url": "https://the.earth.li/~sgtatham/putty/0.80/w32/putty.zip",
+            "hash": "sha512:46a1d573f8acdd7d41f35327c368ba112ec4f5868c9cb475c45a2fe6a49d0bffa66f248861b2a61deae8dee2fd771cdefd465936d5871a52f904942ae98fb346"
+        },
+        "arm64": {
+            "url": "https://the.earth.li/~sgtatham/putty/0.80/wa64/putty.zip",
+            "hash": "sha512:10a4fbe972f20c515a965b007ab8d1a0f3fa3eba1856308a10ced050bb352d11a9be3f26568272d66e480c39b1259b3a0d062f0063c7331d38c0e72eacfc6010"
         }
     },
-    "bin": "putty.exe",
+    "bin": [
+        "putty.exe",
+        "puttygen.exe",
+        "pscp.exe",
+        "pageant.exe",
+        "psftp.exe",
+        "plink.exe"
+    ],
     "shortcuts": [
         [
             "putty.exe",
             "PuTTY"
+        ],
+        [
+            "pageant.exe",
+            "Pageant (PuTTY authentication agent)"
+        ],
+        [
+            "psftp.exe",
+            "PSFTP"
+        ],
+        [
+            "puttygen.exe",
+            "PuTTYgen (PuTTY Key Generator)"
         ]
     ],
-    "checkver": {
-        "url": "https://www.chiark.greenend.org.uk/~sgtatham/putty/",
-        "regex": "latest release</a> ([\\d.]+)"
-    },
+    "checkver": "The latest version is ([\\d.]+)\\.",
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://the.earth.li/~sgtatham/putty/$version/w64/putty.zip#/setup.7z"
+                "url": "https://the.earth.li/~sgtatham/putty/$version/w64/putty.zip",
+                "hash": {
+                    "url": "https://the.earth.li/~sgtatham/putty/$version/sha512sums",
+                    "regex": "$sha512\\s+\\*?(?:w64/$basename)"
+                }
             },
             "32bit": {
-                "url": "https://the.earth.li/~sgtatham/putty/$version/w32/putty.zip#/setup.7z"
+                "url": "https://the.earth.li/~sgtatham/putty/$version/w32/putty.zip",
+                "hash": {
+                    "url": "https://the.earth.li/~sgtatham/putty/$version/sha512sums",
+                    "regex": "$sha512\\s+\\*?(?:w32/$basename)"
+                }
+            },
+            "arm64": {
+                "url": "https://the.earth.li/~sgtatham/putty/$version/wa64/putty.zip",
+                "hash": {
+                    "url": "https://the.earth.li/~sgtatham/putty/$version/sha512sums",
+                    "regex": "$sha512\\s+\\*?(?:wa64/$basename)"
+                }
             }
         }
     }

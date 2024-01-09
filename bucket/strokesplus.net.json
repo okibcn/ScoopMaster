@@ -1,31 +1,31 @@
 {
-    "homepage": "https://www.strokesplus.net/",
-    "description": "Mouse gesture recognition utility for Windows which allows you to create powerful mouse gestures that save you time",
-    "license": "Freeware",
     "version": "0.5.7.8",
-    "url": "https://www.strokesplus.net/files/StrokesPlus.net_Portable_0.5.7.8.zip",
+    "description": "Mouse gesture recognition utility for Windows which allows you to create powerful mouse gestures that save you time.",
+    "homepage": "https://www.strokesplus.net",
+    "license": {
+        "identifier": "Freeware",
+        "url": "https://www.strokesplus.net/FAQ"
+    },
+    "url": "https://cdn.strokesplus.net/files/StrokesPlus.net_Portable_0.5.7.8.zip",
     "hash": "003d87a69b471248e9473c029a0c91190fc66da753aebe36762fc316d0076420",
-    "bin": "StrokesPlus.net.exe",
+    "pre_install": "if (!(Test-Path \"$persist_dir\\strokesplussettings.json\")) { Copy-Item \"$dir\\Default_StrokesPlus.net.json\" \"$dir\\strokesplussettings.json\" }",
     "shortcuts": [
         [
             "StrokesPlus.net.exe",
-            "StrokesPlus.net"
+            "StrokesPlus.net",
+            "settingsfile=\"$dir\\strokesplussettings.json\""
         ]
     ],
-    "persist": "StrokesPlus.net.json",
-    "pre_install": [
-        "if (!(Test-Path \"$persist_dir\\StrokesPlus.net.json\")) {",
-        "    Move-Item \"$dir\\Default_StrokesPlus.net.json\" \"$persist_dir\\StrokesPlus.net.json\"",
-        "}"
+    "persist": "strokesplussettings.json",
+    "pre_uninstall": [
+        "# The following must be done as StrokesPlus deletes the original file which was linked to the persist folder when it saves settings, rather than editing the file.",
+        "Copy-Item \"$dir\\strokesplussettings.json\" \"$persist_dir\\strokesplussettings.json\""
     ],
-    "uninstaller": {
-        "script": "Copy-Item \"$dir\\StrokesPlus.net.json\" \"$persist_dir\\StrokesPlus.net.json\" -Force -ErrorAction SilentlyContinue"
-    },
     "checkver": {
         "url": "https://www.strokesplus.net/Downloads",
-        "re": "Latest Release: <b>([\\d.]+)"
+        "regex": "Latest Release\\: <b>([\\d.]+)"
     },
     "autoupdate": {
-        "url": "https://www.strokesplus.net/files/StrokesPlus.net_Portable_$version.zip"
+        "url": "https://cdn.strokesplus.net/files/StrokesPlus.net_Portable_$version.zip"
     }
 }

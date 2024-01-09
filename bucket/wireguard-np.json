@@ -15,23 +15,35 @@
     },
     "installer": {
         "script": [
-            "if (!(is_admin)) {",
+            "if (is_admin){",
+            "    Invoke-ExternalCommand msiexec -ArgumentList @('/i', \"$dir\\setup.msi_\", '/qn', '/norestart') | Out-Null",
+            "",
+            "    while ($wireguard_process -eq $null) {",
+            "        Start-Sleep -Milliseconds 250",
+            "        $wireguard_process = Get-Process | Where-Object { $_.name -eq 'wireguard' }",
+            "    }",
+            "",
+            "    $wireguard_process | ForEach-Object { Stop-Process -Id $_.Id -Force }",
+            "}",
+            "elseif (Get-Command sudo) {",
+            "     Start-Process msiexec -ArgumentList @('/i', \"$dir\\setup.msi_\", '/qn', '/norestart') -Wait -Verb RunAs | Out-Null",
+            "",
+            "        while ($wireguard_process -eq $null) {",
+            "            Start-Sleep -Milliseconds 250",
+            "            $wireguard_process = Get-Process | Where-Object { $_.name -eq 'wireguard' }",
+            "        }",
+            "        $wireguard_process | ForEach-Object { sudo  Stop-Process -Id $_.Id -Force }",
+            "}",
+            "else{",
             "    error \"Administrator rights are required to install $app.\"",
             "    break",
-            "}",
-            "",
-            "Invoke-ExternalCommand msiexec -ArgumentList @('/i', \"$dir\\setup.msi_\", '/qn', '/norestart') | Out-Null",
-            "",
-            "while ($wireguard_process -eq $null) {",
-            "    Start-Sleep -Milliseconds 250",
-            "    $wireguard_process = Get-Process | Where-Object { $_.name -eq 'wireguard' }",
-            "}",
-            "",
-            "$wireguard_process | ForEach-Object { Stop-Process -Id $_.Id -Force }"
+            "}"
         ]
     },
     "uninstaller": {
-        "script": "Invoke-ExternalCommand msiexec -ArgumentList @('/x', \"$dir\\setup.msi_\", '/qn', '/norestart') -RunAs | Out-Null"
+        "script": [
+            "Start-Process msiexec -ArgumentList @('/x', \"$dir\\setup.msi_\", '/qn', '/norestart') -Wait -Verb RunAs | Out-Null"
+        ]
     },
     "checkver": {
         "url": "https://download.wireguard.com/windows-client/",

@@ -1,23 +1,22 @@
 {
-    "version": "2072-20240108",
-    "description": "Nintendo 3DS emulator",
-    "homepage": "https://citra-emu.org/",
+    "homepage": "https://citra-emu.org",
+    "version": "nightly-2062",
+    "description": "3DS Emulator",
     "license": {
         "identifier": "GPL-2.0",
         "url": "https://github.com/citra-emu/citra-nightly/blob/master/license.txt"
     },
-    "url": "https://github.com/citra-emu/citra-nightly/releases/download/nightly-2072/citra-windows-msvc-20240108-57696b2.7z",
-    "hash": "f98c78a1f12435512a463eba6d05f8d27a8778d15f2b7cbb2ffa02443c66e495",
+    "url": "https://github.com/citra-emu/citra-nightly/releases/download/nightly-2062/citra-windows-msvc-20231226-602f4f6.7z",
+    "hash": "134e4cc6031d78706f8c7756747475c4b53503ebad20994efe4d6858ef0de69b",
     "extract_dir": "nightly",
     "pre_install": [
-        "if (!(Test-Path \"$persist_dir\\user\")) {",
-        "   New-Item -Path \"$persist_dir\" -Name \"user\" -ItemType \"directory\" | Out-Null",
-        "   if (Test-Path \"$env:APPDATA\\Citra\") {",
-        "       Write-host \"Migrating AppData...\" -ForegroundColor yellow",
-        "       Copy-Item -Path \"$env:APPDATA\\Citra\\*\" -Destination \"$persist_dir\\user\" -Recurse",
-        "       Remove-Item -Path \"$env:APPDATA\\Citra\" -Recurse",
+        "function create($path, $type, $content) {",
+        "   if (-not (Test-Path \"$path\")) {",
+        "       New-Item \"$path\" -ItemType $type -Value $content | Out-Null",
+        "       Write-Output \"Creating $path...\"",
         "   }",
-        "}"
+        "}",
+        "create $dir/user Directory"
     ],
     "bin": [
         "citra.exe",
@@ -27,16 +26,18 @@
     "shortcuts": [
         [
             "citra-qt.exe",
-            "Nintendo 3DS [3ds][citra]"
+            "3DS"
         ]
     ],
     "persist": "user",
     "checkver": {
-        "github": "https://github.com/citra-emu/citra-nightly",
-        "regex": "download/nightly-(?<build>[\\d]+)/citra-windows-(?<env>[\\w]+)-(?<date>[\\d]+)-(?<commit>[\\da-f]{7})\\.(?<zip>7z|zip)",
-        "replace": "${build}-${date}"
+        "url": "https://api.github.com/repos/citra-emu/citra-nightly/releases",
+        "jsonpath": {
+            "version": "$.[0].name",
+            "download": "$.[0].assets[?(@.name =~ /citra-windows-msvc-\\d{8}-[\\w\\d]{7}\\.7z/i)].browser_download_url"
+        }
     },
     "autoupdate": {
-        "url": "https://github.com/citra-emu/citra-nightly/releases/download/nightly-$matchBuild/citra-windows-$matchEnv-$matchDate-$matchCommit.$matchZip"
+        "url": "$matchDownload"
     }
 }

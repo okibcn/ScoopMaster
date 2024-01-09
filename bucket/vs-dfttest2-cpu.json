@@ -1,0 +1,32 @@
+{
+    "homepage": "https://github.com/AmusementClub/vs-dfttest2",
+    "description": "DFTTest re-implemetation for VapourSynth (CPU Runtime)",
+    "license": "GPL-3.0-only",
+    "version": "v6",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/AmusementClub/vs-dfttest2/releases/download/v6/vs-dfttest2-cpu-windows-v6.7z",
+            "hash": "3ce87c5db63df423f51252ae05c74d00f1ec075d0c9cd09d6b37ef2123f51d0d"
+        }
+    },
+    "checkver": {
+        "url": "https://api.github.com/repos/AmusementClub/vs-dfttest2/tags",
+        "jsonpath": "$[0].name"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/AmusementClub/vs-dfttest2/releases/download/$version/vs-dfttest2-cpu-windows-$version.7z"
+            }
+        }
+    },
+    "post_install": [
+        "$plugin_dir = \"$env:APPDATA\\Vapoursynth\\plugins64\"",
+        "cmd /c mklink /H \"$plugin_dir\\dfttest2_cpu.dll\" \"$dir\\vs-dfttest2-cpu-windows-$version\\dfttest2_cpu.dll\""
+    ],
+    "post_uninstall": [
+        "$plugin_dir = \"$env:APPDATA\\Vapoursynth\\plugins64\"",
+        "Remove-Item -Force -Path \"$plugin_dir\\dfttest2_cpu.dll\""
+    ],
+    "depends": "vs-dfttest2"
+}

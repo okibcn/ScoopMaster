@@ -1,50 +1,50 @@
 {
-    "version": "MatriX.128",
-    "description": "Torrent stream server.",
-    "homepage": "https://github.com/YouROK/TorrServer",
-    "license": "Freeware",
+  "version": "MatriX.124",
+  "description": "Torrent stream server.",
+  "homepage": "https://github.com/YouROK/TorrServer",
+  "license": "Freeware",
+  "architecture": {
+    "64bit": {
+      "url": "https://ghproxy.net/https://github.com/YouROK/TorrServer/releases/download/MatriX.124/TorrServer-windows-amd64.exe#/torrserver.exe",
+      "hash": "d2dbaedc1694e3511a363b28e526c938677af737007c582035696a04bbaaa00f",
+      "bin": [
+        [
+          "torrserver.exe",
+          "torrserver",
+          "-d $dir"
+        ]
+      ]
+    },
+    "32bit": {
+      "url": "https://ghproxy.net/https://github.com/YouROK/TorrServer/releases/download/MatriX.124/TorrServer-windows-386.exe#/torrserver.exe",
+      "hash": "b6472472b11b186e7a54275fac3c63afb9888abb6ea92ec72eb6e1b3e841ba29",
+      "bin": [
+        [
+          "torrserver.exe",
+          "torrserver",
+          "-d $dir"
+        ]
+      ]
+    }
+  },
+  "checkver": {
+    "url": "https://github.com/YouROK/TorrServer/releases/latest",
+    "regex": "/tree/(\\S+)\""
+  },
+  "autoupdate": {
     "architecture": {
-        "64bit": {
-            "url": "https://github.com/YouROK/TorrServer/releases/download/MatriX.128/TorrServer-windows-amd64.exe#/torrserver.exe",
-            "hash": "8b79d217acae0de27e8347d2314c7e133c3edbcfa3bee8802897eb6ef0f55a5d",
-            "bin": [
-                [
-                    "torrserver.exe",
-                    "torrserver",
-                    "-d $dir"
-                ]
-            ]
-        },
-        "32bit": {
-            "url": "https://github.com/YouROK/TorrServer/releases/download/MatriX.128/TorrServer-windows-386.exe#/torrserver.exe",
-            "hash": "1579d19d53a8fd8cb31cda0b033e02effadf6b185f6fcb94bad29089f15e3bba",
-            "bin": [
-                [
-                    "torrserver.exe",
-                    "torrserver",
-                    "-d $dir"
-                ]
-            ]
-        }
-    },
-    "checkver": {
-        "url": "https://github.com/YouROK/TorrServer/releases/latest",
-        "regex": "/tree/(\\S+)\""
-    },
-    "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://github.com/YouROK/TorrServer/releases/download/$version/TorrServer-windows-amd64.exe#/torrserver.exe"
-            },
-            "32bit": {
-                "url": "https://github.com/YouROK/TorrServer/releases/download/$version/TorrServer-windows-386.exe#/torrserver.exe"
-            }
-        }
-    },
-    "pre_install": [
-        "@('config.db') | ForEach-Object {",
-        "    if (!(Test-Path \"$persist_dir\\$_\")) { New-Item \"$dir\\$_\" -ItemType File | Out-Null }",
-        "}"
-    ],
-    "persist": "config.db"
+      "64bit": {
+        "url": "https://ghproxy.net/https://github.com/YouROK/TorrServer/releases/download/$version/TorrServer-windows-amd64.exe#/torrserver.exe"
+      },
+      "32bit": {
+        "url": "https://ghproxy.net/https://github.com/YouROK/TorrServer/releases/download/$version/TorrServer-windows-386.exe#/torrserver.exe"
+      }
+    }
+  },
+  "pre_install": [
+    "@('config.db') | ForEach-Object {",
+    "    if (!(Test-Path \"$persist_dir\\$_\")) { New-Item \"$dir\\$_\" -ItemType File | Out-Null }",
+    "}"
+  ],
+  "persist": "config.db"
 }

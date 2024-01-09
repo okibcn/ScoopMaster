@@ -1,24 +1,25 @@
 {
-  "version": "1.9.1",
-  "description": "Shogi GUI.",
-  "homepage": "https://sunfish-shogi.github.io/electron-shogi/",
-  "url": "https://ghproxy.net/https://github.com/sunfish-shogi/electron-shogi/releases/download/v1.9.1/release-v1.9.1-win.zip",
-  "hash": "587fbb05afa8fe7ef08708d3099f136e96a31a10562f15e2f06efca1d66b07a9",
-  "installer": {
-    "script": [
-      "Push-Location -Path $dir",
-      "7z.exe x \"./ElectronShogi Setup 1.9.1.exe\"",
-      "Remove-Item \"./ElectronShogi Setup 1.9.1.exe\"",
-      "Rename-Item -Path \"?PLUGINSDIR\" -NewName \"_PLUGINSDIR\"",
-      "Move-Item \"_PLUGINSDIR\\app-64.7z\" .\\",
-      "7z.exe x \"./app-64.7z\"",
-      "Pop-Location"
-    ]
-  },
-  "shortcuts": [
-    [
-      "ElectronShogi.exe",
-      "Electron将棋"
-    ]
-  ]
+    "version": "1.12.0",
+    "description": "Shogi GUI.",
+    "homepage": "https://sunfish-shogi.github.io/electron-shogi/",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/sunfish-shogi/electron-shogi/releases/download/v1.12.0/release-v1.12.0-win.zip",
+            "hash": "faf41e283625358664fb4647c2fa53d0a9260993e6521e2deae8e422c26cece0",
+            "pre_install": [
+                "Expand-7zipArchive \"$dir\\ElectronShogi Setup 1.12.0.exe\" \"$dir\"",
+                "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\"",
+                "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\Uninstall*\" -Force -Recurse"
+            ]
+        }
+    },
+    "shortcuts": [
+        [
+            "ElectronShogi.exe",
+            "Electron将棋"
+        ]
+    ],
+    "checkver": {
+        "github": "https://github.com/sunfish-shogi/electron-shogi"
+    }
 }

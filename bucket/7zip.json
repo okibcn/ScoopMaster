@@ -1,9 +1,9 @@
 {
     "version": "23.01",
-    "description": "A multi-format file archiver with high compression ratios",
+    "description": "压缩工具",
     "homepage": "https://www.7-zip.org/",
     "license": "LGPL-2.1-or-later",
-    "notes": "Add 7-Zip as a context menu option by running: \"$dir\\install-context.reg\"",
+    "notes": "7-Zip has been added to the context menu by running: \"$dir\\install-context.reg\"",
     "architecture": {
         "64bit": {
             "url": "https://www.7-zip.org/a/7z2301-x64.msi",
@@ -35,7 +35,11 @@
         "       $content = $content.Replace('HKEY_CURRENT_USER', 'HKEY_LOCAL_MACHINE')",
         "    }",
         "    Set-Content \"$dir\\$_\" $content -Encoding Ascii",
-        "}"
+        "}",
+        "reg import \"$dir\\install-context.reg\""
+    ],
+    "pre_uninstall": [
+        "reg import \"$dir\\uninstall-context.reg\""
     ],
     "bin": [
         "7z.exe",
@@ -45,7 +49,7 @@
     "shortcuts": [
         [
             "7zFM.exe",
-            "7-Zip"
+            "7z"
         ]
     ],
     "persist": [

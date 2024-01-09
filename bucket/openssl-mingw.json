@@ -1,39 +1,42 @@
 {
-    "version": "3.0.2_1",
-    "description": "A robust, commercial-grade, and full-featured toolkit for the Transport Layer Security (TLS) and Secure Sockets Layer (SSL) protocols.",
     "homepage": "https://curl.haxx.se/windows/",
-    "license": "Apache-2.0",
+    "version": "1.1.1b_2",
+    "license": "OpenSSL",
     "architecture": {
         "64bit": {
-            "url": "https://curl.haxx.se/windows/dl-7.83.1_1/openssl-3.0.2_1-win64-mingw.tar.xz",
-            "hash": "104d05f2aead0f98639654b02327e6f5552f313121c3c6c98bd3785c5e6af3aa",
-            "extract_dir": "openssl-3.0.2-win64-mingw"
+            "url": "https://curl.haxx.se/windows/dl-7.64.0_2/openssl-1.1.1b_2-win64-mingw.tar.xz",
+            "hash": "f5414264bd5992c9ff303587958679b9574767c1ec042707065b1058e18fca80",
+            "extract_dir": "openssl-1.1.1b-win64-mingw"
         },
         "32bit": {
-            "url": "https://curl.haxx.se/windows/dl-7.83.1_1/openssl-3.0.2_1-win32-mingw.tar.xz",
-            "hash": "caa7b35e7a76a0f7e5349b90dde9cd705ebb3336795266b5cbd9f6bf4ecaa7ec",
-            "extract_dir": "openssl-3.0.2-win32-mingw"
+            "url": "https://curl.haxx.se/windows/dl-7.64.0_2/openssl-1.1.1b_2-win32-mingw.tar.xz",
+            "hash": "6086cb1e04ae83f1b54cb1a4b3c24353af8cea290d3bcc7cac1481201fb0927e",
+            "extract_dir": "openssl-1.1.1b-win32-mingw"
         }
     },
-    "env_add_path": "bin",
+    "bin": "openssl.exe",
+    "env_add_path": ".",
     "env_set": {
-        "OPENSSL_CONF": "$dir\\ssl\\openssl.cnf"
+        "OPENSSL_CONF": "$dir\\openssl.cnf"
     },
-    "checkver": "dl-(?<curl>[\\d._]+)/openssl-([\\da-z._]+)-win64-mingw",
+    "checkver": {
+        "url": "https://curl.haxx.se/windows/",
+        "re": "dl-(?<curl>[\\d._]+)/openssl-(?<version>(?<major>[\\da-z.]+)[_\\d]*)-win64-mingw"
+    },
     "autoupdate": {
         "architecture": {
             "64bit": {
                 "url": "https://curl.haxx.se/windows/dl-$matchCurl/openssl-$version-win64-mingw.tar.xz",
-                "extract_dir": "openssl-$matchHead-win64-mingw"
+                "extract_dir": "openssl-$matchMajor-win64-mingw"
             },
             "32bit": {
                 "url": "https://curl.haxx.se/windows/dl-$matchCurl/openssl-$version-win32-mingw.tar.xz",
-                "extract_dir": "openssl-$matchHead-win32-mingw"
+                "extract_dir": "openssl-$matchMajor-win32-mingw"
             }
         },
         "hash": {
             "url": "$baseurl/hashes.txt",
-            "regex": "SHA256\\($basename\\)=\\s+$sha256"
+            "find": "SHA256\\($basename\\)=\\s+([a-fA-F\\d]{64})"
         }
     }
 }

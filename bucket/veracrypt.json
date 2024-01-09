@@ -1,9 +1,12 @@
 {
-    "homepage": "https://www.veracrypt.fr/",
-    "description": "A free open source disk encryption software for Windows, Mac OSX and Linux.",
-    "license": "Apache Licence",
+    "##": "Based on https://github.com/soracqt/scoop-bucket/blob/main/bucket/veracrypt-portable.json",
     "version": "1.26.7",
-    "form": "s0racat/scoop-bucket",
+    "description": "A free open source disk encryption software for Windows, Mac OSX and Linux based on TrueCrypt.",
+    "homepage": "https://veracrypt.fr/",
+    "license": {
+        "identifier": "Apache-2.0",
+        "url": "https://sourceforge.net/p/veracrypt/code/ci/master/tree/License.txt"
+    },
     "url": "https://launchpad.net/veracrypt/trunk/1.26.7/+download/VeraCrypt%20Portable%201.26.7.exe#/setup.exe",
     "hash": "5ac19f68d8b06a51d9d5e9afb47b15ed00f49a4d1e60de9f12e98b5415ce2aad",
     "installer": {
@@ -11,11 +14,7 @@
             "Start-Process -Wait \"$dir\\setup.exe\"",
             "Remove-Item -Recurse \"$dir\\setup.exe\"",
             "Move-Item \"$dir\\VeraCrypt\\*\" -Destination \"$dir\"",
-            "Remove-Item -Recurse \"$dir\\VeraCrypt\"",
-            "$file = 'Configuration.xml'",
-            "if (!(Test-Path \"$persist_dir\\$file\")) {",
-            "    New-Item \"$dir\\$file\" -Type File | Out-Null",
-            "}"
+            "Remove-Item -Recurse \"$dir\\VeraCrypt\""
         ]
     },
     "architecture": {
@@ -37,6 +36,7 @@
         }
     },
     "persist": "Configuration.xml",
+    "pre_install": "If (!(Test-Path \"$persist_dir\\Configuration.xml\")) { New-Item \"$dir\\Configuration.xml\" -ItemType File | Out-Null }",
     "checkver": {
         "url": "https://www.veracrypt.fr/en/Downloads.html",
         "regex": "Latest Stable Release - ([\\d.]+)"

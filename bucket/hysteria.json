@@ -1,28 +1,41 @@
 {
     "version": "2.2.3",
-    "description": "Hysteria is a powerful, lightning fast and censorship resistant proxy.",
-    "homepage": "https://v2.hysteria.network/",
+    "description": "Network utility optimized for networks of poor quality (e.g. satellite connections, congested public Wi-Fi, connecting from China to servers abroad)",
+    "homepage": "https://github.com/apernet/hysteria",
     "license": "MIT",
-    "notes": "",
     "architecture": {
         "64bit": {
-            "url": "https://github.com/apernet/hysteria/releases/download/app/v2.2.3/hysteria-windows-amd64.exe",
+            "url": "https://github.com/apernet/hysteria/releases/download/app/v2.2.3/hysteria-windows-amd64.exe#/hysteria.exe",
             "hash": "2c2a3ab0641f4f0dd0e7cc265b73053119ad5fe80d34a2f42cbf62338dd3d3f8"
+        },
+        "32bit": {
+            "url": "https://github.com/apernet/hysteria/releases/download/app/v2.2.3/hysteria-windows-386.exe#/hysteria.exe",
+            "hash": "ed3d5c15107175fe680497fc44b6ed17ca74b2711448db786ad47bc60a7536d0"
+        },
+        "arm64": {
+            "url": "https://github.com/apernet/hysteria/releases/download/app/v2.2.3/hysteria-windows-arm64.exe#/hysteria.exe",
+            "hash": "442f091ba475c69821cae5b4813a938209eae06086573a35fb6ade95488ef278"
         }
     },
+    "bin": "hysteria.exe",
     "checkver": {
-        "url": "https://api.github.com/repos/apernet/hysteria/releases",
-        "jsonpath": "$.[0].assets[3]",
-        "regex": "download/app/v([\\d.]+)"
+        "url": "https://github.com/apernet/hysteria/releases/latest",
+        "regex": "app/v([\\d\\.]*)"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://github.com/apernet/hysteria/releases/download/app/v$version/hysteria-windows-amd64.exe"
+                "url": "https://github.com/apernet/hysteria/releases/download/app/v$version/hysteria-windows-amd64.exe#/hysteria.exe"
+            },
+            "32bit": {
+                "url": "https://github.com/apernet/hysteria/releases/download/app/v$version/hysteria-windows-386.exe#/hysteria.exe"
+            },
+            "arm64": {
+                "url": "https://github.com/apernet/hysteria/releases/download/app/v$version/hysteria-windows-arm64.exe#/hysteria.exe"
             }
+        },
+        "hash": {
+            "url": "$baseurl/hashes.txt"
         }
-    },
-    "pre_install": "if (!(Test-Path \"$persist_dir\\$config.json\")) { New-Item \"$dir\\config.json\" }",
-    "persist": "config.json",
-    "bin": "hysteria-windows-amd64.exe"
+    }
 }

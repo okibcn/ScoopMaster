@@ -1,31 +1,30 @@
 {
     "version": "4.7",
-    "description": "Scheduling utility that supports many different Events and Actions.",
-    "homepage": "http://www.den4b.com/",
-    "license": "CC-BY-NC-ND-3.0",
-    "url": "https://www.den4b.com/?x=get&product=shutter&type=archive&token=chocolatey&version=4.7#/dl.zip",
+    "description": "A multifunctional scheduling utility, which has a user friendly, easy-to-use interface and supports many different Events and Actions.",
+    "homepage": "https://www.den4b.com/products/shutter",
+    "license": {
+        "identifier": "CC-BY-NC-ND-3.0",
+        "url": "https://www.den4b.com/license"
+    },
+    "url": "https://www.den4b.com/download/shutter/portable/4.7?token=scoop#/dl.zip",
     "hash": "6fdb76f55895687a51374d050cf3fcede95abdb01ed6ca765d9b4a1ea67d944a",
-    "pre_install": [
-        "if(!(Test-Path \"$persist_dir\\Settings.ini\")) {",
-        "  New-Item (\"$persist_dir\\Presets\") -Type Directory | Out-Null",
-        "  New-Item \"$persist_dir\\Settings.ini\" -Type File -Force | Out-Null",
-        "}"
-    ],
-    "persist": [
-        "Presets",
-        "Settings.ini"
-    ],
+    "pre_install": "if (!(Test-Path \"$persist_dir\\Settings.ini\")) { New-Item \"$dir\\Settings.ini\" | Out-Null }",
+    "bin": "Shutter.exe",
     "shortcuts": [
         [
             "Shutter.exe",
-            "Den4b\\Shutter"
+            "Shutter"
         ]
     ],
+    "persist": [
+        "Settings.ini",
+        "Presets"
+    ],
     "checkver": {
-        "url": "https://www.den4b.com/downloads/shutter",
-        "regex": "Shutter ([\\d.]+) Portable"
+        "url": "https://www.den4b.com/changelogs/shutter",
+        "regex": "id=\"v([\\d.]+)\""
     },
     "autoupdate": {
-        "url": "https://www.den4b.com/?x=get&product=shutter&type=archive&token=chocolatey&version=$version#/dl.zip"
+        "url": "https://www.den4b.com/download/shutter/portable/$version?token=scoop#/dl.zip"
     }
 }

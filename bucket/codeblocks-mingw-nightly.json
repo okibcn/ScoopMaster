@@ -1,64 +1,44 @@
 {
-    "version": "20240105.13426",
-    "description": "Free open-source C/C++/Fortran IDE (includes additional GCC/G++ compiler and GDB debugger)",
-    "homepage": "http://www.codeblocks.org",
-    "license": {
-        "identifier": "GPL-3.0-or-later"
-    },
-    "depends": [
-        "7zip",
-        "mingw-winlibs"
-    ],
-    "architecture": {
-        "64bit": {
-            "hash": "sha1:415e79819f88a13aae40932ccc6171833974688d",
-            "url": "https://sourceforge.net/projects/codeblocks/files/Binaries/Nightlies/2024/CB_20240105_rev13426_win64.7z",
-            "pre_install": [
-                "$url = \"https://sourceforge.net/projects/codeblocks/rss?path=/Binaries/Nightlies/Prerequisites/\"",
-                "$response = Invoke-WebRequest -Uri $url",
-                "$mingwPath = [regex]::Matches($response.Content, \"/Binaries/Nightlies/Prerequisites/Mingw64dlls(?<ver>[\\d.]+).7z\")[0]",
-                "if ($mingwPath) {",
-                "    $fileUrl = \"https://nchc.dl.sourceforge.net/project/codeblocks$mingwPath\"",
-                "    $tempFileName = ([System.IO.Path]::GetFileName($fileUrl))",
-                "    $tempFile = Join-Path $ENV:TEMP $tempFileName",
-                "    & { Invoke-WebRequest -Uri $fileUrl -OutFile $tempFile } *>&1 | Out-Null",
-                "    & { 7z x $tempFile \"-o$($dir)\" -y } *>&1 | Out-Null",
-                "    & { Remove-Item -Path $tempFile -Confirm:$false -Force | Out-Null } *>&1 | Out-Null",
-                "}",
-                "$gccPath = [regex]::Matches($response.Content, \"/Binaries/Nightlies/Prerequisites/wxmsw(?<sw>[\\d]+)[\\w]+_gcc_cb_wx(?<wx>[\\d]+)_2D_gcc(?<gcc>[\\d]+)-mingw64.7z\")[0]",
-                "if ($gccPath) {",
-                "    $fileUrl = \"https://nchc.dl.sourceforge.net/project/codeblocks$gccPath\"",
-                "    $tempFileName = ([System.IO.Path]::GetFileName($fileUrl))",
-                "    $tempFile = Join-Path $ENV:TEMP $tempFileName",
-                "    & { Invoke-WebRequest -Uri $fileUrl -OutFile $tempFile } *>&1 | Out-Null",
-                "    & { 7z x $tempFile \"-o$($dir)\" -y } *>&1 | Out-Null",
-                "    & { Remove-Item -Path $tempFile -Confirm:$false -Force | Out-Null } *>&1 | Out-Null",
-                "}"
-            ]
-        }
-    },
-    "bin": [
-        [
-            "codeblocks.exe",
-            "codeblocks-nightly"
-        ]
-    ],
-    "shortcuts": [
-        [
-            "codeblocks.exe",
-            "CodeBlocks Nightly"
-        ]
-    ],
-    "checkver": {
-        "url": "https://sourceforge.net/projects/codeblocks/rss?path=/Binaries/Nightlies/",
-        "regex": "/Binaries/Nightlies/(?<year>\\d{4})/CB_(?<date>\\d{8})_rev(?<rev>\\d{5})_win64.7z",
-        "replace": "${date}.${rev}"
-    },
-    "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://sourceforge.net/projects/codeblocks/files/Binaries/Nightlies/$matchYear/CB_$matchDate_rev$matchRev_win64.7z"
-            }
-        }
+  "architecture": {
+    "64bit": {
+      "hash": [
+        "b52bee400f58311abc19d1447c7df07e5951cace75294127b49802c455f79c13",
+        "sha1:7096f0cf0109e31cfaa0388237f1e3f118c8742c",
+        "sha1:9452ff62c7fff1346d1afc91683d0f3d7d21e84f"
+      ],
+      "url": [
+        "https://sourceforge.net/projects/codeblocks/files/Binaries/Nightlies/2022/CB_20221210_rev13107_win64.7z",
+        "https://sourceforge.net/projects/codeblocks/files/Binaries/Nightlies/Prerequisites/wxmsw31u_gcc_cb_wx315_2D_gcc810-mingw64.7z",
+        "http://sourceforge.net/projects/codeblocks/files/Binaries/Nightlies/Prerequisites/Mingw64dlls8.1.0.7z"
+      ]
     }
+  },
+  "autoupdate": {
+    "architecture": {
+      "64bit": {
+        "url": "https://sourceforge.net/projects/codeblocks/files/Binaries/Nightlies/2022/CB_$matchDate_rev$matchRev_win64.7z"
+      }
+    }
+  },
+  "bin": [
+    "codeblocks.exe",
+    "codeblocks-nightly"
+  ],
+  "checkver": {
+    "regex": "/Binaries/Nightlies/2022/CB_(?<date>\\d{8})_rev(?<rev>\\d{5})_win64.7z",
+    "replace": "${date}.${rev}",
+    "url": "https://sourceforge.net/projects/codeblocks/rss?path=/Binaries/Nightlies/"
+  },
+  "description": "Free open-source C/C++/Fortran IDE (includes additional GCC/G++ compiler and GDB debugger)",
+  "homepage": "http://www.codeblocks.org",
+  "license": {
+    "identifier": "GPL-3.0-or-later"
+  },
+  "shortcuts": [
+    [
+      "codeblocks.exe",
+      "CodeBlocks Nightly"
+    ]
+  ],
+  "version": "20221210.13107"
 }
