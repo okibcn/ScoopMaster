@@ -8,10 +8,13 @@
     },
     "url": "https://dtapp-pub.dingtalk.com/dingtalk-desktop/win_installer/Release/DingTalk_v7.1.10.11169101.exe#/dl.7z",
     "hash": "md5:30b650e938541c0cec1fd49e16581e72",
-    "post_install": "Remove-Item \"$dir\\`$PLUGINSDIR\" -Recurse",
+    "pre_install": [
+        "Move-Item -Path \"$dir\\build\\dist\\*\" -Destination \"$dir\" -Force",
+        "Remove-Item \"$dir\\build\", \"$dir\\setup.xml\", \"$dir\\uninst*\" -Force -Recurse"
+    ],
     "shortcuts": [
         [
-            "DingtalkLauncher.exe",
+            "Dingtalk.exe",
             "DingTalk"
         ]
     ],
