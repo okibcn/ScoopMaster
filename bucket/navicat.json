@@ -1,37 +1,39 @@
 {
     "version": "16.3.3",
-    "description": "Navicat Premium is a database development tool that allows you to simultaneously connect to MySQL, Redis, PostgreSQL, SQL Server, Oracle, MariaDB, SQLite, and MongoDB databases from a single application. Compatible with cloud databases like Amazon RDS, Amazon Aurora, Amazon Redshift, Amazon ElastiCache, Microsoft Azure, Oracle Cloud, Google Cloud, MongoDB Atlas and Redis Enterprise Cloud. You can quickly and easily build, manage and maintain your databases.",
-    "homepage": "https://www.navicat.com/en/products/navicat-premium",
-    "license": {
-        "identifier": "Proprietary",
-        "url": "https://www.navicat.com/en/store/navicat-premium-plan"
-    },
-    "architecture": {
-        "64bit": {
-            "url": "https://download3.navicat.com/download/navicat163_premium_en_x64.exe",
-            "hash": "2bfa1499b84b8ace8314bc3d487d8840612f947e420440013f3a885331b27af5"
-        }
-    },
+    "description": "数据库工具",
+    "homepage": "https://navicat.com.cn",
+    "license": "Proprietary",
+    "url": "https://download.navicat.com.cn/download/navicat163_premium_cs_x64.exe",
+    "hash": "7b6202187ff25facef1cbcfb4f56aebfcb081887ecc0b1c3d068eb0f81b5d3e7",
     "innosetup": true,
-    "bin": "navicat.exe",
     "shortcuts": [
         [
             "navicat.exe",
-            "navicat"
+            "Navicat Premium"
         ]
     ],
+    "post_install": [
+        "$scriptdir = \"$bucketsdir\\mtchaoyi\\scripts\\navicat\"",
+        "Copy-Item -Path \"$scriptdir\\reset.bat\" -Destination \"$dir\\ResetNavicat.bat\"",
+        "Copy-Item -Path \"$scriptdir\\reset.vbs\" -Destination \"$dir\\ResetNavicat.vbs\"",
+        "Add-Content -Path \"$dir\\ResetNavicat.vbs\" -Value \"ws.Run \"\"$dir\\ResetNavicat.bat\"\",0\"",
+        "Copy-Item -Path \"$dir\\ResetNavicat.vbs\" -Destination \"$env:USERPROFILE\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\""
+    ],
+    "uninstaller": {
+        "script":[
+            "Remove-Item \"$env:USERPROFILE\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\\ResetNavicat.vbs\" -Force"
+        ]
+    },
+    "notes": [
+        "已默认将重置试用脚本 ResetNavicat.vbs 添加到开机自启菜单",
+        "Win+R 打开运行窗口  输入 shell:startup 查看",
+        "如果添加失败或被安全软件拦截  请自行添加应用根目录下的 ResetNavicat.vbs 到开机自启菜单"
+    ],
     "checkver": {
-        "url": "https://www.navicat.com/en/products/navicat-premium-release-note#W",
-        "regex": "Navicat Premium \\(Windows\\) version ([\\d.]+)"
+        "url": "https://navicat.com.cn/products/navicat-premium-release-note",
+        "re": "Navicat Premium \\(Windows\\) version ([\\d\\.]+)"
     },
     "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://download3.navicat.com/download/navicat$majorVersion$minorVersion_premium_en_x64.exe"
-            }
-        },
-        "hash": {
-            "url": "$url.sha256"
-        }
+        "url": "https://download.navicat.com.cn/download/navicat$majorVersion$minorVersion_premium_cs_x64.exe"
     }
 }
