@@ -1,19 +1,23 @@
 {
-    "version": "4.2.1",
-    "description": "The automated Usenet download tool",
+    "version": "4.2.2Beta1",
+    "description": "The automated Usenet download tool (Beta/RC if available)",
     "homepage": "https://sabnzbd.org",
     "license": "GPL-2.0-or-later",
+    "suggest": {
+        "unrar (or systemwide WinRAR install)": "main/unrar",
+        "MultiPar (possibly newer)": "versions/multipar-beta"
+    },
     "architecture": {
         "64bit": {
-            "url": "https://github.com/sabnzbd/sabnzbd/releases/download/4.2.1/SABnzbd-4.2.1-win64-bin.zip",
-            "hash": "54a77fce37577dce23f5d6fc3e70b2905f3a044cf5130024df20fb4f728b1608"
+            "url": "https://github.com/sabnzbd/sabnzbd/releases/download/4.2.2Beta1/SABnzbd-4.2.2Beta1-win64-bin.zip",
+            "hash": "734c6b53d2db8247256a5e6b3ad079e054bbfd4c3f139a87d6cdd462dc79d026"
         },
         "32bit": {
-            "url": "https://github.com/sabnzbd/sabnzbd/releases/download/4.2.1/SABnzbd-4.2.1-win32-bin.zip",
-            "hash": "58bf2766a5e7aa98a5a8e3557f53f0bb0b9560e3d57858295e8e171f9634abed"
+            "url": "https://github.com/sabnzbd/sabnzbd/releases/download/4.2.2Beta1/SABnzbd-4.2.2Beta1-win32-bin.zip",
+            "hash": "750f92d69372d82884f977ef2cd857e572a03b91267975ee358ae1d6a8a31779"
         }
     },
-    "extract_dir": "SABnzbd-4.2.1",
+    "extract_dir": "SABnzbd-4.2.2Beta1",
     "bin": [
         "SABnzbd-console.exe",
         [
@@ -27,8 +31,18 @@
             "SABnzbd"
         ]
     ],
+    "post_install": [
+        "if ($architecture -eq '64bit' -and $global) {",
+        "$multipar = $(appdir multipar-beta $global)",
+        "$unrar = $(appdir unrar $global)",
+        "if (!(Test-Path \"$unrar\")) { $unrar = \"$env:ProgramFiles\\WinRAR\\UnRAR.exe\" } else { $unrar = \"$unrar\\current\\UnRAR.exe\" }",
+        "if (Test-Path \"$unrar\") { New-Item -Path \"$dir\\win\\unrar\\x64\\UnRAR.exe\" -Force -ItemType SymbolicLink -Value \"$unrar\" | Out-Null }",
+        "if (Test-Path \"$multipar\") { New-Item -Path \"$dir\\win\\multipar\\par2j64.exe\" -Force -ItemType SymbolicLink -Value \"$multipar\\current\\par2j64.exe\" | Out-Null }",
+        "}"
+    ],
     "checkver": {
-        "github": "https://github.com/sabnzbd/sabnzbd"
+        "url": "https://api.github.com/repos/sabnzbd/sabnzbd/releases?per_page=1",
+        "jsonpath": "$[0].tag_name"
     },
     "autoupdate": {
         "architecture": {
