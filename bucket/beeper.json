@@ -1,38 +1,33 @@
 {
-    "version": "3.91.55",
+    "version": "AmazonChime-5.23.31831-full.nupkg",
+    "homepage": "https://www.beeper.com/",
     "description": "An universal chat application that unifies all your chat applications into one.",
-    "homepage": "https://www.beeper.com",
-    "license": "Freeware",
+    "license": {
+        "identifier": "Freeware",
+        "url": "https://www.beeper.com/terms"
+    },
     "architecture": {
         "64bit": {
-            "url": "https://download.todesktop.com/2003241lzgn20jd/Beeper Setup 3.91.55 - Build 240103fvmyrbzxm-x64.exe#/dl.7z",
-            "hash": "sha512:8408b8a8bdca74742a0883cffbdce414015202c458b32f720fe45eb4f37cf95d2dbdd7a271fdf5ad96a30343c1e4f82fb2c9ac079ee3da4ad70bceccdfefe05e",
-            "pre_install": [
-                "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\"",
-                "Remove-Item \"$dir\\`$*\" -Recurse"
-            ]
+            "url": "https://download.beeper.com/windows/nsis/x64#/beeper.zip",
+            "hash": "c34047ae1fac42753612471d55c86515b2fd1ffc52cf38b6369a7c230c415f02"
         }
     },
+    "pre_install": "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" $dir; Remove-Item \"$dir\\`$*\" -Recurse",
     "shortcuts": [
         [
             "Beeper.exe",
-            "Beeper",
-            "--user-data-dir=\"$dir\\User Data\""
+            "Beeper"
         ]
     ],
-    "persist": "User Data",
     "checkver": {
-        "url": "https://download.todesktop.com/2003241lzgn20jd/latest.yml",
-        "regex": "version: ([\\d.]+)\\nfiles:\\n.*url: (?<url>.+)"
+        "script": "(Invoke-WebRequest 'https://download.beeper.com/windows/nsis/x64' -MaximumRedirection 1).Headers.'Content-Disposition'",
+        "regex": "Beeper\\sSetup\\s([\\d.]+)\\s\\-\\sBuild\\s([\\w]+)\\-x64",
+        "replace": "$1.$2"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://download.todesktop.com/2003241lzgn20jd/$matchUrl#/dl.7z",
-                "hash": {
-                    "url": "https://download.todesktop.com/2003241lzgn20jd/latest.yml",
-                    "regex": "sha512: $base64"
-                }
+                "url": "https://download.beeper.com/windows/nsis/x64#/beeper.zip"
             }
         }
     }
