@@ -1,0 +1,27 @@
+{
+    "version": "0.16.0",
+    "description": "tflocal - a small wrapper script to run Terraform against LocalStack",
+    "homepage": "https://github.com/localstack/terraform-local",
+    "license": "ASLv2",
+    "url": "https://files.pythonhosted.org/packages/aa/f7/69c2981d89c0e074bf15272304fe6843ffcb266cfe044b32f36e23a6e628/terraform-local-0.16.0.tar.gz",
+    "hash": "3193213c54275d5a2407d01763778a876e45a04daaa48c4a698a64807d757a1e",
+    "extract_dir": "terraform-local-0.16.0",
+    "depends": [
+        "main/python"
+    ],
+    "installer": {
+        "script": [
+            "Push-Location $dir",
+            "python setup.py install --user --record \"$dir\\installed_files.txt\"",
+            "Pop-Location"
+        ]        
+    },
+    "uninstaller": {
+        "script": [
+            "(Get-Content -ErrorAction Ignore \"$directory\\installed_files.txt\") -match \".*$name.*\" | Remove-Item -ErrorAction Ignore -Force",
+            "$site_packages = python -m site --user-site",
+            "Get-ChildItem -ErrorAction Ignore \"$site_packages\\$name-*-py*.egg\" | ForEach-Object { Remove-Item -ErrorAction Ignore -Force -Recurse $_ }"
+        ]
+    },
+    "bin": "bin\\tflocal.bat"
+}
