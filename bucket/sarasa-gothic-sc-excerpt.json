@@ -1,35 +1,43 @@
 {
-    "version": "0.42.6",
+    "version": "1.0.3",
     "description": "CJK programming font based on Iosevka and Source Han Sans",
     "license": "OFL-1.1",
     "homepage": "https://github.com/be5invis/Sarasa-Gothic",
-    "url": "https://mirrors.tuna.tsinghua.edu.cn/github-release/be5invis/Sarasa-Gothic/LatestRelease/sarasa-gothic-ttf-0.42.6.7z#dl",
-    "hash": "fb1961079b0e1128c18fa21f2a6cd889b8902febaa4277304de7ff2db9366cdc",
+    "url": "https://mirrors.tuna.tsinghua.edu.cn/github-release/be5invis/Sarasa-Gothic/LatestRelease/Sarasa-TTF-1.0.3.7z#dl",
+    "hash": "6a17be14ed1b1934e790aaf95707e1f20bbd884de9fe257cb8217d59f7295dfe",
     "checkver": "github",
     "autoupdate": {
-        "url": "https://github.com/be5invis/Sarasa-Gothic/releases/download/v$version/sarasa-gothic-ttf-$version.7z"
+        "url": "https://github.com/be5invis/Sarasa-Gothic/releases/download/v$version/Sarasa-TTF-$version.7z"
     },
     "notes": [
         "仅节选了以下字体：",
         "  更纱黑体 UI SC：常规, 半粗体",
-        "  等距更纱黑体 SC：常规, 粗体, 粗斜体, 斜体"
+        "  等距更纱黑体 SC：常规, 粗体, 粗斜体, 斜体",
+        "如果需要重建字体缓存, 请在管理员模式下运行以下命令",
+        "1. 停止字体缓存服务:",
+        "Stop-Service -Name FontCache",
+        "2. 删除字体缓存文件",
+        "Get-ChildItem -Path $env:windir\\ServiceProfiles\\LocalService\\AppData\\Local\\FontCache -File | foreach { $_.Delete()}",
+        "Remove-Item $env:windir\\System32\\FNTCACHE.DAT -Force",
+        "3. 启动字体缓存服务",
+        "Start-Service -Name FontCache"
     ],
     "installer": {
         "script": [
             "# 仅提取指定的字体文件                              ",
             "$7zPath = Get-HelperPath -Helper 7zip               ",
             "$ArgList = @(                                       ",
-            "    'e', \"$dir\\sarasa-gothic-ttf-$version.7z#dl\",",
-            "    'sarasa-mono-sc-bold.ttf',                      ",
-            "    'sarasa-mono-sc-bolditalic.ttf',                ",
-            "    'sarasa-mono-sc-regular.ttf',                   ",
-            "    'sarasa-mono-sc-italic.ttf',                    ",
-            "    'sarasa-ui-sc-regular.ttf',                     ",
-            "    'sarasa-ui-sc-semibold.ttf',                    ",
+            "    'e', \"$dir\\Sarasa-TTF-$version.7z#dl\",",
+            "    'SarasaMonoSC-Bold.ttf',                      ",
+            "    'SarasaMonoSC-BoldItalic.ttf',                ",
+            "    'SarasaMonoSC-Regular.ttf',                   ",
+            "    'SarasaMonoSC-Italic.ttf',                    ",
+            "    'SarasaUiSC-Regular.ttf',                     ",
+            "    'SarasaUiSC-SemiBold.ttf',                    ",
             "    \"-o$dir\", '-y', '-aos'                        ",
             ")                                                   ",
             "Invoke-ExternalCommand $7zPath $ArgList             ",
-            "Remove-Item -Path \"$dir\\sarasa-gothic-ttf-$version.7z#dl\" -Force -ErrorAction SilentlyContinue"
+            "Remove-Item -Path \"$dir\\Sarasa-TTF-$version.7z#dl\" -Force -ErrorAction SilentlyContinue"
         ]
     },
     "post_install": [
@@ -53,7 +61,7 @@
     ],
     "pre_uninstall": [
         "$current_dir = \"$(appdir $app $global)\\current\"",
-        "Get-ChildItem $current_dir -Filter '*.ttf' | ForEach-Object {",
+        "Get-ChildItem -Path $current_dir -Filter '*.ttf' -File | ForEach-Object {",
         "    try {",
         "        Rename-Item $_.FullName $_.FullName -ErrorVariable LockError -ErrorAction Stop",
         "    } catch {",
