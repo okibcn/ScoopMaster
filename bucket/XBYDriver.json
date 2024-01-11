@@ -1,27 +1,34 @@
 {
+    "$schema": "https://abgox.github.io/ScoopType/schema/zh-CN-min.json",
     "version": "3.12.3",
-    "homepage": "https://github.com/gaozhangmin/aliyunpan",
     "description": "小白羊网盘 - Powered by 阿里云盘",
-    "license": "MIT",
-    "architecture": {
-        "64bit": {
-            "url": "https://github.com/gaozhangmin/aliyunpan/releases/download/v3.12.3/XBYDriver-3.12.3-win-x64.exe",
-            "hash": "efd6fa716b2a4f503571191321bc22dea6a4fbac72e4a345c97f762f1995b726"
-        }
+    "homepage": "https://github.com/gaozhangmin/aliyunpan",
+    "license": {
+        "identifier": "MIT",
+        "url": "https://github.com/gaozhangmin/aliyunpan/blob/main/LICENSE"
     },
+    "url": "https://github.com/gaozhangmin/aliyunpan/releases/download/v3.12.3/XBYDriver-3.12.3-win-x64.exe",
+    "hash": "efd6fa716b2a4f503571191321bc22dea6a4fbac72e4a345c97f762f1995b726",
     "post_install": [
-        "$CmdString = \"$dir\\XBYDriver-$version-win-x64.exe /S /D=$dir\"",
-        "Invoke-Expression $CmdString",
+        "& \"$dir\\XBYDriver-$version-win-x64.exe\" /S /D=$dir",
         ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-          "persist -dir @(\"$env:APPData\\alixby3\") @(\"$persist_dir\")"
+        "create_app_lnk \"$dir\\小白羊云盘.exe\" \"$scoop_apps_lnk\\小白羊云盘.lnk\"",
+        "persist -dir @(\"$env:AppData\\alixby3\") @(\"$persist_dir\")",
+        "$null=Start-Job -ScriptBlock {",
+        "   param($path_sudo,$path1,$path2)",
+        "   Start-Sleep -Seconds 10",
+        "   @($path1,$path2) | ForEach-Object {",
+        "       if (Test-Path($_)) { & $path_sudo Remove-Item -Force $_ }",
+        "   }",
+        "} -ArgumentList \"$bucketsdir\\$bucket\\bin\\sudo.ps1\",\"$dir\\XBYDriver-$version-win-x64.exe\",\"C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\小白羊云盘.lnk\""
     ],
     "pre_uninstall": [
-        "$_bucket=(scoop bucket list | where-Object {$_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
-        ". \"$bucketsdir\\$_bucket\\bin\\utils.ps1\"",
+        "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
         "stop_process"
     ],
     "post_uninstall": [
-        "$data=@(\"$env:APPData\\alixby3\",\"C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\小白羊云盘.lnk\")",
+        "$data=@(\"$env:AppData\\alixby3\")",
         "$data | ForEach-Object {",
         "   if (Test-Path($_)) {",
         "       Remove-Item -Force -Recurse $_",
@@ -31,7 +38,6 @@
     ],
     "checkver": "github",
     "autoupdate": {
-        "note": "Thanks for using autoupdate, please test your updates!",
         "url": "https://github.com/gaozhangmin/aliyunpan/releases/download/$version/XBYDriver-$version-win-x64.exe"
     }
-  }
+}

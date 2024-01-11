@@ -1,14 +1,18 @@
 {
+    "$schema": "https://abgox.github.io/ScoopType/schema/zh-CN-min.json",
     "version": "3.1.1",
+    "description": "pyenv for Windows. pyenv is a simple python version management tool. windows下的 pyenv，一个简单的 python 版本管理工具。",
     "homepage": "https://github.com/pyenv-win/pyenv-win",
-    "description": "pyenv for Windows. pyenv is a simple python version management tool. windows下的 pyenv，一个简单的python版本管理工具。",
-    "license": "Freeware",
+    "license": {
+        "identifier": "MIT",
+        "url": "https://github.com/pyenv-win/pyenv-win/blob/master/LICENSE"
+    },
     "url": "https://raw.githubusercontent.com/pyenv-win/pyenv-win/master/pyenv-win/install-pyenv-win.ps1",
     "hash": "ad9611af397ca590d1f8ba17c54c4f7b90545874106199cc87158569fe423d0d",
     "post_install": [
         ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-        "try{Invoke-Expression $dir\\install-pyenv-win.ps1}catch{throw 'Install error due to possible network issues.'}",
-        "persist -dir @(\"$env:userProfile\\.pyenv\") @(\"$persist_dir\\.pyenv\")"
+        "try { Invoke-Expression $dir\\install-pyenv-win.ps1 }catch{ throw 'Install error due to possible network issues.'}",
+        "persist -dir @(\"$env:UserProfile\\.pyenv\") @(\"$persist_dir\\.pyenv\")"
     ],
     "pre_uninstall": [
         "Invoke-Expression \"$dir\\install-pyenv-win.ps1 -Uninstall\""
