@@ -1,38 +1,35 @@
 {
-    "homepage": "https://github.com/Fndroid/clash_for_windows_pkg",
-    "description": "A Windows/macOS/Linux GUI based on Clash and Electron",
+    "homepage": "https://docs.cfw.lbyczf.com/",
+    "description": "A Windows GUI based on Clash https://docs.cfw.lbyczf.com/",
     "version": "0.20.39",
+    "license": "MIT",
     "architecture": {
         "64bit": {
-            "url": "https://github.com/Fndroid/clash_for_windows_pkg/releases/download/0.20.39/Clash.for.Windows-0.20.39-win.7z",
-            "hash": "88db22840497c067c073ab2415fff6fe71f633d64af2fca62c37859ffba1640c"
-        },
-        "32bit": {
-            "url": "https://github.com/Fndroid/clash_for_windows_pkg/releases/download/0.20.39/Clash.for.Windows-0.20.39-ia32-win.7z",
-            "hash": "c9846fbd309eac5bebb40937120f6b716000b38f3fa5e5ea7674c4fbb55e04ee"
+            "url": "https://github.com/Fndroid/clash_for_windows_pkg/releases/download/0.20.39/Clash.for.Windows.Setup.0.20.39.exe#/clash.7z",
+            "hash": "477274ce22d30559ae5df8d41b0adb0a8461be0501d26a0500452ab68c650608",
+            "installer": {
+                "script": [
+                    "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\"",
+                    "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\Uninstall*\" -Force -Recurse"
+                ]
+            }
         }
     },
-    "bin": [
-        [
-            "Clash for Windows.exe",
-            "clash-for-windows"
-        ]
-    ],
     "shortcuts": [
         [
             "Clash for Windows.exe",
             "Clash for Windows"
         ]
     ],
-    "checkver": "github",
+    "persist": "data",
+    "checkver": {
+        "github": "https://github.com/Fndroid/clash_for_windows_pkg"
+    },
     "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://github.com/Fndroid/clash_for_windows_pkg/releases/download/$version/Clash.for.Windows-$version-win.7z"
-            },
-            "32bit": {
-                "url": "https://github.com/Fndroid/clash_for_windows_pkg/releases/download/$version/Clash.for.Windows-$version-ia32-win.7z"
-            }
+        "url": "https://github.com/Fndroid/clash_for_windows_pkg/releases/download/$version/Clash.for.Windows.Setup.$version.exe#/clash.7z",
+        "hash": {
+            "url": "$baseurl/sha256sum",
+            "regex": "^exe: $sha256"
         }
     }
 }
