@@ -1,12 +1,16 @@
 {
-    "version": "7.4.1",
-    "description": " PowerShell Core is a cross-platform (Windows, Linux, and macOS) automation and configuration tool/framework that works well with your existing tools and is optimized for dealing with structured data (e.g. JSON, CSV, XML, etc.), REST APIs, and object models.",
     "homepage": "https://github.com/PowerShell/PowerShell",
+    "description": "PowerShell Core, the cross-platform task automation and configuration management framework/tool.",
+    "version": "7.4.1",
     "license": "MIT",
     "architecture": {
         "64bit": {
-            "url": "https://github.com/PowerShell/PowerShell/releases/download/v7.4.1/PowerShell-7.4.1-win-x64.zip#/dl.7z",
+            "url": "https://github.com/PowerShell/PowerShell/releases/download/v7.4.1/PowerShell-7.4.1-win-x64.zip",
             "hash": "32dfa0d6b59538e28631549f04d3f74f3d3a24bc6eaf3aa7ab0b74f94ecc026e"
+        },
+        "32bit": {
+            "url": "https://github.com/PowerShell/PowerShell/releases/download/v7.4.1/PowerShell-7.4.1-win-x86.zip",
+            "hash": "55f6ca98c8bedc1436e0b16a6a5522caf68f2d7b27312b640dee071e3596e3af"
         }
     },
     "bin": "pwsh.exe",
@@ -16,16 +20,22 @@
             "PowerShell"
         ]
     ],
-    "checkver": "github",
+    "checkver": {
+        "url": "https://raw.githubusercontent.com/PowerShell/PowerShell/master/README.md",
+        "regex": "\\[rl-windows-64\\].*releases/download/v([\\d.]+)/PowerShell"
+    },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://github.com/PowerShell/PowerShell/releases/download/v$version/PowerShell-$version-win-x64.zip#/dl.7z",
-                "hash": {
-                    "url": "https://github.com/PowerShell/PowerShell/releases/tag/v$version/",
-                    "regex": "$basename\\s*<ul>\\s*<li>$sha256"
-                }
+                "url": "https://github.com/PowerShell/PowerShell/releases/download/v$version/PowerShell-$version-win-x64.zip"
+            },
+            "32bit": {
+                "url": "https://github.com/PowerShell/PowerShell/releases/download/v$version/PowerShell-$version-win-x86.zip"
             }
+        },
+        "hash": {
+            "url": "https://github.com/PowerShell/PowerShell/releases/tag/v$version/",
+            "find": "$basename\\s*<ul>\\s*<li>([A-Fa-f\\d]{64})"
         }
     }
 }
