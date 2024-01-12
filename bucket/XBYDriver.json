@@ -1,5 +1,4 @@
 {
-    "$schema": "https://abgox.github.io/ScoopType/schema/zh-CN-min.json",
     "version": "3.12.3",
     "description": "小白羊网盘 - Powered by 阿里云盘",
     "homepage": "https://github.com/gaozhangmin/aliyunpan",
@@ -10,31 +9,17 @@
     "url": "https://github.com/gaozhangmin/aliyunpan/releases/download/v3.12.3/XBYDriver-3.12.3-win-x64.exe",
     "hash": "efd6fa716b2a4f503571191321bc22dea6a4fbac72e4a345c97f762f1995b726",
     "post_install": [
-        "& \"$dir\\XBYDriver-$version-win-x64.exe\" /S /D=$dir",
         ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-        "create_app_lnk \"$dir\\小白羊云盘.exe\" \"$scoop_apps_lnk\\小白羊云盘.lnk\"",
+        "& \"$dir\\XBYDriver-$version-win-x64.exe\" /S /D=$dir",
         "persist -dir @(\"$env:AppData\\alixby3\") @(\"$persist_dir\")",
-        "$null=Start-Job -ScriptBlock {",
-        "   param($path_sudo,$path1,$path2)",
-        "   Start-Sleep -Seconds 10",
-        "   @($path1,$path2) | ForEach-Object {",
-        "       if (Test-Path($_)) { & $path_sudo Remove-Item -Force $_ }",
-        "   }",
-        "} -ArgumentList \"$bucketsdir\\$bucket\\bin\\sudo.ps1\",\"$dir\\XBYDriver-$version-win-x64.exe\",\"C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\小白羊云盘.lnk\""
+        "create_app_lnk \"$dir\\小白羊云盘.exe\" \"$scoop_apps_lnk\\小白羊云盘.lnk\"",
+        "clean_redundant_files @(\"C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\小白羊云盘.lnk\",\"$dir\\XBYDriver-$version-win-x64.exe\") 10"
     ],
     "pre_uninstall": [
         "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
         ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-        "stop_process"
-    ],
-    "post_uninstall": [
-        "$data=@(\"$env:AppData\\alixby3\")",
-        "$data | ForEach-Object {",
-        "   if (Test-Path($_)) {",
-        "       Remove-Item -Force -Recurse $_",
-        "       Write-Host \"Removing $_\" -f Yellow",
-        "   }",
-        "}"
+        "stop_process",
+        "remove_files @(\"C:\\Users\\Public\\Desktop\\小白羊云盘.lnk\",\"$scoop_apps_lnk\\小白羊云盘.lnk\",\"$env:AppData\\alixby3\")"
     ],
     "checkver": "github",
     "autoupdate": {

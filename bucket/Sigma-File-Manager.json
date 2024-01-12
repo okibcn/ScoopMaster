@@ -1,5 +1,4 @@
 {
-    "$schema": "https://abgox.github.io/ScoopType/schema/zh-CN-min.json",
     "version": "1.7.0",
     "description": "A free, open-source, quickly evolving, modern file manager (explorer / browser) app. 一款免费、开源、快速发展的现代文件管理器",
     "homepage": "https://github.com/aleksey-hoffman/sigma-file-manager",
@@ -12,32 +11,16 @@
     "post_install": [
         ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
         "& \"$dir\\Sigma-File-Manager-$version-Windows-Setup.exe\" /S /D=$dir",
-        "create_app_lnk \"$dir\\Sigma file manager.exe\" \"$scoop_apps_lnk\\Sigma file manager.lnk\"",
         "persist -dir @(\"$env:AppData\\Sigma file manager\") @(\"$persist_dir\")",
-        "Write-Host \"There will be a delayed backend behavior soon: Delete redundant files after 10 seconds.\n\" -f Yellow",
-        "$null=Start-Job -ScriptBlock {",
-        "   param($path1,$path2,$path3)",
-        "   Start-Sleep -Seconds 10",
-        "   @($path1,$path2,$path3) | ForEach-Object {",
-        "       if (Test-Path($_)) { Remove-Item -Force $_ }",
-        "   }",
-        "} -ArgumentList \"$dir\\Sigma-File-Manager-$version-Windows-Setup.exe\",\"$env:UserProfile\\Desktop\\Sigma file manager.lnk\",\"$env:AppData\\Microsoft\\Windows\\Start Menu\\Programs\\Sigma file manager.lnk\""
+        "create_app_lnk \"$dir\\Sigma file manager.exe\" \"$desktop\\Sigma file manager.lnk\"",
+        "create_app_lnk \"$dir\\Sigma file manager.exe\" \"$scoop_apps_lnk\\Sigma file manager.lnk\"",
+        "clean_redundant_files @(\"$dir\\Sigma-File-Manager-$version-Windows-Setup.exe\",\"$apps_lnk\\Sigma file manager.lnk\") 10"
     ],
     "pre_uninstall": [
         "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
         ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-        "stop_process"
-    ],
-    "post_uninstall": [
-        "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
-        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-        "$data=@(\"$env:AppData\\Sigma file manager\",\"$env:LocalAppData\\sigma-file-manager-updater\",\"$scoop_apps_lnk\\Sigma file manager.lnk\")",
-        "$data | ForEach-Object {",
-        "   if (Test-Path($_)) {",
-        "       Remove-Item -Force -Recurse $_",
-        "       Write-Host \"Removing $_\" -f Yellow",
-        "   }",
-        "}"
+        "stop_process",
+        "remove_files @(\"$desktop\\Sigma file manager.lnk\",\"$scoop_apps_lnk\\Sigma file manager.lnk\",\"$env:AppData\\Sigma file manager\",\"$env:LocalAppData\\sigma-file-manager-updater\")"
     ],
     "checkver": "github",
     "autoupdate": {

@@ -1,5 +1,4 @@
 {
-    "$schema": "https://abgox.github.io/ScoopType/schema/zh-CN-min.json",
     "version": "2.8.8",
     "description": "A snipping tool, which allows you to pin the screenshot back onto the screen. 一个剪切工具，可以让你把截图固定在屏幕上",
     "homepage": "https://www.snipaste.com/",
@@ -35,13 +34,20 @@
         "}else{",
         "   New-Item $persist_file > $null",
         "}",
-        "explorer \"$dir\\Snipaste.exe\""
+        "create_app_lnk \"$dir\\Snipaste.exe\" \"$desktop\\Snipaste2.lnk\"",
+        "\"$dir\\config.ini\n$persist_file\" | Out-File \"$env:AppData\\abgo_bucket_Snipaste2.txt\"",
+        "& \"$bucketsdir\\$bucket\\bin\\sudo.ps1\" \"$bucketsdir\\$bucket\\bin\\schedule.exe\" \"abgo_bucket_Snipaste2\" \"$bucketsdir\\$bucket\\schedule\\Snipaste2.ps1\""
     ],
     "pre_uninstall": [
         "Copy-Item \"$dir\\config.ini\" \"$persist_dir\\config.ini\" -Force",
         "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
         ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-        "stop_process"
+        "stop_process",
+        "remove_files @(\"$desktop\\Snipaste2.lnk\",\"$env:AppData\\abgo_bucket_Snipaste2.txt\")"
+    ],
+    "post_uninstall": [
+        "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
+        "& \"$bucketsdir\\$bucket\\bin\\schedule.exe\" \"abgo_bucket_Snipaste\""
     ],
     "checkver": {
         "url": "https://dl.snipaste.com/sha-1.txt",

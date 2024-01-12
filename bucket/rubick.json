@@ -1,5 +1,4 @@
 {
-    "$schema": "https://abgox.github.io/ScoopType/schema/zh-CN-min.json",
     "version": "4.2.1",
     "description": "Electron based open source toolbox, free integration of rich plug-ins. 基于 electron 的开源工具箱，自由集成丰富插件",
     "homepage": "https://github.com/rubickCenter/rubick",
@@ -12,33 +11,16 @@
     "post_install": [
         ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
         "& \"$dir\\rubick-Setup-$version-x64.exe\" /S /D=$dir",
-        "create_app_lnk \"$dir\\rubick.exe\" \"$scoop_apps_lnk\\rubick.lnk\"",
         "persist -dir @(\"$env:AppData\\rubick\") @(\"$persist_dir\")",
-        "Write-Host \"There will be a delayed backend behavior soon: Delete redundant files after 10 seconds.\n\" -f Yellow",
-        "Write-Host \"\"",
-        "$null=Start-Job -ScriptBlock {",
-        "   param($path1,$path2,$path3)",
-        "   Start-Sleep -Seconds 10",
-        "   @($path1,$path2,$path3) | ForEach-Object {",
-        "       if (Test-Path($_)) { Remove-Item -Force $_ }",
-        "   }",
-        "} -ArgumentList \"$dir\\rubick-Setup-$version-x64.exe\",\"$env:UserProfile\\Desktop\\rubick.lnk\",\"$env:AppData\\Microsoft\\Windows\\Start Menu\\Programs\\rubick.lnk\""
+        "create_app_lnk \"$dir\\rubick.exe\" \"$desktop\\rubick.lnk\"",
+        "create_app_lnk \"$dir\\rubick.exe\" \"$scoop_apps_lnk\\rubick.lnk\"",
+        "clean_redundant_files @(\"$apps_lnk\\rubick.lnk\",\"$dir\\rubick-Setup-$version-x64.exe\") 10"
     ],
     "pre_uninstall": [
         "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
         ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-        "stop_process"
-    ],
-    "post_uninstall": [
-        "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
-        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-        "$data=@(\"$env:AppData\\rubick\",\"$env:LocalAppData\\Programs\\rubick\",\"$scoop_apps_lnk\\rubick.lnk\")",
-        "$data | ForEach-Object {",
-        "   if (Test-Path($_)) {",
-        "       Remove-Item -Force -Recurse $_",
-        "       Write-Host \"Removing $_\" -f Yellow",
-        "   }",
-        "}"
+        "stop_process",
+        "remove_files @(\"$desktop\\rubick.lnk\",\"$scoop_apps_lnk\\rubick.lnk\",\"$env:AppData\\rubick\",\"$env:LocalAppData\\Programs\\rubick\")"
     ],
     "checkver": "github",
     "autoupdate": {
