@@ -1,13 +1,25 @@
 {
     "version": "0.9.5",
+    "description": "Advanced real-time screen translator for games, hardcoded subtitles in videos, static text and etc.",
     "homepage": "https://github.com/Danily07/Translumo",
-    "description": "Advanced real-time screen translator for games, hardcoded subtitles in videos, static text and etc",
-    "license": "Apache-2.0",
+    "license": {
+        "identifier": "Apache-2.0 license",
+        "url": "https://github.com/Danily07/Translumo/blob/master/LICENSE"
+    },
     "architecture": {
         "64bit": {
             "url": "https://github.com/Danily07/Translumo/releases/download/v.0.9.5/Translumo-v.0.9.5.zip",
-            "hash": "sha512:e5c0cb998d3a41c17b69dfbe0cf35204f9505c3ededfca90ec458affca5c280032543d1bcdb6bced4b9d75797804de24aba5c9007eea0aefd0827cfd4343cb37"
+            "hash": "a7ede4597d4b643d8f497672e6c188d0cdd11dd928637feb59c596c1ba78abc4"
         }
+    },
+    "installer": {
+        "script": [
+            "ensure \"$persist_dir\" | Out-Null",
+            "New-Item \"$env:APPDATA\\Translumo\" -ItemType Junction -Target \"$persist_dir\" | Out-Null"
+        ]
+    },
+    "uninstaller": {
+        "script": "Remove-Item \"$env:APPDATA\\Translumo\" -Recurse -Force -ErrorAction 'SilentlyContinue'"
     },
     "shortcuts": [
         [
@@ -15,7 +27,10 @@
             "Translumo"
         ]
     ],
-    "checkver": "github",
+    "checkver": {
+        "url": "https://github.com/Danily07/Translumo/releases.atom",
+        "regex": "/releases/tag/v.([\\d.]+)"
+    },
     "autoupdate": {
         "architecture": {
             "64bit": {
