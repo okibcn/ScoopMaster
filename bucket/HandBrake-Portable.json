@@ -1,6 +1,6 @@
 {
     "version": "1.7.2",
-    "description": "HandBrake. A tool for converting video from nearly any format to a selection of modern, widely supported codecs.",
+    "description": "A tool for converting video from nearly any format to a selection of modern, widely supported codecs.",
     "homepage": "https://handbrake.fr",
     "license": "GPL-2.0-only",
     "architecture": {
@@ -9,17 +9,15 @@
             "hash": "7e4c4bba3800caeab19a843384e38f295252cbfaf3550d61ee195f9f37c63403"
         }
     },
-    "post_install": "Move-Item \"$dir\\HandBrake\\portable.ini.template\" \"$dir\\HandBrake\\portable.ini\"",
+    "extract_dir": "HandBrake",
+    "pre_install": "Rename-Item $dir/portable.ini.template portable.ini",
     "shortcuts": [
         [
-            "HandBrake\\HandBrake.exe",
+            "HandBrake.exe",
             "HandBrake"
         ]
     ],
-    "persist": [
-        "tmp",
-        "storage"
-    ],
+    "persist": "storage",
     "checkver": {
         "github": "https://github.com/HandBrake/HandBrake"
     },
