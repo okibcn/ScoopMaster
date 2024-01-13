@@ -10,10 +10,10 @@
     "hash": "efd6fa716b2a4f503571191321bc22dea6a4fbac72e4a345c97f762f1995b726",
     "post_install": [
         ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-        "& \"$dir\\XBYDriver-$version-win-x64.exe\" /S /D=$dir",
+        "& \"$dir\\XBYDriver-$($version)-win-x64.exe\" /S /D=$dir",
         "persist -dir @(\"$env:AppData\\alixby3\") @(\"$persist_dir\")",
         "create_app_lnk \"$dir\\小白羊云盘.exe\" \"$scoop_apps_lnk\\小白羊云盘.lnk\"",
-        "clean_redundant_files @(\"C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\小白羊云盘.lnk\",\"$dir\\XBYDriver-$version-win-x64.exe\") 10"
+        "clean_redundant_files @(\"C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\小白羊云盘.lnk\",\"$dir\\XBYDriver-$($version)-win-x64.exe\") 10"
     ],
     "pre_uninstall": [
         "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",

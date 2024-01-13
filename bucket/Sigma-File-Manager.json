@@ -10,11 +10,11 @@
     "hash": "418285100afe0b9a2624740b94f1fa7d483bd24d88327fb99d930aef26805a3f",
     "post_install": [
         ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-        "& \"$dir\\Sigma-File-Manager-$version-Windows-Setup.exe\" /S /D=$dir",
+        "& \"$dir\\Sigma-File-Manager-$($version)-Windows-Setup.exe\" /S /D=$dir",
         "persist -dir @(\"$env:AppData\\Sigma file manager\") @(\"$persist_dir\")",
         "create_app_lnk \"$dir\\Sigma file manager.exe\" \"$desktop\\Sigma file manager.lnk\"",
         "create_app_lnk \"$dir\\Sigma file manager.exe\" \"$scoop_apps_lnk\\Sigma file manager.lnk\"",
-        "clean_redundant_files @(\"$dir\\Sigma-File-Manager-$version-Windows-Setup.exe\",\"$apps_lnk\\Sigma file manager.lnk\") 10"
+        "clean_redundant_files @(\"$dir\\Sigma-File-Manager-$($version)-Windows-Setup.exe\",\"$apps_lnk\\Sigma file manager.lnk\") 10"
     ],
     "pre_uninstall": [
         "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",

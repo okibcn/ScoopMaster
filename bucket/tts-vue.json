@@ -10,11 +10,11 @@
     "hash": "e8cd45a3f1ca1335723554e41ab06fd1f289bacad666ff8adbe9af74a07800de",
     "post_install": [
         ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-        "& \"$dir\\$version\\tts-vue-$version.exe\" /S /D=$dir",
+        "& \"$dir\\$($version)\\tts-vue-$($version).exe\" /S /D=$dir",
         "persist -dir @(\"$env:AppData\\tts-vue\") @(\"$persist_dir\")",
         "create_app_lnk \"$dir\\tts-vue.exe\" \"$desktop\\tts-vue.lnk\"",
         "create_app_lnk \"$dir\\tts-vue.exe\" \"$scoop_apps_lnk\\tts-vue.lnk\"",
-        "clean_redundant_files @(\"$apps_lnk\\tts-vue.lnk\",\"$dir\\$version\\tts-vue-$version.exe\") 10"
+        "clean_redundant_files @(\"$apps_lnk\\tts-vue.lnk\",\"$dir\\$($version)\\tts-vue-$($version).exe\") 10"
     ],
     "pre_uninstall": [
         "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
