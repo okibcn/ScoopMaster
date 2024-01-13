@@ -1,0 +1,58 @@
+{
+    "description": "Microsoft MPI development SDK",
+    "homepage": "https://www.nuget.org/packages/msmpisdk/",
+    "license": "MIT",
+    "version": "10.1.12498.52",
+    "checkver": {
+        "url": "https://www.nuget.org/packages/msmpisdk/",
+        "regex": "<span class=\"version-title\">[\\n\\s]*([\\d\\.]+)[\\n\\s]*</span>"
+    },
+    "autoupdate": {
+        "url": "https://globalcdn.nuget.org/packages/msmpisdk.$version.nupkg",
+        "hash": {
+            "mode": "download"
+        }
+    },
+    "url": "https://globalcdn.nuget.org/packages/msmpisdk.10.1.12498.52.nupkg",
+    "hash": "bad26def67eaeceb8f63e3b8814cbc3e4ae4ce41bc849eb3a2906d2eea099862",
+    "post_install": [
+        "$target = 'User'; if($global) { $target = 'Machine' }",
+        "$include_paths = [environment]::getEnvironmentVariable(\"CPATH\", $target)",
+        "if ($null -eq $include_paths) { $include_paths = '' }",
+        "$include_paths = $include_paths.Trim(';').Split(';')",
+        "$include_path = Join-Path -Path $dir -ChildPath 'Include'",
+        "if ($include_paths -notcontains $include_path) {",
+        "   $include_paths += $include_path",
+        "   [environment]::setEnvironmentVariable(\"CPATH\", $include_paths -join ';', $target)",
+        "}",
+        "$lib_paths = [environment]::getEnvironmentVariable(\"LIBRARY_PATH\", $target)",
+        "if ($null -eq $lib_paths) { $lib_paths = '' }",
+        "$lib_paths = $lib_paths.Trim(';').Split(';')",
+        "$lib_path = Join-Path -Path $dir -ChildPath 'Lib'",
+        "if ($lib_paths -notcontains $lib_path) {",
+        "   $lib_paths += $lib_path",
+        "   [environment]::setEnvironmentVariable(\"LIBRARY_PATH\", $lib_paths -join ';', $target)",
+        "}"
+    ],
+    "post_uninstall": [
+        "$target = 'User'; if($global) { $target = 'Machine' }",
+        "$include_paths = [environment]::getEnvironmentVariable(\"CPATH\", $target)",
+        "if ($null -ne $include_paths) {",
+        "   $include_paths = [System.Collections.ArrayList]$include_paths.Trim(';').Split(';')",
+        "   $include_path = Join-Path -Path $dir -ChildPath 'Include'",
+        "   while ($include_paths -contains $include_path) {",
+        "       $include_paths.Remove($include_path)",
+        "   }",
+        "   [environment]::setEnvironmentVariable(\"CPATH\", $include_paths -join ';', $target)",
+        "}",
+        "$lib_paths = [environment]::getEnvironmentVariable(\"LIBRARY_PATH\", $target)",
+        "if ($null -ne $lib_paths) {",
+        "   $lib_paths = [System.Collections.ArrayList]$lib_paths.Trim(';').Split(';')",
+        "   $lib_path = Join-Path -Path $dir -ChildPath 'Lib'",
+        "   while ($lib_paths -contains $lib_path) {",
+        "       $lib_paths.Remove($lib_path)",
+        "   }",
+        "   [environment]::setEnvironmentVariable(\"LIBRARY_PATH\", $lib_paths -join ';', $target)",
+        "}"
+    ]
+}
