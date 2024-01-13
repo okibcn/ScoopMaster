@@ -1,46 +1,60 @@
 {
-    "version": "1.41.3",
-    "description": "指尖工具箱, Windows 效率工具",
-    "homepage": "https://getquicker.net",
-    "license": "Shareware",
+    "homepage": "https://getquicker.net/",
+    "version": "1.41.5.0",
+    "license": "Freeware",
     "architecture": {
         "64bit": {
-            "url": "https://getquicker.net/download/item/fast_x64#quiker.msi",
-            "hash": "81bd26e255391cd608c5bb674d3f86a974fb5434b76a9bba3775e9d0bceab128"
+            "url": "https://getquicker.net/download/item/fast_x64#.msi",
+            "hash": "98ff30b6b2f7271337cc56734e90963e5888de33283116f3d996c7e0217ade6d"
         },
         "32bit": {
-            "url": "https://getquicker.net/download/item/fast_x86#quiker.msi",
-            "hash": "15c0f22715cd3bfb68ef048469a06aa47f576d566bd37c76d99ada6fa2742076"
+            "url": "https://getquicker.net/download/item/fast_x86#.msi",
+            "hash": "997e507246ebba518c265da25d55d1619341f0869e1ba10a0ba2c3d98e55f09e"
         }
     },
     "extract_dir": "Quicker",
+    "checkver": {
+        "url": "https://getquicker.net/Download",
+        "regex": "快速通道[\\w\\W]*?(\\d.[\\d.]+)"
+    },
+    "installer": {
+        "script": [
+            "if (!(is_admin)) {",
+            "    error \"Administrator rights are required to uninstall $app.\"",
+            "    exit 1",
+            "}",
+            "New-Item Registry::HKEY_CLASSES_ROOT\\quicker -Force -ItemType String -Value 'URL:Quicker Protocol' | Out-Null",
+            "New-ItemProperty Registry::HKEY_CLASSES_ROOT\\quicker -Force -PropertyType string -Name 'URL Protocol' -Value '' | Out-Null",
+            "New-Item Registry::HKEY_CLASSES_ROOT\\quicker\\DefaultIcon -Force -ItemType String -Value 'Quicker.exe' | Out-Null",
+            "New-Item Registry::HKEY_CLASSES_ROOT\\quicker\\shell\\open\\command -Force -ItemType String -Value \"`\"$dir\\QuickerStarter.exe`\" `\"%1`\"\" | Out-Null"
+        ]
+    },
+    "uninstaller": {
+        "script": [
+            "if (!(is_admin)) {",
+            "    error \"Administrator rights are required to uninstall $app.\"",
+            "    exit 1",
+            "}",
+            "if (Test-Path Registry::HKEY_CLASSES_ROOT\\quicker) {",
+            "    Remove-Item Registry::HKEY_CLASSES_ROOT\\quicker -Force -Recurse | Out-Null",
+            "}"
+        ]
+    },
+    "bin": "Quicker.exe",
     "shortcuts": [
         [
             "Quicker.exe",
             "Quicker"
         ]
     ],
-    "pre_install": [
-        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-        "persist -dir @(\"$env:LocalAppData\\Quicker\") @(\"$persist_dir\")",
-        "create_app_lnk \"$dir\\Quicker.exe\" \"$desktop\\Quicker.lnk\""
-    ],
-    "pre_uninstall": [
-        "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
-        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-        "stop_process",
-        "remove_files @(\"$desktop\\Quicker.lnk\",\"$env:LocalAppData\\Quicker\")"
-    ],
-    "checkver": {
-        "url": "https://getquicker.net/Download",
-        "regex": "Quicker.+v([\\d\\.]+)"
-    },
     "autoupdate": {
-        "64bit": {
-            "url": "https://getquicker.net/download/item/fast_x64#quiker.msi"
-        },
-        "32bit": {
-            "url": "https://getquicker.net/download/item/fast_x86#quiker.msi"
+        "architecture": {
+            "64bit": {
+                "url": "https://getquicker.net/download/item/fast_x64#.msi"
+            },
+            "32bit": {
+                "url": "https://getquicker.net/download/item/fast_x86#.msi"
+            }
         }
     }
 }
