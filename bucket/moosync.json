@@ -2,24 +2,36 @@
     "version": "10.2.0",
     "homepage": "https://moosync.app",
     "license": "GPL-3.0-or-later",
-    "url": "https://github.com/Moosync/Moosync/releases/download/v10.2.0/Moosync-10.2.0-win-x64-portable.exe#/dl.7z",
-    "hash": "41711a70ef8518ec1fdbc33e95b3a7ab8c577b12c139fafbc82bb1eb663ab2a4",
-    "installer": {
-        "script": [
-            "Expand-7zipArchive -Path \"$dir/`$PLUGINSDIR/app-64.7z\" -DestinationPath \"$dir\"",
-            "Remove-Item -Force -Recurse \"$dir/`$PLUGINSDIR\""
-        ]
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/Moosync/Moosync/releases/download/v10.2.0/Moosync-10.2.0-win-x64.exe#/dl.7z",
+            "hash": "sha512:923a7dc51e4119c8db5a414e5e3090bd8fb9db29fe35ef557d06a06ef2a48278fa7a981e2b6bc083c7e5d7952ef636dc2642446b69bb6c869fc01b8f5dd1cbd0",
+            "pre_install": [
+                "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\"",
+                "Remove-Item \"$dir\\`$R0\", \"$dir\\`$PLUGINSDIR\" -Force -Recurse"
+            ]
+        }
     },
     "shortcuts": [
         [
             "Moosync.exe",
-            "Moosync"
+            "Moosync",
+            "--user-data-dir=\"$dir\\User Data\""
         ]
     ],
+    "persist": "User Data",
     "checkver": {
         "github": "https://github.com/Moosync/Moosync"
     },
     "autoupdate": {
-        "url": "https://github.com/Moosync/Moosync/releases/download/v$version/Moosync-$version-win-x64-portable.exe#/dl.7z"
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/Moosync/Moosync/releases/download/v$version/Moosync-$version-win-x64.exe#/dl.7z",
+                "hash": {
+                    "url": "$baseurl/latest.yml",
+                    "regex": "sha512:\\s+$base64"
+                }
+            }
+        }
     }
 }
