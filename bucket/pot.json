@@ -1,46 +1,50 @@
 {
+    "homepage": "https://pot-app.com/",
+    "description": "A cross-platform translation software",
+    "license": "GPL-3.0-only",
     "version": "2.7.4",
-    "description": "一个跨平台的划词翻译和OCR软件 | A cross-platform software for text translation and recognize",
-    "homepage": "https://pot-app.com",
-    "license": "GPL-3.0-or-later",
-    "notes": [
-        "Scoop doesn't persist your pot data, by default they are stored in: ",
-        "Config&log files: '%AppData%\\com.pot-app.desktop'",
-        "WebView files: '%LocalAppData%\\com.pot-app.desktop'"
-    ],
     "architecture": {
         "64bit": {
-            "url": "https://github.com/pot-app/pot-desktop/releases/download/2.7.4/pot_2.7.4_x64-setup.nsis.zip",
-            "hash": "949bc4a1a4d5b3ae00f2e5adf68d98d396e5c7f9a28fb13dc0ad91faf27ca093"
+            "url": "https://github.com/pot-app/pot-desktop/releases/download/2.7.4/pot_2.7.4_x64-setup.exe#/dl.7z",
+            "hash": "b9d119407ba88a408de816b63b94595706074bb12b69c64617bb22603057cbee"
         },
         "32bit": {
-            "url": "https://github.com/pot-app/pot-desktop/releases/download/2.7.4/pot_2.7.4_x86-setup.nsis.zip",
-            "hash": "87adcaf1df9e45a6cc5d4dc69130a89afdac561c3af82c53a3ac837a89b1374f"
+            "url": "https://github.com/pot-app/pot-desktop/releases/download/2.7.4/pot_2.7.4_x86-setup.exe#/dl.7z",
+            "hash": "7e695842389a2e8a458ed170a805362ebc566583d3a3745401b079ea3a124c0b"
         }
     },
+    "post_install": [
+        "if (!(Test-Path \"$dir\\data\\*\") -and (Test-Path \"$env:APPDATA\\com.pot-app.desktop\")) {",
+        "    info '[Portable Mode]: Copying user config data . . .'",
+        "    Copy-Item \"$env:APPDATA\\com.pot-app.desktop\\*\" \"$persist_dir\\data\" -Recurse",
+        "}",
+        "Import-Module $(Join-Path $(Find-BucketDirectory -Root -Name scoop-private) scripts/Utils-private.psm1)",
+        "Mount-ExternalRuntimeData -Source \"$persist_dir\\data\" -Target \"$env:APPDATA\\com.pot-app.desktop\"",
+        "Remove-Module -Name Utils-private",
+        "Remove-Item \"$dir\\`$PLUGINSDIR\" -Force -Recurse"
+    ],
     "shortcuts": [
         [
             "pot.exe",
-            "pot"
+            "Pot"
         ]
     ],
-    "extract_to": "_EXTRACTED",
-    "pre_install": [
-        "Expand-7zipArchive (Get-ChildItem \"$dir\\_EXTRACTED\\pot_*.exe\").FullName \"$dir\"",
-        "Remove-Item \"$dir\\_EXTRACTED\" -Force -Recurse",
-        "Remove-Item \"$dir\" -Include 'Uninstall.exe', '$PLUGINSDIR' -Recurse"
-    ],
+    "persist": "data",
     "checkver": {
         "github": "https://github.com/pot-app/pot-desktop"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://github.com/pot-app/pot-desktop/releases/download/$version/pot_$version_x64-setup.nsis.zip"
+                "url": "https://github.com/pot-app/pot-desktop/releases/download/$version/pot_$version_x64-setup.exe#/dl.7z"
             },
             "32bit": {
-                "url": "https://github.com/pot-app/pot-desktop/releases/download/$version/pot_$version_x86-setup.nsis.zip"
+                "url": "https://github.com/pot-app/pot-desktop/releases/download/$version/pot_$version_x86-setup.exe#/dl.7z"
             }
         }
-    }
+    },
+    "notes": [
+        "You may need to install Edge WebView2 Runtime to use Pot.",
+        "A installer of Edge WebView2 Runtime is available under the 'redist' folder of the Pot installation directory."
+    ]
 }
