@@ -1,6 +1,6 @@
 {
     "version": "1.9.15",
-    "description": "🎤 Microsoft speech synthesis tool, built using Electron + Vue + ElementPlus + Vite. 🎤 微软语音合成工具，使用 Electron + Vue + ElementPlus + Vite 构建。",
+    "description": "🎤 微软语音合成工具，使用 Electron + Vue + ElementPlus + Vite 构建。🎤 Microsoft speech synthesis tool, built using Electron + Vue + ElementPlus + Vite.",
     "homepage": "https://github.com/LokerL/tts-vue",
     "license": {
         "identifier": "MIT",
@@ -8,15 +8,17 @@
     },
     "url": "https://github.com/LokerL/tts-vue/releases/download/1.9.15/tts-vue-windows-latest.zip",
     "hash": "e8cd45a3f1ca1335723554e41ab06fd1f289bacad666ff8adbe9af74a07800de",
-    "post_install": [
+    "pre_install": [
         ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
         "& \"$dir\\$($version)\\tts-vue-$($version).exe\" /S /D=$dir",
-        "persist -dir @(\"$env:AppData\\tts-vue\") @(\"$persist_dir\")",
+        "persist -dir @(\"$env:AppData\\tts-vue\") @(\"$persist_dir\\tts-vue\")",
         "create_app_lnk \"$dir\\tts-vue.exe\" \"$desktop\\tts-vue.lnk\"",
         "create_app_lnk \"$dir\\tts-vue.exe\" \"$scoop_apps_lnk\\tts-vue.lnk\"",
         "clean_redundant_files @(\"$apps_lnk\\tts-vue.lnk\",\"$dir\\$($version)\\tts-vue-$($version).exe\") 10"
     ],
     "pre_uninstall": [
+        "$ErrorActionPreference=\"SilentlyContinue\"",
+        "& \"$dir\\Uninstall tts-vue.exe\" /S",
         "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
         ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
         "stop_process",

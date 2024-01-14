@@ -1,6 +1,6 @@
 {
     "version": "2.6.2",
-    "description": "A desktop application to manage multiple active node.js versions. 用于管理多个活动 node.js 版本的桌面应用程序。",
+    "description": "一个用于管理多个活动 node.js 版本的桌面应用程序。A desktop application to manage multiple active node.js versions.",
     "homepage": "https://github.com/1111mp/nvm-desktop",
     "license": {
         "identifier": "MIT",
@@ -16,7 +16,7 @@
         "64bit": {
             "url": "https://github.com/1111mp/nvm-desktop/releases/download/v2.6.2/nvm-desktop_Setup_win_x64_2.6.2.exe",
             "hash": "59b117a39963ae134445ab2c0aebe380d38c7707e8f88095a3b0127ceb560b8e",
-            "post_install": [
+            "pre_install": [
                 ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
                 "& \"$dir\\nvm-desktop_Setup_win_x64_$($version).exe\" /S /D=$dir",
                 "persist -dir @(\"$env:AppData\\NVM-Desktop\",\"$env:UserProfile\\.nvmd\") @(\"$persist_dir\\NVM-Desktop\",\"$persist_dir\\.nvmd\")",
@@ -28,7 +28,7 @@
         "arm64": {
             "url": "https://github.com/1111mp/nvm-desktop/releases/download/v2.6.2/nvm-desktop_Setup_win_arm64_2.6.2.exe",
             "hash": "8346201fbd2646869b84b91fcb31cca54aa62066cf63f0d363508f2078b4b968",
-            "post_install": [
+            "pre_install": [
                 ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
                 "& \"$dir\\nvm-desktop_Setup_win_arm64_$($version).exe\" /S /D=$dir",
                 "persist -dir @(\"$env:AppData\\NVM-Desktop\",\"$env:UserProfile\\.nvmd\") @(\"$persist_dir\\NVM-Desktop\",\".nvmd\")",
@@ -39,6 +39,8 @@
         }
     },
     "pre_uninstall": [
+        "$ErrorActionPreference=\"SilentlyContinue\"",
+        "& \"$dir\\Uninstall nvm-desktop.exe\" /S",
         "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
         ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
         "stop_process",

@@ -1,6 +1,6 @@
 {
     "version": "1.7.0",
-    "description": "A free, open-source, quickly evolving, modern file manager (explorer / browser) app. 一款免费、开源、快速发展的现代文件管理器",
+    "description": "一款免费、开源、快速发展的现代文件管理器。A free, open-source, quickly evolving, modern file manager (explorer / browser) app.",
     "homepage": "https://github.com/aleksey-hoffman/sigma-file-manager",
     "license": {
         "identifier": "GNU GPLv3 or later",
@@ -8,15 +8,17 @@
     },
     "url": "https://github.com/aleksey-hoffman/sigma-file-manager/releases/download/v1.7.0/Sigma-File-Manager-1.7.0-Windows-Setup.exe",
     "hash": "418285100afe0b9a2624740b94f1fa7d483bd24d88327fb99d930aef26805a3f",
-    "post_install": [
+    "pre_install": [
         ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
         "& \"$dir\\Sigma-File-Manager-$($version)-Windows-Setup.exe\" /S /D=$dir",
-        "persist -dir @(\"$env:AppData\\Sigma file manager\") @(\"$persist_dir\")",
+        "persist -dir @(\"$env:AppData\\Sigma file manager\") @(\"$persist_dir\\Sigma file manager\")",
         "create_app_lnk \"$dir\\Sigma file manager.exe\" \"$desktop\\Sigma file manager.lnk\"",
         "create_app_lnk \"$dir\\Sigma file manager.exe\" \"$scoop_apps_lnk\\Sigma file manager.lnk\"",
         "clean_redundant_files @(\"$dir\\Sigma-File-Manager-$($version)-Windows-Setup.exe\",\"$apps_lnk\\Sigma file manager.lnk\") 10"
     ],
     "pre_uninstall": [
+        "$ErrorActionPreference=\"SilentlyContinue\"",
+        "& \"$dir\\Uninstall Sigma file manager.exe\" /S",
         "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
         ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
         "stop_process",
