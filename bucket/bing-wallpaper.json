@@ -1,35 +1,45 @@
 {
-    "autoupdate": {
-        "url": "https://download.microsoft.com/download/$matchPath/Installer/$version/Bing/W011/BingWallpaper.exe"
-    },
-    "checkver": {
-        "regex": "download/(?<path>[\\w-/]+)/Installer/([\\d.]+)/Bing/W011/BingWallpaper.exe",
+    "version": "2.0.0.5",
+    "description": "下载“必应壁纸”后，每天都用新的背景使桌面栩栩如生",
+    "homepage": "https://www.microsoft.com/zh-cn/bing/bing-wallpaper",
+    "license": "https://www.microsoft.com/zh-cn/legal/terms-of-use",
+    "url": "https://download.microsoft.com/download/2/5/2/252967a0-bd0f-4899-b1bd-1e46e19b07bf/Installer/2.0.0.5/Bing/W011/BingWallpaper.exe#/dl.7z",
+    "hash": "7befedf8d8fdcb2189254ae26f7271842127e02ab6eff659a42b3d911e5fd005",
+    "installer": {
         "script": [
-            "#(Invoke-WebRequest -Uri 'https://go.microsoft.com/fwlink/?linkid=2126594'-MaximumRedirection 0 -SkipHttpErrorCheck -ErrorAction:SilentlyContinue).Headers.Location",
-            "return (Invoke-WebRequest -Uri 'https://bingwallpaper.microsoft.com/api/BWC/downloadPackage?brand=bing'-MaximumRedirection 0 -SkipHttpErrorCheck -ErrorAction:SilentlyContinue).Headers.Location"
+            "Rename-Item -Path \"$dir\\BWCInstaller.msi\" -NewName \"BWCInstaller.7z\"",
+            "Expand-7zipArchive \"$dir\\BWCInstaller.7z\" \"$dir\"",
+            "Remove-Item \"$dir\\BWCInstaller.7z\" -Force  -ErrorAction SilentlyContinue",
+            "$AppCache = \"$env:LOCALAPPDATA\\Microsoft\\BingWallpaperApp\"",
+            "$PersistCache = \"$persist_dir\\Cache\"",
+            "if(!(Test-Path $PersistCache)) { New-Item $PersistCache -Type Directory -Force | Out-Null }",
+            "if(Test-Path $AppCache) {",
+            "    $AppDir = Get-Item $AppCache",
+            "    if($AppDir.Attributes -ne \"Directory, ReparsePoint\") { ",
+            "        Move-Item $AppCache $PersistCache -Force",
+            "        Remove-Item $AppCache -Force -Recurse -ErrorAction SilentlyContinue",
+            "        New-Item -Type Junction -Path $AppCache -Target $PersistCache | Out-Null",
+            "    }",
+            "} else {",
+            "    New-Item -Type Junction -Path $AppCache -Target $PersistCache | Out-Null",
+            "}"
         ]
     },
-    "description": "Bing Wallpaper includes a collection of beautiful images from around the world that have been featured on the Bing homepage. Not only will you see a new image on your desktop each day, but you can also browse images and learn where they're from.",
-    "hash": "7befedf8d8fdcb2189254ae26f7271842127e02ab6eff659a42b3d911e5fd005",
-    "homepage": "https://www.microsoft.com/en-us/bing/bing-wallpaper",
-    "license": {
-        "identifier": "Proprietary",
-        "url": "https://www.microsoft.com/servicesagreement"
-    },
-    "pre_install": [
-        "Expand-7zipArchive \"$dir\\$fname\" \"$dir\\extracted\" -Removal",
-        "Expand-MsiArchive \"$dir\\extracted\\BWCInstaller.msi\" \"$dir\" -ExtractDir 'Microsoft\\BingWallpaperApp' -Removal"
-    ],
+    "bin": "BingWallpaperApp.exe",
     "shortcuts": [
         [
             "BingWallpaperApp.exe",
             "Bing Wallpaper"
-        ],
-        [
-            "BingVisualSearchLauncher.exe",
-            "Bing Visual Search"
         ]
     ],
-    "url": "https://download.microsoft.com/download/2/5/2/252967a0-bd0f-4899-b1bd-1e46e19b07bf/Installer/2.0.0.5/Bing/W011/BingWallpaper.exe",
-    "version": "2.0.0.5"
+    "checkver": {
+        "script": [
+            "$url = \"https://bingwallpaper.microsoft.com/api/BWC/downloadPackage?brand=bing\"",
+            "echo (Invoke-WebRequest -Uri $url -UseBasicParsing -SkipHttpErrorCheck -method Get -MaximumRedirection 0 -ErrorAction:SilentlyContinue).Headers.Location"
+        ],
+        "regex": "download/(?<path>[\\d\\w-/]+)/Installer/(?<version>[\\d.]+)/"
+    },
+    "autoupdate": {
+        "url": "https://download.microsoft.com/download/$matchPath/Installer/$matchVersion/Bing/W011/BingWallpaper.exe#/dl.7z"
+    }
 }
