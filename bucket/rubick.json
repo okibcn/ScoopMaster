@@ -10,11 +10,12 @@
     "hash": "0abf70b7efd8c855c270bcecc237809ba48b08c22f582f17bf33fb5c7f55d1b1",
     "pre_install": [
         ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-        "& \"$dir\\rubick-Setup-$($version)-x64.exe\" /S /D=$dir",
+        "$path_exe=\"$dir\\rubick-Setup-$($version)-x64.exe\"",
+        "& $path_exe /S /D=$dir",
         "persist -dir @(\"$env:AppData\\rubick\") @(\"$persist_dir\\rubick\")",
         "create_app_lnk \"$dir\\rubick.exe\" \"$desktop\\rubick.lnk\"",
         "create_app_lnk \"$dir\\rubick.exe\" \"$scoop_apps_lnk\\rubick.lnk\"",
-        "clean_redundant_files @(\"$apps_lnk\\rubick.lnk\",\"$dir\\rubick-Setup-$($version)-x64.exe\") 10"
+        "clean_redundant_files @(\"$apps_lnk\\rubick.lnk\",$path_exe) 10"
     ],
     "pre_uninstall": [
         "$ErrorActionPreference=\"SilentlyContinue\"",
@@ -22,7 +23,7 @@
         "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
         ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
         "stop_process",
-        "remove_files @(\"$desktop\\rubick.lnk\",\"$scoop_apps_lnk\\rubick.lnk\",\"$env:AppData\\rubick\",\"$env:LocalAppData\\Programs\\rubick\")"
+        "remove_files @(\"$desktop\\rubick.lnk\",\"$scoop_apps_lnk\\rubick.lnk\",\"$env:AppData\\rubick\",\"$env:LocalAppData\\Programs\\rubick\",\"$env:LocalAppData\\rubick-updater\")"
     ],
     "checkver": "github",
     "autoupdate": {

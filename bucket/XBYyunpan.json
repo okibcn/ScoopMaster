@@ -10,10 +10,11 @@
     "hash": "efd6fa716b2a4f503571191321bc22dea6a4fbac72e4a345c97f762f1995b726",
     "pre_install": [
         ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-        "& \"$dir\\XBYDriver-$($version)-win-x64.exe\" /S /D=$dir",
+        "$path_exe=\"$dir\\XBYDriver-$($version)-win-x64.exe\"",
+        "& $path_exe /S /D=$dir",
         "persist -dir @(\"$env:AppData\\alixby3\") @(\"$persist_dir\\alixby3\")",
         "create_app_lnk \"$dir\\小白羊云盘.exe\" \"$scoop_apps_lnk\\小白羊云盘.lnk\"",
-        "clean_redundant_files @(\"C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\小白羊云盘.lnk\",\"$dir\\XBYDriver-$($version)-win-x64.exe\") 10"
+        "clean_redundant_files @($path_exe,\"C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\小白羊云盘.lnk\") 10"
     ],
     "pre_uninstall": [
         "$ErrorActionPreference=\"SilentlyContinue\"",
@@ -21,7 +22,7 @@
         "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
         ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
         "stop_process",
-        "remove_files @(\"C:\\Users\\Public\\Desktop\\小白羊云盘.lnk\",\"$scoop_apps_lnk\\小白羊云盘.lnk\",\"$env:AppData\\alixby3\")"
+        "remove_files @(\"C:\\Users\\Public\\Desktop\\小白羊云盘.lnk\",\"$scoop_apps_lnk\\小白羊云盘.lnk\",\"$env:AppData\\alixby3\",\"$env:LocalAppData\\xbyyunpan-updater\")"
     ],
     "checkver": "github",
     "autoupdate": {

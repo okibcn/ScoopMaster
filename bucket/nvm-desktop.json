@@ -7,10 +7,10 @@
         "url": "https://github.com/1111mp/nvm-desktop/blob/main/LICENSE"
     },
     "notes": [
+        "对于此应用下载的所有 node 版本，只有在默认的版本存储路径(~\\.nvmd\\versions)下才会被 persist。",
+        "请不要修改默认版本存储路径以确保正常的 persist。",
         "All node versions downloaded for this application will only be persisted in the default version storage path (~\\.nvmd\\versions).",
-        "Please do not modify the default version storage path to ensure normal persistence",
-        "对于此应用下载的所有 node 版本，只有在默认的版本存储路径(~\\.nvmd\\versions)下才会被 persist",
-        "请不要修改默认版本存储路径以确保正常的 persist"
+        "Please do not modify the default version storage path to ensure normal persistence."
     ],
     "architecture": {
         "64bit": {
@@ -18,11 +18,12 @@
             "hash": "59b117a39963ae134445ab2c0aebe380d38c7707e8f88095a3b0127ceb560b8e",
             "pre_install": [
                 ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-                "& \"$dir\\nvm-desktop_Setup_win_x64_$($version).exe\" /S /D=$dir",
+                "$path_exe=\"$dir\\nvm-desktop_Setup_win_x64_$($version).exe\"",
+                "& $path_exe /S /D=$dir",
                 "persist -dir @(\"$env:AppData\\NVM-Desktop\",\"$env:UserProfile\\.nvmd\") @(\"$persist_dir\\NVM-Desktop\",\"$persist_dir\\.nvmd\")",
                 "create_app_lnk \"$dir\\nvm-desktop.exe\" \"$desktop\\nvm-desktop.lnk\"",
                 "create_app_lnk \"$dir\\nvm-desktop.exe\" \"$scoop_apps_lnk\\nvm-desktop.lnk\"",
-                "clean_redundant_files @(\"$dir\\nvm-desktop_Setup_win_x64_$($version).exe\") 10"
+                "clean_redundant_files @($path_exe) 10"
             ]
         },
         "arm64": {
@@ -30,11 +31,12 @@
             "hash": "8346201fbd2646869b84b91fcb31cca54aa62066cf63f0d363508f2078b4b968",
             "pre_install": [
                 ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-                "& \"$dir\\nvm-desktop_Setup_win_arm64_$($version).exe\" /S /D=$dir",
+                "$path_exe=\"$dir\\nvm-desktop_Setup_win_arm64_$($version).exe\"",
+                "& $path_exe /S /D=$dir",
                 "persist -dir @(\"$env:AppData\\NVM-Desktop\",\"$env:UserProfile\\.nvmd\") @(\"$persist_dir\\NVM-Desktop\",\".nvmd\")",
                 "create_app_lnk \"$dir\\nvm-desktop.exe\" \"$desktop\\nvm-desktop.lnk\"",
                 "create_app_lnk \"$dir\\nvm-desktop.exe\" \"$scoop_apps_lnk\\nvm-desktop.lnk\"",
-                "clean_redundant_files @(\"$dir\\nvm-desktop_Setup_win_arm64_$($version).exe\") 10"
+                "clean_redundant_files @($path_exe) 10"
             ]
         }
     },
@@ -44,7 +46,7 @@
         "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
         ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
         "stop_process",
-        "remove_files @(\"$desktop\\nvm-desktop.lnk\",\"$env:AppData\\NVM-Desktop\",\"$env:LocalAppData\\nvm-desktop-updater\",\"$env:UserProfile\\.nvmd\")"
+        "remove_files @(\"$desktop\\nvm-desktop.lnk\",\"$env:AppData\\NVM-Desktop\",\"$env:UserProfile\\.nvmd\",\"$env:LocalAppData\\nvm-desktop-updater\")"
     ],
     "checkver": "github",
     "autoupdate": {
