@@ -1,19 +1,44 @@
 {
-    "version":  "3.84",
-    "license":  "http://www.softwareok.com/?seite=Microsoft/DontSleep/Eula",
-    "extract_dir":  "",
+    "description": "A small program to prevent system Shutdown, Stand By, Turn Off , Restart, Hibernate.",
+    "version": "9.45",
+    "license": "https://www.softwareok.com/?seite=Microsoft/DontSleep/Eula",
+    "homepage": "https://www.softwareok.com/?seite=Microsoft/DontSleep",
     "architecture": {
         "64bit": {
-            "url":  "http://www.softwareok.com/Download/DontSleep_x64.zip",
-            "hash": "33548ebb07ca818e2fee761af2503b63fdb92ba782a8e631d4398a85251b017b"
+            "url": "https://www.softwareok.com/Download/DontSleep_x64_Portable.zip",
+            "hash": "e107aca5527415e4e6043f6bf65491984ae7f7438e032007ef249a4c7b993792",
+            "shortcuts": [
+                [
+                    "DontSleep_x64_p.exe",
+                    "Don't Sleep"
+                ]
+            ]
+        },
+        "32bit": {
+            "url": "https://www.softwareok.com/Download/DontSleep_Portable.zip",
+            "hash": "fd42971d1f13a022a249c190add63a8b46483a9b1f3fbd0b99db825b0981494f",
+            "shortcuts": [
+                [
+                    "DontSleep_p.exe",
+                    "Don't Sleep"
+                ]
+            ]
         }
     },
-    "homepage":  "http://www.softwareok.com/?seite=Microsoft/DontSleep",
-    "bin":  [
-        ["DontSleep_x64.exe", "dontsleep"]
-    ],
+    "pre_install": "if(!(Test-Path \"$persist_dir\\DontSleep.ini\")) {New-Item \"$dir\\DontSleep.ini\" -ItemType File -Force | Out-Null}",
+    "persist": "DontSleep.ini",
     "checkver": {
-        "url": "http://www.softwareok.com/?seite=Microsoft/DontSleep/History",
-        "re" : "New in version ([0-9\\.]+)"
-    }
+        "url": "https://www.softwareok.com/?seite=Microsoft/DontSleep/History",
+        "re": "New in version ([0-9\\.]+)"
+    },
+    "autoupdate": {
+		"architecture": {
+			"64bit": {
+				"url": "https://www.softwareok.com/Download/DontSleep_x64_Portable.zip"
+			},
+			"32bit": {
+				"url": "https://www.softwareok.com/Download/DontSleep_Portable.zip",
+			}
+		}
+	}
 }
