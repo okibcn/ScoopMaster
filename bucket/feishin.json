@@ -1,36 +1,38 @@
 {
     "version": "0.5.3",
+    "description": "Rewrite of Sonixd, a full-featured Subsonic/Jellyfin compatible desktop music player.",
     "homepage": "https://github.com/jeffvli/feishin",
-    "description": "A modern self-hosted music player.",
     "license": "GPL-3.0-only",
     "architecture": {
         "64bit": {
-            "url": "https://github.com/jeffvli/feishin/releases/download/v0.5.3/Feishin-0.5.3-win-x64.exe#/dl.7z",
-            "hash": "sha512:8addf46dbdc4cfda21fe912a4b11c1252138d62c95429c2dde5ba98d4949ef203ea9843a863fced5704dc734535bcd8cfd3bfd6f69dd95b5417e4a19f76c4556"
+            "url": "https://github.com/jeffvli/feishin/releases/download/v0.5.3/Feishin-0.5.3-win-x64.zip",
+            "hash": "a1568a16263bc79f5a858fbfa459db171c2403187c00d16e51ceaa2e8fece87e"
         }
     },
-    "installer": {
-        "script": [
-            "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\"",
-            "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\Uninst*\" -Force -Recurse"
+    "post_install": "Remove-Item \"$dir\\resources\\app-update.yml\"  -Force",
+    "bin": [
+        [
+            "Feishin.exe",
+            "Feishin",
+            "--user-data-dir=\"$dir\\User Data\""
         ]
-    },
+    ],
     "shortcuts": [
         [
             "Feishin.exe",
-            "Feishin"
+            "Feishin",
+            "--user-data-dir=\"$dir\\User Data\""
         ]
     ],
-    "checkver": "github",
+    "persist": "User Data",
+    "checkver": {
+        "url": "https://github.com/jeffvli/feishin/releases/latest",
+        "regex": "/jeffvli/feishin/releases/tag/v(.+?)\""
+    },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://github.com/jeffvli/feishin/releases/download/v$version/Feishin-$version-win-x64.exe#/dl.7z",
-                "hash": {
-                    "url": "https://github.com/jeffvli/feishin/releases/download/v$version/latest.yml",
-                    "mode": "extract",
-                    "regex": "(?sm)exe.*sha512: $base64"
-                }
+                "url": "https://github.com/jeffvli/feishin/releases/download/v$version/Feishin-$version-win-x64.zip"
             }
         }
     }
