@@ -1,41 +1,15 @@
 {
     "version": "1.4.3",
     "description": "Install and run Python applications in isolated environments",
-    "homepage": "https://pypa.github.io/pipx/",
-    "license": {
-        "identifier": "MIT",
-        "url": "https://github.com/pypa/pipx/blob/main/LICENSE"
-    },
-    "notes": [
-        "pipx requires Python 3 to work properly. Please make sure Python3 (python.exe) is in PATH.",
-        "",
-        "Re-open any shells for new PATH variables to work correctly."
-    ],
+    "homepage": "https://pipx.pypa.io/",
+    "license": "MIT",
     "suggest": {
         "Python": "python"
     },
     "url": "https://github.com/pypa/pipx/releases/download/1.4.3/pipx.pyz",
     "hash": "949221fa7128df4641f1e62daff7c85a3dd05e1132a93e53a909e00fc3c9a32c",
-    "pre_install": [
-        "if (!(Test-Path \"$dir\\bin\")) { New-Item \"$dir\\bin\" -ItemType Directory -Force | Out-Null }",
-        "if (!(Test-Path \"$dir\\pipx\")) { New-Item \"$dir\\pipx\" -ItemType Directory -Force | Out-Null }"
-    ],
-    "bin": [
-        [
-            "python.exe",
-            "pipx",
-            "$dir\\pipx.pyz"
-        ]
-    ],
-    "persist": [
-        "bin",
-        "pipx"
-    ],
-    "env_add_path": "bin",
-    "env_set": {
-        "PIPX_BIN_DIR": "$persist_dir\\bin",
-        "PIPX_HOME": "$persist_dir\\pipx"
-    },
+    "bin": "pipx.bat",
+    "pre_install": "Set-Content -Value '@python \"%~dp0pipx.pyz\" %*' -Path \"$dir\\pipx.bat\"",
     "checkver": {
         "github": "https://github.com/pypa/pipx"
     },
