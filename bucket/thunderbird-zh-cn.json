@@ -1,20 +1,19 @@
 {
+    "description": "Thunderbird is a free email application that’s easy to set up and customize",
+    "homepage": "https://www.thunderbird.net/zh-CN/",
     "version": "115.6.1",
-    "description": "A free email application that's easy to set up and customize.",
-    "homepage": "https://www.thunderbird.net",
     "license": "MPL-2.0",
     "architecture": {
         "64bit": {
-            "url": "https://archive.mozilla.org/pub/thunderbird/releases/115.6.1/win64/zh-CN/Thunderbird%20Setup%20115.6.1.exe#/dl.7z",
-            "hash": "sha512:ebaa4570f371c0bf5996d8214523aee17cbcf452c5f53774629f108c49cd63247905efcb3da05a523c13f00945968e87ac809022cb5dff1b26b294f357c844ce"
+            "url": "https://download.mozilla.org/?product=thunderbird-115.6.1-SSL&os=win64&lang=zh-CN#/thunderbird-115.6.1.7z",
+            "hash": "bdf3bc8d2c7e17cf2bf2503cf6f1d807ba05cb5539647f41be64c343292c74f5"
         },
         "32bit": {
-            "url": "https://archive.mozilla.org/pub/thunderbird/releases/115.6.1/win32/zh-CN/Thunderbird%20Setup%20115.6.1.exe#/dl.7z",
-            "hash": "sha512:a7a45c6ce30ae3cd99eed54a3bfe20b4a8c0c93595e25b85a0e144e0640a2292991a472e3a0a5c74ce93a4c458c4c920a808dadc481565d03e278949c937e301"
+            "url": "https://download.mozilla.org/?product=thunderbird-115.6.1-SSL&os=win&lang=zh-CN#/thunderbird-115.6.1.7z",
+            "hash": "7a813eba218e9ab3c66839f352b81daf210f4db7443f04fa90a299266dfc8e06"
         }
     },
     "extract_dir": "core",
-    "bin": "thunderbird.exe",
     "shortcuts": [
         [
             "thunderbird.exe",
@@ -22,23 +21,23 @@
         ]
     ],
     "checkver": {
-        "url": "https://www.thunderbird.net/thunderbird/all/",
-        "regex": "thunderbird/([\\d.]+)/"
+        "url": "https://www.thunderbird.net/en-US/thunderbird/all/",
+        "re": "thunderbird-([\\d.]+)-SSL&os=win64&lang=zh-CN"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://archive.mozilla.org/pub/thunderbird/releases/$version/win64/zh-CN/Thunderbird%20Setup%20$version.exe#/dl.7z",
+                "url": "https://download.mozilla.org/?product=thunderbird-$version-SSL&os=win64&lang=zh-CN#/thunderbird-$version.7z",
                 "hash": {
-                    "url": "https://archive.mozilla.org/pub/thunderbird/releases/$version/SHA512SUMS",
-                    "regex": "$sha512\\s+win64/zh-CN/$basename"
+                    "find": "([a-fA-F0-9]{64})\\s+(?:win64/zh-CN/Thunderbird Setup ([\\d.]+).exe)",
+                    "url": "https://download-installer.cdn.mozilla.net/pub/thunderbird/releases/$version/SHA256SUMS"
                 }
             },
             "32bit": {
-                "url": "https://archive.mozilla.org/pub/thunderbird/releases/$version/win32/zh-CN/Thunderbird%20Setup%20$version.exe#/dl.7z",
+                "url": "https://download.mozilla.org/?product=thunderbird-$version-SSL&os=win&lang=zh-CN#/thunderbird-$version.7z",
                 "hash": {
-                    "url": "https://archive.mozilla.org/pub/thunderbird/releases/$version/SHA512SUMS",
-                    "regex": "$sha512\\s+win32/zh-CN/$basename"
+                    "find": "([a-fA-F0-9]{64})\\s+(?:win32/zh-CN/Thunderbird Setup ([\\d.]+).exe)",
+                    "url": "https://download-installer.cdn.mozilla.net/pub/thunderbird/releases/$version/SHA256SUMS"
                 }
             }
         }
