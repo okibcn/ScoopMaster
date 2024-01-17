@@ -1,0 +1,34 @@
+{
+    "version": "0.4.3",
+    "description": "ChatGPT 的开源替代品，可在计算机上百分百脱机运行。An open source alternative to ChatGPT that runs 100% offline on your computer.",
+    "homepage": "https://jan.ai",
+    "license": {
+        "identifier": "GNU Affero General Public License v3.0",
+        "url": "https://github.com/janhq/jan/blob/main/LICENSE"
+    },
+    "url": "https://github.com/janhq/jan/releases/download/v0.4.3/jan-win-x64-0.4.3.exe",
+    "hash": "579a5d5c91f7ddb52b58d73c12d538fa30136a6b58660aa22007d7a65489c217",
+    "pre_install": [
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "$path_exe=\"$dir\\jan-win-x64-$($version).exe\"",
+        "& $path_exe /S /D=$dir",
+        "persist -dir @(\"$env:AppData\\jan\") @(\"$persist_dir\\jan\")",
+        "create_app_lnk \"$dir\\jan.exe\" \"$desktop\\jan.lnk\"",
+        "create_app_lnk \"$dir\\jan.exe\" \"$scoop_apps_lnk\\jan.lnk\"",
+        "clean_redundant_files @($path_exe,\"$apps_lnk\\jan.lnk\") 10"
+    ],
+    "pre_uninstall": [
+        "$ErrorActionPreference=\"SilentlyContinue\"",
+        "& \"$dir\\Uninstall jan.exe\" /S",
+        "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "stop_process",
+        "remove_files @(\"$desktop\\jan.lnk\",\"$scoop_apps_lnk\\jan.lnk\",\"$env:AppData\\jan\",\"$env:LocalAppData\\jan-updater\")"
+    ],
+    "checkver": {
+        "github": "https://github.com/janhq/jan"
+    },
+    "autoupdate": {
+        "url": "https://github.com/janhq/jan/releases/download/v$version/jan-win-x64-$version.exe"
+    }
+}
