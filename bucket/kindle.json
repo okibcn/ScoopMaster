@@ -1,0 +1,34 @@
+{
+    "description": "Kindle for PC",
+    "homepage": "https://www.amazon.com/kindleapps",
+    "license": "Unknown",
+    "version": "2.3.70673",
+    "checkver": {
+        "script": [
+            "try {",
+            "   Invoke-WebRequest -Uri 'https://www.amazon.com/kindlepcdownload/' -MaximumRedirection 0 -ErrorAction Stop",
+            "} catch {",
+            "   $response = $_.Exception.Response",
+            "   $downloadURL = $response.Headers.Location.OriginalString",
+            "}",
+            "$version = ([regex]\"(?<=KindleForPC-installer-).*(?=\\.exe)\").Match($downloadURL).Value",
+            "\"$($version)以及$($downloadURL)\""
+        ],
+        "regex": "(?<Version>\\d+(\\.\\d+)*)以及(?<URL>.*)$",
+        "replace": "${Version}"
+    },
+    "shortcuts": [
+        [
+            "Kindle.exe",
+            "Kindle"
+        ]
+    ],
+    "autoupdate": {
+        "url": "$matchURL#/download.7z",
+        "hash": {
+            "mode": "download"
+        }
+    },
+    "url": "https://kindleforpc.s3.amazonaws.com/70673/KindleForPC-installer-2.3.70673.exe#/download.7z",
+    "hash": "8b76c1dd86f5e8e4224466103e60cc58e1cdf94d5a00f1d87f7bf33459e7013a"
+}
