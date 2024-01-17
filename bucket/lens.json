@@ -4,14 +4,20 @@
     "homepage": "https://k8slens.dev",
     "license": {
         "identifier": "Proprietary",
-        "url": "https://github.com/lensapp/lensapp.github.io/blob/master/licenses/eula.md"
+        "url": "https://k8slens.dev/licenses/eula"
     },
+    "url": "https://api.k8slens.dev/binaries/Lens%20Setup%202024.1.170738-latest.exe#/dl.7z",
+    "hash": "f9a35a0c60e99dfedcb368d4a5356803a32b1d96b793cc91daca4c4b8deb2d93",
     "architecture": {
         "64bit": {
-            "url": "https://api.k8slens.dev/binaries/Lens%20Setup%202024.1.170738-latest.exe#/dl.7z",
-            "hash": "sha512:e7ff81c0e9d9a7971cf3b8b44dde66fb2fdbef9f9d856b5284fc4264509dd3a3b9bf105a16239d79390546fbc5d3afb16fd15e6e2301b70cbf7e07acaac8eaed",
             "pre_install": [
                 "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\"",
+                "Remove-Item \"$dir\\`$*\", \"$dir\\Uninstall*\" -Recurse"
+            ]
+        },
+        "32bit": {
+            "pre_install": [
+                "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-32.7z\" \"$dir\"",
                 "Remove-Item \"$dir\\`$*\", \"$dir\\Uninstall*\" -Recurse"
             ]
         }
@@ -23,18 +29,14 @@
         ]
     ],
     "checkver": {
-        "url": "https://api.k8slens.dev/binaries/latest.json",
-        "jsonpath": "$.version"
+        "url": "https://api.k8slens.dev/binaries/latest.yml",
+        "regex": "version:\\s*([\\w.-]+)"
     },
     "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://api.k8slens.dev/binaries/Lens%20Setup%20$version.exe#/dl.7z",
-                "hash": {
-                    "url": "$baseurl/latest.json",
-                    "regex": "\"sha512\":\\s*\"$base64\""
-                }
-            }
+        "url": "https://api.k8slens.dev/binaries/Lens%20Setup%20$version.exe#/dl.7z",
+        "hash": {
+            "url": "$baseurl/latest.yml",
+            "regex": "sha512:\\s+$base64"
         }
     }
 }
