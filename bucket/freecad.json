@@ -6,30 +6,26 @@
     "architecture": {
         "64bit": {
             "url": "https://github.com/FreeCAD/FreeCAD/releases/download/0.21.1/FreeCAD_0.21.1-Windows-x86_64.7z",
-            "hash": "7a4150c2ff4573f4172a26481db0dd338c192edafb8190d97f6bd6f88c9a6d06"
+            "hash": "7a4150c2ff4573f4172a26481db0dd338c192edafb8190d97f6bd6f88c9a6d06",
+            "pre_install": "Move-Item \"$dir\\FreeCAD*\" \"$dir\\FreeCAD-portable\""
         }
     },
-    "installer": {
-        "script":[
-        "$pkg=Get-ChildItem $dir",
-        "$folders=Get-ChildItem $dir\\$pkg | Move-Item -Destination $dir",
-        "Remove-Item -Recurse $pkg.FullName"
-        ]
-    },
-    "bin": "bin\\FreeCADCmd.exe",
+    "bin": "FreeCAD-portable\\bin\\FreeCADCmd.exe",
     "shortcuts": [
         [
-            "bin\\FreeCAD.exe",
+            "FreeCAD-portable\\bin\\FreeCAD.exe",
             "FreeCAD"
         ]
     ],
     "checkver": {
-        "github": "https://github.com/FreeCAD/FreeCAD"
+        "url": "https://api.github.com/repos/FreeCAD/FreeCAD/releases",
+        "regex": "FreeCAD_([\\d.]+)-Windows-x86_64\\.7z",
+        "replace": "${1}"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://github.com/FreeCAD/FreeCAD/releases/download/$version/FreeCAD_$version-Windows-x86_64.7z"
+                "url": "https://github.com/FreeCAD/FreeCAD/releases/download/$matchHead/FreeCAD_$matchHead-Windows-x86_64.zip"
             }
         },
         "hash": {
