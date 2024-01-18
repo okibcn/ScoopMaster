@@ -1,8 +1,11 @@
 {
     "version": "4.6.3.10",
-    "description": "qBittorrent BitTorrent client with anti-leech enhancements",
+    "description": "qBittorrent BitTorrent client with anti-leech enhancement.",
     "homepage": "https://github.com/c0re100/qBittorrent-Enhanced-Edition",
-    "license": "GPL-2.0-or-later",
+    "license": {
+        "identifier": "GPL-2.0-only",
+        "url": "https://github.com/qbittorrent/qBittorrent/blob/master/COPYING"
+    },
     "architecture": {
         "64bit": {
             "url": "https://github.com/c0re100/qBittorrent-Enhanced-Edition/releases/download/release-4.6.3.10/qbittorrent_enhanced_4.6.3.10_x64_setup.exe#/dl.7z",
@@ -13,18 +16,18 @@
             "hash": "9d0fdc71a1408c1ba610834158482dfd8c618a81e17c37fd80387f6898c61923"
         }
     },
-    "pre_install": "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\uninst.exe\" -Force -Recurse",
+    "post_install": "Remove-Item \"$dir\\`$PLUGINSDIR\" -Force -Recurse",
     "bin": "qbittorrent.exe",
+    "persist": "profile",
     "shortcuts": [
         [
             "qbittorrent.exe",
-            "qBittorrent Enhanced Edition"
+            "qBittorrent"
         ]
     ],
-    "persist": "profile",
     "checkver": {
-        "github": "https://github.com/c0re100/qBittorrent-Enhanced-Edition",
-        "regex": "releases/tag/release-([\\d.]+)"
+        "url": "https://github.com/c0re100/qBittorrent-Enhanced-Edition/releases/latest",
+        "regex": "/releases/tag/release-([\\d.]+)"
     },
     "autoupdate": {
         "architecture": {

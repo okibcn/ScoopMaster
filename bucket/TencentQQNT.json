@@ -1,65 +1,27 @@
 {
-    "version": "9.9.7.20811",
+    "version": "9.9.7.20979",
     "description": "A new version of Tencent QQ based on Electron.",
     "homepage": "https://im.qq.com/pcqq/index.shtml",
     "license": "Unknown",
-    "notes": [
-        "The app runtime is persisted by scoop, while user date are storaged in",
-        "\"$env:USERPROFILE\\Documents\\Tencent Files\""
-    ],
+    "notes": "The app runtime is persisted in appdata.",
     "architecture": {
         "64bit": {
-            "url": "https://dldir1.qq.com/qqfile/qq/QQNT/1905df94/QQ9.9.7.20811_x64.exe#/dl.7z",
-            "hash": "bf5f1e48bb4fb8fd84d1e3a237b3a6edf53dffcff1e786f4dc9282ae96f0dc01"
-        },
-        "32bit": {
-            "url": "https://dldir1.qq.com/qqfile/qq/QQNT/3e1587db/QQ9.9.7.20811_x86.exe#/dl.7z",
-            "hash": "38b0d3d9435ff11872df1dccf189076da0b9ed6aabda19e4ee0244f0b98940de"
+            "url": "https://dldir1.qq.com/qqfile/qq/QQNT/81d676ff/QQ9.9.7.20979_x64.exe#/dl.7z",
+            "hash": "dcd3b27cc82fd6c6b4c5e9d1b1f449a930d5727eec09e925334da073fdffa05b"
         }
     },
     "extract_dir": "Files",
-    "installer": {
-        "script": [
-            "$S4UtilsPath = Find-BucketDirectory -Root -Name $bucket | Join-Path -ChildPath \"scripts\\S4Utils.psm1\"",
-            "if (Test-Path $S4UtilsPath) {",
-            "    Unblock-File $S4UtilsPath",
-            "    Import-Module $S4UtilsPath",
-            "    Mount-ExternalRuntimeData -Source \"$persist_dir\\QQ\" -AppData",
-            "    Remove-Module -Name S4Utils -ErrorAction SilentlyContinue",
-            "} else {",
-            "    Write-Host \"Missing files, please re-add Scoop4kariiin bucket and re-install this app.\" -ForegroundColor Red",
-            "}"
-        ]
-    },
     "shortcuts": [
         [
             "QQ.exe",
             "QQ"
         ]
     ],
-    "uninstaller": {
-        "script": [
-            "$S4UtilsPath = Find-BucketDirectory -Root -Name $install.bucket | Join-Path -ChildPath \"scripts\\S4Utils.psm1\"",
-            "if (Test-Path $S4UtilsPath) {",
-            "    Unblock-File $S4UtilsPath",
-            "    Import-Module $S4UtilsPath",
-            "    Dismount-ExternalRuntimeData -Target \"QQ\" -AppData",
-            "    Remove-Module -Name S4Utils -ErrorAction SilentlyContinue",
-            "}"
-        ]
-    },
     "checkver": {
-        "url": "https://im.qq.com/pcqq",
-        "regex": "QQNT\\\\u002F(?<filemd532>\\w+)\\\\u002FQQ[\\d\\.]+_x86\\.exe.+QQNT\\\\u002F(?<filemd564>\\w+)\\\\u002FQQ([\\d\\.]+)_x64\\.exe"
+        "url": "https://cdn-go.cn/qq-web/im.qq.com_new/latest/rainbow/windowsDownloadUrl.js",
+        "regex": "QQNT/(?<md5>[a-z0-9]+)/QQ(?<version>[\\d\\.]+)_x64.exe"
     },
     "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://dldir1.qq.com/qqfile/qq/QQNT/$matchFilemd564/QQ$version_x64.exe#/dl.7z"
-            },
-            "32bit": {
-                "url": "https://dldir1.qq.com/qqfile/qq/QQNT/$matchFilemd532/QQ$version_x86.exe#/dl.7z"
-            }
-        }
+        "url": "https://dldir1.qq.com/qqfile/qq/QQNT/$matchMd5/QQ$matchVersion_x64.exe#/dl.7z"
     }
 }
