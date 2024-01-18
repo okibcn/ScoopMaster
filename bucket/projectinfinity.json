@@ -1,0 +1,27 @@
+{
+    "version": "0.10.6",
+    "description": "Mod manager for Infinity Engine games",
+    "homepage": "https://github.com/ALIENQuake/ProjectInfinity",
+    "license": "Unknown",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/ALIENQuake/ProjectInfinity/raw/0.10.6/ProjectInfinity.exe",
+            "hash": "596d1007d032eec707cae19f15444e797013bd656a480b4c6e1fa714e81c4524"
+        }
+    },
+    "pre_install": "$manifest.persist | ForEach-Object { if (!(Test-Path $persist_dir\\$_)) { New-Item $dir\\$_ | Out-Null } }",
+    "shortcuts": [
+        [
+            "ProjectInfinity.exe",
+            "Project Infinity"
+        ]
+    ],
+    "persist": "ProjectInfinity.ini",
+    "checkver": {
+        "url": "https://github.com/ALIENQuake/ProjectInfinity/tags",
+        "regex": "tag\\/([\\d.]+)"
+    },
+    "autoupdate": {
+        "url": "https://github.com/ALIENQuake/ProjectInfinity/raw/$version/ProjectInfinity.exe"
+    }
+}
