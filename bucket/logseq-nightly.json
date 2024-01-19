@@ -1,33 +1,36 @@
 {
-    "version": "0.10.4-20240118",
+    "version": "0.10.5-20240119",
     "description": "A privacy-first platform for knowledge sharing and management",
     "homepage": "https://logseq.com",
     "license": "AGPL-3.0-only",
     "architecture": {
         "64bit": {
-            "url": "https://github.com/logseq/logseq/releases/download/nightly/Logseq-win-x64-0.10.4-alpha+nightly.20240118.zip",
-            "hash": "f02f111e6ebd1b594b6621bb15afaa593f31a79e37304419c407fce159b04221"
+            "url": "https://github.com/logseq/logseq/releases/download/nightly/Logseq-win-x64-0.10.5-alpha+nightly.20240119.exe#/dl.7z",
+            "hash": "63efa746564aaea2368ea8b7ad32a174266a040eb1ba2773f4b6b08b40f2dfdc"
         }
     },
+    "pre_install": [
+        "Expand-7ZipArchive \"$dir\\Logseq-*-full.nupkg\" -ExtractDir 'lib\\net45' -Removal",
+        "Remove-Item \"$dir\\lib\", \"$dir\\Update*\", \"$dir\\*.gif\", \"$dir\\*.ico\", \"$dir\\RELEASES*\" -Recurse"
+    ],
     "shortcuts": [
         [
             "Logseq.exe",
-            "Logseq (Nightly)"
+            "Logseq"
         ]
     ],
     "checkver": {
         "url": "https://api.github.com/repos/logseq/logseq/releases/tags/nightly",
-        "jsonpath": "$.assets..browser_download_url",
-        "regex": "Logseq-darwin-x64-(?<version>[\\d.]+)-alpha%2Bnightly.(?<date>\\d+).zip",
-        "replace": "${version}-${date}"
+        "regex": "Logseq-win-x64-(?<main>[\\d.]+)([-\\w\\+]+)?\\.(?<date>\\d{8})",
+        "replace": "${main}-${date}"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://github.com/logseq/logseq/releases/download/nightly/Logseq-win-x64-$matchVersion-alpha+nightly.$matchDate.zip",
+                "url": "https://github.com/logseq/logseq/releases/download/nightly/Logseq-win-x64-$matchMain$match1.$matchDate.exe#/dl.7z",
                 "hash": {
                     "url": "$baseurl/SHA256SUMS.txt",
-                    "regex": "$sha256\\s+Logseq-win-x64.*\\.zip"
+                    "regex": "$sha256\\s{2}Logseq-win-x64-$matchMain$match1\\.$matchDate\\.exe"
                 }
             }
         }
