@@ -1,0 +1,19 @@
+{
+    "version": "latest",
+    "license": "Proprietary",
+    "homepage": "https://baimiao.uzero.cn",
+    "url": "https://cdn.desktop.baimiaoapp.com/updater/download/latest/baimiao_windows.zip#/dl.zip",
+    "pre_install": [
+        "$splat = @{ 'DestinationPath' = \"$dir\\extracted\" }",
+        "(Get-ChildItem \"$dir\" '*.msi').FullName | Expand-MsiArchive @splat",
+        "Move-Item \"$dir\\extracted\\PFiles\\白描桌面版\\*\" \"$dir\" -Force",
+        "(Get-ChildItem \"$dir\" '*.msi').FullName | Remove-Item",
+        "Remove-Item \"$dir\\extracted\" -Force -Recurse"
+    ],
+    "shortcuts": [
+        [
+            "白描桌面版.exe",
+            "白描 ScanScan"
+        ]
+    ]
+}
