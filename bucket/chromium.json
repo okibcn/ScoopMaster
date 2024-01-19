@@ -1,11 +1,16 @@
 {
-    "version": "120.0.6099.238",
+    "##": "Check chromium.woolyss.com for different versions of Chromium releases.",
+    "version": "120.0.6099.225-r1217362",
     "description": "Browser aiming for safer, faster, and more stable way for all users to experience the web.",
     "homepage": "https://www.chromium.org",
     "license": "BSD-3-Clause",
-    "url": "https://github.com/macchrome/winchrome/releases/download/v120.6099.238-M120.0.6099.238-r1217362-Win64/ungoogled-chromium-120.0.6099.238-1_Win64.7z",
-    "hash": "sha1:aafe471d6d5d82b6117c988f999b33c9ed0e6f4a",
-    "extract_dir": "ungoogled-chromium-120.0.6099.238-1_Win64",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/Hibbiki/chromium-win64/releases/download/v120.0.6099.225-r1217362/chrome.sync.7z",
+            "hash": "sha1:164b34a4379d8fc7e6586ebd89218af1dcf07550"
+        }
+    },
+    "extract_dir": "Chrome-bin",
     "bin": [
         [
             "chrome.exe",
@@ -28,15 +33,19 @@
     ],
     "persist": "User Data",
     "checkver": {
-        "github": "https://github.com/macchrome/winchrome",
-        "regex": "v(?<semver>[\\d.]+)-M([\\d.]+)-r(?<build>\\d+)-Win64"
+        "url": "https://api.github.com/repositories/220217660/tags",
+        "jsonpath": "$..name",
+        "regex": "v([\\d.\\-r]+)"
     },
     "autoupdate": {
-        "url": "https://github.com/macchrome/winchrome/releases/download/v$matchSemver-M$version-r$matchBuild-Win64/ungoogled-chromium-$version-1_Win64.7z",
-        "extract_dir": "ungoogled-chromium-$version-1_Win64",
-        "hash": {
-            "url": "https://github.com/macchrome/winchrome/releases/v$matchSemver-M$version-r$matchBuild-Win64",
-            "regex": "(?s)$basename.*?$sha1"
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/Hibbiki/chromium-win64/releases/download/v$version/chrome.sync.7z",
+                "hash": {
+                    "url": "https://github.com/Hibbiki/chromium-win64/releases/tag/v$version",
+                    "regex": "$sha1 \\.\\./out/x64/chrome.sync.7z"
+                }
+            }
         }
     }
 }
