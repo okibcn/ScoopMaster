@@ -1,5 +1,5 @@
 {
-    "version": "1.3.2_2023-11-25_091e20e",
+    "version": "1.3.2",
     "description": "Professional vector graphics editor",
     "homepage": "https://inkscape.org",
     "license": "GPL-3.0-or-later",
@@ -7,16 +7,16 @@
         "64bit": {
             "url": "https://media.inkscape.org/dl/resources/file/inkscape-1.3.2_2023-11-25_091e20e-x64.7z",
             "hash": "f1160f5a5f11db6f617c66c6310a726b6c77e28479273b249d8cc8a314b5a059",
-            "extract_dir": "inkscape-1.3.2_2023-11-25_091e20e-x64"
+            "extract_dir": "inkscape"
         }
     },
     "bin": [
         [
-            "bin\\inkscape.exe",
+            "bin\\inkscape.com",
             "inkscape"
         ],
         [
-            "bin\\inkview.exe",
+            "bin\\inkview.com",
             "inkview"
         ]
     ],
@@ -24,10 +24,6 @@
         [
             "bin\\inkscape.exe",
             "Inkscape"
-        ],
-        [
-            "bin\\inkview.exe",
-            "Inkview"
         ]
     ],
     "checkver": {
@@ -37,15 +33,15 @@
             "$filename = ($test_dl.Links | Where-Object href -match '.7z$' | Select-Object -First 1 -ExpandProperty href) -split '/' | Select-Object -Last 1",
             "$clean_filename = $filename -replace '-x64.7z'",
             "$ink_version = $clean_filename -replace 'inkscape-'",
-            "Write-Output $ink_version $clean_filename"
+            "Write-Output \"$ink_version $clean_filename\""
         ],
-        "regex": "(?<version>.+)\\s(?<cleanfilename>.+)"
+        "regex": "(?<version>[\\d\\.?]*).*\\s(?<cleanfilename>.+)"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
                 "url": "https://media.inkscape.org/dl/resources/file/$matchCleanfilename-x64.7z",
-                "extract_dir": "$matchCleanfilename-x64",
+                "extract_dir": "inkscape",
                 "hash": {
                     "url": "https://media.inkscape.org/media/resources/sigs/$matchCleanfilename-x64.7z.sha256"
                 }
