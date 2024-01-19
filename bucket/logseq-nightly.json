@@ -5,32 +5,29 @@
     "license": "AGPL-3.0-only",
     "architecture": {
         "64bit": {
-            "url": "https://github.com/logseq/logseq/releases/download/nightly/Logseq-win-x64-0.10.5-alpha+nightly.20240119.exe#/dl.7z",
-            "hash": "63efa746564aaea2368ea8b7ad32a174266a040eb1ba2773f4b6b08b40f2dfdc"
+            "url": "https://github.com/logseq/logseq/releases/download/nightly/Logseq-win-x64-0.10.5-alpha+nightly.20240119.zip",
+            "hash": "530ffb2a74a1082c3647e554cd61c854fe16d8a750785a5c75a14b4ec1da5d71"
         }
     },
-    "pre_install": [
-        "Expand-7ZipArchive \"$dir\\Logseq-*-full.nupkg\" -ExtractDir 'lib\\net45' -Removal",
-        "Remove-Item \"$dir\\lib\", \"$dir\\Update*\", \"$dir\\*.gif\", \"$dir\\*.ico\", \"$dir\\RELEASES*\" -Recurse"
-    ],
     "shortcuts": [
         [
             "Logseq.exe",
-            "Logseq"
+            "Logseq (Nightly)"
         ]
     ],
     "checkver": {
         "url": "https://api.github.com/repos/logseq/logseq/releases/tags/nightly",
-        "regex": "Logseq-win-x64-(?<main>[\\d.]+)([-\\w\\+]+)?\\.(?<date>\\d{8})",
-        "replace": "${main}-${date}"
+        "jsonpath": "$.assets..browser_download_url",
+        "regex": "Logseq-darwin-x64-(?<version>[\\d.]+)-alpha%2Bnightly.(?<date>\\d+).zip",
+        "replace": "${version}-${date}"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://github.com/logseq/logseq/releases/download/nightly/Logseq-win-x64-$matchMain$match1.$matchDate.exe#/dl.7z",
+                "url": "https://github.com/logseq/logseq/releases/download/nightly/Logseq-win-x64-$matchVersion-alpha+nightly.$matchDate.zip",
                 "hash": {
                     "url": "$baseurl/SHA256SUMS.txt",
-                    "regex": "$sha256\\s{2}Logseq-win-x64-$matchMain$match1\\.$matchDate\\.exe"
+                    "regex": "$sha256\\s+Logseq-win-x64.*\\.zip"
                 }
             }
         }
