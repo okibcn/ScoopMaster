@@ -1,22 +1,47 @@
 {
-    "version": "0.10.7-preview.1",
-    "description": "Game Launcher for miHoYo/hoyoverse.",
+    "version": "0.10.4",
+    "description": "Game Launcher for miHoYo",
+    "notes": "the newest version should always be used, the internal update check cannot be disabled.",
     "homepage": "https://github.com/Scighost/Starward",
-    "license": {
-        "identifier": "MIT",
-        "url": "https://github.com/Scighost/Starward/blob/main/LICENSE"
-    },
+    "license": "MIT",
     "architecture": {
         "64bit": {
-            "url": "https://github.com/Scighost/Starward/releases/download/0.10.7-preview.1/Starward_Portable_0.10.7-preview.1_x64.7z",
-            "hash": "7ea1ac696e68f7c718897c4fd41b17855ce788b9400b33b4ac1802106c4aad3f"
+            "url": "https://github.com/Scighost/Starward/releases/download/0.10.4/Starward_Portable_0.10.4_x64.7z",
+            "hash": "0019fcba8eaa38431b2258a037feb891ebff2b8a50f4bea5f0cee7916414e8b8"
         },
         "arm64": {
-            "url": "https://github.com/Scighost/Starward/releases/download/0.10.7-preview.1/Starward_Portable_0.10.7-preview.1_arm64.7z",
-            "hash": "ae0f980c0bf40dbfca07ec87dd6a64e8c7f27658e1de460f774ba1c9d2247441"
+            "url": "https://github.com/Scighost/Starward/releases/download/0.10.4/Starward_Portable_0.10.4_arm64.7z",
+            "hash": "4029bb4a157dc0590a879b3cde92a9a09fdbc09eea1b8e9492fe1983808be3f2"
         }
     },
-    "checkver": "github",
+    "extract_dir": "Starward",
+    "bin": "Starward.exe",
+    "persist": "data",
+    "shortcuts": [
+        [
+            "Starward.exe",
+            "Starward"
+        ]
+    ],
+    "post_install": [
+        "if (Test-Path \"$persist_dir\\config.ini\") {",
+        "    Copy-Item \"$persist_dir\\config.ini\" \"$dir\"",
+        "}",
+        "else {",
+        "    New-Item \"$persist_dir\\config.ini\" -ItemType File | Out-Null",
+        "    Set-Content -Path \"$persist_dir\\config.ini\" -Value \"EnableConsole = false
+UserDataFolder=./data\"",
+        "    Copy-Item \"$persist_dir\\config.ini\" \"$dir\"",
+        "}"
+    ],
+    "pre_uninstall": [
+        "if (Test-Path \"$dir\\config.ini\") {",
+        "    Copy-Item \"$dir\\config.ini\" \"$persist_dir\"",
+        "}"
+    ],
+    "checkver": {
+        "github": "https://github.com/Scighost/Starward"
+    },
     "autoupdate": {
         "architecture": {
             "64bit": {
@@ -26,18 +51,5 @@
                 "url": "https://github.com/Scighost/Starward/releases/download/$version/Starward_Portable_$version_arm64.7z"
             }
         }
-    },
-    "extract_dir": "Starward",
-    "shortcuts": [
-        [
-            "Starward.exe",
-            "Starward"
-        ]
-    ],
-    "pre_install": "If (-not (Test-Path $persist_dir\\config.ini)) {\"UserDataFolder=$persist_dir\\data\" | Out-File $persist_dir\\config.ini}",
-    "persist": [
-        "data",
-        "config.ini"
-    ],
-    "notes": "Setup wizard would be skipped because of preset value of user data by pre-install scripts."
+    }
 }
