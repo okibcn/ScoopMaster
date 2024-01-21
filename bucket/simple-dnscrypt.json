@@ -18,7 +18,19 @@
             }
         }
     },
-    "pre_install": "if (!(Test-Path \"$persist_dir\\$config.json\")) { New-Item \"$dir\\config.json\" }",    
+    "pre_install": [
+        "'blacklist.txt', 'blocked.log', 'query.log', 'domain-blacklist.txt', 'domain-whitelist.txt' | ForEach-Object {",
+        "    if (!(Test-Path \"$persist_dir\\dnscrypt-proxy\\$_\")) { New-Item \"$dir\\dnscrypt-proxy\\$_\" -ItemType File | Out-Null }",
+        "}"
+    ],
+    "persist": [
+        "dnscrypt-proxy\\dnscrypt-proxy.toml",
+        "dnscrypt-proxy\\blacklist.txt",
+        "dnscrypt-proxy\\blocked.log",
+        "dnscrypt-proxy\\query.log",
+        "dnscrypt-proxy\\domain-blacklist.txt",
+        "dnscrypt-proxy\\domain-whitelist.txt"
+    ],    
     "extract_dir": "SimpleDNSCrypt",
     "shortcuts": [
         [
