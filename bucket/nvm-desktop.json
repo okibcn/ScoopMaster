@@ -14,48 +14,39 @@
     ],
     "architecture": {
         "64bit": {
-            "url": "https://github.com/1111mp/nvm-desktop/releases/download/v2.6.2/nvm-desktop_Setup_win_x64_2.6.2.exe",
-            "hash": "59b117a39963ae134445ab2c0aebe380d38c7707e8f88095a3b0127ceb560b8e",
-            "pre_install": [
-                ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-                "$path_exe=\"$dir\\nvm-desktop_Setup_win_x64_$($version).exe\"",
-                "& $path_exe /S /D=$dir",
-                "persist -dir @(\"$env:AppData\\NVM-Desktop\",\"$env:UserProfile\\.nvmd\") @(\"$persist_dir\\NVM-Desktop\",\"$persist_dir\\.nvmd\")",
-                "create_app_lnk \"$dir\\nvm-desktop.exe\" \"$desktop\\nvm-desktop.lnk\"",
-                "create_app_lnk \"$dir\\nvm-desktop.exe\" \"$scoop_apps_lnk\\nvm-desktop.lnk\"",
-                "clean_redundant_files @($path_exe) 10"
-            ]
+            "url": "https://github.com/1111mp/nvm-desktop/releases/download/v2.6.2/nvm-desktop_Setup_win_x64_2.6.2.exe#/_installers_.exe",
+            "hash": "59b117a39963ae134445ab2c0aebe380d38c7707e8f88095a3b0127ceb560b8e"
         },
         "arm64": {
-            "url": "https://github.com/1111mp/nvm-desktop/releases/download/v2.6.2/nvm-desktop_Setup_win_arm64_2.6.2.exe",
-            "hash": "8346201fbd2646869b84b91fcb31cca54aa62066cf63f0d363508f2078b4b968",
-            "pre_install": [
-                ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-                "$path_exe=\"$dir\\nvm-desktop_Setup_win_arm64_$($version).exe\"",
-                "& $path_exe /S /D=$dir",
-                "persist -dir @(\"$env:AppData\\NVM-Desktop\",\"$env:UserProfile\\.nvmd\") @(\"$persist_dir\\NVM-Desktop\",\".nvmd\")",
-                "create_app_lnk \"$dir\\nvm-desktop.exe\" \"$desktop\\nvm-desktop.lnk\"",
-                "create_app_lnk \"$dir\\nvm-desktop.exe\" \"$scoop_apps_lnk\\nvm-desktop.lnk\"",
-                "clean_redundant_files @($path_exe) 10"
-            ]
+            "url": "https://github.com/1111mp/nvm-desktop/releases/download/v2.6.2/nvm-desktop_Setup_win_arm64_2.6.2.exe#/_installers_.exe",
+            "hash": "8346201fbd2646869b84b91fcb31cca54aa62066cf63f0d363508f2078b4b968"
         }
     },
+    "pre_install": [
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "$path_exe=\"$dir\\_installers_.exe\"",
+        "& $path_exe /S /D=$dir",
+        "persist -dir @(\"$env:AppData\\NVM-Desktop\",\"$env:UserProfile\\.nvmd\") @(\"$persist_dir\\NVM-Desktop\",\"$persist_dir\\.nvmd\")",
+        "create_app_lnk \"$dir\\nvm-desktop.exe\" \"$desktop\\nvm-desktop.lnk\"",
+        "create_app_lnk \"$dir\\nvm-desktop.exe\" \"$scoop_apps_lnk\\nvm-desktop.lnk\"",
+        "clean_redundant_files @(\"$apps_lnk\\nvm-desktop.lnk\",$path_exe) 10"
+    ],
     "pre_uninstall": [
         "$ErrorActionPreference=\"SilentlyContinue\"",
         "& \"$dir\\Uninstall nvm-desktop.exe\" /S",
         "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
         ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
         "stop_process",
-        "remove_files @(\"$desktop\\nvm-desktop.lnk\",\"$env:AppData\\NVM-Desktop\",\"$env:UserProfile\\.nvmd\",\"$env:LocalAppData\\nvm-desktop-updater\")"
+        "remove_files @(\"$desktop\\nvm-desktop.lnk\",\"$scoop_apps_lnk\\nvm-desktop.lnk\",\"$env:AppData\\NVM-Desktop\",\"$env:UserProfile\\.nvmd\",\"$env:LocalAppData\\nvm-desktop-updater\")"
     ],
     "checkver": "github",
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://github.com/1111mp/nvm-desktop/releases/download/v$version/nvm-desktop_Setup_win_x64_$version.exe"
+                "url": "https://github.com/1111mp/nvm-desktop/releases/download/v$version/nvm-desktop_Setup_win_x64_$version.exe#/_installers_.exe"
             },
             "arm64": {
-                "url": "https://github.com/1111mp/nvm-desktop/releases/download/v$version/nvm-desktop_Setup_win_arm64_$version.exe"
+                "url": "https://github.com/1111mp/nvm-desktop/releases/download/v$version/nvm-desktop_Setup_win_arm64_$version.exe#/_installers_.exe"
             }
         }
     }

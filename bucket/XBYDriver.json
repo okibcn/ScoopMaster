@@ -6,11 +6,23 @@
         "identifier": "MIT",
         "url": "https://github.com/gaozhangmin/aliyunpan/blob/main/LICENSE"
     },
-    "url": "https://github.com/gaozhangmin/aliyunpan/releases/download/v3.12.3/XBYDriver-3.12.3-win-x64.exe",
-    "hash": "efd6fa716b2a4f503571191321bc22dea6a4fbac72e4a345c97f762f1995b726",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/gaozhangmin/aliyunpan/releases/download/v3.12.3/XBYDriver-3.12.3-win-x64.exe#/_installer_.exe",
+            "hash": "efd6fa716b2a4f503571191321bc22dea6a4fbac72e4a345c97f762f1995b726"
+        },
+        "32bit": {
+            "url": "https://github.com/gaozhangmin/aliyunpan/releases/download/v3.12.3/XBYDriver-3.12.3-win-ia32.exe#/_installer_.exe",
+            "hash": "82b097cd817cbd6f1d4b61531372abcad20bee9456872ef8d4cf5503de2a9ad5"
+        },
+        "arm64": {
+            "url": "https://github.com/gaozhangmin/aliyunpan/releases/download/v3.12.3/XBYDriver-3.12.3-win-arm64.exe#/_installer_.exe",
+            "hash": "e75587f0a68a257b8f5017dddced838d11a02490475348132bf3446160ef10ef"
+        }
+    },
     "pre_install": [
         ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-        "$path_exe=\"$dir\\XBYDriver-$($version)-win-x64.exe\"",
+        "$path_exe=\"$dir\\_installer_.exe\"",
         "& $path_exe /S /D=$dir",
         "persist -dir @(\"$env:AppData\\alixby3\") @(\"$persist_dir\\alixby3\")",
         "create_app_lnk \"$dir\\小白羊云盘.exe\" \"$scoop_apps_lnk\\小白羊云盘.lnk\"",
@@ -26,6 +38,16 @@
     ],
     "checkver": "github",
     "autoupdate": {
-        "url": "https://github.com/gaozhangmin/aliyunpan/releases/download/$version/XBYDriver-$version-win-x64.exe"
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/gaozhangmin/aliyunpan/releases/download/v$version/XBYDriver-$version-win-x64.exe#/_installer_.exe"
+            },
+            "32bit": {
+                "url": "https://github.com/gaozhangmin/aliyunpan/releases/download/v$version/XBYDriver-$version-win-ia32.exe#/_installer_.exe"
+            },
+            "arm64": {
+                "url": "https://github.com/gaozhangmin/aliyunpan/releases/download/v$version/XBYDriver-$version-win-arm64.exe#/_installer_.exe"
+            }
+        }
     }
 }
