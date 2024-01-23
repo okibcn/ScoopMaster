@@ -21,7 +21,8 @@
     "pre_install": [
         "'blacklist.txt', 'blocked.log', 'query.log', 'domain-blacklist.txt', 'domain-whitelist.txt' | ForEach-Object {",
         "    if (!(Test-Path \"$persist_dir\\dnscrypt-proxy\\$_\")) { New-Item \"$dir\\dnscrypt-proxy\\$_\" -ItemType File | Out-Null }",
-        "}"
+        "};",
+        "if (!(Test-Path \"$persist_dir\\dnscrypt-proxy\\$dnscrypt-proxy.toml\")) { Copy-Item \"$dir\\dnscrypt-proxy\\dnscrypt-proxy.toml.example\" \"$dir\\dnscrypt-proxy.toml\" }"
     ],
     "persist": [
         "dnscrypt-proxy\\dnscrypt-proxy.toml",
