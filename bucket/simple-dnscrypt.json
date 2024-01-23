@@ -39,5 +39,20 @@
             "Simple DnsCrypt"
         ]
     ],
-    "bin": "SimpleDnsCrypt.exe"
+    "bin": "SimpleDnsCrypt.exe",
+    "pre_uninstall": [
+        "if (!(is_admin)) { error \"$app requires admin rights to $cmd\"; break }",
+        "",
+        "Start-Process -Wait \"$dir\\Uninstall.exe\" | Out-Null",
+        "if (Get-Process -Name 'SimpleDnsCrypt' -ErrorAction SilentlyContinue) { Stop-Process -Name 'SimpleDnsCrypt' | Out-Null }",
+        "$service = Get-Service -Name 'dnscrypt-proxy' -ErrorAction SilentlyContinue",
+        "if (($service) -and ($service.Status -ne 'Stopped')) {",
+        "    if (!(is_admin)) { error 'Admin rights are required to stop dnscrypt-proxy service'; break }",
+        "    Stop-Service -Name 'dnscrypt-proxy' | Out-Null",
+        "}",
+        "if (($service) -and ($cmd -eq 'uninstall')) {",
+        "    if (!(is_admin)) { error 'Admin rights are required to remove dnscrypt-proxy service'; break }",
+        "    Remove-Service -Name 'dnscrypt-proxy' | Out-Null",
+        "}"
+    ]
 }
