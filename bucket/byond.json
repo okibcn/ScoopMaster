@@ -19,7 +19,16 @@
 	],
 	"persist": "data",
 	"env_add_path": "bin",
-	"post_install": "New-ItemProperty -Path \"HKCU:\\Software\\Dantom\\BYOND\" -Name \"userpath\" -Value \"$persist_dir\\data\" -PropertyType String -Force",
+	"post_install": [
+		"$regpath = \"HKCU:\\Software\\Dantom\\BYOND\"",
+		"if (!(Test-Path \"$regpath\")) {",
+			"Write-Host \"Registry path '$regpath' doesn't exist. Creating...\"",
+			"New-Item -Path \"$regpath\" -Type Directory -Force | Out-Null",
+		"}",
+		"$datpath = \"$persist_dir\\data\"",
+		"Write-Host -F Yellow \"INFO: BYOND user folder will be set to scoop persistent data directory '$datpath'.`nYou can change the destination in the program settings in Preferences > Advanced > User directory.\"",
+		"New-ItemProperty -Path \"$regpath\" -Name \"userpath\" -Value \"$datpath\" -PropertyType String -Force | Out-Null"
+	],
 	"checkver": {
 		"url": "https://secure.byond.com/download/version.txt",
 		"regex": "^(?<stable_major>[0-9]{3})\\.(?<stable_minor>[0-9]{4})[\\n\\r]{1,2}(?<beta_major>[0-9]{3})\\.(?<beta_minor>[0-9]{4})$",
