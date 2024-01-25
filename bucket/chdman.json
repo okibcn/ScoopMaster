@@ -1,0 +1,37 @@
+{
+    "version": "0.261",
+    "description": "MAME Compressed Hunks of Data (CHD) manager",
+    "homepage": "http://mamedev.org",
+    "license": {
+        "identifier": "GPL-2.0",
+        "url": "https://github.com/mamedev/mame/blob/master/COPYING"
+    },
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/mamedev/mame/releases/download/mame0261/mame0261b_64bit.exe#/dl.7z",
+            "hash": "0678dac2c795b947b742938855ceabf1136deb9fdd994a57e69c647cc370a5d4",
+            "pre_install": [
+                "Move-Item \"$dir\\src\\chdman.exe\" \"$dir\\chdman.exe\"",
+                "Remove-Item -Recurse \"$dir\\src\""
+            ],
+            "bin": [
+                [
+                    "chdman.exe",
+                    "chdman"
+                ]
+            ]
+        }
+    },
+    "extract_to": "src",
+    "checkver": {
+        "github": "https://github.com/mamedev/mame",
+        "regex": "MAME ([\\d.]+)"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/mamedev/mame/releases/download/mame$cleanVersion/mame$cleanVersionb_64bit.exe#/dl.7z"
+            }
+        }
+    }
+}
