@@ -1,0 +1,27 @@
+{
+    "version": "2.0.0",
+    "description": "一个小工具，根据当前输入法中英文状态切换光标样式。A small tool to switch the cursor style according to the current state of the input method in English and Chinese.",
+    "homepage": "https://github.com/abgox/InputTip",
+    "license": {
+        "identifier": "MIT",
+        "url": "https://github.com/abgox/InputTip/blob/main/LICENSE"
+    },
+    "url": "https://github.com/abgox/InputTip/releases/download/v2.0.0/InputTip.exe",
+    "hash": "ef12e493649f43ffcdf4716daa941a72f9525d596115c147f8811c5e8e00bee9",
+    "post_install": [
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "persist -file @(\"$env:AppData\\InputTip_input_state.ini\") @(\"$persist_dir\\InputTip_input_state.ini\")",
+        "create_app_lnk \"$dir\\InputTip.exe\" \"$desktop\\InputTip.lnk\"",
+        "create_app_lnk \"$dir\\InputTip.exe\" \"$scoop_apps_lnk\\InputTip.lnk\""
+    ],
+    "pre_uninstall": [
+        "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "stop_process",
+        "remove_files @(\"$desktop\\InputTip.lnk\",\"$scoop_apps_lnk\\InputTip.lnk\",\"$env:AppData\\InputTip_input_state.ini\")"
+    ],
+    "checkver": "github",
+    "autoupdate": {
+        "url": "https://github.com/abgox/InputTip/releases/download/v$version/InputTip.exe"
+    }
+}
