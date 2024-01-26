@@ -7,19 +7,27 @@
     "hash": "24a284aa02ae33c570803d0b60d11f9c556d816e1e23dd4311b3f69ad12af033",
     "bin": [
         [
-            "THORIUM.BAT",
-            "thorium-avx2"
+            "bin\\thorium.exe",
+            "thorium",
+            "--user-data-dir=\"$dir\\USER_DATA\""
         ]
     ],
     "shortcuts": [
         [
-            "THORIUM.BAT",
-            "Thorium-avx2",
-            "",
-            "BIN\\thorium.exe"
+            "bin\\thorium.exe",
+            "Thorium",
+            "--user-data-dir=\"$dir\\USER_DATA\""
         ]
     ],
-    "persist": "USER_DATA",
+    "post_install": [
+        "if (!(Test-Path \"$dir\\USER_DATA\\*\") -and (Test-Path \"$env:LocalAppData\\Thorium\\User Data\")) {",
+        "    info '[Portable Mode]: Copying user data...'",
+        "    Copy-Item \"$env:LocalAppData\\Thorium\\User Data\\*\" \"$dir\\USER_DATA\" -Recurse",
+        "}"
+    ],
+    "env_set": {
+        "CHROME_EXECUTABLE": "$dir\\thorium.exe"
+    },
     "checkver": {
         "github": "https://github.com/Alex313031/Thorium-Win",
         "regex": "M([\\d]+\\.[\\d]+\\.[\\d]+\\.[\\d]+)"
