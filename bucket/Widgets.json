@@ -1,0 +1,27 @@
+{
+    "version": "23.11.11",
+    "description": "功能强大、符合人体工程学的 Windows 桌面组件系统，使用 Vue 构建。Desktop widgets for windows. built with vue3.",
+    "homepage": "https://github.com/widget-js/widgets",
+    "license": {
+        "identifier": "GNU General Public License v2.0",
+        "url": "https://github.com/widget-js/widgets/blob/master/LICENSE"
+    },
+    "url": "https://widget-fun.oss-cn-hangzhou.aliyuncs.com/version/installer.exe",
+    "hash": "07d38b034bfdc2d3dc8fa5350057c56a0c3c75eb68c459d33ebea85a041248f6",
+    "pre_install": [
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "$path_exe=\"$dir\\installer.exe\"",
+        "& $path_exe /S /D=$dir",
+        "persist -dir @(\"$env:AppData\\app\") @(\"$persist_dir\\app\")",
+        "create_app_lnk \"$dir\\Widgets.exe\" \"$scoop_apps_lnk\\桌面组件.lnk\"",
+        "clean_redundant_files @($path_exe,\"$apps_lnk\\桌面组件.lnk\") 60"
+    ],
+    "pre_uninstall": [
+        "$ErrorActionPreference=\"SilentlyContinue\"",
+        "& \"$dir\\Uninstall Widgets.exe\" /S",
+        "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "stop_process",
+        "remove_files @(\"$desktop\\桌面组件.lnk\",\"$scoop_apps_lnk\\桌面组件.lnk\",\"$env:AppData\\app\",\"$env:LocalAppData\\app-updater\")"
+    ]
+}
