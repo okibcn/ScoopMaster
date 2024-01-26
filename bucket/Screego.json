@@ -1,0 +1,50 @@
+{
+    "version": "1.10.2",
+    "description": "开发人员屏幕共享。Screen sharing for developers.",
+    "homepage": "https://github.com/screego/server",
+    "license": {
+        "identifier": "GNU General Public License v3.0",
+        "url": "https://github.com/screego/server/blob/master/LICENSE"
+    },
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/screego/server/releases/download/v1.10.2/screego_1.10.2_windows_amd64.zip",
+            "hash": "985ec1ea2da7c7060ef25394290cd8dce00153011950d509da686433b4a21f40"
+        },
+        "32bit": {
+            "url": "https://github.com/screego/server/releases/download/v1.10.2/screego_1.10.2_windows_i386.zip",
+            "hash": "9cc9bbbde4d46746df2b199454e7eca08728b0c53cbe9be8b251cdd9a2b496c4"
+        },
+        "arm64": {
+            "url": "https://github.com/screego/server/releases/download/v1.10.2/screego_1.10.2_windows_arm64.zip",
+            "hash": "6df03bbd6827ca1f8bae7dfcaa1ccdd7e8018fc4ad042786537d6a39639398a1"
+        }
+    },
+    "bin": "screego.exe",
+    "post_install": [
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "persist -file @(\"$dir\\screego.config\") @(\"$persist_dir\\screego.config\")",
+        "$config = Get-Content \"$dir\\screego.config\" -Raw",
+        "$config_example = Get-Content \"$dir\\screego.config.example\" -Raw",
+        "if(!$config){ $config_example | Out-File \"$dir\\screego.config\" -Append}"
+    ],
+    "pre_uninstall": [
+        "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "stop_process"
+    ],
+    "checkver": "github",
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/screego/server/releases/download/v$version/screego_$version_windows_amd64.zip"
+            },
+            "32bit": {
+                "url": "https://github.com/screego/server/releases/download/v$version/screego_$version_windows_i386.zip"
+            },
+            "arm64": {
+                "url": "https://github.com/screego/server/releases/download/v$version/screego_$version_windows_arm64.zip"
+            }
+        }
+    }
+}
