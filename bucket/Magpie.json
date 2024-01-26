@@ -1,10 +1,15 @@
 {
-    "homepage": "https://github.com/Blinue/Magpie",
-    "description": "Make game windows fullscreen with scaling method",
-    "license": "GPL-3.0-only",
     "version": "0.10.5",
-    "url": "https://github.com/Blinue/Magpie/releases/download/v0.10.5/Magpie-v0.10.5-x64.zip",
-    "hash": "b6b7fdfdd6d53b6120d7307432605316ea4b384ee4ce3d777ff2309d3ea3105a",
+    "homepage": "https://github.com/Blinue/Magpie",
+    "description": "A utility app that can magnify any window to full screen and has a large number of built-in scaling algorithms/filters.",
+    "license": "GPL-3.0",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/Blinue/Magpie/releases/download/v0.10.5/Magpie-v0.10.5-x64.zip",
+            "hash": "b6b7fdfdd6d53b6120d7307432605316ea4b384ee4ce3d777ff2309d3ea3105a"
+        }
+    },
+    "pre_install": "Copy-Item \"$persist_dir\\ScaleModels.json\" \"$dir\\ScaleModels.json\" -ErrorAction 'SilentlyContinue'",
     "shortcuts": [
         [
             "Magpie.exe",
@@ -16,8 +21,13 @@
         "cache",
         "logs"
     ],
+    "pre_uninstall": "Copy-Item \"$dir\\ScaleModels.json\" \"$persist_dir\\ScaleModels.json\" -ErrorAction 'SilentlyContinue'",
     "checkver": "github",
     "autoupdate": {
-        "url": "https://github.com/Blinue/Magpie/releases/download/v$version/Magpie-v$version-x64.zip"
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/Blinue/Magpie/releases/download/v$version/Magpie-v$version-x64.zip"
+            }
+        }
     }
 }
