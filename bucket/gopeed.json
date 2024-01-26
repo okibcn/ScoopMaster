@@ -1,35 +1,31 @@
 {
     "version": "1.5.3",
-    "description": "一款支持所有平台的现代下载管理器。使用 Golang 和 Flutter 构建。A modern download manager that supports all platforms. Built with Golang and Flutter.",
-    "homepage": "https://gopeed.com",
-    "license": {
-        "identifier": "GNU General Public License v3.0",
-        "url": "https://github.com/GopeedLab/gopeed/blob/main/LICENSE"
+    "description": "High speed downloader that supports all platforms.",
+    "homepage": "https://github.com/GopeedLab/gopeed",
+    "license": "GPL-3.0-only",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/GopeedLab/gopeed/releases/download/v1.5.3/Gopeed-v1.5.3-windows-amd64-portable.zip",
+            "hash": "6097f2a180c5ea3503ad761c6a2bc962b852baaa0bde9ea477007a336f75b971"
+        }
     },
-    "url": "https://github.com/GopeedLab/gopeed/releases/download/v1.5.3/Gopeed-v1.5.3-windows-amd64.zip",
-    "hash": "0bb4c040e06c4fd569e26d5d9cf0cef9967ce9835d26a03c0d9b70861f9cce18",
-    "pre_install": [
-        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-        "$path_exe=\"$dir\\Gopeed-v$($version)-windows-amd64.exe\"",
-        "& $path_exe /VerySilent /Dir=\"$dir\"",
-        "persist -dir @(\"$dir\\extensions\",\"$env:AppData\\com\\gopeed\") @(\"$persist_dir\\extensions\",\"$persist_dir\\gopeed\")",
-        "persist -file @(\"$dir\\gopeed.db\") @(\"$persist_dir\\gopeed.db\")",
-        "create_app_lnk \"$dir\\gopeed.exe\" \"$desktop\\Gopeed.lnk\"",
-        "create_app_lnk \"$dir\\gopeed.exe\" \"$scoop_apps_lnk\\Gopeed.lnk\"",
-        "clean_redundant_files @(\"$apps_lnk\\gopeed.lnk\",$path_exe) 10"
+    "shortcuts": [
+        [
+            "gopeed.exe",
+            "Gopeed"
+        ]
     ],
-    "pre_uninstall": [
-        "$ErrorActionPreference=\"SilentlyContinue\"",
-        "& \"$dir\\unins000.exe\" /VerySilent",
-        "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
-        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-        "stop_process",
-        "remove_files @(\"$desktop\\Gopeed.lnk\",\"$scoop_apps_lnk\\Gopeed.lnk\",\"$env:AppData\\com\\gopeed\")"
-    ],
+    "pre_install": "if (!(Test-Path \"$persist_dir\\gopeed.db\")) { Set-Content -Encoding ASCII -Path \"$dir\\gopeed.db\" -Value $null }",
+    "persist": "gopeed.db",
     "checkver": {
-        "github": "https://github.com/GopeedLab/gopeed"
+        "url": "https://api.github.com/repos/GopeedLab/gopeed/releases",
+        "regex": "/releases/tag/v([\\d.]+)"
     },
     "autoupdate": {
-        "url": "https://github.com/GopeedLab/gopeed/releases/download/v$version/Gopeed-v$version-windows-amd64.zip"
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/GopeedLab/gopeed/releases/download/v$version/Gopeed-v$version-windows-amd64-portable.zip"
+            }
+        }
     }
 }
