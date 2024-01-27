@@ -8,7 +8,9 @@
     },
     "notes": [
         "1. Sublime Merge may be downloaded and evaluated for free, however a license must be purchased for continued use. There is currently no enforced time limit for the evaluation. For more information please see https://www.sublimemerge.com/",
-        "2. For now, it's cracked, and you may need to enter any character as a registration code."
+        "2. For now, it's cracked, and you may need to enter any character as a registration code.",
+        "3. Add Sublime Merge as a context menu option by running:",
+        "   reg import \"$dir\\install-context.reg\""
     ],
     "architecture": {
         "64bit": {
@@ -18,6 +20,17 @@
     },
     "post_install": [
         "'crash_handler', 'update_installer' | ForEach-Object { Remove-Item -Force \"$dir\\$_.exe\" }",
+        "$exepath = \"$dir\\sublime_merge.exe\".Replace('\\', '\\\\')",
+        "'install-context.reg', 'uninstall-context.reg' | ForEach-Object {",
+        "    if (Test-Path \"$bucketsdir\\scoop-private\\scripts\\$app\\$_\") {",
+        "        $content = Get-Content \"$bucketsdir\\scoop-private\\scripts\\$app\\$_\" -Encoding 936",
+        "        $content = $content.Replace('$sublime-merge-path', $exepath)",
+        "        if ($global) {",
+        "            $content = $content.Replace('HKEY_CURRENT_USER', 'HKEY_LOCAL_MACHINE')",
+        "        }",
+        "    }",
+        "    $content | Set-Content -Path \"$dir\\$_\" -Encoding 936",
+        "}",
         "info 'Cracking . . .'",
         "$sublimepath = \"$dir\\sublime_merge.exe\"",
         "$stream = [System.IO.File]::OpenWrite($sublimepath)",
@@ -36,6 +49,7 @@
         "}",
         "$stream.Close()"
     ],
+    "pre_uninstall": "if ($cmd -eq 'uninstall') { reg import \"$dir\\uninstall-context.reg\" }",
     "bin": "smerge.exe",
     "shortcuts": [
         [
