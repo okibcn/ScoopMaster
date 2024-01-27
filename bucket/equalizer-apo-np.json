@@ -17,7 +17,7 @@
         "script": [
             "if (!(is_admin)) {",
             "    error \"Administrator rights are required to install $app.\"",
-            "    break",
+            "    exit 1",
             "}",
             "",
             "Start-Job {",
@@ -29,12 +29,12 @@
             "    $configurator_process | ForEach-Object { Stop-Process -Id $_.Id }",
             "} | Out-Null",
             "",
-            "Start-Process \"$dir\\setup.exe\" -ArgumentList '/S' -Wait -Verb RunAs | Out-Null",
+            "Invoke-ExternalCommand \"$dir\\setup.exe\" -ArgumentList '/S' | Out-Null",
             "Remove-Item \"$dir\\setup.exe\""
         ]
     },
     "uninstaller": {
-        "script": "Start-Process \"$Env:ProgramFiles\\EqualizerAPO\\Uninstall.exe\" -ArgumentList '/S' -Wait -Verb RunAs | Out-Null"
+        "script": "Invoke-ExternalCommand \"$([Environment]::GetFolderPath('programfiles'))\\EqualizerAPO\\Uninstall.exe\" -ArgumentList '/S' -RunAs | Out-Null"
     },
     "checkver": {
         "url": "https://sourceforge.net/projects/equalizerapo/files/",
