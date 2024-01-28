@@ -1,23 +1,16 @@
 {
-    "homepage": "https://github.com/huanghongxun/HMCL",
-    "description": "A powered Minecraft launcher that supports a lot of features.",
-    "license": "GPL-3.0-only",
     "version": "3.5.5",
-    "url": "http://ci.huangyuhui.net/job/HMCL-stable/5/artifact/HMCL/build/libs/HMCL-3.5.5.exe#/hmcl.exe",
-    "hash": "sha1:b416350bd1f6d23e69b7b7ef7a4b69b7110d79bd",
-    "bin": "hmcl.exe",
-    "shortcuts": [
-        [
-            "hmcl.exe",
-            "HMCL"
-        ]
-    ],
+    "description": "A multi-functional, cross-platform Minecraft Launcher.",
+    "homepage": "https://hmcl.huangyuhui.net/",
+    "license": "GPL-3.0-only",
     "suggest": {
-        "JDK": [
-            "java/oraclejdk",
-            "java/openjdk"
+        "JRE" : [
+            "java/oraclejre8",
+            "java/zulufx17-jre"
         ]
     },
+    "url": "https://maven.aliyun.com/repository/central/org/glavo/hmcl/hmcl-stable/3.5.5/hmcl-stable-3.5.5.exe#/HMCL.exe",
+    "hash": "sha1:b416350bd1f6d23e69b7b7ef7a4b69b7110d79bd",
     "pre_install": [
         "function ensureFile([String] $name) {",
         "    if (!(Test-Path \"$persist_dir\\$name\") -and !(Test-Path \"$dir\\$name\")) {",
@@ -25,6 +18,13 @@
         "    }",
         "}",
         "ensureFile 'hmcl.json'"
+    ],
+    "bin": "HMCL.exe",
+    "shortcuts": [
+        [
+            "HMCL.exe",
+            "HMCL"
+        ]
     ],
     "persist": [
         "hmcl.json",
@@ -35,10 +35,10 @@
         "jsonpath": "$.version"
     },
     "autoupdate": {
-        "url": "http://ci.huangyuhui.net/job/HMCL-stable/$patchVersion/artifact/HMCL/build/libs/HMCL-$version.exe#/hmcl.exe",
+        "url": "https://maven.aliyun.com/repository/central/org/glavo/hmcl/hmcl-stable/$version/hmcl-stable-$version.exe#/HMCL.exe",
         "hash": {
             "url": "https://hmcl.huangyuhui.net/api/update_link?channel=stable&download_link=true",
-            "jsonpath": "$.exesha1"
+            "regex": "$.exesha1"
         }
     }
 }
