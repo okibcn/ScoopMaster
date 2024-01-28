@@ -1,54 +1,36 @@
 {
-    "homepage": "https://explorerplusplus.com/",
-    "version": "1.4.0.2289",
-    "license": "freeware",
+    "version": "1.4.0",
+    "description": "Lightweight and fast file manager",
+    "homepage": "https://explorerplusplus.com",
+    "license": "GPL-3.0-only",
     "architecture": {
         "64bit": {
-            "url": "https://download.explorerplusplus.com/dev/latest/explorerpp_x64.zip",
-            "hash": "9d2ca3fce416ff357eb1d40290b320eb7c76692b2b0cbb018692bc9bc336d48e"
+            "url": "https://github.com/derceg/explorerplusplus/releases/download/version-1.4.0/explorerpp_x64.zip",
+            "hash": "81ec54586dfef888b886d409afa22e31f22d4f6ba35d52d93074b4ee64b79b0c"
         },
         "32bit": {
-            "url": "https://download.explorerplusplus.com/dev/latest/explorerpp_x86.zip",
-            "hash": "bca4680a22161da71ad957a7032f4fce1f00fd90ce8946d8c245cd134a6d6035"
+            "url": "https://github.com/derceg/explorerplusplus/releases/download/version-1.4.0/explorerpp_x86.zip",
+            "hash": "39e70f86895568138ab509d5965e104cbca56dda05ac1925fd7e65a57da7bc40"
         }
     },
-    "bin": [
-        "Explorer++.exe",
-        [
-            "Explorer++.exe",
-            "ExplorerPlusPlus",
-            "--enable-plugins"
-        ]
-    ],
-    "persist": "config.xml",
+    "bin": "explorer++.exe",
     "shortcuts": [
         [
-            "Explorer++.exe",
-            "Explorer++",
-            "--enable-plugins"
+            "explorer++.exe",
+            "Explorer++"
         ]
     ],
-    "post_install": [
-        "# plugins",
-        "git clone --depth=1 https://github.com/derceg/explorerplusplus $dir\\explorerplusplus",
-        "Copy-Item -Path \"$dir\\explorerplusplus\\plugins\" -Destination \"$dir\" -Recurse -Force -Confirm:$false",
-        "Remove-Item -Path \"$dir\\explorerplusplus\" -Recurse -Force -Confirm:$false",
-        "# translations",
-        "curl -L -o \"$dir\\explorer++_translations.zip\" \"https://download.explorerplusplus.com/dev/latest/explorerpp_translations.zip\"",
-        "if ($?) {Expand-Archive -Path \"$dir\\explorer++_translations.zip\" -DestinationPath \"$dir\"}",
-        "Remove-Item -Path \"$dir\\explorer++_translations.zip\" -Recurse -Force -Confirm:$false"
-    ],
     "checkver": {
-        "url": "https://download.explorerplusplus.com/dev/latest_version.txt",
-        "regex": "([\\d\\.]+)"
+        "url": "https://github.com/derceg/explorerplusplus/releases",
+        "regex": "/tree/version-([\\w.-]+)"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://download.explorerplusplus.com/dev/latest/explorerpp_x64.zip"
+                "url": "https://github.com/derceg/explorerplusplus/releases/download/version-$version/explorerpp_x64.zip"
             },
             "32bit": {
-                "url": "https://download.explorerplusplus.com/dev/latest/explorerpp_x86.zip"
+                "url": "https://github.com/derceg/explorerplusplus/releases/download/version-$version/explorerpp_x86.zip"
             }
         }
     }
