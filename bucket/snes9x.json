@@ -1,10 +1,10 @@
 {
-    "homepage": "http://www.snes9x.com/",
-    "description": "SNES (Super Nintendo Entertainment System) emulator",
     "version": "1.62.3",
+    "description": "Nintendo SNES (Super Nintendo Entertainment System) emulator",
+    "homepage": "http://www.snes9x.com/",
     "license": {
-        "identifier": "Freeware",
-        "url": "https://github.com/snes9xgit/snes9x/blob/master/LICENSE"
+        "url": "https://github.com/snes9xgit/snes9x/blob/master/LICENSE",
+        "identifier": "Non-commercial"
     },
     "architecture": {
         "32bit": {
@@ -14,7 +14,7 @@
             "shortcuts": [
                 [
                     "snes9x.exe",
-                    "SNES"
+                    "Snes9X"
                 ]
             ]
         },
@@ -30,17 +30,27 @@
             "shortcuts": [
                 [
                     "snes9x-x64.exe",
-                    "SNES"
+                    "Snes9X"
                 ]
             ]
         }
     },
+    "pre_install": [
+        "if (!(Test-Path \"$persist_dir\\snes9x.conf\")) {",
+        "    New-Item \"$dir\\snes9x.conf\" -Type File | Out-Null",
+        "}"
+    ],
     "persist": [
-        "snes9x.conf",
-        "Screenshots",
+        "BIOS",
+        "Cheats",
+        "Movies",
         "Patches",
+        "Roms",
+        "SatData",
         "Saves",
-        "Cheats"
+        "Screenshots",
+        "SPCs",
+        "snes9x.conf"
     ],
     "checkver": {
         "github": "https://github.com/snes9xgit/snes9x"
