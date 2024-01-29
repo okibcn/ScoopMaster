@@ -1,18 +1,31 @@
 {
     "version": "15.6",
-    "description": "Jailer is a tool for database subsetting and relational data browsing.",
-    "homepage": "https://github.com/Wisser/Jailer",
+    "description": "Database Subsetting and Relational Data Browsing Tool",
+    "homepage": "https://wisser.github.io/Jailer",
     "license": "Apache-2.0",
     "url": "https://github.com/Wisser/Jailer/releases/download/v15.6/Jailer-database-tools-15.6.msi",
     "hash": "39089f0645b774f11ea9f44fc78a2a4fec864ab377b1e3faea1365ecbcbd8650",
-    "bin": "Jailer Database Tools\\Jailer Database Tools.exe",
+    "extract_dir": "Jailer Database Tools/app",
+    "post_install": [
+        "(Get-Content \"$dir\\jailer.bat\").replace('=lib','=%~dp0\\lib').replace(';config',';%~dp0\\config').replace('jailer.jar','%~dp0\\jailer.jar') | Set-Content \"$dir\\jailer.bat\"",
+        "(Get-Content \"$dir\\jailerGUI.bat\").replace('=lib','=%~dp0\\lib').replace(';config',';%~dp0\\config').replace('jailer.jar','%~dp0\\jailer.jar') | Set-Content \"$dir\\jailerGUI.bat\""
+    ],
+    "suggest": {
+        "JRE": "java/temurin-lts-jre"
+    },
+    "bin": [
+        "jailer.bat",
+        "jailerGUI.bat"
+    ],
     "shortcuts": [
         [
-            "Jailer Database Tools\\Jailer Database Tools.exe",
+            "Jailer.exe",
             "Jailer"
         ]
     ],
-    "checkver": "github",
+    "checkver": {
+        "github": "https://github.com/Wisser/Jailer"
+    },
     "autoupdate": {
         "url": "https://github.com/Wisser/Jailer/releases/download/v$version/Jailer-database-tools-$version.msi"
     }
