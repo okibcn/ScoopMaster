@@ -1,39 +1,32 @@
 {
-    "version": "2.5.0",
-    "description": "Reqable issue track repo",
-    "homepage": "https://reqable.com/",
-    "license": "Copyright © 2023 Reqable",
-    "architecture": {
-        "64bit": {
-            "url": "https://github.com/reqable/reqable-app/releases/download/2.5.0/reqable-app-windows-x86_64.exe",
-            "hash": "eff17af8212926d9d491071b1108bfb384356b92d82317d1f333a576b23e48a4"
-        }
-    },
-    "innosetup": true,
-    "installer": {
-        "script": [
-            "ensure \"$persist_dir\" | Out-Null",
-            "New-Item \"$env:APPDATA\\Reqable\" -ItemType Junction -Target \"$persist_dir\" | Out-Null"
-        ]
-    },
-    "uninstaller": {
-        "script": "Remove-Item \"$env:APPDATA\\Reqable\" -Recurse -Force -ErrorAction 'SilentlyContinue'"
-    },
-    "shortcuts": [
-        [
-            "Reqable.exe",
-            "Reqable"
-        ]
-    ],
-    "checkver": {
-        "url": "https://api.github.com/repos/reqable/reqable-app/releases/latest",
-        "regex": "/releases/tag/([\\d.]+)"
-    },
-    "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://github.com/reqable/reqable-app/releases/download/$version/reqable-app-windows-x86_64.exe"
-            }
-        }
+  "version": "2.5.0",
+  "description": "新一代API调试 + API测试一站化解决方案",
+  "homepage": "https://reqable.com/zh-CN/",
+  "license": "Unlicense",
+  "architecture": {
+    "64bit": {
+      "url": "https://api.reqable.com/download?platform=windows&arch=x86_64&ext=zip#/dl.7z",
+      "hash": "DB6460306F7CE3B8CBD953C644D5895A9392B384C97E98078C7C80A17090E989"
     }
+  },
+  "bin": [
+    [
+      "Reqable.exe",
+      "Reqable"
+    ]
+  ],
+  "shortcuts": [
+    [
+      "Reqable.exe",
+      "Reqable"
+    ]
+  ],
+  "checkver": {
+    "github": "https://github.com/reqable/reqable-app"
+  },
+  "autoupdate": {
+    "64bit": {
+      "url": "https://api.reqable.com/download?platform=windows&arch=x86_64&ext=zip"
+    }
+  }
 }
