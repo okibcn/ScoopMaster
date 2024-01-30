@@ -1,0 +1,20 @@
+{
+    "homepage": "https://github.com/Orange-OpenSource/keepass-vault-sync-plugin",
+    "version": "1.1.1",
+    "url": "https://github.com/Orange-OpenSource/keepass-vault-sync-plugin/releases/download/v1.1.1/VaultSyncPlugin.plgx",
+    "hash": "70ffaffd83e996f5909080e98ff7b64ec449bca44fc070866b0269fefeae7a0d",
+    "depends": "diseq/keepass",
+    "checkver": {
+        "url": "https://api.github.com/repos/Orange-OpenSource/keepass-vault-sync-plugin/tags",
+        "re": "\"name\":[\\w]*\"v(?<version>[\\d.]+)\""
+    },
+    "autoupdate": {
+        "url": "https://github.com/Orange-OpenSource/keepass-vault-sync-plugin/releases/download/v$version/VaultSyncPlugin.plgx"
+    },
+    "installer": {
+        "script": "Copy-Item \"$dir\\VaultSyncPlugin.plgx\" \"$(appdir keepass $global)\\current\\Plugins\""
+    },
+    "uninstaller": {
+        "script": "Remove-Item \"$(appdir keepass $global)\\current\\Plugins\\VaultSyncPlugin.plgx\""
+    }
+}

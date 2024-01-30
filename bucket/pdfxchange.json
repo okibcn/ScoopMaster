@@ -1,0 +1,36 @@
+{
+    "version": "10.0.0.370",
+    "architecture": {
+        "64bit": {
+            "url": "https://downloads.pdf-xchange.com/EditorV9.x64.msi",
+            "hash": "e522dab54be4278ebc6613a1563d8402c92e9ca8679e1830caf8b18820e5cb13"
+        }
+    },
+    "pre_install": [
+        "if (!(Test-Path \"$persist_dir\\portable.dat\")) {",
+        "    New-Item \"$dir\\portable.dat\" -Type File | Out-Null",
+        "}",
+        "if (!(Test-Path \"$persist_dir\\settings.dat\")) {",
+        "    New-Item \"$dir\\settings.dat\" -Type File | Out-Null",
+        "}"
+    ],
+    "persist": [
+        "settings.dat",
+        "portable.dat"
+    ],
+    "extract_dir": "Tracker Software/PDF Editor",
+    "bin": "PDFXEdit.exe",
+    "shortcuts": [
+        [
+            "PDFXEdit.exe",
+            "PdfXchange Editor"
+        ]
+    ],
+    "checkver": {
+        "url": "https://www.tracker-software.com/product/pdf-xchange-editor/history",
+        "re": "version (?<version>[\\d.]+) release"
+    },
+    "autoupdate": {
+        "url": "https://downloads.pdf-xchange.com/EditorV9.x64.msi"
+    }
+}

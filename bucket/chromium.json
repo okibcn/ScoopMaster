@@ -1,41 +1,47 @@
 {
-    "version": "121.0.6167.131",
-    "description": "Browser aiming for safer, faster, and more stable way for all users to experience the web.",
-    "homepage": "https://www.chromium.org",
+    "##": "Check chromium.woolyss.com for different versions of Chromium releases.",
+    "version": "121.6167.131-1-r1233107",
+    "description": "Browser aiming for safer, faster, and more stable way for all users to experience the web (macchrome's build). This is a portable sync-disabled version of chromium with widevine, webrtc and all codecs enabled.",
+    "homepage": "https://github.com/macchrome/winchrome",
     "license": "BSD-3-Clause",
-    "url": "https://github.com/macchrome/winchrome/releases/download/v121.6167.131-M121.0.6167.131-r1233107-Win64/ungoogled-chromium-121.0.6167.131-1_Win64.7z",
-    "hash": "sha1:9b766c6350197e035b7b5f9cc97627b85f12a1ff",
-    "extract_dir": "ungoogled-chromium-121.0.6167.131-1_Win64",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/macchrome/winchrome/releases/download/v121.6167.131-M121.0.6167.131-r1233107-Win64/ungoogled-chromium-121.0.6167.131-1_Win64.7z",
+            "hash": "sha1:9b766c6350197e035b7b5f9cc97627b85f12a1ff",
+            "extract_dir": "ungoogled-chromium-121.0.6167.131-1_Win64"
+        }
+    },
     "bin": [
+        "chrome.exe",
         [
             "chrome.exe",
-            "chromium",
+            "ungoogled-chromium",
             "--user-data-dir=\"$dir\\User Data\""
         ]
     ],
     "shortcuts": [
         [
             "chrome.exe",
-            "Chromium",
+            "Ungoogled Chromium",
             "--user-data-dir=\"$dir\\User Data\""
         ]
-    ],
-    "post_install": [
-        "if (!(Test-Path \"$dir\\User Data\\*\") -and (Test-Path \"$env:LocalAppData\\Chromium\\User Data\")) {",
-        "    info '[Portable Mode]: Copying user data...'",
-        "    Copy-Item \"$env:LocalAppData\\Chromium\\User Data\\*\" \"$dir\\User Data\" -Recurse",
-        "}"
     ],
     "persist": "User Data",
     "checkver": {
         "github": "https://github.com/macchrome/winchrome",
-        "regex": "v(?<semver>[\\d.]+)-M([\\d.]+)-r(?<build>\\d+)-Win64"
+        "regex": "/v(?<chromeVersion>[\\d.]+)-M(?<versionb>[\\d.]+)-r(?<build>[\\d]+)-Win64/ungoogled-chromium-[\\d.]+-(?<suffix>\\d)_Win(32|64)\\.7z",
+        "replace": "${chromeVersion}-${suffix}-r${build}",
+        "reverse": true
     },
     "autoupdate": {
-        "url": "https://github.com/macchrome/winchrome/releases/download/v$matchSemver-M$version-r$matchBuild-Win64/ungoogled-chromium-$version-1_Win64.7z",
-        "extract_dir": "ungoogled-chromium-$version-1_Win64",
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/macchrome/winchrome/releases/download/v$matchChromeversion-M$matchVersionb-r$matchBuild-Win64/ungoogled-chromium-$matchVersionb-$matchSuffix_Win64.7z",
+                "extract_dir": "ungoogled-chromium-$matchVersionb-$matchSuffix_Win64"
+            }
+        },
         "hash": {
-            "url": "https://github.com/macchrome/winchrome/releases/v$matchSemver-M$version-r$matchBuild-Win64",
+            "url": "https://github.com/macchrome/winchrome/releases/tag/v$matchChromeversion-M$matchVersionb-r$matchBuild-Win64/",
             "regex": "(?s)$basename.*?$sha1"
         }
     }
