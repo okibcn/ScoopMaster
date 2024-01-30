@@ -1,25 +1,26 @@
 {
-    "version": "4.0.2",
-    "description": "Online music app.",
-    "homepage": "https://www.ximalaya.com",
-    "license": "Freeware",
-    "url": "https://www.ximalaya.com/down/lite/v2?client=win#/dl.7z",
-    "hash": "3686a1a11a1ac0fc6c3140c63d654f1e80b1032b15a9433e6009c0d9e32c0f7e",
-    "installer": {
-        "script": "Expand-7zipArchive \"$dir\\ximalaya-$version-ia32.nsis.7z\" \"$dir\""
-    },
-    "post_install": "Remove-Item \"$dir\\`$PLUGINSDIR\" -Force -Recurse",
-    "bin": [
-        [
-            "喜马拉雅.exe",
-            "喜马拉雅"
-        ]
+  "version": "4.0.0.394",
+  "description": "音频平台 喜马拉雅",
+  "homepage": "https://ximalaya.com",
+  "url": "https://webcdn.m.qq.com/spcmgr/download/GKwRIW4IbydWACAAAAIvIR_Q.exe#/dl.7z",
+  "hash": "6ea4e1b30b2c05504d075dc542d4f79bc8f566dd51c9b613ab168bebc51eb8b2",
+  "installer": {
+    "script": [
+      "(Get-ChildItem $dir 'ximalaya-*-ia32.nsis.7z').Fullname | Expand-7zipArchive -DestinationPath $dir -Removal",
+      "Copy-Item -Path \"$dir\\喜马拉雅.exe\" -Destination \"$dir\\XiMaLaYa.exe\""
+    ]
+  },
+  "bin": [["喜马拉雅.exe", "喜马拉雅"]],
+  "shortcuts": [["XiMaLaYa.exe", "XiMaLaYa"]],
+  "post_install": "Remove-Item \"$dir\\`$PLUGINSDIR\" -Force -Recurse",
+  "checkver": {
+    "script": [
+      "$res = Invoke-WebRequest -UseBasicParsing -Uri 'https://luban.m.qq.com/api/public/software-manager/softwareProxy' -Body 'cmdid=3318&jprxReq%5Breq%5D%5Bsoft_id_list%5D%5B%5D=32624' -Method 'POST'",
+      "Write-Output $res.Content"
     ],
-    "shortcuts": [
-        [
-            "喜马拉雅.exe",
-            "喜马拉雅"
-        ]
-    ],
-    "notes": "Check version number manually."
+    "jsonpath": "$..ver_name"
+  },
+  "autoupdate": {
+    "url": "https://webcdn.m.qq.com/spcmgr/download/GKwRIW4IbydWACAAAAIvIR_Q.exe#/dl.7z"
+  }
 }

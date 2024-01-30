@@ -1,0 +1,28 @@
+{
+    "version": "14.1.0.8858",
+    "description": "输入法 Sogou",
+    "homepage": "https://pinyin.sogou.com",
+    "url": "https://webcdn.m.qq.com/spcmgr/download/_sogou_pinyin_Release_14.1.0.8858_6990.exe#/installer.exe",
+    "hash": "0b04102c03f4bcfd2992f025770376d7d7c4483e3588f46bcceaac31b05e1518",
+    "installer": {
+        "script": [
+            "Start-Process -filepath \"$dir\\installer.exe\" -WorkingDirectory \"$dir\" -ArgumentList \"/S /D=$dir\" -Wait",
+            "icacls \"$dir\" /grant Everyone:F /T"
+        ]
+    },
+    "post_install": "Remove-Item \"$dir\\installer.exe\" -Force",
+    "notes": "卸载需要重启.",
+    "uninstaller": {
+        "script": "Start-Process -filepath \"$dir\\$version\\Uninstall\\Uninstall.exe\" -WorkingDirectory \"$dir\" -ArgumentList \"-y\" -PassThru -NoNewWindow | Wait-Process"
+    },
+    "checkver": {
+        "script": [
+            "$res = Invoke-WebRequest -UseBasicParsing -Uri 'https://luban.m.qq.com/api/public/software-manager/softwareProxy' -Body 'cmdid=3318&jprxReq%5Breq%5D%5Bsoft_id_list%5D%5B%5D=12489' -Method 'POST'",
+            "Write-Output $res.Content"
+        ],
+        "jsonpath": "$..ver_name"
+    },
+    "autoupdate": {
+        "url": "https://webcdn.m.qq.com/spcmgr/download/_sogou_pinyin_Release_$version_6990.exe#/installer.exe"
+    }
+}
