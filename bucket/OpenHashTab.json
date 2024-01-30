@@ -1,16 +1,40 @@
 {
     "version": "3.0.4",
-    "description": "OpenHashTab is a shell extension for conveniently calculating and checking file hashes from file properties.",
+    "description": "为资源管理器属性加上Hash校验",
     "homepage": "https://github.com/namazso/OpenHashTab",
-    "license": "GPL-3.0-or-later",
-    "url": "https://github.com/namazso/OpenHashTab/releases/download/v3.0.4/OpenHashTab_setup.exe",
-    "hash": "9966e3ed6693dfc42904a2aaa1b294a2cd1edd059ef795729a76956cc21cd239",
+    "depends": [
+        "sudo",
+        "innounp"
+    ],
     "innosetup": true,
-    "checkver": {
-        "github": "https://github.com/namazso/OpenHashTab",
-        "regex": "Release v([\\d.]+)"
+    "architecture": {
+        "64bit": {
+            "installer": {
+                "script": [
+                    "Move-Item \"$dir\\OpenHashTab,1.dll\" \"$dir\\OpenHashTab.dll\"",
+                    "sudo regsvr32 /s \"$dir\\OpenHashTab.dll\""
+                ]
+            },
+            "uninstaller": {
+                "script": "sudo regsvr32 /u /s \"$dir\\OpenHashTab.dll\""
+            }
+        },
+        "32bit": {
+            "installer": {
+                "script": [
+                    "Move-Item \"$dir\\OpenHashTab,3.dll\" \"$dir\\OpenHashTab.dll\"",
+                    "sudo regsvr32 /s \"$dir\\OpenHashTab.dll\""
+                ]
+            },
+            "uninstaller": {
+                "script": "sudo regsvr32 /u /s \"$dir\\OpenHashTab.dll\""
+            }
+        }
     },
+    "url": "https://github.com/namazso/OpenHashTab/releases/download/v3.0.4/OpenHashTab_setup.exe#/setup.exe",
+    "hash": "9966e3ed6693dfc42904a2aaa1b294a2cd1edd059ef795729a76956cc21cd239",
+    "checkver": "github",
     "autoupdate": {
-        "url": "https://github.com/namazso/OpenHashTab/releases/download/v$version/OpenHashTab_setup.exe"
+        "url": "https://github.com/namazso/OpenHashTab/releases/download/v$version/OpenHashTab_setup.exe#/setup.exe"
     }
 }
