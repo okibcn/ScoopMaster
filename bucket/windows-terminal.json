@@ -1,32 +1,54 @@
 {
-    "homepage": "https://github.com/microsoft/terminal",
+    "version": "1.19.10292.0",
     "description": "The new Windows Terminal, and the original Windows console host - all in the same place!",
+    "homepage": "https://github.com/microsoft/terminal",
     "license": "MIT",
-    "version": "1.19.2831.0",
+    "notes": "Add Windows Terminal as a context menu option by running `reg import \"$dir\\install-context.reg\"`",
     "suggest": {
         "vcredist": "extras/vcredist2022"
     },
-    "url": "https://github.com/microsoft/terminal/releases/download/v1.19.2831.0/Microsoft.WindowsTerminalPreview_1.19.2831.0_8wekyb3d8bbwe.msixbundle#/dl.7z",
-    "hash": "e1d7856f00039923aba1d2ee9d742d6fabd84e530161d021ada9c36590300388",
     "architecture": {
         "64bit": {
-            "pre_install": "Get-ChildItem \"$dir\" -Exclude '*x64.msix' | Remove-Item -Force -Recurse"
+            "url": "https://github.com/microsoft/terminal/releases/download/v1.19.10292.0/Microsoft.WindowsTerminal_1.19.10292.0_x64.zip",
+            "hash": "ddf673666eef46f088668f498456f049067b9c9dceaa8bde357164548f6629f1"
         },
         "32bit": {
-            "pre_install": "Get-ChildItem \"$dir\" -Exclude '*x86.msix' | Remove-Item -Force -Recurse"
+            "url": "https://github.com/microsoft/terminal/releases/download/v1.19.10292.0/Microsoft.WindowsTerminal_1.19.10292.0_x86.zip",
+            "hash": "3bee43bd220be7ac52b9b264b1940be9e4532a939609310fd622252d476becc0"
         },
         "arm64": {
-            "pre_install": "Get-ChildItem \"$dir\" -Exclude '*ARM64.msix' | Remove-Item -Force -Recurse"
+            "url": "https://github.com/microsoft/terminal/releases/download/v1.19.10292.0/Microsoft.WindowsTerminal_1.19.10292.0_arm64.zip",
+            "hash": "9f07a9967301c9809c446e05d6103f92f858528cd1a1c910c5b39b444711abcb"
         }
     },
+    "extract_dir": "terminal-1.19.10292.0",
+    "pre_install": [
+        "# Remove this hint in 2023-12-01",
+        "$settings_path = \"$env:LOCALAPPDATA\\Packages\\Microsoft.WindowsTerminal_8wekyb3d8bbwe\\LocalState\"",
+        "if (!(Test-Path \"$persist_dir\\settings\") -and (Test-Path $settings_path)) {",
+        "  $current_setings = $dir.Replace($version, 'current') + \"\\settings\"",
+        "  warn \"Portable mode is enabled from version 1.17.11391.0, please migrate the settings manually:\"",
+        "  warn \"Original settings dir: `'$settings_path`'\"",
+        "  warn \"Portable settings dir: `'$current_setings`'\"",
+        "}"
+    ],
     "installer": {
         "script": [
             "$winVer = [Environment]::OSVersion.Version",
-            "if (($winver.Major -lt '10') -or ($winVer.Build -lt 19041)) { error 'At least Windows 10 20H1 (build 19041) is required.'; break }",
-            "Get-ChildItem \"$dir\" '*.msix' | Select-Object -ExpandProperty Fullname | Expand-7zipArchive -DestinationPath \"$dir\" -Removal",
-            "Get-ChildItem \"$dir\\ProfileIcons\" '*.png' | Rename-Item -NewName { $_.Name.Replace('%7B', '{').Replace('%7D', '}') }"
+            "if (($winver.Major -lt '10') -or ($winVer.Build -lt 19041)) { warn 'At least Windows 10 20H1 (build 19041) is required.' }",
+            "if (!(Test-Path \"$persist_dir\\.portable\")) { Add-Content \"$dir\\.portable\" '' -Encoding Ascii }"
         ]
     },
+    "post_install": [
+        "'install-context', 'uninstall-context' | ForEach-Object {",
+        "    if (Test-Path \"$bucketsdir\\extras\\scripts\\windows-terminal\\$_.reg\") {",
+        "        $wtPath = \"$dir\\wt.exe\".Replace('\\', '\\\\')",
+        "        $content = (Get-Content \"$bucketsdir\\extras\\scripts\\windows-terminal\\$_.reg\").Replace('$wt', $wtPath)",
+        "        if ($global) { $content = $content.Replace('HKEY_CURRENT_USER', 'HKEY_LOCAL_MACHINE') }",
+        "        Set-Content \"$dir\\$_.reg\" $content -Encoding Ascii -Force",
+        "    }",
+        "}"
+    ],
     "bin": [
         "WindowsTerminal.exe",
         "wt.exe"
@@ -35,19 +57,30 @@
         [
             "WindowsTerminal.exe",
             "Windows Terminal"
-        ],
-        [
-            "wt.exe",
-            "Windows Terminal Quake Mode",
-            "-w _quake"
         ]
     ],
+    "persist": [
+        ".portable",
+        "settings"
+    ],
+    "pre_uninstall": "if ($cmd -eq 'uninstall') { reg import \"$dir\\uninstall-context.reg\" }",
     "checkver": "github",
     "autoupdate": {
-        "url": "https://github.com/microsoft/terminal/releases/download/v$version/Microsoft.WindowsTerminal_Win10_$version_8wekyb3d8bbwe.msixbundle#/dl.7z",
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/microsoft/terminal/releases/download/v$version/Microsoft.WindowsTerminal_$version_x64.zip"
+            },
+            "32bit": {
+                "url": "https://github.com/microsoft/terminal/releases/download/v$version/Microsoft.WindowsTerminal_$version_x86.zip"
+            },
+            "arm64": {
+                "url": "https://github.com/microsoft/terminal/releases/download/v$version/Microsoft.WindowsTerminal_$version_arm64.zip"
+            }
+        },
         "hash": {
             "url": "https://github.com/microsoft/terminal/releases/tag/v$version",
             "regex": "(?s)$basename.*?$sha256"
-        }
+        },
+        "extract_dir": "terminal-$version"
     }
 }
