@@ -1,21 +1,30 @@
 {
-    "homepage": "https://www.aardio.com/",
-    "description": "A Windows desktop rapid programming platform",
     "version": "35.70.11",
-    "license": "freeware",
+    "description": "灵活而强大的动态语言。A flexible and powerful dynamic language.",
+    "homepage": "https://www.aardio.com/",
+    "license": "Freeware",
     "url": "https://d.aardio.com/ide/aardio.7z",
     "hash": "46eef5486079a4f44fd7577cbb746e8e4acf0e40a1fe9cb9d2219a519e5729ce",
-    "bin": "aardio.exe",
     "shortcuts": [
         [
             "aardio.exe",
             "aardio"
         ]
     ],
-    "persist": "config\\USR.CFG",
+    "post_install": [
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "persist -dir @(\"$dir\\config\",\"$dir\\project\") @(\"$persist_dir\\config\",\"$persist_dir\\project\")",
+        "create_app_lnk \"$dir\\aardio.exe\" \"$desktop\\aardio.lnk\""
+    ],
+    "pre_uninstall": [
+        "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "stop_process",
+        "remove_files @(\"$desktop\\aardio.lnk\",\"$env:LocalAppData\\aardio\")"
+    ],
     "checkver": {
-        "url": "http://ide.update.aardio.com/check/",
-        "regex": "\"version\":\"([\\d.]+)\""
+        "url": "https://ide.update.aardio.com/log/",
+        "regex": "aardio v([\\d.]+)"
     },
     "autoupdate": {
         "url": "https://d.aardio.com/ide/aardio.7z"
