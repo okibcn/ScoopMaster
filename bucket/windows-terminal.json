@@ -3,52 +3,35 @@
     "description": "The new Windows Terminal, and the original Windows console host - all in the same place!",
     "homepage": "https://github.com/microsoft/terminal",
     "license": "MIT",
-    "notes": [
-        "This version may contain breaking changes. You can use app `windows-terminal-1-16` instead",
-        "For prior to Windows 10 20H1 (build 19041), use `windows-terminal-1-16` instead"
-    ],
+    "notes": "Add Windows Terminal as a context menu option by running `reg import \"$dir\\install-context.reg\"`",
     "suggest": {
-        "vcredist": "extras/vcredist2022"
+        "vcredist": "zault/vcredist2022"
     },
     "architecture": {
         "64bit": {
-            "url": [
-                "https://github.com/microsoft/terminal/releases/download/v1.19.10302.0/Microsoft.WindowsTerminal_1.19.10302.0_x64.zip",
-                "https://raw.githubusercontent.com/brave-simpletons/scoop-the-business/main/assets/windows-terminal/install-context.reg",
-                "https://raw.githubusercontent.com/brave-simpletons/scoop-the-business/main/assets/windows-terminal/uninstall-context.reg"
-            ],
-            "hash": [
-                "899b60d9145fce8ce7b18c0e53a80c2362fa67c3eab5d0823543041a7e10f0d3",
-                "baf11f7fb4e99fbd80e931dcdbb860b4e598182830ac7b310d7cd9efcb2a66d8",
-                "5e1429c0750845a2bd09b47029c3ae47ce8fa4dbc0effb92740d91ea7076dd4b"
-            ]
+            "url": "https://github.com/microsoft/terminal/releases/download/v1.19.10302.0/Microsoft.WindowsTerminal_1.19.10302.0_x64.zip",
+            "hash": "899b60d9145fce8ce7b18c0e53a80c2362fa67c3eab5d0823543041a7e10f0d3"
         },
         "32bit": {
-            "url": [
-                "https://github.com/microsoft/terminal/releases/download/v1.19.10302.0/Microsoft.WindowsTerminal_1.19.10302.0_x86.zip",
-                "https://raw.githubusercontent.com/brave-simpletons/scoop-the-business/main/assets/windows-terminal/install-context.reg",
-                "https://raw.githubusercontent.com/brave-simpletons/scoop-the-business/main/assets/windows-terminal/uninstall-context.reg"
-            ],
-            "hash": [
-                "27dcb0951cd83c7551f7b3ec3e997a1928d395d985015833ed11ca9976f5c48a",
-                "baf11f7fb4e99fbd80e931dcdbb860b4e598182830ac7b310d7cd9efcb2a66d8",
-                "5e1429c0750845a2bd09b47029c3ae47ce8fa4dbc0effb92740d91ea7076dd4b"
-            ]
+            "url": "https://github.com/microsoft/terminal/releases/download/v1.19.10302.0/Microsoft.WindowsTerminal_1.19.10302.0_x86.zip",
+            "hash": "27dcb0951cd83c7551f7b3ec3e997a1928d395d985015833ed11ca9976f5c48a"
         },
         "arm64": {
-            "url": [
-                "https://github.com/microsoft/terminal/releases/download/v1.19.10302.0/Microsoft.WindowsTerminal_1.19.10302.0_arm64.zip",
-                "https://raw.githubusercontent.com/brave-simpletons/scoop-the-business/main/assets/windows-terminal/install-context.reg",
-                "https://raw.githubusercontent.com/brave-simpletons/scoop-the-business/main/assets/windows-terminal/uninstall-context.reg"
-            ],
-            "hash": [
-                "9a3b3ef52f887518fb58ab79d14f54ab177f4d7fd42de5c37c921e30e7a9d259",
-                "baf11f7fb4e99fbd80e931dcdbb860b4e598182830ac7b310d7cd9efcb2a66d8",
-                "5e1429c0750845a2bd09b47029c3ae47ce8fa4dbc0effb92740d91ea7076dd4b"
-            ]
+            "url": "https://github.com/microsoft/terminal/releases/download/v1.19.10302.0/Microsoft.WindowsTerminal_1.19.10302.0_arm64.zip",
+            "hash": "9a3b3ef52f887518fb58ab79d14f54ab177f4d7fd42de5c37c921e30e7a9d259"
         }
     },
     "extract_dir": "terminal-1.19.10302.0",
+    "pre_install": [
+        "# Remove this hint in 2023-12-01",
+        "$settings_path = \"$env:LOCALAPPDATA\\Packages\\Microsoft.WindowsTerminal_8wekyb3d8bbwe\\LocalState\"",
+        "if (!(Test-Path \"$persist_dir\\settings\") -and (Test-Path $settings_path)) {",
+        "  $current_setings = $dir.Replace($version, 'current') + \"\\settings\"",
+        "  warn \"Portable mode is enabled from version 1.17.11391.0, please migrate the settings manually:\"",
+        "  warn \"Original settings dir: `'$settings_path`'\"",
+        "  warn \"Portable settings dir: `'$current_setings`'\"",
+        "}"
+    ],
     "installer": {
         "script": [
             "$winVer = [Environment]::OSVersion.Version",
@@ -58,21 +41,13 @@
     },
     "post_install": [
         "'install-context', 'uninstall-context' | ForEach-Object {",
-        "    if (Test-Path \"$dir\\$_.reg\") {",
+        "    if (Test-Path \"$bucketsdir\\zault\\scripts\\windows-terminal\\$_.reg\") {",
         "        $wtPath = \"$dir\\wt.exe\".Replace('\\', '\\\\')",
-        "        $content = (Get-Content \"$dir\\$_.reg\").Replace('$wt', $wtPath)",
-        "        if ($global) {",
-        "            $content = $content.Replace('HKEY_CURRENT_USER', 'HKEY_LOCAL_MACHINE')",
-        "        }",
-        "        $content | Set-Content -Path \"$dir\\$_.reg\" -Encoding unicode -Force",
+        "        $content = (Get-Content \"$bucketsdir\\zault\\scripts\\windows-terminal\\$_.reg\").Replace('$wt', $wtPath)",
+        "        if ($global) { $content = $content.Replace('HKEY_CURRENT_USER', 'HKEY_LOCAL_MACHINE') }",
+        "        Set-Content \"$dir\\$_.reg\" $content -Encoding Ascii -Force",
         "    }",
-        "}",
-        "Write-Host Registering Windows Terminal as a context menu option with \"$dir\\install-context.reg\"",
-        "reg import \"$dir\\install-context.reg\""
-    ],
-    "pre_uninstall": [
-        "Write-Host UnRegistering Windows Terminal as a context menu option with \"$dir\\uninstall-context.reg\"",
-        "reg import \"$dir\\uninstall-context.reg\""
+        "}"
     ],
     "bin": [
         "WindowsTerminal.exe",
@@ -88,6 +63,7 @@
         ".portable",
         "settings"
     ],
+    "pre_uninstall": "if ($cmd -eq 'uninstall') { reg import \"$dir\\uninstall-context.reg\" }",
     "checkver": "github",
     "autoupdate": {
         "architecture": {
