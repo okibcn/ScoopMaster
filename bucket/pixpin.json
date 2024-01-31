@@ -1,37 +1,32 @@
 {
     "version": "1.5.0.0",
-    "description": "截图/贴图/长截图/文字识别/标注",
+    "description": "功能强大使用简单的截图/贴图工具，帮助你提高效率。A powerful screenshot tool.",
     "homepage": "https://pixpinapp.com/",
-    "license": "Unlicense",
-    "architecture": {
-        "64bit": {
-            "url": "https://download.pixpinapp.com/PixPin_1.5.0.0.zip",
-            "hash": "04165BD4169464229A2A61E66F8AB1015CF779B2107DA4825079481F522456D5",
-            "extract_dir": "PixPin"
-        }
-    },
-    "bin": [
-        [
-            "PixPin.exe",
-            "PixPin"
-        ]
-    ],
+    "license": "Unknown",
+    "url": "https://download.pixpinapp.com/PixPin_1.5.0.0.zip",
+    "hash": "04165bd4169464229a2a61e66f8ab1015cf779b2107da4825079481f522456d5",
+    "extract_dir": "PixPin",
     "shortcuts": [
         [
             "PixPin.exe",
             "PixPin"
         ]
     ],
-    "persist": "Config",
-    // "checkver": {
-    //     "url": "https://pixpinapp.com/assets/index.md.f3de7cf0.lean.js",
-    //     "regex": "PixPin_([\\d.]+)\\.exe"
-    // },
+    "post_install": [
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "persist -dir @(\"$dir\\Config\") @(\"$persist_dir\\Config\")",
+        "create_app_lnk \"$dir\\PixPin.exe\" \"$desktop\\PixPin.lnk\""
+    ],
+    "pre_uninstall": [
+        "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "stop_process",
+        "remove_files @(\"$desktop\\PixPin.lnk\")"
+    ],
+    "checkver": {
+        "regex": "PixPin_([\\d.]+)\\."
+    },
     "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://download.pixpinapp.com/PixPin_$version.zip"
-            }
-        }
+        "url": "https://download.pixpinapp.com/PixPin_$version.zip"
     }
 }
