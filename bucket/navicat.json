@@ -1,21 +1,37 @@
 {
-  "version": "16.3.5",
-  "description": "数据库工具 Navicat",
-  "homepage": "https://navicat.com.cn",
-  "url": "https://download.navicat.com.cn/download/navicat163_premium_cs_x64.exe",
-  "hash": "1f2d3c2d45d42a2243410f376b9575a1c5618076d5223e518b25d259bb7b070b",
-  "innosetup": true,
-  "shortcuts": [["navicat.exe", "Navicat Premium"]],
-  "post_install": [
-    "$scriptdir = \"$bucketsdir\\rainte\\scripts\\navicat\"",
-    "cmd /c \"$scriptdir\\crack.bat\"",
-    "Copy-Item -Path \"$scriptdir\\winmm.dll\" -Destination \"$dir\\winmm.dll\""
-  ],
-  "checkver": {
-    "url": "https://navicat.com.cn/products/navicat-premium-release-note",
-    "re": "Navicat Premium \\(Windows\\) version ([\\d\\.]+)"
-  },
-  "autoupdate": {
-    "url": "https://download.navicat.com.cn/download/navicat$majorVersion$minorVersion_premium_cs_x64.exe"
-  }
+    "version": "16.3.5",
+    "description": "Navicat Premium is a database development tool that allows you to simultaneously connect to MySQL, Redis, PostgreSQL, SQL Server, Oracle, MariaDB, SQLite, and MongoDB databases from a single application. Compatible with cloud databases like Amazon RDS, Amazon Aurora, Amazon Redshift, Amazon ElastiCache, Microsoft Azure, Oracle Cloud, Google Cloud, MongoDB Atlas and Redis Enterprise Cloud. You can quickly and easily build, manage and maintain your databases.",
+    "homepage": "https://www.navicat.com/en/products/navicat-premium",
+    "license": {
+        "identifier": "Proprietary",
+        "url": "https://www.navicat.com/en/store/navicat-premium-plan"
+    },
+    "architecture": {
+        "64bit": {
+            "url": "https://download3.navicat.com/download/navicat163_premium_en_x64.exe",
+            "hash": "207b76423d3c283223d85e2b55e736152e7a45ed71c26cac7d62bbd9a8ef50a2"
+        }
+    },
+    "innosetup": true,
+    "bin": "navicat.exe",
+    "shortcuts": [
+        [
+            "navicat.exe",
+            "navicat"
+        ]
+    ],
+    "checkver": {
+        "url": "https://www.navicat.com/en/products/navicat-premium-release-note#W",
+        "regex": "Navicat Premium \\(Windows\\) version ([\\d.]+)"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://download3.navicat.com/download/navicat$majorVersion$minorVersion_premium_en_x64.exe"
+            }
+        },
+        "hash": {
+            "url": "$url.sha256"
+        }
+    }
 }
