@@ -1,14 +1,13 @@
 {
+    "version": "2023",
     "homepage": "https://tug.org/texlive/",
     "description": "TeX Live is a cross-platform, free software distribution for the TeX typesetting system",
     "license": "LPPL,GPL2",
-    "version": "2023",
-    "url": "http://mirror.ctan.org/systems/texlive/tlnet/install-tl.zip",
-    "hash": "sha512:13b3ab8ae7ac98eb73aff2d70ea4324dfbd5081de0ab252aec00c245f69b777d61bf553ff96f94c2de2d7476b8364053f3480c02b22164f1d2834121e4113746",
+    "url": "https://mirrors4.tuna.tsinghua.edu.cn/ctan/systems/texlive/tlnet/install-tl.zip",
     "installer": {
         "script": [
             "Write-Host 'Invoking TeX Live installer...' -ForegroundColor DarkCyan",
-            "Write-Host 'This can take a few minutes to to a long time...' -ForegroundColor DarkYellow",
+            "Write-Host 'This can take from a few minutes to a long long time...' -ForegroundColor DarkYellow",
             "Get-ChildItem \"$dir\\install-tl-*\" | Rename-Item -NewName \"$dir\\installer\"",
             "$env:TEXLIVE_INSTALL_PAPER='a4'",
             "$env:TEXLIVE_INSTALL_PREFIX=\"$dir\"",
@@ -34,7 +33,8 @@
     },
     "env_add_path": [
         "bin\\win64",
-        "bin\\win32"
+        "bin\\win32",
+        "bin\\windows"
     ],
     "shortcuts": [
         [
@@ -42,14 +42,21 @@
             "Tex Live Manager"
         ]
     ],
-    "persist": "texmf-config",
+    "persist": [
+        "texmf-config",
+        "texmf-local"
+    ],
     "checkver": {
         "regex": "Current release: TeX Live ([\\d]+)"
     },
     "autoupdate": {
-        "url": "http://mirror.ctan.org/systems/texlive/tlnet/install-tl.zip",
-        "hash": {
-            "url": "$url.sha512"
+        "architecture": {
+            "64bit": {
+                "url": "https://mirrors4.tuna.tsinghua.edu.cn/ctan/systems/texlive/tlnet/install-tl.zip",
+                "hash": {
+                    "url": "$url.sha512"
+                }
+            }
         }
     }
 }
