@@ -5,20 +5,12 @@
     "license": "MIT",
     "notes": "Add Windows Terminal as a context menu option by running `reg import \"$dir\\install-context.reg\"`",
     "suggest": {
-        "vcredist": "zault/vcredist2022"
+        "vcredist": "extras/vcredist2022"
     },
     "architecture": {
         "64bit": {
             "url": "https://github.com/microsoft/terminal/releases/download/v1.19.10302.0/Microsoft.WindowsTerminal_1.19.10302.0_x64.zip",
             "hash": "899b60d9145fce8ce7b18c0e53a80c2362fa67c3eab5d0823543041a7e10f0d3"
-        },
-        "32bit": {
-            "url": "https://github.com/microsoft/terminal/releases/download/v1.19.10302.0/Microsoft.WindowsTerminal_1.19.10302.0_x86.zip",
-            "hash": "27dcb0951cd83c7551f7b3ec3e997a1928d395d985015833ed11ca9976f5c48a"
-        },
-        "arm64": {
-            "url": "https://github.com/microsoft/terminal/releases/download/v1.19.10302.0/Microsoft.WindowsTerminal_1.19.10302.0_arm64.zip",
-            "hash": "9a3b3ef52f887518fb58ab79d14f54ab177f4d7fd42de5c37c921e30e7a9d259"
         }
     },
     "extract_dir": "terminal-1.19.10302.0",
@@ -41,9 +33,9 @@
     },
     "post_install": [
         "'install-context', 'uninstall-context' | ForEach-Object {",
-        "    if (Test-Path \"$bucketsdir\\zault\\scripts\\windows-terminal\\$_.reg\") {",
+        "    if (Test-Path \"$bucketsdir\\$bucket\\scripts\\windows-terminal\\$_.reg\") {",
         "        $wtPath = \"$dir\\wt.exe\".Replace('\\', '\\\\')",
-        "        $content = (Get-Content \"$bucketsdir\\zault\\scripts\\windows-terminal\\$_.reg\").Replace('$wt', $wtPath)",
+        "        $content = (Get-Content \"$bucketsdir\\$bucket\\scripts\\windows-terminal\\$_.reg\").Replace('$wt', $wtPath)",
         "        if ($global) { $content = $content.Replace('HKEY_CURRENT_USER', 'HKEY_LOCAL_MACHINE') }",
         "        Set-Content \"$dir\\$_.reg\" $content -Encoding Ascii -Force",
         "    }",
@@ -69,12 +61,6 @@
         "architecture": {
             "64bit": {
                 "url": "https://github.com/microsoft/terminal/releases/download/v$version/Microsoft.WindowsTerminal_$version_x64.zip"
-            },
-            "32bit": {
-                "url": "https://github.com/microsoft/terminal/releases/download/v$version/Microsoft.WindowsTerminal_$version_x86.zip"
-            },
-            "arm64": {
-                "url": "https://github.com/microsoft/terminal/releases/download/v$version/Microsoft.WindowsTerminal_$version_arm64.zip"
             }
         },
         "hash": {
