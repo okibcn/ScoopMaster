@@ -1,31 +1,35 @@
 {
     "version": "0.9.5",
-    "description": "一款简洁、高效、高颜值的输入、截图、划词翻译软件。A concise, efficient, and high-quality input, screenshot, and word translation software.",
+    "description": "🚀 A concise, efficient, good-looking input, screenshot, and word translation software",
     "homepage": "https://github.com/InkTimeRecord/TTime",
     "license": {
-        "identifier": "Apache License 2.0(with the additional conditions)",
+        "identifier": "Apache-2.0",
         "url": "https://github.com/InkTimeRecord/TTime/blob/main/LICENSE.txt"
     },
-    "url": " https://github.com/InkTimeRecord/TTime/releases/download/v0.9.5/TTime-0.9.5-setup.exe",
-    "hash": "383d9ed7883218949eebfc71eb2324298354f21f4ead079caf6919cbe9ecd28e",
-    "pre_install": [
-        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-        "$path_exe=\"$dir\\TTime-$($version)-setup.exe\"",
-        "& $path_exe /S /D=$dir",
-        "persist -dir @(\"$env:AppData\\time-translate\") @(\"$persist_dir\\time-translate\")",
-        "create_app_lnk \"$dir\\TTime.exe\" \"$scoop_apps_lnk\\TTime.lnk\"",
-        "clean_redundant_files @($path_exe,\"C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\TTime.lnk\") 10"
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/InkTimeRecord/TTime/releases/download/v0.9.5/TTime.0.9.5.exe#/dl.7z",
+            "hash": "2635a4d8718a9767cd59b20e582b63504cf7fe7837878bf88e41e220d09b08ef",
+            "pre_install": [
+                "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\"",
+                "Remove-Item \"$dir\\`$*\" -Recurse"
+            ]
+        }
+    },
+    "shortcuts": [
+        [
+            "TTime.exe",
+            "TTime"
+        ]
     ],
-    "pre_uninstall": [
-        "$ErrorActionPreference=\"SilentlyContinue\"",
-        "& \"$dir\\Uninstall TTime.exe\" /S",
-        "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
-        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-        "stop_process",
-        "remove_files @(\"C:\\Users\\Public\\Desktop\\TTime.lnk\",\"$scoop_apps_lnk\\TTime.lnk\",\"$env:AppData\\time-translate\")"
-    ],
-    "checkver": "github",
+    "checkver": {
+        "github": "https://github.com/InkTimeRecord/TTime"
+    },
     "autoupdate": {
-        "url": " https://github.com/InkTimeRecord/TTime/releases/download/v$version/TTime-$version-setup.exe"
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/InkTimeRecord/TTime/releases/download/v$version/TTime.$version.exe#/dl.7z"
+            }
+        }
     }
 }
