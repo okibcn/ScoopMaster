@@ -6,8 +6,12 @@
         "identifier": "Freeware",
         "url": "https://www.gitkraken.com/eula"
     },
-    "url": "https://release.gitkraken.com/windows/gitkraken-9.11.1-full.nupkg",
-    "hash": "25846da424d48ca6fa28a038959f9ad1dc61bfb36432fc50316abaa64f479ae5",
+    "architecture": {
+        "64bit": {
+            "url": "https://release.gitkraken.com/windows/gitkraken-9.11.1-full.nupkg",
+            "hash": "sha1:60cbae43a8a4a72bd8e8027c1b5054c97a77d9a2"
+        }
+    },
     "extract_dir": "lib\\net45",
     "bin": "gitkraken.exe",
     "shortcuts": [
@@ -17,11 +21,18 @@
         ]
     ],
     "checkver": {
-        "url": "https://release.gitkraken.com/windows/RELEASES",
+        "url": "https://release.gitkraken.com/windows/RELEASES?id=gitkraken&localVersion=0&arch=amd64",
         "regex": "gitkraken-([\\d.]+)-full\\.nupkg",
         "reverse": true
     },
     "autoupdate": {
-        "url": "https://release.gitkraken.com/windows/gitkraken-$version-full.nupkg"
+        "architecture": {
+            "64bit": {
+                "url": "https://release.gitkraken.com/windows/gitkraken-$version-full.nupkg"
+            }
+        },
+        "hash": {
+            "url": "$baseurl/RELEASES"
+        }
     }
 }
