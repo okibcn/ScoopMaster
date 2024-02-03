@@ -1,56 +1,54 @@
 {
-    "version": "1.17-107",
+    "version": "1.17-109-g6e676b9d1",
+    "description": "Sony PlayStation Portable (PSP) emulator",
     "homepage": "https://www.ppsspp.org",
-    "license": "GPL-2.0-only",
-    "extract_dir": "ppsspp",
-    "post_install": "Remove-Item \"$dir\\demos\" -Recurse",
-    "persist": "memstick",
+    "license": "GPL-2.0-or-later",
     "architecture": {
-        "64bit": {
-            "url": "https://buildbot.orphis.net/ppsspp/index.php?m=dl&rev=v1.17-107-g16d1d5566&platform=windows-amd64#/dl.7z",
-            "hash": "a5819276fb4c36183a4cb0efc1621e6788e82d6f3589a15f3de4807dd0e61f46",
-            "bin": [
-                [
-                    "PPSSPPWindows64.exe",
-                    "ppsspp-dev"
-                ]
-            ],
+        "32bit": {
+            "url": "https://buildbot.orphis.net/ppsspp/index.php?m=dl&rev=v1.17-109-g6e676b9d1&platform=windows-x86#/dl.zip",
+            "hash": "a0195a6e66a82153b2805367ea6d7c6fabc14951b4b3c7e09f4cc1499b1bd267",
             "shortcuts": [
                 [
-                    "PPSSPPWindows64.exe",
-                    "PPSSPP-DEV"
+                    "PPSSPPWindows.exe",
+                    "Sony PlayStation Portable [psp][ppsspp] (dev)"
                 ]
             ]
         },
-        "32bit": {
-            "url": "https://buildbot.orphis.net/ppsspp/index.php?m=dl&rev=v1.17-107-g16d1d5566&platform=windows-x86#/dl.7z",
-            "hash": "442fd7fb777e23b6ffa0a5f2801286d5bf30679cdbb58e0ab6675f67476ea3c5",
-            "bin": [
-                [
-                    "PPSSPPWindows.exe",
-                    "ppsspp-dev"
-                ]
-            ],
+        "64bit": {
+            "url": "https://buildbot.orphis.net/ppsspp/index.php?m=dl&rev=v1.17-109-g6e676b9d1&platform=windows-amd64#/dl.zip",
+            "hash": "2ee8c1ac2f56850bc194b7753e68aeed9a3f012aadbf2048e0e16aa5381f2eda",
             "shortcuts": [
                 [
-                    "PPSSPPWindows.exe",
-                    "PPSSPP-DEV"
+                    "PPSSPPWindows64.exe",
+                    "Sony PlayStation Portable [psp][ppsspp] (dev)"
                 ]
             ]
         }
     },
+    "extract_dir": "ppsspp",
+    "pre_install": [
+        "if (!(Test-Path \"$persist_dir\")) {",
+        "   New-item \"$persist_dir\" -ItemType Directory | Out-Null",
+        "   New-item \"$persist_dir\\memstick\" -ItemType Directory | Out-Null",
+        "}"
+    ],
+    "persist": [
+        "memstick",
+        "assets",
+        "demos"
+    ],
     "checkver": {
-        "url": "https://buildbot.orphis.net/ppsspp/index.php?m=fulllist",
-        "regex": "v(?<version>[\\d.]+)-(?<rev>[\\d]+)-(?<commit>[\\d\\w]+)",
-        "replace": "${version}-${rev}"
+        "url": "https://buildbot.orphis.net/ppsspp/index.php",
+        "regex": "rev=v(?<version>[\\d.]+)-(?<build>[\\d]+)-g(?<commit>[\\da-fA-F]+)&(?:amp;)platform=windows-amd64",
+        "replace": "${version}-${build}-g${commit}"
     },
     "autoupdate": {
         "architecture": {
-            "64bit": {
-                "url": "https://buildbot.orphis.net/ppsspp/index.php?m=dl&rev=v$version-$matchCommit&platform=windows-amd64#/dl.7z"
-            },
             "32bit": {
-                "url": "https://buildbot.orphis.net/ppsspp/index.php?m=dl&rev=v$version-$matchCommit&platform=windows-x86#/dl.7z"
+                "url": "https://buildbot.orphis.net/ppsspp/index.php?m=dl&rev=v$matchVersion-$matchBuild-g$matchCommit&platform=windows-x86#/dl.zip"
+            },
+            "64bit": {
+                "url": "https://buildbot.orphis.net/ppsspp/index.php?m=dl&rev=v$matchVersion-$matchBuild-g$matchCommit&platform=windows-amd64#/dl.zip"
             }
         }
     }
