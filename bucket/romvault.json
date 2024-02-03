@@ -1,20 +1,33 @@
 {
-    "##": [
-        "name:RomVault",
-        "logo:https://4.bp.blogspot.com/-qgmh6rsiEE8/V0JOsbE2cII/AAAAAAAAVCU/NiApPwG_29EA4aTQaPcXSyjDtdCK89DvQCLcB/s320/RomVault.png"
+    "version": "3.6.4",
+    "description": "Multi-DAT ROM management software",
+    "homepage": "https://www.romvault.com/",
+    "license": "Freeware",
+    "url": "https://www.romvault.com/download/ROMVault_V3.6.4.zip",
+    "hash": "bc93eacd4595cf144dec2efcafeaa1a7e8c9c5eca70d36323ba460bb5d5de1b9",
+    "pre_install": [
+        "Rename-Item $dir\\ROMVault36.exe ROMVault.exe",
+        "'RomVault3cfg.xml', 'RomVault3_2.Cache', 'graphics.zip' | ForEach-Object {",
+        "  if (!(Test-Path $persist_dir\\$_)) { New-Item $dir\\$_ | Out-Null } }"
     ],
-    "version": "3.2.1",
-    "description": "RomVault is a ROM management tool for Windows that helps you manage and organize your retro game collection.",
-    "homepage": "https://github.com/RomVault/RVWorld",
-    "license": "MIT",
-    "url": "https://github.com/RomVault/RVWorld/releases/download/3.2.1/RomVault_V3.2.1.zip",
-    "hash": "3853e95288fdf1bae1a34559cd3a1b4d2a311da70c101527d5188f11d8b2bdf1",
-    "bin": [
-        "ROMVault3.exe",
-        "ROMVault3"
+    "shortcuts": [
+        [
+            "ROMVault.exe",
+            "ROMVault"
+        ]
     ],
-    "checkver": "github",
+    "persist": [
+        "RomVault3cfg.xml",
+        "RomVault3_2.Cache",
+        "graphics.zip",
+        "DATRoot",
+        "ROMRoot",
+        "ToSort"
+    ],
+    "checkver": {
+        "regex": "RomVault V([\\d.]+)"
+    },
     "autoupdate": {
-        "url": "https://github.com/RomVault/RVWorld/releases/download/$version/RomVault_V$version.zip"
+        "url": "https://www.romvault.com/download/ROMVault_V$version.zip"
     }
 }

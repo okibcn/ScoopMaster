@@ -1,33 +1,26 @@
 {
     "version": "4.0.0",
-    "description": "A small application designed to display detailed information on the USB device tree.",
+    "description": "View USB devices in a tree-like structure",
     "homepage": "https://www.uwe-sieber.de/usbtreeview_e.html",
     "license": "Freeware",
     "architecture": {
         "64bit": {
             "url": "https://www.uwe-sieber.de/files/UsbTreeView_x64.zip",
-            "hash": "BB9EF61959AF167BCE7E1E90CD1F732405320D50C97123AC35C923DC167D8832"
+            "hash": "34999c0cae0fe8b32d9b1b842286e64703c8407745d0975468cac7878dd7751a"
+        },
+        "32bit": {
+            "url": "https://www.uwe-sieber.de/files/UsbTreeView_Win32.zip",
+            "hash": "23ab9343380ff63601571b3ea7af62ed97ec38b52a9129e682d7b51635c3a832"
         }
     },
-    "pre_install": [
-        "New-Item -Name UsbTreeView.ini -Path $dir | Out-Null"
-    ],
-    "persist": [
-        "UsbTreeView.ini"
-    ],
+    "bin": "UsbTreeView.exe",
     "shortcuts": [
         [
             "UsbTreeView.exe",
-            "UsbTreeView"
+            "USB Device Tree Viewer"
         ]
     ],
-    "checkver": {
-        "script": [
-            "(Invoke-WebRequest 'https://www.majorgeeks.com/files/details/usb_device_tree_viewer.html') -match 'USB Device Tree Viewer (?<version>[\\d.]+)' | Out-Null",
-            "$resp = $Matches['version']"
-        ],
-        "regex": "(?<version>[\\d.]+),(?<dlurl>.*\\.zip)"
-    },
+    "checkver": "USB Device Tree Viewer V([\\d.]+)",
     "autoupdate": {
         "architecture": {
             "64bit": {
