@@ -1,50 +1,15 @@
 {
     "version": "0.7.1.2172",
-    "description": "MPC Video Renderer",
+    "description": "MPC Video Renderer is a free and open-source video renderer for DirectShow.",
     "homepage": "https://github.com/Aleksoid1978/VideoRenderer",
-    "license": "GPL-3.0",
+    "license": "GPL-3.0-only",
     "url": "https://github.com/Aleksoid1978/VideoRenderer/releases/download/0.7.1/MpcVideoRenderer-0.7.1.2172.zip",
-    "hash": "sha1:cb5d31206c3501ab7faa7f80b5ec1e9214695f87",
-    "installer": {
-        "script": [
-            "if ($architecture -eq \"64bit\") {",
-            "    $Arg = \"/s \"+ \"$dir\\MpcVideoRenderer64.ax\"",
-            "    Start-Process regsvr32.exe -ArgumentList $Arg -Verb RunAs -Wait",
-            "}",
-            "elseif ($architecture -eq \"32bit\") {",
-            "    $Arg = \"/s \"+ \"$dir\\MpcVideoRenderer.ax\"",
-            "    Start-Process regsvr32.exe -ArgumentList $Arg -Verb RunAs -Wait",
-            "}",
-            "else {",
-            "   Write-Host \"No appropriate version\"",
-            "   break",
-            "}"
-        ]
-    },
-    "uninstaller": {
-        "script": [
-            "if ($architecture -eq \"64bit\") {",
-            "    $Arg = \"/u /s \"+ \"$dir\\MpcVideoRenderer64.ax\"",
-            "    Start-Process regsvr32.exe -ArgumentList $Arg -Verb RunAs -Wait",
-            "}",
-            "elseif ($architecture -eq \"32bit\") {",
-            "    $Arg = \"/u /s \"+ \"$dir\\MpcVideoRenderer.ax\"",
-            "    Start-Process regsvr32.exe -ArgumentList $Arg -Verb RunAs -Wait",
-            "}",
-            "else {",
-            "   Write-Host \"No appropriate version\"",
-            "   break",
-            "}"
-        ]
-    },
+    "hash": "a7e98dad834c530b488a4b90267c154e153ea662ba5fdd96dd8b72674c166d29",
     "checkver": {
-        "url": "https://api.github.com/repos/Aleksoid1978/VideoRenderer/releases/latest",
-        "regex": "MpcVideoRenderer-(?<version>[\\d\\.]{10}).zip"
+        "url": "https://github.com/Aleksoid1978/VideoRenderer",
+        "regex": "MPC Video Renderer ([\\d.]+)"
     },
     "autoupdate": {
-        "url": "https://github.com/Aleksoid1978/VideoRenderer/releases/download/$majorVersion.$minorVersion.$patchVersion/MpcVideoRenderer-$version.zip",
-        "hash": {
-            "url": "https://github.com/Aleksoid1978/VideoRenderer/releases/download/$majorVersion.$minorVersion.$patchVersion/mpc_vr.$majorVersion.$minorVersion.$patchVersion.checksums.sha"
-        }
+        "url": "https://github.com/Aleksoid1978/VideoRenderer/releases/download/$matchHead/MpcVideoRenderer-$version.zip"
     }
 }
