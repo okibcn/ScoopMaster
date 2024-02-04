@@ -1,0 +1,72 @@
+{
+    "version": "0.75.69",
+    "description": "A simple Package Editor you can use to extract, create and edit .package files used in The Sims 2",
+    "homepage": "https://modthesims.info/d/30839",
+    "license": "GPL-2.0",
+    "notes": [
+        "This software requires .NET Framework 2.0. You have to enable .NET Framework 3.5 in Windows Features located at Control Panel.",
+        "Since .NET Framework 3.5 is sharing the same version of CLR 2.0 with .NET Framework 2.0 and 3.0 and is built incrementally on top of earlier versions,",
+        "You don't have to install 2.0 version separately.",
+        "",
+        "Since the authors of this software are bundling notable plugins in every release, I've separated user installed plugins from the main package by creating a folder called \"MyPlugins\".",
+        "The directory will be persisted. You can make a symbolic link or hard link for the plugins to the parent directory to use in SimPE.",
+        "To make a symbolic link in PowerShell, use this command: New-Item -ItemType SymbolicLink -Path \"$dir\\Plugins\\YourPlugin.dll\" -Target \"$dir\\Plugins\\MyPlugins\\YourPlugin.dll\".",
+        "If you have any trouble with this software regarding persist data, please let this manifest maintainer know by creating an issue at https://github.com/Capella87/capella-bucket/issues/new",
+        "",
+        "Recent version of SimPe is no longer working as portable properly, because the current contributor of SimPe disactivate portable option in source code.",
+        "That means all of data are stored under AppData\\Roaming\\SimPe"
+    ],
+    "url": "https://simfileshare.net/download/3500590/#/download.zip",
+    "hash": "40b5299e406648f95f4ccefb8481cd3299ddad970dee1023d38a76e3321626c1",
+    "post_install": [
+        "New-Item -Type Directory -Path $dir -Target \".\\Bodyshop Sim Templates\"",
+        "New-Item -Type Directory -Path $dir -Target .\\Data",
+        "New-Item -Type Directory -Path $dir -Target .\\Neighbourhoods",
+        "New-Item -Type Directory -Path $dir -Target .\\Teleport",
+        "New-Item -Type Directory -Path $dir -Target .\\Plugins\\MyPlugins\\"
+    ],
+    "bin": [
+        "EPselector.exe",
+        "SettingManager.exe",
+        "SimPe.exe",
+        "Sims2Tools.exe",
+        "Wizards of SimPe.exe"
+    ],
+    "shortcuts": [
+        [
+            "EPselector.exe",
+            "EPselector"
+        ],
+        [
+            "SettingManager.exe",
+            "SettingManager"
+        ],
+        [
+            "SimPe.exe",
+            "SimPe"
+        ],
+        [
+            "Sims2Tools.exe",
+            "Sims2Tools"
+        ],
+        [
+            "Wizards of SimPe.exe",
+            "Wizards of SimPe"
+        ]
+    ],
+    "persist": [
+        "Bodyshop Sim Templates",
+        "Data",
+        "Neighbourhoods",
+        "Plugins\\MyPlugins",
+        "Teleport"
+    ],
+    "checkver": {
+        "url": "https://simfileshare.net/folder/77372/",
+        "regex": "<a href=\"/download/(?<downloadLinkNumber>[\\d]+)/\">SimPe_(\\d+)_(\\d+)_(\\d+).zip",
+        "replace": "${1}.${2}.${3}"
+    },
+    "autoupdate": {
+        "url": "https://simfileshare.net/download/$matchDownloadlinknumber/#/download.zip"
+    }
+}
