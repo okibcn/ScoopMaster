@@ -15,11 +15,12 @@
         "persist -dir @(\"$env:AppData\\tts-vue\") @(\"$persist_dir\\tts-vue\")",
         "create_app_lnk \"$dir\\tts-vue.exe\" \"$desktop\\tts-vue.lnk\"",
         "create_app_lnk \"$dir\\tts-vue.exe\" \"$scoop_apps_lnk\\tts-vue.lnk\"",
-        "clean_redundant_files @($path_exe,\"$apps_lnk\\tts-vue.lnk\") 10"
+        "clean_redundant_files @($path_exe,\"$apps_lnk\\tts-vue.lnk\") 60"
     ],
     "pre_uninstall": [
         "$ErrorActionPreference=\"SilentlyContinue\"",
         "& \"$dir\\Uninstall tts-vue.exe\" /S",
+        "Start-Sleep -S 3",
         "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
         ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
         "stop_process",
