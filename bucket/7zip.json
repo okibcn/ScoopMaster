@@ -1,11 +1,9 @@
 {
     "version": "24.01",
-    "description": "具有高压缩比的多格式文件归档器。A multi-format file archiver with high compression ratios.",
+    "description": "A multi-format file archiver with high compression ratios",
     "homepage": "https://www.7-zip.org/",
-    "license": {
-        "identifier": "GNU Lesser General Public License v3.0",
-        "url": "https://github.com/sparanoid/7z/blob/master/LICENSE"
-    },
+    "license": "LGPL-2.1-or-later",
+    "notes": "Add 7-Zip as a context menu option by running: \"$dir\\install-context.reg\"",
     "architecture": {
         "64bit": {
             "url": "https://www.7-zip.org/a/7z2401-x64.msi",
@@ -28,6 +26,17 @@
             ]
         }
     },
+    "post_install": [
+        "$7zip_root = \"$dir\".Replace('\\', '\\\\')",
+        "'install-context.reg', 'uninstall-context.reg' | ForEach-Object {",
+        "    $content = Get-Content \"$bucketsdir\\apps\\scripts\\7-zip\\$_\"",
+        "    $content = $content.Replace('$7zip_root', $7zip_root)",
+        "    if ($global) {",
+        "       $content = $content.Replace('HKEY_CURRENT_USER', 'HKEY_LOCAL_MACHINE')",
+        "    }",
+        "    Set-Content \"$dir\\$_\" $content -Encoding Ascii",
+        "}"
+    ],
     "bin": [
         "7z.exe",
         "7zFM.exe",
@@ -36,35 +45,12 @@
     "shortcuts": [
         [
             "7zFM.exe",
-            "7zip"
+            "7-Zip"
         ]
     ],
-    "post_install": [
-        "$7zip_root = \"$dir\".Replace('\\', '\\\\')",
-        "'install-context.reg', 'uninstall-context.reg' | ForEach-Object {",
-        "    $content = Get-Content \"$bucketsdir\\$bucket\\scripts\\7-zip\\$_\"",
-        "    $content = $content.Replace('$7zip_root', $7zip_root)",
-        "    if ($global) {",
-        "       $content = $content.Replace('HKEY_CURRENT_USER', 'HKEY_LOCAL_MACHINE')",
-        "    }",
-        "    Set-Content \"$dir\\$_\" $content -Encoding Ascii",
-        "}",
-        "reg import \"$dir\\install-context.reg\"",
-        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-        "create_app_lnk \"$dir\\7zFM.exe\" \"$desktop\\7z File Manager.lnk\""
-    ],
-    "pre_uninstall": [
-        "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
-        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-        "stop_process $false",
-        "if ($cmd -eq 'uninstall') {",
-        "   reg import \"$dir\\uninstall-context.reg\"",
-        "}",
-        "remove_files @(\"$desktop\\7z File Manager.lnk\")",
-        "Write-Host \"\"",
-        "confirm $(data_replace $json.stop_explorer)",
-        "Stop-Process -Name \"explorer\" -Force",
-        "Start-Process explorer.exe"
+    "persist": [
+        "Codecs",
+        "Formats"
     ],
     "checkver": {
         "url": "https://www.7-zip.org/download.html",
