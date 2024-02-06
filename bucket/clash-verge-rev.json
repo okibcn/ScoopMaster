@@ -19,12 +19,10 @@
     "post_install": [
         "if (!(Test-Path \"$persist_dir\\.config\\PORTABLE\")) {",
         "    New-Item -Path \"$persist_dir\\.config\\PORTABLE\" -ItemType file | Out-Null",
-        "}",
-        "Start-Process \"$dir\\resources\\install-service.exe\" -Wait -Verb 'RunAs' -WindowStyle 'Hidden';"
+        "}"
     ],
     "pre_uninstall": [
         "if (!(is_admin)) { error \"$app requires admin rights to $cmd\"; break }",
-        "$processdir = appdir $app $global | Convert-Path; Get-Process | Where-Object { $_.Path -like \"$processdir\\*\" } | Stop-Process -Force; ",
         "Start-Process \"$dir\\resources\\uninstall-service.exe\" -Wait -Verb 'RunAs' -WindowStyle 'Hidden'; Start-Sleep -Seconds 3"
     ],
     "checkver": "github",
