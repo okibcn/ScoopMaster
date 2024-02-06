@@ -1,34 +1,47 @@
 {
     "version": "1.8.4",
+    "homepage": "https://gajim.org/",
     "description": "A fully-featured XMPP client",
-    "homepage": "https://gajim.org",
-    "license": "GPL-3.0",
+    "license": "GPL-3.0-or-later",
     "architecture": {
         "64bit": {
-            "url": "https://gajim.org/downloads/1.8/Gajim-Portable-1.8.4-64bit.exe#/gajim-portable.exe",
+            "url": "https://gajim.org/downloads/1.8/Gajim-Portable-1.8.4-64bit.exe#/dl.7z",
             "hash": "70a005ef8037f24470eb35468c7056dcb094a4f7204568dd5e7a6fb0f9dd640d"
         }
     },
-    "bin": "bin/Gajim.exe",
     "shortcuts": [
         [
-            "bin/Gajim.exe",
+            "bin\\Gajim.exe",
             "Gajim"
+        ],
+        [
+            "bin\\Gajim-Debug.exe",
+            "Gajim (Debug)"
         ]
     ],
-    "persist": "UserData",
-    "installer": {
-        "file": "gajim-portable.exe",
-        "args": "\" /S /LANG=en /D=$dir \""
-    },
+    "post_install": [
+        "Remove-Item \"$dir\\`$PLUGINSDIR\" -Recurse",
+        "Write-Host 'Registering the XMPP Protocol...'",
+        "New-Item 'HKCU:\\SOFTWARE\\Classes\\xmpp\\shell\\open\\command' -Value \"\"\"$dir\\bin\\Gajim.exe\"\" \"\"%1\"\"\" -Force | Out-Null",
+        "New-Item 'HKCU:\\SOFTWARE\\Classes\\xmpp\\DefaultIcon' -Value \"$dir\\bin\\Gajim.exe,1\" -Force | Out-Null",
+        "New-ItemProperty 'HKCU:\\SOFTWARE\\Classes\\xmpp\\shell\\open' -Name 'FriendlyAppName' -PropertyType 'String' -Value 'Gajim' | Out-Null",
+        "New-ItemProperty 'HKCU:\\SOFTWARE\\Classes\\xmpp' -Name '(Default)' -PropertyType 'String' -Value 'URL:xmpp-uri' | Out-Null",
+        "New-ItemProperty 'HKCU:\\SOFTWARE\\Classes\\xmpp' -Name 'URL Protocol' -PropertyType 'String' -Value '' | Out-Null",
+        "Write-Host 'Done!'"
+    ],
+    "pre_uninstall": "Write-Host 'Unregistering the XMPP Protocol...'; Remove-Item 'HKCU:\\SOFTWARE\\Classes\\xmpp' -Force -Recurse; Write-Host 'Done!'",
+    "persist": [
+        "UserData",
+        "var\\cache"
+    ],
     "checkver": {
-        "url": "https://dev.gajim.org/api/v4/projects/30/releases/permalink/latest",
-        "jsonpath": "$.tag_name"
+        "url": "https://gajim.org/current-version.json",
+        "jsonpath": "$.current_version"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://gajim.org/downloads/$majorVersion.$minorVersion/Gajim-Portable-$version-64bit.exe"
+                "url": "https://gajim.org/downloads/$majorVersion.$minorVersion/Gajim-Portable-$version-64bit.exe#/dl.7z"
             }
         }
     }
