@@ -1,13 +1,13 @@
 {
-    "version": "20240206.7722534",
+    "version": "20240207.67e3821",
     "description": "Smiley Sans (得意黑, Dev version from Github Actions). A condensed and oblique Chinese typeface seeking a visual balance between the humanist and the geometric.",
     "homepage": "https://atelier-anchor.com/typefaces/smiley-sans/",
     "license": {
         "identifier": "OFL-1.1",
         "url": "https://github.com/atelier-anchor/smiley-sans/raw/main/LICENSE"
     },
-    "url": "https://nightly.link/atelier-anchor/smiley-sans/actions/runs/7802417915/smiley-sans.zip",
-    "hash": "7ff2239004c7d921efcc6b78cbb0bf845f164c8dd18aba3cbfb0aa44827541a3",
+    "url": "https://nightly.link/atelier-anchor/smiley-sans/actions/runs/7813340859/smiley-sans.zip",
+    "hash": "6009ffd7966e543ca18576e760627b0ad737cd73160a2d014ecb5b62d542d3ef",
     "installer": {
         "script": [
             "$currentBuildNumber = [int] (Get-ItemProperty \"HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\").CurrentBuildNumber",
@@ -29,6 +29,7 @@
             "$fontInstallDir = if ($global) { \"$env:windir\\Fonts\" } else { \"$env:LOCALAPPDATA\\Microsoft\\Windows\\Fonts\" }",
             "if (-not $global) {",
             "    # Ensure user font install directory exists and has correct permission settings",
+            "    # See https://github.com/matthewjberger/scoop-nerd-fonts/issues/198#issuecomment-1488996737",
             "    New-Item $fontInstallDir -ItemType Directory -ErrorAction SilentlyContinue | Out-Null",
             "    $accessControlList = Get-Acl $fontInstallDir",
             "    $allApplicationPackagesAccessRule = New-Object System.Security.AccessControl.FileSystemAccessRule([System.Security.Principal.SecurityIdentifier]::new(\"S-1-15-2-1\"), \"ReadAndExecute\", \"ContainerInherit,ObjectInherit\", \"None\", \"Allow\")",
