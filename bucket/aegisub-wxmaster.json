@@ -1,0 +1,59 @@
+{
+    "homepage": "https://github.com/arch1t3cht/Aegisub",
+    "description": "Free open source tool for creating and modifying subtitles",
+    "version": "feature_11",
+    "license": {
+        "identifier": "Unknown",
+        "url": "https://github.com/arch1t3cht/Aegisub/blob/feature/LICENCE"
+    },
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/arch1t3cht/Aegisub/releases/download/feature_11/Windows.MSVC.Release.wx.master.-.portable.zip",
+            "hash": "14b6fd29a5017154b1a382b30fe4ac6e54e872cebd55b12923b194c87824d474",
+            "installer": {
+                "script": [
+                    "New-Item \"$dir\\hotkey.json\", \"$dir\\mru.json\", \"$dir\\shift_history.json\" -Force -ErrorAction SilentlyContinue | Out-Null",
+                    "Expand-7zipArchive \"$dir\\aegisub-portable-64.zip\" -ExtractDir 'aegisub-portable' -Removal"
+                ]
+            }        
+        }
+    },
+    "shortcuts": [
+        [
+            "aegisub.exe",
+            "Aegisub"
+        ]
+    ],
+    "persist": [
+        "config.json",
+        "hotkey.json",
+        "mru.json",
+        "shift_history.json",
+        "autoback",
+        "automation\\autoload",
+        "automation\\vapoursynth",
+        "autosave",
+        "catalog",
+        "config",
+        "crashdumps",
+        "dictionaries",
+        "feedDump",
+        "ffms2cache",
+        "log"
+    ],
+    "bin": "aegisub.exe",
+    "post_install": [
+        "Invoke-WebRequest https://github.com/LibreOffice/dictionaries/raw/master/en/en_US.dic -OutFile \"$dir\\dictionaries\\en_US.dic\"",
+        "Invoke-WebRequest https://github.com/LibreOffice/dictionaries/raw/master/en/en_US.aff -OutFile \"$dir\\dictionaries\\en_US.aff\"",
+        "Invoke-WebRequest https://github.com/arch1t3cht/Aegisub/raw/$version/automation/vapoursynth/aegisub_vs.py -OutFile \"$dir\\automation\\vapoursynth\\aegisub_vs.py\"",
+        "Get-ChildItem -Path \"$dir\" -Force -Recurse -Include *.original | Remove-Item -Recurse -Force -Confirm:$false"
+    ],
+    "checkver": "releases/tag/([\\w_]+)",
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/arch1t3cht/Aegisub/releases/download/$version/Windows.MSVC.Release.wx.master.-.portable.zip"
+            }
+        }
+    }
+}
