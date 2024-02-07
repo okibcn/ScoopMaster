@@ -1,54 +1,47 @@
 {
-    "description": "Chatbox is a desktop app for GPT-4 / GPT-3.5 (OpenAI API)",
-    "homepage": "https://github.com/Bin-Huang/chatbox",
-    "license": "GPL-3.0-only",
     "version": "1.2.2",
-    "checkver": "github",
-    "autoupdate": {
-        "url": "https://github.com/Bin-Huang/chatbox/releases/download/v$version/Chatbox-$version-Setup.exe#/setup.7z",
-        "hash": {
-            "mode": "download"
+    "description": "A desktop app for ChatGPT API (OpenAI API) that supports Windows, Mac & Linux. 开源的 ChatGPT 桌面应用，prompt 开发神器，全平台支持",
+    "homepage": "https://github.com/Bin-Huang/chatbox",
+    "license": {
+        "identifier": "GPL-3.0 license",
+        "url": "https://github.com/Bin-Huang/chatbox/blob/main/LICENSE"
+    },
+    "url": "https://github.com/Bin-Huang/chatbox/releases/download/v1.2.2/Chatbox-1.2.2-Setup.exe#/dl.7z",
+    "hash": "b9a7c561368cb0541ffca340101afb6db62e4be4a242d2a1d4b4d9c4620ab503",
+    "architecture": {
+        "64bit": {
+            "pre_install": [
+                "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\"",
+                "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\`$R0\" -Force -Recurse"
+            ]
+        },
+        "arm64": {
+            "pre_install": [
+                "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-arm64.7z\" \"$dir\"",
+                "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\`$R0\" -Force -Recurse"
+            ]
         }
     },
-    "url": "https://github.com/Bin-Huang/chatbox/releases/download/v1.2.2/Chatbox-1.2.2-Setup.exe#/setup.7z",
-    "hash": "b9a7c561368cb0541ffca340101afb6db62e4be4a242d2a1d4b4d9c4620ab503",
+    "installer": {
+        "script": [
+            "ensure \"$persist_dir\" | Out-Null",
+            "New-Item \"$env:APPDATA\\xyz.chatboxapp.app\" -ItemType Junction -Target \"$persist_dir\" | Out-Null"
+        ]
+    },
+    "uninstaller": {
+        "script": "Remove-Item \"$env:APPDATA\\xyz.chatboxapp.app\" -Recurse -Force -ErrorAction 'SilentlyContinue'"
+    },
     "shortcuts": [
         [
             "Chatbox.exe",
-            "ChatGPT"
+            "Chatbox"
         ]
     ],
-    "installer": {
-        "script": [
-            "Move-Item -Path \"$dir\\`$PLUGINSDIR\\*\" -Destination $dir\\ -Force",
-            "Move-Item -Path \"$dir\\`$R0\\*\" -Destination $dir\\ -Force",
-            "Remove-Item -Path \"$dir\\`$PLUGINSDIR\" -Recurse -Force",
-            "Remove-Item -Path \"$dir\\`$R0\" -Recurse -Force",
-            "7z x -o\"$dir\" \"$dir\\app-64.7z\" -y | Out-Null",
-            "Remove-Item -Path \"$dir\\app-64.7z\" -Force"
-        ]
+    "checkver": {
+        "url": "https://api.github.com/repos/Bin-Huang/chatbox/releases",
+        "regex": "/releases/tag/v([\\d.]+)"
     },
-    "post_install": [
-        "if (Get-Command magick -ErrorAction SilentlyContinue) {",
-        "   Push-Location $dir",
-        "   Invoke-WebRequest https://cdn.openai.com/brand/openai-logos.zip -OutFile openai-logos.zip",
-        "   Expand-Archive openai-logos.zip -DestinationPath logos",
-        "   Move-Item -Path logos\\openai-logos\\SVGs\\openai-logomark.svg -Destination logo.svg",
-        "   Remove-Item -Path openai-logos.zip",
-        "   Remove-Item -Path logos -Recurse",
-        "   magick -size 256x256 xc:none -fill \"#1ea078\" -draw \"circle 128,128 128,0\" logo_circle.png",
-        "   magick convert -density 128x128 -background transparent logo.svg -define icon:auto-resize -colors 256 logo.png",
-        null,
-        "   magick logo.png -resize 150x150 logo_resized.png",
-        "   magick composite -gravity center logo_resized.png logo_circle.png OpenAI.ico",
-        "   Remove-Item logo*",
-        "   $shortcutPath = Join-Path -Path (Convert-Path([System.IO.Path]::Combine([Environment]::GetFolderPath($global ? 'CommonStartMenu':'StartMenu'), 'Programs', 'Scoop Apps'))) -ChildPath 'ChatGPT.lnk'",
-        "   Copy-Item -Path $shortcutPath -Destination OriginalShortcut.lnk",
-        "   $shortcut = (New-Object -ComObject WScript.Shell).CreateShortcut($shortcutPath)",
-        "   $shortcut.IconLocation = (Join-Path -Path $dir -ChildPath 'OpenAI.ico')",
-        "   $shortcut.Save()",
-        "   Pop-Location",
-        "   Write-Host 'A custom icon has been set for the shortcut. The original shortcut is saved as OriginalShortcut.lnk in the app folder.'",
-        "}"
-    ]
+    "autoupdate": {
+        "url": "https://github.com/Bin-Huang/chatbox/releases/download/v$version/Chatbox-$version-Setup.exe#/dl.7z"
+    }
 }

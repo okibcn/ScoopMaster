@@ -1,36 +1,21 @@
 {
     "version": "25.50.0100",
-    "description": "一个 Windows 上的第三方文件管理器。A file manager for Windows.",
-    "homepage": "https://www.xyplorer.com/index.php",
-    "license": {
-        "identifier": "Proprietary",
-        "url": "https://www.xyplorer.com/purchase.php"
-    },
+    "description": "File manager that features tabbed browsing, a powerful file search, a versatile preview, a highly customizable interface, an optional dual pane, and many unique ways to efficiently automate repetitive tasks.",
+    "homepage": "https://www.xyplorer.com",
+    "license": "Proprietary",
     "url": "https://www.xyplorer.com/download/xyplorer_full_noinstall.zip",
-    "hash": "2a2bd7ebab92d0f4025d6d2ed8330fbd1a8068602e3ed43fb4316cc829fe7274",
-    "bin": "XYplorer.exe",
+    "hash": "",
     "shortcuts": [
         [
             "XYplorer.exe",
             "XYplorer"
         ]
     ],
-    "post_install": [
-        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-        "persist -dir @(\"$dir\\Data\") @(\"$persist_dir\\Data\")",
-        "create_app_lnk \"$dir\\XYplorer.exe\" \"$desktop\\XYplorer.lnk\""
-    ],
-    "pre_uninstall": [
-        "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
-        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-        "stop_process",
-        "remove_files @(\"$desktop\\XYplorer.lnk\")"
-    ],
-    "checkver": {
-        "url": "https://www.xyplorer.com/download.php",
-        "regex": "Version.+>([\\d\\.]+)"
-    },
+    "checkver": "XYplorer.*(\\d{2}\\.\\d{2}\\.\\d{4}), release",
     "autoupdate": {
-        "url": "https://www.xyplorer.com/download/xyplorer_full_noinstall.zip"
+        "hash": {
+            "url": "https://www.xyplorer.com/download/XYHash-$version.txt",
+            "regex": "/File: xyplorer_full_noinstall\\.zip.*SHA-256\\s*(.{64}).*File: xyplorer_full_noinstall\\.rar/s"
+        }
     }
 }
