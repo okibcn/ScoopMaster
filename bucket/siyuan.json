@@ -1,35 +1,31 @@
 {
     "version": "2.12.7",
-    "description": "一款隐私优先的个人知识管理系统，支持完全离线使用，同时也支持端到端加密同步。融合块、大纲和双向链接，重构你的思维。A privacy-first personal knowledge management system that supports complete offline usage, as well as end-to-end encrypted data sync. Fuse blocks, outlines, and bidirectional links to refactor your thinking.",
-    "homepage": "https://b3log.org/siyuan/",
+    "description": "SiYuan is a local-first personal knowledge management system, support fine-grained block-level reference and Markdown instant-render editing.",
+    "homepage": "https://github.com/siyuan-note/siyuan",
     "license": {
-        "identifier": "GNU Affero General Public License v3.0",
-        "url": "https://github.com/siyuan-note/siyuan/blob/master/LICENSE"
+        "identifier": "Unknown"
     },
-    "url": "https://github.com/siyuan-note/siyuan/releases/download/v2.12.7/siyuan-2.12.7-win.exe",
+    "depends": "7zip",
+    "url": "https://github.com/siyuan-note/siyuan/releases/download/v2.12.7/siyuan-2.12.7-win.exe#/dl.7z",
     "hash": "087d7e3101982dc01ff5b111701b5d52d470e0a55ac763fe40247b7b813cc48d",
     "pre_install": [
-        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-        "$path_exe=\"$dir\\siyuan-$($version)-win.exe\"",
-        "& $path_exe /S /D=$dir",
-        "persist -dir @(\"$env:AppData\\SiYuan\",\"$env:AppData\\SiYuan-Electron\") @(\"$persist_dir\\SiYuan\",\"$persist_dir\\SiYuan-Electron\")",
-        "create_app_lnk \"$dir\\SiYuan.exe\" \"$desktop\\SiYuan.lnk\"",
-        "create_app_lnk \"$dir\\SiYuan.exe\" \"$scoop_apps_lnk\\SiYuan.lnk\"",
-        "clean_redundant_files @(\"$apps_lnk\\SiYuan.lnk\",$path_exe) 60"
+        "7z x \"$dir\\`$PLUGINSDIR\\*.7z\" -o\"$dir\\`$PLUGINSDIR\\siyuan\"",
+        "Remove-Item -R -Path $dir\\resources",
+        "Move-Item $dir\\`$PLUGINSDIR\\siyuan\\* $dir -force",
+        "Remove-Item -R -Path $dir\\`$PLUGINSDIR"
     ],
-    "pre_uninstall": [
-        "$ErrorActionPreference=\"SilentlyContinue\"",
-        "& \"$dir\\Uninstall SiYuan.exe\" /S",
-        "Start-Sleep -S 3",
-        "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
-        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-        "stop_process",
-        "remove_files @(\"$desktop\\SiYuan.lnk\",\"$scoop_apps_lnk\\SiYuan.lnk\",\"$env:AppData\\SiYuan\",\"$env:AppData\\SiYuan-Electron\",\"$env:LocalAppData\\siyuan-updater\")"
+    "bin": "SiYuan.exe",
+    "shortcuts": [
+        [
+            "SiYuan.exe",
+            "SiYuan"
+        ]
     ],
     "checkver": {
-        "github": "https://github.com/siyuan-note/siyuan"
+        "url": "https://github.com/siyuan-note/siyuan/releases",
+        "regex": "/releases/tag/v(?<version>.+?)\""
     },
     "autoupdate": {
-        "url": "https://github.com/siyuan-note/siyuan/releases/download/v$version/siyuan-$version-win.exe"
+        "url": "https://github.com/siyuan-note/siyuan/releases/download/v$version/siyuan-$version-win.exe#/dl.7z"
     }
 }
