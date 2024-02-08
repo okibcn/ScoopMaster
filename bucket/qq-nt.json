@@ -1,7 +1,6 @@
 {
     "version": "9.9.7.21453",
-    "description": "QQ Windows版 全新升级。沟通更便捷，功能更全面，不一样的QQ为你而来。",
-    "homepage": "https://im.qq.com/pcqq/index.shtml",
+    "homepage": "https://im.qq.com",
     "license": {
         "identifier": "Proprietary",
         "url": "https://ti.qq.com/agreement/index.html"
@@ -16,24 +15,36 @@
             "hash": "24727d77833a3a65db42acc9362232c29e256535c2a3c75b86834ecdddd01f28"
         }
     },
-    "bin": "Files\\QQ.exe",
+    "installer": {
+        "script": [
+            "$configpath = \"$env:PUBLIC\\Documents\\Tencent\\QQ\"",
+            "if (!(Test-Path \"$configpath\")) {",
+            "    New-Item -Path \"$configpath\" -Type Directory -Force | Out-Null",
+            "}",
+            "Set-Content -NoNewline -Path \"$configpath\\UserDataInfo.ini\" -Value \"[UserDataSet]`nUserDataSavePathType=2`nUserDataSavePath=$persist_dir\\QQ Files\""
+        ]
+    },
     "shortcuts": [
         [
             "Files\\QQ.exe",
             "QQ-NT"
         ]
     ],
+    "persist": "QQ Files",
+    "uninstaller": {
+        "script": "Remove-Item -Path \"$env:PUBLIC\\Documents\\Tencent\" -Recurse -Force | Out-Null"
+    },
     "checkver": {
         "url": "https://cdn-go.cn/qq-web/im.qq.com_new/latest/rainbow/windowsDownloadUrl.js",
-        "regex": "QQNT/(?<x86>[0-9a-f]+)/QQ(?<version>[\\d.]+)_x86.exe.*QQNT/(?<x64>[0-9a-f]+)/QQ(?<version>[\\d.]+)_x64.exe"
+        "regex": "QQNT/(?<Commitidx64>[0-9a-f]+)/QQ(?<Version>[\\d.]+)_x64.exe.*QQNT/(?<Commitidx86>[0-9a-f]+)/QQ(?<Version>[\\d.]+)_x86.exe|QQNT/(?<Commitidx86>[0-9a-f]+)/QQ(?<Version>[\\d.]+)_x86.exe.*QQNT/(?<Commitidx64>[0-9a-f]+)/QQ(?<Version>[\\d.]+)_x64.exe"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://dldir1.qq.com/qqfile/qq/QQNT/$matchX64/QQ$version_x64.exe#/dl.7z"
+                "url": "https://dldir1.qq.com/qqfile/qq/QQNT/$matchCommitidx64/QQ$matchVersion_x64.exe#/dl.7z"
             },
             "32bit": {
-                "url": "https://dldir1.qq.com/qqfile/qq/QQNT/$matchX86/QQ$version_x86.exe#/dl.7z"
+                "url": "https://dldir1.qq.com/qqfile/qq/QQNT/$matchCommitidx86/QQ$matchVersion_x86.exe#/dl.7z"
             }
         }
     }
