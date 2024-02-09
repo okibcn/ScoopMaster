@@ -1,7 +1,8 @@
 {
-    "homepage": "http://www.bookxnote.com/",
-    "license": "Proprietary",
     "version": "2.0.0.1121",
+    "description": "[BookxNote Pro] 一款全新的电子书学习工具，助力您的学习与思考，让您的大脑更高效的记忆",
+    "homepage": "http://www.bookxnote.com",
+    "license": "Freeware",
     "architecture": {
         "64bit": {
             "url": "http://www.bookxnote.com/setup/bookxnotepro-windows-x64-2.0.0.1121-20240206.zip",
@@ -12,12 +13,10 @@
             "hash": "c70ad0f9a243092182aceb371cc9abafcb0f81654eea1db36b3fe0a5d99dc033"
         }
     },
-    "installer": {
-        "script": [
-            "$exefile = (Get-ChildItem \"$dir\" '*.exe' | Select-Object -First 1).FullName",
-            "Expand-7ZipArchive \"$exefile\" \"$dir\" -Removal"
-        ]
-    },
+    "pre_install": [
+        "Expand-7zipArchive \"$dir\\bookxnotepro-windows-*.exe\" \"$dir\"",
+        "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\uninst*nsis\", \"$dir\\bookxnotepro-windows-*.exe\" -Recurse"
+    ],
     "bin": "BookxNotePro.exe",
     "shortcuts": [
         [
@@ -25,7 +24,9 @@
             "BookxNote Pro"
         ]
     ],
-    "checkver": "bookxnotepro-windows-x64-([\\d.]+)-(?<date>\\d{6,8}).zip",
+    "checkver": {
+        "regex": "bookxnotepro-windows-x64-([\\d.]+)-(?<date>\\d+).zip"
+    },
     "autoupdate": {
         "architecture": {
             "64bit": {
