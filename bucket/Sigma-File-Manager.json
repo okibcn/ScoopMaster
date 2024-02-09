@@ -12,18 +12,21 @@
         ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
         "$path_exe=\"$dir\\Sigma-File-Manager-$($version)-Windows-Setup.exe\"",
         "& $path_exe /S /D=$dir",
+        "$core_exe=\"$dir\\Sigma file manager.exe\"",
+        "sleep_install $core_exe",
         "persist -dir @(\"$env:AppData\\Sigma file manager\",\"$env:UserProfile\\.sigma-file-manager\") @(\"$persist_dir\\Sigma file manager\",\"$persist_dir\\.sigma-file-manager\")",
-        "create_app_lnk \"$dir\\Sigma file manager.exe\" \"$desktop\\Sigma file manager.lnk\"",
-        "create_app_lnk \"$dir\\Sigma file manager.exe\" \"$scoop_apps_lnk\\Sigma file manager.lnk\"",
-        "clean_redundant_files @($path_exe,\"$apps_lnk\\Sigma file manager.lnk\") 60"
+        "create_app_lnk $core_exe \"$desktop\\Sigma file manager.lnk\"",
+        "create_app_lnk $core_exe \"$scoop_apps_lnk\\Sigma file manager.lnk\"",
+        "clean_redundant_files @($path_exe,\"$apps_lnk\\Sigma file manager.lnk\") 15"
     ],
     "pre_uninstall": [
-        "$ErrorActionPreference=\"SilentlyContinue\"",
-        "& \"$dir\\Uninstall Sigma file manager.exe\" /S",
-        "Start-Sleep -S 3",
+
         "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
         ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-        "stop_process",
+        "stop_process $false",
+        "$ui_exe=\"$dir\\Uninstall Sigma file manager.exe\"",
+        "& $ui_exe /S",
+        "sleep_uninstall $ui_exe",
         "remove_files @(\"$desktop\\Sigma file manager.lnk\",\"$scoop_apps_lnk\\Sigma file manager.lnk\",\"$env:AppData\\Sigma file manager\",\"$env:UserProfile\\.sigma-file-manager\",\"$env:LocalAppData\\sigma-file-manager-updater\")"
     ],
     "checkver": "github",

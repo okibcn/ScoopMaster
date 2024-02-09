@@ -12,18 +12,21 @@
         ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
         "$path_exe=\"$dir\\jan-win-x64-$($version).exe\"",
         "& $path_exe /S /D=$dir",
+        "$core_exe=\"$dir\\jan.exe\"",
+        "sleep_install $core_exe",
         "persist -dir @(\"$env:AppData\\jan\",\"$env:UserProfile\\jan\") @(\"$persist_dir\\jan\",\"$persist_dir\\jan_user\")",
-        "create_app_lnk \"$dir\\jan.exe\" \"$desktop\\jan.lnk\"",
-        "create_app_lnk \"$dir\\jan.exe\" \"$scoop_apps_lnk\\jan.lnk\"",
-        "clean_redundant_files @($path_exe,\"$apps_lnk\\jan.lnk\") 60"
+        "create_app_lnk $core_exe \"$desktop\\jan.lnk\"",
+        "create_app_lnk $core_exe \"$scoop_apps_lnk\\jan.lnk\"",
+        "clean_redundant_files @($path_exe,\"$apps_lnk\\jan.lnk\") 15"
     ],
     "pre_uninstall": [
-        "$ErrorActionPreference=\"SilentlyContinue\"",
-        "& \"$dir\\Uninstall jan.exe\" /S",
-        "Start-Sleep -S 3",
+
         "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
         ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-        "stop_process",
+        "stop_process $false",
+        "$ui_exe=\"$dir\\Uninstall jan.exe\"",
+        "& $ui_exe /S",
+        "sleep_uninstall $ui_exe",
         "remove_files @(\"$desktop\\jan.lnk\",\"$scoop_apps_lnk\\jan.lnk\",\"$env:AppData\\jan\",\"$env:UserProfile\\jan\",\"$env:LocalAppData\\jan-updater\")"
     ],
     "checkver": {

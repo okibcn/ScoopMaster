@@ -26,18 +26,21 @@
         ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
         "$path_exe=\"$dir\\_installers_.exe\"",
         "& $path_exe /S /D=$dir",
+        "$core_exe=\"$dir\\nvm-desktop.exe\"",
+        "sleep_install $core_exe",
         "persist -dir @(\"$env:AppData\\NVM-Desktop\",\"$env:UserProfile\\.nvmd\") @(\"$persist_dir\\NVM-Desktop\",\"$persist_dir\\.nvmd\")",
-        "create_app_lnk \"$dir\\nvm-desktop.exe\" \"$desktop\\nvm-desktop.lnk\"",
-        "create_app_lnk \"$dir\\nvm-desktop.exe\" \"$scoop_apps_lnk\\nvm-desktop.lnk\"",
-        "clean_redundant_files @(\"$apps_lnk\\nvm-desktop.lnk\",$path_exe) 60"
+        "create_app_lnk $core_exe \"$desktop\\nvm-desktop.lnk\"",
+        "create_app_lnk $core_exe \"$scoop_apps_lnk\\nvm-desktop.lnk\"",
+        "clean_redundant_files @($path_exe,\"$apps_lnk\\nvm-desktop.lnk\") 15"
     ],
     "pre_uninstall": [
-        "$ErrorActionPreference=\"SilentlyContinue\"",
-        "& \"$dir\\Uninstall nvm-desktop.exe\" /S",
-        "Start-Sleep -S 3",
+
         "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
         ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-        "stop_process",
+        "stop_process $false",
+        "$ui_exe=\"$dir\\Uninstall nvm-desktop.exe\"",
+        "& $ui_exe /S",
+        "sleep_uninstall $ui_exe",
         "remove_files @(\"$desktop\\nvm-desktop.lnk\",\"$scoop_apps_lnk\\nvm-desktop.lnk\",\"$env:AppData\\NVM-Desktop\",\"$env:UserProfile\\.nvmd\",\"$env:LocalAppData\\nvm-desktop-updater\")"
     ],
     "checkver": "github",
