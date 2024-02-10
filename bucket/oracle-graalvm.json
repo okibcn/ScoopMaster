@@ -1,7 +1,7 @@
 {
     "version": "21.0.2",
     "description": "GraalVM is a high performance JDK that speeds up the performance of Java and JVM-based applications and simplifies the building and running of Java cloud native services.",
-    "homepage": "https://www.graalvm.org/",
+    "homepage": "https://www.oracle.com/java/graalvm/",
     "license": {
         "identifier": "Freeware",
         "url": "https://www.oracle.com/downloads/licenses/graal-free-license.html"
@@ -19,16 +19,9 @@
         "GRAALVM_HOME": "$dir"
     },
     "checkver": {
-        "script": [
-            "$relRes = $(Invoke-WebRequest https://docs.oracle.com/en/graalvm/).Content",
-            "$relRes -match 'Oracle GraalVM for JDK (\\d+)'",
-            "$major = $Matches.1",
-            "$verRes = $(Invoke-WebRequest \"https://docs.oracle.com/en/graalvm/jdk/$major/docs/release-notes/\").Content",
-            "$verRes -match 'Oracle GraalVM for JDK ([\\d.]+)</h1>'",
-            "$version = $Matches.1",
-            "\"$version-$major\""
-        ],
-        "regex": "([\\d.]+)-(?<jdk>\\d+)"
+        "url": "https://www.oracle.com/java/technologies/downloads/",
+        "useragent": "Mozilla/5.0",
+        "regex": "GraalVM for JDK ((?<jdk>\\d+)[\\d.]*) downloads"
     },
     "autoupdate": {
         "architecture": {
