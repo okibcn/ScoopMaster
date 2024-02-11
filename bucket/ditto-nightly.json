@@ -15,8 +15,13 @@
     },
     "extract_dir": "Ditto",
     "pre_install": [
-        "Test-Persistence 'Ditto.db'",
-        "Test-Persistence 'Ditto.Settings' -Content @('[Ditto]', 'DBPath3=Ditto.db')"
+        "Test-Persistence 'Ditto.Settings' -Content @('[Ditto]', 'DBPath3=Ditto.db')",
+        "Test-Persistence 'Ditto.db' -Execution {",
+        "    Write-Host 'File Ditto.db does not exists. Creating.' -f Yellow",
+        "    Start-Process \"$dir\\Ditto.exe\"",
+        "    Start-Sleep -Milliseconds 500",
+        "    Start-Process \"$dir\\Ditto.exe\" /exit",
+        "}"
     ],
     "bin": "Ditto.exe",
     "shortcuts": [
