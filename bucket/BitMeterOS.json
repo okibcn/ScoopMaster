@@ -1,0 +1,38 @@
+{
+    "version": "0.7.6",
+    "description": "一个带命令行的网络监控工具。A networking monitoring with command line tool.",
+    "homepage": "https://codebox.net/pages/bitmeteros-downloads",
+    "license": {
+        "identifier": "GNU General Public License v3.0",
+        "url": "https://github.com/codebox/bitmeteros/blob/master/LICENSE.txt"
+    },
+    "url": "https://codebox.net/downloads/bitmeteros/windows#/dl.zip",
+    "hash": "2e60ee29c0e67182934fa4ccaa18e3469e84f38fbf239055d87601e3005b6b59",
+    "bin": [
+        "bmclient.exe",
+        "BitMeterWeb.exe",
+        "BitMeterCapture.exe"
+    ],
+    "pre_install": [
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "$path_exe=\"$dir\\BitMeterOSInstaller.exe\"",
+        "& $path_exe /S /D=$dir",
+        "$core_exe=\"$dir\\bmclient.exe\"",
+        "sleep_install $core_exe",
+        "clean_redundant_files @($path_exe) 60"
+    ],
+    "pre_uninstall": [
+        "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "stop_process $false",
+        "$ui_exe=\"$dir\\uninstall.exe\"",
+        "& $ui_exe /S",
+        "sleep_uninstall $ui_exe"
+    ],
+    "checkver": {
+        "regex": "BitMeter OS v([\\d\\.]+) \\(stable\\)"
+    },
+    "autoupdate": {
+        "url": "https://codebox.net/downloads/bitmeteros/windows#/dl.zip"
+    }
+}
