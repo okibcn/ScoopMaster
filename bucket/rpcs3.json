@@ -1,36 +1,35 @@
 {
-    "version": "0.0.30-16085",
+    "version": "0.0.30-16087",
     "description": "Sony PlayStation 3 emulator",
     "homepage": "https://rpcs3.net/",
     "license": {
-        "url": "https://github.com/RPCS3/rpcs3/blob/master/LICENSE",
-        "identifier": "GPL-2.0"
+        "identifier": "GPL-2.0",
+        "url": "https://github.com/RPCS3/rpcs3/blob/master/LICENSE"
     },
+    "notes": [
+        "ATTENTION: RPCS3 requires a copy of the official PS3 firmware to function.",
+        "Install the ps3-system-software package.  You must still manually load PS3UPDAT.PUP",
+        "See the official quickstart guide for further instructions: https://rpcs3.net/quickstart"
+    ],
     "depends": "ps3-system-software",
     "suggest": {
-        "Microsoft Visual C++ Runtime 2019": "extras/vcredist2019"
+        "Microsoft Visual C++ Runtime 2022": "extras/vcredist2022"
     },
-    "architecture": {
-        "64bit": {
-            "url": "https://github.com/rpcs3/rpcs3-binaries-win/releases/download/build-148edc005a45b21c4c9c8250ed8548e05a368516/rpcs3-v0.0.30-16085-148edc00_win64.7z",
-            "hash": "3c4adad838b3014870c595494b7d53964a42e9263fc76aeac3f1dc9558fb90be"
-        }
-    },
-    "installer": {
-        "script": [
-            "if (!(Test-Path \"$persist_dir\\config.yml\")) {",
-            "    New-Item \"$dir\\config.yml\" -Type File | Out-Null",
-            "}",
-            "if (!(Test-Path \"$persist_dir\\games.yml\")) {",
-            "    New-Item \"$dir\\games.yml\" -Type File | Out-Null",
-            "}"
-        ]
-    },
+    "url": "https://github.com/rpcs3/rpcs3-binaries-win/releases/download/build-77ba2b40e7a6b9a2bd559c41977938d3c6efbd97/rpcs3-v0.0.30-16087-77ba2b40_win64.7z",
+    "hash": "c2db4b18d6004e393940e2814ade24c9893aa122ee97c6d87c6ec6ca9f05593e",
+    "pre_install": [
+        "if (!(Test-Path \"$persist_dir\")) {",
+        "   New-Item \"$persist_dir\" -ItemType Directory | Out-Null",
+        "   New-Item \"$persist_dir\\config.yml\" -ItemType File | Out-Null",
+        "   New-Item \"$persist_dir\\games.yml\" -ItemType File | Out-Null",
+        "   '[Meta]', 'checkUpdateStart=false' | Set-Content \"$dir\\GuiConfigs\\CurrentSettings.ini\"",
+        "}"
+    ],
     "bin": "rpcs3.exe",
     "shortcuts": [
         [
             "rpcs3.exe",
-            "RPCS3"
+            "Sony PlayStation 3 [ps3][rpcs3]"
         ]
     ],
     "persist": [
@@ -61,10 +60,5 @@
             "url": "https://rpcs3.net/compatibility?b",
             "regex": "Windows SHA-256: ($sha256)"
         }
-    },
-    "notes": [
-        "ATTENTION: RPCS3 requires a copy of the official PS3 firmware to function.",
-        "Install the ps3-system-software package.  You must still manually load PS3UPDAT.PUP",
-        "See the official quickstart guide for further instructions: https://rpcs3.net/quickstart"
-    ]
+    }
 }
