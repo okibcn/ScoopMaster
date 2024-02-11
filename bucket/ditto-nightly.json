@@ -1,0 +1,48 @@
+{
+    "version": "nightly.3_24_294_0.20240129",
+    "description": "An enhanced clipboard manager",
+    "homepage": "https://ditto-cp.sourceforge.io",
+    "license": "GPL-3.0-only",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/sabrogden/Ditto/releases/download/nightly/DittoPortable_64bit_3_24_294_0.zip",
+            "hash": "f37dafe411857a872ba35943e7bab087a275feeb9080f180c3d33389d9676114"
+        },
+        "32bit": {
+            "url": "https://github.com/sabrogden/Ditto/releases/download/nightly/DittoPortable_3_24_294_0.zip",
+            "hash": "c1f2440e5926be6b360d425b999dcb2bb39838cfa248ba9efe83831b6a0b9d13"
+        }
+    },
+    "extract_dir": "Ditto",
+    "pre_install": [
+        "Test-Persistence 'Ditto.db'",
+        "Test-Persistence 'Ditto.Settings' -Content @('[Ditto]', 'DBPath3=Ditto.db')"
+    ],
+    "bin": "Ditto.exe",
+    "shortcuts": [
+        [
+            "Ditto.exe",
+            "Ditto"
+        ]
+    ],
+    "persist": [
+        "Ditto.db",
+        "Ditto.Settings"
+    ],
+    "checkver": {
+        "url": "https://api.github.com/repos/sabrogden/Ditto/releases",
+        "jsonpath": "$[0].assets[?(@.name =~ /DittoPortable_64bit/i)]",
+        "regex": "(?s)name\": \"DittoPortable_64bit_(?<ver>.*?).zip\".*\"updated_at\": \"(?<y>\\d{4})-(?<m>\\d{2})-(?<d>\\d{2})T",
+        "replace": "nightly.${ver}.${y}${m}${d}"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/sabrogden/Ditto/releases/download/nightly/DittoPortable_64bit_$matchVer.zip"
+            },
+            "32bit": {
+                "url": "https://github.com/sabrogden/Ditto/releases/download/nightly/DittoPortable_$matchVer.zip"
+            }
+        }
+    }
+}
