@@ -1,25 +1,21 @@
 {
+    "homepage": "https://github.com/massgravel/Microsoft-Activation-Scripts",
     "version": "2.5",
-    "description": "A Windows and Office activator using HWID / KMS38 / Online KMS activation methods, with a focus on open-source code and fewer antivirus detections.",
-    "homepage": "https://massgrave.dev/",
-    "license": {
-        "identifier": "GPL-3.0 license",
-        "url": "https://github.com/massgravel/Microsoft-Activation-Scripts/blob/master/LICENSE"
-    },
-    "url": "https://github.com/massgravel/Microsoft-Activation-Scripts/archive/master.zip",
-    "hash": "e0f531ed89e525cd25a7d836a1c580ba98efdf260ab1d5e1884792ce1a3fb427",
-    "extract_dir": "Microsoft-Activation-Scripts-master",
-    "shortcuts": [
-        [
-            "MAS\\All-In-One-Version\\MAS_AIO.cmd",
-            "MAS_AIO"
-        ]
-    ],
+    "description": "A Windows and Office activator using HWID / Ohook / KMS38 / Online KMS activation methods, with a focus on open-source code and fewer antivirus detections.",
     "checkver": {
-        "url": "https://github.com/massgravel/Microsoft-Activation-Scripts/releases.atom",
-        "regex": "/releases/tag/([\\d.]+)"
+        "url": "https://github.com/massgravel/Microsoft-Activation-Scripts/releases/latest",
+        "re": "releases/tag/(\\d+\\.\\d+)\""
     },
+    "url": "https://github.com/massgravel/Microsoft-Activation-Scripts/archive/refs/tags/2.5.zip",
+    "hash": "cd8cd102c79d7dfa9eb83eeb485bc2f163e4aab16f54705712e4b342a302aaa3",
     "autoupdate": {
-        "url": "https://github.com/massgravel/Microsoft-Activation-Scripts/archive/master.zip"
+        "url": "https://github.com/massgravel/Microsoft-Activation-Scripts/archive/refs/tags/$version.zip"
+    },
+    "installer":{
+        "keep": "false",
+        "script":[
+            "%{git clone \"https://github.com/massgravel/Microsoft-Activation-Scripts\" \"$dir\\scripts\"}",
+            "Remove-Item -Recurse -Path \"$dir\" -Include \"Microsoft*\""
+        ]
     }
 }
