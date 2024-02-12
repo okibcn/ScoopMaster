@@ -3,30 +3,38 @@
     "description": "Mogan (based on GNU TeXmacs): Let us enjoy exploring science and technology!",
     "homepage": "https://mogan.app",
     "license": "GPL-3.0-or-later",
-    "url": "https://github.com/XmacsLabs/mogan/releases/download/v1.2.4/MoganResearch-v1.2.4-64bit-installer.exe#/setup.exe",
-    "hash": "c66ff1721e418ccfc8733119a970820675c16dba034fd1b599d928726f61f673",
-    "notes": [
-        "Data is stored in $persist_dir\\data",
-        "delete them manually if you want to purge the data"
+    "url": "https://github.com/XmacsLabs/mogan/releases/download/v1.2.4/MoganResearch-v1.2.4-64bit-installer.zip",
+    "hash": "f4a5b46a67581b864d7cf58df4d4a3c6a6bcef28c6e7419f8729bc0529cf224d",
+    "bin": "bin\\MoganResearch.exe",
+    "shortcuts": [
+        [
+            "bin\\MoganResearch.exe",
+            "Mogan Research"
+        ]
     ],
     "post_install": [
-        "if (!(is_admin)) { error \"$app requires admin rights to $cmd\"; break }",
-        "Start-Process \"$dir\\setup.exe\" -Wait -Verb 'RunAs' -WindowStyle 'Hidden' -ArgumentList @('in', '-c', '--am', '--al', '-t', \"$dir\")",
-        "Remove-Item \"$dir\\setup.exe\"",
-        "ensure \"$persist_dir\\data\" | Out-Null"
+        "Write-Host 'Registering the TM FileType...'",
+        "New-Item 'HKCU:\\SOFTWARE\\Classes\\.tm' -Value \"tmfile\" -Force | Out-Null",
+        "New-Item 'HKCU:\\SOFTWARE\\Classes\\tmfile' -Value \"text/tm\" -Force | Out-Null",
+        "New-Item 'HKCU:\\SOFTWARE\\Classes\\tmfile\\DefaultIcon' -Value \"$dir\\TeXmacs.ico\" -Force | Out-Null",
+        "New-Item 'HKCU:\\SOFTWARE\\Classes\\tmfile\\shell\\open\\command' -Value \"\"\"$dir\\bin\\MoganResearch.exe\"\" \"\"%1\"\"\" -Force | Out-Null",
+        "Write-Host 'Done!'"
     ],
     "pre_uninstall": [
-        "if (!(is_admin)) { error \"$app requires admin rights to $cmd\"; break }",
-        "Start-Process \"$dir\\maintenancetool.exe\" -Wait -Verb 'RunAs' -WindowStyle 'Hidden' -ArgumentList @('pr', '-c', '--am', '--al')"
+        "Write-Host 'Unregistering the TM FileType...'",
+        "Remove-Item 'HKCU:\\SOFTWARE\\Classes\\.tm' -Force -Recurse",
+        "Remove-Item 'HKCU:\\SOFTWARE\\Classes\\tmfile' -Force -Recurse",
+        "Write-Host 'Done!'"
     ],
     "env_set": {
         "TEXMACS_HOME_PATH": "$persist_dir\\data"
     },
+    "persist": "data",
     "checkver": {
         "github": "https://github.com/XmacsLabs/mogan"
     },
     "autoupdate": {
-        "url": "https://github.com/XmacsLabs/mogan/releases/download/v$version/MoganResearch-v$version-64bit-installer.exe#/setup.exe",
+        "url": "https://github.com/XmacsLabs/mogan/releases/download/v$version/MoganResearch-v$version-64bit-installer.zip",
         "hash": {
             "url": "https://mogan.app/guide/Install.html"
         }
