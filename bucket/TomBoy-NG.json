@@ -1,30 +1,23 @@
 {
+    "version": "0.39",
+    "description": "Tomboy-ng is a desktop simple note-taking application for Windows and other platforms",
     "homepage": "https://github.com/tomboy-notes/tomboy-ng",
-    "license": "GPL-3.0-or-later",
-    "version": "0.34c",
-    "url": "https://github.com/tomboy-notes/tomboy-ng/releases/download/v0.34/tomboy-ng-setup-0.34c.exe",
-    "hash": "cdce85403e6d0254a620b3ae84d54ff46db6856013d4e2b7fbd802571badbd7b",
+    "license": "BSD-3-Clause-Clear",
+    "url": "https://github.com/tomboy-notes/tomboy-ng/releases/download/v0.39/tomboy-ng-setup-0.39.exe",
+    "hash": "7d4ac2c727d3f26e80b64b9913b8456d6d038b40aba3df832cb61fc10a10faf8",
     "innosetup": true,
     "architecture": {
         "64bit": {
-            "installer": {
-                "script": [
-                    "Rename-Item \"$dir\\tomboy-ng,1.exe\" \"tomboy-ng.exe\"",
-                    "Rename-Item \"$dir\\libeay32,1.dll\" \"libeay32.dll\"",
-                    "Rename-Item \"$dir\\ssleay32,1.dll\" \"ssleay32.dll\"",
-                    "Remove-Item \"$dir\\tomboy-ng,2.exe\",\"$dir\\libeay32,2.dll\",\"$dir\\ssleay32,2.dll\""
-                ]
-            }
+            "pre_install": [
+                "Get-ChildItem \"$dir\" '*,2.*' | Rename-Item -NewName { $_.FullName -replace ',2\\.', '.' }",
+                "Remove-Item \"$dir\\*,1.*\""
+            ]
         },
         "32bit": {
-            "installer": {
-                "script": [
-                    "Rename-Item \"$dir\\tomboy-ng,2.exe\" \"tomboy-ng.exe\"",
-                    "Rename-Item \"$dir\\libeay32,2.dll\" \"libeay32.dll\"",
-                    "Rename-Item \"$dir\\ssleay32,2.dll\" \"ssleay32.dll\"",
-                    "Remove-Item \"$dir\\tomboy-ng,1.exe\",\"$dir\\libeay32,1.dll\",\"$dir\\ssleay32,1.dll\""
-                ]
-            }
+            "pre_install": [
+                "Get-ChildItem \"$dir\" '*,1.*' | Rename-Item -NewName { $_.FullName -replace ',1\\.', '.' }",
+                "Remove-Item \"$dir\\*,2.*\""
+            ]
         }
     },
     "bin": "tomboy-ng.exe",
@@ -34,11 +27,8 @@
             "TomBoy NG"
         ]
     ],
-    "checkver": {
-        "url": "https://github.com/tomboy-notes/tomboy-ng/releases/latest",
-        "regex": "[\\w\\W]*/tomboy-notes/tomboy-ng/releases/download/v(?<main>[\\d.]+\\w?)/tomboy-ng-setup-([\\d.\\w]+).exe"
-    },
+    "checkver": "github",
     "autoupdate": {
-        "url": "https://github.com/tomboy-notes/tomboy-ng/releases/download/v$matchMain/tomboy-ng-setup-$version.exe"
+        "url": "https://github.com/tomboy-notes/tomboy-ng/releases/download/v$version/tomboy-ng-setup-$version.exe"
     }
 }
