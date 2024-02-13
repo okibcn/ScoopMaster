@@ -1,46 +1,54 @@
 {
-    "homepage": "https://www.mozilla.org/zh-CN/firefox/developer/",
-    "description": "Developer builds of Firefox: the popular open source web browser.",
-    "license": "MPL-2.0",
     "version": "123.0b9",
+    "description": "Developer builds of Firefox: the popular open source web browser.",
+    "homepage": "https://www.mozilla.org/zh-CN/firefox/developer/",
+    "license": "MPL-2.0",
     "architecture": {
         "64bit": {
-            "url": "https://download-installer.cdn.mozilla.net/pub/devedition/releases/123.0b9/win64/zh-CN/Firefox%20Setup%20123.0b9.exe#/dl.7z",
-            "hash": "514c6f36f0ede6c6b6486d060e8c483d78a0841dd95c208495feeed48fade275"
+            "url": "https://download-installer.cdn.mozilla.net/pub/devedition/releases/123.0b9/win64/zh-CN/Firefox%20Setup%20123.0b9.exe#/firefox-developer.7z",
+            "hash": "sha512:248b8e9c91137abcb8dfd6bd3734839a8a47a3d8d7e8f219fcbfce1c3c923c265b18a24aba81dfb561ec0061acaf04e95fb96621398f7c5420784bf0030ed09d"
         },
         "32bit": {
-            "url": "https://download-installer.cdn.mozilla.net/pub/devedition/releases/123.0b9/win32/zh-CN/Firefox%20Setup%20123.0b9.exe#/dl.7z",
-            "hash": "abe37aa4888c5d10ce21d75a49627891b060e3030ac2cd0cd7d1e5f3a7dbbaa9"
+            "url": "https://download-installer.cdn.mozilla.net/pub/devedition/releases/123.0b9/win32/zh-CN/Firefox%20Setup%20123.0b9.exe#/firefox-developer.7z",
+            "hash": "sha512:0fa885bc3854234dddb02dd291b41a6a80f499ab8fd210cb3320f1bb08cd7deb7b1bb9e536eabd95785cc1144f06db05cb13ff196b200539ce50c9fcad86ebff"
         }
     },
     "extract_dir": "core",
+    "bin": [
+        [
+            "firefox.exe",
+            "firefox-developer"
+        ]
+    ],
     "shortcuts": [
         [
             "firefox.exe",
-            "Firefox Developer Simplified Chinese Edition"
+            "Firefox Developer Edition"
         ]
     ],
+    "persist": "profile-portable",
     "checkver": {
-        "url": "https://aus5.mozilla.org/update/6/Firefox/93.0/_/WINNT_x86_64-msvc-x64/en-US/beta/_/_/_/_/update.xml",
+        "url": "https://aus5.mozilla.org/update/6/Firefox/93.0/_/WINNT_x86_64-msvc-x64/zh-CN/aurora/_/_/_/_/update.xml",
         "xpath": "/updates/update/patch/@URL",
-        "regex": "firefox-([\\db.]+)-"
+        "regex": "devedition-([\\db.]+)-"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://download-installer.cdn.mozilla.net/pub/devedition/releases/$version/win64/zh-CN/Firefox%20Setup%20$version.exe#/dl.7z",
+                "url": "https://download-installer.cdn.mozilla.net/pub/devedition/releases/$version/win64/zh-CN/Firefox%20Setup%20$version.exe#/firefox-developer.7z",
                 "hash": {
-                    "url": "https://download-installer.cdn.mozilla.net/pub/devedition/releases/$version/SHA256SUMS",
-                    "regex": "$sha256\\s+win64/zh-CN/$basename"
+                    "url": "https://download-installer.cdn.mozilla.net/pub/devedition/releases/$version/SHA512SUMS",
+                    "regex": "$sha512\\s+win64/zh-CN/$basename"
                 }
             },
             "32bit": {
-                "url": "https://download-installer.cdn.mozilla.net/pub/devedition/releases/$version/win32/zh-CN/Firefox%20Setup%20$version.exe#/dl.7z",
+                "url": "https://download-installer.cdn.mozilla.net/pub/devedition/releases/$version/win32/zh-CN/Firefox%20Setup%20$version.exe#/firefox-developer.7z",
                 "hash": {
-                    "url": "https://download-installer.cdn.mozilla.net/pub/devedition/releases/$version/SHA256SUMS",
-                    "regex": "$sha256\\s+win32/zh-CN/$basename"
+                    "url": "https://download-installer.cdn.mozilla.net/pub/devedition/releases/$version/SHA512SUMS",
+                    "regex": "$sha512\\s+win32/zh-CN/$basename"
                 }
             }
         }
-    }
+    },
+    "notes": "To recover persisted profile, you need to open the Profile Manager with `firefox-developer -P` and create by selecting the portable profile directory."
 }
