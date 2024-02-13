@@ -4,57 +4,47 @@
     "homepage": "https://www.microsoft.com/net/",
     "license": "MIT",
     "suggest": {
-        "Visual C++ Redistributable": "vcredist"
+        "vcredist": "extras/vcredist2022"
     },
     "architecture": {
         "64bit": {
-            "url": "https://dotnetcli.blob.core.windows.net/dotnet/Sdk/6.0.419/dotnet-sdk-6.0.419-win-x64.zip",
+            "url": "https://dotnetcli.azureedge.net/dotnet/Sdk/6.0.419/dotnet-sdk-6.0.419-win-x64.zip",
             "hash": "sha512:102d1e2ec71b7a1caf169b83f3004d30f1684eb77777a3c8dffa929e0e05d04ce21e585f670c212d4bd840928909605e2d580989cef9bb3f000e790b2da73eeb"
         },
-        "arm64": {
-            "url": "https://dotnetcli.blob.core.windows.net/dotnet/Sdk/6.0.419/dotnet-sdk-6.0.419-win-arm64.zip",
-            "hash": "sha512:dd4c90996f421aadf71eae7026776353c70b88f695da1da3ba92530607f66ed92f19c9fd41f5326994b61591b704778f8aa9ee56e7fc83d5980d4414a11f62d3"
-        },
         "32bit": {
-            "url": "https://dotnetcli.blob.core.windows.net/dotnet/Sdk/6.0.419/dotnet-sdk-6.0.419-win-x86.zip",
+            "url": "https://dotnetcli.azureedge.net/dotnet/Sdk/6.0.419/dotnet-sdk-6.0.419-win-x86.zip",
             "hash": "sha512:92abac3bcfab97f4d24454ae501677687b79d677b6f3a421a047761e0e77a00e0647701622077029282c672ad4e515099b23529a3499f1d1dab99483891a5365"
+        },
+        "arm64": {
+            "url": "https://dotnetcli.azureedge.net/dotnet/Sdk/6.0.419/dotnet-sdk-6.0.419-win-arm64.zip",
+            "hash": "sha512:dd4c90996f421aadf71eae7026776353c70b88f695da1da3ba92530607f66ed92f19c9fd41f5326994b61591b704778f8aa9ee56e7fc83d5980d4414a11f62d3"
         }
     },
-    "bin": "dotnet.exe",
-    "env_add_path": [
-        ".",
-        "\\sdk\\6.0.419"
-    ],
+    "env_add_path": ".",
     "env_set": {
         "DOTNET_ROOT": "$dir",
-        "DOTNET_HOST_PATH": "$dir",
-        "DOTNET_MULTILEVEL_LOOKUP": 0,
-        "DOTNET_CLI_TELEMETRY_OPTOUT": true,
         "MSBuildSDKsPath": "$dir\\sdk\\$version\\Sdks"
     },
+    "pre_uninstall": "info 'If the uninstall fails with a message saying that access is denied, you may need to log out of your current account, log back in and try again.'",
     "checkver": {
         "url": "https://dotnetcli.blob.core.windows.net/dotnet/release-metadata/releases-index.json",
-        "jsonpath": "$.releases-index[?(@.channel-version == '6.0')].latest-sdk"
+        "jsonpath": "$..releases-index[?(@.channel-version =~ /^6/)].latest-sdk"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://dotnetcli.blob.core.windows.net/dotnet/Sdk/$version/dotnet-sdk-$version-win-x64.zip"
-            },
-            "arm64": {
-                "url": "https://dotnetcli.blob.core.windows.net/dotnet/Sdk/$version/dotnet-sdk-$version-win-arm64.zip"
+                "url": "https://dotnetcli.azureedge.net/dotnet/Sdk/$version/dotnet-sdk-$version-win-x64.zip"
             },
             "32bit": {
-                "url": "https://dotnetcli.blob.core.windows.net/dotnet/Sdk/$version/dotnet-sdk-$version-win-x86.zip"
+                "url": "https://dotnetcli.azureedge.net/dotnet/Sdk/$version/dotnet-sdk-$version-win-x86.zip"
+            },
+            "arm64": {
+                "url": "https://dotnetcli.azureedge.net/dotnet/Sdk/$version/dotnet-sdk-$version-win-arm64.zip"
             }
         },
         "hash": {
             "url": "https://dotnetcli.blob.core.windows.net/dotnet/release-metadata/$majorVersion.$minorVersion/releases.json",
             "regex": "(?s)$basename.*?$sha512"
-        },
-        "env_add_path": [
-            ".",
-            "\\sdk\\$version"
-        ]
+        }
     }
 }

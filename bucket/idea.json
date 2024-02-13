@@ -1,38 +1,39 @@
 {
-    "version": "2023.3.3",
-    "description": "IntelliJ IDEA Community Edition for JVM and Android development.",
-    "homepage": "https://www.jetbrains.com/idea/",
-    "license": "Apache-2.0",
-    "notes": "Please restart your command line for changes to take effect.",
-    "url": "https://download.jetbrains.com/idea/ideaIC-2023.3.3.win.zip",
-    "hash": "a9d31975b01339c808df7f422f205c399cb04246c2c1ab870799f402d0d7f1ec",
-    "env_add_path": "bin",
-    "architecture": {
-        "64bit": {
-            "bin": "bin\\idea64.exe",
-            "shortcuts": [
-                [
-                    "bin/idea64.exe",
-                    "IntelliJ IDEA Community Edition"
-                ]
-            ]
-        },
-        "32bit": {
-            "bin": "bin\\idea.exe",
-            "shortcuts": [
-                [
-                    "bin/idea.exe",
-                    "IntelliJ IDEA Community Edition"
-                ]
-            ]
-        }
+    "version": "2023.3.4-233.14475.28",
+    "description": "Java IDE Idea",
+    "homepage": "https://jetbrains.com/idea",
+    "url": "https://download.jetbrains.com/idea/ideaIU-2023.3.4.win.zip",
+    "hash": "6684869e2cec039850b786e5f3ae166cc3197cbe63f27114d0985876081a6218",
+    "extract_to": "IDE",
+    "pre_install": "Get-ChildItem \"$persist_dir\\IDE\\bin\\idea*.exe.vmoptions\" -ErrorAction SilentlyContinue | Copy-Item -Destination \"$dir\\IDE\\bin\"",
+    "installer": {
+        "script": "& \"$bucketsdir\\rainte\\scripts\\idea\\portable.ps1\" \"$dir\" \"$persist_dir\""
     },
+    "bin": [
+        [
+            "IDE\\bin\\idea64.exe",
+            "idea"
+        ]
+    ],
+    "shortcuts": [
+        [
+            "IDE\\bin\\idea64.exe",
+            "IDEA Ultimate"
+        ]
+    ],
+    "persist": [
+        "IDE\\bin\\idea.properties",
+        "profile"
+    ],
+    "notes": "激活码网址: https://www.idejihuo.com  验证码: 1314",
+    "pre_uninstall": "Get-ChildItem \"$dir\\IDE\\bin\\idea*.exe.vmoptions\" -ErrorAction SilentlyContinue | Copy-Item -Destination \"$persist_dir\\IDE\\bin\"",
     "checkver": {
-        "url": "https://data.services.jetbrains.com/products/releases?code=IIC&latest=true&type=release",
-        "jsonpath": "$..version"
+        "url": "https://data.services.jetbrains.com/products/releases?code=IIU&latest=true&platform=zip&type=release",
+        "regex": "version\":\"(?<ver>[\\d.]+)\".*\"build\":\"(?<build>[\\d.]+)\"",
+        "replace": "${ver}-${build}"
     },
     "autoupdate": {
-        "url": "https://download.jetbrains.com/idea/ideaIC-$version.win.zip",
+        "url": "https://download.jetbrains.com/idea/ideaIU-$matchHead.win.zip",
         "hash": {
             "url": "$url.sha256"
         }
