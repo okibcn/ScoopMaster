@@ -1,30 +1,42 @@
 {
-    "version": "1.0.12",
-    "description": "A Multi-purpose PDF file processing tool with a nice UI that supports merge, split, rotate, reorder, delete, scale, crop, watermark, encrypt/decrypt, bookmark, extract, compress, etc",
-    "homepage": "https://github.com/kevin2li/pdf-guru",
-    "license": "AGPL-3.0-or-later",
+    "version": "1.0.13",
+    "description": "A Multi-purpose PDF file processing tool with a nice UI that supports merge, split, rotate, reorder, delete, scale, crop, watermark, encrypt/decrypt, bookmark, extract, compress, etc.",
+    "homepage": "https://github.com/kevin2li/PDF-Guru",
+    "license": {
+        "identifier": "AGPL-3.0 license",
+        "url": "https://github.com/kevin2li/PDF-Guru/blob/main/LICENSE"
+    },
+    "notes": "See usage:<https://github.com/kevin2li/PDF-Guru#使用>",
     "architecture": {
         "64bit": {
-            "url": "https://github.com/kevin2li/PDF-Guru/releases/download/v1.0.12/pdf-guru-windows-amd64-1.0.12.zip",
-            "hash": "sha512:bb4836ba18de4a560f8a796ef4c852a831f1d61823f785c20f8f4101adb570bea2fed83cbadc960fd9a49d1237f36726503a993668884f7c5bd0717e2f1204a2"
+            "url": "https://github.com/kevin2li/PDF-Guru/releases/download/v1.0.13/pdf-guru-windows-amd64-v1.0.13.1.zip",
+            "hash": "bb57580ae5a0d2b72bec29a45c33027dfabfe34f4ddae0b4fba40b1ec852220b"
         }
     },
-    "pre_install":[
-        "if (-not (Test-Path -Path \"$persist_dir/config.json\")) {",
-        "    New-Item -ItemType File -Path \"$dir/config.json\"",
-        "    Set-Content -Path \"$dir/config.json\" -Value \"{}\"",
-        "}"
-    ],
-    "persist": "config.json",
+    "installer": {
+        "script": [
+            "ensure \"$persist_dir\" | Out-Null",
+            "New-Item \"$env:APPDATA\\PDF Guru.exe\" -ItemType Junction -Target \"$persist_dir\" | Out-Null"
+        ]
+    },
+    "uninstaller": {
+        "script": "Remove-Item \"$env:APPDATA\\PDF Guru.exe\" -Recurse -Force -ErrorAction 'SilentlyContinue'"
+    },
     "shortcuts": [
         [
             "PDF Guru.exe",
             "PDF Guru"
         ]
     ],
-    "extract_to": "",
-    "checkver": "github",
+    "checkver": {
+        "url": "https://api.github.com/repos/kevin2li/PDF-Guru/releases",
+        "regex": "(?sm)browser_download_url.*?releases/download/v([\\d.]+)/(?<file>pdf-guru-windows.*?\\.zip)"
+    },
     "autoupdate": {
-        "url": "https://github.com/kevin2li/PDF-Guru/releases/download/v$version/pdf-guru-windows-amd64-$version.zip"
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/kevin2li/PDF-Guru/releases/download/v$version/$matchFile"
+            }
+        }
     }
 }
