@@ -1,31 +1,41 @@
 {
     "version": "1.29.2",
     "description": "Control the Kubernetes cluster manager.",
-    "homepage": "https://kubernetes.io/docs/user-guide/kubectl-overview/",
+    "homepage": "https://kubernetes.io/docs/reference/kubectl/",
     "license": "Apache-2.0",
     "architecture": {
         "64bit": {
-            "url": "https://dl.k8s.io/release/v1.29.2/kubernetes-client-windows-amd64.tar.gz",
+            "url": "https://storage.googleapis.com/kubernetes-release/release/v1.29.2/kubernetes-client-windows-amd64.tar.gz",
             "hash": "48b5888e7525a6e332efc38175096cff631a841f7c2d178503764b70279e07b4"
         },
         "32bit": {
-            "url": "https://dl.k8s.io/release/v1.29.2/kubernetes-client-windows-386.tar.gz",
+            "url": "https://storage.googleapis.com/kubernetes-release/release/v1.29.2/kubernetes-client-windows-386.tar.gz",
             "hash": "d587d7919715580053c3d57643a9bff1f0f6a7152b6c55fc6e99f21ebd26c162"
+        },
+        "arm64": {
+            "url": "https://storage.googleapis.com/kubernetes-release/release/v1.29.2/kubernetes-client-windows-arm64.tar.gz",
+            "hash": "4c7347d66c5fb2562eb69eccd492cf8f3ba05ed9fa05e3843e103dc1583c1380"
         }
     },
     "extract_dir": "kubernetes\\client",
-    "bin": "bin\\kubectl.exe",
+    "bin": [
+        "bin\\kubectl.exe",
+        "bin\\kubectl-convert.exe"
+    ],
     "checkver": {
-        "url": "https://dl.k8s.io/release/stable.txt",
+        "url": "https://storage.googleapis.com/kubernetes-release/release/stable.txt",
         "regex": "v([\\d.]+)"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://dl.k8s.io/release/v$version/kubernetes-client-windows-amd64.tar.gz"
+                "url": "https://storage.googleapis.com/kubernetes-release/release/v$version/kubernetes-client-windows-amd64.tar.gz"
             },
             "32bit": {
-                "url": "https://dl.k8s.io/release/v$version/kubernetes-client-windows-386.tar.gz"
+                "url": "https://storage.googleapis.com/kubernetes-release/release/v$version/kubernetes-client-windows-386.tar.gz"
+            },
+            "arm64": {
+                "url": "https://storage.googleapis.com/kubernetes-release/release/v$version/kubernetes-client-windows-arm64.tar.gz"
             }
         },
         "hash": {
