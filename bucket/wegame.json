@@ -1,23 +1,33 @@
 {
-  "version": "5.6.6.12275",
-  "description": "游戏平台 WeGame",
-  "homepage": "https://wegame.com.cn",
-  "url": "https://dldir1.qq.com/tgc/wegame/full/WeGameSetup5.6.6.12275_gjwegame_0_0.exe#/dl.7z",
-  "hash": "1c71aa9672c17696bfe69f6da3c6e42b5e59686625755df80767b5d069eaa02c",
-  "pre_install": [
-    "Expand-7zipArchive \"$dir\\WeGameSetup.exe\" \"$dir\"",
-    "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\`$SYSDIR\",\"$dir\\WeGameSetup.exe\" -Force -Recurse"
-  ],
-  "shortcuts": [["wegame.exe", "WeGame"]],
-  "persist": ["downloads", "games", "data", "config", "client_config"],
-  "checkver": {
-    "script": [
-      "$res = Invoke-WebRequest -UseBasicParsing -Uri 'https://luban.m.qq.com/api/public/software-manager/softwareProxy' -Body 'cmdid=3318&jprxReq%5Breq%5D%5Bsoft_id_list%5D%5B%5D=23761' -Method 'POST'",
-      "Write-Output $res.Content"
+    "version": "5.6.6.12275",
+    "description": "WeGame是国内最大的数字游戏发行平台，集游戏购买下载、游戏社区等功能于一身，为游戏开发者提供更好的服务，为游戏玩家提供更多优质游戏内容，构筑开发者和游戏玩家之间的沟通桥梁。",
+    "homepage": "https://www.wegame.com.cn/",
+    "license": "https://www.wegame.com.cn/contract",
+    "url": "https://dldir1.qq.com/tgc/wegame/full/WeGameSetup5.6.6.12275_gjwegame_0_0.exe#/dl.7z",
+    "hash": "1c71aa9672c17696bfe69f6da3c6e42b5e59686625755df80767b5d069eaa02c",
+    "pre_install": [
+        "Expand-7zipArchive \"$dir\\WeGameSetup.exe\" \"$dir\"",
+        "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\`$SYSDIR\",\"$dir\\WeGameSetup.exe\" -Force -Recurse"
     ],
-    "jsonpath": "$..ver_name"
-  },
-  "autoupdate": {
-    "url": "https://dldir1.qq.com/tgc/wegame/full/WeGameSetup$matchVersion_gjwegame_0_0.exe#/dl.7z"
-  }
+    "bin": "wegame.exe",
+    "shortcuts": [
+        [
+            "wegame.exe",
+            "WeGame"
+        ]
+    ],
+    "persist": [
+        "downloads",
+        "games",
+        "data",
+        "config",
+        "client_config"
+    ],
+    "checkver": {
+        "url": "https://pc.qq.com/detail/1/detail_23761.html",
+        "regex": "<div class=\"sys-info-value ellipsis\">\\n\\s+(?<version>[\\d.]+)"
+    },
+    "autoupdate": {
+        "url": "https://dldir1.qq.com/tgc/wegame/full/WeGameSetup$matchVersion_gjwegame_0_0.exe#/dl.7z"
+    }
 }
