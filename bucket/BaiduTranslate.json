@@ -1,0 +1,34 @@
+{
+    "version": "1.7.0",
+    "description": "轻·快的多语种翻译工具。Light and fast multilingual translation tool.",
+    "homepage": "https://fanyi.baidu.com",
+    "license": "Unknown",
+    "url": "https://fanyiapp.cdn.bcebos.com/fanyi-client/pkg/win/1.7.0/百度翻译_Setup_1.7.0.exe",
+    "hash": "77b54aa77b98df4d2c4d9746520ba3b2fef23e13aae918ee4fbdbdc5bd6ea388",
+    "pre_install": [
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "$path_exe=\"$dir\\百度翻译_Setup_$($version).exe\"",
+        "& $path_exe /S /D=$dir",
+        "$core_exe=\"$dir\\百度翻译.exe\"",
+        "sleep_install $core_exe",
+        "persist -dir @(\"$env:AppData\\BdTranslateClient\") @(\"$persist_dir\\BdTranslateClient\")",
+        "create_app_lnk $core_exe \"$scoop_apps_lnk\\百度翻译.lnk\"",
+        "clean_redundant_files @($path_exe,\"$apps_lnk\\百度翻译.lnk\") 15"
+    ],
+    "pre_uninstall": [
+        "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "stop_process $false",
+        "$ui_exe=\"$dir\\Uninstall 百度翻译.exe\"",
+        "& $ui_exe /S",
+        "sleep_uninstall $ui_exe",
+        "remove_files @(\"$scoop_apps_lnk\\百度翻译.lnk\",\"$env:AppData\\BdTranslateClient\")"
+    ],
+    "checkver": {
+        "url": "https://github.com/microsoft/winget-pkgs/commits/master/manifests/b/Baidu/BaiduTranslate",
+        "regex": "Baidu.BaiduTranslate version ([\\d\\.]+)"
+    },
+    "autoupdate": {
+        "url": "https://fanyiapp.cdn.bcebos.com/fanyi-client/pkg/win/$version/百度翻译_Setup_$version.exe"
+    }
+}
