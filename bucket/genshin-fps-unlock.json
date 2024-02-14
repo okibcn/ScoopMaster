@@ -1,6 +1,6 @@
 {
     "version": "3.0.3",
-    "description": "Unlocks the 60 fps cap in Genshin Impact",
+    "description": "Unlock the 60 fps cap in Genshin Impact",
     "homepage": "https://github.com/34736384/genshin-fps-unlock",
     "license": "Freeware",
     "suggest": {
@@ -12,7 +12,11 @@
             "hash": "08f16aa2f37dcd7fb4748c360a12f17e1fef33906be4cb8586874237af6f5fec"
         }
     },
-    "pre_install": "if (!(Test-Path \"$persist_dir\\fps_config.json\")) { Add-Content \"$dir\\fps_config.json\" '{}' -Encoding utf8 }",
+    "pre_install": [
+        "if (!(Test-Path \"$persist_dir\\fps_config.json\")) {",
+        "    New-Item \"$dir\\fps_config.json\" | Out-Null",
+        "}"
+    ],
     "shortcuts": [
         [
             "unlockfps_nc.exe",

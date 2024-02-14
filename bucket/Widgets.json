@@ -19,7 +19,6 @@
         "clean_redundant_files @($path_exe,\"$apps_lnk\\桌面组件.lnk\") 15"
     ],
     "pre_uninstall": [
-
         "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
         ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
         "stop_process $false",
@@ -27,5 +26,18 @@
         "& $ui_exe /S",
         "sleep_uninstall $ui_exe",
         "remove_files @(\"$desktop\\桌面组件.lnk\",\"$scoop_apps_lnk\\桌面组件.lnk\",\"$env:UserProfile\\Documents\\Widget\",\"$env:AppData\\app\",\"$env:LocalAppData\\app-updater\")"
-    ]
+    ],
+    "checkver": {
+        "script": [
+            "$dl_url='https://widget-fun.oss-cn-hangzhou.aliyuncs.com/version/installer.exe'",
+            "$out_path='Widgets-' + (New-Guid).Guid + '.exe'",
+            "Invoke-WebRequest -Uri $dl_url -OutFile $out_path",
+            "(Get-Item $out_path).VersionInfo.FileVersion",
+            "Remove-Item $out_path -Force"
+        ],
+        "regex": "([\\d\\.]+)"
+    },
+    "autoupdate": {
+        "url": "https://widget-fun.oss-cn-hangzhou.aliyuncs.com/version/installer.exe"
+    }
 }

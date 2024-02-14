@@ -1,0 +1,35 @@
+{
+    "version": "10.2.0.0",
+    "description": "网易有道翻译。YouDaoTranslate for windows.",
+    "homepage": "https://fanyi.youdao.com/download-Windows",
+    "license": "Unknown",
+    "url": "https://download.ydstatic.com/cidian/YoudaoDict_baidu_pc.exe#/dl.7z",
+    "hash": "1ef371fcafa8ea70f156dca824db3b4930de0fb584eb70d675699d576e65a647",
+    "post_install": [
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\dict.7z\" \"$dir\" -Removal",
+        "persist -dir @(\"$env:LocalAppData\\Yodao\",\"$env:LocalAppData\\youdao\") @(\"$persist_dir\\Yodao\",\"$persist_dir\\youdao\")",
+        "create_app_lnk \"$dir\\YoudaoDict.exe\" \"$desktop\\网易有道翻译.lnk\"",
+        "create_app_lnk \"$dir\\YoudaoDict.exe\" \"$scoop_apps_lnk\\网易有道翻译.lnk\"",
+        "clean_redundant_files @(\"$apps_lnk\\有道\\网易有道翻译\") 15"
+    ],
+    "pre_uninstall": [
+        "$ErrorActionPreference=\"SilentlyContinue\"",
+        "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "stop_process $false",
+        "$app_name=\"网易有道翻译\"",
+        "confirm $(data_replace $json.need_close)",
+        "$ui_exe=\"$dir\\uninst.exe\"",
+        "& $ui_exe /S",
+        "sleep_uninstall $ui_exe",
+        "remove_files @(\"$desktop\\网易有道翻译.lnk\",\"$scoop_apps_lnk\\网易有道翻译.lnk\",\"$env:LocalAppData\\Yodao\",\"$env:LocalAppData\\youdao\")"
+    ],
+    "checkver": {
+        "url": "https://v.abgo-bucket.workers.dev/y/Youdao/YoudaoTranslate",
+        "jsonpath": "$.version[0]"
+    },
+    "autoupdate": {
+        "url": "https://download.ydstatic.com/cidian/YoudaoDict_baidu_pc.exe#/dl.7z"
+    }
+}
