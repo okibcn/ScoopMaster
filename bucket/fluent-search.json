@@ -1,34 +1,27 @@
 {
-    "version": "0.9.20.0",
-    "description": "Search tool for running apps, browser tabs, in-app content, files and more.",
-    "homepage": "https://fluentsearch.net/",
-    "license": "Freeware",
-    "architecture": {
-        "64bit": {
-            "url": "https://stfluentsearch.blob.core.windows.net/fluent-search/fluent-search-portable.zip",
-            "hash": "664e385e80749d8ddfd77245a1de756016dd3f1f03aa6b8a830a4a7efc6531d6"
-        }
-    },
-    "pre_install": "if([environment]::OSVersion.Version.Major -lt 10) { error 'This app requires Windows 10 or 11'; break }",
-    "shortcuts": [
-        [
-            "FluentSearch.exe",
-            "Fluent Search"
-        ]
+    "version": "0.9.92.998",
+    "description": "使用它，你可以搜索正在运行的应用程序、浏览器标签、应用程序内内容、文件等。With it, you can search for running apps, browser tabs, in-app content, files and more.",
+    "homepage": "https://fluentsearch.net",
+    "license": "Unknown",
+    "url": "https://stfluentsearch.blob.core.windows.net/fluent-search/fluent-search-portable.zip",
+    "hash": "664e385e80749d8ddfd77245a1de756016dd3f1f03aa6b8a830a4a7efc6531d6",
+    "post_install": [
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "persist -dir @(\"$dir\\Blast\") @(\"$persist_dir\\Blast\")",
+        "create_app_lnk \"$dir\\FluentSearch.exe\" \"$desktop\\FluentSearch.lnk\"",
+        "create_app_lnk \"$dir\\FluentSearch.exe\" \"$scoop_apps_lnk\\FluentSearch.lnk\""
     ],
-    "persist": [
-        "Blast\\FluentSearchPlugins",
-        "Blast\\Settings"
+    "pre_uninstall": [
+        "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "stop_process",
+        "remove_files @(\"$desktop\\FluentSearch.lnk\",\"$scoop_apps_lnk\\FluentSearch.lnk\",\"$env:LocalAppData\\FluentSearch\")"
     ],
     "checkver": {
-        "url": "https://fluentsearch.net/blog",
-        "regex": "Fluent Search version ([\\d.]+)</a>"
+        "url": "https://v.abgo-bucket.workers.dev/b/BlastApps/FluentSearch",
+        "jsonpath": "$.version[0]"
     },
     "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://stfluentsearch.blob.core.windows.net/fluent-search/fluent-search-portable.zip"
-            }
-        }
+        "url": "https://stfluentsearch.blob.core.windows.net/fluent-search/fluent-search-portable.zip"
     }
 }
