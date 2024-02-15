@@ -1,32 +1,38 @@
 {
-    "version": "5.11.1",
-    "description": "You can operate Windows with key bindings like Vim.",
+    "version": "5.11.2",
     "homepage": "https://github.com/pit-ray/win-vind",
+    "description": "A Vim-oriented toy box that allows the user to operate Windows with key bindings like Vim. The app consists of various useful features inspired by Vim and its plugins.",
     "license": "MIT",
     "architecture": {
         "64bit": {
-            "url": "https://github.com/pit-ray/win-vind/releases/download/v5.11.1/win-vind_5.11.1_64bit_portable.zip",
-            "hash": "dcf9c40ea560d31f52c408c11631c655b3f2cead0735a27f340c3c00c22c7aa0"
+            "url": "https://github.com/pit-ray/win-vind/releases/download/v5.11.2/win-vind_5.11.2_64bit_portable.zip",
+            "hash": "f16d3fcd49b1286c67838b3270dcdd8c50468598b968c5eea662666bd4f59682"
+        },
+        "32bit": {
+            "url": "https://github.com/pit-ray/win-vind/releases/download/v5.11.2/win-vind_5.11.2_32bit_portable.zip",
+            "hash": "97162b572173c8ea415b7d2d8b14817e4a01d43db63abfb108795ccb3bd898af"
         }
     },
-    "pre_install": [
-        "if (!(Test-Path \"$persist_dir\")) {",
-        "   New-Item -Path \"$dir\" -Name \"config\" -ItemType \"Directory\" | Out-Null",
-        "   New-Item -Path \"$dir\" -Name \"config\\.vindrc\" -ItemType \"File\" | Out-Null",
-        "}"
-    ],
-    "bin": "win-vind.exe",
-    "persist": "config\\.vindrc",
     "extract_dir": "win-vind",
-    "checkver": {
-        "url": "https://api.github.com/repos/pit-ray/win-vind/releases/latest",
-        "jp": "$.tag_name",
-        "re": "v([\\d.]+)"
-    },
+    "bin": "win-vind.exe",
+    "shortcuts": [
+        [
+            "win-vind.exe",
+            "win-vind"
+        ]
+    ],
+    "persist": [
+        "config",
+        "log"
+    ],
+    "checkver": "github",
     "autoupdate": {
         "architecture": {
             "64bit": {
                 "url": "https://github.com/pit-ray/win-vind/releases/download/v$version/win-vind_$version_64bit_portable.zip"
+            },
+            "32bit": {
+                "url": "https://github.com/pit-ray/win-vind/releases/download/v$version/win-vind_$version_32bit_portable.zip"
             }
         }
     }
