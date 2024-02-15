@@ -1,7 +1,7 @@
 {
-    "version": "2024.1.0-mach",
-    "description": "General-purpose programming language designed for robustness, optimality, and maintainability.",
-    "homepage": "https://ziglang.org/",
+    "version": "0.12.0-dev.2063+804cee3b9",
+    "description": "Latest nominated zig version for mach project.",
+    "homepage": "https://machengine.org/about/nominated-zig",
     "license": "MIT",
     "suggest": {
         "vcredist": "extras/vcredist2022"
@@ -23,10 +23,60 @@
             "extract_dir": "zig-windows-aarch64-0.12.0-dev.2063+804cee3b9"
         }
     },
-    "bin": "zig.exe",
+    "bin": [
+        "zig.exe",
+        [
+            "zig.exe",
+            "zig-mach",
+            ""
+        ]
+    ],
     "checkver": {
         "url": "https://machengine.org/zig/index.json",
-        "jsonpath": "$.master.version",
-        "regex": "(?<version>[\\w._-]+)\\+(?<commit>[0-9a-f]+)"
+        "jsonpath": "$.mach-latest.version"
     },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "hash": {
+                    "mode": "json",
+                    "url": "https://machengine.org/zig/index.json",
+                    "jp": "$.mach-latest.x86_64-windows.shasum"
+                },
+                "url": {
+                    "mode": "json",
+                    "url": "https://machengine.org/zig/index.json",
+                    "jp": "$.mach-latest.x86_64-windows.tarball"
+                },
+                "extract_dir": "zig-windows-x86_64-$version"
+            },
+            "32bit": {
+                "hash": {
+                    "mode": "json",
+                    "url": "https://machengine.org/zig/index.json",
+                    "jp": "$.mach-latest.x86-windows.shasum"
+                },
+                "url": {
+                    "mode": "json",
+                    "url": "https://machengine.org/zig/index.json",
+                    "jp": "$.mach-latest.x86-windows.tarball"
+                },
+                "extract_dir": "zig-windows-x86-$version"
+            },
+            "arm64": {
+                "hash": {
+                    "mode": "json",
+                    "url": "https://machengine.org/zig/index.json",
+                    "jp": "$.mach-latest.aarch64-windows.shasum"
+                },
+                "url": {
+                    "mode": "json",
+                    "url": "https://machengine.org/zig/index.json",
+                    "jp": "$.mach-latest.aarch64-windows.tarball"
+                },
+                "extract_dir": "zig-windows-aarch64-$version"
+            }
+        }
+    },
+    "post_install": "if (Test-Path \"$(appdir zig)\\current\\zig.exe\") { scoop reset zig }"
 }
