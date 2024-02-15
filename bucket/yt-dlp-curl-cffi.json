@@ -1,0 +1,51 @@
+{
+    "version": "2023.12.10",
+    "description": "A youtube-dl fork with additional features and fixes (Dev; curl_cffi)",
+    "homepage": "https://github.com/yt-dlp/yt-dlp",
+    "license": "Unlicense",
+    "suggest": {
+        "ffmpeg": [
+            "versions/ffmpeg-gyan-nightly",
+            "versions/ffmpeg-yt-dlp"
+        ]
+    },
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/coletdjnz/yt-dlp-dev/releases/download/2023.12.10/yt-dlp.exe",
+            "hash": "sha512:bd8fee7f7f26b356925e3efaf4744c6bc65d890bbe58f109f311e3219f731728e2acdb994c451871c8a5dbba18c511adfc2bf77d5679b6cbecf95658de6d13aa"
+        },
+        "32bit": {
+            "url": "https://github.com/coletdjnz/yt-dlp-dev/releases/download/2023.12.10/yt-dlp_x86.exe#/yt-dlp.exe",
+            "hash": "sha512:fbe4c6e69380674487b2311beb66a54e63629325266679070a6d70dd09cdf4cc3644b040fa57f5d7831499d34c581e2d63de9182dd138bf69710d13c46e4c515"
+        }
+    },
+    "pre_install": "if (-not (Test-Path \"$persist_dir\\yt-dlp.conf\")) { New-Item \"$dir\\yt-dlp.conf\" -ItemType file | Out-Null }",
+    "bin": [
+        [
+            "yt-dlp.exe",
+            "yt-dlp-cffi"
+        ]
+    ],
+    "persist": [
+        "yt-dlp.conf",
+        "yt-dlp-plugins"
+    ],
+    "checkver": {
+        "url": "https://api.github.com/repos/coletdjnz/yt-dlp-dev/releases",
+        "jsonpath": "$..name",
+        "regex": "([\\d.]+) \\(curl_cffi\\)"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/coletdjnz/yt-dlp-dev/releases/download/$version/yt-dlp.exe"
+            },
+            "32bit": {
+                "url": "https://github.com/coletdjnz/yt-dlp-dev/releases/download/$version/yt-dlp_x86.exe#/yt-dlp.exe"
+            }
+        },
+        "hash": {
+            "url": "$baseurl/SHA2-512SUMS"
+        }
+    }
+}
