@@ -1,39 +1,58 @@
 {
+    "homepage": "http://aimp.ru",
     "version": "5.30",
-    "description": "Audio player",
-    "homepage": "http://www.aimp.ru",
-    "license": {
-        "identifier": "Freeware",
-        "url": "http://www.aimp.ru/files/windows/EULA_lang-en.txt"
+    "description": "AIMP is a music player and library manager",
+    "architecture": {
+        "32bit": {
+            "url": "https://www.aimp.ru/?do=download.file&id=8#/aimp_5.30_32bit_no-installer.zip",
+            "hash": "71bebac9358d027e18fd9488b4500adcf0b132e4fc8d30e3d420fbeca9bab369"
+        },
+        "64bit": {
+            "url": "https://www.aimp.ru/?do=download.file&id=31#/aimp_5.30_64bit_no-installer.zip",
+            "hash": "71bebac9358d027e18fd9488b4500adcf0b132e4fc8d30e3d420fbeca9bab369"
+        }
     },
-    "url": "http://www.aimp.ru/?do=download.file&id=8#/dl.zip",
-    "hash": "fa27c1b32618ff7f58df756bce61aa44ad82175f7c6f9308ce07bc8aa7a78e9d",
     "extract_dir": "AIMP",
+    "persist": "Profile",
     "bin": [
-        "AIMP.exe",
-        "AIMPac.exe",
-        "AIMPate.exe"
+        "aimp.exe",
+        "aimpac.exe",
+        "aimpate.exe"
     ],
     "shortcuts": [
         [
-            "AIMP.exe",
+            "aimp.exe",
             "AIMP"
         ],
         [
-            "AIMPac.exe",
+            "aimpac.exe",
             "AIMP Audio Converter"
         ],
         [
-            "AIMPate.exe",
+            "aimpate.exe",
             "AIMP Advanced Tag Editor"
         ]
     ],
-    "persist": "Profile",
     "checkver": {
         "url": "http://aimp.su/update.php?id=1234&b=2169&p=aimp&lng=english&u=1",
         "regex": "aimp_([\\d.]+)\\."
     },
     "autoupdate": {
-        "url": "http://www.aimp.ru/?do=download.file&id=8#/dl.zip"
+        "architecture": {
+            "32bit": {
+                "url": "https://www.aimp.ru/?do=download.file&id=8#/aimp_$version_32bit_no-installer.zip",
+                "hash": {
+                    "url": "http://www.aimp.ru/?do=download&os=windows",
+                    "regex": "32-bit \\(No Installer\\)[\\s\\S]+($sha256)"
+                }
+            },
+            "64bit": {
+                "url": "https://www.aimp.ru/?do=download.file&id=31#/aimp_$version_64bit_no-installer.zip",
+                "hash": {
+                    "url": "http://www.aimp.ru/?do=download&os=windows",
+                    "regex": "64-bit \\(No Installer\\)[\\s\\S]+($sha256)"
+                }
+            }
+        }
     }
 }
