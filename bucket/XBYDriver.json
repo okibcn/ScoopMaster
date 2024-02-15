@@ -31,14 +31,14 @@
         "clean_redundant_files @($path_exe,\"C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\小白羊云盘.lnk\") 15"
     ],
     "pre_uninstall": [
-
         "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
         ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
         "stop_process $false",
+        "remove_files @(\"$env:AppData\\alixby3\")",
         "$ui_exe=\"$dir\\Uninstall 小白羊云盘.exe\"",
         "& $ui_exe /S",
         "sleep_uninstall $ui_exe",
-        "remove_files @(\"$scoop_apps_lnk\\小白羊云盘.lnk\",\"$env:AppData\\alixby3\",\"$env:LocalAppData\\xbyyunpan-updater\")"
+        "remove_files @(\"$scoop_apps_lnk\\小白羊云盘.lnk\",\"$env:LocalAppData\\xbyyunpan-updater\")"
     ],
     "checkver": "github",
     "autoupdate": {

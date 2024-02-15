@@ -34,14 +34,14 @@
         "clean_redundant_files @($path_exe,\"$apps_lnk\\nvm-desktop.lnk\") 15"
     ],
     "pre_uninstall": [
-
         "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
         ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
         "stop_process $false",
+        "remove_files @(\"$env:AppData\\NVM-Desktop\",\"$env:UserProfile\\.nvmd\")",
         "$ui_exe=\"$dir\\Uninstall nvm-desktop.exe\"",
         "& $ui_exe /S",
         "sleep_uninstall $ui_exe",
-        "remove_files @(\"$desktop\\nvm-desktop.lnk\",\"$scoop_apps_lnk\\nvm-desktop.lnk\",\"$env:AppData\\NVM-Desktop\",\"$env:UserProfile\\.nvmd\",\"$env:LocalAppData\\nvm-desktop-updater\")"
+        "remove_files @(\"$desktop\\nvm-desktop.lnk\",\"$scoop_apps_lnk\\nvm-desktop.lnk\",\"$env:LocalAppData\\nvm-desktop-updater\")"
     ],
     "checkver": "github",
     "autoupdate": {

@@ -22,10 +22,11 @@
         "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
         ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
         "stop_process $false",
+        "remove_files @(\"$env:AppData\\app\")",
         "$ui_exe=\"$dir\\Uninstall Widgets.exe\"",
         "& $ui_exe /S",
         "sleep_uninstall $ui_exe",
-        "remove_files @(\"$desktop\\桌面组件.lnk\",\"$scoop_apps_lnk\\桌面组件.lnk\",\"$env:UserProfile\\Documents\\Widget\",\"$env:AppData\\app\",\"$env:LocalAppData\\app-updater\")"
+        "remove_files @(\"$desktop\\桌面组件.lnk\",\"$scoop_apps_lnk\\桌面组件.lnk\",\"$env:UserProfile\\Documents\\Widget\",\"$env:LocalAppData\\app-updater\")"
     ],
     "checkver": {
         "script": [

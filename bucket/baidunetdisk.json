@@ -1,27 +1,27 @@
 {
     "version": "7.37.5.3",
-    "description": "百度网盘 PC 版。BaiduNetdisk for windows.",
     "homepage": "https://pan.baidu.com/download",
-    "license": "Unknown",
-    "url": "http://issuecdn.baidupcs.com/issue/netdisk/yunguanjia/BaiduNetdisk_7.37.5.3.exe#/dl.7z",
+    "license": "Freeware",
+    "description": "百度网盘 PC 版",
+    "url": "http://issuecdn.baidupcs.com/issue/netdisk/yunguanjia/BaiduNetdisk_7.37.5.3.exe#dl.7z",
     "hash": "7e2ce818c2999af97ece03ad00ee5022ab7c4c5887ae4d45842f3436404ab004",
-    "post_install": [
-        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-        "persist -dir @(\"$dir\\users\") @(\"$persist_dir\\users\")",
-        "create_app_lnk \"$dir\\BaiduNetdisk.exe\" \"$desktop\\百度网盘.lnk\"",
-        "create_app_lnk \"$dir\\BaiduNetdisk.exe\" \"$scoop_apps_lnk\\百度网盘.lnk\""
+    "bin": "BaiduNetdisk.exe",
+    "shortcuts": [
+        [
+            "BaiduNetdisk.exe",
+            "百度网盘"
+        ]
     ],
-    "pre_uninstall": [
-        "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
-        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-        "stop_process",
-        "remove_files @(\"$desktop\\百度网盘.lnk\",\"$scoop_apps_lnk\\百度网盘.lnk\",\"$env:AppData\\PLogs\",\"$env:AppData\\BaiduYunKernel\",\"$env:AppData\\BaiduYunGuanjia\",\"$env:AppData\\Baidu\\BaiduNetdisk\",\"$env:AppData\\Baidu\\BaiduYunKernel\")"
+    "persist": "users",
+    "post_install": [
+        "Remove-Item \"$dir\\`$PLUGINSDIR\" -Recurse",
+        "Remove-Item \"$dir\\`$TEMP\" -Recurse"
     ],
     "checkver": {
         "url": "https://pan.baidu.com/disk/cmsdata?do=client",
-        "regex": "BaiduNetdisk_([\\d\\.]+).exe"
+        "regex": "BaiduNetdisk_(\\d+.\\d+.\\d+.\\d+).exe"
     },
     "autoupdate": {
-        "url": "http://issuecdn.baidupcs.com/issue/netdisk/yunguanjia/BaiduNetdisk_$version.exe#/dl.7z"
+        "url": "http://issuecdn.baidupcs.com/issue/netdisk/yunguanjia/BaiduNetdisk_$version.exe#dl.7z"
     }
 }

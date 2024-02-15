@@ -20,14 +20,14 @@
         "clean_redundant_files @($path_exe,\"$apps_lnk\\Sigma file manager.lnk\") 15"
     ],
     "pre_uninstall": [
-
         "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
         ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
         "stop_process $false",
+        "remove_files @(\"$env:AppData\\Sigma file manager\",\"$env:UserProfile\\.sigma-file-manager\")",
         "$ui_exe=\"$dir\\Uninstall Sigma file manager.exe\"",
         "& $ui_exe /S",
         "sleep_uninstall $ui_exe",
-        "remove_files @(\"$desktop\\Sigma file manager.lnk\",\"$scoop_apps_lnk\\Sigma file manager.lnk\",\"$env:AppData\\Sigma file manager\",\"$env:UserProfile\\.sigma-file-manager\",\"$env:LocalAppData\\sigma-file-manager-updater\")"
+        "remove_files @(\"$desktop\\Sigma file manager.lnk\",\"$scoop_apps_lnk\\Sigma file manager.lnk\",\"$env:LocalAppData\\sigma-file-manager-updater\")"
     ],
     "checkver": "github",
     "autoupdate": {
