@@ -1,52 +1,49 @@
 {
+    "homepage": "https://github.com/komet/mediaelch",
+    "description": "Media Manager for Kodi",
+    "license": "LGPL-3.0",
     "version": "2.10.6",
-    "description": "Kodi 的媒体管理器。Media Manager for Kodi.",
-    "homepage": "https://mediaelch.github.io/mediaelch-doc/about.html",
-    "license": {
-        "identifier": "GNU Lesser General Public License v3.0",
-        "url": "https://github.com/Komet/MediaElch/blob/master/COPYING"
-    },
     "architecture": {
         "64bit": {
             "url": "https://github.com/Komet/MediaElch/releases/download/v2.10.6/MediaElch_win_10_or_later_Qt6_2.10.6_2023-12-03_git-6121419e.zip",
-            "hash": "0c6061e1768867729efbf3fd368320886898fc50d42b7bbf66fa172e274b4bb7"
-        },
-        "32bit": {
-            "url": "https://github.com/Komet/MediaElch/releases/download/v2.10.6/MediaElch_win_7_8_Qt5_2.10.6_2023-12-03_git-6121419e.zip",
-            "hash": "2f86ffd608e47fd9cf6c93432934cc898a8802a04491cee41428bc9d8bbb3465"
+            "hash": "0c6061e1768867729efbf3fd368320886898fc50d42b7bbf66fa172e274b4bb7",
+            "extract_dir": "MediaElch"
         }
     },
-    "extract_dir": "MediaElch",
-    "bin": "MediaElch.exe",
     "pre_install": [
-        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-        "if (!(Test-Path \"$persist_dir\\advancedsettings.xml\")){",
-        "   \"<advancedsettings>\" | Out-File \"$persist_dir\\advancedsettings.xml\"",
-        "   \"    <portableMode>true</portableMode>\" | Out-File \"$persist_dir\\advancedsettings.xml\" -Append",
-        "   \"</advancedsettings>\" | Out-File \"$persist_dir\\advancedsettings.xml\" -Append",
+        "$PortableConfig = 'advancedsettings.xml'",
+        "if ( !(Test-Path $dir\\advancedsettings.xml) ) {",
+        "    New-Item -Path $dir\\$PortableConfig -ItemType File -Value \"<advancedsettings><portableMode>true</portableMode></advancedsettings>\" -Force | Out-Null",
         "}",
-        "persist -dir @(\"$dir\\export_themes\") @(\"$persist_dir\\export_themes\")",
-        "persist -file @(\"$dir\\advancedsettings.xml\",\"$dir\\MediaElch.ini\") @(\"$persist_dir\\advancedsettings.xml\",\"$persist_dir\\MediaElch.ini\")",
-        "create_app_lnk \"$dir\\MediaElch.exe\" \"$desktop\\MediaElch.lnk\"",
-        "create_app_lnk \"$dir\\MediaElch.exe\" \"$scoop_apps_lnk\\MediaElch.lnk\""
+        "if (Test-Path $persist_dir\\MediaElch.ini) {",
+        "    Move-Item -Path $persist_dir\\MediaElch.ini -Destination $dir\\MediaElch.ini -Force | Out-Null",
+        "}",
+        "if (Test-Path $persist_dir\\MediaElch.sqlite) {",
+        "    Move-Item -Path $persist_dir\\MediaElch.sqlite -Destination $dir\\MediaElch.sqlite -Force | Out-Null",
+        "}"
     ],
-    "pre_uninstall": [
-        "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
-        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-        "stop_process",
-        "remove_files @(\"$desktop\\MediaElch.lnk\",\"$scoop_apps_lnk\\MediaElch.lnk\")"
+    "persist": [
+        "cache",
+        "export_themes",
+        "images"
     ],
+    "shortcuts": [
+        [
+            "MediaElch.exe",
+            "MediaElch"
+        ]
+    ],
+    "uninstaller": {
+        "script": "'MediaElch.ini', 'MediaElch.sqlite' | ForEach-Object { Move-Item -Path $dir\\$_ -Destination $persist_dir\\$_ -Force | Out-Null }"
+    },
     "checkver": {
-        "url": "https://api.github.com/repositories/3618825/releases/latest",
-        "regex": "MediaElch_win_10_or_later_Qt6_(?<version>[\\d\\.]+)(?<detail>[\\w\\d-.]+).zip"
+        "url": "https://api.github.com/repos/komet/mediaelch/releases/latest",
+        "regex": "MediaElch_win_10_or_later_Qt6_(?<version>[\\d.]+)_(?<releasedate>[\\d\\-]+)_git-(?<releasenumber>[\\w]{8}).zip"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://github.com/Komet/MediaElch/releases/download/v$version/MediaElch_win_10_or_later_Qt6_$version$matchDetail.zip"
-            },
-            "32bit": {
-                "url": "https://github.com/Komet/MediaElch/releases/download/v$version/MediaElch_win_7_8_Qt5_$version$matchDetail.zip"
+                "url": "https://github.com/Komet/MediaElch/releases/download/v$version/MediaElch_win_10_or_later_Qt6_$version_$matchReleasedate_git-$matchReleasenumber.zip"
             }
         }
     }
