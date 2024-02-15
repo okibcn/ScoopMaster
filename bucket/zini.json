@@ -1,0 +1,58 @@
+{
+    "version": "1.1.0",
+    "description": "
+# PS-Tool zur Erstellung und zum Coupling von Schlauchpaketen
+v1.1.0 (240123 - bpa):
+    Features/Improvements:
+    - Die Schlauchpaket-Namen koennen fuer Becker aus der Auswahl von Roboter und Achsen generiert werden.
+    - Schlauchpakete koennen mit Anbauteilen anderer Komponenten erweitert werden (Upgrade dresspack).
+
+    Fixes:
+    - Es wurde ein Fehler bei der Auswahl der Kurve behoben, durch den Elemente gewaehlt werden konnten, die keine Kurven waren.
+        Nun wird zusaetzlich eine Meldung ausgegeben, falls es sich nicht um eine Kurve handelt.
+    - Es wurde ein Fehler beim Speichern von Komponenten behoben, bei dem der Pfad ungueltige Zeichen enthielt.
+        Diese Zeichen stammten aus dem Studien- oder Roboternamen und werden nun entfernt.
+
+
+v1.0.0 (240102 - bpa):
+    Features/Improvements:
+    - Die Nullposition der Kinematik des Schlauchpakets wird ab Tecnomatix Version 2301 automatisch gesetzt.
+        Falls ein aelteres Tecnomatix genutzt wird, wird weiterhin eine Warnung ausgegeben.
+    - Es koennen Schlauchpakete ohne Kinematik erzeugt werden.
+    - Beim Verwenden von Zusatz-Kinematiken wurde das Verhalten fuer 5-achsige Pfannen mit Richtungswechsel (Becker-Standard) optimiert.
+    - Die Bewegungs-Funktionen fuer die Achsen des Schlauchpakets werden in der UI angezeigt.
+    - Die Auswahl des festen Endes der Kurve fuer den Schlauchpaket-Verlauf wurde in die Auswahl der Kurve integriert.
+
+    Fixes:
+    - Fehler bei der automatischen Auswahl von UI-Elementen wurden beseitigt.
+",
+    "homepage": "https://icarus-consult.de",
+    "license": "non-free",
+    "url": "//promptly-apps.icarus-consult.local/Software/TMXTOOLS/zini/1.1.0/zini_1.1.0.zip",
+    "autoupdate": {
+        "url": "//promptly-apps.icarus-consult.local/Software/TMXTOOLS/zini/$version/zini_$version.zip"
+    },
+    "pre_install": [
+        "if(Get-Process -Name \"tune\" -ErrorAction SilentlyContinue) {",
+        "    Write-Error \"Process Simulate is running. Please close it to continue.\"",
+        "    exit 1",
+       " }"
+    ],
+    "post_install":[
+        "# run install.ps1",
+        "Set-Variable -Name \"PSScriptRoot\" -Value $dir -Scope Script",
+        "#.\\install.ps1",
+        "$command = \"$dir\\install.ps1\"",
+        "Invoke-Expression \"& $command\""
+    ],
+    "pre_uninstall": [
+        "if(Get-Process -Name \"tune\" -ErrorAction SilentlyContinue) {",
+        "    Write-Error \"Process Simulate is running. Please close it to continue.\"",
+        "    exit 1",
+       " }",
+       "# run uninstall.ps1",
+        "$command = \"$dir\\uninstall.ps1\"",
+        "Invoke-Expression \"& $command\""
+    ],
+    "post_uninstall": []
+}

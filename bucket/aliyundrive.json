@@ -1,25 +1,27 @@
 {
     "version": "4.12.0",
-    "homepage": "https://www.aliyundrive.com/",
-    "license": "Freeware",
+    "description": "一款速度快、不打扰、够安全、易于分享的网盘，你可以在这里存储、管理和探索内容，尽情打造丰富的数字世界。A fast, non-intrusive, secure and easy-to-share personal netdisk where you can store, manage and explore things, and build a flourishing digital world.",
+    "homepage": "https://www.alipan.com/",
+    "license": "Unknown",
     "url": "https://cdn.aliyundrive.net/downloads/apps/desktop/update/4.12.0/win32/ia32/aDrive-4.12.0.exe#/dl.7z",
-    "hash": "sha512:ac515dda05f6167b4d3a3fbbb0bf4a015a938f0dd7108c3106b68fffa23dc7b73f299e03da18558369e606a6243aab48e06036ff726ae41ebffbfba0ec6c2abc",
-    "post_install": "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\`$TEMP\" -Force -Recurse",
-    "shortcuts": [
-        [
-            "aDrive.exe",
-            "aliyun drive"
-        ]
+    "hash": "9a829cc1e6a93ab55f89d79339113e4ab142e3cc30e7bfc9d1edd08d2090bc7c",
+    "post_install": [
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "persist -dir @(\"$env:AppData\\aDrive\") @(\"$persist_dir\\aDrive\")",
+        "create_app_lnk \"$dir\\aDrive.exe\" \"$desktop\\阿里云盘.lnk\"",
+        "create_app_lnk \"$dir\\aDrive.exe\" \"$scoop_apps_lnk\\阿里云盘.lnk\""
+    ],
+    "pre_uninstall": [
+        "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "stop_process",
+        "remove_files @(\"$desktop\\阿里云盘.lnk\",\"$scoop_apps_lnk\\阿里云盘.lnk\",\"$env:AppData\\aDrive\")"
     ],
     "checkver": {
-        "url": "https://api.nicoconi.com/updater/aliyundrive",
-        "regex": "version: ([\\d.]+)"
+        "url": "https://v.abgo-bucket.workers.dev/a/Alibaba/aDrive",
+        "jsonpath": "$.version[0]"
     },
     "autoupdate": {
-        "url": "https://cdn.aliyundrive.net/downloads/apps/desktop/update/$version/win32/ia32/aDrive-$version.exe#/dl.7z",
-        "hash": {
-            "url": "https://api.nicoconi.com/updater/aliyundrive",
-            "regex": "sha512: $base64"
-        }
+        "url": "https://cdn.aliyundrive.net/downloads/apps/desktop/update/$version/win32/ia32/aDrive-$version.exe#/dl.7z"
     }
 }
