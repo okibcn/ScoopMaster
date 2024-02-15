@@ -21,7 +21,7 @@
         "sleep_install $core_exe",
         "persist -dir @(\"$env:AppData\\he3\") @(\"$persist_dir\\he3\")",
         "create_app_lnk $core_exe \"$scoop_apps_lnk\\He3.lnk\"",
-        "clean_redundant_files @($path_exe,\"C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\He3.lnk\") 15"
+        "clean_redundant_files @($path_exe,\"$admin_apps_lnk\\He3.lnk\") 15"
     ],
     "pre_uninstall": [
         "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
@@ -31,7 +31,7 @@
         "$ui_exe=\"$dir\\Uninstall He3.exe\"",
         "& $ui_exe /S",
         "sleep_uninstall $ui_exe",
-        "remove_files @(\"C:\\Users\\Public\\Desktop\\He3.lnk\",\"$scoop_apps_lnk\\He3.lnk\",\"$env:LocalAppData\\he3-updater\")"
+        "remove_files @(\"$public_desktop\\He3.lnk\",\"$scoop_apps_lnk\\He3.lnk\",\"$env:LocalAppData\\he3-updater\")"
     ],
     "checkver": {
         "url": "https://he3-1309519128.cos.accelerate.myqcloud.com/latest/latest.yml",
