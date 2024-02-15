@@ -1,11 +1,8 @@
 {
     "version": "9.7.1",
-    "description": "一个基于开放源码技术的免费文件归档(压缩)实用程序。A free file archiver utility, based on Open Source technologies.",
+    "description": "A free file archiver utility, based on Open Source technologies",
     "homepage": "https://peazip.github.io",
-    "license": {
-        "identifier": "GNU Lesser General Public License v3.0",
-        "url": "https://github.com/peazip/PeaZip/blob/sources/LICENSE"
-    },
+    "license": "LGPL-3.0-only",
     "architecture": {
         "64bit": {
             "url": "https://github.com/peazip/PeaZip/releases/download/9.7.1/peazip_portable-9.7.1.WIN64.zip",
@@ -25,17 +22,7 @@
             "PeaZip"
         ]
     ],
-    "post_install": [
-        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-        "persist -dir @(\"$dir\\res\\conf\") @(\"$persist_dir\\res\\conf\")",
-        "create_app_lnk \"$dir\\peazip.exe\" \"$desktop\\PeaZip.lnk\""
-    ],
-    "pre_uninstall": [
-        "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
-        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-        "stop_process",
-        "remove_files @(\"$desktop\\PeaZip.lnk\")"
-    ],
+    "persist": "res\\conf",
     "checkver": {
         "github": "https://github.com/peazip/PeaZip"
     },
