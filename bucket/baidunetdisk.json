@@ -1,50 +1,27 @@
 {
     "version": "7.37.5.3",
-    "description": "百度网盘PC版 ",
+    "description": "百度网盘 PC 版。BaiduNetdisk for windows.",
     "homepage": "https://pan.baidu.com/download",
-    "license": "Proprietary",
-    "url": "http://issuecdn.baidupcs.com/issue/netdisk/yunguanjia/BaiduNetdisk_7.37.5.3.exe#dl.7z",
+    "license": "Unknown",
+    "url": "http://issuecdn.baidupcs.com/issue/netdisk/yunguanjia/BaiduNetdisk_7.37.5.3.exe#/dl.7z",
     "hash": "7e2ce818c2999af97ece03ad00ee5022ab7c4c5887ae4d45842f3436404ab004",
-    "bin": "BaiduNetdisk.exe",
-    "persist": "users",
     "post_install": [
-        "Remove-Item \"$dir\\`$PLUGINSDIR\" -Recurse",
-        "Remove-Item \"$dir\\`$TEMP\" -Recurse"
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "persist -dir @(\"$dir\\users\") @(\"$persist_dir\\users\")",
+        "create_app_lnk \"$dir\\BaiduNetdisk.exe\" \"$desktop\\百度网盘.lnk\"",
+        "create_app_lnk \"$dir\\BaiduNetdisk.exe\" \"$scoop_apps_lnk\\百度网盘.lnk\""
     ],
     "pre_uninstall": [
-        "$processName = \"YunDetectService\"",
-        "if((Get-Process -Name $processName -ErrorAction SilentlyContinue) -eq $null) {",
-        "Write-Host \"YunDetectService is not running.\" -ForegroundColor blue",
-        "} else {",
-        "Stop-Process -ProcessName $processName",
-        "Write-Host \"YunDetectService is exist.\" -ForegroundColor green",
-        "}"
-    ],
-    "post_uninstall": [
-        "$baiduCache = \"$env:APPDATA\\Baidu\"",
-        "$baiduLog = \"$env:APPDATA\\BaiduYunGuanjia\"",
-        "$runtimeCache = \"$env:APPDATA\\BaiduYunKernel\"",
-        "if (Test-Path \"$baiduCache\") {",
-        "Remove-Item $baiduCache -Force -Recurse -ErrorAction SilentlyContinue",
-        "}",
-        "if (Test-Path \"$baiduLog\") {",
-        "Remove-Item $baiduLog -Force -Recurse -ErrorAction SilentlyContinue",
-        "}",
-        "if (Test-Path \"$runtimeCache\") {",
-        "Remove-Item $runtimeCache -Force -Recurse -ErrorAction SilentlyContinue",
-        "}"
+        "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "stop_process",
+        "remove_files @(\"$desktop\\百度网盘.lnk\",\"$scoop_apps_lnk\\百度网盘.lnk\",\"$env:AppData\\PLogs\",\"$env:AppData\\BaiduYunKernel\",\"$env:AppData\\BaiduYunGuanjia\",\"$env:AppData\\Baidu\\BaiduNetdisk\",\"$env:AppData\\Baidu\\BaiduYunKernel\")"
     ],
     "checkver": {
         "url": "https://pan.baidu.com/disk/cmsdata?do=client",
-        "regex": "BaiduNetdisk_(\\d+.\\d+.\\d+.\\d+).exe"
+        "regex": "BaiduNetdisk_([\\d\\.]+).exe"
     },
     "autoupdate": {
-        "url": "http://issuecdn.baidupcs.com/issue/netdisk/yunguanjia/BaiduNetdisk_$version.exe#dl.7z"
-    },
-    "shortcuts": [
-        [
-            "BaiduNetdisk.exe",
-            "百度网盘"
-        ]
-    ]
+        "url": "http://issuecdn.baidupcs.com/issue/netdisk/yunguanjia/BaiduNetdisk_$version.exe#/dl.7z"
+    }
 }
