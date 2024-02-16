@@ -1,32 +1,30 @@
 {
-    "version": "7.10.7",
     "homepage": "https://www.feishu.cn/",
-    "description": "先进企业写协作与管理平台，一站式无缝办公协作。Advanced enterprise collaboration and management platform.",
-    "license": "Unknown",
-    "url": "https://sf3-cn.feishucdn.com/obj/ee-appcenter/ea59a261/Feishu-win32_ia32-7.10.7-signed.exe#/dl.7z",
+    "description": "Connect with teammates anytime and anywhere",
+    "license": {
+        "identifier": "EULA",
+        "url": "https://www.feishu.cn/en/terms"
+    },
+    "version": "7.10.7",
+    "url": "https://sf3-cn.feishucdn.com/obj/ee-appcenter/ea59a261/Feishu-win32_ia32-7.10.7-signed.exe#/feishu-7.10.7.7z",
     "hash": "md5:bedde0266c823ac40d64596b34211d36",
     "extract_to": "app",
-    "post_install": [
-        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-        "persist -dir @(\"$env:AppData\\LarkShell\") @(\"$persist_dir\\LarkShell\")",
-        "create_app_lnk \"$dir\\app\\Feishu.exe\" \"$desktop\\飞书.lnk\"",
-        "create_app_lnk \"$dir\\app\\Feishu.exe\" \"$scoop_apps_lnk\\飞书.lnk\""
-    ],
-    "pre_uninstall": [
-        "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
-        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-        "stop_process",
-        "remove_files @(\"$desktop\\飞书.lnk\",\"$scoop_apps_lnk\\飞书.lnk\",\"$env:AppData\\LarkShell\",\"$env:LocalAppData\\Feishu\")"
+    "shortcuts": [
+        [
+            "app/Feishu.exe",
+            "Feishu"
+        ]
     ],
     "checkver": {
         "url": "https://www.feishu.cn/api/downloads",
-        "regex": "Windows.+https://(?<path>[\\w\\.-/].*?)-(?<version>[\\d\\.]+)(?<suffix>[\\w\\.-].*?).exe"
+        "regex": "(?sm)Windows.*?https://(?<path>[\\w.-/].*?)-(?<version>[\\d.]+)(?<suffix>[\\w.-].*?).exe"
     },
     "autoupdate": {
-        "url": "https://$matchPath-$version$matchSuffix.exe#/dl.7z",
+        "url": "https://$matchPath-$version$matchSuffix.exe#/feishu-$version.7z",
         "hash": {
             "url": "https://www.feishu.cn/api/downloads",
             "jsonpath": "$.versions.Windows.hash"
         }
-    }
+    },
+    "notes": "Runtime data are stored in '%APPDATA%\\LarkShell', and are not persisted by Scoop."
 }
