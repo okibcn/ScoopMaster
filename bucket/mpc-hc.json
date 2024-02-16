@@ -10,8 +10,9 @@
         }
     },
     "pre_install": [
-        "if (!(Test-Path \"$persist_dir\\mpc-hc64.ini\")) {",
-        "    New-Item \"$dir\\mpc-hc64.ini\" | Out-Null",
+        "Remove-Item \"$dir\\CrashReporter\", \"$dir\\LAVFilters64\" -Recurse -Force",
+        "'mpc-hc64.ini', 'version.dll' | ForEach-Object {",
+        "    if (!(Test-Path \"$persist_dir\\$_\")) { New-Item \"$dir\\$_\" -ItemType File | Out-Null }",
         "}"
     ],
     "bin": [
@@ -26,10 +27,9 @@
             "MPC-HC"
         ]
     ],
-    "persist": "mpc-hc64.ini",
-    "post_install": [
-        "Remove-Item \"$dir\\CrashReporter\" -Recurse",
-        "Remove-Item \"$dir\\LAVFilters64\" -Recurse"
+    "persist": [
+        "mpc-hc64.ini",
+        "version.dll"
     ],
     "checkver": "github",
     "autoupdate": {
