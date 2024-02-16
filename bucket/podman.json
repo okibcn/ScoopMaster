@@ -1,32 +1,28 @@
 {
-    "version": "4.9.2",
+    "version": "4.9.3",
     "description": "A tool for managing OCI containers and pods.",
     "homepage": "https://podman.io/",
     "license": "Apache-2.0",
     "architecture": {
         "64bit": {
-            "url": "https://github.com/containers/podman/releases/download/v4.9.2/podman-4.9.2-setup.exe",
-            "hash": "d74c46564ca76210ae6e8e306fb4e4732057eeb4a998596daef3847fbfbd5ce1"
+            "url": "https://github.com/containers/podman/releases/download/v4.9.3/podman-remote-release-windows_amd64.zip",
+            "hash": "ed2d0c91f35e207dcef5eddbb00b2641d0c81ed6045711160bcce7a9fbd30d7e",
+            "extract_dir": "podman-4.9.3"
         }
     },
-    "bin": "podman.exe",
-    "installer": {
-        "script": [
-            "Expand-DarkArchive \"$dir\\podman-$version-setup.exe\" \"$dir\\_tmp\" -Removal",
-            "Expand-MsiArchive \"$dir\\_tmp\\AttachedContainer\\podman.msi\" \"$dir\" -ExtractDir 'PFiles\\RedHat\\Podman'"
-        ]
-    },
+    "bin": "usr/bin/podman.exe",
     "checkver": {
         "github": "https://github.com/containers/podman"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://github.com/containers/podman/releases/download/v$version/podman-$version-setup.exe",
-                "hash": {
-                    "url": "$baseurl/shasums"
-                }
+                "url": "https://github.com/containers/podman/releases/download/v$version/podman-remote-release-windows_amd64.zip",
+                "extract_dir": "podman-$version"
             }
+        },
+        "hash": {
+            "url": "$baseurl/shasums"
         }
     }
 }
