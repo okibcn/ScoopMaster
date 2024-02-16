@@ -1,0 +1,44 @@
+{
+    "version": "5.7.0-1",
+    "description": "Suite of applications used to implement SNMP",
+    "homepage": "http://www.net-snmp.org",
+    "license": "http://www.net-snmp.org/about/license.html",
+    "architecture": {
+        "32bit": {
+            "url": "https://downloads.sourceforge.net/project/net-snmp/net-snmp%20binaries/5.7-binaries/net-snmp-5.7.0-1.x86.exe#/dl.7z",
+            "hash": "7741f35eaf18a48f44b7d5c56fe5650f1c41b3c07576e8295a6c60cf075cbc7e"
+        }
+    },
+    "pre_install": "Remove-Item \"$dir\\`$*\", \"$dir\\uninst.exe\" -Force -Recurse",
+    "bin": [
+        "bin\\snmpbulkget.exe",
+        "bin\\snmpbulkwalk.exe",
+        "bin\\snmpd.exe",
+        "bin\\snmpdelta.exe",
+        "bin\\snmpdf.exe",
+        "bin\\snmpget.exe",
+        "bin\\snmpgetnext.exe",
+        "bin\\snmpnetstat.exe",
+        "bin\\snmpset.exe",
+        "bin\\snmpstatus.exe",
+        "bin\\snmptable.exe",
+        "bin\\snmptest.exe",
+        "bin\\snmptranslate.exe",
+        "bin\\snmptrap.exe",
+        "bin\\snmptrapd.exe",
+        "bin\\snmpusm.exe",
+        "bin\\snmpvacm.exe",
+        "bin\\snmpwalk.exe"
+    ],
+    "checkver": {
+        "url": "https://sourceforge.net/projects/net-snmp/rss?path=/net-snmp%20binaries",
+        "regex": "net-snmp-([\\d.]+).x86\\.exe\\]\\]"
+    },
+    "autoupdate": {
+        "architecture": {
+            "32bit": {
+                "url": "https://downloads.sourceforge.net/project/net-snmp/net-snmp%20binaries/$matchHead-binaries/net-snmp-$version.x86.exe#/dl.7z"
+            }
+        }
+    }
+}

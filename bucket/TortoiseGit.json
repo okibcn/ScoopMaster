@@ -5,15 +5,14 @@
     "license": {
         "identifier": "GPL-2.0-only"
     },
-    "notes": [
-        "To add TortoiseGit as a context menu option, run '$dir\\tortoisegit-install.reg'",
-        "For file associations, run '$dir\\tortoisegit-install-tools.reg'",
-        "Before uninstalling TortoiseGit, run '$dir\\tortoisegit-uninstall.reg' "
-    ],
     "architecture": {
         "64bit": {
-            "url": "https://repo.huaweicloud.com/tortoisegit/2.15.0.0/TortoiseGit-2.15.0.0-64bit.msi",
+            "url": "https://download.tortoisegit.org/tgit/2.15.0.0/TortoiseGit-2.15.0.0-64bit.msi",
             "hash": "481359c8773e1d098b98156ff44f0dd50304e97a866d44e6594c709ec5a61377"
+        },
+        "32bit": {
+            "url": "https://download.tortoisegit.org/tgit/2.15.0.0/TortoiseGit-2.15.0.0-32bit.msi",
+            "hash": "1e818fd4793b4e2130c6ec33b8803006b3b9949d8c2b025e8908f2565b257105"
         }
     },
     "extract_dir": "Program Files\\TortoiseGit",
@@ -23,13 +22,7 @@
         "    New-Item $path | Out-Null",
         "    New-ItemProperty -Path $path -Name 'VersionCheck' -PropertyType DWord -Value 0 -Force | Out-Null",
         "    New-ItemProperty -Path $path -Name 'MsysGit' -PropertyType String -Value \"$env:GIT_INSTALL_ROOT\\bin\" -Force | Out-Null",
-        "}",
-        "$null, $bucket = find_manifest $app 'cvp'",
-        "$bucketdir = Find-BucketDirectory($bucket)",
-        "$escdir = $dir -replace \"\\\\\",\"\\\\\"",
-        "(gc \"$bucketdir\\..\\scripts\\tortoisegit\\tortoisegit-install.reg.templ\") | % {$_ -replace \"%TGITHOME%\",\"$escdir\"} | out-file -enc oem \"$dir\\tortoisegit-install.reg\"",
-        "(gc \"$bucketdir\\..\\scripts\\tortoisegit\\tortoisegit-install-tools.reg.templ\") | % {$_ -replace \"%TGITHOME%\",\"$escdir\"} | out-file -enc oem \"$dir\\tortoisegit-install-tools.reg\"",
-        "cp \"$bucketdir\\..\\scripts\\tortoisegit\\tortoisegit-uninstall.reg\" \"$dir\""
+        "}"
     ],
     "bin": [
         "bin\\TortoiseGitUDiff.exe",
@@ -38,19 +31,19 @@
     "shortcuts": [
         [
             "bin\\TortoiseGitMerge.exe",
-            "TortoiseGit Merge"
+            "TortoiseGit\\TortoiseGit Merge"
         ],
         [
             "bin\\TortoiseGitBlame.exe",
-            "TortoiseGit Blame"
+            "TortoiseGit\\TortoiseGit Blame"
         ],
         [
             "bin\\TortoiseGitIDiff.exe",
-            "TortoiseGit Diff"
+            "TortoiseGit\\TortoiseGit Diff"
         ],
         [
             "bin\\TortoiseGitProc.exe",
-            "TortoiseGit Settings",
+            "TortoiseGit\\TortoiseGit Settings",
             "/command:settings"
         ]
     ],
@@ -61,7 +54,10 @@
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://repo.huaweicloud.com/tortoisegit/$version/TortoiseGit-$version-64bit.msi"
+                "url": "https://download.tortoisegit.org/tgit/$version/TortoiseGit-$version-64bit.msi"
+            },
+            "32bit": {
+                "url": "https://download.tortoisegit.org/tgit/$version/TortoiseGit-$version-32bit.msi"
             }
         }
     }
