@@ -1,47 +1,44 @@
 {
     "version": "121.0.6167.160",
-    "description": "Chromium woth GOST algorithm support.",
+    "description": "Chromium with support of GOST algorithms.",
     "homepage": "https://github.com/deemru/Chromium-Gost",
     "license": "MIT",
     "architecture": {
-        "32bit": {
-            "url": "https://github.com/deemru/Chromium-Gost/releases/download/121.0.6167.160/chromium-gost-121.0.6167.160-windows-386.zip",
-            "hash": "a40b2b85c6558714c869c813cf7583186f1a17ca8320be80b20e678aed679353"
-        },
         "64bit": {
             "url": "https://github.com/deemru/Chromium-Gost/releases/download/121.0.6167.160/chromium-gost-121.0.6167.160-windows-amd64.zip",
             "hash": "f4b93695c196b9a0912f3429fd20ea712788cb53f7275f591f42ffc6ba57e40d"
+        },
+        "32bit": {
+            "url": "https://github.com/deemru/Chromium-Gost/releases/download/121.0.6167.160/chromium-gost-121.0.6167.160-windows-386.zip",
+            "hash": "a40b2b85c6558714c869c813cf7583186f1a17ca8320be80b20e678aed679353"
         }
     },
+    "extract_dir": "chromium-gost-121.0.6167.160",
     "bin": [
         [
-            "app\\chrome.exe",
+            "chrome.exe",
             "chromium-gost",
-            "--user-data-dir=\"$dir\\User Data\""
+            "\"--user-data-dir=$dir\\User Data\""
         ]
     ],
     "shortcuts": [
         [
-            "app\\chrome.exe",
-            "Chromium-GOST",
-            "--user-data-dir=\"$dir\\User Data\""
+            "chrome.exe",
+            "Chromium GOST",
+            "\"--user-data-dir=$dir\\User Data\""
         ]
     ],
-    "installer": {
-        "script": "Move-Item -Path \"$dir\\chromium-gost-$version\" -Destination \"$dir\\app\""
-    },
     "persist": "User Data",
-    "checkver": {
-        "github": "https://github.com/deemru/Chromium-Gost"
-    },
+    "checkver": "github",
     "autoupdate": {
         "architecture": {
-            "32bit": {
-                "url": "https://github.com/deemru/Chromium-Gost/releases/download/$version/chromium-gost-$version-windows-386.zip"
-            },
             "64bit": {
                 "url": "https://github.com/deemru/Chromium-Gost/releases/download/$version/chromium-gost-$version-windows-amd64.zip"
+            },
+            "32bit": {
+                "url": "https://github.com/deemru/Chromium-Gost/releases/download/$version/chromium-gost-$version-windows-386.zip"
             }
-        }
+        },
+        "extract_dir": "chromium-gost-$version"
     }
 }
