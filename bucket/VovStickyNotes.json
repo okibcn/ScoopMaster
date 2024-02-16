@@ -5,6 +5,12 @@
     "license": "Shareware",
     "url": "https://vovsoft.com/files/vov-sticky-notes.exe?v=8.8",
     "hash": "ca2792164c858a1e8c826d7283215cfe5712e60f914a7ec67879e8ec98bd93ab",
+    "shortcuts": [
+        [
+            "sticky.exe",
+            "Vov Sticky Notes"
+        ]
+    ],
     "pre_install": [
         ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
         "$path_exe=\"$dir\\vov-sticky-notes.exe\"",
@@ -12,7 +18,6 @@
         "$core_exe=\"$dir\\sticky.exe\"",
         "sleep_install $core_exe",
         "persist -file @(\"$dir\\data.ini\") @(\"$persist_dir\\data.ini\")",
-        "create_app_lnk $core_exe \"$scoop_apps_lnk\\Vov Sticky Notes.lnk\"",
         "clean_redundant_files @($path_exe) 15"
     ],
     "pre_uninstall": [
@@ -20,9 +25,8 @@
         ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
         "stop_process $false",
         "$ui_exe=\"$dir\\unins000.exe\"",
-        "& $ui_exe /VerySilent",
-        "sleep_uninstall $ui_exe",
-        "remove_files @(\"$scoop_apps_lnk\\Vov Sticky Notes.lnk\")"
+        "try{ & $ui_exe /VerySilent }catch{}",
+        "sleep_uninstall $ui_exe"
     ],
     "checkver": "Version:</b>\\s?([\\d\\.]+)",
     "autoupdate": {

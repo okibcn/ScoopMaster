@@ -6,12 +6,6 @@
         "identifier": "MIT",
         "url": "https://github.com/1111mp/nvm-desktop/blob/main/LICENSE"
     },
-    "notes": [
-        "对于此应用下载的所有 node 版本，只有在默认的版本存储路径(~\\.nvmd\\versions)下才会被 persist。",
-        "请不要修改默认版本存储路径以确保正常的 persist。",
-        "All node versions downloaded for this application will only be persisted in the default version storage path (~\\.nvmd\\versions).",
-        "Please do not modify the default version storage path to ensure normal persistence."
-    ],
     "architecture": {
         "64bit": {
             "url": "https://github.com/1111mp/nvm-desktop/releases/download/v3.0.0/nvm-desktop_Setup_win_x64_3.0.0.exe#/_installers_.exe",
@@ -22,6 +16,12 @@
             "hash": "c5f004bb8824cce417df5de9ba73e50e3d6e87dcbb848d571ad4ed3c4e00c26f"
         }
     },
+    "shortcuts": [
+        [
+            "nvm-desktop.exe",
+            "nvm-desktop"
+        ]
+    ],
     "pre_install": [
         ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
         "$path_exe=\"$dir\\_installers_.exe\"",
@@ -29,8 +29,6 @@
         "$core_exe=\"$dir\\nvm-desktop.exe\"",
         "sleep_install $core_exe",
         "persist -dir @(\"$env:AppData\\NVM-Desktop\",\"$env:UserProfile\\.nvmd\") @(\"$persist_dir\\NVM-Desktop\",\"$persist_dir\\.nvmd\")",
-        "create_app_lnk $core_exe \"$desktop\\nvm-desktop.lnk\"",
-        "create_app_lnk $core_exe \"$scoop_apps_lnk\\nvm-desktop.lnk\"",
         "clean_redundant_files @($path_exe,\"$apps_lnk\\nvm-desktop.lnk\") 15"
     ],
     "pre_uninstall": [
@@ -39,9 +37,9 @@
         "stop_process $false",
         "remove_files @(\"$env:AppData\\NVM-Desktop\",\"$env:UserProfile\\.nvmd\")",
         "$ui_exe=\"$dir\\Uninstall nvm-desktop.exe\"",
-        "& $ui_exe /S",
+        "try{ & $ui_exe /S }catch{}",
         "sleep_uninstall $ui_exe",
-        "remove_files @(\"$desktop\\nvm-desktop.lnk\",\"$scoop_apps_lnk\\nvm-desktop.lnk\",\"$env:LocalAppData\\nvm-desktop-updater\")"
+        "remove_files @(\"$env:LocalAppData\\nvm-desktop-updater\")"
     ],
     "checkver": "github",
     "autoupdate": {

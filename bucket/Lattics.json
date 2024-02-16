@@ -1,31 +1,46 @@
 {
-    "version": "1.8.3",
+    "version": "1.18.3",
     "description": "「类脑式」知识管理笔记与写作。\"Brain-like\" Knowledge Management Notes.",
     "homepage": "https://lattics.zineapi.com/",
     "license": "Unknown",
-    "url": "https://mid.zineapi.com/to/get-lattics/win-installer-x64#/dl.zip",
+    "url": "https://media.zine.la/Lattics/1.18/Lattics_win_installer_x64_1.18.3(400).exe.zip",
     "hash": "eda7711217ee32629c137fa58b9b20a19ae325ca15effa32b105f5e8a4749cbb",
-    "post_install": [
+    "shortcuts": [
+        [
+            "Lattics.exe",
+            "Lattics"
+        ]
+    ],
+    "pre_install": [
         ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
         "$filter=Get-ChildItem $dir | Where-Object {$_.Name -like \"*.exe\" }",
-        "Rename-Item $filter[0].FullName \"dl.zip\"",
-        "Expand-7zipArchive \"$dir\\dl.zip\" \"$dir\" -ExtractDir '$PLUGINSDIR' -Removal",
+        "Rename-Item $filter[0].FullName \"_installer_.7z\"",
+        "Expand-7zipArchive \"$dir\\_installer_.7z\" \"$dir\" -ExtractDir '$PLUGINSDIR' -Removal",
         "Expand-7zipArchive \"$dir\\app-64.7z\" \"$dir\" -Removal",
         "persist -dir @(\"$env:AppData\\Lattics\") @(\"$persist_dir\\Lattics\")",
-        "create_app_lnk \"$dir\\Lattics.exe\" \"$desktop\\Lattics.lnk\"",
-        "create_app_lnk \"$dir\\Lattics.exe\" \"$scoop_apps_lnk\\Lattics.lnk\""
+        "create_app_lnk \"$dir\\Lattics.exe\" \"$desktop\\Lattics.lnk\""
     ],
     "pre_uninstall": [
         "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
         ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
         "stop_process",
-        "remove_files @(\"$desktop\\Lattics.lnk\",\"$scoop_apps_lnk\\Lattics.lnk\",\"$apps_lnk\\Lattics.lnk\",\"$env:AppData\\Lattics\",\"$env:LocalAppData\\lattics-updater\")"
+        "remove_files @(\"$desktop\\Lattics.lnk\",\"$env:AppData\\Lattics\",\"$env:LocalAppData\\lattics-updater\")"
     ],
     "checkver": {
-        "url": "https://apps.apple.com/cn/app/lattics-%E7%B1%BB%E8%84%91%E5%BC%8F%E7%9F%A5%E8%AF%86%E7%AE%A1%E7%90%86%E7%AC%94%E8%AE%B0%E4%B8%8E%E5%8D%A1%E7%89%87%E5%BC%8F%E5%86%99%E4%BD%9C/id1575605022?mt=12",
-        "regex": "版本 ([\\d\\.]+)"
+        "script": [
+            "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
+            ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+            "$dl_info = get_installer_info 'AuraMarker/Lattics'",
+            "\"ver:$($dl_info.PackageVersion);\"",
+            "\"x64:$($dl_info.x64_zip.InstallerUrl);\""
+        ],
+        "regex": "ver:(?<version>.+?); x64:(?<x64>.+?);"
     },
     "autoupdate": {
-        "url": "https://mid.zineapi.com/to/get-lattics/win-installer-x64#/dl.zip"
+        "url": "$matchX64",
+        "hash": {
+            "url": "https://raw.githubusercontent.com/microsoft/winget-pkgs/master/manifests/a/AuraMarker/Lattics/$version/AuraMarker.Lattics.installer.yaml",
+            "regex": "Architecture: x64[\\s\\S]+?InstallerSha256:\\s?(.+)"
+        }
     }
 }

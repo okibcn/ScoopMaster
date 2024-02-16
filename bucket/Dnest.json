@@ -8,16 +8,21 @@
     },
     "url": "https://github.com/davidkane0526/Dnest/releases/download/V1.3.0/Dnest.exe",
     "hash": "4508477c70ffa47530d757d73ea298abe848ac7443de973dabcc2d3aee9a8d1b",
+    "shortcuts": [
+        [
+            "Dnest.exe",
+            "Dnest"
+        ]
+    ],
     "pre_install": [
         ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-        "create_app_lnk \"$dir\\Dnest.exe\" \"$desktop\\Dnest.lnk\"",
-        "create_app_lnk \"$dir\\Dnest.exe\" \"$scoop_apps_lnk\\Dnest.lnk\""
+        "create_app_lnk \"$dir\\Dnest.exe\" \"$desktop\\Dnest.lnk\""
     ],
     "pre_uninstall": [
         "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
         ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
         "stop_process",
-        "remove_files @(\"$desktop\\Dnest.lnk\",\"$scoop_apps_lnk\\Dnest.lnk\")"
+        "remove_files @(\"$desktop\\Dnest.lnk\")"
     ],
     "checkver": "github",
     "autoupdate": {

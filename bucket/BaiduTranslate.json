@@ -1,18 +1,23 @@
 {
     "version": "1.7.0",
-    "description": "轻·快的多语种翻译工具。Light and fast multilingual translation tool.",
+    "description": "轻·快的多语种翻译工具。A fast and lightweight multilingual translation tool.",
     "homepage": "https://fanyi.baidu.com",
     "license": "Unknown",
-    "url": "https://fanyiapp.cdn.bcebos.com/fanyi-client/pkg/win/1.7.0/百度翻译_Setup_1.7.0.exe",
+    "url": "https://fanyiapp.cdn.bcebos.com/fanyi-client/pkg/win/1.7.0/百度翻译_Setup_1.7.0.exe#/_installer_.exe",
     "hash": "77b54aa77b98df4d2c4d9746520ba3b2fef23e13aae918ee4fbdbdc5bd6ea388",
+    "shortcuts": [
+        [
+            "百度翻译.exe",
+            "百度翻译"
+        ]
+    ],
     "pre_install": [
         ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-        "$path_exe=\"$dir\\百度翻译_Setup_$($version).exe\"",
+        "$path_exe=\"$dir\\_installer_.exe\"",
         "& $path_exe /S /D=$dir",
         "$core_exe=\"$dir\\百度翻译.exe\"",
         "sleep_install $core_exe",
         "persist -dir @(\"$env:AppData\\BdTranslateClient\") @(\"$persist_dir\\BdTranslateClient\")",
-        "create_app_lnk $core_exe \"$scoop_apps_lnk\\百度翻译.lnk\"",
         "clean_redundant_files @($path_exe,\"$apps_lnk\\百度翻译.lnk\") 15"
     ],
     "pre_uninstall": [
@@ -21,15 +26,24 @@
         "stop_process $false",
         "remove_files @(\"$env:AppData\\BdTranslateClient\")",
         "$ui_exe=\"$dir\\Uninstall 百度翻译.exe\"",
-        "& $ui_exe /S",
-        "sleep_uninstall $ui_exe",
-        "remove_files @(\"$scoop_apps_lnk\\百度翻译.lnk\")"
+        "try{ & $ui_exe /S }catch{}",
+        "sleep_uninstall $ui_exe"
     ],
     "checkver": {
-        "url": "https://v.abgo-bucket.workers.dev/b/Baidu/BaiduTranslate",
-        "jsonpath": "$.version[0]"
+        "script": [
+            "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
+            ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+            "$dl_info = get_installer_info 'Baidu/BaiduTranslate'",
+            "\"ver:$($dl_info.PackageVersion);\"",
+            "\"x86:$($dl_info.x86_exe.InstallerUrl);\""
+        ],
+        "regex": "ver:(?<version>.+?); x86:(?<x86>.+?);"
     },
     "autoupdate": {
-        "url": "https://fanyiapp.cdn.bcebos.com/fanyi-client/pkg/win/$version/百度翻译_Setup_$version.exe"
+        "url": "$matchX86#/_installer_.exe",
+        "hash": {
+            "url": "https://raw.githubusercontent.com/microsoft/winget-pkgs/master/manifests/b/Baidu/BaiduTranslate/$version/Baidu.BaiduTranslate.installer.yaml",
+            "regex": "Architecture: x86[\\s\\S]+?InstallerSha256:\\s?(.+)"
+        }
     }
 }

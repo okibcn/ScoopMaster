@@ -13,6 +13,12 @@
             "hash": "b0fdd677cc31946181bd72828dc28ddb0f561279e2ea3e5e07bf6d1edb031244"
         }
     },
+    "shortcuts": [
+        [
+            "uTools.exe",
+            "uTools"
+        ]
+    ],
     "pre_install": [
         ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
         "$path_exe= \"$dir\\_installer_.exe\"",
@@ -20,7 +26,6 @@
         "$core_exe=\"$dir\\uTools.exe\"",
         "sleep_install $core_exe",
         "persist -dir @(\"$env:AppData\\uTools\") @(\"$persist_dir\\uTools\")",
-        "create_app_lnk $core_exe \"$scoop_apps_lnk\\uTools.lnk\"",
         "clean_redundant_files @($path_exe,\"$apps_lnk\\uTools.lnk\") 15"
     ],
     "pre_uninstall": [
@@ -29,9 +34,9 @@
         "stop_process $false",
         "remove_files @(\"$env:AppData\\uTools\")",
         "$ui_exe=\"$dir\\Uninstall uTools.exe\"",
-        "& $ui_exe /S",
+        "try{ & $ui_exe /S }catch{}",
         "sleep_uninstall $ui_exe",
-        "remove_files @(\"$desktop\\uTools.lnk\",\"$scoop_apps_lnk\\uTools.lnk\",\"$env:LocalAppData\\utools-updater\")"
+        "remove_files @(\"$env:LocalAppData\\utools-updater\")"
     ],
     "checkver": "version:.+V([\\d\\.]+)",
     "autoupdate": {

@@ -3,34 +3,46 @@
     "description": "网易有道翻译。YouDaoTranslate for windows.",
     "homepage": "https://fanyi.youdao.com/download-Windows",
     "license": "Unknown",
-    "url": "https://download.ydstatic.com/cidian/YoudaoDict_baidu_pc.exe#/dl.7z",
-    "hash": "1ef371fcafa8ea70f156dca824db3b4930de0fb584eb70d675699d576e65a647",
-    "post_install": [
+    "url": "https://download.ydstatic.com/cidian/static/10.2/20240201/YoudaoDictSetup.exe#/dl.7z",
+    "hash": "6e2225189e2a5c0f52f8a2bda204fe8aebb97e0c805df4e60b5c9013e8a23c53",
+    "shortcuts": [
+        [
+            "YoudaoDict.exe",
+            "网易有道翻译"
+        ]
+    ],
+    "pre_install": [
         ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
         "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\dict.7z\" \"$dir\" -Removal",
         "persist -dir @(\"$env:LocalAppData\\Yodao\",\"$env:LocalAppData\\youdao\") @(\"$persist_dir\\Yodao\",\"$persist_dir\\youdao\")",
         "create_app_lnk \"$dir\\YoudaoDict.exe\" \"$desktop\\网易有道翻译.lnk\"",
-        "create_app_lnk \"$dir\\YoudaoDict.exe\" \"$scoop_apps_lnk\\网易有道翻译.lnk\"",
         "clean_redundant_files @(\"$apps_lnk\\有道\\网易有道翻译\") 15"
     ],
     "pre_uninstall": [
-        "$ErrorActionPreference=\"SilentlyContinue\"",
         "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
         ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-        "stop_process $false",
-        "$app_name=\"网易有道翻译\"",
-        "confirm $(data_replace $json.need_close)",
+        "confirm (handle_lang {\"卸载暂停。`n网易有道翻译 需要先手动关闭软件再进行卸载，请确认已经关闭了软件。`n然后按下 Enter(回车键) 继续进行卸载，或者按下其他任意键取消本次卸载。`n如果依然卸载失败，请重启终端，运行卸载命令。\"} {\"Uninstall paused.`nYouDaoTranslate needs to be manually closed to continue to uninstall.`nPlease confirm that you have closed it.`nPress Enter to continue or other key to cancel the uninstall.`nIf the uninstall still fails, restart the terminal and run the uninstall command.\"})",
         "remove_files @(\"$env:LocalAppData\\Yodao\",\"$env:LocalAppData\\youdao\")",
         "$ui_exe=\"$dir\\uninst.exe\"",
-        "& $ui_exe /S",
+        "try{ & $ui_exe /S }catch{}",
         "sleep_uninstall $ui_exe",
-        "remove_files @(\"$desktop\\网易有道翻译.lnk\",\"$scoop_apps_lnk\\网易有道翻译.lnk\")"
+        "remove_files @(\"$desktop\\网易有道翻译.lnk\")"
     ],
     "checkver": {
-        "url": "https://v.abgo-bucket.workers.dev/y/Youdao/YoudaoTranslate",
-        "jsonpath": "$.version[0]"
+        "script": [
+            "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
+            ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+            "$dl_info = get_installer_info 'Youdao/YoudaoTranslate'",
+            "\"ver:$($dl_info.PackageVersion);\"",
+            "\"x86:$($dl_info.x86_exe.InstallerUrl);\""
+        ],
+        "regex": "ver:(?<version>.+?); x86:(?<x86>.+?);"
     },
     "autoupdate": {
-        "url": "https://download.ydstatic.com/cidian/YoudaoDict_baidu_pc.exe#/dl.7z"
+        "url": "$matchX86#/dl.7z",
+        "hash": {
+            "url": "https://raw.githubusercontent.com/microsoft/winget-pkgs/master/manifests/y/Youdao/YoudaoTranslate/$version/Youdao.YoudaoTranslate.installer.yaml",
+            "regex": "Architecture: x86[\\s\\S]+?InstallerSha256:\\s?(.+)"
+        }
     }
 }

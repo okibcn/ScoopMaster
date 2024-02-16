@@ -19,14 +19,14 @@
         "& $path_exe /S /D=$dir",
         "$core_exe=\"$dir\\bmclient.exe\"",
         "sleep_install $core_exe",
-        "clean_redundant_files @($path_exe) 60"
+        "clean_redundant_files @($path_exe) 15"
     ],
     "pre_uninstall": [
         "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
         ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
         "stop_process $false",
         "$ui_exe=\"$dir\\uninstall.exe\"",
-        "& $ui_exe /S",
+        "try{ & $ui_exe /S }catch{}",
         "sleep_uninstall $ui_exe"
     ],
     "checkver": {

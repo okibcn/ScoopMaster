@@ -13,6 +13,12 @@
             "hash": "9fe562e938bb08aea07a50e79daded73be6641364790e64f1d02f37cbec4b23e"
         }
     },
+    "shortcuts": [
+        [
+            "AdsPower Global.exe",
+            "AdsPower Browser"
+        ]
+    ],
     "pre_install": [
         ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
         "$path_exe=\"$dir\\_installer_.exe\"",
@@ -20,7 +26,6 @@
         "$core_exe=\"$dir\\AdsPower Global.exe\"",
         "sleep_install $core_exe",
         "persist -dir @(\"$env:AppData\\adspower_global\") @(\"$persist_dir\\adspower_global\")",
-        "create_app_lnk $core_exe \"$scoop_apps_lnk\\AdsPower Browser.lnk\"",
         "clean_redundant_files @($path_exe,\"$admin_apps_lnk\\AdsPower Browser.lnk\") 15"
     ],
     "pre_uninstall": [
@@ -29,9 +34,9 @@
         "stop_process $false",
         "remove_files @(\"$env:AppData\\adspower_global\")",
         "$ui_exe=\"$dir\\Uninstall AdsPower Global.exe\"",
-        "& $ui_exe /S",
+        "try{ & $ui_exe /S }catch{}",
         "sleep_uninstall $ui_exe",
-        "remove_files @(\"$scoop_apps_lnk\\AdsPower Browser.lnk\",\"$env:AppData\\adspower_global\",\"$env:LocalAppData\\adspower_global-updater\")"
+        "remove_files @(\"$env:LocalAppData\\adspower_global-updater\")"
     ],
     "checkver": {
         "url": "https://www.adspower.net/download",

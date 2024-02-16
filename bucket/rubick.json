@@ -8,6 +8,12 @@
     },
     "url": "https://github.com/rubickCenter/rubick/releases/download/v4.2.1/rubick-Setup-4.2.1-x64.exe",
     "hash": "0abf70b7efd8c855c270bcecc237809ba48b08c22f582f17bf33fb5c7f55d1b1",
+    "shortcuts": [
+        [
+            "rubick.exe",
+            "Rubick"
+        ]
+    ],
     "pre_install": [
         ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
         "$path_exe=\"$dir\\rubick-Setup-$($version)-x64.exe\"",
@@ -15,8 +21,6 @@
         "$core_exe=\"$dir\\rubick.exe\"",
         "sleep_install $core_exe",
         "persist -dir @(\"$env:AppData\\rubick\") @(\"$persist_dir\\rubick\")",
-        "create_app_lnk $core_exe \"$desktop\\rubick.lnk\"",
-        "create_app_lnk $core_exe \"$scoop_apps_lnk\\rubick.lnk\"",
         "clean_redundant_files @($path_exe,\"$apps_lnk\\rubick.lnk\") 15"
     ],
     "pre_uninstall": [
@@ -25,9 +29,9 @@
         "stop_process $false",
         "remove_files @(\"$env:AppData\\rubick\")",
         "$ui_exe=\"$dir\\Uninstall rubick.exe\"",
-        "& $ui_exe /S",
+        "try{ & $ui_exe /S }catch{}",
         "sleep_uninstall $ui_exe",
-        "remove_files @(\"$desktop\\rubick.lnk\",\"$scoop_apps_lnk\\rubick.lnk\",\"$env:LocalAppData\\Programs\\rubick\",\"$env:LocalAppData\\rubick-updater\")"
+        "remove_files @(\"$env:LocalAppData\\Programs\\rubick\",\"$env:LocalAppData\\rubick-updater\")"
     ],
     "checkver": "github",
     "autoupdate": {

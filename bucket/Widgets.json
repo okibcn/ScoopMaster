@@ -8,6 +8,12 @@
     },
     "url": "https://widget-fun.oss-cn-hangzhou.aliyuncs.com/version/installer.exe",
     "hash": "07d38b034bfdc2d3dc8fa5350057c56a0c3c75eb68c459d33ebea85a041248f6",
+    "shortcuts": [
+        [
+            "Widgets.exe",
+            "桌面组件"
+        ]
+    ],
     "pre_install": [
         ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
         "$path_exe=\"$dir\\installer.exe\"",
@@ -15,7 +21,6 @@
         "$core_exe=\"$dir\\Widgets.exe\"",
         "sleep_install $core_exe",
         "persist -dir @(\"$env:AppData\\app\") @(\"$persist_dir\\app\")",
-        "create_app_lnk $core_exe \"$scoop_apps_lnk\\桌面组件.lnk\"",
         "clean_redundant_files @($path_exe,\"$apps_lnk\\桌面组件.lnk\") 15"
     ],
     "pre_uninstall": [
@@ -24,9 +29,9 @@
         "stop_process $false",
         "remove_files @(\"$env:AppData\\app\")",
         "$ui_exe=\"$dir\\Uninstall Widgets.exe\"",
-        "& $ui_exe /S",
+        "try{ & $ui_exe /S }catch{}",
         "sleep_uninstall $ui_exe",
-        "remove_files @(\"$desktop\\桌面组件.lnk\",\"$scoop_apps_lnk\\桌面组件.lnk\",\"$env:UserProfile\\Documents\\Widget\",\"$env:LocalAppData\\app-updater\")"
+        "remove_files @(\"$env:UserProfile\\Documents\\Widget\",\"$env:LocalAppData\\app-updater\")"
     ],
     "checkver": {
         "script": [

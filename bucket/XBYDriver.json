@@ -20,6 +20,12 @@
             "hash": "e75587f0a68a257b8f5017dddced838d11a02490475348132bf3446160ef10ef"
         }
     },
+    "shortcuts": [
+        [
+            "小白羊云盘.exe",
+            "小白羊云盘"
+        ]
+    ],
     "pre_install": [
         ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
         "$path_exe=\"$dir\\_installer_.exe\"",
@@ -27,7 +33,6 @@
         "$core_exe=\"$dir\\小白羊云盘.exe\"",
         "sleep_install $core_exe",
         "persist -dir @(\"$env:AppData\\alixby3\") @(\"$persist_dir\\alixby3\")",
-        "create_app_lnk $core_exe \"$scoop_apps_lnk\\小白羊云盘.lnk\"",
         "clean_redundant_files @($path_exe,\"$admin_apps_lnk\\小白羊云盘.lnk\") 15"
     ],
     "pre_uninstall": [
@@ -36,9 +41,9 @@
         "stop_process $false",
         "remove_files @(\"$env:AppData\\alixby3\")",
         "$ui_exe=\"$dir\\Uninstall 小白羊云盘.exe\"",
-        "& $ui_exe /S",
+        "try{ & $ui_exe /S }catch{}",
         "sleep_uninstall $ui_exe",
-        "remove_files @(\"$scoop_apps_lnk\\小白羊云盘.lnk\",\"$env:LocalAppData\\xbyyunpan-updater\")"
+        "remove_files @(\"$env:LocalAppData\\xbyyunpan-updater\")"
     ],
     "checkver": "github",
     "autoupdate": {
