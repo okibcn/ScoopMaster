@@ -20,12 +20,13 @@
     "installer": {
         "script": [
             "$programname = \"YouTube Music Desktop App*\"",
-            "$regPath = \"HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\afca255d-79c9-539f-84c6-b3a7619889d5\"",
-            "if((Get-ItemProperty -LiteralPath \"$regPath\").DisplayVersion -lt [Version]\"$version\")",
+            "$AppData = [Environment]::GetFolderPath(\"LocalApplicationData\")",
+            "$filepath = \"$AppData\\Programs\\youtube-music-desktop-app\\YouTube Music Desktop App.exe\"",
+            "if(((Test-Path -Path $filepath -PathType Leaf) -eq $false) -or ((Get-Command $filepath).Version -lt [System.Version]\"$version\"))",
             "{",
             "   &\"$dir\\setup.exe\" /S | Out-Null",
             "   Start-Sleep -Seconds 10",
-            "   if((Get-ItemProperty -LiteralPath \"$regPath\").DisplayVersion -lt [Version]\"$version\")",
+            "   if(((Test-Path -Path $filepath -PathType Leaf) -eq $false) -or ((Get-Command $filepath).Version -lt [System.Version]\"$version\"))",
             "   {",
             "       exit 1",
             "   }",
@@ -42,6 +43,6 @@
         "github": "https://github.com/ytmdesktop/ytmdesktop"
     },
     "autoupdate": {
-        "url": "https://github.com/ytmdesktop/ytmdesktop/releases/download/v$version/YouTube-Music-Desktop-App-Setup-$version.exe#/setup.exe"
+        "url": "https://github.com/ytmdesktop/ytmdesktop/releases/download/v$version/YouTube-Music-Desktop-App-$version-Setup.exe#/setup.exe"
     }
 }
