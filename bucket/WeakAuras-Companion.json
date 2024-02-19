@@ -2,30 +2,24 @@
     "version": "5.2.3",
     "description": "Updates WeakAuras installed from Wago.",
     "homepage": "https://weakauras.wtf/",
-    "license": "GPL-2.0-or-later",
-    "url": "https://github.com/WeakAuras/WeakAuras-Companion/releases/download/v5.2.3/WeakAuras-Companion-Setup-5.2.3.exe#/dl.7z",
-    "hash": "sha512:d38a80fdd1dc28e07cf84e675351d147c3890631088ec9182e573d8d8c3a1c811aa061873e87c6bb8a4d4a77c906cb9ddb47889aea7ee2728de6834e2e73bf30",
-    "extract_dir": "$PLUGINSDIR",
+    "license": {
+        "identifier": "GPL-2.0-or-later",
+        "url": "https://raw.githubusercontent.com/WeakAuras/WeakAuras-Companion/main/LICENSE"
+    },
+    "url": "https://github.com/WeakAuras/WeakAuras-Companion/releases/download/v5.2.3/WeakAuras-Companion-Setup-5.2.3.exe#/setup.exe",
+    "hash": "564b672b2889cdf481e67037f094a48ea6a2a66985820842b8a32dcd6fdf3cbc",
     "installer": {
         "script": [
-            "Remove-Item \"$dir\\*\" -Exclude 'app-64.7z'",
-            "Expand-7zipArchive \"$dir\\app-64.7z\" \"$dir\" -Removal"
+            "Start-Process \"$dir\\setup.exe\" -ArgumentList '/S' -Wait -Verb RunAs | Out-Null",
+            "Remove-Item \"$dir\\setup.exe\""
         ]
     },
-    "shortcuts": [
-        [
-            "WeakAuras Companion.exe",
-            "WeakAuras Companion"
-        ]
-    ],
     "checkver": {
-        "github": "https://github.com/WeakAuras/WeakAuras-Companion"
+        "url": "https://api.github.com/repos/WeakAuras/WeakAuras-Companion/releases",
+        "jsonpath": "$[0].tag_name",
+        "regex": "(?!v)(.+)"
     },
     "autoupdate": {
-        "url": "https://github.com/WeakAuras/WeakAuras-Companion/releases/download/v$version/WeakAuras-Companion-Setup-$version.exe#/dl.7z",
-        "hash": {
-            "url": "$baseurl/latest.yml",
-            "find": "sha512:\\s+(.*)"
-        }
+        "url": "https://github.com/WeakAuras/WeakAuras-Companion/releases/download/v$version/WeakAuras-Companion-Setup-$version.exe#/setup.exe"
     }
 }
