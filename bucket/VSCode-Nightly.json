@@ -12,7 +12,7 @@
     ],
     "architecture": {
         "64bit": {
-            "url": "https://vscode.blob.core.windows.net/insider/00124e9e5830e3efc897db71c781899f8a676295/VSCode-win32-x64-1.87.0-insider.zip",
+            "url": "https://vscode.download.prss.microsoft.com/dbazure/download/insider/00124e9e5830e3efc897db71c781899f8a676295/VSCode-win32-x64-1.87.0-insider.zip",
             "hash": "ade25670eda3dcc5ce8c1c4f4b9fa78fe320a81eec9b7dadee29d30aba9ea296"
         }
     },
@@ -62,13 +62,13 @@
     "checkver": {
         "url": "https://code.visualstudio.com/sha?build=insider",
         "jsonpath": "$.products[?(@.platform.os == 'win32-x64-archive')]",
-        "regex": "\"name\": \"(?<name>[\\d.]+-insider)\",\\s+\"version\": \"(?<version>[\\w]{40})(?>.|\\s)+?\"timestamp\": (?<time>[\\d]{13})",
+        "regex": "\"url\": \"https:(?<url>.*zip)\",\\s+\"name\": \"(?<name>[\\d.]+-insider)\",(?>.|\\s)+?\"timestamp\": (?<time>[\\d]{13})",
         "replace": "${name}_${time}"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://vscode.blob.core.windows.net/insider/$matchVersion/VSCode-win32-x64-$matchName.zip",
+                "url": "https:$matchUrl",
                 "hash": {
                     "url": "https://code.visualstudio.com/sha?build=insider",
                     "mode": "json",
