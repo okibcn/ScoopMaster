@@ -1,26 +1,32 @@
 {
-    "##": "Noi",
     "version": "0.3.0",
-    "description": "🦄 AI + Tools + Plugins + Community",
-    "homepage": "https://github.com/lencx/Noi",
-    "license": {
-        "identifier": "Proprietary",
-        "url": "https://github.com/lencx"
-    },
-    "url": "https://github.com/lencx/Noi/releases/download/v0.3.0/Noi-win32-x64-0.3.0-setup.exe#/dl.7z",
-    "hash": "076190fd036ae63b6aea84634430f2f03dbb61a20aec867dcd30252f69af6bc8",
-    "checkver": "github",
-    "autoupdate": {
-        "url": "https://github.com/lencx/Noi/releases/download/v$version/Noi-win32-x64-$version-setup.exe#/dl.7z"
+    "description": "Noi, a platform solution integrating AI with operating systems (AI + tools + plugins + community)",
+    "homepage": "https://noi.nofwl.com",
+    "license": "Unknown",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/lencx/Noi/releases/download/v0.3.0/Noi-win32-x64-0.3.0-setup.exe#/dl.7z",
+            "hash": "076190fd036ae63b6aea84634430f2f03dbb61a20aec867dcd30252f69af6bc8"
+        }
     },
     "pre_install": [
-        "Move-Item \"$dir\\noi-*-full.nupkg\" \"$dir\\noi-full.nupkg\"; Remove-Item \"$dir\\*\" -Exclude 'noi-full.nupkg'",
-        "Expand-7zipArchive \"$dir\\noi-full.nupkg\" $dir -ExtractDir 'lib\\net45' -Removal"
+        "Get-ChildItem \"$dir\\*\" -Exclude 'noi-*nupkg' | Remove-Item",
+        "Expand-7zipArchive \"$dir\\noi-*-full.nupkg\" -ExtractDir 'lib\\net45' -Removal"
     ],
     "shortcuts": [
         [
             "Noi.exe",
             "Noi"
         ]
-    ]
+    ],
+    "checkver": {
+        "github": "https://github.com/lencx/Noi"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/lencx/Noi/releases/download/v$version/Noi-win32-x64-$version-setup.exe#/dl.7z"
+            }
+        }
+    }
 }
