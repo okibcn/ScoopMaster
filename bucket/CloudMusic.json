@@ -1,37 +1,48 @@
 {
-    "version": "2.9.8.199759",
-    "description": "Netease Cloud Music(music.163.com) Official Client",
-    "homepage": "https://music.163.com",
-    "license": {
-        "identifier": "Proprietary",
-        "url": "https://st.music.163.com/official-terms/service"
-    },
-    "url": [
-        "https://d1.music.126.net/dmusic/cloudmusicsetup2.9.8.199759.exe#/dl.7z",
-        "https://pan.jiemi.workers.dev/?file=/scoop/patch/CloudMusic_v2.x_Patch_20191129.7z#dl.7z_"
-    ],
-    "hash": [
-        "122f8a47abffafa1f1e926c3496975b0fd6e28e0b2c6290a2621339bea98946e",
-        "017bfe799134a7ff000152058852947848d53d8048ed0366b57cece39ce53b58"
-    ],
-    "pre_install": [
-        "7z x -p2022 \"$dir\\CloudMusic_v2.x_Patch_20191129.7z#dl.7z_\" $('-o' + $dir) | Out-Null",
-        "sudo Start-Process -filepath \"$dir\\CloudMusic_v2.x_Patch_20191129.exe\" -WorkingDirectory \"$dir\" -ArgumentList \"/silent\" -Wait | Out-Null"
-    ],
-    "post_install": "@('$PLUGINSDIR', '[NSIS].nsi') | ForEach-Object { Remove-Item \"$dir\\$_\" -Recurse -Force -ErrorAction SilentlyContinue }",
-    "bin": "cloudmusic.exe",
+    "version": "2.10.12.201849",
+    "description": "网易旗下的音乐平台，同时也是业内领先的音乐社区。It's NetEase's music platform, and it's also the industry's leading music community.",
+    "homepage": "https://music.163.com/",
+    "license": "Unknown",
+    "url": "https://d1.music.126.net/dmusic/NeteaseCloudMusic_Music_official_2.10.12.201849_32.exe#/_installer_.exe",
+    "hash": "7e808f47b501a6822d0cbfac1f378719c2a70682a579af9637e4a72010d4a5dd",
     "shortcuts": [
         [
-            "cloudmusic.exe",
-            "Netease Cloud Music"
+            "cloudMusic.exe",
+            "网易云音乐"
         ]
     ],
-    "persist": "Netease",
+    "pre_install": [
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "$path_exe=\"$dir\\_installer_.exe\"",
+        "& $path_exe /S /D=$dir",
+        "$core_exe=\"$dir\\cloudMusic.exe\"",
+        "sleep_install $core_exe",
+        "persist -dir @(\"$env:LocalAppData\\Netease\\CloudMusic\") @(\"$persist_dir\\Netease\\CloudMusic\")",
+        "clean_redundant_files @($path_exe,\"$admin_apps_lnk\\网易云音乐.lnk\") 15"
+    ],
+    "pre_uninstall": [
+        "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "stop_process $false",
+        "remove_files @(\"$env:LocalAppData\\Netease\\CloudMusic\")",
+        "$ui_exe=\"$dir\\Uninstall.exe\"",
+        "try{ & $ui_exe /S }catch{}",
+        "sleep_uninstall $ui_exe"
+    ],
     "checkver": {
-        "url": "https://baoku.360.cn/soft/show/appid/103466312",
-        "regex": "<dd>([\\d.]+)</dd>"
+        "script": [
+            ". \"$pwd\\bin\\utils.ps1\"",
+            "$dl_info = get_installer_info 'NetEase/CloudMusic'",
+            "\"ver:$($dl_info.PackageVersion);\"",
+            "\"x86:$($dl_info.x86_exe.InstallerUrl);\""
+        ],
+        "regex": "ver:(?<version>.+?); x86:(?<x86>.+?);"
     },
     "autoupdate": {
-        "url": "https://d1.music.126.net/dmusic/cloudmusicsetup$version.exe#/dl.7z"
+        "url": "$matchX86#/_installer_.exe",
+        "hash": {
+            "url": "https://raw.githubusercontent.com/microsoft/winget-pkgs/master/manifests/n/NetEase/CloudMusic/$version/NetEase.CloudMusic.installer.yaml",
+            "regex": "Architecture: x86[\\s\\S]+?InstallerSha256:\\s?(.+)"
+        }
     }
 }
