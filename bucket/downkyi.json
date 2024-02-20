@@ -1,12 +1,11 @@
 {
     "version": "1.6.1",
-    "description": "A video downloader for bilibili",
+    "description": "一个B站(bilibili)视频下载工具。A bilibili video download tool.",
     "homepage": "https://github.com/leiurayer/downkyi",
     "license": {
-        "identifier": "Apache-2.0",
+        "identifier": "GNU General Public License v3.0",
         "url": "https://github.com/leiurayer/downkyi/blob/main/LICENSE"
     },
-    "notes": "If you cannot run this app, please install .NET Framework 4.7.2 or above.",
     "url": "https://github.com/leiurayer/downkyi/releases/download/v1.6.1/DownKyi-1.6.1.zip",
     "hash": "d809c230c9dd9ab18a7cbafc413db2d93eca25e45c4df5fa6aaad3f253015986",
     "shortcuts": [
@@ -15,7 +14,17 @@
             "DownKyi"
         ]
     ],
-    "persist": "Config",
+    "pre_install": [
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "persist -dir @(\"$dir\\config\") @(\"$persist_dir\\config\")",
+        "create_app_lnk \"$dir\\DownKyi.exe\" \"$desktop\\DownKyi.lnk\""
+    ],
+    "pre_uninstall": [
+        "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "stop_process",
+        "remove_files @(\"$desktop\\DownKyi.lnk\")"
+    ],
     "checkver": "github",
     "autoupdate": {
         "url": "https://github.com/leiurayer/downkyi/releases/download/v$version/DownKyi-$version.zip"
