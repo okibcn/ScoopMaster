@@ -1,22 +1,31 @@
 {
     "version": "2.13.0",
-    "description": "Unofficial native GUI reimplementation for GOG and Epic Games Launcher",
+    "description": "Heroic Games Launcher is a native GOG and Epic Games launcher.",
     "homepage": "https://heroicgameslauncher.com/",
-    "license": "GPL-3.0",
+    "license": "GPL-3.0-only",
     "architecture": {
         "64bit": {
             "url": "https://github.com/Heroic-Games-Launcher/HeroicGamesLauncher/releases/download/v2.13.0/Heroic-2.13.0-Setup-x64.exe#/dl.7z",
             "hash": "sha512:2f4d62f55c1a26fe22b328880d0241bed63ed7d9aff8a8318a6707042ab16e3726d0d4105fc124826850709dfe9a28c35fd63aa2457920520a8aeb6d7041a5e0",
-            "pre_install": "Remove-Item \"$dir\\*.dll\"; Expand-7ZipArchive \"$dir\\app-64.7z\" \"$dir\" -Removal"
+            "pre_install": [
+                "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\"",
+                "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\Uninstall*\", \"$dir\\resources\\app-update.yml\" -Force -Recurse"
+            ]
         }
     },
-    "extract_dir": "$PLUGINSDIR",
+    "bin": [
+        [
+            "Heroic.exe",
+            "Heroic"
+        ]
+    ],
     "shortcuts": [
         [
             "Heroic.exe",
             "Heroic"
         ]
     ],
+    "notes": "Heroic is NOT portable.",
     "checkver": {
         "github": "https://github.com/Heroic-Games-Launcher/HeroicGamesLauncher"
     },
@@ -28,7 +37,7 @@
         },
         "hash": {
             "url": "$baseurl/latest.yml",
-            "regex": "url:\\s(?<fname>[\\w.-]+)\\n\\s+sha512:\\s$sha512"
+            "regex": "(?sm)$basename\\s+sha512: $sha512"
         }
     }
 }
