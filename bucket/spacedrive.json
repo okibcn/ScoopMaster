@@ -1,27 +1,34 @@
 {
     "version": "0.2.4",
-    "homepage": "https://github.com/spacedriveapp/spacedrive",
-    "description": "Spacedrive is an open source cross-platform file explorer, powered by a virtual distributed filesystem written in Rust",
-    "license": "AGPL-3.0-or-later",
-    "architecture": {
-        "64bit": {
-            "url": "https://github.com/spacedriveapp/spacedrive/releases/download/0.2.4/Spacedrive-windows-x86_64.msi",
-            "hash": "4e96cb0a814583475e87df7534c98ec43a2e4546b82ce8ec444b87d6815da0dd",
-            "extract_dir": "PFiles/Spacedrive",
-            "shortcuts": [
-                [
-                    "Spacedrive.exe",
-                    "Spacedrive"
-                ]
-            ]
-        }
+    "description": "一个开源的跨平台文件浏览器，由一个用 Rust 编写的虚拟分布式文件系统提供支持。An open source cross-platform file explorer, powered by a virtual distributed filesystem written in Rust.",
+    "homepage": "https://www.spacedrive.com",
+    "license": {
+        "identifier": "GNU Affero General Public License v3.0",
+        "url": "https://github.com/spacedriveapp/spacedrive/blob/main/LICENSE"
     },
-    "checkver": "github",
+    "url": "https://github.com/spacedriveapp/spacedrive/releases/download/0.2.4/Spacedrive-windows-x86_64.msi",
+    "hash": "4e96cb0a814583475e87df7534c98ec43a2e4546b82ce8ec444b87d6815da0dd",
+    "checkver": {
+        "github": "https://github.com/spacedriveapp/spacedrive"
+    },
+    "shortcuts": [
+        [
+            "PFiles\\Spacedrive\\Spacedrive.exe",
+            "Spacedrive"
+        ]
+    ],
+    "pre_install": [
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "persist -dir @(\"$env:AppData\\spacedrive\",\"$env:LocalAppData\\com.spacedrive.desktop\") @(\"$persist_dir\\spacedrive\",\"$persist_dir\\com.spacedrive.desktop\")",
+        "create_app_lnk \"$dir\\PFiles\\Spacedrive\\Spacedrive.exe\" \"$desktop\\Spacedrive.lnk\""
+    ],
+    "pre_uninstall": [
+        "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "stop_process",
+        "remove_files @(\"$desktop\\Spacedrive.lnk\",\"$env:AppData\\spacedrive\",\"$env:LocalAppData\\com.spacedrive.desktop\")"
+    ],
     "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://github.com/spacedriveapp/spacedrive/releases/download/$version/Spacedrive-windows-x86_64.msi"
-            }
-        }
+        "url": "https://github.com/spacedriveapp/spacedrive/releases/download/$version/Spacedrive-windows-x86_64.msi"
     }
 }
