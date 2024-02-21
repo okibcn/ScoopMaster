@@ -1,39 +1,43 @@
 {
-    "homepage": "https://www.yuque.com/",
-    "description": "Professional note and document repositories",
     "version": "3.3.1.1115",
+    "description": "为每一个人，为每一个团队，提供优秀的文档与知识库工具。Provide excellent documentation and knowledge base tools for everyone and every team.",
+    "homepage": "https://www.yuque.com/",
     "license": {
-        "identifier": "EULA",
+        "identifier": "Unknown",
         "url": "https://www.yuque.com/terms"
     },
-    "architecture": {
-        "64bit": {
-            "url": "https://app.nlark.com/yuque-desktop/3.3.1.1115/BJ0bd9b248a5e9495dbcacd0039edcee43/Yuque-3.3.1.1115.exe#/Yuque_3.3.1.1115.7z",
-            "hash": "fa7086f6d009d053af7382a87577c2de1524fd5031b4308f70061a43ab1b1825",
-            "installer": {
-                "script": [
-                    "Expand-7zipArchive \"$dir\\`$PLUGINSDIR/app-64.7z\" \"$dir\" -Removal",
-                    "Remove-Item \"$dir\\`$PLUGINSDIR\" -Recurse"
-                ]
-            }
-        }
-    },
+    "url": "https://app.nlark.com/yuque-desktop/3.3.1.1115/BJ0bd9b248a5e9495dbcacd0039edcee43/Yuque-3.3.1.1115.exe",
+    "hash": "fa7086f6d009d053af7382a87577c2de1524fd5031b4308f70061a43ab1b1825",
     "shortcuts": [
         [
             "语雀.exe",
             "语雀"
         ]
     ],
+    "pre_install": [
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "$path_exe=\"$dir\\Yuque-$($version).exe\"",
+        "& $path_exe /S /D=$dir",
+        "$core_exe=\"$dir\\语雀.exe\"",
+        "sleep_install $core_exe",
+        "persist -dir @(\"$env:AppData\\yuque-desktop\") @(\"$persist_dir\\yuque-desktop\")",
+        "clean_redundant_files @($path_exe,\"$apps_lnk\\Yuque\") 15"
+    ],
+    "pre_uninstall": [
+        "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "stop_process $false",
+        "remove_files @(\"$env:AppData\\yuque-desktop\")",
+        "$ui_exe=\"$dir\\Uninstall 语雀.exe\"",
+        "try{ & $ui_exe /S }catch{}",
+        "sleep_uninstall $ui_exe",
+        "remove_files @(\"$env:LocalAppData\\yuque-desktop-updater\")"
+    ],
     "checkver": {
         "url": "https://www.yuque.com/download",
-        "regex": "%2F(?<code>[a-zA-Z0-9]+)%2FYuque-([\\d.]+).exe"
+        "regex": "%2F(?<hash>[\\w\\d]+)%2FYuque-(?<version>[\\d\\.]+).exe"
     },
     "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://app.nlark.com/yuque-desktop/$version/$matchCode/Yuque-$version.exe#/Yuque_$version.7z"
-            }
-        }
-    },
-    "notes": "Your Yuque data are not persisted by Scoop and still storaged in '%APPDATA%\\yuque-desktop'."
+        "url": "https://app.nlark.com/yuque-desktop/$version/$matchHash/Yuque-$version.exe"
+    }
 }
