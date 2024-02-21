@@ -1,40 +1,31 @@
 {
     "version": "0.11.3",
-    "description": "下一代知识库，集规划、分类和创建于一体。隐私第一、开源、可定制、随时可用。A next-gen knowledge base that brings planning, sorting and creating all together. Privacy first, open-source, customizable and ready to use.",
-    "homepage": "https://affine.pro",
-    "license": {
-        "identifier": "Unknown",
-        "url": "https://github.com/toeverything/AFFiNE/blob/canary/LICENSE"
+    "description": "A privacy-focussed, local-first, open-source, and ready-to-use alternative for Notion & Miro.",
+    "homepage": "https://affine.pro/",
+    "license": "MPL-2.0",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/toeverything/AFFiNE/releases/download/v0.11.3/affine-stable-windows-x64.exe#/dl.7z",
+            "hash": "5185755d7e913aa14cb1f80d50f46dfd81f555dffb5f874f41d1ae71dec58320"
+        }
     },
-    "url": "https://github.com/toeverything/AFFiNE/releases/download/v0.11.3/affine-stable-windows-x64.exe#/dl.7z",
-    "hash": "5185755d7e913aa14cb1f80d50f46dfd81f555dffb5f874f41d1ae71dec58320",
+    "installer": {
+        "script": "Expand-7zipArchive -Path \"$dir\\AFFiNE-*-full.nupkg\" -ExtractDir 'lib\\net45' -Removal"
+    },
     "shortcuts": [
         [
-            "app\\AFFiNE.exe",
+            "AFFiNE.exe",
             "AFFiNE"
         ]
-    ],
-    "pre_install": [
-        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-        "$filter=(Get-ChildItem $dir | Where-Object {$_.Name -like \"*.nupkg\" })[0]",
-        "Rename-Item $filter.FullName \"affine_installer.zip\" -Force",
-        "Expand-Archive \"$dir\\affine_installer.zip\" \"$dir\\temp\"",
-        "Copy-Item \"$dir\\temp\\lib\\net45\" \"$dir\\app\" -Recurse -Force",
-        "Remove_file \"$dir\\temp\" -Recurse -Force",
-        "Remove_file \"$dir\\affine_installer.zip\" -Force",
-        "persist -dir @(\"$env:AppData\\AFFiNE\") @(\"$persist_dir\\AFFiNE\")",
-        "create_app_lnk \"$dir\\app\\AFFiNE.exe\" \"$desktop\\AFFiNE.lnk\""
-    ],
-    "pre_uninstall": [
-        "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
-        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-        "stop_process",
-        "remove_files @(\"$desktop\\AFFiNE.lnk\",\"$env:AppData\\AFFiNE\")"
     ],
     "checkver": {
         "github": "https://github.com/toeverything/AFFiNE"
     },
     "autoupdate": {
-        "url": "https://github.com/toeverything/AFFiNE/releases/download/v$version/affine-stable-windows-x64.exe#/dl.7z"
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/toeverything/AFFiNE/releases/download/v$version/affine-stable-windows-x64.exe#/dl.7z"
+            }
+        }
     }
 }

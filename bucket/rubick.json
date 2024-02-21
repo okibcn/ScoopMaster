@@ -1,19 +1,23 @@
 {
     "version": "4.2.2",
-    "description": "Electron based open source toolbox, free integration of rich plug-ins. 基于 electron 的开源工具箱，自由集成丰富插件。",
-    "homepage": "https://rubickcenter.github.io",
+    "description": "基于 electron 的开源工具箱，自由集成丰富插件。",
+    "homepage": "https://rubickcenter.github.io/rubick/",
     "license": "MIT",
-    "notes": "config location: $env:LocalAppData/rubickconfig location: $env:AppData/rubick - https://github.com/ViCrack/scoop-bucket/blob/master/bucket/rubick.json",
+    "notes": "config location: C:\\Users\\<your username>\\AppData\\Local\\rubickconfig location: C:\\Users\\<your username>\\AppData\\Roaming\\rubick",
     "architecture": {
         "64bit": {
             "url": "https://github.com/rubickCenter/rubick/releases/download/v4.2.2/rubick-Setup-4.2.2-x64.exe#/dl.7z",
-            "hash": "cb003ce20f98993e92b58fbbf53e9b622d5e6d66361f16c41f377582e5b666df",
-            "pre_install": [
-                "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\"",
-                "Remove-Item \"$dir\\`$*\", \"$dir\\Uninstall*\" -Force -Recurse"
-            ]
+            "hash": "cb003ce20f98993e92b58fbbf53e9b622d5e6d66361f16c41f377582e5b666df"
+        },
+        "32bit": {
+            "url": "https://github.com/rubickCenter/rubick/releases/download/v4.2.2/rubick-Setup-4.2.2-ia32.exe#/dl.7z",
+            "hash": "81a75bc204319d6681040beebde4b095a475133f45161e0fb546164185230c0c"
         }
     },
+    "pre_install": [
+        "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\*.7z\" \"$dir\"",
+        "Remove-Item \"$dir\\`$*\", \"$dir\\Uninstall*\" -Force -Recurse"
+    ],
     "shortcuts": [
         [
             "rubick.exe",
@@ -27,6 +31,9 @@
         "architecture": {
             "64bit": {
                 "url": "https://github.com/rubickCenter/rubick/releases/download/v$version/rubick-Setup-$version-x64.exe#/dl.7z"
+            },
+            "32bit": {
+                "url": "https://github.com/rubickCenter/rubick/releases/download/v$version/rubick-Setup-$version-ia32.exe#/dl.7z"
             }
         }
     }

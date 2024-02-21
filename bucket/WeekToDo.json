@@ -1,0 +1,42 @@
+{
+    "version": "2.2.0",
+    "description": "一个免费和开源的极简每周计划和待办事项应用程序，专注于隐私。A free and open source minimalist weekly planner and To Do list App focused on privacy.",
+    "homepage": "https://weektodo.me/",
+    "license": {
+        "identifier": "GNU General Public License v3.0",
+        "url": "https://github.com/manuelernestog/weektodo/blob/main/LICENSE"
+    },
+    "url": "https://github.com/manuelernestog/weektodo/releases/download/v2.2.0/WeekToDo.Setup.2.2.0.exe#/_installer_.exe",
+    "hash": "c214f85207e4d0e377b573f8d3b25d5badcc06e5cfb4315187f1ca77a001ace0",
+    "shortcuts": [
+        [
+            "WeekToDo.exe",
+            "WeekToDo"
+        ]
+    ],
+    "pre_install": [
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "$path_exe=\"$dir\\_installer_.exe\"",
+        "& $path_exe /S /D=$dir",
+        "$core_exe=\"$dir\\WeekToDo.exe\"",
+        "sleep_install $core_exe",
+        "persist -dir @(\"$env:AppData\\WeekToDo\") @(\"$persist_dir\\WeekToDo\")",
+        "clean_redundant_files @($path_exe,\"$apps_lnk\\WeekToDo.lnk\") 15"
+    ],
+    "pre_uninstall": [
+        "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "stop_process $false",
+        "remove_files @(\"$env:AppData\\WeekToDo\")",
+        "$ui_exe=\"$dir\\Uninstall WeekToDo.exe\"",
+        "try{ & $ui_exe /S }catch{}",
+        "sleep_uninstall $ui_exe",
+        "remove_files @(\"$env:LocalAppData\\weektodo-updater\")"
+    ],
+    "checkver": {
+        "github": "https://github.com/manuelernestog/weektodo"
+    },
+    "autoupdate": {
+        "url": "https://github.com/manuelernestog/weektodo/releases/download/v$version/WeekToDo.Setup.$version.exe#/_installer_.exe"
+    }
+}
