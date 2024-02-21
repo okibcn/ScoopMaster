@@ -1,11 +1,8 @@
 {
     "version": "2.10.6",
-    "description": "Kodi 的媒体管理器。Media Manager for Kodi.",
+    "description": "Media Manager for Kodi.",
     "homepage": "https://mediaelch.github.io/mediaelch-doc/about.html",
-    "license": {
-        "identifier": "GNU Lesser General Public License v3.0",
-        "url": "https://github.com/Komet/MediaElch/blob/master/COPYING"
-    },
+    "license": "LGPL-3.0",
     "architecture": {
         "64bit": {
             "url": "https://github.com/Komet/MediaElch/releases/download/v2.10.6/MediaElch_win_10_or_later_Qt6_2.10.6_2023-12-03_git-6121419e.zip",
@@ -17,6 +14,21 @@
         }
     },
     "extract_dir": "MediaElch",
+    "pre_install": [
+        "# Portable",
+        "if (!(Test-Path \"$persist_dir\\advancedsettings.xml\")) {",
+        "    New-Item -Path \"$dir\\advancedsettings.xml\" -ItemType File -Value \"<advancedsettings><portableMode>true</portableMode></advancedsettings>\" | Out-Null",
+        "}",
+        "# Persist manually because symlinks don't work",
+        "if (Test-Path \"$persist_dir\\MediaElch.sqlite\") {",
+        "    Copy-Item -Path \"$persist_dir\\MediaElch.sqlite\" -Destination \"$dir\\MediaElch.sqlite\"",
+        "}",
+        "if (Test-Path \"$persist_dir\\MediaElch.ini\") {",
+        "    Copy-Item -Path \"$persist_dir\\MediaElch.ini\" -Destination \"$dir\\MediaElch.ini\"",
+        "} else {",
+        "    Set-Content \"$dir\\MediaElch.ini\" @('[General]', 'CheckForUpdates=false') -Encoding Ascii",
+        "}"
+    ],
     "bin": "MediaElch.exe",
     "shortcuts": [
         [
@@ -24,25 +36,19 @@
             "MediaElch"
         ]
     ],
-    "pre_install": [
-        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-        "$xml_path=\"$persist_dir\\advancedsettings.xml\"",
-        "if (!(Test-Path $xml_path)){",
-        "   \"<advancedsettings>`n  <portableMode>true</portableMode>`n</advancedsettings>\" | Out-File $xml_path",
-        "}",
-        "persist -dir @(\"$dir\\export_themes\") @(\"$persist_dir\\export_themes\")",
-        "persist -file @(\"$dir\\advancedsettings.xml\",\"$dir\\MediaElch.ini\") @($xml_path,\"$persist_dir\\MediaElch.ini\")",
-        "create_app_lnk \"$dir\\MediaElch.exe\" \"$desktop\\MediaElch.lnk\""
+    "persist": [
+        "export_themes",
+        "images",
+        "advancedsettings.xml"
     ],
     "pre_uninstall": [
-        "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
-        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-        "stop_process",
-        "remove_files @(\"$desktop\\MediaElch.lnk\")"
+        "'MediaElch.ini', 'MediaElch.sqlite' | ForEach-Object {",
+        "    Copy-Item -Path \"$dir\\$_\" -Destination \"$persist_dir\\$_\" -ErrorAction SilentlyContinue -Force | Out-Null",
+        "}"
     ],
     "checkver": {
         "url": "https://api.github.com/repositories/3618825/releases/latest",
-        "regex": "MediaElch_win_10_or_later_Qt6_(?<version>[\\d\\.]+)(?<detail>[\\w\\d-.]+).zip"
+        "regex": "MediaElch_win_10_or_later_Qt6_(?<version>[\\d\\.]+)(?<detail>[\\w\\d-_]+).zip"
     },
     "autoupdate": {
         "architecture": {
