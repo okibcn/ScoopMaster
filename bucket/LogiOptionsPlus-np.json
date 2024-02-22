@@ -1,10 +1,10 @@
 {
-    "version": "1.62.518518",
+    "version": "1.64.527952",
     "description": "Logi Options+. Enhance your experience. Logi Options+ is the powerful, easy-to-use, next-gen application that enables customization for Logitech mice and keyboards so you can work how you want.",
     "homepage": "https://www.logitech.com/en-au/software/logi-options-plus.html",
     "license": "Proprietary",
-    "url": "https://download01.logi.com/web/ftp/pub/techsupport/optionsplus/logioptionsplus_installer.exe",
-    "hash": "19829c2e585b52249b9489315787cd94c116e74d592cc838c89536610b57f63c",
+    "url": "https://download01.logi.com/web/ftp/pub/techsupport/optionsplus/logioptionsplus_installer.exe#/setup.exe",
+    "hash": "2a0d98de5e8e8cd7443a9af1abbd72bbf32332df53b69f313ec04e3dc9c45300",
     "pre_install": [
         "if (!(is_admin)) { error \"$app requires admin rights to $cmd\"; break }",
         "if ($process) {",
@@ -17,9 +17,7 @@
         "}"
     ],
     "installer": {
-        "script": [
-            "Start-Process \"$dir\\logioptionsplus_installer.exe\" -ArgumentList @('/quiet', '/analytics No', '/flow Yes', '/sso Yes', '/update No') -Wait -NoNewWindow"
-        ],
+        "script": "Start-Process \"$dir\\logioptionsplus_installer.exe\" -ArgumentList @('/quiet', '/analytics No', '/flow Yes', '/sso Yes', '/update No') -Wait -NoNewWindow",
         "keep": true
     },
     "pre_uninstall": [
@@ -36,9 +34,7 @@
         "}"
     ],
     "uninstaller": {
-        "script": [
-            "Start-Process \"C:\\Program Files\\LogiOptionsPlus\\logioptionsplus_updater.exe\" -ArgumentList @('--uninstall', '--full', '--shadow') -Wait -Verb 'RunAs'"
-        ]
+        "script": "Start-Process \"C:\\Program Files\\LogiOptionsPlus\\logioptionsplus_updater.exe\" -ArgumentList @('--uninstall', '--full', '--shadow') -Wait -Verb 'RunAs'"
     },
     "checkver": {
         "url": "https://support.logi.com/hc/en-us/articles/1500005516462-Logi-Options-Release-Notes",
