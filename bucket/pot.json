@@ -1,20 +1,20 @@
 {
-    "version": "2.7.6",
-    "description": "一个跨平台的划词翻译和OCR软件 | A cross-platform software for text translation and recognize",
-    "homepage": "https://pot-app.com",
-    "license": "GPL-3.0-or-later",
-    "notes": [
-        "config location: C:\\Users\\<your username>\\AppData\\Local\\com.pot-app.desktop",
-        "config location: C:\\Users\\<your username>\\AppData\\Roaming\\com.pot-app.desktop",
-        "- https://github.com/ViCrack/scoop-bucket/blob/master/bucket/pot.json"
-    ],
+    "version": "2.7.7",
+    "description": "A cross-platform software for text translation.",
+    "homepage": "https://pot-app.com/",
+    "license": "GPL-3.0-only",
     "architecture": {
         "64bit": {
-            "url": "https://github.com/pot-app/pot-desktop/releases/download/2.7.6/pot_2.7.6_x64-setup.exe#/dl.7z",
-            "hash": "60f493bc19179174a0f3b4e2d8280ff514c70f75dcdebe794d2262a68801b273",
-            "pre_install": "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\Uninstall*\" -Force -Recurse"
+            "url": "https://github.com/pot-app/pot-desktop/releases/download/2.7.7/pot_2.7.7_x86-setup.exe#/dl.7z",
+            "hash": "048a94cff0e2a53d2a6d6c319de378e6b66007f263582f206f8822aeaba93ff8"
+        },
+        "32bit": {
+            "url": "https://github.com/pot-app/pot-desktop/releases/download/2.7.7/pot_2.7.7_x64-setup.exe#/dl.7z",
+            "hash": "6e259cd97368d49d2797f78a7e552a19d1d2cb0fe8a355d399febd1c9cc5d776"
         }
     },
+    "post_install": "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\uninstall*\" -Force -Recurse",
+    "bin": "pot.exe",
     "shortcuts": [
         [
             "pot.exe",
@@ -24,9 +24,13 @@
     "checkver": {
         "github": "https://github.com/pot-app/pot-desktop"
     },
+    "notes": "Pot is NOT portable.",
     "autoupdate": {
         "architecture": {
             "64bit": {
+                "url": "https://github.com/pot-app/pot-desktop/releases/download/$version/pot_$version_x86-setup.exe#/dl.7z"
+            },
+            "32bit": {
                 "url": "https://github.com/pot-app/pot-desktop/releases/download/$version/pot_$version_x64-setup.exe#/dl.7z"
             }
         }
