@@ -1,34 +1,60 @@
 {
-    "version": "1.5.2",
-    "description": "System Region and Language Simulator.",
+    "version": "1.5.3-beta.1",
+    "description": "System Region and Language Simulator. Supports 64-bit application.",
     "homepage": "https://github.com/InWILL/Locale_Remulator",
     "license": "LGPL-3.0-only",
-    "notes": "Please run `LRInstaller.exe` to complete installation.",
+    "notes": [
+        "Run $dir\\LRInstaller.exe as administrator and install Locale Remulator to use more conveniently",
+        "Locale Remulator supports Chinese, Japanese and Korean code page in default, but you can add custom settings with $dir\\LREditor.exe",
+        "This software also requires .NET Framework 4.8",
+        "To remove this software when you've installed in system, Run $dir\\LRInstaller.exe first and uninstall.",
+        "This can be applied also in update, so it is recommended to hold the version."
+    ],
+    "suggest": {
+        "vcredist": "extras/vcredist2022"
+    },
     "architecture": {
         "64bit": {
-            "url": "https://github.com/InWILL/Locale_Remulator/releases/download/v1.5.2/Locale_Remulator.1.5.2.zip",
-            "hash": "b1aa495e3b192790162036dcde797d1e6ec0c9df3a1e4e63c69f0cbd86762641",
-            "extract_dir": "Locale_Remulator.1.5.2"
+            "url": "https://github.com/InWILL/Locale_Remulator/releases/download/v1.5.3-beta.1/Locale_Remulator.1.5.3-beta.1.zip",
+            "hash": "0f133892ade6a8bbf61bf2ebcbeb3848bcb5ebd1ea4be890619ed776de6a3d2e",
+            "extract_dir": "Locale_Remulator.1.5.3-beta.1"
         }
     },
-    "pre_install": "if (!(Test-Path \"$persist_dir\\LEConfig.xml\")) { New-Item \"$dir\\LEConfig.xml\" | Out-Null }",
+    "installer": {
+        "script": [
+            "$configFile = Test-Path -Path \"$dir\\LRConfig.xml\"",
+            "if ($configFile -eq $false)",
+            "{",
+            "    $process = Start-Process -FilePath \"$dir\\LREditor.exe\" -ArgumentList \"/S\" -Passthru",
+            "    Start-Sleep -Seconds 2",
+            "    Stop-Process -Id $process.Id",
+            "}"
+        ]
+    },
     "bin": [
         "LREditor.exe",
-        "LRProc.exe",
-        "LRInstaller.exe"
+        "LRInstaller.exe",
+        "LRProc.exe"
     ],
     "shortcuts": [
         [
             "LREditor.exe",
-            "Locale Remulator Editor"
+            "LREditor"
         ],
         [
             "LRInstaller.exe",
-            "Locale Remulator Installer"
+            "LRInstaller"
+        ],
+        [
+            "LRProc.exe",
+            "LRProc"
         ]
     ],
     "persist": "LRConfig.xml",
-    "checkver": "github",
+    "checkver": {
+        "github": "https://github.com/InWILL/Locale_Remulator/",
+        "regex": "tag/v([\\w\\.-]+)"
+    },
     "autoupdate": {
         "architecture": {
             "64bit": {
