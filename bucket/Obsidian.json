@@ -1,23 +1,64 @@
 {
     "version": "1.5.8",
+    "description": "强大的知识库，基于 Markdown 文件。Powerful knowledge base that works on top of a local folder of plain text Markdown files.",
     "homepage": "https://obsidian.md",
-    "license": "",
-    "url": "https://github.com/obsidianmd/obsidian-releases/releases/download/v1.5.8/Obsidian.1.5.8.exe#/dl.7z",
-    "hash": "c11cd0c22f98b638016dd33c7240d8544308929c7376e02eaa4bc450cbd3641d",
-    "pre_install": [
-        "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app*.7z\" \"$dir\"",
-        "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\Uninstall*\" -Force -Recurse"
-    ],
+    "license": {
+        "identifier": "Proprietary",
+        "url": "https://obsidian.md/eula"
+    },
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/obsidianmd/obsidian-releases/releases/download/v1.5.8/Obsidian.1.5.8.exe#/_installer_.exe",
+            "hash": "c11cd0c22f98b638016dd33c7240d8544308929c7376e02eaa4bc450cbd3641d"
+        },
+        "32bit": {
+            "url": "https://github.com/obsidianmd/obsidian-releases/releases/download/v1.5.8/Obsidian.1.5.8-32.exe#/_installer_.exe",
+            "hash": "e023b6988b38269832b0b314af5a91eb7c19fe416d147f214c2cf00b47800003"
+        },
+        "arm64": {
+            "url": "https://github.com/obsidianmd/obsidian-releases/releases/download/v1.5.8/Obsidian.1.5.8-arm64.exe#/_installer_.exe",
+            "hash": "c3eea0d5a9806be5cd1850b341efb5a3a42cf41372883e24cb0caf1614184eed"
+        }
+    },
     "shortcuts": [
         [
             "Obsidian.exe",
             "Obsidian"
         ]
     ],
+    "pre_install": [
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "$path_exe= \"$dir\\_installer_.exe\"",
+        "& $path_exe /S /D=$dir",
+        "$core_exe=\"$dir\\Obsidian.exe\"",
+        "sleep_install $core_exe",
+        "persist -dir @(\"$env:AppData\\obsidian\",\"$env:UserProfile\\Documents\\Obsidian Vault\") @(\"$persist_dir\\obsidian\",\"$persist_dir\\obsidian\\Obsidian Vault\")",
+        "clean_redundant_files @($path_exe,\"$apps_lnk\\Obsidian.lnk\") 15"
+    ],
+    "pre_uninstall": [
+        "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "stop_process $false",
+        "remove_files @(\"$env:AppData\\obsidian\",\"$env:UserProfile\\Documents\\Obsidian Vault\")",
+        "$ui_exe=\"$dir\\Uninstall Obsidian.exe\"",
+        "try{ & $ui_exe /S }catch{}",
+        "sleep_uninstall $ui_exe",
+        "remove_files @(\"$env:LocalAppData\\obsidian-updater\")"
+    ],
     "checkver": {
         "github": "https://github.com/obsidianmd/obsidian-releases"
     },
     "autoupdate": {
-        "url": "https://github.com/obsidianmd/obsidian-releases/releases/download/v$version/Obsidian.$version.exe#/dl.7z"
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/obsidianmd/obsidian-releases/releases/download/v$version/Obsidian.$version.exe#/_installer_.exe"
+            },
+            "32bit": {
+                "url": "https://github.com/obsidianmd/obsidian-releases/releases/download/v$version/Obsidian.$version-32.exe#/_installer_.exe"
+            },
+            "arm64": {
+                "url": "https://github.com/obsidianmd/obsidian-releases/releases/download/v$version/Obsidian.$version-arm64.exe#/_installer_.exe"
+            }
+        }
     }
 }
