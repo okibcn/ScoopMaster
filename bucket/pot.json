@@ -1,37 +1,69 @@
 {
     "version": "2.7.7",
-    "description": "A cross-platform software for text translation.",
+    "description": "一个跨平台的划词翻译和OCR软件。A cross-platform software for text translation and recognition.",
     "homepage": "https://pot-app.com/",
-    "license": "GPL-3.0-only",
+    "license": {
+        "identifier": "GNU General Public License v3.0",
+        "url": "https://github.com/pot-app/pot-desktop/blob/master/LICENSE"
+    },
     "architecture": {
         "64bit": {
-            "url": "https://github.com/pot-app/pot-desktop/releases/download/2.7.7/pot_2.7.7_x86-setup.exe#/dl.7z",
-            "hash": "048a94cff0e2a53d2a6d6c319de378e6b66007f263582f206f8822aeaba93ff8"
+            "url": "https://github.com/pot-app/pot-desktop/releases/download/2.7.7/pot_2.7.7_x64-setup.exe#/_installer_.exe",
+            "hash": "6e259cd97368d49d2797f78a7e552a19d1d2cb0fe8a355d399febd1c9cc5d776"
         },
         "32bit": {
-            "url": "https://github.com/pot-app/pot-desktop/releases/download/2.7.7/pot_2.7.7_x64-setup.exe#/dl.7z",
-            "hash": "6e259cd97368d49d2797f78a7e552a19d1d2cb0fe8a355d399febd1c9cc5d776"
+            "url": "https://github.com/pot-app/pot-desktop/releases/download/2.7.7/pot_2.7.7_x86-setup.exe#/_installer_.exe",
+            "hash": "048a94cff0e2a53d2a6d6c319de378e6b66007f263582f206f8822aeaba93ff8"
+        },
+        "arm64": {
+            "url": "https://github.com/pot-app/pot-desktop/releases/download/2.7.7/pot_2.7.7_arm64-setup.exe#/_installer_.exe",
+            "hash": "f8bf72d9dcc230ee7edd7c3fa4b32122434c5434b4588633b26c107e7c79d6f3"
         }
     },
-    "post_install": "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\uninstall*\" -Force -Recurse",
-    "bin": "pot.exe",
     "shortcuts": [
         [
             "pot.exe",
-            "Pot"
+            "pot"
         ]
+    ],
+    "pre_install": [
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "$path_exe=\"$dir\\_installer_.exe\"",
+        "& $path_exe /S /D=$dir",
+        "$core_exe=\"$dir\\pot.exe\"",
+        "sleep_install $core_exe",
+        "persist -file @(\"$env:AppData\\com.pot-app.desktop\\config.json\") @(\"$persist_dir\\com.pot-app.desktop\\config.json\")",
+        "if(Test-Path \"$persist_dir\\com.pot-app.desktop\\plugins\"){",
+        "   Copy-Item \"$persist_dir\\com.pot-app.desktop\\plugins\" \"$env:AppData\\com.pot-app.desktop\" -Force -Recurse",
+        "}elseif(Test-Path \"$env:AppData\\com.pot-app.desktop\\plugins\"){",
+        "   Copy-Item \"$env:AppData\\com.pot-app.desktop\\plugins\"  \"$persist_dir\\com.pot-app.desktop\"-Force -Recurse",
+        "}",
+        "clean_redundant_files @($path_exe,\"$admin_apps_lnk\\pot\\pot.lnk\") 15"
+    ],
+    "pre_uninstall": [
+        "Copy-Item \"$env:AppData\\com.pot-app.desktop\\plugins\" \"$persist_dir\\com.pot-app.desktop\" -Force -Recurse",
+        "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "stop_process $false",
+        "remove_files @(\"$env:AppData\\com.pot-app.desktop\")",
+        "$ui_exe=\"$dir\\uninstall.exe\"",
+        "try{ & $ui_exe /S }catch{}",
+        "sleep_uninstall $ui_exe",
+        "remove_files @(\"$env:LocalAppData\\com.pot-app.desktop\")"
     ],
     "checkver": {
         "github": "https://github.com/pot-app/pot-desktop"
     },
-    "notes": "Pot is NOT portable.",
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://github.com/pot-app/pot-desktop/releases/download/$version/pot_$version_x86-setup.exe#/dl.7z"
+                "url": "https://github.com/pot-app/pot-desktop/releases/download/$version/pot_$version_x64-setup.exe#/_installer_.exe"
             },
             "32bit": {
-                "url": "https://github.com/pot-app/pot-desktop/releases/download/$version/pot_$version_x64-setup.exe#/dl.7z"
+                "url": "https://github.com/pot-app/pot-desktop/releases/download/$version/pot_$version_x86-setup.exe#/_installer_.exe"
+            },
+            "arm64": {
+                "url": "https://github.com/pot-app/pot-desktop/releases/download/$version/pot_$version_arm64-setup.exe#/_installer_.exe"
             }
         }
     }
