@@ -1,43 +1,43 @@
 {
-  "architecture": {
-    "32bit": {
-      "installer": {
-        "script": [
-          "Remove-Item \"$dir\\*\" -Exclude 'app-32.7z'",
-          "Expand-7zipArchive \"$dir\\app-32.7z\" \"$dir\" -Removal"
-        ]
-      }
+    "architecture": {
+        "32bit": {
+            "installer": {
+                "script": [
+                    "Remove-Item \"$dir\\*\" -Exclude 'app-32.7z'",
+                    "Expand-7zipArchive \"$dir\\app-32.7z\" \"$dir\" -Removal"
+                ]
+            }
+        },
+        "64bit": {
+            "installer": {
+                "script": [
+                    "Remove-Item \"$dir\\*\" -Exclude 'app-64.7z'",
+                    "Expand-7zipArchive \"$dir\\app-64.7z\" \"$dir\" -Removal"
+                ]
+            }
+        }
     },
-    "64bit": {
-      "installer": {
-        "script": [
-          "Remove-Item \"$dir\\*\" -Exclude 'app-64.7z'",
-          "Expand-7zipArchive \"$dir\\app-64.7z\" \"$dir\" -Removal"
+    "autoupdate": {
+        "url": "https://docs.qq.com/api/package/get?channel_id=30001&version_id=latest&package_name=TencentDocs-x86_64.exe#/dl.7z"
+    },
+    "checkver": {
+        "regex": "/([\\d.]+)/TencentDocs-x86_64\\.exe",
+        "script": "(Invoke-WebRequest -Uri 'https://docs.qq.com/api/package/get?channel_id=30001&version_id=latest&package_name=TencentDocs-x86_64.exe' -MaximumRedirection 0 -SkipHttpErrorCheck -ErrorAction:SilentlyContinue).Headers.Location"
+    },
+    "description": "Tencent Docs (腾讯文档) supports multiple people editing Word, Excel and PPT documents online.",
+    "extract_dir": "$PLUGINSDIR",
+    "hash": "099f86440c21ad37b544e75f7950bf0de295d14f48eeb747ddb9580f0f904462",
+    "homepage": "https://docs.qq.com",
+    "license": {
+        "identifier": "Freeware",
+        "url": "https://docs.qq.com/doc/p/41c65c813fe78d2f262bf35b825c214f0f459bfe"
+    },
+    "shortcuts": [
+        [
+            "TencentDocs.exe",
+            "腾讯文档"
         ]
-      }
-    }
-  },
-  "autoupdate": {
-    "url": "https://docs.qq.com/api/package/get?channel_id=30001&version_id=latest&package_name=TencentDocs-x86_64.exe#/dl.7z"
-  },
-  "checkver": {
-    "regex": "/([\\d.]+)/TencentDocs-x86_64\\.exe",
-    "script": "(Invoke-WebRequest -Uri 'https://docs.qq.com/api/package/get?channel_id=30001&version_id=latest&package_name=TencentDocs-x86_64.exe' -MaximumRedirection 0 -SkipHttpErrorCheck -ErrorAction:SilentlyContinue).Headers.Location"
-  },
-  "description": "Tencent Docs (腾讯文档) supports multiple people editing Word, Excel and PPT documents online.",
-  "extract_dir": "$PLUGINSDIR",
-  "hash": "80a647a14bdcf0370804d4400439da47c4cb825e0e86b6afaea1355096532f2e",
-  "homepage": "https://docs.qq.com",
-  "license": {
-    "identifier": "Freeware",
-    "url": "https://docs.qq.com/doc/p/41c65c813fe78d2f262bf35b825c214f0f459bfe"
-  },
-  "shortcuts": [
-    [
-      "TencentDocs.exe",
-      "腾讯文档"
-    ]
-  ],
-  "url": "https://docs.qq.com/api/package/get?channel_id=30001&version_id=latest&package_name=TencentDocs-x86_64.exe#/dl.7z",
-  "version": "3.1.15"
+    ],
+    "url": "https://docs.qq.com/api/package/get?channel_id=30001&version_id=latest&package_name=TencentDocs-x86_64.exe#/dl.7z",
+    "version": "3.2.1"
 }
