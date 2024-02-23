@@ -1,0 +1,51 @@
+{
+    "version": "15.0.6-143.2370.31",
+    "description": "Cross-Platform IDE for Java by JetBrains.",
+    "homepage": "https://www.jetbrains.com/idea/",
+    "license": {
+        "identifier": "Proprietary",
+        "url": "https://www.jetbrains.com/store/license.html"
+    },
+    "url": "https://download.jetbrains.com/idea/ideaIU-15.0.6.win.zip",
+    "hash": "09d09a7cd27fe97102cb0fe75d7ae23e97aec5eb2dda070b80c0498794081e2f",
+    "extract_to": "IDE",
+    "pre_install": "Get-ChildItem \"$persist_dir\\IDE\\bin\\idea*.exe.vmoptions\" -ErrorAction SilentlyContinue | Copy-Item -Destination \"$dir\\IDE\\bin\"",
+    "installer": {
+        "script": "& \"$bucketsdir\\extras\\scripts\\jetbrains\\portable.ps1\" \"$dir\" \"$persist_dir\""
+    },
+    "architecture": {
+        "64bit": {
+            "bin": [
+                [
+                    "IDE\\bin\\idea64.exe",
+                    "idea"
+                ]
+            ],
+            "shortcuts": [
+                [
+                    "IDE\\bin\\idea64.exe",
+                    "JetBrains\\IDEA Ultimate 15.0.6"
+                ]
+            ]
+        },
+        "32bit": {
+            "bin": "IDE\\bin\\idea.exe",
+            "shortcuts": [
+                [
+                    "IDE\\bin\\idea.exe",
+                    "JetBrains\\IDEA Ultimate 15.0.6"
+                ]
+            ]
+        }
+    },
+    "persist": [
+        "IDE\\bin\\idea.properties",
+        "profile"
+    ],
+    "pre_uninstall": "Get-ChildItem \"$dir\\IDE\\bin\\idea*.exe.vmoptions\" -ErrorAction SilentlyContinue | Copy-Item -Destination \"$persist_dir\\IDE\\bin\"",
+    "checkver": {
+        "url": "https://data.services.jetbrains.com/products/releases?code=IIU&latest=true&platform=zip&type=release",
+        "regex": "version\":\"(?<ver>[\\d.]+)\".*\"build\":\"(?<build>[\\d.]+)\"",
+        "replace": "${ver}-${build}"
+    }
+}
