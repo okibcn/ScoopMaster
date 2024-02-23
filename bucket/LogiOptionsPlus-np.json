@@ -17,7 +17,9 @@
         "}"
     ],
     "installer": {
-        "script": "Start-Process \"$dir\\logioptionsplus_installer.exe\" -ArgumentList @('/quiet', '/analytics No', '/flow Yes', '/sso Yes', '/update No') -Wait -NoNewWindow",
+        "script": [
+            "Start-Process \"$dir\\setup.exe\" -ArgumentList @('/quiet', '/analytics No', '/flow Yes', '/sso Yes', '/update No') -Wait -NoNewWindow"
+        ],
         "keep": true
     },
     "pre_uninstall": [
@@ -34,7 +36,9 @@
         "}"
     ],
     "uninstaller": {
-        "script": "Start-Process \"C:\\Program Files\\LogiOptionsPlus\\logioptionsplus_updater.exe\" -ArgumentList @('--uninstall', '--full', '--shadow') -Wait -Verb 'RunAs'"
+        "script": [
+            "Start-Process \"C:\\Program Files\\LogiOptionsPlus\\logioptionsplus_updater.exe\" -ArgumentList @('--uninstall', '--full', '--shadow') -Wait -Verb 'RunAs'"
+        ],
     },
     "checkver": {
         "url": "https://support.logi.com/hc/en-us/articles/1500005516462-Logi-Options-Release-Notes",
