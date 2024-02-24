@@ -1,32 +1,33 @@
 {
-    "version": "1.6.1",
-    "description": "kernel mode mouse accel",
     "homepage": "https://github.com/a1xd/rawaccel",
+    "description": "Kernel mode mouse accel",
+    "version": "1.6.1",
     "license": "MIT",
-    "url": "https://github.com/a1xd/rawaccel/releases/download/v1.6.1/RawAccel_v1.6.1.zip#/dl.7z",
+    "url": "https://github.com/a1xd/rawaccel/releases/download/v1.6.1/RawAccel_v1.6.1.zip",
     "hash": "0ff7b09e34e846df33ae617eac8ae1c30587e0cd6c5dac9c76eb15a371b4b574",
-    "architecture": {
-        "64bit": {
-            "extract_dir": "RawAccel"
-        }
-    },
+    "extract_dir": "RawAccel",
     "shortcuts": [
-        [
-            "installer.exe",
-            "Raw Accel Installer"
-        ],
-        [
-            "uninstaller.exe",
-            "Raw Accel Uninstaller"
-        ],
         [
             "rawaccel.exe",
             "Raw Accel"
         ]
     ],
+    "persist": ".config",
+    "pre_install": [
+        "if(!(is_admin)) { error \"Admin rights are required, please run 'sudo scoop install $app'\"; exit 1 }",
+        "if (!(Test-Path \"$persist_dir\\.config\")) {",
+        "    New-Item \"$dir\\.config\" -Type File | Out-Null",
+        "}"
+    ],
+    "installer": {
+        "script": "cmd /c \"cd $dir && installer.exe\""
+    },
+    "pre_uninstall": "if(!(is_admin)) { error \"Admin rights are required, please run 'sudo scoop uninstall $app'\"; exit 1 }",
+    "uninstaller": {
+        "script": "cmd /c \"cd $dir && uninstaller.exe\""
+    },
     "checkver": "github",
-    "persist": "settings.json",
     "autoupdate": {
-        "url": "https://github.com/a1xd/rawaccel/releases/download/v$version/RawAccel_v$version.zip#/dl.7z"
+        "url": "https://github.com/a1xd/rawaccel/releases/download/v$version/RawAccel_v$version.zip"
     }
 }
