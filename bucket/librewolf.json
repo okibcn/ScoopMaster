@@ -1,54 +1,65 @@
 {
     "version": "123.0-1",
-    "description": "An independent fork of Firefox, with the primary goals of privacy, security and user freedom.",
-    "homepage": "https://librewolf-community.gitlab.io/",
+    "description": "A fork of Firefox, focused on privacy, security and freedom.",
+    "homepage": "https://librewolf.net/",
     "license": "MPL-2.0",
-    "url": "https://gitlab.com/api/v4/projects/44042130/packages/generic/librewolf/123.0-1/librewolf-123.0-1-windows-x86_64-portable.zip#/librewolf-123.0-1-windows-x86_64-portable.zip",
-    "hash": "7ece90bbf5c571fb2f6b2e7acb74c42da1dc7c8bd96c8035cf01f18da5e5a28b",
-    "extract_dir": "librewolf-123.0-1/LibreWolf",
+    "architecture": {
+        "64bit": {
+            "url": "https://gitlab.com/api/v4/projects/44042130/packages/generic/librewolf/123.0-1/librewolf-123.0-1-windows-x86_64-portable.zip",
+            "hash": "7ece90bbf5c571fb2f6b2e7acb74c42da1dc7c8bd96c8035cf01f18da5e5a28b"
+        },
+        "32bit": {
+            "url": "https://gitlab.com/api/v4/projects/44042130/packages/generic/librewolf/123.0-1/librewolf-123.0-1-windows-i686-portable.zip",
+            "hash": "505acf182627b603b6f98ce3304a5fc6f441b95d436377bdb0aafe868bf83fd3"
+        }
+    },
+    "extract_dir": "librewolf-123.0-1",
+    "pre_install": [
+        "Remove-Item \"$dir\\LibreWolf-WinUpdater.exe\"",
+        "# Customizing LibreWolf Using AutoConfig",
+        "# https://support.mozilla.org/en-US/kb/customizing-firefox-using-autoconfig",
+        "ensure \"$persist_dir\\LibreWolf\\defaults\\pref\" | Out-Null",
+        "Copy-Item \"$persist_dir\\LibreWolf\\defaults\\pref\\*\" \"$dir\\LibreWolf\\defaults\\pref\" -Exclude 'channel-prefs.js'",
+        "Copy-Item \"$persist_dir\\LibreWolf\\*.js\", \"$persist_dir\\LibreWolf\\*.cfg\" \"$dir\\LibreWolf\"",
+        "# Customizing LibreWolf Using policies.json",
+        "# https://support.mozilla.org/en-US/kb/customizing-firefox-using-policiesjson",
+        "# Used to override the default policies.json of LibreWolf, if you want",
+        "ensure \"$persist_dir\\LibreWolf\\distribution\" | Out-Null",
+        "Copy-Item \"$persist_dir\\LibreWolf\\distribution\\policies.json\" \"$dir\\LibreWolf\\distribution\" -ErrorAction SilentlyContinue"
+    ],
     "bin": [
         [
-            "librewolf.exe",
-            "LibreWolf",
-            "-profile \"$dir\\profiles\\default\""
+            "LibreWolf-Portable.exe",
+            "librewolf"
         ]
     ],
     "shortcuts": [
         [
-            "librewolf.exe",
-            "LibreWolf",
-            "-profile \"$dir\\profiles\\default\""
+            "LibreWolf-Portable.exe",
+            "LibreWolf"
         ]
     ],
-    "post_install": [
-        "$app = \"$dir\\librewolf.exe\".Replace('\\', '\\\\')",
-        "$shim = \"$(shimdir)\\librewolf.exe\".Replace('\\', '\\\\')",
-        "$scripts = join-path $bucketsdir $($ResolvedObject.Bucket) | join-path -ChildPath scripts/librewolf",
-        "'install-associations', 'uninstall-associations' | ForEach-Object {",
-        "  if (Test-Path \"$scripts\\$_.reg\") {",
-        "    $content = Get-Content \"$scripts\\$_.reg\"",
-        "    $content = $content.Replace('$app', $app)",
-        "    $content = $content.Replace('$shim', $shim)",
-        "    if ($global) {",
-        "      $content = $content.Replace('HKEY_CURRENT_USER', 'HKEY_LOCAL_MACHINE')",
-        "    }",
-        "    $content | Set-Content -Path \"$dir\\$_.reg\"",
-        "  }",
-        "}",
-        "REG IMPORT \"$dir\\install-associations.reg\" *>&1 | Out-Null"
+    "persist": "Profiles",
+    "pre_uninstall": [
+        "Copy-Item \"$dir\\LibreWolf\\defaults\\pref\\*\" \"$persist_dir\\LibreWolf\\defaults\\pref\" -Exclude 'channel-prefs.js'",
+        "Copy-Item \"$dir\\LibreWolf\\*.js\", \"$dir\\LibreWolf\\*.cfg\" \"$persist_dir\\LibreWolf\" -Exclude 'librewolf.cfg'"
     ],
-    "pre_uninstall": "REG IMPORT \"$dir\\uninstall-associations.reg\" *>&1 | Out-Null",
-    "persist": "profiles",
     "checkver": {
-        "url": "https://gitlab.com/api/v4/projects/44042130/releases",
-        "jsonpath": "$[0].assets.links",
-        "regex": "(?s)\"(?<file>librewolf-(?<version>\\d+(?:\\.\\d+)*(?:-\\d+)?)-windows-x86_64-portable\\.zip)\".*?\"(?<url>https://.+?)\""
+        "url": "https://gitlab.com/api/v4/projects/44042130/releases/permalink/latest",
+        "jsonpath": "$.tag_name"
     },
     "autoupdate": {
-        "url": "${matchUrl}#/${matchFile}",
-        "extract_dir": "librewolf-$version/LibreWolf",
+        "architecture": {
+            "64bit": {
+                "url": "https://gitlab.com/api/v4/projects/44042130/packages/generic/librewolf/$version/librewolf-$version-windows-x86_64-portable.zip"
+            },
+            "32bit": {
+                "url": "https://gitlab.com/api/v4/projects/44042130/packages/generic/librewolf/$version/librewolf-$version-windows-i686-portable.zip"
+            }
+        },
         "hash": {
-            "url": "${matchUrl}.sha256sum"
-        }
+            "url": "$url.sha256sum"
+        },
+        "extract_dir": "librewolf-$version"
     }
 }
