@@ -7,6 +7,10 @@
         "64bit": {
             "url": "https://github.com/clash-verge-rev/clash-verge-rev/releases/download/v1.5.4/Clash.Verge_1.5.4_x64_portable.zip",
             "hash": "8eb65b10fae5b0b1c430c1e2e53917b1928356bbbe58f36e27e389f7ded866fe"
+        },
+        "arm64": {
+            "url": "https://github.com/clash-verge-rev/clash-verge-rev/releases/download/v1.5.4/Clash.Verge_1.5.4_arm64_portable.zip",
+            "hash": "c5f266b802fbf9df0860beeafa4150a738f923e792b11a22003e57fdca3022bf"
         }
     },
     "shortcuts": [
@@ -19,12 +23,10 @@
     "post_install": [
         "if (!(Test-Path \"$persist_dir\\.config\\PORTABLE\")) {",
         "    New-Item -Path \"$persist_dir\\.config\\PORTABLE\" -ItemType file | Out-Null",
-        "}",
-        "Start-Process \"$dir\\resources\\install-service.exe\" -Wait -Verb 'RunAs' -WindowStyle 'Hidden';"
+        "}"
     ],
     "pre_uninstall": [
         "if (!(is_admin)) { error \"$app requires admin rights to $cmd\"; break }",
-        "$processdir = appdir $app $global | Convert-Path; Get-Process | Where-Object { $_.Path -like \"$processdir\\*\" } | Stop-Process -Force; ",
         "Start-Process \"$dir\\resources\\uninstall-service.exe\" -Wait -Verb 'RunAs' -WindowStyle 'Hidden'; Start-Sleep -Seconds 3"
     ],
     "checkver": "github",
@@ -32,6 +34,9 @@
         "architecture": {
             "64bit": {
                 "url": "https://github.com/clash-verge-rev/clash-verge-rev/releases/download/v$version/Clash.Verge_$version_x64_portable.zip"
+            },
+            "arm64": {
+                "url": "https://github.com/clash-verge-rev/clash-verge-rev/releases/download/v$version/Clash.Verge_$version_arm64_portable.zip"
             }
         }
     }
