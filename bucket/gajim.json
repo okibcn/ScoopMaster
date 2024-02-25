@@ -1,14 +1,20 @@
 {
     "version": "1.8.4",
+    "description": "An instant messaging client for the XMPP protocol which uses the GTK toolkit.",
     "homepage": "https://gajim.org/",
-    "description": "A fully-featured open source XMPP client.",
-    "license": "GPL-3.0",
+    "license": "GPL-3.0-only",
     "architecture": {
         "64bit": {
             "url": "https://gajim.org/downloads/1.8/Gajim-Portable-1.8.4-64bit.exe#/dl.7z",
-            "hash": "37c6a7f5df7ea42c8ed0b278845b04f9080d3721ec3d8e86a8b76be97c5a63d9"
+            "hash": "70a005ef8037f24470eb35468c7056dcb094a4f7204568dd5e7a6fb0f9dd640d"
         }
     },
+    "bin": [
+        [
+            "bin\\Gajim.exe",
+            "gajim"
+        ]
+    ],
     "shortcuts": [
         [
             "bin\\Gajim.exe",
@@ -26,7 +32,14 @@
         "Write-Host 'Done!'"
     ],
     "pre_uninstall": "Write-Host 'Unregistering the XMPP Protocol...'; Remove-Item 'HKCU:\\SOFTWARE\\Classes\\xmpp' -Force -Recurse; Write-Host 'Done!'",
-    "checkver": "Gajim\\s([\\d.]+)",
+    "persist": [
+        "UserData",
+        "var\\cache"
+    ],
+    "checkver": {
+        "url": "https://gajim.org/download/",
+        "regex": "<span class=\"label label-primary\">([\\d.]+)</span>"
+    },
     "autoupdate": {
         "architecture": {
             "64bit": {
