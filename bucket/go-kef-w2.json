@@ -1,22 +1,28 @@
 {
-    "version": "0.0.1",
+    "version": "0.0.2",
     "architecture": {
         "64bit": {
-            "url": "https://github.com/hilli/go-kef-w2/releases/download/v0.0.1/go-kef-w2_Windows_x86_64.zip",
+            "url": "https://github.com/hilli/go-kef-w2/releases/download/v0.0.2/go-kef-w2_Windows_x86_64.zip",
             "bin": [
                 "kefw2.exe"
             ],
-            "hash": "18e2c643c57b29b1c5eaedebcc8d11f2cfe3a6c38de2f537f3a3511b3ee3d878"
+            "hash": "d472f4c274c3d8a43e6369606a3701e5121709d7d236443fde1dc1d9bc916576"
         },
         "arm64": {
-            "url": "https://github.com/hilli/go-kef-w2/releases/download/v0.0.1/go-kef-w2_Windows_arm64.zip",
+            "url": "https://github.com/hilli/go-kef-w2/releases/download/v0.0.2/go-kef-w2_Windows_arm64.zip",
             "bin": [
                 "kefw2.exe"
             ],
-            "hash": "9697edc14ecc6f4fc1ba8d902ab71f019dbc140ec337dd401596a00f6e9fe777"
+            "hash": "10f9b905b4f6ca1442273e45ff5b5ca2e45d9beea355fe25f014e5eebcdaf1a0"
         }
     },
     "homepage": "https://github.com/hilli/go-kef-w2",
     "license": "MIT",
-    "description": "Command for handling KEF W2 platform speakers (LSX Wireless II (LT)/LS50 Wireless II/LS60 Wireless)"
+    "description": "Command for handling KEF W2 platform speakers (LSX Wireless II (LT)/LS50 Wireless II/LS60 Wireless)",
+    "post_install": [
+        "Write-Host 'Running postinstall command'",
+        "if(!(Test-Path $PROFILE.CurrentUserCurrentHost -PathType Leaf)) { New-Item -Path $PROFILE.CurrentUserCurrentHost -ItemType file -Force }",
+        "$scoopPrefix = $(scoop prefix go-kef-w2)",
+        "Add-Content -Path $PROFILE.CurrentUserCurrentHost -Value . \"$scoopPrefix\\completions\\kefw2.ps1\""
+    ]
 }

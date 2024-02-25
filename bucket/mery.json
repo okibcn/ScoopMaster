@@ -1,16 +1,19 @@
 {
+    "homepage": "https://www.haijin-boys.com/",
+    "description": "Simple text editor",
+    "license": "Freeware",
     "version": "3.7.0",
-    "description": "A free Japanese text editor for Windows.",
-    "homepage": "https://www.haijin-boys.com/wiki/",
-    "license": "zlib",
-    "url": "http://www.haijin-boys.com/download/MeryPortable-x64-3.7.0.zip",
-    "hash": "d123b50da2df0fea65aecc139942f977f6c77412b5c5a58b8915906ac4896e91",
+    "architecture": {
+        "32bit": {
+            "url": "https://www.haijin-boys.com/download/Mery-3.7.0.zip",
+            "hash": "07ed57176e5da06d0ded9ea3c31c81d2e481bd5d8c1d5dcc7b5353a1ddddb51e"
+        },
+        "64bit": {
+            "url": "https://www.haijin-boys.com/download/Mery-x64-3.7.0.zip",
+            "hash": "68eff2d746145d7cffe2e903238cf2a4793d96e8757a2cf7ac072ab502b8699a"
+        }
+    },
     "extract_dir": "Mery",
-    "pre_install": [
-        "$manifest.persist | ForEach-Object {",
-        "    if (-not (Test-Path \"$persist_dir\\$_\")) { New-Item \"$dir\\$_\" -ItemType file | Out-Null }",
-        "}"
-    ],
     "bin": "Mery.exe",
     "shortcuts": [
         [
@@ -20,13 +23,36 @@
     ],
     "persist": [
         "Mery.ini",
-        "Mery.his"
+        "Mery.his",
+        "Dicts",
+        "Ext",
+        "Macros",
+        "Plugins",
+        "migemo.dll",
+        "dict"
+    ],
+    "pre_install": [
+        "function CreateEmptyFile($name) {",
+        "    if (!(Test-Path \"$persist_dir\\$name\")) {",
+        "        New-Item -Path \"$dir\\$name\" -ItemType File | Out-Null",
+        "    }",
+        "}",
+        "CreateEmptyFile Mery.ini",
+        "CreateEmptyFile Mery.his",
+        "CreateEmptyFile migemo.dll"
     ],
     "checkver": {
         "url": "https://www.haijin-boys.com/software/mery",
-        "re": "Ver ([\\d.]+)"
+        "re": "Ver (?<version>[\\d.]+)"
     },
     "autoupdate": {
-        "url": "http://www.haijin-boys.com/download/MeryPortable-x64-$version.zip"
+        "architecture": {
+            "32bit": {
+                "url": "https://www.haijin-boys.com/download/Mery-$version.zip"
+            },
+            "64bit": {
+                "url": "https://www.haijin-boys.com/download/Mery-x64-$version.zip"
+            }
+        }
     }
 }
