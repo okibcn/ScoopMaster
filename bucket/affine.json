@@ -1,38 +1,30 @@
 {
     "version": "0.12.0",
-    "description": "AFFiNE is a workspace with fully merged docs, whiteboards and databases.",
+    "description": "A privacy-focussed, local-first, open-source, and ready-to-use alternative for Notion & Miro.",
     "homepage": "https://affine.pro/",
-    "license": "MIT",
+    "license": "MPL-2.0",
     "architecture": {
         "64bit": {
             "url": "https://github.com/toeverything/AFFiNE/releases/download/v0.12.0/affine-stable-windows-x64.exe#/dl.7z",
-            "hash": "sha512:05e35ee7e8b57873d9aed92498bdd21df92d978c0de40b85277611e68d4f11dc31ad063371ca35cb751f8daee23a5911cb3590d45941c91356c19cb1a96ae9bc",
-            "pre_install": [
-                "Remove-Item \"$dir\\*\" -Exclude 'AFFiNE-*-full.nupkg'",
-                "Expand-7zipArchive \"$dir\\AFFiNE-*-full.nupkg\" -ExtractDir 'lib\\net45' -Removal"
-            ]
+            "hash": "5bd85108fbdf8a0e54adb9b58bd435574e366036e63bff5b303f211104f84f82"
         }
     },
-    "bin": "AFFiNE.exe",
+    "installer": {
+        "script": "Expand-7zipArchive -Path \"$dir\\AFFiNE-*-full.nupkg\" -ExtractDir 'lib\\net45' -Removal"
+    },
     "shortcuts": [
         [
             "AFFiNE.exe",
-            "AFFiNE",
-            "--user-data-dir=\"$dir\\User Data\""
+            "AFFiNE"
         ]
     ],
-    "persist": "User Data",
     "checkver": {
         "github": "https://github.com/toeverything/AFFiNE"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://github.com/toeverything/AFFiNE/releases/download/v$version/affine-stable-windows-x64.exe#/dl.7z",
-                "hash": {
-                    "url": "$baseurl/latest.yml",
-                    "regex": "sha512:\\s+$base64"
-                }
+                "url": "https://github.com/toeverything/AFFiNE/releases/download/v$version/affine-stable-windows-x64.exe#/dl.7z"
             }
         }
     }
