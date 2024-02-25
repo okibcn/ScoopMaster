@@ -1,60 +1,46 @@
 {
-    "version": "14.11",
-    "description": "See what programs are configured to startup automatically when your system boots and you login",
-    "homepage": "https://learn.microsoft.com/sysinternals/downloads/autoruns",
+    "homepage": "https://docs.microsoft.com/en-us/sysinternals/",
+    "description": "See what programs are configured to startup automatically when your system boots and you login.",
     "license": {
         "identifier": "Freeware",
-        "url": "https://learn.microsoft.com/sysinternals/license-terms"
+        "url": "https://docs.microsoft.com/en-us/sysinternals/license-terms"
     },
+    "version": "14.11",
     "url": "https://download.sysinternals.com/files/Autoruns.zip",
     "hash": "b04d2ac6dcc287a4b01a9cdc5bd9580a38df8a3379e03698cf7b888cdab7ea0f",
+    "checkver": {
+        "url": "https://docs.microsoft.com/en-us/sysinternals/downloads/autoruns",
+        "re": "Autoruns for Windows\\s(?:v|V)?([\\d.]+)"
+    },
+    "autoupdate": {
+        "url": "https://download.sysinternals.com/files/Autoruns.zip"
+    },
     "architecture": {
-        "64bit": {
-            "pre_install": "Remove-Item $dir\\Autoruns.exe, $dir\\Autorunsc.exe, $dir\\*64a.exe",
+        "32bit": {
             "bin": [
+                "Autoruns.exe",
+                "autorunsc.exe"
+            ],
+            "shortcuts": [
                 [
-                    "Autorunsc64.exe",
-                    "Autorunsc"
+                    "Autoruns.exe",
+                    "SysInternals/Autoruns for Windows",
+                    "/accepteula"
                 ]
+            ]
+        },
+        "64bit": {
+            "bin": [
+                "Autoruns64.exe",
+                "autorunsc64.exe"
             ],
             "shortcuts": [
                 [
                     "Autoruns64.exe",
-                    "Autoruns"
-                ]
-            ]
-        },
-        "32bit": {
-            "pre_install": "Remove-Item $dir\\*64.exe, $dir\\*64a.exe",
-            "bin": "Autorunsc.exe",
-            "shortcuts": [
-                [
-                    "Autoruns.exe",
-                    "Autoruns"
-                ]
-            ]
-        },
-        "arm64": {
-            "pre_install": "Remove-Item $dir\\Autoruns.exe, $dir\\Autorunsc.exe, $dir\\*64.exe",
-            "bin": [
-                [
-                    "Autorunsc64a.exe",
-                    "Autorunsc"
-                ]
-            ],
-            "shortcuts": [
-                [
-                    "Autoruns64a.exe",
-                    "Autoruns"
+                    "SysInternals/Autoruns for Windows",
+                    "/accepteula"
                 ]
             ]
         }
-    },
-    "checkver": {
-        "url": "https://raw.githubusercontent.com/MicrosoftDocs/sysinternals/main/sysinternals/downloads/autoruns.md",
-        "regex": "#.*?v([\\d.]+)"
-    },
-    "autoupdate": {
-        "url": "https://download.sysinternals.com/files/Autoruns.zip"
     }
 }
