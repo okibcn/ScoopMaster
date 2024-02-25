@@ -1,45 +1,34 @@
 {
-    "##": "The installer is made with InnoSetup.",
+    "##": "Gopeed",
     "version": "1.5.5",
-    "description": "High speed downloader that supports all platforms.",
+    "description": "支持所有平台的现代下载管理器。使用 Golang 和 Flutter 构建",
+    "license": {
+        "identifier": "GPL-3.0-only",
+        "url": "https://github.com/GopeedLab/gopeed/blob/main/LICENSE"
+    },
     "homepage": "https://github.com/GopeedLab/gopeed",
-    "license": "GPL-3.0-only",
-    "architecture": {
-        "64bit": {
-            "url": "https://github.com/GopeedLab/gopeed/releases/download/v1.5.5/Gopeed-v1.5.5-windows-amd64.zip",
-            "hash": "ee4c24d00248899e40d328c1886725e1bb9233e3566d2880764979f5fcb23b8b"
-        }
+    "hash": "21c022c0ec8350080c3cf565ecae5966e11d8425e02c424de3674edae237b66c",
+    "url": "https://github.com/GopeedLab/gopeed/releases/download/v1.5.5/Gopeed-v1.5.5-windows-amd64-portable.zip",
+    "checkver": "github",
+    "pre_install": [
+        "if (-not (Test-Path \"$persist_dir\\gopeed.db\")) { New-Item \"$dir\\gopeed.db\" -ItemType file | Out-Null }",
+        "if (-not (Test-Path \"$persist_dir\\database.hive\")) { New-Item \"$dir\\database.hive\" -ItemType file | Out-Null }",
+        "if (-not (Test-Path \"$persist_dir\\database.lock\")) { New-Item \"$dir\\database.lock\" -ItemType file | Out-Null }"
+    ],
+    "autoupdate": {
+        "url": "https://github.com/GopeedLab/gopeed/releases/download/v$version/Gopeed-v$version-windows-amd64-portable.zip"
     },
-    "pre_install": "Get-ChildItem \"$dir\" 'Gopeed*.exe' | Rename-Item -NewName 'setup.exe'",
-    "installer": {
-        "script": [
-            "Start-Process -Wait \"$dir\\setup.exe\" -ArgumentList @('/SP-', '/VERYSILENT', '/PORTABLE', \"/DIR=`\"$dir`\"\")",
-            "Remove-Item \"$dir\\setup.exe\""
-        ]
-    },
-    "uninstaller": {
-        "file": "unins000.exe",
-        "args": [
-            "/verysilent",
-            "/nocancel",
-            "/norestart"
-        ]
-    },
+    "persist": [
+        "logs",
+        "extensions",
+        "gopeed.db",
+        "database.hive",
+        "database.lock"
+    ],
     "shortcuts": [
         [
             "gopeed.exe",
             "Gopeed"
         ]
-    ],
-    "checkver": {
-        "url": "https://api.github.com/repos/GopeedLab/gopeed/releases",
-        "regex": "/releases/tag/v([\\d.]+)"
-    },
-    "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://github.com/GopeedLab/gopeed/releases/download/v$version/Gopeed-v$version-windows-amd64.zip"
-            }
-        }
-    }
+    ]
 }
