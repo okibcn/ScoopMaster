@@ -1,8 +1,11 @@
 {
-    "homepage": "https://github.com/troyeguo/koodo-reader",
-    "description": "A modern ebook manager and reader with sync and backup capacities for Windows, macOS, Linux and Web",
     "version": "1.6.5",
-    "license": "AGPL-3.0",
+    "description": "一款现代电子书管理器和阅读器，具有同步和备份功能，适用于 Windows、macOS、Linux 和 Web。A modern ebook manager and reader with sync and backup capacities for Windows, macOS, Linux and Web.",
+    "homepage": "https://koodo.960960.xyz",
+    "license": {
+        "identifier": "GNU Affero General Public License v3.0",
+        "url": "https://github.com/koodo-reader/koodo-reader/blob/master/LICENSE"
+    },
     "architecture": {
         "64bit": {
             "url": "https://github.com/troyeguo/koodo-reader/releases/download/v1.6.5/Koodo-Reader-1.6.5-x64-Win.zip",
@@ -11,6 +14,10 @@
         "32bit": {
             "url": "https://github.com/troyeguo/koodo-reader/releases/download/v1.6.5/Koodo-Reader-1.6.5-ia32-Win.zip",
             "hash": "ced7355f93ccbf35f8b298b8409108c58751f108ded67c34dc4aff0e22cdb608"
+        },
+        "arm64": {
+            "url": "https://github.com/troyeguo/koodo-reader/releases/download/v1.6.5/Koodo-Reader-1.6.5-arm64-Win.zip",
+            "hash": "56c40ed5e0bb20e372c686ed49f8f4acbc8d5d3d1c2b42d036e95022602c644d"
         }
     },
     "shortcuts": [
@@ -19,7 +26,20 @@
             "Koodo Reader"
         ]
     ],
-    "checkver": "github",
+    "pre_install": [
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "persist -dir @(\"$env:AppData\\koodo-reader\") @(\"$persist_dir\\koodo-reader\")",
+        "create_app_lnk \"$dir\\Koodo Reader.exe\" \"$desktop\\Koodo Reader.lnk\""
+    ],
+    "pre_uninstall": [
+        "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "stop_process",
+        "remove_files @(\"$desktop\\Koodo Reader.lnk\",\"$env:AppData\\koodo-reader\")"
+    ],
+    "checkver": {
+        "github": "https://github.com/troyeguo/koodo-reader"
+    },
     "autoupdate": {
         "architecture": {
             "64bit": {
@@ -27,6 +47,9 @@
             },
             "32bit": {
                 "url": "https://github.com/troyeguo/koodo-reader/releases/download/v$version/Koodo-Reader-$version-ia32-Win.zip"
+            },
+            "arm64": {
+                "url": "https://github.com/troyeguo/koodo-reader/releases/download/v$version/Koodo-Reader-$version-arm64-Win.zip"
             }
         }
     }
