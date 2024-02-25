@@ -1,9 +1,30 @@
 {
-  "version": "0.2.10",
-  "hash": "A4A0AE8FE3BEBDD353F2CD092B3963F51B827C93D0492498628CDB3ECB247514",
-  "homepage": "https://lmstudio.ai/",
-  "license": "MIT License",
-  "extract_dir": "lmstudio-0.2.10",
-  "bin": "LM Studio.exe",
-  "url": "https://s3.amazonaws.com/releases.lmstudio.ai/0.2.10/LM+Studio-0.2.10+Setup.exe"
+    "homepage": "https://lmstudio.ai/",
+    "description": "Discover, download, and run local LLMs",
+    "license": {
+        "url": "https://lmstudio.ai/terms"
+    },
+    "version": "0.2.16",
+    "url": "https://releases.lmstudio.ai/windows/0.2.16/latest/LM-Studio-0.2.16-Setup.exe#/dl.7z",
+    "hash": "1acf631c47fe6efb4ecfbd388554393139c62413ec4d6ad8a2692597b67bbf01",
+    "installer": {
+        "script": [
+            "$pkgfile = (Get-ChildItem \"$dir\" '*.nupkg' | Select-Object -First 1).FullName",
+            "Expand-7ZipArchive \"$pkgfile\" \"$dir\" -Removal",
+            "Move-Item \"$dir\\lib\\net45\\*\" \"$dir\""
+        ]
+    },
+    "shortcuts": [
+        [
+            "LM Studio.exe",
+            "LM Studio"
+        ]
+    ],
+    "checkver": {
+        "url": "https://lmstudio.ai/static/js/main.3404156b.js",
+        "regex": "LM-Studio-([\\d.]+)-"
+    },
+    "autoupdate": {
+        "url": "https://releases.lmstudio.ai/windows/$version/latest/LM-Studio-$version-Setup.exe#/dl.7z"
+    }
 }

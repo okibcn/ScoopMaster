@@ -1,8 +1,11 @@
 {
     "version": "2.2.0",
-    "description": "QtScrcpy connects to Android devices via USB (or via TCP/IP) for display and control. It does NOT require the root privileges.",
+    "description": "通过TCP/IP或USB显示和控制Android设备。Display and control Android device via TCP/IP or USB.",
     "homepage": "https://github.com/barry-ran/QtScrcpy",
-    "license": "Apache-2.0",
+    "license": {
+        "identifier": "Apache License 2.0",
+        "url": "https://github.com/barry-ran/QtScrcpy/blob/dev/LICENSE"
+    },
     "architecture": {
         "64bit": {
             "url": "https://github.com/barry-ran/QtScrcpy/releases/download/v2.2.0/QtScrcpy-win-x64-v2.2.0.zip",
@@ -15,12 +18,22 @@
             "extract_dir": "QtScrcpy-win-x86-v2.2.0"
         }
     },
-    "bin": "QtScrcpy.exe",
     "shortcuts": [
         [
             "QtScrcpy.exe",
             "QtScrcpy"
         ]
+    ],
+    "pre_install": [
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "persist -dir @(\"$dir\\config\") @(\"$persist_dir\\config\")",
+        "create_app_lnk \"$dir\\QtScrcpy.exe\" \"$desktop\\QtScrcpy.lnk\""
+    ],
+    "pre_uninstall": [
+        "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "stop_process",
+        "remove_files @(\"$desktop\\QtScrcpy.lnk\")"
     ],
     "checkver": "github",
     "autoupdate": {
