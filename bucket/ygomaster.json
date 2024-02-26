@@ -1,0 +1,31 @@
+{
+    "version": "1.43",
+    "extract_dir": "YgoMaster",
+    "url": "https://github.com/pixeltris/YgoMaster/releases/download/v1.43/YgoMaster-v1.43.zip",
+    "hash": "bce3f489637f2ed5110935fecd6c14fc40417e719408bbd21cc1839d04f3d669",
+    "bin": "",
+    "homepage": "https://github.com/pixeltris/YgoMaster",
+    "license": "MIT",
+    "checkver": "github",
+    "autoupdate": {
+        "url": "https://github.com/pixeltris/YgoMaster/releases/download/v$version/YgoMaster-v$version.zip"
+    },
+    "post_install": [
+        ". $bucketsdir/sniffer/scripts/find_steam_game_folder.ps1",
+        "$game_path = find_steam_game_folder(\"1449850\")",
+        "$ygomaster_path = \"$game_path\\YgoMaster\"",
+        "if (Test-Path -Path $ygomaster_path) {",
+        "    Remove-Item -Path $ygomaster_path -Force",
+        "}",
+        "# Copy Directory",
+        "Copy-Item -Recurse -Path \"$scoopdir\\apps\\$app\\current\" -Destination $ygomaster_path -Force"
+    ],
+    "pre_uninstall": [
+        ". $bucketsdir/sniffer/scripts/find_steam_game_folder.ps1",
+        "$game_path = find_steam_game_folder(\"1449850\")",
+        "$ygomaster_path = \"$game_path\\YgoMaster\"",
+        "if (Test-Path -Path $ygomaster_path) {",
+        "    Remove-Item -Path $ygomaster_path -Force -Recurse",
+        "}"
+    ]
+}
