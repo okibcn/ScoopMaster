@@ -1,11 +1,8 @@
 {
     "version": "2.2.0",
-    "description": "通过TCP/IP或USB显示和控制Android设备。Display and control Android device via TCP/IP or USB.",
+    "description": "Display and control Android device via TCP/IP or USB.",
     "homepage": "https://github.com/barry-ran/QtScrcpy",
-    "license": {
-        "identifier": "Apache License 2.0",
-        "url": "https://github.com/barry-ran/QtScrcpy/blob/dev/LICENSE"
-    },
+    "license": "Apache-2.0",
     "architecture": {
         "64bit": {
             "url": "https://github.com/barry-ran/QtScrcpy/releases/download/v2.2.0/QtScrcpy-win-x64-v2.2.0.zip",
@@ -24,17 +21,7 @@
             "QtScrcpy"
         ]
     ],
-    "pre_install": [
-        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-        "persist -dir @(\"$dir\\config\") @(\"$persist_dir\\config\")",
-        "create_app_lnk \"$dir\\QtScrcpy.exe\" \"$desktop\\QtScrcpy.lnk\""
-    ],
-    "pre_uninstall": [
-        "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
-        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-        "stop_process",
-        "remove_files @(\"$desktop\\QtScrcpy.lnk\")"
-    ],
+    "persist": "config",
     "checkver": "github",
     "autoupdate": {
         "architecture": {
