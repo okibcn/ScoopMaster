@@ -1,0 +1,49 @@
+{
+    "version": "4.2",
+    "description": "Calibrate monitors to sRGB or other color spaces on NVIDIA GPUs, based on EDID data or ICC profiles",
+    "homepage": "https://github.com/ledoge/novideo_srgb",
+    "license": "GPL-3.0-only",
+    "notes": "This software supports ONLY NVIDIA GPUs (Fermi and later). It is not compatible with AMD or Intel GPUs.",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/ledoge/novideo_srgb/releases/download/v4.1/release.zip",
+            "hash": "a75cf2991ad0ef407b0804f4c6be210aba07d086e6a754c8d5952200094401a8"
+        }
+    },
+    "pre_install": [
+        "$configFileExists = Test-Path $persist_dir\\config.xml",
+        "if (-not $configFileExists)",
+        "{",
+        "   $xmlDocument = New-Object System.Xml.XmlDocument",
+        "   $root = $xmlDocument.CreateElement('monitors')",
+        "   $mockMonitor = $xmlDocument.CreateElement('monitor')",
+        "   $root.AppendChild($mockMonitor)",
+        "   $xmlDocument.AppendChild($root)",
+        "   Write-Debug $xmlDocument.OuterXml",
+        "   $path = Join-Path -Path $dir -ChildPath 'config.xml'",
+        "   $utf8 = New-Object System.Text.UTF8Encoding $false",
+        "   $settings = New-Object System.Xml.XmlWriterSettings",
+        "   $settings.Encoding = $utf8",
+        "   $settings.Indent = $true",
+        "   $writer = [System.Xml.XmlWriter]::Create([string]$path, $settings)",
+        "   $xmlDocument.Save($writer)",
+        "   $writer.Close()",
+        "}"
+    ],
+    "bin": "novideo_srgb.exe",
+    "shortcuts": [
+        [
+            "novideo_srgb.exe",
+            "novideo_srgb"
+        ]
+    ],
+    "persist": "config.xml",
+    "pre_uninstall": "",
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/ledoge/novideo_srgb/releases/download/v4.1/release.zip"
+            }
+        }
+    }
+}
