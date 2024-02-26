@@ -17,15 +17,16 @@
         "if (Test-Path -Path $ygomaster_path) {",
         "    Remove-Item -Path $ygomaster_path -Force",
         "}",
-        "# Copy Directory",
-        "Copy-Item -Recurse -Path \"$scoopdir\\apps\\$app\\current\" -Destination $ygomaster_path -Force"
+        "# Create Junction",
+        "New-Item -ItemType Junction -Path $ygomaster_path -Value \"$scoopdir\\apps\\$app\\current\""
     ],
     "pre_uninstall": [
         ". $bucketsdir/sniffer/scripts/find_steam_game_folder.ps1",
         "$game_path = find_steam_game_folder(\"1449850\")",
         "$ygomaster_path = \"$game_path\\YgoMaster\"",
         "if (Test-Path -Path $ygomaster_path) {",
-        "    Remove-Item -Path $ygomaster_path -Force -Recurse",
+        "    Remove-Item -Path $ygomaster_path -Force",
         "}"
-    ]
+    ],
+    "persist": ["Data/Settings.json", "Data/CustomDuel.json", "Data/Players", "Data/ClientData"]
 }
