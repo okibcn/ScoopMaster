@@ -1,49 +1,32 @@
 {
     "version": "1.13.0",
-    "description": "哔哩哔哩 Windows 客户端",
-    "homepage": "https://app.bilibili.com/",
     "license": "Unknown",
-    "url": "https://dl.hdslb.com/mobile/pack/bili_win/13707499/public/bilibili-setup-v1.13.0.exe#/_installer_.exe",
-    "hash": "77d6a515578ecca787d209f28496b2e5f9f795ecaee76279318cbd22a09fa2cc",
+    "url": "https://dl.hdslb.com/mobile/fixed/bili_win/bili_win-install.exe?v=1.13.0#/dl.7z",
+    "extract_dir": "$PLUGINSDIR",
+    "extract_to": "package",
+    "notes": "In Application Auto update has been disable",
+    "installer": {
+        "script": [
+            "Expand-7zipArchive -Path \"$dir/package/app-64.7z\" -DestinationPath \"$dir\"",
+            "Remove-Item \"$dir/package/\" -Recurse -Force",
+            "Set-Content -Value \"\" -Path \"$dir/resources/app-update.yml\""
+        ]
+    },
+    "pre_uninstall": "taskkill /F /IM 哔哩哔哩.exe",
     "shortcuts": [
         [
-            "bilibili\\哔哩哔哩.exe",
+            "哔哩哔哩.exe",
             "哔哩哔哩"
         ]
     ],
-    "pre_install": [
-        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-        "$path_exe=\"$dir\\_installer_.exe\"",
-        "& $path_exe /S /D=$dir",
-        "$core_exe=\"$dir\\bilibili\\哔哩哔哩.exe\"",
-        "sleep_install $core_exe",
-        "persist -dir @(\"$env:AppData\\bilibili\") @(\"$persist_dir\\bilibili\")",
-        "clean_redundant_files @($path_exe,\"C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\哔哩哔哩\",\"C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\哔哩哔哩.lnk\") 15"
-    ],
-    "pre_uninstall": [
-        "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
-        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-        "stop_process $false",
-        "remove_files @(\"$env:AppData\\bilibili\")",
-        "$ui_exe=\"$dir\\bilibili\\卸载哔哩哔哩.exe\"",
-        "& $ui_exe /S",
-        "sleep_uninstall $ui_exe",
-        "remove_files @(\"$env:LocalAppData\\bilibili-updater\")"
-    ],
+    "homepage": "https://www.bilibili.com/",
+    "hash": "77d6a515578ecca787d209f28496b2e5f9f795ecaee76279318cbd22a09fa2cc",
     "checkver": {
-        "script": [
-            ". \"$pwd\\bin\\utils.ps1\"",
-            "$dl_info = get_installer_info \"Bilibili/Bilibili\"",
-            "\"ver:$($dl_info.PackageVersion);\"",
-            "\"x64:$($dl_info.x64_exe.InstallerUrl);\""
-        ],
-        "regex": "ver:(?<version>.+?); x64:(?<x64>.+?);"
+        "url": "https://api.bilibili.com/x/web-frontend/getappversion?target=pc_electron&cdn_url=https%3A%2F%2Fdl.hdslb.com%2Fmobile%2Ffixed%2Fbili_win%2Fbili_win-install.exe",
+        "regex": "\\.exe\\?v=([\\d\\.]+)",
+        "useragent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36"
     },
     "autoupdate": {
-        "url": "$matchX64#/_installer_.exe",
-        "hash": {
-            "url": "https://raw.githubusercontent.com/microsoft/winget-pkgs/master/manifests/b/Bilibili/Bilibili/$version/Bilibili.Bilibili.installer.yaml",
-            "regex": "x64[\\s\\S]*InstallerSha256:\\s?(.+)"
-        }
+        "url": "https://dl.hdslb.com/mobile/fixed/bili_win/bili_win-install.exe?v=$version#/dl.7z"
     }
 }
