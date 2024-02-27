@@ -1,0 +1,32 @@
+{
+    "version": "1.0.1.23121",
+    "description": "一个阿里云盘音乐播放器，它可以读取阿里云盘内的音乐来进行播放。 用户可以创建并同步歌单，播放时可以读取歌曲标签信息，还支持读取内嵌歌词/外置歌词。",
+    "homepage": "https://music.codepublic.top/",
+    "license": "Unknown",
+    "url": "https://abgo-bucket.netlify.app/SimplyListenMusicV1.0.1.23121.exe#/dl.7z",
+    "hash": "82f477713e7535df1bf09edfcf4c111cbc94120bdbcdc847d3a48f89ecbc30bb",
+    "shortcuts": [
+        [
+            "SimplyListenMusic.exe",
+            "普听音乐"
+        ]
+    ],
+    "pre_install": [
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "persist -dir @(\"$dir\\cache\",\"$env:AppData\\top.codepublic\\普听音乐\") @(\"$persist_dir\\cache\",\"$persist_dir\\top.codepublic\\普听音乐\")",
+        "create_app_lnk \"$dir\\SimplyListenMusic.exe\" \"$desktop\\普听音乐.lnk\""
+    ],
+    "pre_uninstall": [
+        "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "stop_process $false",
+        "remove_files @(\"$desktop\\普听音乐.lnk\",\"$env:AppData\\top.codepublic\\普听音乐\")"
+    ],
+    "checkver": {
+        "url": "https://abgo-bucket-apps.netlify.app/SimplyListenMusic.version",
+        "regex": "v(.+)"
+    },
+    "autoupdate": {
+        "url": "https://abgo-bucket.netlify.app/SimplyListenMusicV$version.exe#/dl.7z"
+    }
+}

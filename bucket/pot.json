@@ -1,70 +1,41 @@
 {
-    "version": "2.7.8",
-    "description": "一个跨平台的划词翻译和OCR软件。A cross-platform software for text translation and recognition.",
     "homepage": "https://pot-app.com/",
-    "license": {
-        "identifier": "GNU General Public License v3.0",
-        "url": "https://github.com/pot-app/pot-desktop/blob/master/LICENSE"
-    },
+    "description": "A cross-platform translation software",
+    "license": "GPL-3.0-only",
+    "version": "2.7.8",
     "architecture": {
         "64bit": {
-            "url": "https://github.com/pot-app/pot-desktop/releases/download/2.7.8/pot_2.7.8_x64-setup.exe#/_installer_.exe",
+            "url": "https://github.com/pot-app/pot-desktop/releases/download/2.7.8/pot_2.7.8_x64-setup.exe#/dl.7z",
             "hash": "84b92b14bf1f586e5d8305befac16062d346582cfcabd276ba5d60ecce88f8a4"
         },
         "32bit": {
-            "url": "https://github.com/pot-app/pot-desktop/releases/download/2.7.8/pot_2.7.8_x86-setup.exe#/_installer_.exe",
+            "url": "https://github.com/pot-app/pot-desktop/releases/download/2.7.8/pot_2.7.8_x86-setup.exe#/dl.7z",
             "hash": "145d68db4010bc5286883a43a0c686e179a0fc7a0769b2a3973680a29728225e"
-        },
-        "arm64": {
-            "url": "https://github.com/pot-app/pot-desktop/releases/download/2.7.8/pot_2.7.8_arm64-setup.exe#/_installer_.exe",
-            "hash": "6eb43c9ec5792de5184a3974a796fe3217523f069b2af9ce7528583d3d09a8a8"
         }
     },
+    "post_install": "Remove-Item \"$dir\\`$PLUGINSDIR\" -Force -Recurse",
     "shortcuts": [
         [
             "pot.exe",
-            "pot"
+            "Pot"
         ]
     ],
-    "pre_install": [
-        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-        "$path_exe=\"$dir\\_installer_.exe\"",
-        "& $path_exe /S /D=$dir",
-        "$core_exe=\"$dir\\pot.exe\"",
-        "sleep_install $core_exe",
-        "persist -file @(\"$env:AppData\\com.pot-app.desktop\\config.json\") @(\"$persist_dir\\com.pot-app.desktop\\config.json\")",
-        "if(Test-Path \"$persist_dir\\com.pot-app.desktop\\plugins\"){",
-        "   Copy-Item \"$persist_dir\\com.pot-app.desktop\\plugins\" \"$env:AppData\\com.pot-app.desktop\" -Force -Recurse",
-        "}elseif(Test-Path \"$env:AppData\\com.pot-app.desktop\\plugins\"){",
-        "   Copy-Item \"$env:AppData\\com.pot-app.desktop\\plugins\"  \"$persist_dir\\com.pot-app.desktop\"-Force -Recurse",
-        "}",
-        "clean_redundant_files @($path_exe,\"$admin_apps_lnk\\pot\\pot.lnk\") 15"
-    ],
-    "pre_uninstall": [
-        "Copy-Item \"$env:AppData\\com.pot-app.desktop\\plugins\" \"$persist_dir\\com.pot-app.desktop\" -Force -Recurse",
-        "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
-        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-        "stop_process $false",
-        "remove_files @(\"$env:AppData\\com.pot-app.desktop\")",
-        "$ui_exe=\"$dir\\uninstall.exe\"",
-        "try{ & $ui_exe /S }catch{}",
-        "sleep_uninstall $ui_exe",
-        "remove_files @(\"$env:LocalAppData\\com.pot-app.desktop\")"
-    ],
+    "persist": "config.toml",
     "checkver": {
         "github": "https://github.com/pot-app/pot-desktop"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://github.com/pot-app/pot-desktop/releases/download/$version/pot_$version_x64-setup.exe#/_installer_.exe"
+                "url": "https://github.com/pot-app/pot-desktop/releases/download/$version/pot_$version_x64-setup.exe#/dl.7z"
             },
             "32bit": {
-                "url": "https://github.com/pot-app/pot-desktop/releases/download/$version/pot_$version_x86-setup.exe#/_installer_.exe"
-            },
-            "arm64": {
-                "url": "https://github.com/pot-app/pot-desktop/releases/download/$version/pot_$version_arm64-setup.exe#/_installer_.exe"
+                "url": "https://github.com/pot-app/pot-desktop/releases/download/$version/pot_$version_x86-setup.exe#/dl.7z"
             }
         }
-    }
+    },
+    "notes": [
+        "You may need to install Edge WebView2 Runtime to use Pot.",
+        "A installer of Edge WebView2 Runtime is available under the 'redist' folder of the Pot installation directory."
+    ]
 }
