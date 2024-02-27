@@ -1,0 +1,22 @@
+{
+    "version": "1.0",
+    "license": "unknown",
+    "description": "Windows 3.1",
+    "homepage": "https://winworldpc.com/product/windows-3/31",
+    "url": ["https://winworldpc.com/download/4150c3ab-c3b3-18c3-9a11-c3a4e284a2ef/from/c39ac2af-c381-c2bf-1b25-11c3a4e284a2#/dl.7z"],
+    "hash": ["379DBA3E7EEE0723A2B0C3D8503E18383BBDD5262F2CCCFD1FCC930E93D17CA5"],
+    "depends": ["main/dosbox"],
+    "extract_to": "drive\\wininst",
+    "pre_install": [
+        "Set-Content -Path '~\\scoop\\apps\\Windows-3_1\\1.0\\run.bat' -Value '%userprofile%\\scoop\\apps\\dosbox\\current\\DOSBox.exe -c \"mount c %userprofile%\\scoop\\apps\\Windows-3_1\\current\\drive\\ \" -c \" c: \" -c \" cd WINDOWS \" -c \" WIN.COM \" -c \" exit \"'"
+    ],
+    "shortcuts": [
+        [
+            "run.bat",
+            "Windiows 3.1"
+        ]
+    ],
+    "post_install": [
+        "dosbox -c \"mount c $HOME\\scoop\\apps\\Windows-3_1\\current\\drive\\ \" -c \"c: \" -c \"cd WININST \" -c \"cd MICROS~1.104 \" -c \"SETUP.EXE \" -c \" exit \""
+    ]
+}

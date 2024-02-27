@@ -1,0 +1,22 @@
+{
+    "version": "1.0",
+    "license": "unknown",
+    "description": "Windows 3.1 Czech",
+    "homepage": "https://winworldpc.com/product/windows-3/31",
+    "url": ["https://winworldpc.com/download/3f56c38f-6118-c39a-11c3-a4e284a2c3a5/from/c39ac2af-c381-c2bf-1b25-11c3a4e284a2#/dl.7z"],
+    "hash": ["5F1815FFA3BF25854501B3DB180E29AE7956BBE10D5548AAD68105D0506CA02C"],
+    "depends": ["main/dosbox"],
+    "extract_to": "drive\\wininst",
+    "pre_install": [
+        "Set-Content -Path '~\\scoop\\apps\\Windows-3_1-cz\\1.0\\run.bat' -Value '%userprofile%\\scoop\\apps\\dosbox\\current\\DOSBox.exe -c \"mount c %userprofile%\\scoop\\apps\\Windows-3_1-cz\\current\\drive\\ \" -c \" c: \" -c \" cd WINDOWS \" -c \" WIN.COM \" -c \" exit \"'"
+    ],
+    "shortcuts": [
+        [
+            "run.bat",
+            "Windiows 3.1 Czech"
+        ]
+    ],
+    "post_install": [
+        "dosbox -c \"mount c $HOME\\scoop\\apps\\Windows-3_1-cz\\current\\drive\\ \" -c \"c: \" -c \"cd WININST \" -c \"INSTALL.COM \" -c \"exit \""
+    ]
+}

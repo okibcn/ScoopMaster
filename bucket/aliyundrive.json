@@ -1,34 +1,41 @@
 {
     "version": "4.12.0",
-    "description": "The official client for Alibaba's cloud dirve service",
-    "homepage": "https://www.aliyundrive.com/",
-    "license": {
-        "identifier": "EULA",
-        "url": "https://www.aliyundrive.com/protocol/service"
-    },
-    "url": "https://cdn.aliyundrive.net/downloads/apps/desktop/update/4.12.0/win32/ia32/aDrive-4.12.0.exe#/aDrive-4.12.0.7z",
-    "hash": "sha512:33a9d6057d1af1bc4198d1a3b599afc6b1deaa97c50a530fbb86175bb2775b94390dde5841e1c4d0ce87bde000570a7cc17cfafce162c158ed9afa8caf3049f1",
-    "post_install": [
-        "@('$PLUGINSDIR', '$TEMP') | ForEach-Object {",
-        "    Remove-Item \"$dir\\$_\" -Recurse -Force",
-        "}"
-    ],
+    "description": "一款速度快、不打扰、够安全、易于分享的网盘，你可以在这里存储、管理和探索内容，尽情打造丰富的数字世界。A fast, non-intrusive, secure and easy-to-share personal netdisk where you can store, manage and explore things, and build a flourishing digital world.",
+    "homepage": "https://www.alipan.com/",
+    "license": "Unknown",
+    "url": "https://cdn.aliyundrive.net/downloads/apps/desktop/update/4.12.0/win32/ia32/aDrive-4.12.0.exe#/dl.7z",
+    "hash": "9a829cc1e6a93ab55f89d79339113e4ab142e3cc30e7bfc9d1edd08d2090bc7c",
     "shortcuts": [
         [
             "aDrive.exe",
             "阿里云盘"
         ]
     ],
+    "pre_install": [
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "persist -dir @(\"$env:AppData\\aDrive\") @(\"$persist_dir\\aDrive\")",
+        "create_app_lnk \"$dir\\aDrive.exe\" \"$desktop\\阿里云盘.lnk\""
+    ],
+    "pre_uninstall": [
+        "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "stop_process",
+        "remove_files @(\"$desktop\\阿里云盘.lnk\",\"$env:AppData\\aDrive\")"
+    ],
     "checkver": {
-        "script": "return (iwr -useb \"$($(iwr -useb 'https://www.aliyundrive.com/desktop/version/update.json' | ConvertFrom-Json).url)/win32/ia32/latest.yml\")",
-        "re": "version: ([\\d.]+)"
+        "script": [
+            ". \"$pwd\\bin\\utils.ps1\"",
+            "$dl_info = get_installer_info 'Alibaba/aDrive'",
+            "\"ver:$($dl_info.PackageVersion);\"",
+            "\"x86:$($dl_info.x86_exe.InstallerUrl);\""
+        ],
+        "regex": "ver:(?<version>.+?); x86:(?<x86>.+?);"
     },
     "autoupdate": {
-        "url": "https://cdn.aliyundrive.net/downloads/apps/desktop/update/$version/win32/ia32/aDrive-$version.exe#/aDrive-$version.7z",
+        "url": "$matchX86#/dl.7z",
         "hash": {
-            "url": "https://g.alicdn.com/aliyun-drive-fe/aliyun-drive-desktop-version/$version/win32/ia32/latest.yml",
-            "mode": "extract",
-            "regex": "sha512: $base64"
+            "url": "https://raw.githubusercontent.com/microsoft/winget-pkgs/master/manifests/a/Alibaba/aDrive/$version/Alibaba.aDrive.installer.yaml",
+            "regex": "Architecture: x86[\\s\\S]+?InstallerSha256:\\s?(.+)"
         }
     }
 }
