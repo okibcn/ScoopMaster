@@ -1,0 +1,48 @@
+{
+    "version": "11.1.5155.400",
+    "description": "腾讯官方出品，基于 Chromium 内核开发，启动速度、打开网页速度更快的浏览器。Tencent's official Chromium-based browser with faster startup and web page opening speed.",
+    "homepage": "https://browser.qq.com/",
+    "license": "Unknown",
+    "url": "https://dldir1.qq.com/invc/tt/QQBrowser_Setup_11.1.5155.400.exe#/_installer_.exe",
+    "hash": "18ca900795b4f78c51f979c6417f1c05197ee9921e10c7b3ed78f5a54c5e58ec",
+    "shortcuts": [
+        [
+            "QQBrowser.exe",
+            "QQ浏览器"
+        ]
+    ],
+    "pre_install": [
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "$path_exe=\"$dir\\_installer_.exe\"",
+        "& $path_exe /S /D=$dir",
+        "sleep_install \"$env:LocalAppData\\Tencent\\QQBrowser\\User Data\"",
+        "Start-Sleep -s 3",
+        "persist -dir @(\"$env:AppData\\Tencent\\QQBrowser\",\"$env:LocalAppData\\Tencent\\QQBrowser\") @(\"$persist_dir\\QQBrowser\",\"$persist_dir\\QQBrowser_LocalAppData\")",
+        "clean_redundant_files @($path_exe,\"$apps_lnk\\腾讯软件\\QQ浏览器\") 15"
+    ],
+    "pre_uninstall": [
+        "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "stop_process $false",
+        "remove_files @(\"$env:AppData\\Tencent\\QQBrowser\",\"$env:LocalAppData\\Tencent\\QQBrowser\")",
+        "$ui_exe=\"$dir\\uninst.exe\"",
+        "try{ & $ui_exe /S }catch{}",
+        "sleep_uninstall $ui_exe"
+    ],
+    "checkver": {
+        "script": [
+            ". \"$pwd\\bin\\utils.ps1\"",
+            "$dl_info = get_installer_info 'Tencent/QQBrowser'",
+            "\"ver:$($dl_info.PackageVersion);\"",
+            "\"x86:$($dl_info.x86_exe.InstallerUrl);\""
+        ],
+        "regex": "ver:(?<version>.+?); x86:(?<x86>.+?);"
+    },
+    "autoupdate": {
+        "url": "$matchX86#/_installer_.exe",
+        "hash": {
+            "url": "https://raw.githubusercontent.com/microsoft/winget-pkgs/master/manifests/t/Tencent/QQBrowser/$version/Tencent.QQBrowser.installer.yaml",
+            "regex": "Architecture: x86[\\s\\S]+?InstallerSha256:\\s?(.+)"
+        }
+    }
+}
