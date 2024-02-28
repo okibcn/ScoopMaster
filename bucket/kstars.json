@@ -1,14 +1,19 @@
 {
-    "version": "3.6.9-1816",
+    "version": "3.6.9",
     "description": "KStars is freely licensed, open source, cross-platform Astronomy Software by KDE.",
     "homepage": "https://apps.kde.org/kstars/",
     "license": "LGPL-2.0-only",
     "architecture": {
         "64bit": {
-            "url": "https://binary-factory.kde.org/job/KStars_Release_win64/lastSuccessfulBuild/artifact/kstars-3.6.9-1816-windows-cl-msvc2019-x86_64.7z",
-            "hash": "4ec2e0cfaabe1d2034b3682e17db708a770ad31af99c1b10a62e49ec28e42db7"
+            "url": "https://www.indilib.org/jdownloads/kstars/kstars-3.6.9.exe#/dl.7z",
+            "hash": "1aae71a4fdd58f1e3ee312c01dce0add9412f9b80eed76ab989878135f3ce2e0"
         }
     },
+    "pre_install": [
+        "Remove-Item \"$dir\\*\" -Exclude kstars-*.7z -Recurse",
+        "Expand-7ZipArchive \"$dir\\kstars-*.7z\" \"$dir\"",
+        "Remove-Item \"$dir\\kstars-*.7z\""
+    ],
     "bin": "bin\\kstars.exe",
     "shortcuts": [
         [
@@ -17,13 +22,13 @@
         ]
     ],
     "checkver": {
-        "url": "https://binary-factory.kde.org/job/KStars_Release_win64/",
-        "regex": "kstars-([\\d.-]+)-windows-cl-msvc2019-x86_64\\.7z"
+        "url": "https://kstars.kde.org/download/",
+        "regex": "kstars-([\\d.-]+).exe"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://binary-factory.kde.org/job/KStars_Release_win64/lastSuccessfulBuild/artifact/kstars-$version-windows-cl-msvc2019-x86_64.7z",
+                "url": "https://www.indilib.org/jdownloads/kstars/kstars-$version.exe#/dl.7z",
                 "hash": {
                     "url": "$url.sha256"
                 }
