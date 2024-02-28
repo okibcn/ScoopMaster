@@ -1,0 +1,39 @@
+{
+    "version": "0.5.0",
+    "description": "仿明日方舟工业风音乐播放器，支持添加曲绘",
+    "homepage": "https://github.com/Kaidesuyo/Hydrogen-Music",
+    "license": {
+        "identifier": "MIT",
+        "url": "https://github.com/Kaidesuyo/Hydrogen-Music/blob/main/LICENSE"
+    },
+    "url": "https://github.com/Kaidesuyo/Hydrogen-Music/releases/download/v0.5.0/Hydrogen-Music-Setup-0.5.0.exe#/_installer_.exe",
+    "hash": "1d315caab1a63eb7e982e8c7c25b003fc03a518b82fd03bfb2cf38bdd532f160",
+    "shortcuts": [
+        [
+            "Hydrogen Music.exe",
+            "Hydrogen Music"
+        ]
+    ],
+    "pre_install": [
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "$path_exe=\"$dir\\_installer_.exe\"",
+        "& $path_exe /S /D=$dir",
+        "$core_exe=\"$dir\\Hydrogen Music.exe\"",
+        "sleep_install $core_exe",
+        "persist -dir @(\"$env:AppData\\hydrogenmusic\") @(\"$persist_dir\\hydrogenmusic\")",
+        "clean_redundant_files @($path_exe,\"$apps_lnk\\Hydrogen Music.lnk\") 15"
+    ],
+    "pre_uninstall": [
+        "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "stop_process $false",
+        "remove_files @(\"$env:AppData\\hydrogenmusic\")",
+        "$ui_exe=\"$dir\\Uninstall Hydrogen Music.exe\"",
+        "try{ & $ui_exe /S }catch{}",
+        "sleep_uninstall $ui_exe"
+    ],
+    "checkver": "github",
+    "autoupdate": {
+        "url": "https://github.com/Kaidesuyo/Hydrogen-Music/releases/download/v$version/Hydrogen-Music-Setup-$version.exe#/_installer_.exe"
+    }
+}
