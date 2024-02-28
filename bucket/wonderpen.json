@@ -1,7 +1,7 @@
 {
-    "homepage": "https://www.tominlab.com/en/wonderpen",
-    "description": "Professional writing app with a focused and fluid writing experience.",
     "version": "2.4.4",
+    "description": "Professional writing app with a focused and fluid writing experience.",
+    "homepage": "https://www.tominlab.com/en/wonderpen",
     "license": {
         "identifier": "Proprietary",
         "url": "https://www.tominlab.com/en/term/privacy"
@@ -9,34 +9,23 @@
     "architecture": {
         "64bit": {
             "url": "https://file.tominlab.com/WonderPen/2.4/WonderPen_win_installer_x64_2.4.4(7328).exe#/dl.7z",
-            "hash": "dcdb2171fd26418712db1a66d287d9d0b1bd69b36600f5a967c6a958535cf3e1",
-            "installer": {
-                "script": [
-                    "Expand-7ZipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\" -Removal",
-                    "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\Uninstall*\" -Force -Recurse"
-                ]
-            }
+            "hash": "dcdb2171fd26418712db1a66d287d9d0b1bd69b36600f5a967c6a958535cf3e1"
         },
         "32bit": {
             "url": "https://file.tominlab.com/WonderPen/2.4/WonderPen_win_installer_ia32_2.4.4(7328).exe#/dl.7z",
-            "hash": "dbbf70643804fb06893359f3a1c43218663492d26182a92125f5dcf5b3014c6e",
-            "installer": {
-                "script": [
-                    "Expand-7ZipArchive \"$dir\\`$PLUGINSDIR\\app-32.7z\" \"$dir\" -Removal",
-                    "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\Uninstall*\" -Force -Recurse"
-                ]
-            }
+            "hash": "dbbf70643804fb06893359f3a1c43218663492d26182a92125f5dcf5b3014c6e"
         },
         "arm64": {
             "url": "https://file.tominlab.com/WonderPen/2.4/WonderPen_win_installer_arm64_2.4.4(7328).exe#/dl.7z",
-            "hash": "917e318897758d26f7914c87f9c379bec9fca2671e7742594123962052e9086c",
-            "installer": {
-                "script": [
-                    "Expand-7ZipArchive \"$dir\\`$PLUGINSDIR\\app-arm64.7z\" \"$dir\" -Removal",
-                    "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\Uninstall*\" -Force -Recurse"
-                ]
-            }
+            "hash": "917e318897758d26f7914c87f9c379bec9fca2671e7742594123962052e9086c"
         }
+    },
+    "installer": {
+        "script": [
+            "Get-Item \"$dir\\`$PLUGINSDIR\\app*.7z\" | Rename-Item -NewName 'app.7z'",
+            "Expand-7ZipArchive \"$dir\\`$PLUGINSDIR\\app.7z\" \"$dir\" -Removal",
+            "Remove-Item \"$dir\\`$*\" -Force -Recurse"
+        ]
     },
     "shortcuts": [
         [
