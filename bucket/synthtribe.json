@@ -1,0 +1,35 @@
+{
+    "version": "2.6.9",
+    "description": "Control Behringer's synthesizers and do firmware updates.",
+    "homepage": "https://www.behringer.com/",
+    "license": {
+        "identifier": "Proprietary",
+        "url": "https://community.musictribe.com/terms-of-use"
+    },
+    "url": "https://mediadl.musictribe.com/download/software/behringer/synthTool/SYNTHTRIBE_V2.6.9-Windows.zip",
+    "hash": "70599092240C50B1596970D57E5A29507FCEA124315F97135E257DFFABF7F533",
+    "extract_dir": "SYNTHTRIBE V2.6.9(Windows)\\SYNTHTRIBE V2.6.9(Windows)_Signed",
+    "pre_install": [
+        "Get-ChildItem \"$dir\\SYNTHTRIBE*.exe\" | Rename-Item -NewName 'SYNTHTRIBE.exe'"
+    ],
+    "shortcuts": [
+        [
+            "SYNTHTRIBE.exe",
+            "SYNTHTRIBE"
+        ]
+    ],
+    "checkver": {
+        "_": "Found this path using dev tools while loading https://www.behringer.com/product.html?modelCode=P0DTD",
+        "script": [
+            "$url = 'https://www.behringer.com/.rest/musictribe/v1/products/media-library?brandName=behringer&modelCode=P0DTD'",
+            "$json = $(Invoke-WebRequest -Headers $head $url).Content | ConvertFrom-Json",
+            "$list = ($json | Where-Object title -eq 'Software').list",
+            "$list | ForEach-Object { if ($_.title -match 'for Windows V([\\d.]+)') { $matches[1] } }"
+        ],
+        "regex": "([\\d.]+)"
+    },
+    "autoupdate": {
+        "url": "https://mediadl.musictribe.com/download/software/behringer/synthTool/SYNTHTRIBE_V$version-Windows.zip",
+        "extract_dir": "SYNTHTRIBE V$version(Windows)\\SYNTHTRIBE V$version(Windows)_Signed"
+    }
+}
