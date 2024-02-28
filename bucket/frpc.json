@@ -1,34 +1,34 @@
 {
-  "version": "0.51.2",
-  "description": "frp 客户端.",
-  "homepage": "https://github.com/fatedier/frp",
-  "license": "Apache-2.0",
-  "architecture": {
-    "64bit": {
-      "url": "https://ghproxy.com/https://github.com/fatedier/frp/releases/download/v0.51.2/frp_0.51.2_windows_amd64.zip",
-      "hash": "c35d5b705e2b321cf612bcdeb44ee27392d6a1202248e8ec30bf178adf00f9da",
-      "extract_dir": "frp_0.51.2_windows_amd64"
-    }
-  },
-  "bin": "frpc.exe",
-  "persist": [
-    "frpc.ini",
-    "frpc_full.ini"
-  ],
-  "post_install": [
-    "if (Test-Path \"$dir\\frps.exe\") {",
-    "  Remove-Item \"$dir\\frps.exe\" -Force",
-    "  Remove-Item \"$dir\\frps.ini\" -Force",
-    "  Remove-Item \"$dir\\frps_full.ini\" -Force",
-    "}"
-  ],
-  "checkver": "github",
-  "autoupdate": {
+    "version": "0.54.0",
+    "description": "frp 客户端.",
+    "homepage": "https://github.com/fatedier/frp",
+    "license": "Apache-2.0",
     "architecture": {
-      "64bit": {
-        "url": "https://ghproxy.com/https://github.com/fatedier/frp/releases/download/v$version/frp_$version_windows_amd64.zip",
-        "extract_dir": "frp_$version_windows_amd64"
-      }
+        "64bit": {
+            "url": "https://github.com/fatedier/frp/releases/download/v0.54.0/frp_0.54.0_windows_amd64.zip",
+            "hash": "95f0d8c8f4781fc8e42b7d644024c647032e3f6cd0ffe425e8f7d5a46d601557",
+            "extract_dir": "frp_0.54.0_windows_amd64"
+        }
+    },
+    "bin": "frpc.exe",
+    "persist": "frpc.toml",
+    "post_install": [
+        "if (Test-Path \"$dir\\frps.exe\") {",
+        "  Remove-Item \"$dir\\frps.exe\" -Force",
+        "  Remove-Item \"$dir\\frps.toml\" -Force",
+        "}"
+    ],
+    "checkver": "github",
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/fatedier/frp/releases/download/v$version/frp_$version_windows_amd64.zip",
+                "hash": {
+                    "url": "$baseurl/frp_sha256_checksums.txt",
+                    "regex": "$sha256\\s+$basename"
+                },
+                "extract_dir": "frp_$version_windows_amd64"
+            }
+        }
     }
-  }
 }

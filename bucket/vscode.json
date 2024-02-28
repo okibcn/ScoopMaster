@@ -1,17 +1,11 @@
 {
     "version": "1.87.0",
-    "description": "Lightweight but powerful source code editor",
+    "description": "一个轻量级、功能强大，插件生态丰富的文件编辑器。Lightweight but powerful source code editor.",
     "homepage": "https://code.visualstudio.com/",
     "license": {
         "identifier": "Freeware",
         "url": "https://code.visualstudio.com/License/"
     },
-    "notes": [
-        "Add Visual Studio Code as a context menu option by running:",
-        "'reg import \"$dir\\install-context.reg\"'",
-        "For file associations, run:",
-        "'reg import \"$dir\\install-associations.reg\"'"
-    ],
     "architecture": {
         "64bit": {
             "url": "https://update.code.visualstudio.com/1.87.0/win32-x64-archive/stable#/dl.7z",
@@ -29,38 +23,18 @@
             "Visual Studio Code"
         ]
     ],
-    "post_install": [
-        "$dirpath = \"$dir\".Replace('\\', '\\\\')",
-        "$exepath = \"$dir\\Code.exe\".Replace('\\', '\\\\')",
-        "'install-associations', 'uninstall-associations', 'install-context', 'uninstall-context' | ForEach-Object {",
-        "  if (Test-Path \"$bucketsdir\\extras\\scripts\\vscode\\$_.reg\") {",
-        "    $content = Get-Content \"$bucketsdir\\extras\\scripts\\vscode\\$_.reg\"",
-        "    $content = $content.Replace('$codedir', $dirpath)",
-        "    $content = $content.Replace('$code', $exepath)",
-        "    if ($global) {",
-        "      $content = $content.Replace('HKEY_CURRENT_USER', 'HKEY_LOCAL_MACHINE')",
-        "    }",
-        "    $content | Set-Content -Path \"$dir\\$_.reg\"",
-        "  }",
-        "}",
-        "if (!(Test-Path \"$dir\\data\\extensions\") -and (Test-Path \"$env:USERPROFILE\\.vscode\\extensions\")) {",
-        "    info '[Portable Mode] Copying extensions...'",
-        "    Copy-Item \"$env:USERPROFILE\\.vscode\\extensions\" \"$dir\\data\" -Recurse",
-        "}",
-        "if (!(Test-Path \"$dir\\data\\user-data\") -and (Test-Path \"$env:AppData\\Code\")) {",
-        "    info '[Portable Mode] Copying user data...'",
-        "    Copy-Item \"$env:AppData\\Code\" \"$dir\\data\\user-data\" -Recurse",
-        "}",
-        "$extensions_file = \"$dir\\data\\extensions\\extensions.json\"",
-        "if ((Test-Path \"$extensions_file\")) {",
-        "    info 'Adjusting path in extensions file...'",
-        "    (Get-Content \"$extensions_file\") -replace '(?<=vscode(/|\\\\\\\\)).*?(?=(/|\\\\\\\\)data(/|\\\\\\\\)extensions)', $version | Set-Content \"$extensions_file\"",
-        "}"
+    "pre_install": [
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "persist -dir @(\"$env:AppData\\Code\",\"$env:UserProfile\\.vscode\") @(\"$persist_dir\\Code\",\"$persist_dir\\.vscode\")",
+        "create_app_lnk \"$dir\\Code.exe\" \"$desktop\\VS Code.lnk\"",
+        "clean_redundant_files @(\"$apps_lnk\\Visual Studio Code\") 15"
     ],
-    "uninstaller": {
-        "script": "if ($cmd -eq 'uninstall') { reg import \"$dir\\uninstall-context.reg\" }"
-    },
-    "persist": "data",
+    "pre_uninstall": [
+        "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "stop_process",
+        "remove_files @(\"$desktop\\VS Code.lnk\",\"$env:AppData\\Code\",\"$env:UserProfile\\.vscode\")"
+    ],
     "checkver": {
         "url": "https://code.visualstudio.com/sha?build=stable",
         "jsonpath": "$.products[?(@.platform.os == 'win32-x64-archive')].name"
