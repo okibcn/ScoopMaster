@@ -1,16 +1,16 @@
 {
+    "homepage": "https://kmiya-culti.github.io/RLogin/",
     "version": "2.29.1",
-    "description": "RLogin",
-    "homepage": "http://nanno.dip.jp/softlib/man/rlogin/",
     "license": "MIT",
+    "description": "RLogin",
     "architecture": {
-        "32bit": {
-            "url": "https://github.com/kmiya-culti/RLogin/files/14324843/rlogin_x32.zip",
-            "hash": "93af58f846bafe31e46f806ab44bc90af3c41a82b9f8e9aab54b421704e58ba6"
-        },
         "64bit": {
             "url": "https://github.com/kmiya-culti/RLogin/files/14324845/rlogin_x64.zip",
             "hash": "0dbe55139417787c3aa9a1c9f12ed2b0e246662a6a2da04ff560e13e319d9adb"
+        },
+        "32bit": {
+            "url": "https://github.com/kmiya-culti/RLogin/files/14324843/rlogin_x32.zip",
+            "hash": "93af58f846bafe31e46f806ab44bc90af3c41a82b9f8e9aab54b421704e58ba6"
         }
     },
     "bin": "RLogin.exe",
@@ -20,17 +20,43 @@
             "RLogin"
         ]
     ],
+    "pre_install": [
+        "$ini = \"$dir\\RLogin.ini\"",
+        "if (!(Test-Path \"$ini\")) {",
+        "   # Using $dir instead of $persist_dir, causes this error:",
+        "   Add-Content -Path \"$ini\" -Value \"\"",
+        "}"
+    ],
+    "post_install": [
+        "",
+        "$shortcuts = @(arch_specific 'shortcuts' $manifest $arch)",
+        "$shortcutName = $shortcuts[0].item(1)",
+        "$scoop_startmenu_folder = shortcut_folder $global",
+        "$wsShell = New-Object -ComObject WScript.Shell",
+        "$shortcut = $wsShell.CreateShortcut(\"$scoop_startmenu_folder\\$shortcutName.lnk\")",
+        "$shortcut.WorkingDirectory = \"$dir\"",
+        "$shortcut.Save()",
+        ""
+    ],
+    "persist": [
+        "userdata",
+        [
+            "RLogin.ini",
+            "userdata\\RLogin.ini"
+        ]
+    ],
     "checkver": {
-        "github": "https://github.com/kmiya-culti/RLogin",
-        "re": "RLogin-(?<version>\\d+.\\d+.\\d+)[\\s\\S]+files\\/(?<x86url>\\d+)\\/rlogin_x32.zip[\\s\\S]+files\\/(?<x64url>\\d+)\\/rlogin_x64.zip"
+        "url": "https://mwlab.net/scoop.cgi",
+        "re": "rLogin:(?<version>.*):32bit=(?<x32>[\\d]*):64bit=(?<x64>[\\d]*)",
+        "replace": "${version}"
     },
     "autoupdate": {
         "architecture": {
-            "32bit": {
-                "url": "https://github.com/kmiya-culti/RLogin/files/$matchX86url/rlogin_x32.zip"
-            },
             "64bit": {
-                "url": "https://github.com/kmiya-culti/RLogin/files/$matchX64url/rlogin_x64.zip"
+                "url": "https://github.com/kmiya-culti/RLogin/files/$matchX64/rlogin_x64.zip"
+            },
+            "32bit": {
+                "url": "https://github.com/kmiya-culti/RLogin/files/$matchX32/rlogin_x32.zip"
             }
         }
     }
