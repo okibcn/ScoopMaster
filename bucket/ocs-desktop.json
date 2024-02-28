@@ -5,11 +5,19 @@
     "license": "MIT",
     "architecture": {
         "64bit": {
-            "url": "https://cdn.ocsjs.com/app/download/ocs-2.6.0-setup-win-x64.exe#/dl.7z",
-            "hash": "be50ebef8725fa901b1073246868147e87d219d3ba5aef6d1023fc74e18726e5",
+            "url": "https://github.com/ocsjs/ocs-desktop/releases/download/2.6.0/ocs-2.6.0-setup-win-x64.exe#/dl.7z",
+            "hash": "759d5be95c380b3f726f352c0c308b77eee73ff888991d42d6588def4489595d",
             "pre_install": [
                 "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\"",
-                "Remove-Item \"$dir\\`$R0\", \"$dir\\`$PLUGINSDIR\" -Force -Recurse"
+                "Remove-Item \"$dir\\`$*\" -Recurse"
+            ]
+        },
+        "32bit": {
+            "url": "https://github.com/ocsjs/ocs-desktop/releases/download/2.6.0/ocs-2.6.0-setup-win-ia32.exe#/dl.7z",
+            "hash": "678305cd49fa43177088eb61e31521ba0c4a331aec6ab33bbe1d6c29bd818a7e",
+            "pre_install": [
+                "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-32.7z\" \"$dir\"",
+                "Remove-Item \"$dir\\`$*\" -Recurse"
             ]
         }
     },
@@ -22,13 +30,15 @@
     ],
     "persist": "User Data",
     "checkver": {
-        "url": "https://github.com/ocsjs/ocs-desktop/tags",
-        "regex": "/releases/tag/(?:v|V)?([\\d.]+)"
+        "github": "https://github.com/ocsjs/ocs-desktop"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://cdn.ocsjs.com/app/download/ocs-$version-setup-win-x64.exe#/dl.7z"
+                "url": "https://github.com/ocsjs/ocs-desktop/releases/download/$version/ocs-$version-setup-win-x64.exe#/dl.7z"
+            },
+            "32bit": {
+                "url": "https://github.com/ocsjs/ocs-desktop/releases/download/$version/ocs-$version-setup-win-ia32.exe#/dl.7z"
             }
         }
     }
