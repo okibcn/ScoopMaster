@@ -17,7 +17,10 @@
             "hash": "8d0214e5a9d97c42c1829948710100546874ac9b741c1b925d959a5feec26fc5"
         }
     },
-    "pre_install": "if (!(Test-Path \"$persist_dir\\rarreg.key\")) { New-Item \"$dir\\rarreg.key\" | Out-Null }",
+    "pre_install": [
+        "if (!(Test-Path \"$persist_dir\\rarreg.key\")) { New-Item \"$dir\\rarreg.key\" | Out-Null }",
+        "if (!(Test-Path \"$persist_dir\\WinRar.ini\")) { New-Item \"$dir\\WinRar.ini\" | Out-Null }"
+    ],
     "bin": [
         "Rar.exe",
         "UnRAR.exe",
@@ -29,7 +32,11 @@
             "WinRAR"
         ]
     ],
-    "persist": "rarreg.key",
+    "persist": [
+        "rarreg.key",
+        "WinRar.ini",
+        "Themes"
+    ],
     "checkver": "WinRAR and RAR ([\\d.]+) release",
     "autoupdate": {
         "architecture": {

@@ -1,5 +1,5 @@
 {
-    "version": "15.3.0.62055",
+    "version": "15.3.0.62060",
     "description": "Sunlogin by Oray",
     "homepage": "https://sunlogin.oray.com/",
     "license": {
@@ -7,8 +7,12 @@
     },
     "architecture": {
         "64bit": {
-            "url": "https://down.oray.com/sunlogin/windows/SunloginClient_15.3.0.62055.exe#/Sunlogin.exe",
-            "hash": "md5:d85ff7d795310fe79a26c68136f9fdfc"
+            "url": "https://down.oray.com/sunlogin/windows/SunloginClient_15.3.0.62060_x64.exe#/Sunlogin.exe",
+            "hash": "md5:e4cec7cd14abd249641037d6cb605573"
+        },
+        "32bit": {
+            "url": "https://down.oray.com/sunlogin/windows/SunloginClient_15.3.0.62060.exe#/Sunlogin.exe",
+            "hash": "md5:ac7d5305d29be129a0a04df06270a45f"
         }
     },
     "installer": {
@@ -26,15 +30,23 @@
     ],
     "checkver": {
         "url": "https://client-api.oray.com/softwares/SUNLOGIN_X_WINDOWS?x64=1",
-        "jp": "$.versionno"
+        "jp": "$.downloadurl",
+        "re": "/SunloginClient_([\\d\\.]+)_(?<arch>[Xx\\d]+)"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://down.oray.com/sunlogin/windows/SunloginClient_$version.exe#/Sunlogin.exe",
+                "url": "https://down.oray.com/sunlogin/windows/SunloginClient_$version_$matchArch.exe#/Sunlogin.exe",
                 "hash": {
                     "url": "https://client-api.oray.com/softwares/SUNLOGIN_X_WINDOWS?x64=1",
-                    "jsonpath": "$.md5"
+                    "jp": "$.md5"
+                }
+            },
+            "32bit": {
+                "url": "https://down.oray.com/sunlogin/windows/SunloginClient_$version.exe#/Sunlogin.exe",
+                "hash": {
+                    "url": "https://client-api.oray.com/softwares/SUNLOGIN_X_WINDOWS?x64=0",
+                    "jp": "$.md5"
                 }
             }
         }

@@ -1,15 +1,23 @@
 {
-    "version": "2.6.0",
+    "version": "2.6.3",
     "description": "OCS 浏览器自动化神器，一键浏览器多开，用户脚本环境一键配置。",
     "homepage": "https://docs.ocsjs.com/docs/app",
     "license": "MIT",
     "architecture": {
         "64bit": {
-            "url": "https://cdn.ocsjs.com/app/download/ocs-2.6.0-setup-win-x64.exe#/dl.7z",
-            "hash": "be50ebef8725fa901b1073246868147e87d219d3ba5aef6d1023fc74e18726e5",
+            "url": "https://github.com/ocsjs/ocs-desktop/releases/download/2.6.3/ocs-2.6.3-setup-win-x64.exe#/dl.7z",
+            "hash": "387b5cd38ae5d4c069a52c4e7a443efdc869b9246047715e14942790c5262f2d",
             "pre_install": [
                 "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\"",
-                "Remove-Item \"$dir\\`$R0\", \"$dir\\`$PLUGINSDIR\" -Force -Recurse"
+                "Remove-Item \"$dir\\`$*\" -Recurse"
+            ]
+        },
+        "32bit": {
+            "url": "https://github.com/ocsjs/ocs-desktop/releases/download/2.6.3/ocs-2.6.3-setup-win-ia32.exe#/dl.7z",
+            "hash": "26e1b0d26885ba1fe11014dfcd723b9863818570b1137df169b286ea07a2ff91",
+            "pre_install": [
+                "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-32.7z\" \"$dir\"",
+                "Remove-Item \"$dir\\`$*\" -Recurse"
             ]
         }
     },
@@ -22,13 +30,15 @@
     ],
     "persist": "User Data",
     "checkver": {
-        "url": "https://github.com/ocsjs/ocs-desktop/tags",
-        "regex": "/releases/tag/(?:v|V)?([\\d.]+)"
+        "github": "https://github.com/ocsjs/ocs-desktop"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://cdn.ocsjs.com/app/download/ocs-$version-setup-win-x64.exe#/dl.7z"
+                "url": "https://github.com/ocsjs/ocs-desktop/releases/download/$version/ocs-$version-setup-win-x64.exe#/dl.7z"
+            },
+            "32bit": {
+                "url": "https://github.com/ocsjs/ocs-desktop/releases/download/$version/ocs-$version-setup-win-ia32.exe#/dl.7z"
             }
         }
     }
