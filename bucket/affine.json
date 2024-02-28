@@ -1,23 +1,35 @@
 {
-    "homepage": "https://affine.pro/",
-    "desciption": "A workspace with fully merged docs, whiteboards and databases.",
     "version": "0.12.1",
+    "description": "下一代知识库，集规划、分类和创建于一体。隐私第一、开源、可定制、随时可用。A next-gen knowledge base that brings planning, sorting and creating all together. Privacy first, open-source, customizable and ready to use.",
+    "homepage": "https://affine.pro",
+    "license": {
+        "identifier": "Unknown",
+        "url": "https://github.com/toeverything/AFFiNE/blob/canary/LICENSE"
+    },
     "url": "https://github.com/toeverything/AFFiNE/releases/download/v0.12.1/affine-stable-windows-x64.exe#/dl.7z",
     "hash": "86cb6c0a0f67384da24c3162335d4398de790f6ecb9e3179365667d1508b7d70",
-    "installer": {
-        "script": [
-            "$nupkg = (Get-ChildItem \"$dir\" 'AFFiNE-*-full.nupkg' | Select-Object -First 1).FullName",
-            "Expand-7ZipArchive \"$nupkg\" \"$dir\"",
-            "Move-Item \"$dir\\lib\\net45\\*\" \"$dir\""
-        ]
-    },
-    "post_install": "Remove-Item \"$dir\\package\",\"$dir\\_rels\",\"$dir\\AFFiNE.nuspec\",\"$dir\\[Content_Types].xml\",\"$dir\\*.nupkg\" -Recurse",
-    "bin": "AFFiNE.exe",
     "shortcuts": [
         [
-            "AFFiNE.exe",
+            "app\\AFFiNE.exe",
             "AFFiNE"
         ]
+    ],
+    "pre_install": [
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "$filter=(Get-ChildItem $dir | Where-Object {$_.Name -like \"*.nupkg\" })[0]",
+        "Rename-Item $filter.FullName \"affine_installer.zip\" -Force",
+        "Expand-Archive \"$dir\\affine_installer.zip\" \"$dir\\temp\"",
+        "Copy-Item \"$dir\\temp\\lib\\net45\" \"$dir\\app\" -Recurse -Force",
+        "remove_file \"$dir\\temp\"",
+        "remove_file \"$dir\\affine_installer.zip\"",
+        "persist -dir @(\"$env:AppData\\AFFiNE\") @(\"$persist_dir\\AFFiNE\")",
+        "create_app_lnk \"$dir\\app\\AFFiNE.exe\" \"$desktop\\AFFiNE.lnk\""
+    ],
+    "pre_uninstall": [
+        "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "stop_process",
+        "remove_files @(\"$desktop\\AFFiNE.lnk\",\"$env:AppData\\AFFiNE\")"
     ],
     "checkver": {
         "github": "https://github.com/toeverything/AFFiNE"
