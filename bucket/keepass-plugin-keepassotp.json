@@ -1,21 +1,23 @@
 {
-    "version": "1.7",
-    "description": "KeePassOTP allows you to generate one time passwords (OTP)",
     "homepage": "https://github.com/Rookiestyle/KeePassOTP",
-    "license": "GPL-3.0 License",
+    "version": "1.7",
+    "license": "Unknown",
     "url": "https://github.com/Rookiestyle/KeePassOTP/releases/download/v1.7/KeePassOTP.plgx",
     "hash": "230c0086413796f918b1ece1540296aefa16518949b3633ff29698ec2efee16a",
-    "depends": "extras/keepass",
     "checkver": {
         "github": "https://github.com/Rookiestyle/KeePassOTP"
     },
     "autoupdate": {
         "url": "https://github.com/Rookiestyle/KeePassOTP/releases/download/v$version/KeePassOTP.plgx"
     },
+    "depends": "diseq/keepass",
     "installer": {
-        "script": "Copy-Item \"$dir\\KeePassOTP.plgx\" \"$(appdir keepass $global)\\current\\Plugins\""
+        "script": [
+            "$pluginDir = New-Item -ItemType Directory \"$(appdir keepass $global)\\current\\Plugins\\KeePassOTP\"",
+            "Copy-Item \"$dir\\KeePassOTP.plgx\" \"$pluginDir\""
+        ]
     },
     "uninstaller": {
-        "script": "Remove-Item \"$(appdir keepass $global)\\current\\Plugins\\KeePassOTP.plgx\""
+        "script": "Remove-Item -Recurse \"$(appdir keepass $global)\\current\\Plugins\\KeePassOTP\""
     }
 }
