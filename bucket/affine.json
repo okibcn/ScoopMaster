@@ -1,39 +1,40 @@
 {
     "version": "0.12.1",
-    "description": "AFFiNE is a workspace with fully merged docs, whiteboards and databases.",
-    "homepage": "https://affine.pro/",
-    "license": "MIT",
-    "architecture": {
-        "64bit": {
-            "url": "https://github.com/toeverything/AFFiNE/releases/download/v0.12.1/affine-stable-windows-x64.exe#/dl.7z",
-            "hash": "sha512:cf40acaf6c6efc0bdc88ee38302281be1fdaedb8e97d19ffcc4eb9a87c9ecb3d70a250aa237d3ff15d26c8bfe511fb3f4fe6953e394472a6fe8f8ebb628af039",
-            "pre_install": [
-                "Remove-Item \"$dir\\*\" -Exclude 'AFFiNE-*-full.nupkg'",
-                "Expand-7zipArchive \"$dir\\AFFiNE-*-full.nupkg\" -ExtractDir 'lib\\net45' -Removal"
-            ]
-        }
+    "description": "下一代知识库，集规划、分类和创建于一体。隐私第一、开源、可定制、随时可用。A next-gen knowledge base that brings planning, sorting and creating all together. Privacy first, open-source, customizable and ready to use.",
+    "homepage": "https://affine.pro",
+    "license": {
+        "identifier": "Unknown",
+        "url": "https://github.com/toeverything/AFFiNE/blob/canary/LICENSE"
     },
-    "bin": "AFFiNE.exe",
+    "url": "https://github.com/toeverything/AFFiNE/releases/download/v0.12.1/affine-stable-windows-x64.exe#/dl.7z",
+    "hash": "86cb6c0a0f67384da24c3162335d4398de790f6ecb9e3179365667d1508b7d70",
     "shortcuts": [
         [
-            "AFFiNE.exe",
-            "AFFiNE",
-            "--user-data-dir=\"$dir\\User Data\""
+            "app\\AFFiNE.exe",
+            "AFFiNE"
         ]
     ],
-    "persist": "User Data",
+    "pre_install": [
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "$filter=(Get-ChildItem $dir | Where-Object {$_.Name -like \"*.nupkg\" })[0]",
+        "Rename-Item $filter.FullName \"affine_installer.zip\" -Force",
+        "Expand-Archive \"$dir\\affine_installer.zip\" \"$dir\\temp\"",
+        "Copy-Item \"$dir\\temp\\lib\\net45\" \"$dir\\app\" -Recurse -Force",
+        "remove_file \"$dir\\temp\"",
+        "remove_file \"$dir\\affine_installer.zip\"",
+        "persist -dir @(\"$env:AppData\\AFFiNE\") @(\"$persist_dir\\AFFiNE\")",
+        "create_app_lnk \"$dir\\app\\AFFiNE.exe\" \"$desktop\\AFFiNE.lnk\""
+    ],
+    "pre_uninstall": [
+        "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "stop_process",
+        "remove_files @(\"$desktop\\AFFiNE.lnk\",\"$env:AppData\\AFFiNE\")"
+    ],
     "checkver": {
         "github": "https://github.com/toeverything/AFFiNE"
     },
     "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://github.com/toeverything/AFFiNE/releases/download/v$version/affine-stable-windows-x64.exe#/dl.7z",
-                "hash": {
-                    "url": "$baseurl/latest.yml",
-                    "regex": "sha512:\\s+$base64"
-                }
-            }
-        }
+        "url": "https://github.com/toeverything/AFFiNE/releases/download/v$version/affine-stable-windows-x64.exe#/dl.7z"
     }
 }
