@@ -1,43 +1,34 @@
 {
     "version": "0.9.7",
     "description": "🚀 A concise, efficient, good-looking input, screenshot, and word translation software",
-    "homepage": "https://ttime.timerecord.cn/",
+    "homepage": "https://github.com/InkTimeRecord/TTime",
     "license": {
-        "identifier": "AGPL-3.0 license",
+        "identifier": "Apache-2.0",
         "url": "https://github.com/InkTimeRecord/TTime/blob/main/LICENSE.txt"
     },
     "architecture": {
         "64bit": {
-            "url": "https://github.com/InkTimeRecord/TTime/releases/download/v0.9.7/TTime-0.9.7-setup.exe#/dl.7z",
-            "hash": "ad9fd18cfe196b440849d1ec4e162feeb4099af107de7d06d2d81ab7fcea38ce",
+            "url": "https://github.com/InkTimeRecord/TTime/releases/download/v0.9.7/TTime.0.9.7.exe#/dl.7z",
+            "hash": "be3bc6882e2ec0e205561aedec17556f4eaba2709d739a3696589072f51d5b30",
             "pre_install": [
-                "if (Test-Path \"$env:AppData\\time-translate\") {",
-                "    info '[Persistent data]: Copying user data...'",
-                "    ensure \"$dir\\User Data\" | Out-Null",
-                "    Copy-Item \"$env:AppData\\time-translate\\*\" \"$dir\\User Data\\\" -Recurse -Force -ErrorAction 'SilentlyContinue'",
-                "    Remove-Item \"$env:AppData\\time-translate\" -Recurse -Force -ErrorAction 'SilentlyContinue'",
-                "}",
-                "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\" -Removal"
-            ],
-            "post_install": "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\$R0\" -Recurse -Force -ErrorAction 'SilentlyContinue'"
+                "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\"",
+                "Remove-Item \"$dir\\`$*\" -Recurse"
+            ]
         }
     },
     "shortcuts": [
         [
             "TTime.exe",
-            "TTime",
-            "--user-data-dir=\"$dir\\User Data\""
+            "TTime"
         ]
     ],
-    "persist": "User Data",
     "checkver": {
-        "url": "https://api.github.com/repos/InkTimeRecord/TTime/releases",
-        "regex": "(?sm)browser_download_url.*?releases/download/v([\\d.]+)/TTime-([\\d.]+)-setup\\.exe"
+        "github": "https://github.com/InkTimeRecord/TTime"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://github.com/InkTimeRecord/TTime/releases/download/v$version/TTime-$version-setup.exe#/dl.7z"
+                "url": "https://github.com/InkTimeRecord/TTime/releases/download/v$version/TTime.$version.exe#/dl.7z"
             }
         }
     }
