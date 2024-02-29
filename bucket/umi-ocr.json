@@ -1,29 +1,31 @@
 {
-    "homepage": "https://github.com/hiroi-sora/Umi-OCR",
-    "description": "Offline OCR image-to-text tool.",
     "version": "2.1.0",
-    "license": "MIT",
-    "url": "https://github.com/hiroi-sora/Umi-OCR/releases/download/release%2F2.1.0/Umi-OCR_Paddle_v2.1.0.7z.exe#/dl.7z",
-    "hash": "6d0ac31da950fadbe7d5eb772065a313d07c77c530ffb60ca09ef0bc28e6e627",
-    "extract_dir": "Umi-OCR_Paddle_v2.1.0",
-    "bin": "Umi-OCR.exe",
+    "homepage": "https://github.com/hiroi-sora/Umi-OCR",
+    "description": "OCR software, free and offline. (Rapid)",
+    "license": "MIT License",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/hiroi-sora/Umi-OCR/releases/download/release/2.1.0/Umi-OCR_Rapid_v2.1.0.7z.exe",
+            "hash": "6460148b3b8fcdfb447ed8984a9c2fa232ca0cd156d8352f47d1841b2e3614ac",
+            "extract_dir": "Umi-OCR_Rapid_v2.1.0"
+        }
+    },
     "shortcuts": [
         [
             "Umi-OCR.exe",
             "Umi-OCR"
         ]
     ],
-    "persist": "UmiOCR-data\\.settings",
-    "pre_install": "if (-not (Test-Path \"$persist_dir\\.settings\")) { New-Item \"$dir\\UmiOCR-data\\.settings\" | Out-Null }",
-    "uninstaller": {
-        "script": "if ((Test-Path \"$dir\\UmiOCR-data\\.settings\") -and !(Get-Item \"$dir\\UmiOCR-data\\.settings\").LinkType -and (Test-Path $persist_dir\\UmiOCR-data)) { Copy-Item \"$dir\\UmiOCR-data\\.settings\" $persist_dir\\UmiOCR-data -Force }"
-    },
     "checkver": {
-        "url": "https://github.com/hiroi-sora/Umi-OCR/releases/latest",
-        "regex": "Release Umi-OCR v([\\d.]+)"
+        "url": "https://github.com/hiroi-sora/Umi-OCR/releases/",
+        "regex": "release/([\\d\\w.]+)"
     },
     "autoupdate": {
-        "url": "https://github.com/hiroi-sora/Umi-OCR/releases/download/release%2F$version/Umi-OCR_Paddle_v$version.7z.exe#/dl.7z",
-        "extract_dir": "Umi-OCR_Paddle_v$version"
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/hiroi-sora/Umi-OCR/releases/download/release/$version/Umi-OCR_Rapid_v$version.7z.exe",
+                "extract_dir": "Umi-OCR_Rapid_v$version"
+            }
+        }
     }
 }
