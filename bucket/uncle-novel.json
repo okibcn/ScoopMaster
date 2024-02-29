@@ -1,0 +1,59 @@
+{
+    "version": "5.0.44",
+    "description": "一个全网小说下载器及阅读器，目录解析与书源结合，支持有声小说与文本小说，可下载 mobi、epub、txt 格式文本小说。",
+    "homepage": "https://uncle-novel.github.io/uncle-novel-official-site/",
+    "license": {
+        "identifier": "MIT",
+        "url": "https://github.com/uncle-novel/uncle-novel/blob/main/LICENSE"
+    },
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/uncle-novel/uncle-novel/releases/download/v5.0.44/uncle-novel_5.0.44_Setup.exe#/_installer_.exe",
+            "hash": "e36442833d00592cb20bc9e4e653b04bad43b7f6f2f5dc86803b02a144469399"
+        },
+        "32bit": {
+            "url": "https://github.com/uncle-novel/uncle-novel/releases/download/v5.0.44/uncle-novel_5.0.44_Setup_x86.exe#/_installer_.exe",
+            "hash": "24ce76e76031071bfc9db916780d8a0d3ce91ad187ee6f4669379724090f941e"
+        }
+    },
+    "shortcuts": [
+        [
+            "Uncle小说.exe",
+            "Uncle小说"
+        ]
+    ],
+    "pre_install": [
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "$path_exe=\"$dir\\_installer_.exe\"",
+        "& $path_exe /VerySilent /Dir=\"$dir\"",
+        "$core_exe=\"$dir\\Uncle小说.exe\"",
+        "sleep_install $core_exe",
+        "sleep_install \"$dir\\conf\" 5",
+        "persist -dir @(\"$dir\\conf\",\"$dir\\caches\") @(\"$persist_dir\\conf\",\"$persist_dir\\caches\")",
+        "create_app_lnk $core_exe \"$desktop\\Uncle小说.lnk\"",
+        "clean_redundant_files @($path_exe,\"$apps_lnk\\uncle-novel.lnk\") 15"
+    ],
+    "pre_uninstall": [
+        "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "stop_process $false",
+        "remove_files @(\"$dir\\conf\",\"$dir\\caches\")",
+        "$ui_exe=\"$dir\\unins000.exe\"",
+        "try{ & $ui_exe /VerySilent }catch{}",
+        "sleep_uninstall $ui_exe",
+        "remove_files @(\"$desktop\\Uncle小说.lnk\")"
+    ],
+    "checkver": {
+        "github": "https://github.com/uncle-novel/uncle-novel"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/uncle-novel/uncle-novel/releases/download/v$version/uncle-novel_$version_Setup.exe#/_installer_.exe"
+            },
+            "32bit": {
+                "url": "https://github.com/uncle-novel/uncle-novel/releases/download/v$version/uncle-novel_$version_Setup_x86.exe#/_installer_.exe"
+            }
+        }
+    }
+}
