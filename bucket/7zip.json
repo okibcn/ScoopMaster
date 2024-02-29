@@ -6,19 +6,15 @@
     "notes": "Add 7-Zip as a context menu option by running: \"$dir\\install-context.reg\"",
     "architecture": {
         "64bit": {
-            "url": "https://7-zip.org/a/7z2401-x64.msi",
-            "hash": "646954cd0eb1eda1da31e0806efc903c652c9d19f8359fb466f6fd1d59bc0507"
-        },
-        "32bit": {
-            "url": "https://7-zip.org/a/7z2401.msi",
-            "hash": "1c3c3560906974161f25f5f81de4620787b55ca76002ac3c4fc846d57a06df99"
+            "url": "https://www.7-zip.org/a/7z2401-x64.msi",
+            "hash": "646954cd0eb1eda1da31e0806efc903c652c9d19f8359fb466f6fd1d59bc0507",
+            "extract_dir": "Files\\7-Zip"
         }
     },
-    "extract_dir": "Files\\7-Zip",
     "post_install": [
         "$7zip_root = \"$dir\".Replace('\\', '\\\\')",
         "'install-context.reg', 'uninstall-context.reg' | ForEach-Object {",
-        "    $content = Get-Content \"$bucketsdir\\main\\scripts\\7-zip\\$_\"",
+        "    $content = Get-Content \"$bucketsdir\\giflw\\scripts\\7-zip\\$_\"",
         "    $content = $content.Replace('$7zip_root', $7zip_root)",
         "    if ($global) {",
         "       $content = $content.Replace('HKEY_CURRENT_USER', 'HKEY_LOCAL_MACHINE')",
@@ -26,7 +22,11 @@
         "    Set-Content \"$dir\\$_\" $content -Encoding Ascii",
         "}"
     ],
-    "bin": "7z.exe",
+    "bin": [
+        "7z.exe",
+        "7zFM.exe",
+        "7zG.exe"
+    ],
     "shortcuts": [
         [
             "7zFM.exe",
@@ -44,10 +44,7 @@
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://7-zip.org/a/7z$cleanVersion-x64.msi"
-            },
-            "32bit": {
-                "url": "https://7-zip.org/a/7z$cleanVersion.msi"
+                "url": "https://www.7-zip.org/a/7z$cleanVersion-x64.msi"
             }
         }
     }
