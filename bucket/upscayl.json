@@ -1,32 +1,40 @@
 {
-    "version": "2.9.9",
+    "version": "2.10.0",
+    "description": "适用于 Linux、MacOS 和 Windows 的免费开源 AI 图像升级程序，秉承 Linux 优先的理念。Free and Open Source AI Image Upscaler for Linux, MacOS and Windows built with Linux-First philosophy.",
     "homepage": "https://github.com/upscayl/upscayl",
-    "description": "A Free and Open Source AI Image Upscaler.",
-    "license": "AGPL-3.0",
-    "architecture": {
-        "64bit": {
-            "url": "https://github.com/upscayl/upscayl/releases/download/v2.9.9/upscayl-2.9.9-win.exe#/dl.7z",
-            "hash": "sha512:d7978628df100d3211f898804d0f7e34c082e709e409b48f4b464db8a396ac5b2e5c77f4b6c23c2124d6df09510dff5a9ae5b6faf92ca01f8a82697b7a98dfbf"
-        }
+    "license": {
+        "identifier": "GNU Affero General Public License v3.0",
+        "url": "https://github.com/upscayl/upscayl/blob/main/LICENSE"
     },
-    "extract_dir": "$PLUGINSDIR",
-    "pre_install": "Expand-7zipArchive \"$dir\\app-64.7z\" \"$dir\" -Removal",
+    "url": "https://github.com/upscayl/upscayl/releases/download/v2.10.0/upscayl-2.10.0-win.exe",
+    "hash": "c4a0b2d4829bf425d24a514d3edfc291a9bca3a06daa27a7e6b99e2cb107b9b6",
     "shortcuts": [
         [
             "Upscayl.exe",
             "Upscayl"
         ]
     ],
+    "pre_install": [
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "$path_exe= \"$dir\\upscayl-$($version)-win.exe\"",
+        "& $path_exe /S /D=$dir",
+        "$core_exe=\"$dir\\Upscayl.exe\"",
+        "sleep_install $core_exe",
+        "persist -dir @(\"$env:AppData\\Upscayl\") @(\"$persist_dir\\Upscayl\")",
+        "clean_redundant_files @($path_exe,\"$apps_lnk\\Upscayl.lnk\") 15"
+    ],
+    "pre_uninstall": [
+        "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "stop_process $false",
+        "remove_files @(\"$env:AppData\\Upscayl\")",
+        "$ui_exe=\"$dir\\Uninstall Upscayl.exe\"",
+        "try{ & $ui_exe /S }catch{}",
+        "sleep_uninstall $ui_exe",
+        "remove_files @(\"$env:LocalAppData\\upscayl-updater\")"
+    ],
     "checkver": "github",
     "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://github.com/upscayl/upscayl/releases/download/v$version/upscayl-$version-win.exe#/dl.7z"
-            }
-        },
-        "hash": {
-            "url": "$baseurl/latest.yml",
-            "regex": "sha512:\\s$base64"
-        }
+        "url": "https://github.com/upscayl/upscayl/releases/download/v$version/upscayl-$version-win.exe"
     }
 }

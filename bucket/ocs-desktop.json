@@ -5,11 +5,19 @@
     "license": "MIT",
     "architecture": {
         "64bit": {
-            "url": "https://cdn.ocsjs.com/app/download/ocs-2.6.4-setup-win-x64.exe#/dl.7z",
+            "url": "https://github.com/ocsjs/ocs-desktop/releases/download/2.6.4/ocs-2.6.4-setup-win-x64.exe#/dl.7z",
             "hash": "19ba5ac4553a7f197ac7394a90f241cea196dbb848c9757a3432d0ac44c4d273",
             "pre_install": [
                 "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\"",
-                "Remove-Item \"$dir\\`$R0\", \"$dir\\`$PLUGINSDIR\" -Force -Recurse"
+                "Remove-Item \"$dir\\`$*\" -Recurse"
+            ]
+        },
+        "32bit": {
+            "url": "https://github.com/ocsjs/ocs-desktop/releases/download/2.6.4/ocs-2.6.4-setup-win-ia32.exe#/dl.7z",
+            "hash": "0c58fdc3b6e78d61843bd98fff1e6fd9d07e598585e8891b718ef07b9bed07da",
+            "pre_install": [
+                "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-32.7z\" \"$dir\"",
+                "Remove-Item \"$dir\\`$*\" -Recurse"
             ]
         }
     },
@@ -22,13 +30,15 @@
     ],
     "persist": "User Data",
     "checkver": {
-        "url": "https://github.com/ocsjs/ocs-desktop/tags",
-        "regex": "/releases/tag/(?:v|V)?([\\d.]+)"
+        "github": "https://github.com/ocsjs/ocs-desktop"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://cdn.ocsjs.com/app/download/ocs-$version-setup-win-x64.exe#/dl.7z"
+                "url": "https://github.com/ocsjs/ocs-desktop/releases/download/$version/ocs-$version-setup-win-x64.exe#/dl.7z"
+            },
+            "32bit": {
+                "url": "https://github.com/ocsjs/ocs-desktop/releases/download/$version/ocs-$version-setup-win-ia32.exe#/dl.7z"
             }
         }
     }
