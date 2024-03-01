@@ -6,36 +6,50 @@
     "architecture": {
         "64bit": {
             "url": "https://github.com/clsid2/mpc-hc/releases/download/2.1.6/MPC-HC.2.1.6.x64.zip",
-            "hash": "eb00d1cea451ad847e15e0368f8588d583c753e6b60534756d1906871d66053b"
+            "hash": "eb00d1cea451ad847e15e0368f8588d583c753e6b60534756d1906871d66053b",
+            "bin": [
+                "mpc-hc64.exe",
+                [
+                    "mpc-hc64.exe",
+                    "mpc-hc"
+                ]
+            ],
+            "shortcuts": [
+                [
+                    "mpc-hc64.exe",
+                    "MPC-HC x64"
+                ]
+            ]
+        },
+        "32bit": {
+            "url": "https://github.com/clsid2/mpc-hc/releases/download/2.1.6/MPC-HC.2.1.6.x86.zip",
+            "hash": "0d7c43785fd70ec8b3774895a248e053b7e2ac37c8bffefa9e5bf6567747a9c2",
+            "bin": "mpc-hc.exe",
+            "shortcuts": [
+                [
+                    "mpc-hc.exe",
+                    "MPC-HC"
+                ]
+            ]
         }
     },
     "pre_install": [
-        "Remove-Item \"$dir\\CrashReporter\", \"$dir\\LAVFilters64\" -Recurse -Force",
-        "'mpc-hc64.ini', 'version.dll' | ForEach-Object {",
+        "@('mpc-hc64.ini', 'mpc-hc.ini') | ForEach-Object {",
         "    if (!(Test-Path \"$persist_dir\\$_\")) { New-Item \"$dir\\$_\" -ItemType File | Out-Null }",
         "}"
     ],
-    "bin": [
-        [
-            "mpc-hc64.exe",
-            "mpc-hc"
-        ]
-    ],
-    "shortcuts": [
-        [
-            "mpc-hc64.exe",
-            "MPC-HC"
-        ]
-    ],
     "persist": [
         "mpc-hc64.ini",
-        "version.dll"
+        "mpc-hc.ini"
     ],
     "checkver": "github",
     "autoupdate": {
         "architecture": {
             "64bit": {
                 "url": "https://github.com/clsid2/mpc-hc/releases/download/$version/MPC-HC.$version.x64.zip"
+            },
+            "32bit": {
+                "url": "https://github.com/clsid2/mpc-hc/releases/download/$version/MPC-HC.$version.x86.zip"
             }
         }
     }
