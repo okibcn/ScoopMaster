@@ -28,9 +28,22 @@
     "shortcuts": [
         [
             "chrome.exe",
-            "Google Chrome (Beta)"
+            "Google Chrome (Beta)",
+            "--force-device-scale-factor=1.5"
         ]
     ],
+    "post_install": [
+        "## 用户数据貌似无法复用, 安装后会重置, 故暂时不迁移用户数据",
+        "Import-Module $(Join-Path $(Find-BucketDirectory -Root -Name scoop-private) scripts/Utils-private.psm1)",
+        "Mount-ExternalRuntimeData -Source \"$persist_dir\\User Data\" -Target \"$env:LocalAppData\\Google\\Chrome\\User Data\"",
+        "Remove-Module -Name Utils-private"
+    ],
+    "post_uninstall": [
+        "Import-Module $(Join-Path $(Find-BucketDirectory -Root -Name scoop-private) scripts/Utils-private.psm1)",
+        "Dismount-ExternalRuntimeData -Target \"$env:LocalAppData\\Google\\Chrome\\User Data\"",
+        "Remove-Module -Name Utils-private"
+    ],
+    "persist": "User Data",
     "checkver": {
         "url": "https://scoopinstaller.github.io/UpdateTracker/googlechrome/chrome.min.xml",
         "regex": "(?sm)<beta32><version>(?<version>[\\d.]+)</version>.+release2/chrome/(?<32>[\\w-]+)_.+<beta64>.+release2/chrome/(?<64>[\\w-]+)_.+</beta64>"
