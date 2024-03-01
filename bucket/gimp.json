@@ -3,7 +3,7 @@
     "description": "GNU Image Manipulation Program",
     "homepage": "https://www.gimp.org",
     "license": "GPL-3.0-only",
-    "url": "https://mirror.nju.edu.cn/gimp/gimp/v2.10/windows/gimp-2.10.36-setup.exe",
+    "url": "https://download.gimp.org/mirror/pub/gimp/v2.10/windows/gimp-2.10.36-setup.exe",
     "hash": "947efa2397f7a17b8e4f4c9689e4ab67f00ca220ac1aa0ae0c1e179ccfc4fc10",
     "innosetup": true,
     "installer": {
@@ -11,13 +11,13 @@
             "Push-Location \"$dir\"",
             "Get-ChildItem -Filter '*.debug' -Recurse | Remove-Item -Recurse",
             "if ($architecture -eq '64bit') {",
-            "   Rename-Item 'lib\\gimp\\2.0\\plug-ins\\twain\\twain,2.exe' 'twain.exe'",
+            "   Rename-Item 'lib\\gimp\\2.0\\plug-ins\\twain\\twain,3.exe' 'twain.exe'",
             "   Remove-Item 'lib\\gimp\\2.0\\plug-ins\\twain\\twain,1.exe'",
             "   Get-ChildItem -Filter '*,1*' -Recurse | Rename-Item -NewName { $_.name -Replace ',\\d','' }",
             "   Get-ChildItem -Filter '*,*' -Recurse | Remove-Item",
             "} else {",
             "   Rename-Item 'lib\\gimp\\2.0\\plug-ins\\twain\\twain,1.exe' 'twain.exe'",
-            "   Remove-Item 'lib\\gimp\\2.0\\plug-ins\\twain\\twain,2.exe'",
+            "   Remove-Item 'lib\\gimp\\2.0\\plug-ins\\twain\\twain,3.exe'",
             "   Get-ChildItem -Filter '*,1*' -Recurse | Remove-Item",
             "   Get-ChildItem -Filter '*,*' -Recurse | Rename-Item -NewName { $_.name -Replace ',\\d','' }",
             "}",
@@ -28,7 +28,7 @@
             "$pyint = $pyint -Replace 'py::python2', 'py::python'",
             "$pyint | Set-Content 'lib\\gimp\\2.0\\interpreters\\pygimp.interp'",
             "Pop-Location",
-            "Copy-Item \"$bucketsdir\\extras\\scripts\\gimp\\default.env\" \"$dir\\lib\\gimp\\2.0\\environ\\\" | Out-Null"
+            "Copy-Item \"$bucketsdir\\giflw\\scripts\\gimp\\default.env\" \"$dir\\lib\\gimp\\2.0\\environ\\\" | Out-Null"
         ]
     },
     "bin": [
@@ -59,7 +59,7 @@
         "replace": "${version}${build}"
     },
     "autoupdate": {
-        "url": "https://mirror.nju.edu.cn/gimp/gimp/v$majorVersion.$minorVersion/windows/gimp-$matchHead-setup$matchTail.exe",
+        "url": "https://download.gimp.org/mirror/pub/gimp/v$majorVersion.$minorVersion/windows/gimp-$matchHead-setup$matchTail.exe",
         "hash": {
             "url": "$baseurl/SHA256SUMS"
         }
