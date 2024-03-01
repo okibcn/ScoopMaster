@@ -1,13 +1,18 @@
 {
-    "version": "25.60.0000",
-    "description": "一个 Windows 上的第三方文件管理器。A file manager for Windows.",
-    "homepage": "https://www.xyplorer.com/index.php",
+    "version": "25.60.000",
+    "description": "Portable Dual Pane Multi-Tabbed File manager for Windows",
+    "homepage": "https://www.xyplorer.com",
     "license": {
         "identifier": "Proprietary",
-        "url": "https://www.xyplorer.com/purchase.php"
+        "url": "https://www.xyplorer.com/company.php#legal"
     },
-    "url": "https://www.xyplorer.com/download/xyplorer_full_noinstall.zip",
+    "url": "https://www.xyplorer.com/download/xyplorer_25.60.0000_noinstall.zip",
     "hash": "500fa17a188905c959ad13aaf43bba9f62d0bed482f3e797b01d1daeeeb69072",
+    "pre_install": [
+        "if (!(Test-Path \"$persist_dir\\lic.ini\")) { New-Item \"$dir\\lic.ini\" | Out-Null }",
+        "if (!(Test-Path \"$persist_dir\\startup.ini\")) { New-Item \"$dir\\startup.ini\" | Out-Null }",
+        "if (!(Test-Path \"$persist_dir\\admin.ini\")) { New-Item \"$dir\\admin.ini\" | Out-Null }"
+    ],
     "bin": "XYplorer.exe",
     "shortcuts": [
         [
@@ -15,22 +20,19 @@
             "XYplorer"
         ]
     ],
-    "pre_install": [
-        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-        "persist -dir @(\"$dir\\Data\") @(\"$persist_dir\\Data\")",
-        "create_app_lnk \"$dir\\XYplorer.exe\" \"$desktop\\XYplorer.lnk\""
-    ],
-    "pre_uninstall": [
-        "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
-        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-        "stop_process",
-        "remove_files @(\"$desktop\\XYplorer.lnk\")"
+    "persist": [
+        "Data",
+        "AC",
+        "startup.ini",
+        "admin.ini",
+        "lic.ini"
     ],
     "checkver": {
-        "url": "https://www.xyplorer.com/download.php",
-        "regex": "Version.+>([\\d\\.]+)"
+        "url": "http://www.xyplorer.com/xyfc/viewtopic.php?f=1&t=4&sd=d",
+        "regex": "2. .a href=\"https://www.xyplorer.com/download/xyplorer_([\\d.]+)(.+?_noinstall).zip"
     },
     "autoupdate": {
-        "url": "https://www.xyplorer.com/download/xyplorer_full_noinstall.zip"
+        "note": "Check update log at http://www.xyplorer.com/xyfc/viewtopic.php?f=1&t=4&sd=d",
+        "url": "https://www.xyplorer.com/download/xyplorer_$version$match2.zip"
     }
 }
