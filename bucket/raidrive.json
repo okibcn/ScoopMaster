@@ -16,31 +16,7 @@
             "hash": "6e1ed8eac3810e59d2adf1e797ddbf2cc89f68adad8c34712de2e0a38ca685fc"
         }
     },
-    "pre_install": [
-        "IF (-NOT (Test-Path \"C:\\Temp\\RaiDrive\")) { New-Item \"C:\\Temp\\RaiDrive\" -ItemType Directory | Out-Null }",
-        "IF (-NOT (Test-Path \"$dir\")) { New-Item \"$dir\" -ItemType Directory | Out-Null }"
-    ],
     "##": "https://www.advancedinstaller.com/user-guide/exe-setup-file.html",
-    "installer": {
-        "args": [
-            "/noprereqs",
-            "/quiet",
-            "/qn",
-            "/norestart",
-            "/l*vx",
-            "$dir\\RaiDrive.log",
-            "APPDIR=$dir"
-        ]
-    },
-    "uninstaller": {
-        "script": [
-            "Stop-Process -Name RaiDrive* -Force",
-            "$ID = (Get-CimInstance Win32_Product -FILTER \"Name = 'RaiDrive'\").IdentifyingNumber",
-            "msiexec.exe /x \"$ID\" /qn",
-            "    # Prevent failed installation",
-            "Start-Sleep -Seconds 3"
-        ]
-    },
     "bin": "raidrive.exe",
     "shortcuts": [
         [
