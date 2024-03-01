@@ -1,28 +1,31 @@
 {
     "version": "0.13.5",
-    "description": "WasmEdge is a lightweight, high-performance, and extensible WebAssembly runtime for cloud native, edge, and decentralized applications.",
+    "description": "一款轻量级、高性能和可扩展的 WebAssembly 运行时，适用于云原生、边缘和去中心化应用。它为无服务器应用程序、嵌入式功能、微服务、智能合约和物联网设备提供支持。A lightweight, high-performance, and extensible WebAssembly runtime for cloud native, edge, and decentralized applications. It powers serverless apps, embedded functions, microservices, smart contracts, and IoT devices.",
     "homepage": "https://wasmedge.org/",
-    "license": "Apache-2.0",
-    "architecture": {
-        "64bit": {
-            "url": "https://github.com/WasmEdge/WasmEdge/releases/download/0.13.5/WasmEdge-0.13.5-windows.zip",
-            "hash": "db533289ba26ec557b5193593c9ed03db75be3bc7aa737e2caa5b56b8eef888a",
-            "extract_dir": "WasmEdge-0.13.5-Windows"
-        }
+    "license": {
+        "identifier": "Apache License 2.0",
+        "url": "https://github.com/WasmEdge/WasmEdge/blob/master/LICENSE"
     },
+    "url": "https://github.com/WasmEdge/WasmEdge/releases/download/0.13.5/WasmEdge-0.13.5-windows-msvc.zip",
+    "hash": "b878d188d4f1fa124e28cf7f846d91128da43dac4e1b056463f3a1c835543976",
+    "extract_dir": "WasmEdge-0.13.5-Windows",
     "bin": [
         "bin\\wasmedge.exe",
         "bin\\wasmedgec.exe"
+    ],
+    "pre_uninstall": [
+        "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "stop_process"
     ],
     "checkver": {
         "github": "https://github.com/WasmEdge/WasmEdge"
     },
     "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://github.com/WasmEdge/WasmEdge/releases/download/$version/WasmEdge-$version-windows.zip",
-                "extract_dir": "WasmEdge-$version-Windows"
-            }
-        }
+        "url": "https://github.com/WasmEdge/WasmEdge/releases/download/$version/WasmEdge-$version-windows-msvc.zip",
+        "hash": {
+            "url": "$baseurl/SHA256SUM"
+        },
+        "extract_dir": "WasmEdge-$version-Windows"
     }
 }

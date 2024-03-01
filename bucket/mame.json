@@ -1,47 +1,55 @@
 {
     "version": "0.263",
-    "description": "Multi-purpose emulation framework",
+    "description": "Arcade machine emulator",
     "homepage": "http://mamedev.org",
     "license": {
-        "identifier": "GPL-2.0",
-        "url": "https://github.com/mamedev/mame/blob/master/COPYING"
+        "url": "https://github.com/mamedev/mame/blob/master/COPYING",
+        "identifier": "GPL-2.0"
     },
     "architecture": {
         "64bit": {
             "url": "https://github.com/mamedev/mame/releases/download/mame0263/mame0263b_64bit.exe#/dl.7z",
-            "hash": "8faf86bd46fa3cd3a25851959f081c5d92663835f7137c1e2a524a6a05bf6eb8"
+            "hash": "8faf86bd46fa3cd3a25851959f081c5d92663835f7137c1e2a524a6a05bf6eb8",
+            "pre_install": [
+                "if(!(Test-Path \"$persist_dir\\mame.ini\")) {",
+                "   Start-Process \"$dir\\mame.exe\" -WorkingDirectory \"$dir\" -ArgumentList \"-createconfig\"",
+                "   Start-Sleep -Seconds 5",
+                "}"
+            ],
+            "bin": [
+                [
+                    "mame.exe",
+                    "mame"
+                ]
+            ],
+            "shortcuts": [
+                [
+                    "mame.exe",
+                    "MAME"
+                ]
+            ]
         }
     },
-    "pre_install": [
-        "if (!(Test-Path $persist_dir\\mame.ini)) {",
-        "  Start-Process $dir\\mame.exe -WorkingDirectory $dir -ArgumentList -createconfig",
-        "  Start-Sleep -Seconds 5",
-        "}",
-        "Remove-Item $dir\\mame.sym",
-        "Get-ChildItem $dir\\language -Exclude English, LICENSE, README.md | Remove-Item -Recurse"
-    ],
-    "bin": "mame.exe",
-    "shortcuts": [
-        [
-            "mame.exe",
-            "MAME"
-        ]
-    ],
     "persist": [
-        "bgfx\\chains\\_CUSTOM",
-        "cfg",
-        "folders",
-        "ini_",
-        "nvram",
-        "snap",
-        "ui",
-        "mame.ini"
+        "ctrlr",
+        "plugins",
+        "roms",
+        "mame.ini",
+        "ui.ini",
+        "plugin.ini"
     ],
     "checkver": {
         "github": "https://github.com/mamedev/mame",
         "regex": "MAME ([\\d.]+)"
     },
     "autoupdate": {
-        "url": "https://github.com/mamedev/mame/releases/download/mame$cleanVersion/mame$cleanVersionb_64bit.exe#/dl.7z"
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/mamedev/mame/releases/download/mame$cleanVersion/mame$cleanVersionb_64bit.exe#/dl.7z"
+            }
+        },
+        "hash": {
+            "url": "$baseurl/SHA256SUMS"
+        }
     }
 }
