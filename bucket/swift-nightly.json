@@ -1,0 +1,59 @@
+{
+    "homepage": "https://www.swift.org/",
+    "description": "The Swift Programming Language (Nightly builds)",
+    "license": "Apache-2.0",
+    "version": "20240302.0",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/thebrowsercompany/swift-build/releases/download/20240302.0/installer-amd64.exe",
+            "hash": "4f13b552a144ae21b2228969a79b31313e380333e71933485b77c19c79e095d5"
+        },
+        "arm64": {
+            "url": "https://github.com/thebrowsercompany/swift-build/releases/download/20240302.0/installer-arm64.exe",
+            "hash": "e0f3fd889190f454f157cce31877856070b32796d7de9c0752452f8404812d49"
+        }
+    },
+    "depends": "dorado/wix",
+    "suggest": {
+        "python": "main/python",
+        "vcredist": "extras/vcredist2022"
+    },
+    "installer": {
+        "script": [
+            "wix.exe burn extract \"$dir\\$fname\" -o \"$dir\\extracted\" -oba \"$dir\\extracted\"",
+            "Get-ChildItem \"$dir\\extracted\\WixAttachedContainer\\*.msi\" | ForEach-Object {",
+            "    if ($_.Name -match 'rtl.msi') {",
+            "        Expand-MsiArchive $_ \"$dir\\LocalApp\\Programs\\Swift\\Runtimes\\0.0.0\\usr\\bin\"",
+            "    } else {",
+            "        Expand-MsiArchive $_ \"$dir\"",
+            "    }",
+            "}",
+            "Remove-Item \"$dir\\$fname\",\"$dir\\extracted\" -Recurse | Out-Null"
+        ]
+    },
+    "env_add_path": [
+        "LocalApp\\Programs\\Swift\\Toolchains\\0.0.0+Asserts\\usr\\bin",
+        "LocalApp\\Programs\\Swift\\Runtimes\\0.0.0\\usr\\bin"
+    ],
+    "env_set": {
+        "SDKROOT": "$dir\\LocalApp\\Programs\\Swift\\Platforms\\0.0.0\\Windows.platform\\Developer\\SDKs\\Windows.sdk",
+        "DEVELOPER_DIR": "$dir\\LocalApp\\Programs\\Swift\\Platforms\\0.0.0\\Windows.platform\\Developer"
+    },
+    "checkver": {
+        "github": "https://api.github.com/repos/thebrowsercompany/swift-build/releases?per_page=50",
+        "regex": "tag/([\\d.]+)"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/thebrowsercompany/swift-build/releases/download/$version/installer-amd64.exe"
+            },
+            "arm64": {
+                "url": "https://github.com/thebrowsercompany/swift-build/releases/download/$version/installer-arm64.exe"
+            }
+        },
+        "hash": {
+            "url": "$url.sha256"
+        }
+    }
+}
