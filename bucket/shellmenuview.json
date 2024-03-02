@@ -1,18 +1,41 @@
 {
-    "homepage": "https://www.nirsoft.net/utils/shell_menu_view.html",
-    "checkver": "ShellMenuView v(\\d+\\.\\d\\d)",
+    "homepage": "https://www.nirsoft.net",
+    "description": "Disable/enable static menu items in context menu of Explorer.",
     "version": "1.41",
-    "license": "freeware",
-    "description": "ShellMenuView is a small utility that display the list of static menu items that appeared in the context menu when you right-click a file/folder on Windows Explorer, and allows you to easily disable unwanted menu items.",
+    "license": "Freeware",
     "architecture": {
         "64bit": {
-            "url": "https://www.nirsoft.net/utils/shmnview-x64.zip",
+            "url": "http://www.nirsoft.net/utils/shmnview-x64.zip",
             "hash": "e5a5b7c4a6ce2772782243027c73974d9699f2ba1d3eab1f53bcff4096635b83"
         },
         "32bit": {
-            "url": "https://www.nirsoft.net/utils/shmnview.zip",
+            "url": "http://www.nirsoft.net/utils/shmnview.zip",
             "hash": "bd8d233e44155100677f855b61b867b596d2006bd65b4553da6ca5e38f70d483"
         }
+    },
+    "bin": "shmnview.exe",
+    "shortcuts": [
+        [
+            "shmnview.exe",
+            "ShellMenuView"
+        ]
+    ],
+    "persist": [
+        "shmnview_lng.ini",
+        "shmnview.cfg"
+    ],
+    "pre_install": [
+        "function CreateFile ($name) {",
+        "    if (!(Test-Path \"$persist_dir\\$name\")) {",
+        "        New-Item -Force -Path \"$persist_dir\" -Name $name -ItemType \"file\"",
+        "    }",
+        "}",
+        "'shmnview_lng.ini', 'shmnview.cfg' | % {CreateFile $_}"
+    ],
+    "notes": "Please download the languages file from nirsoft.net",
+    "checkver": {
+        "url": "https://www.nirsoft.net/pad/shmnview.xml",
+        "xpath": "/XML_DIZ_INFO/Program_Info/Program_Version"
     },
     "autoupdate": {
         "architecture": {
@@ -23,12 +46,5 @@
                 "url": "https://www.nirsoft.net/utils/shmnview.zip"
             }
         }
-    },
-    "bin": "shmnview.exe",
-    "shortcuts": [
-        [
-            "shmnview.exe",
-            "NirSoft\\ShellMenuView - Disable_enable Explorer menu items"
-        ]
-    ]
+    }
 }
