@@ -1,0 +1,48 @@
+{
+    "version": "3.3.3.1",
+    "homepage": "https://github.com/Data-Oriented-House/PortableBuildTools",
+    "description": "Portable VS Build Tools installer",
+    "license": "https://go.microsoft.com/fwlink/?LinkId=2179911",
+    "notes": [
+        "This package defaults to download and install the latest MSVC toolchain in new installs and persist it in $persist_dir\\BuildTools.",
+        " - You can use GUI application to download and install other versions of MSVC toolchains.",
+        " - You can use `scoop uninstall portable-build-tools -p` to uninstall PortableBuildTools and MSVC toolchains.",
+        " - Read license https://go.microsoft.com/fwlink/?LinkId=2179911."
+    ],
+    "url": "https://github.com/Data-Oriented-House/PortableBuildTools/releases/download/v1.6/PortableBuildTools.exe",
+    "hash": "48afcc488757229cdadf1bc38caf05a7617b35df535e0ebb08dc8ecf8a8f2a45",
+    "installer": {
+        "script": [
+            "if (!(Test-Path -Path $persist_dir\\BuildTools)) {",
+            "   warn 'Downloading and installing the latest MSVC toolchain. This may take up minutes.'",
+            "   if ($architecture -eq '64bit') {",
+            "       Invoke-ExternalCommand -Path \"$dir\\PortableBuildTools.exe\" -Args @('accept_license', \"install_path=$persist_dir\\BuildTools\") | Out-Null",
+            "   } else {",
+            "       Invoke-ExternalCommand -Path \"$dir\\PortableBuildTools.exe\" -Args @('accept_license', \"install_path=$persist_dir\\BuildTools\", 'target=x86', 'host=x86') | Out-Null",
+            "   }",
+            "} else {",
+            "   warn 'Persisted MSVC toolchain found. Skip downloading and installing.'",
+            "}"
+        ]
+    },
+    "post_install": "startmenu_shortcut \"$env:comspec\" 'Developer Command Prompt for PortableBuildTools' \"/K $persist_dir\\BuildTools\\devcmd.bat\"",
+    "post_uninstall": [
+        "$shortcut = \"$(shortcut_folder $global)\\Developer Command Prompt for PortableBuildTools.lnk\"",
+        "write \"Removing shortcut $(friendly_path $shortcut)\"",
+        "if (Test-Path -Path $shortcut) {",
+        "Remove-Item $shortcut",
+        "}"
+    ],
+    "bin": "PortableBuildTools.exe",
+    "shortcuts": [
+        [
+            "PortableBuildTools.exe",
+            "PortableBuildTools"
+        ]
+    ],
+    "persist": "BuildTools",
+    "checkver": "github",
+    "autoupdate": {
+        "url": "https://github.com/Data-Oriented-House/PortableBuildTools/releases/download/v$version/PortableBuildTools.exe"
+    }
+}
