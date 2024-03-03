@@ -1,0 +1,55 @@
+{
+    "$schema": "https://raw.githubusercontent.com/ScoopInstaller/Scoop/master/schema.json",
+    "version": "8.0.5",
+    "description": "A simple disk benchmark software",
+    "homepage": "https://crystalmark.info/en/software/crystaldiskmark/",
+    "license": "BSD-3-Clause",
+    "url": "https://sourceforge.net/projects/crystaldiskmark/files/8.0.5/CrystalDiskMark8_0_5Aoi.zip",
+    "hash": "sha1:2c0660085aa9dd2b746409525637341c707e6dd4",
+    "pre_install": [
+        "'64', '32' | ForEach-Object {",
+        "    if (!(Test-Path \"$persist_dir\\DiskMark$_.ini\")) { New-Item \"$dir\\DiskMark$_.ini\" | Out-Null }",
+        "}"
+    ],
+    "architecture": {
+        "64bit": {
+            "bin": [
+                [
+                    "DiskMark64A.exe",
+                    "DiskMark-Aoi"
+                ]
+            ],
+            "shortcuts": [
+                [
+                    "DiskMark64A.exe",
+                    "CrystalDiskMark (Aoi Edition)"
+                ]
+            ]
+        },
+        "32bit": {
+            "bin": [
+                [
+                    "DiskMark32A.exe",
+                    "DiskMark-Aoi"
+                ]
+            ],
+            "shortcuts": [
+                [
+                    "DiskMark32A.exe",
+                    "CrystalDiskMark (Aoi Edition)"
+                ]
+            ]
+        }
+    },
+    "persist": [
+        "DiskMark32.ini",
+        "DiskMark64.ini"
+    ],
+    "checkver": {
+        "sourceforge": "crystaldiskmark",
+        "regex": "([\\d.a-zA-Z]+)/CrystalDiskMark.*.zip"
+    },
+    "autoupdate": {
+        "url": "https://sourceforge.net/projects/crystaldiskmark/files/$version/CrystalDiskMark$underscoreVersionAoi.zip"
+    }
+}
