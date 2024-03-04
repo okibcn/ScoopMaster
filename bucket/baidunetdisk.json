@@ -1,41 +1,26 @@
 {
-    "version": "7.37.5",
-    "description": "百度网盘。Baidu Netdisk for windows.",
     "homepage": "https://pan.baidu.com/download",
-    "license": "Unknown",
-    "url": "https://issuepcdn.baidupcs.com/issue/netdisk/yunguanjia/BaiduNetdisk_7.37.5.3.exe#/dl.7z",
-    "hash": "7e2ce818c2999af97ece03ad00ee5022ab7c4c5887ae4d45842f3436404ab004",
+    "description": "百度网盘PC版",
+    "version": "7.38.0.9",
+    "url": "http://issuecdn.baidupcs.com/issue/netdisk/yunguanjia/BaiduNetdisk_7.38.0.9.exe#dl.7z",
+    "hash": "f6dc86c5017c892554a7adc1e4f5540c84556da2b6cd378b5c8bc1d6cc8ed9db",
+    "bin": "BaiduNetdisk.exe",
     "shortcuts": [
         [
             "BaiduNetdisk.exe",
             "百度网盘"
         ]
     ],
-    "pre_install": [
-        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-        "persist -dir @(\"$dir\\users\") @(\"$persist_dir\\users\")",
-        "create_app_lnk \"$dir\\BaiduNetdisk.exe\" \"$desktop\\百度网盘.lnk\""
-    ],
-    "pre_uninstall": [
-        "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
-        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-        "stop_process",
-        "remove_files @(\"$desktop\\百度网盘.lnk\",\"$env:AppData\\PLogs\",\"$env:AppData\\BaiduYunKernel\",\"$env:AppData\\BaiduYunGuanjia\",\"$env:AppData\\Baidu\\BaiduNetdisk\",\"$env:AppData\\Baidu\\BaiduYunKernel\")"
+    "persist": "users",
+    "post_install": [
+        "Remove-Item \"$dir\\`$PLUGINSDIR\" -Recurse",
+        "Remove-Item \"$dir\\`$TEMP\" -Recurse"
     ],
     "checkver": {
-        "script": [
-            ". \"$pwd\\bin\\utils.ps1\"",
-            "$dl_info = get_installer_info 'Baidu/BaiduNetdisk'",
-            "\"ver:$($dl_info.PackageVersion);\"",
-            "\"x86:$($dl_info.x86_exe.InstallerUrl);\""
-        ],
-        "regex": "ver:(?<version>.+?); x86:(?<x86>.+?);"
+        "url": "https://pan.baidu.com/disk/cmsdata?do=client",
+        "regex": "BaiduNetdisk_(\\d+.\\d+.\\d+.\\d+).exe"
     },
     "autoupdate": {
-        "url": "$matchX86#/dl.7z",
-        "hash": {
-            "url": "https://raw.githubusercontent.com/microsoft/winget-pkgs/master/manifests/b/Baidu/BaiduNetdisk/$version/Baidu.BaiduNetdisk.installer.yaml",
-            "regex": "Architecture: x86[\\s\\S]+?InstallerSha256:\\s?(.+)"
-        }
+        "url": "http://issuecdn.baidupcs.com/issue/netdisk/yunguanjia/BaiduNetdisk_$version.exe#dl.7z"
     }
 }
