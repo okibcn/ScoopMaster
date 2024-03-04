@@ -1,43 +1,41 @@
 {
+    "##": "腾讯文档",
+    "version": "3.2.1",
+    "description": "[腾讯文档] 支持多人在线编辑Word、Excel和PPT文档",
+    "homepage": "https://docs.qq.com",
+    "license": "Freeware",
+    "url": "https://desktop.docs.qq.com/Installer/30001/3.2.1/TencentDocs-x86_64.exe#/dl.7z",
+    "hash": "930862599ff33ccd30aaeab7340a132b1863f3a2c0a57d963dc8084d9d2437e6",
     "architecture": {
-        "32bit": {
-            "installer": {
-                "script": [
-                    "Remove-Item \"$dir\\*\" -Exclude 'app-32.7z'",
-                    "Expand-7zipArchive \"$dir\\app-32.7z\" \"$dir\" -Removal"
-                ]
-            }
-        },
         "64bit": {
-            "installer": {
-                "script": [
-                    "Remove-Item \"$dir\\*\" -Exclude 'app-64.7z'",
-                    "Expand-7zipArchive \"$dir\\app-64.7z\" \"$dir\" -Removal"
-                ]
-            }
+            "pre_install": "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\""
+        },
+        "32bit": {
+            "pre_install": "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-32.7z\" \"$dir\""
         }
     },
-    "autoupdate": {
-        "url": "https://docs.qq.com/api/package/get?channel_id=30001&version_id=latest&package_name=TencentDocs-x86_64.exe#/dl.7z"
-    },
-    "checkver": {
-        "regex": "/([\\d.]+)/TencentDocs-x86_64\\.exe",
-        "script": "(Invoke-WebRequest -Uri 'https://docs.qq.com/api/package/get?channel_id=30001&version_id=latest&package_name=TencentDocs-x86_64.exe' -MaximumRedirection 0 -SkipHttpErrorCheck -ErrorAction:SilentlyContinue).Headers.Location"
-    },
-    "description": "Tencent Docs (腾讯文档) supports multiple people editing Word, Excel and PPT documents online.",
-    "extract_dir": "$PLUGINSDIR",
-    "hash": "930862599ff33ccd30aaeab7340a132b1863f3a2c0a57d963dc8084d9d2437e6",
-    "homepage": "https://docs.qq.com",
-    "license": {
-        "identifier": "Freeware",
-        "url": "https://docs.qq.com/doc/p/41c65c813fe78d2f262bf35b825c214f0f459bfe"
-    },
+    "post_install": "Remove-Item \"$dir\\`$*\" -Force -Recurse",
     "shortcuts": [
         [
             "TencentDocs.exe",
             "Tencent Docs"
+        ],
+        [
+            "TencentDocs.exe",
+            "腾讯文档"
         ]
     ],
-    "url": "https://docs.qq.com/api/package/get?channel_id=30001&version_id=latest&package_name=TencentDocs-x86_64.exe#/dl.7z",
-    "version": "5.2.3"
+    "checkver": {
+        "script": [
+            "$url = 'https://docs.qq.com/rainbow/config.v2.ConfigService/PullConfigReq'",
+            "$payload='{\"pull_item\":{\"app_id\":\"936c3190-4a5a-4608-ac9e-d37fe33f40be\",\"group\":\"DOWNLOAD.release-note-mac\",\"envName\":\"Default\"}}'",
+            "$headers = @{'Content-Type' = 'application/json'}",
+            "$response = Invoke-RestMethod -Uri $url -Method Post -Body $payload -Headers $headers -ContentType 'application/json'",
+            "(($response.config.items[0].rows|ConvertFrom-Json).config|ConvertFrom-Json).version"
+        ],
+        "regex": "(\\S+)"
+    },
+    "autoupdate": {
+        "url": "https://desktop.docs.qq.com/Installer/30001/$version/TencentDocs-x86_64.exe#/dl.7z"
+    }
 }
