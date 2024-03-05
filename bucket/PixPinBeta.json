@@ -1,0 +1,35 @@
+{
+    "version": "1.8.0.0",
+    "description": "(Beta 版本) 功能强大使用简单的截图/贴图工具，帮助你提高效率。(Beta version) A powerful screenshot tool.",
+    "homepage": "https://pixpinapp.com/",
+    "license": "Unknown",
+    "url": "https://download.pixpinapp.com/PixPin_1.8.0.0.zip",
+    "hash": "4613f58a4718ea317203844d9019c45e475aabf5b452260bda7df9e90963674c",
+    "extract_dir": "PixPin",
+    "shortcuts": [
+        [
+            "PixPin.exe",
+            "PixPin"
+        ]
+    ],
+    "pre_install": [
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "persist -dir @(\"$dir\\Config\") @(\"$persist_dir\\Config\")",
+        "persist -dir @(\"$dir\\History\") @(\"$persist_dir\\History\")",
+        "create_app_lnk \"$dir\\PixPin.exe\" \"$desktop\\PixPin.lnk\""
+    ],
+    "pre_uninstall": [
+        "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "stop_process",
+        "remove_files @(\"$desktop\\PixPin.lnk\")"
+    ],
+    "checkver": {
+        "url": "https://accounts.viewdepth.cn/deepviewapi/public/pixpin/info",
+        "jsonpath": "$.data.info",
+        "regex": "versionBeta.+\"version\":\"(?<version>[\\d\\.]+)\""
+    },
+    "autoupdate": {
+        "url": "https://download.pixpinapp.com/PixPin_$version.zip"
+    }
+}
