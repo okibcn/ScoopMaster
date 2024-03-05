@@ -1,25 +1,41 @@
 {
     "version": "4.13.0",
-    "homepage": "https://www.aliyundrive.com/",
-    "license": "Freeware",
+    "description": "一款速度快、不打扰、够安全、易于分享的网盘，你可以在这里存储、管理和探索内容，尽情打造丰富的数字世界。A fast, non-intrusive, secure and easy-to-share personal netdisk where you can store, manage and explore things, and build a flourishing digital world.",
+    "homepage": "https://www.alipan.com/",
+    "license": "Unknown",
     "url": "https://cdn.aliyundrive.net/downloads/apps/desktop/update/4.13.0/win32/ia32/aDrive-4.13.0.exe#/dl.7z",
-    "hash": "sha512:ab1cbf868b8039fac184e5c63642a0a2f8b0a0703b6eb3733738444458ed7501bd514100040862d25f247d67f5c7716633b2a9a80e42605a055ea1e71b510db6",
-    "post_install": "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\`$TEMP\" -Force -Recurse",
+    "hash": "63cedeced08fa22180b087d93c01ff962a414b4fa1400ff1b77136ed9c8ce45d",
     "shortcuts": [
         [
             "aDrive.exe",
-            "aliyun drive"
+            "阿里云盘"
         ]
     ],
+    "pre_install": [
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "persist -dir @(\"$user_AppData\\aDrive\") @(\"$persist_dir\\aDrive\")",
+        "create_app_lnk \"$dir\\aDrive.exe\" \"$desktop\\阿里云盘.lnk\""
+    ],
+    "pre_uninstall": [
+        "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "stop_process",
+        "remove_files @(\"$desktop\\阿里云盘.lnk\",\"$user_AppData\\aDrive\")"
+    ],
     "checkver": {
-        "url": "https://api.nicoconi.com/updater/aliyundrive",
-        "regex": "version: ([\\d.]+)"
+        "script": [
+            ". \"$pwd\\bin\\utils.ps1\"",
+            "$dl_info = get_installer_info 'Alibaba/aDrive'",
+            "\"ver:$($dl_info.PackageVersion);\"",
+            "\"x86:$($dl_info.x86_exe.InstallerUrl);\""
+        ],
+        "regex": "ver:(?<version>.+?); x86:(?<x86>.+?);"
     },
     "autoupdate": {
-        "url": "https://cdn.aliyundrive.net/downloads/apps/desktop/update/$version/win32/ia32/aDrive-$version.exe#/dl.7z",
+        "url": "$matchX86#/dl.7z",
         "hash": {
-            "url": "https://api.nicoconi.com/updater/aliyundrive",
-            "regex": "sha512: $base64"
+            "url": "https://raw.githubusercontent.com/microsoft/winget-pkgs/master/manifests/a/Alibaba/aDrive/$version/Alibaba.aDrive.installer.yaml",
+            "regex": "Architecture: x86[\\s\\S]+?InstallerSha256:\\s?(.+)"
         }
     }
 }
