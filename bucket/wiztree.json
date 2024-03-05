@@ -1,6 +1,6 @@
 {
     "version": "4.19",
-    "description": "High speed disk space analyser",
+    "description": "A hard drive disk space analyser that finds the files and folders using the most space.",
     "homepage": "https://www.diskanalyzer.com",
     "license": {
         "identifier": "Freeware",
@@ -9,16 +9,40 @@
     "url": "https://www.diskanalyzer.com/files/wiztree_4_19_portable.zip",
     "hash": "013917c5fb72e32fa1fcc4d1d6b57d130da3e112def7ade4429c8d23dc9b792b",
     "pre_install": [
-        "Remove-Item $dir\\WizTree.exe",
-        "Get-ChildItem $dir\\locale -Exclude en | Remove-Item -Recurse",
-        "$manifest.persist | ForEach-Object { if (!(Test-Path $persist_dir\\$_)) { New-Item $dir\\$_ | Out-Null } }"
+        "$default_content = \"[frmWizTreeMain]`r`nactWindowsContextMenu_Checked=FALSE`r`nactRunAsAdmin_Checked=FALSE\"",
+        "if (!(Test-Path \"$persist_dir\\WizTree3.ini\")) {",
+        "    Set-Content \"$dir\\WizTree3.ini\" $default_content -Encoding ascii",
+        "# This applies the fix when WizTree3.ini exist but is empty, see #8404 for details",
+        "} elseif ($(Get-Content \"$persist_dir\\WizTree3.ini\") -eq $null) {",
+        "    Set-Content \"$persist_dir\\WizTree3.ini\" $default_content -Encoding ascii",
+        "}"
     ],
-    "shortcuts": [
-        [
-            "WizTree64.exe",
-            "WizTree"
-        ]
-    ],
+    "architecture": {
+        "64bit": {
+            "bin": [
+                "WizTree64.exe",
+                [
+                    "WizTree64.exe",
+                    "WizTree"
+                ]
+            ],
+            "shortcuts": [
+                [
+                    "WizTree64.exe",
+                    "WizTree"
+                ]
+            ]
+        },
+        "32bit": {
+            "bin": "WizTree.exe",
+            "shortcuts": [
+                [
+                    "WizTree.exe",
+                    "WizTree"
+                ]
+            ]
+        }
+    },
     "persist": "WizTree3.ini",
     "checkver": {
         "url": "https://www.diskanalyzer.com/download",
