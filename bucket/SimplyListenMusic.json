@@ -13,14 +13,14 @@
     ],
     "pre_install": [
         ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-        "persist -dir @(\"$dir\\cache\",\"$env:AppData\\top.codepublic\\普听音乐\") @(\"$persist_dir\\cache\",\"$persist_dir\\top.codepublic\\普听音乐\")",
+        "persist -dir @(\"$dir\\cache\",\"$user_AppData\\top.codepublic\\普听音乐\") @(\"$persist_dir\\cache\",\"$persist_dir\\top.codepublic\\普听音乐\")",
         "create_app_lnk \"$dir\\SimplyListenMusic.exe\" \"$desktop\\普听音乐.lnk\""
     ],
     "pre_uninstall": [
         "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
         ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
         "stop_process $false",
-        "remove_files @(\"$desktop\\普听音乐.lnk\",\"$env:AppData\\top.codepublic\\普听音乐\")"
+        "remove_files @(\"$desktop\\普听音乐.lnk\",\"$user_AppData\\top.codepublic\\普听音乐\")"
     ],
     "checkver": {
         "url": "https://abgo-bucket-apps.netlify.app/SimplyListenMusic.version",

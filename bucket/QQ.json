@@ -21,7 +21,7 @@
     ],
     "pre_install": [
         ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-        "$tencent_path=\"$env:UserProfile\\Documents\\Tencent Files\"",
+        "$tencent_path=\"$user_Documents\\Tencent Files\"",
         "$accountList=[array](Get-ChildItem $tencent_path | Where-Object { $_.BaseName -match \"\\d+\" -and (Test-Path \"$($_.FullName)\\nt_qq\") })",
         "$persist_accountList=[array](Get-ChildItem \"$persist_dir\" | Where-Object { $_.BaseName -match \"\\d+\" -and (Test-Path \"$($_.FullName)\\nt_qq\") })",
         "if($accountList){",
@@ -38,7 +38,7 @@
         "   $account_dir2=@()",
         "   $persist_account_dir2=@()",
         "}",
-        "$data_list=@(\"$env:UserProfile\\Documents\\Tencent Files\\nt_qq\",\"$env:AppData\\QQ\") + $account_dir + $account_dir2",
+        "$data_list=@(\"$user_Documents\\Tencent Files\\nt_qq\",\"$user_AppData\\QQ\") + $account_dir + $account_dir2",
         "$persist_list= @(\"$persist_dir\\nt_qq\",\"$persist_dir\\QQ\") + $persist_account_dir + $persist_account_dir2",
         "persist -dir $data_list $persist_list",
         "create_app_lnk \"$dir\\Files\\QQ.exe\" \"$desktop\\QQ.lnk\""
@@ -47,10 +47,10 @@
         "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
         ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
         "stop_process",
-        "$tencent_path=\"$env:UserProfile\\Documents\\Tencent Files\"",
+        "$tencent_path=\"$user_Documents\\Tencent Files\"",
         "$accountList=Get-ChildItem $tencent_path | Where-Object { $_.BaseName -match \"\\d+\" -and (Test-Path \"$($_.FullName)\\nt_qq\") -and (Test-Path \"$persist_dir\\$($_.BaseName)\\nt_qq\") }",
         "$account_dir=if($accountList){$accountList.FullName | ForEach-Object { \"$($_)\\nt_qq\" } }else{ @() }",
-        "$need_remove_files=@(\"$desktop\\QQ.lnk\",\"$env:UserProfile\\Documents\\Tencent Files\\nt_qq\",\"$env:AppData\\QQ\") + $account_dir",
+        "$need_remove_files=@(\"$desktop\\QQ.lnk\",\"$user_Documents\\Tencent Files\\nt_qq\",\"$user_AppData\\QQ\") + $account_dir",
         "remove_files $need_remove_files"
     ],
     "checkver": {

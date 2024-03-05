@@ -15,14 +15,14 @@
     ],
     "pre_install": [
         ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-        "persist -dir @(\"$env:AppData\\HBuilder X\") @(\"$persist_dir\\HBuilder X\")",
+        "persist -dir @(\"$user_AppData\\HBuilder X\") @(\"$persist_dir\\HBuilder X\")",
         "create_app_lnk \"$dir\\HBuilderX.exe\" \"$desktop\\HBuilder X.lnk\""
     ],
     "pre_uninstall": [
         "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
         ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
         "stop_process",
-        "remove_files @(\"$desktop\\HBuilder X.lnk\",\"$env:AppData\\HBuilder X\")"
+        "remove_files @(\"$desktop\\HBuilder X.lnk\",\"$user_AppData\\HBuilder X\")"
     ],
     "checkver": {
         "script": [

@@ -17,7 +17,7 @@
         "& $path_exe /VerySilent /Dir=\"$dir\"",
         "$core_exe=\"$dir\\SyncBackFree.exe\"",
         "sleep_install $core_exe",
-        "persist -dir @(\"$env:AppData\\2BrightSparks\\SyncBackFree\",\"$env:LocalAppData\\2BrightSparks\\SyncBackFree\") @(\"$persist_dir\\SyncBackFree\",\"$persist_dir\\SyncBackFree_LocalAppData\")",
+        "persist -dir @(\"$user_AppData\\2BrightSparks\\SyncBackFree\",\"$user_LocalAppData\\2BrightSparks\\SyncBackFree\") @(\"$persist_dir\\SyncBackFree\",\"$persist_dir\\SyncBackFree_LocalAppData\")",
         "create_app_lnk $core_exe \"$desktop\\SyncBackFree.lnk\"",
         "clean_redundant_files @($path_exe,\"$admin_apps_lnk\\SyncBackFree.lnk\") 15"
     ],
@@ -25,7 +25,7 @@
         "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
         ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
         "stop_process $false",
-        "remove_files @(\"$env:AppData\\2BrightSparks\\SyncBackFree\",\"$env:LocalAppData\\2BrightSparks\\SyncBackFree\")",
+        "remove_files @(\"$user_AppData\\2BrightSparks\\SyncBackFree\",\"$user_LocalAppData\\2BrightSparks\\SyncBackFree\")",
         "$ui_exe=\"$dir\\unins000.exe\"",
         "try{ & $ui_exe /VerySilent }catch{}",
         "sleep_uninstall $ui_exe",

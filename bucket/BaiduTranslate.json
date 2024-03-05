@@ -17,14 +17,14 @@
         "& $path_exe /S /D=$dir",
         "$core_exe=\"$dir\\百度翻译.exe\"",
         "sleep_install $core_exe",
-        "persist -dir @(\"$env:AppData\\BdTranslateClient\") @(\"$persist_dir\\BdTranslateClient\")",
+        "persist -dir @(\"$user_AppData\\BdTranslateClient\") @(\"$persist_dir\\BdTranslateClient\")",
         "clean_redundant_files @($path_exe,\"$apps_lnk\\百度翻译.lnk\") 15"
     ],
     "pre_uninstall": [
         "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
         ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
         "stop_process $false",
-        "remove_files @(\"$env:AppData\\BdTranslateClient\")",
+        "remove_files @(\"$user_AppData\\BdTranslateClient\")",
         "$ui_exe=\"$dir\\Uninstall 百度翻译.exe\"",
         "try{ & $ui_exe /S }catch{}",
         "sleep_uninstall $ui_exe"

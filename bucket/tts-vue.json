@@ -20,18 +20,18 @@
         "& $path_exe /S /D=$dir",
         "$core_exe=\"$dir\\tts-vue.exe\"",
         "sleep_install $core_exe",
-        "persist -dir @(\"$env:AppData\\tts-vue\") @(\"$persist_dir\\tts-vue\")",
+        "persist -dir @(\"$user_AppData\\tts-vue\") @(\"$persist_dir\\tts-vue\")",
         "clean_redundant_files @($path_exe,\"$apps_lnk\\tts-vue.lnk\") 15"
     ],
     "pre_uninstall": [
         "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
         ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
         "stop_process $false",
-        "remove_files @(\"$env:AppData\\tts-vue\")",
+        "remove_files @(\"$user_AppData\\tts-vue\")",
         "$ui_exe=\"$dir\\Uninstall tts-vue.exe\"",
         "try{ & $ui_exe /S }catch{}",
         "sleep_uninstall $ui_exe",
-        "remove_files @(\"$env:LocalAppData\\tts-vue-updater\")"
+        "remove_files @(\"$user_LocalAppData\\tts-vue-updater\")"
     ],
     "checkver": "github",
     "autoupdate": {

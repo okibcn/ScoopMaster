@@ -32,18 +32,18 @@
         "& $path_exe /S /D=$dir",
         "$core_exe=\"$dir\\小白羊云盘.exe\"",
         "sleep_install $core_exe",
-        "persist -dir @(\"$env:AppData\\alixby3\") @(\"$persist_dir\\alixby3\")",
+        "persist -dir @(\"$user_AppData\\alixby3\") @(\"$persist_dir\\alixby3\")",
         "clean_redundant_files @($path_exe,\"$admin_apps_lnk\\小白羊云盘.lnk\") 15"
     ],
     "pre_uninstall": [
         "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
         ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
         "stop_process $false",
-        "remove_files @(\"$env:AppData\\alixby3\")",
+        "remove_files @(\"$user_AppData\\alixby3\")",
         "$ui_exe=\"$dir\\Uninstall 小白羊云盘.exe\"",
         "try{ & $ui_exe /S }catch{}",
         "sleep_uninstall $ui_exe",
-        "remove_files @(\"$env:LocalAppData\\xbyyunpan-updater\")"
+        "remove_files @(\"$user_LocalAppData\\xbyyunpan-updater\")"
     ],
     "checkver": "github",
     "autoupdate": {

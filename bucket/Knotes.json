@@ -17,18 +17,18 @@
         "& $path_exe /S /D=$dir",
         "$core_exe=\"$dir\\Knotes.exe\"",
         "sleep_install $core_exe",
-        "persist -dir @(\"$env:AppData\\Knotes2\") @(\"$persist_dir\\Knotes2\")",
+        "persist -dir @(\"$user_AppData\\Knotes2\") @(\"$persist_dir\\Knotes2\")",
         "clean_redundant_files @($path_exe,\"$apps_lnk\\Knotes.lnk\") 15"
     ],
     "pre_uninstall": [
         "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
         ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
         "stop_process $false",
-        "remove_files @(\"$env:AppData\\Knotes2\")",
+        "remove_files @(\"$user_AppData\\Knotes2\")",
         "$ui_exe=\"$dir\\Uninstall Knotes.exe\"",
         "try{ & $ui_exe /S }catch{}",
         "sleep_uninstall $ui_exe",
-        "remove_files @(\"$env:LocalAppData\\knotes2-updater\")"
+        "remove_files @(\"$user_LocalAppData\\knotes2-updater\")"
     ],
     "checkver": {
         "url": "https://knotesapp.cn",

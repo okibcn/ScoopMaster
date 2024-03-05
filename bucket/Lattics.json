@@ -17,14 +17,14 @@
         "Rename-Item $filter[0].FullName \"_installer_.7z\"",
         "Expand-7zipArchive \"$dir\\_installer_.7z\" \"$dir\" -ExtractDir '$PLUGINSDIR' -Removal",
         "Expand-7zipArchive \"$dir\\app-64.7z\" \"$dir\" -Removal",
-        "persist -dir @(\"$env:AppData\\Lattics\") @(\"$persist_dir\\Lattics\")",
+        "persist -dir @(\"$user_AppData\\Lattics\") @(\"$persist_dir\\Lattics\")",
         "create_app_lnk \"$dir\\Lattics.exe\" \"$desktop\\Lattics.lnk\""
     ],
     "pre_uninstall": [
         "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
         ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
         "stop_process",
-        "remove_files @(\"$desktop\\Lattics.lnk\",\"$env:AppData\\Lattics\",\"$env:LocalAppData\\lattics-updater\")"
+        "remove_files @(\"$desktop\\Lattics.lnk\",\"$user_AppData\\Lattics\",\"$user_LocalAppData\\lattics-updater\")"
     ],
     "checkver": {
         "script": [

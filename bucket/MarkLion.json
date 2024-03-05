@@ -14,14 +14,14 @@
     "pre_install": [
         ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
         "Expand-7zipArchive \"$dir\\.text\" \"$dir\" -Removal",
-        "persist -dir @(\"$env:AppData\\Rayyu\\MarkLion\") @(\"$persist_dir\\MarkLion\")",
+        "persist -dir @(\"$user_AppData\\Rayyu\\MarkLion\") @(\"$persist_dir\\MarkLion\")",
         "create_app_lnk \"$dir\\MarkLion.exe\" \"$desktop\\标记狮 MarkLion.lnk\""
     ],
     "pre_uninstall": [
         "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
         ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
         "stop_process",
-        "remove_files @(\"$desktop\\标记狮 MarkLion.lnk\",\"$env:AppData\\Rayyu\\MarkLion\")"
+        "remove_files @(\"$desktop\\标记狮 MarkLion.lnk\",\"$user_AppData\\Rayyu\\MarkLion\")"
     ],
     "checkver": {
         "url": "https://www.marklion.cn/whatsnew_w.shtml",

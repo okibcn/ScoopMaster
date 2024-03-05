@@ -14,7 +14,7 @@
     "pre_install": [
         ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
         "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\dict.7z\" \"$dir\" -Removal",
-        "persist -dir @(\"$env:LocalAppData\\Yodao\",\"$env:LocalAppData\\youdao\") @(\"$persist_dir\\Yodao\",\"$persist_dir\\youdao\")",
+        "persist -dir @(\"$user_LocalAppData\\Yodao\",\"$user_LocalAppData\\youdao\") @(\"$persist_dir\\Yodao\",\"$persist_dir\\youdao\")",
         "create_app_lnk \"$dir\\YoudaoDict.exe\" \"$desktop\\网易有道翻译.lnk\"",
         "clean_redundant_files @(\"$apps_lnk\\有道\\网易有道翻译\") 15"
     ],
@@ -22,7 +22,7 @@
         "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
         ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
         "confirm (handle_lang {\"卸载暂停。`n网易有道翻译 需要先手动关闭软件再进行卸载，请确认已经关闭了软件。`n然后按下 Enter(回车键) 继续进行卸载，或者按下其他任意键取消本次卸载。`n如果依然卸载失败，请重启终端，运行卸载命令。\"} {\"Uninstall paused.`nYouDaoTranslate needs to be manually closed to continue to uninstall.`nPlease confirm that you have closed it.`nPress Enter to continue or other key to cancel the uninstall.`nIf the uninstall still fails, restart the terminal and run the uninstall command.\"})",
-        "remove_files @(\"$env:LocalAppData\\Yodao\",\"$env:LocalAppData\\youdao\")",
+        "remove_files @(\"$user_LocalAppData\\Yodao\",\"$user_LocalAppData\\youdao\")",
         "$ui_exe=\"$dir\\uninst.exe\"",
         "try{ & $ui_exe /S }catch{}",
         "sleep_uninstall $ui_exe",

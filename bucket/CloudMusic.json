@@ -17,14 +17,14 @@
         "& $path_exe /S /D=$dir",
         "$core_exe=\"$dir\\cloudMusic.exe\"",
         "sleep_install $core_exe",
-        "persist -dir @(\"$env:LocalAppData\\Netease\\CloudMusic\") @(\"$persist_dir\\Netease\\CloudMusic\")",
+        "persist -dir @(\"$user_LocalAppData\\Netease\\CloudMusic\") @(\"$persist_dir\\Netease\\CloudMusic\")",
         "clean_redundant_files @($path_exe,\"$admin_apps_lnk\\网易云音乐.lnk\") 15"
     ],
     "pre_uninstall": [
         "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
         ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
         "stop_process $false",
-        "remove_files @(\"$env:LocalAppData\\Netease\\CloudMusic\")",
+        "remove_files @(\"$user_LocalAppData\\Netease\\CloudMusic\")",
         "$ui_exe=\"$dir\\Uninstall.exe\"",
         "try{ & $ui_exe /S }catch{}",
         "sleep_uninstall $ui_exe"

@@ -14,14 +14,14 @@
     ],
     "pre_install": [
         ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-        "persist -dir @(\"$env:AppData\\Blast\") @(\"$persist_dir\\Blast\")",
+        "persist -dir @(\"$user_AppData\\Blast\") @(\"$persist_dir\\Blast\")",
         "create_app_lnk \"$dir\\FluentSearch.exe\" \"$desktop\\FluentSearch.lnk\""
     ],
     "pre_uninstall": [
         "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
         ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
         "stop_process",
-        "remove_files @(\"$desktop\\FluentSearch.lnk\",\"$env:AppData\\Blast\",\"$env:LocalAppData\\FluentSearch\")"
+        "remove_files @(\"$desktop\\FluentSearch.lnk\",\"$user_AppData\\Blast\",\"$user_LocalAppData\\FluentSearch\")"
     ],
     "checkver": {
         "script": [

@@ -20,18 +20,18 @@
         "& $path_exe /S /D=$dir",
         "$core_exe=\"$dir\\Widgets.exe\"",
         "sleep_install $core_exe",
-        "persist -dir @(\"$env:AppData\\app\") @(\"$persist_dir\\app\")",
+        "persist -dir @(\"$user_AppData\\app\") @(\"$persist_dir\\app\")",
         "clean_redundant_files @($path_exe,\"$apps_lnk\\桌面组件.lnk\") 15"
     ],
     "pre_uninstall": [
         "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
         ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
         "stop_process $false",
-        "remove_files @(\"$env:AppData\\app\")",
+        "remove_files @(\"$user_AppData\\app\")",
         "$ui_exe=\"$dir\\Uninstall Widgets.exe\"",
         "try{ & $ui_exe /S }catch{}",
         "sleep_uninstall $ui_exe",
-        "remove_files @(\"$env:UserProfile\\Documents\\Widget\",\"$env:LocalAppData\\app-updater\")"
+        "remove_files @(\"$user_Documents\\Widget\",\"$user_LocalAppData\\app-updater\")"
     ],
     "checkver": {
         "script": [
