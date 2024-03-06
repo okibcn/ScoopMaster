@@ -1,28 +1,32 @@
 {
     "version": "35.73.1",
-    "description": "aardio 编程语言，专注于桌面软件快速开发",
+    "description": "灵活而强大的动态语言。A flexible and powerful dynamic language.",
     "homepage": "https://www.aardio.com/",
     "license": "Freeware",
-    "url": "https://ide.update.aardio.com/releases/aardio.7z",
-    "hash": "42921f663e20658bd02f2c0daeaccac32c630b8ef021554ecadd5cdef57dce42",
-    "bin": "aardio.exe",
+    "url": "https://d.aardio.com/ide/aardio.7z",
+    "hash": "6a789fddfe3812b39858321a034120b3ef6048326f1fefead9f0ab3c4b6d1274",
     "shortcuts": [
         [
             "aardio.exe",
             "aardio"
         ]
     ],
-    "persist": [
-        "config",
-        "download",
-        "project",
-        "codes\\我的代码段"
+    "pre_install": [
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "persist -dir @(\"$dir\\config\",\"$dir\\project\") @(\"$persist_dir\\config\",\"$persist_dir\\project\")",
+        "create_app_lnk \"$dir\\aardio.exe\" \"$desktop\\aardio.lnk\""
+    ],
+    "pre_uninstall": [
+        "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "stop_process",
+        "remove_files @(\"$desktop\\aardio.lnk\",\"$user_LocalAppData\\aardio\")"
     ],
     "checkver": {
-        "url": "http://ide.update.aardio.com/check/",
-        "jsonpath": "$.version"
+        "url": "https://ide.update.aardio.com/log/",
+        "regex": "aardio v([\\d\\.]+)"
     },
     "autoupdate": {
-        "url": "https://ide.update.aardio.com/releases/aardio.7z"
+        "url": "https://d.aardio.com/ide/aardio.7z"
     }
 }
