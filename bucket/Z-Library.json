@@ -18,7 +18,8 @@
         "$core_exe=\"$dir\\Z-Library.exe\"",
         "sleep_install $core_exe",
         "persist -dir @(\"$user_AppData\\Z-Library\") @(\"$persist_dir\\Z-Library\")",
-        "clean_redundant_files @($path_exe,\"$apps_lnk\\Z-Library.lnk\") 15"
+        "clean_redundant_files @($path_exe,\"$apps_lnk\\Z-Library.lnk\")",
+        "remove_app_lnk @(\"Z-Library.lnk\")"
     ],
     "pre_uninstall": [
         "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",

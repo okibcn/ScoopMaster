@@ -21,7 +21,8 @@
         "$core_exe=\"$dir\\Sigma file manager.exe\"",
         "sleep_install $core_exe",
         "persist -dir @(\"$user_AppData\\Sigma file manager\",\"$env:UserProfile\\.sigma-file-manager\") @(\"$persist_dir\\Sigma file manager\",\"$persist_dir\\.sigma-file-manager\")",
-        "clean_redundant_files @($path_exe,\"$apps_lnk\\Sigma file manager.lnk\") 15"
+        "clean_redundant_files @($path_exe,\"$apps_lnk\\Sigma file manager.lnk\")",
+        "remove_app_lnk @(\"Sigma file manager.lnk\")"
     ],
     "pre_uninstall": [
         "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",

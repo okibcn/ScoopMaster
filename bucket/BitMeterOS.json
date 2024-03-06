@@ -19,7 +19,8 @@
         "& $path_exe /S /D=$dir",
         "$core_exe=\"$dir\\bmclient.exe\"",
         "sleep_install $core_exe",
-        "clean_redundant_files @($path_exe) 15"
+        "clean_redundant_files @($path_exe)",
+        "remove_app_lnk @(\"BitMeter OS.url\")"
     ],
     "pre_uninstall": [
         "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",

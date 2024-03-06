@@ -18,7 +18,8 @@
         "$core_exe=\"$dir\\Knotes.exe\"",
         "sleep_install $core_exe",
         "persist -dir @(\"$user_AppData\\Knotes2\") @(\"$persist_dir\\Knotes2\")",
-        "clean_redundant_files @($path_exe,\"$apps_lnk\\Knotes.lnk\") 15"
+        "clean_redundant_files @($path_exe,\"$apps_lnk\\Knotes.lnk\")",
+        "remove_app_lnk @(\"Knotes.lnk\")"
     ],
     "pre_uninstall": [
         "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",

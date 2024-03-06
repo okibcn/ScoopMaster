@@ -18,7 +18,8 @@
         "$core_exe=\"$dir\\sticky.exe\"",
         "sleep_install $core_exe",
         "persist -file @(\"$dir\\data.ini\") @(\"$persist_dir\\data.ini\")",
-        "clean_redundant_files @($path_exe) 15"
+        "clean_redundant_files @($path_exe)",
+        "remove_app_lnk @(\"Vov Sticky Notes.lnk\")"
     ],
     "pre_uninstall": [
         "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",

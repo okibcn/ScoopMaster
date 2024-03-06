@@ -21,7 +21,8 @@
         "$core_exe=\"$dir\\tts-vue.exe\"",
         "sleep_install $core_exe",
         "persist -dir @(\"$user_AppData\\tts-vue\") @(\"$persist_dir\\tts-vue\")",
-        "clean_redundant_files @($path_exe,\"$apps_lnk\\tts-vue.lnk\") 15"
+        "clean_redundant_files @($path_exe,\"$apps_lnk\\tts-vue.lnk\")",
+        "remove_app_lnk @(\"tts-vue.lnk\")"
     ],
     "pre_uninstall": [
         "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",

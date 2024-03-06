@@ -21,7 +21,8 @@
         "$core_exe=\"$dir\\Hydrogen Music.exe\"",
         "sleep_install $core_exe",
         "persist -dir @(\"$user_AppData\\hydrogenmusic\") @(\"$persist_dir\\hydrogenmusic\")",
-        "clean_redundant_files @($path_exe,\"$apps_lnk\\Hydrogen Music.lnk\") 15"
+        "clean_redundant_files @($path_exe,\"$apps_lnk\\Hydrogen Music.lnk\")",
+        "remove_app_lnk @(\"Hydrogen Music.lnk\")"
     ],
     "pre_uninstall": [
         "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
