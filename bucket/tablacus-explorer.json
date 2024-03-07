@@ -1,17 +1,23 @@
 {
     "version": "24.2.27",
-    "description": "Tablacus Explorer is a tabbed file manager with add-on support.",
-    "homepage": "https://tablacus.github.io/explorer.html",
-    "license": "MIT",
+    "description": "A tabbed file manager with Add-on support.",
+    "homepage": "https://tablacus.github.io/explorer_en.html",
+    "license": {
+        "identifier": "MIT",
+        "url": "https://github.com/tablacus/TablacusExplorer/blob/master/LICENSE"
+    },
     "url": "https://github.com/tablacus/TablacusExplorer/releases/download/24.2.27/te240227.zip",
-    "hash": "651ea7795ce39cf67af2f2db86e4c996b723786941c21730c48c3e69fd78b753",
+    "hash": "f55705e9d6f0a71a08d645122199b0a71dbe593e48e970517174f43278124542",
     "architecture": {
         "64bit": {
             "bin": [
-                "TE64.exe",
                 [
                     "TE64.exe",
-                    "TE"
+                    "te"
+                ],
+                [
+                    "TE64.exe",
+                    "tablacus"
                 ]
             ],
             "shortcuts": [
@@ -20,17 +26,35 @@
                     "Tablacus Explorer"
                 ]
             ]
+        },
+        "32bit": {
+            "bin": [
+                [
+                    "TE32.exe",
+                    "te"
+                ],
+                [
+                    "TE32.exe",
+                    "tablacus"
+                ]
+            ],
+            "shortcuts": [
+                [
+                    "TE32.exe",
+                    "Tablacus Explorer"
+                ]
+            ]
         }
     },
     "persist": [
+        "config",
         "addons",
-        "config"
+        "icons"
     ],
     "checkver": {
-        "github": "https://github.com/tablacus/TablacusExplorer",
-        "regex": "/(?<version>[\\d.]+)/(?<file>te(?<date>[\\d]+)\\.zip)"
+        "regex": "Version <span id=\"ver\">([\\d.]+)</span>[\\w\\W]*?te(?<cleanpadding>\\d+)\\.zip"
     },
     "autoupdate": {
-        "url": "https://github.com/tablacus/TablacusExplorer/releases/download/$version/$matchFile"
+        "url": "https://github.com/tablacus/TablacusExplorer/releases/download/$version/te$matchCleanpadding.zip"
     }
 }
