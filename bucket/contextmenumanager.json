@@ -1,8 +1,11 @@
 {
-    "homepage": "https://github.com/BluePointLilac/ContextMenuManager",
-    "description": "一个纯粹的Windows右键菜单管理程序",
     "version": "3.3.3.1",
-    "license": "MIT",
+    "description": "🖱️ 纯粹的 Windows 右键菜单管理程序。A pure Windows context menu manager.",
+    "homepage": "https://github.com/BluePointLilac/ContextMenuManager",
+    "license": {
+        "identifier": "MIT",
+        "url": "https://github.com/BluePointLilac/ContextMenuManager/blob/master/LICENSE"
+    },
     "url": "https://github.com/BluePointLilac/ContextMenuManager/releases/download/3.3.3.1/ContextMenuManager.NET.4.0.exe",
     "hash": "1352c2222d2d28dd1a8824334f16c0676dfe88cd7211de873ec9b125f6782ec7",
     "shortcuts": [
@@ -10,6 +13,17 @@
             "ContextMenuManager.NET.4.0.exe",
             "ContextMenuManager"
         ]
+    ],
+    "pre_install": [
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "persist -dir @(\"$user_AppData\\ContextMenuManager\") @(\"$persist_dir\\ContextMenuManager\")",
+        "create_app_lnk \"$dir\\ContextMenuManager.NET.4.0.exe\" \"$desktop\\ContextMenuManager.lnk\""
+    ],
+    "pre_uninstall": [
+        "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "stop_process",
+        "remove_files @(\"$desktop\\ContextMenuManager.lnk\",\"$user_AppData\\ContextMenuManager\")"
     ],
     "checkver": "github",
     "autoupdate": {
