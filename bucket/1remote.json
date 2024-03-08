@@ -2,8 +2,10 @@
     "version": "0.7.2.8",
     "description": "One Remote Access Manager to Rule Them All",
     "homepage": "https://1remote.github.io/",
-    "license": "GPL-3.0-or-later",
-    "notes": "config location: C:\\Users\\<your username>\\AppData\\Local\\PRemoteM\nconfig location: C:\\Users\\<your username>\\\\AppData\\\\Roaming\\PRemoteM - https://github.com/ViCrack/scoop-bucket/blob/master/bucket/1remote.json",
+    "license": {
+        "identifier": "GPL-3.0 license",
+        "url": "https://github.com/1Remote/1Remote/blob/main/LICENSE"
+    },
     "architecture": {
         "64bit": {
             "url": "https://github.com/1Remote/1Remote/releases/download/0.7.2.8/PRemoteM.zip",
@@ -17,12 +19,13 @@
         ]
     ],
     "checkver": {
-        "github": "https://github.com/1Remote/1Remote"
+        "url": "https://api.github.com/repos/1Remote/1Remote/releases",
+        "regex": "(?sm)browser_download_url.*?releases/download/([\\d.]+)/(?<file>PRe.*?.zip)"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://github.com/1Remote/1Remote/releases/download/$version/PRemoteM.zip"
+                "url": "https://github.com/1Remote/1Remote/releases/download/$version/$matchFile"
             }
         }
     }
