@@ -1,31 +1,32 @@
 {
-    "description": "",
-    "homepage": "https://steamapp.net",
-    "license": "",
-    "version": "3.0.0-rc.2",
-    "notes": "",
+    "version": "3.0.0-rc.4",
+    "description": "Watt Toolkit (former name Steam++) is an open source cross-platform multi-purpose game toolkit, most of its features require you to download and install Steam to use it.",
+    "homepage": "https://steampp.net/",
+    "license": "GPL-3.0-only",
     "architecture": {
         "64bit": {
-            "url": "https://github.com/BeyondDimension/SteamTools/releases/download/3.0.0-rc.1/Steam++_v3.0.0-rc.1_win_x64.7z",
-            "hash": "sha256:AB9E678E1290B71C14EC8678FA1F5937E6CB2F8FA54038EFC9705031C8C6D1D5"
+            "url": "https://github.com/BeyondDimension/SteamTools/releases/download/3.0.0-rc.4/Steam++_v3.0.0-rc.4_win_x64.7z",
+            "hash": "7d0f44dc472cb40899fae6805374aedff3fb15efa7b72e581a9d712890d4cad8"
         }
     },
-
     "shortcuts": [
         [
             "Steam++.exe",
             "Watt Toolkit"
         ]
     ],
-    "persist": "AppData",
-
     "checkver": {
-        "github": "https://github.com/BeyondDimension/SteamTools"
+        "github": "https://github.com/BeyondDimension/SteamTools",
+        "regex": "tag/([\\d.\\-\\w]+)"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://github.com/BeyondDimension/SteamTools/releases/download/$version/Steam++_v$version_win_x64.7z"
+                "url": "https://github.com/BeyondDimension/SteamTools/releases/download/$version/Steam++_v$version_win_x64.7z",
+                "hash": {
+                    "url": "https://github.com/BeyondDimension/SteamTools/releases/tag/$version",
+                    "find": "win_x64.7z[\\s\\S]+?<sub>(\\w{64})<\\/sub>"
+                }
             }
         }
     }
