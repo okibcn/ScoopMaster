@@ -20,7 +20,7 @@
         "if ($existingRule) {  sudo Set-NetFirewallRule -DisplayName YakitVi -Action Allow -Enabled True -Program \"$original_dir\\yakit.exe\" }",
         "else { sudo New-NetFirewallRule -DisplayName YakitVi -Action Allow -Enabled True -Program \"$original_dir\\yakit.exe\" }",
         "$filesToDelete = Get-ChildItem -Path \"$persist_dir\\yakit-projects\\yak-engine\" -Recurse | Where-Object { $_.Name -match '^yak-v\\d'}",
-        "foreach ($file in $filesToDelete) {  Remove-Item $file.FullName -Force;  Write-Host \"已删除旧版本yak.exe文件: $($file.FullName)\";  }",
+        "foreach ($file in $filesToDelete) {  Remove-Item $file.FullName -Force;  Write-Host \"已删除旧版本yak.exe文件: $($file.FullName)\";  }"
     ],
     "uninstall": {
         "script": "Remove-NetFirewallRule -DisplayName 'YakitVi' -ErrorAction SilentlyContinue"
