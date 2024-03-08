@@ -1,34 +1,44 @@
 {
     "version": "0.4.7",
-    "description": "An open source alternative to ChatGPT that runs 100% offline on your computer.",
-    "homepage": "https://github.com/janhq/jan",
-    "license": "https://jan.ai/",
-    "architecture": {
-        "64bit": {
-            "url": "https://github.com/janhq/jan/releases/download/v0.4.7/jan-win-x64-0.4.7.exe#/dl.7z",
-            "hash": "sha512:a0217c1ad77626c2c6e6144ad47e9ea86900d9a8d162b3eaf32fc4a76c6363ef9f48b358a6065cb230ddd7cfcec9cbd583e8f7e5bd2c44230d2a16cbd0d84437",
-            "pre_install": "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\""
-        }
+    "description": "ChatGPT 的开源替代品，可在计算机上百分百脱机运行。An open source alternative to ChatGPT that runs 100% offline on your computer.",
+    "homepage": "https://jan.ai",
+    "license": {
+        "identifier": "GNU Affero General Public License v3.0",
+        "url": "https://github.com/janhq/jan/blob/main/LICENSE"
     },
+    "url": "https://github.com/janhq/jan/releases/download/v0.4.7/jan-win-x64-0.4.7.exe",
+    "hash": "d34c96d1ee98c7ab9bb526667b95a23b5fcef65cd9e2ee9a6aa30b3e1ff3bc07",
+    "bin": "jan.exe",
     "shortcuts": [
         [
-            "Jan.exe",
+            "jan.exe",
             "Jan"
         ]
     ],
-    "post_install": "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\resources\\app-update.yml\"  -Force -Recurse",
+    "pre_install": [
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "$path_exe=\"$dir\\jan-win-x64-$($version).exe\"",
+        "& $path_exe /S /D=$dir",
+        "$core_exe=\"$dir\\jan.exe\"",
+        "sleep_install $core_exe",
+        "persist -dir @(\"$user_AppData\\jan\",\"$env:UserProfile\\jan\") @(\"$persist_dir\\jan\",\"$persist_dir\\jan_user\")",
+        "clean_redundant_files @($path_exe,\"$apps_lnk\\jan.lnk\")",
+        "remove_app_lnk @(\"Jan.lnk\")"
+    ],
+    "pre_uninstall": [
+        "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "stop_process $false",
+        "remove_files @(\"$user_AppData\\jan\",\"$env:UserProfile\\jan\")",
+        "$ui_exe=\"$dir\\Uninstall jan.exe\"",
+        "try{ & $ui_exe /S }catch{}",
+        "sleep_uninstall $ui_exe",
+        "remove_files @(\"$user_LocalAppData\\jan-updater\")"
+    ],
     "checkver": {
         "github": "https://github.com/janhq/jan"
     },
     "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://github.com/janhq/jan/releases/download/v$version/jan-win-x64-$version.exe#/dl.7z",
-                "hash": {
-                    "url": "$baseurl/latest.yml",
-                    "regex": "sha512:\\s*$base64"
-                }
-            }
-        }
+        "url": "https://github.com/janhq/jan/releases/download/v$version/jan-win-x64-$version.exe"
     }
 }
