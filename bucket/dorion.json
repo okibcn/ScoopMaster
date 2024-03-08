@@ -1,35 +1,62 @@
 {
     "version": "4.1.3",
-    "description": "A tiny alternative Discord client with a smaller footprint, themes, plugins.",
-    "homepage": "https://spikehd.github.io/projects/dorion/",
-    "license": "GPL-3.0-only",
+    "description": "Tiny alternative Discord client with a smaller footprint, themes and plugins, multi-profile, and more!",
+    "homepage": "https://github.com/SpikeHD/Dorion",
+    "license": {
+        "identifier": "GPL-3.0",
+        "url": "https://github.com/SpikeHD/Dorion/blob/main/LICENSE"
+    },
     "architecture": {
         "64bit": {
             "url": "https://github.com/SpikeHD/Dorion/releases/download/v4.1.3/Dorion_4.1.3_win64_portable.zip",
             "hash": "698b20f2a5452791566467cddbfd608da77b84741cf67c8d56cffaf78678eead"
         }
     },
-    "pre_install": "Remove-Item \"$dir\\updater*\" -Force",
-    "shortcuts": [
-        [
-            "Dorion.exe",
-            "Dorion"
-        ]
+    "post_install": [
+        "$sourceFolders, $foldersToMove = @(\"~\\dorion\", \"$env:APPDATA\\dorion\"), @(\"plugins\", \"themes\", \"profiles\")",
+        "$canMoveFolders = $false",
+        "foreach ($sourceFolder in $sourceFolders) {",
+        "    foreach ($folderToMove in $foldersToMove) {",
+        "        If (Test-Path -Path \"$sourceFolder\\$folderToMove\") {$canMoveFolders = $true; break}",
+        "    }",
+        "}",
+        "If ($canMoveFolders) {",
+        "    $confirm = Read-Host -Prompt \"Do you want to move the data folders to '$dir'? (Y/N)\"",
+        "    If ($confirm -eq \"Y\") {",
+        "        foreach ($sourceFolder in $sourceFolders) {",
+        "            If (Test-Path -Path \"$sourceFolder\") {",
+        "                foreach ($folderToMove in $foldersToMove) {",
+        "                    If (Test-Path -Path \"$sourceFolder\\$folderToMove\") {Move-Item -Path \"$sourceFolder\\$folderToMove\\*\" -Destination \"$dir\\$folderToMove\" -Force}",
+        "                }",
+        "                Get-ChildItem $sourceFolder -Recurse -Force -Directory | ",
+        "                    Sort-Object -Property FullName -Descending |",
+        "                    Where-Object { $($_ | Get-ChildItem -Force | Select-Object -First 1).Count -eq 0 } |",
+        "                    Remove-Item -Force",
+        "                If ((Get-ChildItem -Path \"$sourceFolder\" -Force | Measure-Object).Count -eq 0) {Remove-Item \"$sourceFolder\" -Force}",
+        "            }",
+        "        }",
+        "    }",
+        "}",
+        "Remove-Item \"$dir\\*.original\" -Force -Recurse"
     ],
     "persist": [
-        "profiles",
-        "themes",
+        "config.json",
         "plugins",
-        "config.json"
+        "themes",
+        "profiles"
     ],
-    "checkver": {
-        "github": "https://github.com/SpikeHD/Dorion"
-    },
+    "checkver": "github",
     "autoupdate": {
         "architecture": {
             "64bit": {
                 "url": "https://github.com/SpikeHD/Dorion/releases/download/v$version/Dorion_$version_win64_portable.zip"
             }
         }
-    }
+    },
+    "shortcuts": [
+        [
+            "Dorion.exe",
+            "Dorion"
+        ]
+    ]
 }
