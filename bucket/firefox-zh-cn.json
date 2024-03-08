@@ -1,20 +1,16 @@
 {
+    "description": "流行的开源网络浏览器。跨平台并提供多种语言版本。",
+    "homepage": "https://www.mozilla.org/zh-CN/firefox/new/",
     "version": "123.0.1",
-    "description": "Popular open source web browser.",
-    "homepage": "https://www.mozilla.org/firefox/",
     "license": "MPL-2.0",
     "architecture": {
         "64bit": {
-            "url": "https://archive.mozilla.org/pub/firefox/releases/123.0.1/win64/zh-CN/Firefox%20Setup%20123.0.1.exe#/dl.7z",
+            "url": "https://download-installer.cdn.mozilla.net/pub/firefox/releases/123.0.1/win64/zh-CN/Firefox%20Setup%20123.0.1.exe#/firefox.7z",
             "hash": "sha512:dba52c6fc461d84111983fc8b966b653a1e34105c35517c893bbe456bfaebfb487dee26c65b9261ddee0aa360d73e5dc26b45d1cd9b355b47d4553e94a6d5e4c"
         },
         "32bit": {
-            "url": "https://archive.mozilla.org/pub/firefox/releases/123.0.1/win32/zh-CN/Firefox%20Setup%20123.0.1.exe#/dl.7z",
+            "url": "https://download-installer.cdn.mozilla.net/pub/firefox/releases/123.0.1/win32/zh-CN/Firefox%20Setup%20123.0.1.exe#/firefox.7z",
             "hash": "sha512:8a36482b18d671c5bd114761c0ecfce01557c56efe94ea79c4ec63332d218d482246d8cb457f9fdd6fe54edfdb36e534bcce4c6fca8f548f52f885fb9ad5e6c2"
-        },
-        "arm64": {
-            "url": "https://archive.mozilla.org/pub/firefox/releases/123.0.1/win64-aarch64/zh-CN/Firefox%20Setup%20123.0.1.exe#/dl.7z",
-            "hash": "sha512:d5aa690abb4961302b0a754d45af3f382eda0ae97d4bf94e96307f798e4772c5d64a7a3d05c203c08247cb005d53f83432449011340c0c98da081abb75680381"
         }
     },
     "extract_dir": "core",
@@ -22,37 +18,31 @@
     "shortcuts": [
         [
             "firefox.exe",
-            "Firefox"
+            "Mozilla Firefox"
         ]
     ],
-    "persist": "distribution",
+    "persist": "profile-portable",
     "checkver": {
         "url": "https://www.mozilla.org/zh-CN/firefox/all/",
-        "regex": "data-latest-firefox=\"([\\d.]+)\""
+        "re": "data-latest-firefox=\"([\\d.]+)\""
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://archive.mozilla.org/pub/firefox/releases/$version/win64/zh-CN/Firefox%20Setup%20$version.exe#/dl.7z",
+                "url": "https://download-installer.cdn.mozilla.net/pub/firefox/releases/$version/win64/zh-CN/Firefox%20Setup%20$version.exe#/firefox.7z",
                 "hash": {
-                    "url": "https://archive.mozilla.org/pub/firefox/releases/$version/SHA512SUMS",
+                    "url": "https://download-installer.cdn.mozilla.net/pub/firefox/releases/$version/SHA512SUMS",
                     "regex": "$sha512\\s+win64/zh-CN/$basename"
                 }
             },
             "32bit": {
-                "url": "https://archive.mozilla.org/pub/firefox/releases/$version/win32/zh-CN/Firefox%20Setup%20$version.exe#/dl.7z",
+                "url": "https://download-installer.cdn.mozilla.net/pub/firefox/releases/$version/win32/zh-CN/Firefox%20Setup%20$version.exe#/firefox.7z",
                 "hash": {
-                    "url": "https://archive.mozilla.org/pub/firefox/releases/$version/SHA512SUMS",
+                    "url": "https://download-installer.cdn.mozilla.net/pub/firefox/releases/$version/SHA512SUMS",
                     "regex": "$sha512\\s+win32/zh-CN/$basename"
-                }
-            },
-            "arm64": {
-                "url": "https://archive.mozilla.org/pub/firefox/releases/$version/win64-aarch64/zh-CN/Firefox%20Setup%20$version.exe#/dl.7z",
-                "hash": {
-                    "url": "https://archive.mozilla.org/pub/firefox/releases/$version/SHA512SUMS",
-                    "regex": "$sha512\\s+win64-aarch64/zh-CN/$basename"
                 }
             }
         }
-    }
+    },
+    "notes": "要恢复持久的配置文件，您需要使用“firefox -P”打开配置文件管理器，并通过选择可移植配置文件目录来创建。"
 }
