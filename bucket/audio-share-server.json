@@ -1,0 +1,38 @@
+{
+    "version": "0.0.17",
+    "description": "Share a computer's audio to an Android device over the network (GUI server)",
+    "homepage": "https://github.com/mkckr0/audio-share",
+    "license": "Apache-2.0",
+    "suggest": {
+        "vcredist": [
+            "extras/vcredist2022",
+            "extras/vcredist-aio"
+        ]
+    },
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/mkckr0/audio-share/releases/download/v0.0.17/AudioShareServer.exe",
+            "hash": "4887e1f5c9c1df21f732d62911838d3a8d20757c395b75852caa513445d359ae"
+        }
+    },
+    "shortcuts": [
+        [
+            "AudioShareServer.exe",
+            "Audio Share Server"
+        ]
+    ],
+    "bin": "AudioShareServer.exe",
+    "persist": "config.ini",
+    "pre_install": "if (-not (Test-Path \"$persist_dir\\config.ini\")) { New-Item \"$dir\\config.ini\" -Force -ItemType File | Out-Null }",
+    "checkver": "github",
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/mkckr0/audio-share/releases/download/v$version/AudioShareServer.exe"
+            }
+        },
+        "hash": {
+            "url": "$url.sha256"
+        }
+    }
+}
