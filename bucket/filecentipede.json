@@ -1,49 +1,60 @@
 {
-    "homepage": "http://filecxx.com/",
-    "description": "Cross-platform internet upload/download manager for HTTP(S), FTP(S), SSH, magnet-link, BitTorrent, m3u8, ed2k, and online videos. WebDAV client, FTP client, SSH client.",
-    "license": "Unlicense",
     "version": "2.82.0",
+    "description": "An internet file download manager",
+    "homepage": "https://github.com/filecxx/FileCentipede",
+    "license": "Unknown",
+    "notes": [
+        "Use built-in upgradation instead of the scoop one,",
+        "scoop cannot update the service of filecentipede, which causes no response"
+    ],
     "architecture": {
         "64bit": {
             "url": "https://github.com/filecxx/FileCentipede/releases/download/v2.82.0/filecxx_2.82_win_x64.zip",
-            "hash": "F0BDEF157F45AE1652EDE116EBE98D889D163E5C094E88A076E917989742FE1E"
+            "hash": "sha256:F0BDEF157F45AE1652EDE116EBE98D889D163E5C094E88A076E917989742FE1E",
+            "bin": [
+                [
+                    "fileu.exe",
+                    "FileCentipede"
+                ]
+            ],
+            "shortcuts": [
+                [
+                    "fileu.exe",
+                    "FileCentipede"
+                ]
+            ]
         }
     },
-    "installer": {
-        "script": [
-            "Start-Process \"$dir\\filec.exe\" -ArgumentList @(\"-i\", \"system_service\") -Verb RunAs -WindowStyle Hidden | Out-Null"
-        ]
-    },
     "pre_install": [
-        "if (Test-Path $persist_dir\\data_windows.db) {",
-        "    Move-Item -Path $persist_dir\\data_windows.db -Destination $dir\\lib\\data_windows.db -Force | Out-Null",
+        "if (!(Test-Path \"$persist_dir\\lib\\libicu.dat\")) {",
+        "    New-Item -Path \"$dir\\lib\\libicu.dat\" | Out-Null",
         "}",
-        "if (Test-Path $persist_dir\\fileu_win32.conf) {",
-        "    Move-Item -Path $persist_dir\\fileu_win32.conf -Destination $dir\\lib\\fileu_win32.conf -Force | Out-Null",
+        "if (!(Test-Path \"$persist_dir\\lib\\data_windows.db\")) {",
+        "    New-Item -Path \"$dir\\lib\\data_windows.db\" | Out-Null",
+        "}",
+        "if (!(Test-Path \"$persist_dir\\lib\\data_windows.db-shm\")) {",
+        "    New-Item -Path \"$dir\\lib\\data_windows.db-shm\" | Out-Null",
+        "}",
+        "if (!(Test-Path \"$persist_dir\\lib\\data_windows.db-wal\")) {",
+        "    New-Item -Path \"$dir\\lib\\data_windows.db-wal\" | Out-Null",
+        "}",
+        "if (!(Test-Path \"$persist_dir\\lib\\fileu_win32.conf\")) {",
+        "    New-Item -Path \"$dir\\lib\\fileu_win32.conf\" | Out-Null",
         "}"
     ],
     "persist": [
-        "cache"
+        "lib\\libicu.dat",
+        "lib\\data_windows.db",
+        "lib\\data_windows.db-shm",
+        "lib\\data_windows.db-wal",
+        "lib\\ip.mmdb",
+        "lib\\fileu_win32.conf"
     ],
-    "shortcuts": [
-        [
-            "lib\\fileu.exe",
-            "FileCentipede"
-        ]
-    ],
-    "uninstaller": {
-        "script": [
-            "Start-Process \"$dir\\filec.exe\" -ArgumentList @(\"-u\") -Wait -verb RunAs | Out-Null",
-            "'data_windows.db', 'fileu_win32.conf' | ForEach-Object { Move-Item -Path $dir\\lib\\$_ -Destination $persist_dir\\$_ -Force | Out-Null }"
-        ]
-    },
-    "checkver": {
-        "github": "https://github.com/filecxx/FileCentipede"
-    },
+    "checkver": "github",
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://github.com/filecxx/FileCentipede/releases/download/$version/filecxx_$version_win_x64.zip"
+                "url": "https://github.com/filecxx/FileCentipede/releases/download/v$version/filecxx_$version_win_x64.zip"
             }
         }
     }
