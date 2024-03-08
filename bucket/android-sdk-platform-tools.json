@@ -1,13 +1,21 @@
 {
     "version": "35.0.0",
-    "homepage": "https://developer.android.com/tools/releases/platform-tools",
-    "license": "",
+    "description": "Android SDK Platform-Tools is a component for the Android SDK. It includes tools that interface with the Android platform, primarily adb and fastboot.",
+    "homepage": "https://developer.android.com/studio/releases/platform-tools",
+    "license": {
+        "identifier": "Freeware",
+        "url": "https://developer.android.com/studio/releases/platform-tools.html#downloads"
+    },
     "url": "https://dl.google.com/android/repository/platform-tools_r35.0.0-windows.zip",
     "hash": "7ab78a8f8b305ae4d0de647d99c43599744de61a0838d3a47bda0cdffefee87e",
-    "extract_dir": "platform-tools",
+    "post_install": ". \"$bucketsdir\\$bucket\\scripts\\android-sdk-link.ps1\"",
+    "pre_uninstall": ". \"$bucketsdir\\$($install.bucket)\\scripts\\android-sdk-setup.ps1\"",
     "bin": [
-        "adb.exe",
-        "fastboot.exe"
+        "platform-tools\\adb.exe",
+        "platform-tools\\dmtracedump.exe",
+        "platform-tools\\etc1tool.exe",
+        "platform-tools\\fastboot.exe",
+        "platform-tools\\hprof-conv.exe"
     ],
     "checkver": "<h4.*>([\\d.]+) \\(.*\\)</h4>",
     "autoupdate": {
