@@ -1,0 +1,52 @@
+{
+    "version": "1.0.0",
+    "description": "QQNT Patch",
+    "homepage": "https://github.com/LiteLoaderQQNT/QQNTFileVerifyPatch",
+    "license": "MIT",
+    "depends": "qq-nt",
+    "suggest": {
+        "LiteLoaderQQNT": "LiteLoaderQQNT"
+    },
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/LiteLoaderQQNT/QQNTFileVerifyPatch/releases/download/QQNTPatcher-DllHijack_1.0.0/dbghelp_x64.dll",
+            "hash": "b42985c254a5f1cf267a038de3456ff05ea8c5f89850644f5305565fee964d75"
+        },
+        "32bit": {
+            "url": "https://github.com/LiteLoaderQQNT/QQNTFileVerifyPatch/releases/download/QQNTPatcher-DllHijack_1.0.0/dbghelp_x86.dll",
+            "hash": "0722636198f909880d261712fa5d8177d115710b04076596f3f2161b5978ef45"
+        }
+    },
+    "post_install": [
+        "$arch = ($architecture -eq \"64bit\") ? \"x64\" : \"x86\"",
+        "foreach ($_ in Get-ChildItem \"$dir\" -File) {",
+        "    $name = $_.Name",
+        "    if ($name -Like \"dbghelp_$arch.dll\") {",
+        "        info \"Creating hardlink for $name\"",
+        "        New-Item -ItemType HardLink -Path \"$(appdir qq-nt $global)\\current\\Files\" -Name dbghelp.dll -Target \"$dir\\$name\" | Out-Null",
+        "        }",
+        "}"
+    ],
+    "pre_uninstall": [
+        "$envfilePath = \"$(appdir qq-nt $global)\\current\\Files\\dbghelp.dll\"",
+        "info \"Removing hardlink for $envfilePath\"",
+        "if ((Get-Item $envfilePath).LinkType -eq \"HardLink\") {",
+        "    Remove-Item -Path $envfilePath",
+        "}"
+    ],
+    "checkver": {
+        "url": "https://api.github.com/repos/LiteLoaderQQNT/QQNTFileVerifyPatch/releases/latest",
+        "jsonpath": "$.assets[0].browser_download_url",
+        "regex": "QQNTPatcher-DllHijack_(?<version>[\\d.]+)/dbghelp_x(?<arch>[\\d]+).dll"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/LiteLoaderQQNT/QQNTFileVerifyPatch/releases/download/QQNTPatcher-DllHijack_$version/dbghelp_x64.dll"
+            },
+            "32bit": {
+                "url": "https://github.com/LiteLoaderQQNT/QQNTFileVerifyPatch/releases/download/QQNTPatcher-DllHijack_$version/dbghelp_x86.dll"
+            }
+        }
+    }
+}

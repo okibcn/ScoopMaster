@@ -1,0 +1,60 @@
+{
+    "version": "1.0.3",
+    "description": "Lightweight, simple and open source QQNT plugin loader.",
+    "homepage": "https://github.com/LiteLoaderQQNT/LiteLoaderQQNT",
+    "license": "MIT",
+    "depends": [
+        "qq-nt",
+        "QQNTPatcher-DllHijack"
+    ],
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/LiteLoaderQQNT/LiteLoaderQQNT/releases/download/1.0.3/LiteLoaderQQNT.zip",
+            "hash": "9386da93bed1b80604d1e811eda6160fe502af02cc35a40cceda50b09f02bc09"
+        }
+    },
+    "env_set": {
+        "LITELOADERQQNT_PROFILE": "$persist_dir"
+    },
+    "post_install": [
+        "if (!(Test-Path \"$persist_dir\")) { New-Item -Path $persist_dir -Type Directory | Out-Null}",
+        "$envfilePath = \"$(appdir qq-nt $global)\\current\\Files\\resources\\app\\app_launcher\\index.js\"",
+        "if (Test-Path \"$envfilePath\") {",
+        "    $firstLine = Get-Content \"$envfilePath\" -TotalCount 1;",
+        "    $newcontent = 'require(String.raw`' + $dir + '`);'",
+        "    if ($firstLine -notlike '*LiteLoaderQQNT*') {",
+        "        $filecontent = Get-Content \"$envfilePath\";",
+        "        $filecontent = $newcontent + \"`r`n\" + $filecontent;",
+        "        $filecontent | Set-Content \"$envfilePath\";",
+        "    } else {",
+        "        info '文件 $envfilePath 的第一行已包含 LiteLoaderQQNT'",
+        "        $content = Get-Content $envfilePath",
+        "        info \"$firstLine -> $newcontent\"",
+        "        $content[0] = $newcontent",
+        "        $content | Set-Content $envfilePath",
+        "    }",
+        "} else {",
+        "    info '文件 $envfilePath 不存在'",
+        "}"
+    ],
+    "post_uninstall": [
+            "$envfilePath = \"$(appdir qq-nt $global)\\current\\Files\\resources\\app\\app_launcher\\index.js\"",
+            "if (Test-Path \"$envfilePath\") {",
+            "    $firstLine = Get-Content \"$envfilePath\" -TotalCount 1;",
+            "    if ($firstLine -like '*LiteLoaderQQNT\\current*') {",
+            "        $filecontent = Get-Content \"$envfilePath\";",
+            "        info \"delete $firstLine from $envfilePath\"",
+            "        $filecontent = $filecontent[1..($filecontent.Count - 1)];",
+            "        $filecontent | Set-Content \"$envfilePath\";",
+            "    }",
+            "}"
+        ],
+    "checkver": "github",
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/LiteLoaderQQNT/LiteLoaderQQNT/releases/download/$version/LiteLoaderQQNT.zip"
+            }
+        }
+    }
+}
