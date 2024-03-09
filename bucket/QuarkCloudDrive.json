@@ -6,17 +6,43 @@
     "url": "https://pdds.quark.cn/download/stfile/zz6341197z14z282c/QuarkCloudDrive_v3.1.4_release2_(Build1696586-20240304145630).exe#/dl.7z",
     "hash": "84B3B46DB92D26F4624E326161D451B74D908BFE2D9CB4BFFBD0361138FABD08",
     "innosetup": true,
+    "installer": {
+        "script": [
+            "if (!(Test-Path \"$persist_dir\\Cache\")) {",
+            "    New-Item \"$persist_dir\\Cache\" -Type Directory -Force | Out-Null",
+            "}",
+            "$runtimeCache = \"$env:APPDATA\\quark-cloud-drive\"",
+            "$runtimeCachePersist = \"$persist_dir\\Cache\"",
+            "if (Test-Path $runtimeCachePersist) {",
+            "    Remove-Item $runtimeCache -Force -Recurse -ErrorAction SilentlyContinue",
+            "    New-Item -Type Junction -Path $runtimeCache -Target $runtimeCachePersist | Out-Null",
+            "} else {",
+            "    if (Test-Path $runtimeCache) {",
+            "        Move-Item $runtimeCache $runtimeCachePersist -Force",
+            "        New-Item -Type Junction -Path $runtimeCache -Target $runtimeCachePersist | Out-Null",
+            "    }",
+            "}"
+        ]
+    },
+    "uninstaller": {
+        "script": [
+            "$runtimeCache = \"$env:APPDATA\\quark-cloud-drive\"",
+            "$runtimeCachePersist = \"$persist_dir\\Cache\"",
+            "if (!(Test-Path $runtimeCachePersist)) {",
+            "    Move-Item $runtimeCache $runtimeCachePersist -Force",
+            "} else {",
+            "    Remove-Item $runtimeCache -Force -Recurse -ErrorAction SilentlyContinue",
+            "}"
+        ]
+    },
+    "shortcuts": [["QuarkCloudDrive.exe", "QuarkCloudDrive"]],
     "checkver": {
         "url": "https://pan.quark.cn/api/client_version",
-        "regex": "origin_winInstallerUrl.{4}(?<url>(?<version>\\d+.\\d+.\\d+.\\d+).exe)"
+        "jsonpath": "$.data.winInstallerUrl",
+        "re": "^https?://pdds.quark.cn/download/stfile/(?<release>\\w+)/QuarkCloudDrive_v(?<version>[\\d.]+)_release_(?<build>[\\d]+).exe",
+        "replace": "${2}"
     },
     "autoupdate": {
-        "url": "$matchUrl#dl.7z"
-    },
-    "shortcuts": [
-        [
-            "QuarkCloudDrive.exe",
-            "夸克网盘"
-        ]
-    ]
+        "url": "https://pdds.quark.cn/download/stfile/$matchRelease/QuarkCloudDrive_v$matchVersion_release_$matchBuild.exe#/dl.7z"
+    }
 }
