@@ -1,8 +1,8 @@
 {
-    "version": "1.6.2",
-    "description": "RyuSAK is a tool for Ryujinx",
+    "$schema": "https://raw.githubusercontent.com/ScoopInstaller/Scoop/master/schema.json",
     "homepage": "https://github.com/Ecks1337/RyuSAK",
-    "license": "GPL-3.0",
+    "license": "GPLv3",
+    "version": "1.6.2",
     "architecture": {
         "64bit": {
             "url": "https://github.com/Ecks1337/RyuSAK/releases/download/v1.6.2/RyuSAK-win32-x64-1.6.2.zip",
@@ -10,13 +10,6 @@
         }
     },
     "bin": "RyuSAK.exe",
-    "shortcuts": [
-        [
-            "RyuSAK.exe",
-            "RyuSAK"
-        ]
-    ],
-    "persist": "electron_cache",
     "checkver": {
         "github": "https://github.com/Ecks1337/RyuSAK"
     },
@@ -26,5 +19,17 @@
                 "url": "https://github.com/Ecks1337/RyuSAK/releases/download/v$version/RyuSAK-win32-x64-$version.zip"
             }
         }
-    }
+    },
+    "shortcuts": [
+        [
+            "RyuSAK.exe",
+            "RyuSAK"
+        ]
+    ],
+    "persist": "electron_cache",
+    "pre_install": [
+        "if (!(Test-Path \"$persist_dir\")) {",
+        "   New-item \"$persist_dir\\electron_cache\" -ItemType Directory | Out-Null",
+        "}"
+    ]
 }
