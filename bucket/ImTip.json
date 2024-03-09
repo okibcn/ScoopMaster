@@ -1,20 +1,25 @@
 {
     "version": "4.4",
-    "description": "Input Method Status Indicator Tool",
-    "homepage": "https://imtip.aardio.com/",
-    "license": "MIT",
+    "description": "通用输入法状态（中/英、全/半角、标点、大写）提示",
+    "homepage": "https://imtip.aardio.com",
+    "license": "MIT License",
     "url": "https://imtip.aardio.com/update/ImTip.7z",
     "hash": "949f662a3ad383e76bb34bfd1af6d6953d16b574ac6bb87a76e3cc746e688035",
+    "pre_install": [
+    "# Create portable config dir",
+    "if (!(Test-Path -Path \"$dir\\.ImTip\")) {",
+    "    (New-Item -ItemType \"directory\" -Path \"$dir\" -Name \".ImTip\") | Out-Null",
+    "}"
+    ],
+    "bin": "ImTip.exe",
     "shortcuts": [
         [
             "ImTip.exe",
             "ImTip"
         ]
     ],
-    "checkver": {
-        "url": "https://imtip.aardio.com",
-        "regex": "v([\\d.]+)"
-    },
+    "persist": ".ImTip",
+    "checkver": "v([\\d.]+)",
     "autoupdate": {
         "url": "https://imtip.aardio.com/update/ImTip.7z"
     }
