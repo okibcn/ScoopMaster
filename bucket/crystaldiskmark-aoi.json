@@ -1,53 +1,55 @@
 {
+    "$schema": "https://raw.githubusercontent.com/ScoopInstaller/Scoop/master/schema.json",
     "version": "8.0.5",
-    "description": "A simple disk benchmark software.",
-    "homepage": "https://crystalmark.info/en/",
-    "license": "MIT",
-    "url": "https://zenlayer.dl.sourceforge.net/project/crystaldiskmark/8.0.5/CrystalDiskMark8_0_5Aoi.zip",
-    "hash": "c980e03aa877321fa7b8528bdcf4aa28bebc8e4baca7bbe3470a4baa48bc9f50",
+    "description": "A simple disk benchmark software",
+    "homepage": "https://crystalmark.info/en/software/crystaldiskmark/",
+    "license": "BSD-3-Clause",
+    "url": "https://sourceforge.net/projects/crystaldiskmark/files/8.0.5/CrystalDiskMark8_0_5Aoi.zip",
+    "hash": "sha1:2c0660085aa9dd2b746409525637341c707e6dd4",
+    "pre_install": [
+        "'64', '32' | ForEach-Object {",
+        "    if (!(Test-Path \"$persist_dir\\DiskMark$_.ini\")) { New-Item \"$dir\\DiskMark$_.ini\" | Out-Null }",
+        "}"
+    ],
     "architecture": {
         "64bit": {
+            "bin": [
+                [
+                    "DiskMark64A.exe",
+                    "DiskMark-Aoi"
+                ]
+            ],
             "shortcuts": [
                 [
                     "DiskMark64A.exe",
-                    "CrystalDiskMark Aoi Edition"
+                    "CrystalDiskMark (Aoi Edition)"
                 ]
             ]
         },
         "32bit": {
+            "bin": [
+                [
+                    "DiskMark32A.exe",
+                    "DiskMark-Aoi"
+                ]
+            ],
             "shortcuts": [
                 [
                     "DiskMark32A.exe",
-                    "CrystalDiskMark Aoi Edition"
-                ]
-            ]
-        },
-        "arm64": {
-            "shortcuts": [
-                [
-                    "DiskMarkA64A.exe",
-                    "CrystalDiskMark Aoi Edition"
+                    "CrystalDiskMark (Aoi Edition)"
                 ]
             ]
         }
     },
-    "pre_install": [
-        "'DiskMark32A.ini', 'DiskMark64A.ini', 'DiskMarkA64A.ini' | ForEach-Object {",
-        "    if (!(Test-Path \"$persist_dir\\$_\")) {",
-        "        New-Item \"$dir\\$_\" -ItemType File | Out-Null",
-        "    }",
-        "}"
-    ],
     "persist": [
-        "DiskMark32A.ini",
-        "DiskMark64A.ini",
-        "DiskMarkA64A.ini"
+        "DiskMark32.ini",
+        "DiskMark64.ini"
     ],
     "checkver": {
-        "url": "https://crystalmark.info/en/download/",
-        "regex": "CrystalDiskMark ([\\w\\.]+) &#8211;"
+        "sourceforge": "crystaldiskmark",
+        "regex": "([\\d.a-zA-Z]+)/CrystalDiskMark.*.zip"
     },
     "autoupdate": {
-        "url": "https://zenlayer.dl.sourceforge.net/project/crystaldiskmark/$version/CrystalDiskMark$underscoreVersionAoi.zip"
+        "url": "https://sourceforge.net/projects/crystaldiskmark/files/$version/CrystalDiskMark$underscoreVersionAoi.zip"
     }
 }

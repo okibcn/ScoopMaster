@@ -1,6 +1,6 @@
 {
     "homepage": "https://www.swift.org/",
-    "description": "The Swift Programming Language (Snapshot build)",
+    "description": "The Swift Programming Language",
     "license": "Apache-2.0",
     "version": "snapshot-2024-02-29-a",
     "architecture": {
@@ -9,35 +9,21 @@
             "hash": "b14a1c49a50f0ddeae2980eb2a45b7238261e2139c473b95d1e63d54e3422031"
         }
     },
-    "depends": "dorado/wix",
-    "suggest": {
-        "python39": "versions/python39",
-        "vcredist": "extras/vcredist2022"
-    },
+    "depends": "dark",
     "installer": {
         "script": [
-            "wix.exe burn extract \"$dir\\$fname\" -o \"$dir\\extracted\" -oba \"$dir\\extracted\"",
-            "Get-ChildItem \"$dir\\extracted\\WixAttachedContainer\\*.msi\" | ForEach-Object {",
-            "    if ($_.Name -match 'rtl.msi') {",
-            "        Expand-MsiArchive $_ \"$dir\\LocalApp\\Programs\\Swift\\Runtimes\\0.0.0\\usr\\bin\"",
-            "    } else {",
-            "        Expand-MsiArchive $_ \"$dir\"",
-            "    }",
-            "}",
-            "if (Test-Path \"$dir\\SourceDir\") {",
-            "    Get-ChildItem \"$dir\\SourceDir\" | Copy-Item -Destination \"$dir\" -Force -Recurse",
-            "    Remove-Item \"$dir\\SourceDir\" -Recurse | Out-Null",
-            "}",
-            "Remove-Item \"$dir\\$fname\",\"$dir\\extracted\" -Recurse | Out-Null"
+            "Expand-DarkArchive \"$dir\\$fname\" \"$dir\\extracted\" -Removal",
+            "Get-ChildItem \"$dir\\extracted\\AttachedContainer\\*.msi\" | ForEach-Object { Expand-MsiArchive $_ \"$dir\" }",
+            "@('extracted') | ForEach-Object { Remove-Item \"$dir\\$_\" -Recurse }"
         ]
     },
     "env_add_path": [
-        "LocalApp\\Programs\\Swift\\Toolchains\\0.0.0+Asserts\\usr\\bin",
-        "LocalApp\\Programs\\Swift\\Runtimes\\0.0.0\\usr\\bin"
+        "Developer\\Toolchains\\unknown-Asserts-development.xctoolchain\\usr\\bin",
+        "runtime-development\\bin"
     ],
     "env_set": {
-        "SDKROOT": "$dir\\LocalApp\\Programs\\Swift\\Platforms\\0.0.0\\Windows.platform\\Developer\\SDKs\\Windows.sdk",
-        "DEVELOPER_DIR": "$dir\\LocalApp\\Programs\\Swift\\Platforms\\0.0.0\\Windows.platform\\Developer"
+        "SDKROOT": "$dir\\Developer\\Platforms\\Windows.platform\\Developer\\SDKs\\Windows.sdk",
+        "DEVELOPER_DIR": "$dir\\Developer"
     },
     "checkver": {
         "url": "https://dorado-api.deno.dev/swift-tmp",
@@ -52,7 +38,7 @@
         }
     },
     "notes": [
-        "Swift Toolchain does not bundle Python39 which is a requirement for LLDB to work.",
-        "Please install Python39 from versions/python39 if you want to use the LLDB debugger."
+        "To make swift toolchain work, you must have Visual Studio and Windows SDK components installed.",
+        "Please read https://www.swift.org/getting-started/#support-files for Supporting Files installation guide."
     ]
 }
