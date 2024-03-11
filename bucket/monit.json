@@ -1,34 +1,26 @@
 {
     "version": "0.8.1",
-    "description": "🎯桌面小组件。Desktop Widget.",
-    "homepage": "https://monit.fzf404.art",
-    "license": {
-        "identifier": "MIT",
-        "url": "https://github.com/fzf404/Monit/blob/legacy-webpack/LICENSE"
+    "description": "用于展示各种信息的桌面小组件",
+    "homepage": "https://github.com/fzf404/Monit",
+    "license": "MIT",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/fzf404/Monit/releases/download/v0.8.1/Monit-0.8.1-win-x64.7z",
+            "hash": "848db7b2cfbf5293cdd810ca5a08c1a80688b505f6f25b2287bde81e794589a9"
+        }
     },
-    "url": "https://github.com/fzf404/Monit/releases/download/v0.8.1/Monit-0.8.1-win-x64.7z",
-    "hash": "848db7b2cfbf5293cdd810ca5a08c1a80688b505f6f25b2287bde81e794589a9",
     "shortcuts": [
         [
             "Monit.exe",
             "Monit"
         ]
     ],
-    "pre_install": [
-        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-        "persist -dir @(\"$user_AppData\\monit\") @(\"$persist_dir\\monit\")",
-        "create_app_lnk \"$dir\\Monit.exe\" \"$desktop\\Monit.lnk\""
-    ],
-    "pre_uninstall": [
-        "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
-        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-        "stop_process",
-        "remove_files @(\"$desktop\\Monit.lnk\",\"$user_AppData\\monit\")"
-    ],
-    "checkver": {
-        "github": "https://github.com/fzf404/Monit"
-    },
+    "checkver": "github",
     "autoupdate": {
-        "url": "https://github.com/fzf404/Monit/releases/download/v$version/Monit-$version-win-x64.7z"
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/fzf404/Monit/releases/download/v$version/Monit-$version-win-x64.7z"
+            }
+        }
     }
 }
