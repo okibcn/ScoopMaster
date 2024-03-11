@@ -1,19 +1,23 @@
 {
     "version": "4.9.5",
-    "description": "Explore, discover, and have fun with your music using our beautiful, custom-built music player",
-    "homepage": "https://www.plex.tv/plexamp/",
-    "license": "Proprietary",
+    "description": "Plexamp. A beautiful, dedicated Plex music player with tons of goodies for audiophile purists, music curators, and hipsters looking for their next aural fix.",
+    "homepage": "https://plexamp.com/",
+    "license": "Apache-2.0",
+    "changelog": "https://forums.plex.tv/t/plexamp-release-notes/",
+    "url": "https://plexamp.plex.tv/plexamp.plex.tv/desktop/Plexamp%20Setup%204.9.5.exe#/dl.7z",
+    "hash": "325ce15f181eca16522a8a597f338e4a2c0b6aa5d9838a08a79ae38a37ed84fc",
+    "extract_dir": "$PLUGINSDIR",
     "architecture": {
         "64bit": {
-            "url": "https://plexamp.plex.tv/plexamp.plex.tv/desktop/Plexamp%20Setup%204.9.5.exe#/dl.7z",
-            "hash": "325ce15f181eca16522a8a597f338e4a2c0b6aa5d9838a08a79ae38a37ed84fc"
+            "installer": {
+                "script": [
+                    "Remove-Item \"$dir\\*\" -Exclude \"app-64.7z\"",
+                    "Expand-7zipArchive \"$dir\\app-64.7z\" \"$dir\"",
+                    "Remove-Item \"$dir\\app-64.7z\""
+                ]
+            }
         }
     },
-    "pre_install": "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\" -Removal",
-    "post_install": [
-        "Remove-Item \"$dir\\`$PLUGINSDIR\" -Force -Recurse",
-        "Remove-Item \"$dir\\Uninstall Plexamp.exe\" -Force"
-    ],
     "bin": "Plexamp.exe",
     "shortcuts": [
         [
@@ -22,14 +26,11 @@
         ]
     ],
     "checkver": {
-        "url": "https://www.plex.tv/plexamp/",
-        "regex": "Plexamp\\sv(?<version>\\d+\\.\\d+\\.\\d+)"
+        "url": "https://github.com/microsoft/winget-pkgs/tree/master/manifests/p/Plex/Plexamp",
+        "regex": "manifests/p/Plex/Plexamp/([\\d.]+)",
+        "reverse": true
     },
     "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://plexamp.plex.tv/plexamp.plex.tv/desktop/Plexamp%20Setup%20$version.exe#/dl.7z"
-            }
-        }
+        "url": "https://plexamp.plex.tv/plexamp.plex.tv/desktop/Plexamp%20Setup%20$version.exe#/dl.7z"
     }
 }
