@@ -1,18 +1,16 @@
 {
     "version": "1.10.6",
     "description": "Open-source mod manager from Nexus Mods",
-    "homepage": "https://www.nexusmods.com/about/vortex/",
+    "homepage": "https://www.nexusmods.com/about/vortex",
     "license": "GPL-3.0-or-later",
     "architecture": {
         "64bit": {
             "url": "https://github.com/Nexus-Mods/Vortex/releases/download/v1.10.6/vortex-setup-1.10.6.exe#/dl.7z",
-            "hash": "9cf7d3818ee4dbbde2dc98a076e7698b16c1a257c8f8fabfc6009c8d08763308",
-            "installer": {
-                "script": [
-                    "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\"",
-                    "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\Uninstall*\" -Force -Recurse"
-                ]
-            }
+            "hash": "sha512:bd9559e4c630aa5dd9d36e49cc12ebed570b3b9b71048c3777d3258969c8e7a45bf2dfc43d95840df281f5930722fd9be5bad61ad2d4c483af7fc28b76da04b3",
+            "pre_install": [
+                "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\"",
+                "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\Uninstall*\" -Recurse"
+            ]
         }
     },
     "shortcuts": [
@@ -27,12 +25,12 @@
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://github.com/Nexus-Mods/Vortex/releases/download/v$version/vortex-setup-$version.exe#/dl.7z",
-                "hash": {
-                    "url": "https://github.com/Nexus-Mods/Vortex/releases/download/v$version/latest.yml",
-                    "find": "sha2: $sha256"
-                }
+                "url": "https://github.com/Nexus-Mods/Vortex/releases/download/v$version/vortex-setup-$version.exe#/dl.7z"
             }
+        },
+        "hash": {
+            "url": "$baseurl/latest.yml",
+            "regex": "sha512: $base64"
         }
     }
 }
