@@ -1,31 +1,33 @@
 {
-    "homepage": "https://anytype.io/",
     "version": "0.38.0",
-    "license": "freeware",
+    "description": "Anytype is a local-first, P2P and open-source note-taking application",
+    "homepage": "https://anytype.io/",
+    "license": "Proprietary",
     "architecture": {
         "64bit": {
-            "url": "https://anytype-release.fra1.cdn.digitaloceanspaces.com/Anytype%20Setup%200.38.0.exe",
-            "hash": "cd5f1fe25345cea1402ff890dfb7eac7811e083bd17b57e76f680438ff0c6575"
+            "url": "https://anytype-release.fra1.cdn.digitaloceanspaces.com/Anytype%20Setup%200.38.0.exe#/dl.7z",
+            "hash": "cd5f1fe25345cea1402ff890dfb7eac7811e083bd17b57e76f680438ff0c6575",
+            "pre_install": [
+                "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app*.7z\" \"$dir\"",
+                "Remove-Item \"$dir\\`$R0\", \"$dir\\`$PLUGINSDIR\" -Force -Recurse"
+            ]
         }
     },
-    "installer": {
-        "script": [
-            "$file = (Get-ChildItem \"$dir\" 'Anytype*.exe' | Select-Object -First 1).FullName",
-            "Expand-7ZipArchive \"$file\" \"$dir\\\" -Removal",
-            "Expand-7ZipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\" -Removal",
-            "Remove-Item \"$dir\\`$PLUGINSDIR\",\"$dir\\`$R0\"  -Force -Recurse"
-        ]
-    },
+    "bin": "Anytype.exe",
     "shortcuts": [
         [
-            "AnyType.exe",
-            "AnyType"
+            "Anytype.exe",
+            "Anytype"
         ]
     ],
+    "checkver": {
+        "url": "https://download.anytype.io/",
+        "regex": "Desktop \\n\\s+?<span class=\"version\">v(\\d+?\\.\\d+?\\.\\d+?)<"
+    },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://anytype-release.fra1.cdn.digitaloceanspaces.com/Anytype%20Setup%20$version.exe"
+                "url": "https://anytype-release.fra1.cdn.digitaloceanspaces.com/Anytype%20Setup%20$version.exe#/dl.7z"
             }
         }
     }
