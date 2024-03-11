@@ -1,0 +1,75 @@
+{
+    "version": "3.8.3.2696",
+    "description": "MuMu Player 12 Large Screen, Unlimited Games Android 12 | Customize keep-alive apps | Multi-Instance",
+    "homepage": "https://mumuglobal.com",
+    "license": {
+        "identifier": "Freeware",
+        "url": "https://www.mumuplayer.com/news/update/20190906/30607_831430.html"
+    },
+    "architecture": {
+        "64bit": {
+            "url": "http://a11.gdl.netease.com/MuMuNG-setup-V3.8.3.2696-overseas-0221213808.exe#/setup.exe",
+            "hash": "md5:0F81941EFFD3BCDD3D198E0FBFDACB9A"
+        }
+    },
+    "installer": {
+        "script": [
+            "if (!(is_admin)) { \"$app requires admin rights to $cmd\"; break }",
+            "$installdir = \"$(appdir $app $global)\\current\"",
+            "persist_data $manifest $installdir $persist_dir",
+            "Rename-Item -Path $dir -NewName $installdir",
+            "Start-Process -Wait \"$installdir\\setup.exe\" \"/S /auto_start=false /fchannel=gw-overseas12 /D=$installdir \" -Verb RunAs",
+            "unlink_persist_data $manifest $installdir",
+            "Remove-Item \"$Env:USERPROFILE\\Desktop\\MuMu*12.lnk\"",
+            "Remove-Item \"$Env:APPDATA\\Microsoft\\Windows\\Start Menu\\Programs\\MuMu*12\" -Recurse",
+            "Remove-Item \"$installdir\\setup.exe\"",
+            "Rename-Item -Path \"$installdir\" -NewName \"$dir\""
+        ]
+    },
+    "shortcuts": [
+        [
+            "shell\\MuMuPlayer.exe",
+            "MuMu Player 12"
+        ],
+        [
+            "shell\\MuMuMultiPlayer.exe",
+            "MuMu MultiPlayer 12"
+        ]
+    ],
+    "pre_uninstall": [
+        "$installdir = \"$(appdir $app $global)\\current\"",
+        "unlink_persist_data $manifest $installdir"
+    ],
+    "uninstaller": {
+        "script": [
+            "if (!(is_admin)) { \"$app requires admin rights to $cmd\"; break }",
+            "$uninstaller = (Get-ItemProperty -ErrorAction Ignore \"HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\MuMuPlayerGlobal-12.0\" -Name UninstallString).UninstallString",
+            "if (!$uninstaller) { $uninstaller = (Get-ItemProperty -ErrorAction Ignore \"HKLM:\\SOFTWARE\\Wow6432Node\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\MuMuPlayerGlobal-12.0\" -Name UninstallString).UninstallString }",
+            "if (!$uninstaller) { warn 'Could not find app info in registry' }",
+            "$uninstaller = $uninstaller.Substring(1, $uninstaller.Length - 2)",
+            "if (-not (Test-Path -Path $uninstaller -PathType Leaf)) { $uninstaller = \"$(appdir $app $global)\\current\\uninstall.exe\" }",
+            "if (Test-Path -Path $uninstaller -PathType Leaf) { Start-Process -Wait \"$uninstaller\" \"/S /no_browser /auto_start=false /fchannel=gw-overseas12 /U=$dir\" -Verb RunAs}",
+            "persist_data $manifest $installdir $persist_dir"
+        ]
+    },
+    "persist": "vms",
+    "checkver": {
+        "script": [
+            "$url = \"https://api.mumuglobal.com/api/v1/download/nemux?architecture=x86_64&machine=%22%22\"",
+            "$response = Invoke-RestMethod -Uri $url -Method Post",
+            "Write-Output $response.data.mumu.version $response.data.mumu.checksum $response.data.mumu.link"
+        ],
+        "regex": "(?<version>[\\d.]+)\\s(?<filemd5>[A-Z\\d]{32})\\s.*a11.gdl.netease.com/(?<filename>.+)"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "http://a11.gdl.netease.com/$matchFilename#/setup.exe",
+                "hash": {
+                    "url": "http://httpbin.org/get?md5=$matchFilemd5",
+                    "regex": "md5=.*?$md5"
+                }
+            }
+        }
+    }
+}
