@@ -1,35 +1,33 @@
 {
-    "version": "2.2.5",
+    "$schema": "https://raw.githubusercontent.com/ScoopInstaller/Scoop/master/schema.json",
     "homepage": "https://github.com/XIU2/CloudflareSpeedTest",
-    "description": "在 Cloudflare CDN 找到适合自己的 IP",
-    "license": {
-        "identifier": "GPL-3.0",
-        "url": "https://github.com/XIU2/CloudflareSpeedTest/blob/master/LICENSE"
-    },
-    "architecture": {
-        "64bit": {
-            "url": "https://github.com/XIU2/CloudflareSpeedTest/releases/download/v2.2.5/CloudflareST_windows_amd64.zip",
-            "hash": "6b40691bda8af67a46cc4d67527b561ee307e37b0da86af150a0d8f8d18a98f2"
-        }
-    },
-    "shortcuts": [
-        [
-            "CloudflareST.exe",
-            "CloudflareST"
+    "license": "GPLv3",
+    "version": "2.2.5",
+    "url": "https://github.com/XIU2/CloudflareSpeedTest/releases/download/v2.2.5/CloudflareST_windows_amd64.zip",
+    "hash": "6b40691bda8af67a46cc4d67527b561ee307e37b0da86af150a0d8f8d18a98f2",
+    "installer": {
+        "script": [
+            "if (!(Test-Path \"$persist_dir\\result.csv\")) {",
+            "    New-Item -ItemType File -Path \"$dir\\result.csv\" | Out-Null",
+            "}",
+            "if (!(Test-Path \"$dir\\cfst.bat\")) {",
+            "    Set-Content -path \"$dir\\cfst.bat\" -value \"$dir\\CloudflareST.exe -f $dir\\ip.txt -url https://cdn.cloudflare.steamstatic.com/steam/apps/256843155/movie_max.mp4 -tll 150 -o $persist_dir\\result.csv\"",
+            "}"
         ]
-    ],
+    },
     "bin": [
-        [
-            "CloudflareST.exe",
-            "CloudflareST"
-        ]
+        "cfst.bat",
+        "CloudflareST.exe"
     ],
-    "checkver": "github",
+    "persist": [
+        "result.csv",
+        "cfst.bat"
+    ],
+    "checkver": {
+        "github": "https://github.com/XIU2/CloudflareSpeedTest",
+        "re": "/tag/v([\\d.]+)"
+    },
     "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://github.com/XIU2/CloudflareSpeedTest/releases/download/v$version/CloudflareST_windows_amd64.zip"
-            }
-        }
+        "url": "https://github.com/XIU2/CloudflareSpeedTest/releases/download/v$version/CloudflareST_windows_amd64.zip"
     }
 }
