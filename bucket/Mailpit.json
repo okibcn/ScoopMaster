@@ -1,0 +1,38 @@
+{
+    "version": "1.14.3",
+    "description": "为开发人员提供的带有应用程序接口的电子邮件和 SMTP 测试工具。An email and SMTP testing tool with API for developers.",
+    "homepage": "https://mailpit.axllent.org",
+    "license": {
+        "identifier": "MIT",
+        "url": "https://github.com/axllent/mailpit/blob/master/LICENSE"
+    },
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/axllent/mailpit/releases/download/v1.14.3/mailpit-windows-amd64.zip",
+            "hash": "04b04ed3c090a2de0549a2973915511c82fa5f22a04ae6c04847f4e117989991"
+        },
+        "arm64": {
+            "url": "https://github.com/axllent/mailpit/releases/download/v1.14.3/mailpit-windows-arm64.zip",
+            "hash": "155c95e91b4fda82c487717b29e3ba6d89c13ab2a563c43649f0c743a59ddff2"
+        }
+    },
+    "bin": "mailpit.exe",
+    "checkver": {
+        "github": "https://github.com/axllent/mailpit"
+    },
+    "pre_uninstall": [
+        "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "stop_process"
+    ],
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/axllent/mailpit/releases/download/v$version/mailpit-windows-amd64.zip"
+            },
+            "arm64": {
+                "url": "https://github.com/axllent/mailpit/releases/download/v$version/mailpit-windows-arm64.zip"
+            }
+        }
+    }
+}

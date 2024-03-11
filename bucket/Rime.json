@@ -1,35 +1,30 @@
 {
     "version": "0.15.0",
-    "description": "一个跨平台的开源输入法，Windows 中叫小狼毫。A cross-platform open source input method.It's called weasel on Windows.",
-    "homepage": "https://rime.im/",
-    "license": {
-        "identifier": "GNU General Public License v3.0",
-        "url": "https://github.com/rime/weasel/blob/master/LICENSE.txt"
-    },
-    "url": "https://github.com/rime/weasel/releases/download/0.15.0/weasel-0.15.0.0-installer.exe",
-    "hash": "21b2b3ba19f11b308db3c50ce343a14a42ce10331e3c0b7021850ec6726dcd10",
-    "pre_install": [
-        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-        "$path_exe=\"$dir\\weasel-$($version).0-installer.exe\"",
-        "persist -dir @(\"$user_AppData\\Rime\") @(\"$persist_dir\\Rime\")",
-        "& $path_exe /S /D=$dir",
-        "sleep_install \"$dir\\weasel-$($version)\\uninstall.exe\"",
-        "clean_redundant_files @($path_exe)"
+    "description": "小狼毫输入法",
+    "homepage": "https://github.com/gendloop/Rime",
+    "license": "LGPL-2.1-or-later",
+    "notes": [
+        "<Installer>"
     ],
-    "pre_uninstall": [
-        "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
-        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-        "confirm (handle_lang {\"卸载暂停。`n请先切换到其他输入法，然后按下 Enter(回车键) 继续卸载，或者按下其他任意键取消本次卸载。\"} {\"Uninstall paused.`nPlease switch to another input method, and then press Enter to continue or other key to cancel the uninstall.\"})",
-        "stop_process $false",
-        "remove_files @(\"$user_AppData\\Rime\")",
-        "$ui_exe=\"$dir\\weasel-$($version)\\uninstall.exe\"",
-        "try{ & $ui_exe /S }catch{}",
-        "sleep_uninstall $ui_exe"
-    ],
-    "checkver": {
-        "github": "https://github.com/rime/weasel"
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/gendloop/Rime/releases/download/v0.15.0/Rime-0.15.0-win64.7z",
+            "hash": "bf0d26b74f7871353fdd8f0ce057748ddc785646b77459b52c8dba290a4b4da1"
+        }
     },
+    "installer": {
+        "script": [
+            "Push-Location \"$dir\"",
+            "Start-Process Rime-$version-win64.exe",
+            "Pop-Location"
+        ]
+    },
+    "checkver": "github",
     "autoupdate": {
-        "url": "https://github.com/rime/weasel/releases/download/$version/weasel-$version.0-installer.exe"
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/gendloop/Rime/releases/download/v$version/Rime-$version-win64.7z"
+            }
+        }
     }
 }
