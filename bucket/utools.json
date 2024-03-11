@@ -1,39 +1,52 @@
 {
     "version": "4.4.1",
-    "description": "新一代效率工具平台，自由组合插件应用，打造专属你的趁手工具集",
-    "homepage": "https://u.tools/",
-    "license": "Freeware",
+    "description": "新一代效率工具平台，自由组合插件应用，打造专属你的趁手工具集。",
+    "homepage": "https://u.tools",
+    "license": "Unknown",
     "architecture": {
         "64bit": {
-            "url": "https://res.u-tools.cn/version2/uTools-4.4.1.exe#/dl.7z",
-            "hash": "61be90771bf3c7370f28c296836690edfbe4496c365f2fe22770f32065b0d61d",
-            "installer": {
-                "script": "Expand-7zipArchive \"$dir\\`$PLUGINSDIR/app-64.7z\" \"$dir\""
-            }
+            "url": "https://res.u-tools.cn/version2/uTools-4.4.1.exe#/_installer_.exe",
+            "hash": "61be90771bf3c7370f28c296836690edfbe4496c365f2fe22770f32065b0d61d"
         },
         "32bit": {
-            "url": "https://res.u-tools.cn/version2/uTools-4.4.1-ia32.exe#/dl.7z",
-            "hash": "b0fdd677cc31946181bd72828dc28ddb0f561279e2ea3e5e07bf6d1edb031244",
-            "installer": {
-                "script": "Expand-7zipArchive \"$dir\\`$PLUGINSDIR/app-32.7z\" \"$dir\""
-            }
+            "url": "https://res.u-tools.cn/version2/uTools-4.4.1-ia32.exe#/_installer_.exe",
+            "hash": "b0fdd677cc31946181bd72828dc28ddb0f561279e2ea3e5e07bf6d1edb031244"
         }
     },
-    "post_install": "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\`$R0\" -Force -Recurse",
     "shortcuts": [
         [
             "uTools.exe",
             "uTools"
         ]
     ],
-    "checkver": "version: 'V([\\d.]+)'",
+    "pre_install": [
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "$path_exe= \"$dir\\_installer_.exe\"",
+        "& $path_exe /S /D=$dir",
+        "$core_exe=\"$dir\\uTools.exe\"",
+        "sleep_install $core_exe",
+        "persist -dir @(\"$user_AppData\\uTools\") @(\"$persist_dir\\uTools\")",
+        "clean_redundant_files @($path_exe,\"$apps_lnk\\uTools.lnk\")",
+        "remove_app_lnk @(\"uTools.lnk\")"
+    ],
+    "pre_uninstall": [
+        "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "stop_process $false",
+        "remove_files @(\"$user_AppData\\uTools\")",
+        "$ui_exe=\"$dir\\Uninstall uTools.exe\"",
+        "try{ & $ui_exe /S }catch{}",
+        "sleep_uninstall $ui_exe",
+        "remove_files @(\"$user_LocalAppData\\utools-updater\")"
+    ],
+    "checkver": "version:.+V([\\d\\.]+)",
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://res.u-tools.cn/version2/uTools-$version.exe#/dl.7z"
+                "url": "https://res.u-tools.cn/version2/uTools-$version.exe#/_installer_.exe"
             },
             "32bit": {
-                "url": "https://res.u-tools.cn/version2/uTools-$version-ia32.exe#/dl.7z"
+                "url": "https://res.u-tools.cn/version2/uTools-$version-ia32.exe#/_installer_.exe"
             }
         }
     }
