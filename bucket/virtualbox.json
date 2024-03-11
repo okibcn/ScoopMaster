@@ -1,30 +1,59 @@
 {
+    "##": "see https://github.com/ACooper81/scoop-apps/blob/master/bucket/VirtualBox-Install.json or https://github.com/cc713/ownscoop/blob/master/bucket/virtualbox.json",
     "version": "7.0.14",
     "description": "Powerful x86 and AMD64/Intel64 virtualization product for enterprise as well as home use.",
     "homepage": "https://www.virtualbox.org/",
     "license": "GPL-2.0-only",
-    "url": "http://download.virtualbox.org/virtualbox/7.0.14/VirtualBox-7.0.14-161095-Win.exe#/VBoxSetup.exe",
-    "hash": "4719b38e7a276b43099ce4d6349e6bfc80edf644ee59d9dafd264bc7ed7691f4",
+    "architecture": {
+        "64bit": {
+            "url": "https://download.virtualbox.org/virtualbox/7.0.14/VirtualBox-7.0.14-161095-Win.exe#/VBoxSetup.exe",
+            "hash": "4719b38e7a276b43099ce4d6349e6bfc80edf644ee59d9dafd264bc7ed7691f4"
+        }
+    },
     "installer": {
-        "script": "Start-Process cmd -Verb Runas \"/c $dir\\VBoxSetup.exe --msiparams INSTALLDIR=$dir VBOX_START=0 REBOOT=ReallySuppress --silent\" -Wait -WindowStyle hidden"
+        "script": "Start-Process -Wait -WindowStyle Hidden cmd \"/c call `\"$dir\\VBoxSetup.exe`\" --msiparams INSTALLDIR=`\"$dir`\" VBOX_START=0 VBOX_INSTALLDESKTOPSHORTCUT=0 VBOX_INSTALLQUICKLAUNCHSHORTCUT=0 REBOOT=ReallySuppress --silent && icacls `\"$dir`\" /grant Everyone:F /T\" -Verb RunAs"
     },
-    "post_install": "remove-item \"$dir\\VBoxSetup.exe\"",
     "uninstaller": {
-        "script": "Start-Process cmd -Verb Runas \"/c msiexec /x $dir\\VirtualBox.exe /qn\" -Wait -WindowStyle hidden"
+        "script": [
+            "$id = wmic product where \"\"\"name like 'Oracle VM VirtualBox%'\"\"\" get IdentifyingNumber | find /i \"\"\"-\"\"\"",
+            "Start-Process -Wait -WindowStyle Hidden cmd \"/c msiexec /x $id /qn && icacls `\"$dir`\" /grant Everyone:F /T\" -Verb RunAs"
+        ]
     },
-    "bin": "VBoxManage.exe",
+    "bin": [
+        "vbox-img.exe",
+        "VBoxAudioTest.exe",
+        "VBoxAutostartSvc.exe",
+        "VBoxBalloonCtrl.exe",
+        "VBoxBugReport.exe",
+        "VBoxDTrace.exe",
+        "VBoxExtPackHelperApp.exe",
+        "VBoxHeadless.exe",
+        "VBoxManage.exe",
+        "VBoxNetDHCP.exe",
+        "VBoxNetNAT.exe",
+        "VBoxSDS.exe",
+        "VBoxSVC.exe",
+        "VBoxTestOGL.exe",
+        "VBoxWebSrv.exe",
+        "VirtualBox.exe",
+        "VirtualBoxVM.exe"
+    ],
     "shortcuts": [
         [
             "VirtualBox.exe",
-            "Oracle VM VirtualBox"
+            "VirtualBox"
         ]
     ],
     "checkver": {
-        "url": "https://update.virtualbox.org/query.php?platform=WINDOWS_64BITS_GENERIC&version=0.0.0",
-        "regex": "VirtualBox-(?<version>[\\d.]+)-(?<revision>[\\d]+)-Win.exe"
+        "url": "https://www.virtualbox.org/wiki/Downloads",
+        "regex": "https://download.virtualbox.org/virtualbox/(?<version>[\\d.]+)/VirtualBox-(?<patch>[\\d.]+.)-(?<revision>[\\d]+)-Win.exe"
     },
     "autoupdate": {
-        "url": "http://download.virtualbox.org/virtualbox/$version/VirtualBox-$version-$matchRevision-Win.exe#/VBoxSetup.exe",
+        "architecture": {
+            "64bit": {
+                "url": "https://download.virtualbox.org/virtualbox/$version/VirtualBox-$matchPatch-$matchRevision-Win.exe#/VBoxSetup.exe"
+            }
+        },
         "hash": {
             "url": "https://www.virtualbox.org/download/hashes/$version/SHA256SUMS"
         }
