@@ -1,32 +1,41 @@
 {
     "version": "6.6.5.635",
-    "description": "PC Cleaning and Speed up Tool",
-    "license": "https://www.wisecleaner.com",
-    "homepage": "https://www.wisecleaner.com",
-    "architecture": {
-        "64bit": {
-            "url": "https://downloads.wisecleaner.com/soft/WiseCare365_6.6.5.635.zip",
-            "hash": "f5200b4f6d0db24c3c5d7bab5d52dc0045f1470f9a74591ec9a89af398e25bea",
-            "extract_dir": "Wise Care 365"
-        }
-    },
-    "bin": "WiseCare365.exe",
+    "description": "Windows 系统清理和加速工具。Free Windows PC Cleaner and Speed up Tool",
+    "homepage": "https://www.wisecleaner.com/wise-care-365.html",
+    "license": "Freeware",
+    "url": "https://downloads.wisecleaner.com/soft/WiseCare365_6.6.5.635.exe#/_installer_.exe",
+    "hash": "00c436abeecd3fed64f48306ea9f4ce1f735a3299de5a3b761d9cbd96a69d36d",
     "shortcuts": [
         [
             "WiseCare365.exe",
             "Wise Care 365"
         ]
     ],
+    "pre_install": [
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "$path_exe=\"$dir\\_installer_.exe\"",
+        "& $path_exe /VerySilent /Dir=\"$dir\"",
+        "$core_exe=\"$dir\\WiseCare365.exe\"",
+        "sleep_install $core_exe",
+        "persist -dir @(\"$user_AppData\\Wise Care 365\") @(\"$persist_dir\\Wise Care 365\")",
+        "persist -file @(\"$dir\\DefragOptions.ini\") @(\"$persist_dir\\DefragOptions.ini\")",
+        "clean_redundant_files @($path_exe,\"$admin_apps_lnk\\Wise Care 365\")",
+        "remove_app_lnk @(\"Wise Care 365.lnk\")"
+    ],
+    "pre_uninstall": [
+        "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "confirm (handle_lang {\"卸载暂停。`nWiseCare365 需要先手动关闭软件再进行卸载，请确认已经关闭了软件。`n然后按下 Enter(回车键) 继续进行卸载，或者按下其他任意键取消本次卸载。\"} {\"Uninstall paused.`nWiseCare365 needs to be manually closed to continue to uninstall.`nPlease confirm that you have closed it.`nPress Enter to continue or other key to cancel the uninstall.\"})",
+        "remove_files @(\"$user_AppData\\Wise Care 365\")",
+        "$ui_exe=\"$dir\\unins000.exe\"",
+        "try{ & $ui_exe /VerySilent }catch{}",
+        "sleep_uninstall $ui_exe"
+    ],
     "checkver": {
         "url": "https://www.wisecleaner.com/download.html",
-        "regex": "WiseCare365_(?<version>[\\d\\.]+)\\.zip"
+        "regex": "WiseCare365_([\\d\\.]+)\\.zip"
     },
     "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://downloads.wisecleaner.com/soft/WiseCare365_$version.zip",
-                "extract_dir": "Wise Care 365"
-            }
-        }
+        "url": "https://downloads.wisecleaner.com/soft/WiseCare365_$version.exe#/_installer_.exe"
     }
 }
