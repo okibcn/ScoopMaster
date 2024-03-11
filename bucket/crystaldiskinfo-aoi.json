@@ -1,50 +1,56 @@
 {
+    "$schema": "https://raw.githubusercontent.com/ScoopInstaller/Scoop/master/schema.json",
     "version": "9.2.3",
-    "description": "A HDD/SSD utility software which supports a part of USB, Intel RAID and NVMe.",
-    "homepage": "https://crystalmark.info/en/",
+    "description": "A HDD/SSD utility software which supports a part of USB, RAID and NVMe",
+    "homepage": "https://crystalmark.info/en/software/crystaldiskinfo/",
     "license": "MIT",
-    "url": "https://zenlayer.dl.sourceforge.net/project/crystaldiskinfo/9.2.3/CrystalDiskInfo9_2_3Aoi.zip",
-    "hash": "f69a9d3dac15e26ddc03cc5e4bf924c023d15168760472361a34c456f5fe10b4",
+    "url": "https://sourceforge.net/projects/crystaldiskinfo/files/9.2.3/CrystalDiskInfo9_2_3Aoi.zip",
+    "hash": "sha1:4c15c2cd507abe50da392672db006876fc70a364",
+    "pre_install": [
+        "if (!(Test-Path \"$persist_dir\\DiskInfo.ini\")) { New-Item \"$dir\\DiskInfo.ini\" | Out-Null }",
+        "# Manually persist AMD RAID plugins (AMD_RC2t7x64.dll, AMD_RC2t7x86.dll)",
+        "if (Test-Path \"$persist_dir\\AMD_RC2t7*.dll\") { Copy-Item \"$persist_dir\\AMD_RC2t7*.dll\" \"$dir\\\" }"
+    ],
     "architecture": {
         "64bit": {
+            "bin": [
+                [
+                    "DiskInfo64A.exe",
+                    "DiskInfo-Aoi"
+                ]
+            ],
             "shortcuts": [
                 [
                     "DiskInfo64A.exe",
-                    "CrystalDiskInfo Aoi Edition"
+                    "CrystalDiskInfo (Aoi Edition)"
                 ]
             ]
         },
         "32bit": {
-            "shortcuts": [
+            "bin": [
                 [
                     "DiskInfo32A.exe",
-                    "CrystalDiskInfo Aoi Edition"
+                    "DiskInfo-Aoi"
                 ]
-            ]
-        },
-        "arm64": {
+            ],
             "shortcuts": [
                 [
-                    "DiskInfoA64A.exe",
-                    "CrystalDiskInfo Aoi Edition"
+                    "DiskInfo32A",
+                    "CrystalDiskInfo (Aoi Edition)"
                 ]
             ]
         }
     },
-    "pre_install": [
-        "if (!(Test-Path \"$persist_dir\\DiskInfo.ini\")) {",
-        "    New-Item \"$dir\\DiskInfo.ini\" -ItemType File | Out-Null",
-        "}"
-    ],
     "persist": [
-        "DiskInfo.ini",
-        "Smart"
+        "Smart",
+        "DiskInfo.ini"
     ],
+    "pre_uninstall": "if (Test-Path \"$dir\\AMD_RC2t7*.dll\") { Copy-Item \"$dir\\AMD_RC2t7*.dll\" \"$persist_dir\\\" }",
     "checkver": {
-        "url": "https://crystalmark.info/en/download/",
-        "regex": "CrystalDiskInfo ([\\w\\.]+) &#8211;"
+        "sourceforge": "crystaldiskinfo",
+        "regex": "([\\d.a-zA-Z]+)/CrystalDiskInfo.*.zip"
     },
     "autoupdate": {
-        "url": "https://zenlayer.dl.sourceforge.net/project/crystaldiskinfo/$version/CrystalDiskInfo$underscoreVersionAoi.zip"
+        "url": "https://sourceforge.net/projects/crystaldiskinfo/files/$version/CrystalDiskInfo$underscoreVersionAoi.zip"
     }
 }
