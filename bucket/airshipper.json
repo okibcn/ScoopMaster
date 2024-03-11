@@ -1,23 +1,32 @@
 {
-    "version": "0.11.0",
+    "homepage": "https://veloren.net/download/",
     "description": "The official Veloren launcher",
-    "homepage": "https://veloren.net",
     "license": "GPL-3.0-only",
+    "version": "0.11.0",
     "architecture": {
         "64bit": {
             "url": "https://github.com/veloren/Airshipper/releases/download/v0.11.0/airshipper-windows.msi",
-            "hash": "b49d28de218f87375945ffe0ff32605e2653b2c2a52fdc1084108358d97acca6",
-            "extract_dir": "PFiles\\Airshipper"
+            "hash": "b49d28de218f87375945ffe0ff32605e2653b2c2a52fdc1084108358d97acca6"
         }
     },
+    "pre_install": [
+        "robocopy \"$dir\\PFiles\\Airshipper\" \"$dir\" /MOVE /E /NFL /NDL /NJH /NJS /nc /ns /np",
+        "Remove-Item -Force -Recurse -Path \"$dir\\PFiles\""
+    ],
     "shortcuts": [
         [
             "airshipper.exe",
             "Airshipper"
+        ],
+        [
+            "airshipper.exe",
+            "Veloren"
         ]
     ],
+    "bin": "airshipper.exe",
     "checkver": {
-        "github": "https://github.com/veloren/Airshipper"
+        "github": "https://github.com/veloren/Airshipper",
+        "regex": "Release (\\d+\\.\\d+\\.\\d+)"
     },
     "autoupdate": {
         "architecture": {
