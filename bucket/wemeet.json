@@ -1,36 +1,31 @@
 {
     "version": "3.24.3.406",
-    "description": "Tencent Meeting provides one-stop audio and video conferencing solutions.",
+    "description": "Tencent Wemeet App.",
     "homepage": "https://meeting.tencent.com/",
     "license": {
         "identifier": "Proprietary",
-        "url": "https://meeting.tencent.com/declare.html"
+        "url": "https://rule.tencent.com/rule/ab9ea528-0bf1-47b3-a8c3-f001b98912e2"
     },
-    "notes": "We don't persist your Tencent Meeting data, they are still storaged in \"$env:APPDATA\\Tencent\\WeMeet\".",
     "url": "https://updatecdn.meeting.qq.com/cos/dc4d3ae9e357a0b348759a6aca324bc2/TencentMeeting_0300000000_3.24.3.406.publish.officialwebsite.exe#/dl.7z",
-    "hash": "feb70b5a7b0e5f8e048237668b3b59ee7029f317672858027dd14e82be2f668a",
+    "hash": "md5:dc4d3ae9e357a0b348759a6aca324bc2",
     "post_install": [
-        "Rename-Item \"$dir\\`$_10_\" \"$dir\\$version\"",
-        "Remove-Item \"$dir\\$*\" -Recurse -Force -ErrorAction SilentlyContinue",
-        "Remove-Item \"$dir\\wemeetapp_new.exe\" -Force -ErrorAction SilentlyContinue"
+        "rni \"$dir\\`$_*_\" \"$dir\\$version\"",
+        "rm \"$dir\\$*\" -Recurse -Force -ErrorAction SilentlyContinue",
+        "rm \"$dir\\wemeetapp_new.exe\" -Force -ErrorAction SilentlyContinue"
     ],
-    "bin": [
-        [
-            "wemeetapp.exe",
-            "wemeet"
-        ]
-    ],
-    "shortcuts": [
-        [
-            "wemeetapp.exe",
-            "腾讯会议"
-        ]
-    ],
+    "bin": "wemeetapp.exe",
+    "shortcuts": [["wemeetapp.exe", "腾讯会议"]],
     "checkver": {
-        "url": "https://meeting.tencent.com/web-service/query-download-info?q=%5B%7B%22package-type%22:%22app%22,%22channel%22:%220300000000%22,%22platform%22:%22windows%22%7D%5D&nonce=AAAAAAAAAAAAAAAA",
-        "regex": "(?<Commitid>[0-9a-f]+)/TencentMeeting_0300000000_(?<Version>\\d+.\\d+.\\d+.\\d+).publish.officialwebsite.exe"
+        "url": "https://meeting.tencent.com/web-service/query-download-info?q%3D%5B%7B%22package-type%22%3A%22app%22%2C%22channel%22%3A%220300000000%22%2C%22platform%22%3A%22windows%22%7D%5D%26nonce%3D0000000000000000",
+        "jsonpath": "$.info-list[0].url",
+        "regex": "(?<commitid>w+)/TencentMeeting_0300000000_(?<version>.+).publish.officialwebsite.exe"
     },
     "autoupdate": {
-        "url": "https://updatecdn.meeting.qq.com/cos/$matchCommitid/TencentMeeting_0300000000_$matchVersion.publish.officialwebsite.exe#/dl.7z"
+        "url": "https://updatecdn.meeting.qq.com/cos/$matchCommitid/TencentMeeting_0300000000_$matchVersion.publish.officialwebsite.exe#/dl.7z",
+        "hash": {
+            "mode": "json",
+            "url": "https://meeting.tencent.com/web-service/query-download-info?q%3D%5B%7B%22package-type%22%3A%22app%22%2C%22channel%22%3A%220300000000%22%2C%22platform%22%3A%22windows%22%7D%5D%26nonce%3D0000000000000000",
+            "jsonpath": "$.info-list[0].md5"
+        }
     }
 }

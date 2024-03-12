@@ -1,12 +1,8 @@
 {
-    "$schema": "https://raw.githubusercontent.com/ScoopInstaller/Scoop/master/schema.json",
     "version": "9.9.7.21804",
-    "description": "An instant messaging software built with Electron and developed by Tencent.",
-    "homepage": "https://im.qq.com/pcqq/index.shtml",
-    "license": {
-        "identifier": "Proprietary",
-        "url": "https://ti.qq.com/agreement/index.html"
-    },
+    "description": "(NT版本) 一款能让你与你的朋友和家人保持联系的即时通讯工具。(NT version) An instant messaging tool that gives you the best way to keep in touch with your friends and family.",
+    "homepage": "https://im.qq.com/",
+    "license": "Unknown",
     "architecture": {
         "64bit": {
             "url": "https://dldir1v6.qq.com/qqfile/qq/QQNT/Windows/QQ_9.9.7_240305_x64_01.exe#/dl.7z",
@@ -17,49 +13,70 @@
             "hash": "89f0046c71938262261b2f976eee6246d91af58e66316f287e6aa75559bed9d6"
         }
     },
-    "extract_dir": "Files",
-    "post_install": "Remove-Item \"$dir\\Uninstall.exe\" -Force -ErrorAction SilentlyContinue",
     "shortcuts": [
         [
-            "QQ.exe",
+            "Files\\QQ.exe",
             "QQ"
         ]
     ],
+    "pre_install": [
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "$tencent_path=\"$user_Documents\\Tencent Files\"",
+        "$accountList=[array](Get-ChildItem $tencent_path | Where-Object { $_.BaseName -match \"\\d+\" -and (Test-Path \"$($_.FullName)\\nt_qq\") })",
+        "$persist_accountList=[array](Get-ChildItem \"$persist_dir\" | Where-Object { $_.BaseName -match \"\\d+\" -and (Test-Path \"$($_.FullName)\\nt_qq\") })",
+        "if($accountList){",
+        "   $account_dir=$accountList.FullName | ForEach-Object { \"$($_)\\nt_qq\" }",
+        "   $persist_account_dir=$accountList.BaseName | ForEach-Object { \"$($persist_dir)\\$($_)\\nt_qq\" }",
+        "}else{",
+        "   $account_dir=@()",
+        "   $persist_account_dir=@()",
+        "}",
+        "if($persist_accountList){",
+        "   $account_dir2=[array]($persist_accountList.BaseName | ForEach-Object { \"$($tencent_path)\\$($_)\\nt_qq\" })",
+        "   $persist_account_dir2=[array]($persist_accountList.FullName | ForEach-Object { \"$($_)\\nt_qq\" })",
+        "}else{",
+        "   $account_dir2=@()",
+        "   $persist_account_dir2=@()",
+        "}",
+        "$data_list=@(\"$user_Documents\\Tencent Files\\nt_qq\",\"$user_AppData\\QQ\") + $account_dir + $account_dir2",
+        "$persist_list= @(\"$persist_dir\\nt_qq\",\"$persist_dir\\QQ\") + $persist_account_dir + $persist_account_dir2",
+        "persist -dir $data_list $persist_list",
+        "create_app_lnk \"$dir\\Files\\QQ.exe\" \"$desktop\\QQ.lnk\""
+    ],
+    "pre_uninstall": [
+        "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "stop_process",
+        "$tencent_path=\"$user_Documents\\Tencent Files\"",
+        "$accountList=Get-ChildItem $tencent_path | Where-Object { $_.BaseName -match \"\\d+\" -and (Test-Path \"$($_.FullName)\\nt_qq\") -and (Test-Path \"$persist_dir\\$($_.BaseName)\\nt_qq\") }",
+        "$account_dir=if($accountList){$accountList.FullName | ForEach-Object { \"$($_)\\nt_qq\" } }else{ @() }",
+        "$need_remove_files=@(\"$desktop\\QQ.lnk\",\"$user_Documents\\Tencent Files\\nt_qq\",\"$user_AppData\\QQ\") + $account_dir",
+        "remove_files $need_remove_files"
+    ],
     "checkver": {
         "script": [
-            "$uri = 'https://api.github.com/repos/microsoft/winget-pkgs/contents/manifests/t/Tencent/QQ/NT'",
-            "$latestVersion = ((Invoke-WebRequest -Uri $uri).Content |",
-            "  ConvertFrom-Json |",
-            "  ForEach-Object { $_.name } |",
-            "  Where-Object { $_ -notmatch '^\\.' } |",
-            "  Sort-Object -Descending { try { [version]$_ } catch {} })[0]",
-            "\"version:$latestVersion\"",
-            "$uri = \"https://raw.githubusercontent.com/microsoft/winget-pkgs/master/manifests/t/Tencent/QQ/NT/$latestVersion/Tencent.QQ.NT.installer.yaml\"",
-            "$installerInfo = (Invoke-WebRequest -Uri $uri).Content",
-            "$installerInfo -split '[\\r\\n]+' | ForEach-Object {",
-            "  if ($_ -cmatch '^\\s+InstallerUrl:\\s*https://(.+_x86_.+)$') {",
-            "    \"url_x86:$($Matches[1])\"",
-            "  } elseif ($_ -cmatch '^\\s+InstallerUrl:\\s*https://(.+_x64_.+)$') {",
-            "    \"url_x64:$($Matches[1])\"",
-            "  }",
-            "}"
+            ". \"$pwd\\bin\\utils.ps1\"",
+            "$dl_info = get_installer_info 'Tencent/QQ/NT'",
+            "\"ver:$($dl_info.PackageVersion);\"",
+            "\"x64:$($dl_info.x64_exe.InstallerUrl);\"",
+            "\"x86:$($dl_info.x86_exe.InstallerUrl);\""
         ],
-        "regex": "^version:(?<version>\\S+)\\s+url_x86:(?<URLX86>\\S+)\\s+url_x64:(?<URLX64>\\S+)$"
+        "regex": "ver:(?<version>.+?); x64:(?<x64>.+?); x86:(?<x86>.+?);"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://$matchURLX64#/dl.7z",
+                "url": "$matchX64#/dl.7z",
                 "hash": {
                     "url": "https://raw.githubusercontent.com/microsoft/winget-pkgs/master/manifests/t/Tencent/QQ/NT/$version/Tencent.QQ.NT.installer.yaml",
-                    "regex": "- Architecture:\\s*x64[\\s\\S]+?InstallerSha256:\\s*$sha256"
+                    "regex": "Architecture: x64[\\s\\S]+?InstallerSha256:\\s?(.+)"
                 }
             },
             "32bit": {
-                "url": "https://$matchURLX86#/dl.7z",
+                "url": "$matchX86#/dl.7z",
                 "hash": {
                     "url": "https://raw.githubusercontent.com/microsoft/winget-pkgs/master/manifests/t/Tencent/QQ/NT/$version/Tencent.QQ.NT.installer.yaml",
-                    "regex": "- Architecture:\\s*x86[\\s\\S]+?InstallerSha256:\\s*$sha256"
+                    "regex": "Architecture: x86[\\s\\S]+?InstallerSha256:\\s?(.+)"
                 }
             }
         }

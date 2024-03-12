@@ -1,28 +1,39 @@
 {
-    "homepage": "https://affine.pro/",
-    "desciption": "A workspace with fully merged docs, whiteboards and databases.",
     "version": "0.12.2",
-    "url": "https://github.com/toeverything/AFFiNE/releases/download/v0.12.2/affine-stable-windows-x64.exe#/dl.7z",
-    "hash": "f4519544eb6de672ed453c7feeaa668a66dd1d6281369436d1be475d9bbd5122",
-    "installer": {
-        "script": [
-            "$nupkg = (Get-ChildItem \"$dir\" 'AFFiNE-*-full.nupkg' | Select-Object -First 1).FullName",
-            "Expand-7ZipArchive \"$nupkg\" \"$dir\"",
-            "Move-Item \"$dir\\lib\\net45\\*\" \"$dir\""
-        ]
+    "description": "AFFiNE is a workspace with fully merged docs, whiteboards and databases.",
+    "homepage": "https://affine.pro/",
+    "license": "MIT",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/toeverything/AFFiNE/releases/download/v0.12.2/affine-stable-windows-x64.exe#/dl.7z",
+            "hash": "sha512:d75139b96d7f0776b690e44de371c8c0e55cd2f59dfe0d2492ca4a558f536df181365315dfad52a2c9e0b35d4f50da50a5b87b3822cc17d0a5a294b87f447f71",
+            "pre_install": [
+                "Remove-Item \"$dir\\*\" -Exclude 'AFFiNE-*-full.nupkg'",
+                "Expand-7zipArchive \"$dir\\AFFiNE-*-full.nupkg\" -ExtractDir 'lib\\net45' -Removal"
+            ]
+        }
     },
-    "post_install": "Remove-Item \"$dir\\package\",\"$dir\\_rels\",\"$dir\\AFFiNE.nuspec\",\"$dir\\[Content_Types].xml\",\"$dir\\*.nupkg\" -Recurse",
     "bin": "AFFiNE.exe",
     "shortcuts": [
         [
             "AFFiNE.exe",
-            "AFFiNE"
+            "AFFiNE",
+            "--user-data-dir=\"$dir\\User Data\""
         ]
     ],
+    "persist": "User Data",
     "checkver": {
         "github": "https://github.com/toeverything/AFFiNE"
     },
     "autoupdate": {
-        "url": "https://github.com/toeverything/AFFiNE/releases/download/v$version/affine-stable-windows-x64.exe#/dl.7z"
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/toeverything/AFFiNE/releases/download/v$version/affine-stable-windows-x64.exe#/dl.7z",
+                "hash": {
+                    "url": "$baseurl/latest.yml",
+                    "regex": "sha512:\\s+$base64"
+                }
+            }
+        }
     }
 }
