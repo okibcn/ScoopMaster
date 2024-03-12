@@ -8,12 +8,13 @@
     "hash": "e941076cb4d7912d32a22ea87ad2693c01fa465227b4d1ead588283518de428f",
     "installer": {
         "script": [
-            "Expand-Archive \"$dir/windbg_win7-x64.msix\"  -DestinationPath \"$dir/Application\"",
-            "Remove-Item \"$dir/*.json\"",
-            "Remove-Item \"$dir/*.msix\"",
-            "Remove-Item \"$dir/*.p7x\"",
-            "Remove-Item \"$dir/*.xml\"",
-            "Remove-Item \"$dir/AppxMetadata\" -Force -Recurse"
+            "$metadataPath = Join-Path $dir 'AppxMetadata'",
+            "$xml = [xml](Get-Content (Join-Path $metadataPath 'AppxBundleManifest.xml'))",
+            "Remove-Item $metadataPath -Force -Recurse",
+            "$x64Package = $xml.Bundle.Packages.Package | Where-Object Architecture -eq 'x64'",
+            "Write-Host -ForegroundColor Yellow ('Expanding {0} ({1}) v{2}' -f $x64Package.FileName, $x64Package.Architecture, $x64Package.Version)",
+            "Expand-Archive (Join-Path $dir $x64Package.FileName)  -DestinationPath (Join-Path $dir Application)",
+            "Get-ChildItem -File $dir | Remove-Item"
         ]
     },
     "shortcuts": [
