@@ -1,5 +1,5 @@
 {
-    "version": "17.5.0-22583795",
+    "version": "17.5.1",
     "homepage": "https://www.vmware.com/ca/products/workstation-player.html",
     "description": "An application for creating and running virtual machines on your computer.",
     "license": {
@@ -8,8 +8,8 @@
     },
     "architecture": {
         "64bit": {
-            "url": "https://download3.vmware.com/software/WKST-PLAYER-1750/VMware-player-full-17.5.0-22583795.exe#/setup.exe",
-            "hash": "cad460ff2f79fdfba7746727c5dd07a6ff45aea1bbeb6c9e5b2245e80b982d07"
+            "url": "https://download3.vmware.com/software/WKST-PLAYER-1751/VMware-player-full-17.5.1-23298084.exe#/setup.exe",
+            "hash": "50f5596fbd3fd60336f368e35f9ca991a4be1aa40d94cf5017c3abd104b24f8b"
         }
     },
     "pre_install": [
@@ -28,22 +28,19 @@
         "}"
     ],
     "checkver": {
-        "url": "https://scoop.sh/",
-        "script": [
-            "$userAgent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36'",
-            "(Invoke-WebRequest 'https://www.vmware.com/go/getplayer-win' -UserAgent $userAgent).BaseResponse.RequestMessage.RequestUri.AbsoluteUri"
-        ],
-        "regex": "WKST-PLAYER-(?<Half>[\\d]+)/VMware-player-full-([\\w.-]+)\\.exe"
+        "url": "https://www.softpedia.com/get/System/OS-Enhancements/VMware-Player.shtml",
+        "regex": "VMware-player-full-(?<version>[\\d.]+)-(?<build>[\\d]+).exe",
+        "replace": "${version}"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://download3.vmware.com/software/WKST-PLAYER-$matchHalf/VMware-player-full-$version.exe#/setup.exe",
+                "url": "https://download3.vmware.com/software/WKST-PLAYER-$cleanVersion/VMware-player-full-$version-$matchBuild.exe#/setup.exe",
                 "hash": {
                     "type": "sha256",
-                    "url": "https://customerconnect.vmware.com/channel/public/api/v1.0/dlg/details?locale=en_US&downloadGroup=WKST-PLAYER-$matchHalf",
+                    "url": "https://customerconnect.vmware.com/channel/public/api/v1.0/dlg/details?locale=en_US&downloadGroup=WKST-PLAYER-$cleanVersion",
                     "mode": "json",
-                    "jsonpath": "$.downloadFiles[0].sha256checksum",
+                    "jsonpath": "$.downloadFiles[1].sha256checksum",
                     "find": "$sha256"
                 }
             }

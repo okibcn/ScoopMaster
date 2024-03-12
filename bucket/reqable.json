@@ -1,20 +1,24 @@
 {
-    "version": "2.8.1",
-    "description": "新一代API调试 + API测试一站化解决方案",
-    "homepage": "https://reqable.com/zh-CN/",
-    "license": "Unlicense",
+    "version": "2.8.2",
+    "description": "Reqable issue track repo",
+    "homepage": "https://reqable.com/",
+    "license": "Copyright © 2023 Reqable",
     "architecture": {
         "64bit": {
-            "url": "https://api.reqable.com/download?platform=windows&arch=x86_64&ext=zip#/dl.7z",
-            "hash": "DB6460306F7CE3B8CBD953C644D5895A9392B384C97E98078C7C80A17090E989"
+            "url": "https://github.com/reqable/reqable-app/releases/download/2.8.2/reqable-app-windows-x86_64.exe",
+            "hash": "60c535af90ff34621654df1f5765d2f78c8900e30d3d6dd4b20ea8bdba084115"
         }
     },
-    "bin": [
-        [
-            "Reqable.exe",
-            "Reqable"
+    "innosetup": true,
+    "installer": {
+        "script": [
+            "ensure \"$persist_dir\" | Out-Null",
+            "New-Item \"$env:APPDATA\\Reqable\" -ItemType Junction -Target \"$persist_dir\" | Out-Null"
         ]
-    ],
+    },
+    "uninstaller": {
+        "script": "Remove-Item \"$env:APPDATA\\Reqable\" -Recurse -Force -ErrorAction 'SilentlyContinue'"
+    },
     "shortcuts": [
         [
             "Reqable.exe",
@@ -22,11 +26,14 @@
         ]
     ],
     "checkver": {
-        "github": "https://github.com/reqable/reqable-app"
+        "url": "https://api.github.com/repos/reqable/reqable-app/releases/latest",
+        "regex": "/releases/tag/([\\d.]+)"
     },
     "autoupdate": {
-        "64bit": {
-            "url": "https://api.reqable.com/download?platform=windows&arch=x86_64&ext=zip"
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/reqable/reqable-app/releases/download/$version/reqable-app-windows-x86_64.exe"
+            }
         }
     }
 }
