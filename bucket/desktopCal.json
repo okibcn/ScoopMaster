@@ -1,0 +1,28 @@
+{
+    "homepage": "https://chs.desktopcal.com/chs",
+    "description": "A desktop calendar app",
+    "version": "2.3.108.5601",
+    "license": "Freeware",
+    "url": "https://download.desktopcal.com/xdiarys-setup-v3.exe#/dl.7z",
+    "hash": "20578cefa6a32babe9ea42fed1a39e6b0f6f7ed9401d7c4cdd00de6527074ad5",
+    "pre_install": [
+        "if (!(Test-Path \"$persist_dir\\config.ini\")) {",
+        "    New-Item -Force -Path \"$persist_dir\\config.ini\" -ItemType File -Value \"[ConfigInfo]`nautoStart=0\" | Out-Null",
+        "}"
+    ],
+    "post_install": "Remove-Item \"$dir\\`$PLUGINSDIR\",\"$dir\\`$TEMP\" -Force -Recurse",
+    "shortcuts": [
+        [
+            "desktopcal.exe",
+            "DesktopCal"
+        ]
+    ],
+    "persist": "config.ini",
+    "checkver": {
+        "url": "https://chs.desktopcal.com/chs",
+        "regex": ">v([\\d.]+)</div>"
+    },
+    "autoupdate": {
+        "url": "https://download.desktopcal.com/xdiarys-setup-v3.exe#/dl.7z"
+    }
+}

@@ -1,43 +1,33 @@
 {
     "version": "0.11.1",
-    "description": "Game Launcher for miHoYo/hoyoverse.",
+    "description": "Game Launcher for miHoYo - 米家游戏启动器",
     "homepage": "https://github.com/Scighost/Starward",
-    "license": {
-        "identifier": "MIT",
-        "url": "https://github.com/Scighost/Starward/blob/main/LICENSE"
-    },
+    "license": "Unknown",
     "architecture": {
         "64bit": {
             "url": "https://github.com/Scighost/Starward/releases/download/0.11.1/Starward_Portable_0.11.1_x64.7z",
-            "hash": "05712574e266126928394def53a642af2e92b7948ddb4d75dfa7ad9ae560a4a1"
-        },
-        "arm64": {
-            "url": "https://github.com/Scighost/Starward/releases/download/0.11.1/Starward_Portable_0.11.1_arm64.7z",
-            "hash": "3fe30af71e67ce9922cb8a10c42f67f23923e0565c92853b63cb64c2270490f7"
+            "hash": "05712574e266126928394def53a642af2e92b7948ddb4d75dfa7ad9ae560a4a1",
+            "extract_dir": "Starward"
         }
     },
-    "checkver": "github",
-    "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://github.com/Scighost/Starward/releases/download/$version/Starward_Portable_$version_x64.7z"
-            },
-            "arm64": {
-                "url": "https://github.com/Scighost/Starward/releases/download/$version/Starward_Portable_$version_arm64.7z"
-            }
-        }
-    },
-    "extract_dir": "Starward",
+    "bin": "Starward.exe",
     "shortcuts": [
         [
             "Starward.exe",
             "Starward"
         ]
     ],
-    "pre_install": "If (-not (Test-Path $persist_dir\\config.ini)) {\"UserDataFolder=$persist_dir\\data\" | Out-File $persist_dir\\config.ini}",
     "persist": [
-        "data",
-        "config.ini"
+        "config.ini",
+        "data"
     ],
-    "notes": "Setup wizard would be skipped because of preset value of user data by pre-install scripts."
+    "checkver": {
+        "github": "https://github.com/Scighost/Starward"
+    },
+    "autoupdate": {
+        "url": "https://github.com/Scighost/Starward/releases/download/$version/Starward_Portable_$version_x64.7z",
+        "hash": {
+            "mode": "download"
+        }
+    }
 }
