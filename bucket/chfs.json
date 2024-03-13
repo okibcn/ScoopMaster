@@ -1,38 +1,91 @@
 {
-    "homepage": "http://iscute.cn/chfs",
-    "description": "chfs is a free file sharing http server tool.",
-    "license": "Freeware",
     "version": "3.1",
+    "description": "一个免费的http服务器文件共享工具，通过局域网实现文件传输。A free file sharing http server tool.",
+    "homepage": "http://iscute.cn/chfs",
+    "license": "Freeware",
     "architecture": {
         "64bit": {
-            "url": "http://iscute.cn/tar/chfs/3.1/chfs-windows-x64-3.1.zip",
-            "hash": "252fd34b162bc92ab6a1d2f193831b0693efe8c22bc56bdf73e709ed05f1744a"
+            "url": [
+                "http://iscute.cn/tar/chfs/3.1/chfs-windows-x64-3.1.zip",
+                "http://iscute.cn/tar/chfs/3.1/gui-chfs-windows.zip"
+            ],
+            "hash": [
+                "252fd34b162bc92ab6a1d2f193831b0693efe8c22bc56bdf73e709ed05f1744a",
+                "05aa08b34d82ec78673984a1399321fc14dddaac8181694be9baf13589b8b583"
+            ],
+            "bin": [
+                [
+                    "chfs-windows-x64-3.1.exe",
+                    "chfs"
+                ],
+                "chfsgui.exe"
+            ]
         },
         "32bit": {
-            "url": "http://iscute.cn/tar/chfs/3.1/chfs-windows-x86-3.1.zip",
-            "hash": "7aefd42c6e1e3c5970dfe4e0bc3793e88535b0876bba3cad9c67e801c1518cfc"
+            "url": [
+                "http://iscute.cn/tar/chfs/3.1/chfs-windows-x86-3.1.zip",
+                "http://iscute.cn/tar/chfs/3.1/gui-chfs-windows.zip"
+            ],
+            "hash": [
+                "7aefd42c6e1e3c5970dfe4e0bc3793e88535b0876bba3cad9c67e801c1518cfc",
+                "05aa08b34d82ec78673984a1399321fc14dddaac8181694be9baf13589b8b583"
+            ],
+            "bin": [
+                [
+                    "chfs-windows-x86-3.1.exe",
+                    "chfs"
+                ],
+                "chfsgui.exe"
+            ]
         }
     },
-    "bin": "chfs.exe",
-    "pre_install": [
-        "function CreateFile ($name, $value = $null) {",
-        "    if (!(Test-Path \"$persist_dir\\$name\")) {",
-        "        Set-Content \"$dir\\$name\" $value -Encoding Ascii",
-        "    }",
-        "}",
-        "CreateFile 'chfs.ini' "
+    "shortcuts": [
+        [
+            "chfsgui.exe",
+            "chfs Gui"
+        ]
     ],
-    "persist": "chfs.ini",
+    "pre_install": [
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "persist -dir @(\"$user_LocalAppData\\chfsgui\") @(\"$persist_dir\\chfsgui\")",
+        "create_app_lnk \"$dir\\chfsgui.exe\" \"$desktop\\chfs Gui.lnk\""
+    ],
+    "pre_uninstall": [
+        "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "stop_process",
+        "remove_files @(\"$desktop\\chfs Gui.lnk\",\"$user_LocalAppData\\chfsgui\")"
+    ],
     "checkver": {
-        "regex": "chfs-windows-x64-([\\d.]+).zip"
+        "regex": "chfs-windows-x64-([\\d\\.]+).zip"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "http://iscute.cn/tar/chfs/$version/chfs-windows-x64-$version.zip"
+                "url": [
+                    "http://iscute.cn/tar/chfs/$version/chfs-windows-x64-$version.zip",
+                    "http://iscute.cn/tar/chfs/$version/gui-chfs-windows.zip"
+                ],
+                "bin": [
+                    [
+                        "chfs-windows-x64-$version.exe",
+                        "chfs"
+                    ],
+                    "chfsgui.exe"
+                ]
             },
             "32bit": {
-                "url": "http://iscute.cn/tar/chfs/$version/chfs-windows-x86-$version.zip"
+                "url": [
+                    "http://iscute.cn/tar/chfs/$version/chfs-windows-x86-$version.zip",
+                    "http://iscute.cn/tar/chfs/$version/gui-chfs-windows.zip"
+                ],
+                "bin": [
+                    [
+                        "chfs-windows-x86-$version.exe",
+                        "chfs"
+                    ],
+                    "chfsgui.exe"
+                ]
             }
         }
     }
