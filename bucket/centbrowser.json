@@ -1,36 +1,51 @@
 {
-    "homepage": "https://www.centbrowser.com/",
+    "homepage": "https://www.centbrowser.com",
     "description": "The Most Feature Rich Chromium",
+    "notes": "This extracts app contents from the exe installer.",
     "version": "5.0.1002.354",
-    "license": "Freeware",
     "architecture": {
         "64bit": {
-            "url": "http://static.centbrowser.com/win_stable/5.0.1002.354/centbrowser_5.0.1002.354_x64_portable.exe#/dl.7z",
-            "hash": "7ecafa434aa0ddb63127f318e7e03be5184bd523c5335edacddce71e174d4345"
+            "url": "http://static.centbrowser.com/win_stable/5.0.1002.354/centbrowser_5.0.1002.354_x64.exe#/dl.7z",
+            "hash": "b8eefd006853fc7b415ccbe4987d9b03f83c92cfee55182a59e4217afd2a0aba"
         },
         "32bit": {
-            "url": "http://static.centbrowser.com/win_stable/5.0.1002.354/centbrowser_5.0.1002.354_portable.exe#/dl.7z",
-            "hash": "1ef37aa9edc87af06dbdebaa1737638e6172a59ec13f81ed6065e849c9454ddc"
+            "url": "http://static.centbrowser.com/win_stable/5.0.1002.354/centbrowser_5.0.1002.354.exe#/dl.7z",
+            "hash": "9a7b92ef28f9ee0dce5c414b6fc1a060ccbed12f624c8c1f456c468aef3bef8f"
         }
     },
+    "installer": {
+        "script": [
+            "$output = 7z x $dir\\chrome.7z \"-o$dir\"",
+            "rm $dir\\chrome.7z",
+            "Move-Item -Path \"$dir\\Chrome-bin\\chrome.exe\" -Destination \"$dir\\chrome.exe\"",
+            "Get-ChildItem -Path \"$dir\\Chrome-bin\\$version\" | Copy-Item -Destination \"$dir\" -Recurse -Container",
+            "Get-ChildItem -Path \"$dir\\Chrome-bin\\*\" -Recurse -Force | Remove-Item -Recurse -Force",
+            "Remove-Item -Path \"$dir\\Chrome-bin\" -Recurse -Force"
+        ]
+    },
+    "bin": [
+        [
+            "chrome.exe",
+            "centbrowser"
+        ]
+    ],
     "shortcuts": [
         [
             "chrome.exe",
-            "Cent Browser"
+            "CentBrowser"
         ]
     ],
-    "persist": "User Data",
     "checkver": {
         "url": "https://www.centbrowser.com/history.html",
-        "re": "<p id=\"[\\d.]+\">v([\\d.]+)"
+        "regex": "<p\\s*id=\"([\\d\\.]+)\">v[\\d\\.]+\\s*<i>\\[[\\d\\-]+\\]<\\/i><\\/p>"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "http://static.centbrowser.com/win_stable/$version/centbrowser_$version_x64_portable.exe#/dl.7z"
+                "url": "http://static.centbrowser.com/win_stable/$version/centbrowser_$version_x64.exe#/dl.7z"
             },
             "32bit": {
-                "url": "http://static.centbrowser.com/win_stable/$version/centbrowser_$version_portable.exe#/dl.7z"
+                "url": "http://static.centbrowser.com/win_stable/$version/centbrowser_$version.exe#/dl.7z"
             }
         }
     }
