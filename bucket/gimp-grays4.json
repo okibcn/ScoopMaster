@@ -1,17 +1,11 @@
 {
-    "version": "1",
+    "version": "2",
     "description": "Palette file with 4 gray colors for GIMP.",
     "homepage": "https://gist.github.com/topstone/4e5adf80717299dfedf6bda0d9cfbd28",
     "url": "https://gist.githubusercontent.com/topstone/4e5adf80717299dfedf6bda0d9cfbd28/raw/bbb6ce16645edf03bcab68ee014c9f5b8eb31e76/Grays4.gpl",
-    "hash": "0dbceed212b6f0223f8b312e237ece41aaca4eb43d3e9e44dd9a892de2a768ac",
+    "hash": "sha512:6e410d5412f381529a77e562697b0018c08610b4c14db16ea49704b3f03df14d304ad404ff73da922a126a2e5a3940283a140f3689d9a653fca25607cb518833",
     "depends": [
         "gimp"
     ],
-    "installer": {
-        "script": [
-            "Push-Location -Path $dir",
-            "Copy-Item \"Grays4.gpl\" -Destination \"../../gimp/current/share/gimp/2.0/palettes\"",
-            "Pop-Location"
-        ]
-    }
+    "post_install": "New-Item -Value \"$dir\\Grays4.gpl\" -Path \"$dir\\..\\..\\gimp\\current\\share\\gimp\\2.0\\palettes\\Grays4.gpl\" -ItemType HardLink"
 }

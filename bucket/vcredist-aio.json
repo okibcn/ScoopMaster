@@ -1,31 +1,34 @@
 {
-    "version": "0.78.0",
+    "version": "0.79.0",
     "description": "All-in-one repack for latest Microsoft Visual C++ Redistributable Runtimes, without the original setup bloat payload.",
     "homepage": "https://github.com/abbodi1406/vcredist",
     "license": "Unlicense",
-    "url": "https://github.com/abbodi1406/vcredist/releases/download/v0.78.0/VisualCppRedist_AIO_x86_x64_78.zip",
-    "hash": "2c36e82daa8f9be5f013d92b8461f67038d2bf5d26a12b3f881cf6ddead1823c",
+    "url": "https://github.com/abbodi1406/vcredist/releases/latest/download/VisualCppRedist_AIO_x86_x64_79.zip",
+    "hash": "bb326128506ff6bf2a14021c61cbd00e1105eec76488297fbf2eb370266406c2",
+    "pre_install": "if (!(is_admin)) {error 'This package requires admin rights to install'; break}",
     "installer": {
-        "script": [
-            "if (!(is_admin)) { error 'This package requires admin rights to install'; break }",
-            "Start-Process -Wait \"$dir\\VisualCppRedist_AIO_x86_x64.exe\" -ArgumentList @('/ai', '/gm2') -Verb RunAs"
-        ]
+        "file": "VisualCppRedist_AIO_x86_x64.exe",
+        "args": [
+            "/ai",
+            "/gm2"
+        ],
+        "keep": true
     },
     "bin": "VisualCppRedist_AIO_x86_x64.exe",
     "uninstaller": {
         "script": [
-            "if (!(is_admin)) { error 'This package requires admin rights to uninstall'; break }",
-            "Start-Process -Wait \"$dir\\VisualCppRedist_AIO_x86_x64.exe\" -ArgumentList @('/ai', '/gm2') -Verb RunAs"
+            "if (!(is_admin)) {error 'This package requires admin rights to uninstall'; break}",
+            "Invoke-ExternalCommand \"$dir\\VisualCppRedist_AIO_x86_x64.exe\" -ArgumentList @('/ai', '/gm2') | Out-Null"
         ]
     },
     "checkver": {
         "github": "https://github.com/abbodi1406/vcredist"
     },
     "autoupdate": {
-        "url": "https://github.com/abbodi1406/vcredist/releases/download/v$version/VisualCppRedist_AIO_x86_x64_$minorVersion.zip",
+        "url": "https://github.com/abbodi1406/vcredist/releases/latest/download/VisualCppRedist_AIO_x86_x64_$minorVersion.zip",
         "hash": {
-            "url": "https://github.com/abbodi1406/vcredist/releases/v$version",
-            "regex": "File: $basename[\\S\\s]*?SHA-256: $sha256"
+            "url": "https://github.com/abbodi1406/vcredist/releases/latest",
+            "find": "File: $basename[\\S\\s]*?SHA-256: $sha256"
         }
     }
 }
