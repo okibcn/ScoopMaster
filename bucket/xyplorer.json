@@ -1,38 +1,21 @@
 {
-    "version": "25.70.000",
-    "description": "Portable Dual Pane Multi-Tabbed File manager for Windows",
+    "version": "25.70.0000",
+    "description": "File manager that features tabbed browsing, a powerful file search, a versatile preview, a highly customizable interface, an optional dual pane, and many unique ways to efficiently automate repetitive tasks.",
     "homepage": "https://www.xyplorer.com",
-    "license": {
-        "identifier": "Proprietary",
-        "url": "https://www.xyplorer.com/company.php#legal"
-    },
-    "url": "https://www.xyplorer.com/download/xyplorer_25.70.0000_noinstall.zip",
-    "hash": "232f10e00139e3e9e315cdde6f9969b24c9ec5bf5b2d9bfa032ce7611c370c3b",
-    "pre_install": [
-        "if (!(Test-Path \"$persist_dir\\lic.ini\")) { New-Item \"$dir\\lic.ini\" | Out-Null }",
-        "if (!(Test-Path \"$persist_dir\\startup.ini\")) { New-Item \"$dir\\startup.ini\" | Out-Null }",
-        "if (!(Test-Path \"$persist_dir\\admin.ini\")) { New-Item \"$dir\\admin.ini\" | Out-Null }"
-    ],
-    "bin": "XYplorer.exe",
+    "license": "Proprietary",
+    "url": "https://www.xyplorer.com/download/xyplorer_full_noinstall.zip",
+    "hash": "",
     "shortcuts": [
         [
             "XYplorer.exe",
             "XYplorer"
         ]
     ],
-    "persist": [
-        "Data",
-        "AC",
-        "startup.ini",
-        "admin.ini",
-        "lic.ini"
-    ],
-    "checkver": {
-        "url": "http://www.xyplorer.com/xyfc/viewtopic.php?f=1&t=4&sd=d",
-        "regex": "2. .a href=\"https://www.xyplorer.com/download/xyplorer_([\\d.]+)(.+?_noinstall).zip"
-    },
+    "checkver": "XYplorer.*(\\d{2}\\.\\d{2}\\.\\d{4}), release",
     "autoupdate": {
-        "note": "Check update log at http://www.xyplorer.com/xyfc/viewtopic.php?f=1&t=4&sd=d",
-        "url": "https://www.xyplorer.com/download/xyplorer_$version$match2.zip"
+        "hash": {
+            "url": "https://www.xyplorer.com/download/XYHash-$version.txt",
+            "regex": "/File: xyplorer_full_noinstall\\.zip.*SHA-256\\s*(.{64}).*File: xyplorer_full_noinstall\\.rar/s"
+        }
     }
 }

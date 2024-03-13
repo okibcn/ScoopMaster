@@ -1,41 +1,33 @@
 {
     "version": "4.2.2",
-    "description": "基于 electron 的开源工具箱，自由集成丰富插件。Electron based open source toolbox, free integration of rich plug-ins.",
-    "homepage": "https://github.com/rubickCenter/rubick",
-    "license": {
-        "identifier": "MIT",
-        "url": "https://github.com/rubickCenter/rubick/blob/master/LICENSE"
+    "description": "Electron based open source toolbox, free integration of rich plug-ins. 基于 electron 的开源工具箱，自由集成丰富插件。",
+    "homepage": "https://rubickcenter.github.io",
+    "license": "MIT",
+    "notes": "https://github.com/ViCrack/scoop-bucket/blob/master/bucket/rubick.json",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/rubickCenter/rubick/releases/download/v4.2.2/rubick-Setup-4.2.2-x64.exe#/dl.7z",
+            "hash": "cb003ce20f98993e92b58fbbf53e9b622d5e6d66361f16c41f377582e5b666df",
+            "pre_install": [
+                "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\"",
+                "Remove-Item \"$dir\\`$*\", \"$dir\\Uninstall*\" -Force -Recurse"
+            ]
+        }
     },
-    "url": "https://github.com/rubickCenter/rubick/releases/download/v4.2.2/rubick-Setup-4.2.2-x64.exe",
-    "hash": "cb003ce20f98993e92b58fbbf53e9b622d5e6d66361f16c41f377582e5b666df",
     "shortcuts": [
         [
             "rubick.exe",
             "Rubick"
         ]
     ],
-    "pre_install": [
-        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-        "$path_exe=\"$dir\\rubick-Setup-$($version)-x64.exe\"",
-        "& $path_exe /S /D=$dir",
-        "$core_exe=\"$dir\\rubick.exe\"",
-        "sleep_install $core_exe",
-        "persist -dir @(\"$user_AppData\\rubick\") @(\"$persist_dir\\rubick\")",
-        "clean_redundant_files @($path_exe,\"$apps_lnk\\rubick.lnk\")",
-        "remove_app_lnk @(\"rubick.lnk\")"
-    ],
-    "pre_uninstall": [
-        "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
-        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-        "stop_process $false",
-        "remove_files @(\"$user_AppData\\rubick\")",
-        "$ui_exe=\"$dir\\Uninstall rubick.exe\"",
-        "try{ & $ui_exe /S }catch{}",
-        "sleep_uninstall $ui_exe",
-        "remove_files @(\"$user_LocalAppData\\Programs\\rubick\",\"$user_LocalAppData\\rubick-updater\")"
-    ],
-    "checkver": "github",
+    "checkver": {
+        "github": "https://github.com/rubickCenter/rubick"
+    },
     "autoupdate": {
-        "url": "https://github.com/rubickCenter/rubick/releases/download/v$version/rubick-Setup-$version-x64.exe"
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/rubickCenter/rubick/releases/download/v$version/rubick-Setup-$version-x64.exe#/dl.7z"
+            }
+        }
     }
 }
