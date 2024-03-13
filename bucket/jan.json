@@ -1,14 +1,21 @@
 {
     "version": "0.4.8",
-    "description": "An open source alternative to ChatGPT that runs 100% offline on your computer.",
-    "homepage": "https://github.com/janhq/jan",
-    "license": "https://jan.ai/",
+    "descirption": "An open source alternative to ChatGPT that runs 100% offline on your computer",
+    "homepage": "https://jan.ai/",
+    "license": "AGPL-3.0",
     "architecture": {
         "64bit": {
-            "url": "https://github.com/janhq/jan/releases/download/v0.4.8/jan-win-x64-0.4.8.exe#/dl.7z",
-            "hash": "sha512:7fb824199c2869f0b1f5bb609bc403e6b4e2c8ac2da86be418c74190f691d00a77c29d0076c98339544933faae60512190912280ef7aad97782e01ea032ec88d",
-            "pre_install": "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\""
+            "url": "https://github.com/janhq/jan/releases/download/v0.4.8/jan-win-x64-0.4.8.exe",
+            "hash": "sha512:7fb824199c2869f0b1f5bb609bc403e6b4e2c8ac2da86be418c74190f691d00a77c29d0076c98339544933faae60512190912280ef7aad97782e01ea032ec88d"
         }
+    },
+    "installer": {
+        "script": [
+            "$file = (Get-ChildItem \"$dir\" 'jan-*.exe' | Select-Object -First 1).FullName",
+            "Expand-7ZipArchive \"$file\" \"$dir\\\" -Removal",
+            "Expand-7ZipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\" -Removal",
+            "Remove-Item \"$dir\\`$PLUGINSDIR\",\"$dir\\`$R0\"  -Force -Recurse"
+        ]
     },
     "shortcuts": [
         [
@@ -16,17 +23,16 @@
             "Jan"
         ]
     ],
-    "post_install": "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\resources\\app-update.yml\"  -Force -Recurse",
     "checkver": {
         "github": "https://github.com/janhq/jan"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://github.com/janhq/jan/releases/download/v$version/jan-win-x64-$version.exe#/dl.7z",
+                "url": "https://github.com/janhq/jan/releases/download/v$version/jan-win-x64-$version.exe",
                 "hash": {
-                    "url": "$baseurl/latest.yml",
-                    "regex": "sha512:\\s*$base64"
+                    "url": "https://github.com/janhq/jan/releases/download/v$version/latest.yml",
+                    "regex": "sha512: $base64"
                 }
             }
         }
