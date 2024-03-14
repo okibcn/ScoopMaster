@@ -1,42 +1,30 @@
 {
+    "homepage": "https://www.feishu.cn/",
+    "description": "Connect with teammates anytime and anywhere",
+    "license": {
+        "identifier": "EULA",
+        "url": "https://www.feishu.cn/en/terms"
+    },
     "version": "7.13.8",
-    "homepage": "https://github.com/microsoft/winget-pkgs/tree/master/manifests/b/ByteDance/Feishu",
-    "description": "字节跳动旗下先进企业写协作与管理平台，一站式无缝办公协作。Empowering teams by messenger, meetings, calendar, docs, and emails. It's all in one place.",
-    "license": "Unknown",
-    "url": "https://sf3-cn.feishucdn.com/obj/ee-appcenter/966dccae/Feishu-win32_ia32-7.13.8-signed.exe#/dl.7z",
-    "hash": "5c633e2904937ed5086013a1fc1d5f91af2a0b2d92225e7a7dd0edd39da1e34c",
+    "url": "https://sf3-cn.feishucdn.com/obj/ee-appcenter/966dccae/Feishu-win32_ia32-7.13.8-signed.exe#/feishu-7.13.8.7z",
+    "hash": "md5:c52a8a686fe4902ee89de9a3060c2cec",
     "extract_to": "app",
     "shortcuts": [
         [
-            "app\\Feishu.exe",
-            "飞书"
+            "app/Feishu.exe",
+            "Feishu"
         ]
     ],
-    "pre_install": [
-        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-        "persist -dir @(\"$user_AppData\\LarkShell\") @(\"$persist_dir\\LarkShell\")",
-        "create_app_lnk \"$dir\\app\\Feishu.exe\" \"$desktop\\飞书.lnk\""
-    ],
-    "pre_uninstall": [
-        "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
-        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-        "stop_process",
-        "remove_files @(\"$desktop\\飞书.lnk\",\"$user_AppData\\LarkShell\",\"$user_LocalAppData\\Feishu\")"
-    ],
     "checkver": {
-        "script": [
-            ". \"$pwd\\bin\\utils.ps1\"",
-            "$dl_info = get_installer_info 'ByteDance/Feishu'",
-            "\"ver:$($dl_info.PackageVersion);\"",
-            "\"x86:$($dl_info.x86_exe.InstallerUrl);\""
-        ],
-        "regex": "ver:(?<version>.+?); x86:(?<x86>.+?);"
+        "url": "https://www.feishu.cn/api/downloads",
+        "regex": "(?sm)Windows.*?https://(?<path>[\\w.-/].*?)-(?<version>[\\d.]+)(?<suffix>[\\w.-].*?).exe"
     },
     "autoupdate": {
-        "url": "$matchX86#/dl.7z",
+        "url": "https://$matchPath-$version$matchSuffix.exe#/feishu-$version.7z",
         "hash": {
-            "url": "https://raw.githubusercontent.com/microsoft/winget-pkgs/master/manifests/b/ByteDance/Feishu/$version/ByteDance.Feishu.installer.yaml",
-            "regex": "Architecture: x86[\\s\\S]+?InstallerSha256:\\s?(.+)"
+            "url": "https://www.feishu.cn/api/downloads",
+            "jsonpath": "$.versions.Windows.hash"
         }
-    }
+    },
+    "notes": "Runtime data are stored in '%APPDATA%\\LarkShell', and are not persisted by Scoop."
 }

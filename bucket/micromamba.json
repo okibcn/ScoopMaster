@@ -9,44 +9,10 @@
             "hash": "4328776bd044e30904ddc9334ba4352a8f7812e717e8b1f7e11c0664c67015cd"
         }
     },
-    "post_install": [
-        "@\"",
-        "auto_activate_base: false",
-        "channels: ",
-        "  - defaults",
-        "show_channel_urls: true",
-        "default_channels: ",
-        "  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main",
-        "  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/r",
-        "  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/msys2",
-        "custom_channels: ",
-        "  conda-forge: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud",
-        "  msys2: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud",
-        "  bioconda: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud",
-        "  menpo: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud",
-        "  pytorch: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud",
-        "  pytorch-lts: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud",
-        "  simpleitk: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud",
-        "  deepmodeling: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/",
-        "  nvidia: https://mirrors.sustech.edu.cn/anaconda-extra/cloud/",
-        "\"@ | Set-Content -Path \"$dir\\mamba\\.condarc\" -Force",
-        "New-Item -Path \"$HOME\\pip\" -ItemType Directory -Force | Out-Null",
-        "@\"",
-        "[global]",
-        "index-url=https://pypi.tuna.tsinghua.edu.cn/simple",
-        "cache-dir=$dir\\pip-cache",
-        "[install]",
-        "trusted-host=pypi.tuna.tsinghua.edu.cn",
-        "\"@ | Set-Content -Path \"$HOME\\pip\\pip.ini\" -Force"
-    ],
     "env_set": {
-        "MAMBA_ROOT_PREFIX": "$dir\\mamba"
+        "MAMBA_ROOT_PREFIX": "$dir\\mamba",
+        "MAMBA_EXE": "$dir\\micromamba.exe"
     },
-    "bin": "micromamba.exe",
-    "persist": [
-        "mamba",
-        "pip-cache"
-    ],
     "checkver": {
         "url": "https://api.anaconda.org/release/conda-forge/micromamba/latest",
         "regex": "win-64/micromamba-([\\d.-]+).tar.bz2"
@@ -64,15 +30,10 @@
     "notes": [
         "No shim is now exposed for micromamba, you have to add following hook to your PowerShell $PROFILE to use it:",
         "",
-        "(& micromamba 'shell' 'hook' -s 'powershell' -p $env:MAMBA_ROOT_PREFIX) | Out-String | Invoke-Expression",
+        "(& $env:MAMBA_EXE 'shell' 'hook' -s 'powershell' -p $env:MAMBA_ROOT_PREFIX) | Out-String | Invoke-Expression",
         "",
-        "If you want to use it in Msys2 environment, you should manually insert following lines into your rc file",
-        "",
-        "# >>> mamba initialize >>>",
-        "# !! Contents within this block are managed by 'mamba init' !!",
-        "export MAMBA_EXE=\"$(cygpath '$dir')/micromamba.exe\";",
-        "export MAMBA_ROOT_PREFIX=\"$(cygpath '$persist_dir')/mamba\";",
-        "eval \"$(\"$MAMBA_EXE\" shell hook --shell ${SHELL##*/} --root-prefix \"$MAMBA_ROOT_PREFIX\" | tr -d '\\r' | sed \"s#$(cygpath -w $MAMBA_EXE|sed 's|\\\\|\\\\\\\\|g')#$MAMBA_EXE#g\")\"",
-        "# <<< mamba initialize <<<"
+        "Also note that the mamba base environment located in $env:MAMBA_ROOT_PREFIX is now NOT persisted,",
+        "we advice to setup 'envs_dirs' to use a seperated path like '~/.conda/envs' and avoid using the base env.",
+        "https://conda.io/projects/conda/en/latest/user-guide/configuration/use-condarc.html#specify-environment-directories-envs-dirs"
     ]
 }
