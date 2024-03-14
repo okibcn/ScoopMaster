@@ -1,28 +1,20 @@
 {
     "version": "11.17.0",
-    "homepage": "https://tools.pdf24.org/en/creator",
-    "description": "Free and easy to use PDF software with several functions",
-    "license": {
-        "identifier": "Proprietary",
-        "url": "https://www.pdf24.org/en/terms-of-use"
-    },
+    "description": "Free and user-friendly PDF creator with many functions.",
+    "homepage": "https://tools.pdf24.org/",
+    "license": "Freeware",
     "url": "https://stx.pdf24.org/products/pdf-creator/download/pdf24-creator-11.17.0.msi#/setup.msi_",
     "hash": "692bcc2e24fa8f0cd0e3008d52f9a21c8cff838d53ae7bad66330956ef1eeb8a",
-    "post_install": [
-        "if (!(is_admin)) { error \"$app requires admin rights to $cmd\"; break }",
-        "Write-Host \"Please wait and don't cancel the script...\" -F 'Yellow'",
-        "Start-Process 'msiexec' -Wait -Verb 'RunAs' -WindowStyle 'Hidden' -ArgumentList @('/i', \"$dir\\setup.msi_\", '/qn', \"INSTALLDIR=$dir\", \"TARGETDIR=$dir\")",
-        "Stop-Service -Name 'pdf24' -Force -ErrorAction 'SilentlyContinue'; Stop-Process -Name 'pdf24' -Force -ErrorAction 'SilentlyContinue'",
-        "Stop-Process -Name 'explorer' -Force -ErrorAction 'SilentlyContinue'; Start-Sleep -Seconds 3"
-    ],
-    "pre_uninstall": [
-        "if (!(is_admin)) { error \"$app requires admin rights to $cmd\"; break }",
-        "Stop-Service -Name 'pdf24' -Force -ErrorAction 'SilentlyContinue'; Stop-Process -Name 'pdf24' -Force -ErrorAction 'SilentlyContinue'",
-        "Write-Host \"Please wait and don't cancel the script...\" -F 'Yellow'",
-        "Start-Process 'msiexec' -Wait -Verb 'RunAs' -WindowStyle 'Hidden' -ArgumentList @('/x', \"$dir\\setup.msi_\", '/qn')",
-        "Stop-Process -Name 'explorer' -Force -ErrorAction 'SilentlyContinue'; Start-Sleep -Seconds 3"
-    ],
-    "checkver": "Version\\s+([\\d.]+)",
+    "installer": {
+        "script": "Invoke-ExternalCommand msiexec -ArgumentList @('/i', \"$dir\\setup.msi_\", 'DESKTOPICONS=No', '/qn', '/norestart') -RunAs -ContinueExitCodes @{ 3010 = 'A system reboot is required to finalize the installation.' } | Out-Null"
+    },
+    "uninstaller": {
+        "script": "Invoke-ExternalCommand msiexec -ArgumentList @('/x', \"$dir\\setup.msi_\", '/qn', '/norestart') -RunAs -ContinueExitCodes @{ 3010 = 'A system reboot is required to finalize the uninstallation.' } | Out-Null"
+    },
+    "checkver": {
+        "url": "https://tools.pdf24.org/de/creator",
+        "regex": "\"version\">([\\d.]+)</span>"
+    },
     "autoupdate": {
         "url": "https://stx.pdf24.org/products/pdf-creator/download/pdf24-creator-$version.msi#/setup.msi_"
     }
