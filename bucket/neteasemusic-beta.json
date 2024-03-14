@@ -1,9 +1,9 @@
 {
-    "version": "3.0.0.Beta.03.05.202613",
-    "description": "The official Netease Cloud Music client.(beta version)",
     "homepage": "https://music.163.com/",
+    "description": "The official NetEase Cloud Music client.(beta version)",
+    "version": "3.0.0.Beta.03.05.202613",
     "license": {
-        "identifier": "Proprietary",
+        "identifier": "EULA",
         "url": "https://music.163.com/html/web2/service.html"
     },
     "architecture": {
@@ -18,45 +18,38 @@
     },
     "installer": {
         "script": [
-            "gci \"$dir\\redist_packages\" | mi -Destination \"$dir\" -Force",
-            "$source = \"$persist_dir\\appdata\"",
-            "$target = \"$env:LOCALAPPDATA\\Netease\\CloudMusic\"",
-            "if (Test-Path $source) {",
-            "   ri $target -Force -Recurse -ErrorAction SilentlyContinue",
-            "} else {",
-            "   ni -ItemType Directory -Path $source -Force | Out-Null",
-            "   if (Test-Path $target) {",
-            "       gci $target | mi -Destination $source",
-            "       ri $target",
-            "   }",
-            "}",
-            "ni -ItemType Junction -Path $target -Target $source -Force | Out-Null"
+            "Get-ChildItem \"$dir\\redist_packages\" | Move-Item -Destination \"$dir\" -Force",
+            "Import-Module $(Join-Path $(Find-BucketDirectory -Root -Name dorado) scripts/DoradoUtils.psm1)",
+            "Mount-ExternalRuntimeData -Source \"$persist_dir\\appdata\" -Target \"$env:LOCALAPPDATA\\Netease\\CloudMusic\"",
+            "Remove-Module -Name DoradoUtils"
         ]
     },
-    "post_install": "ri \"$dir\\`$PLUGINSDIR\",\"$dir\\redist_packages\" -Force -Recurse",
+    "post_install": "Remove-Item \"$dir\\`$PLUGINSDIR\",\"$dir\\redist_packages\" -Force -Recurse",
     "uninstaller": {
         "script": [
-            "$target = \"$env:LOCALAPPDATA\\Netease\\CloudMusic\"",
-            "if (Test-Path $target) {",
-            "   ri $target -Force -Recurse",
-            "}"
+            "Import-Module $(Join-Path $(Find-BucketDirectory -Root -Name dorado) scripts/DoradoUtils.psm1)",
+            "Dismount-ExternalRuntimeData -Target \"$env:LOCALAPPDATA\\Netease\\CloudMusic\"",
+            "Remove-Module -Name DoradoUtils"
         ]
     },
     "bin": "cloudmusic.exe",
-    "shortcuts": [["cloudmusic.exe", "网易云音乐"]],
-    "persist": ["appdata", "download"],
+    "shortcuts": [
+        [
+            "cloudmusic.exe",
+            "网易云音乐 beta"
+        ]
+    ],
     "checkver": {
         "url": "https://music.163.com/api/appcustomconfig/get",
-        "jsonpath": "$.data.web-pc-beta-download-links.pcPackage64",
-        "regex": "NeteaseCloudMusic_Music_official_(?<version>.*?).64.exe"
+        "regex": "\"web-pc-beta-download-links\":{\"pcPackage64\":\"https://.*official_(?<version>.*).64.exe\""
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://d1.music.126.net/dmusic/NeteaseCloudMusic_Music_official_$matchVersion.64.exe#/dl.7z"
+                "url": "https://d1.music.126.net/dmusic/NeteaseCloudMusic_Music_official_$version.64.exe#/dl.7z"
             },
             "32bit": {
-                "url": "https://d1.music.126.net/dmusic/NeteaseCloudMusic_Music_official_$matchVersion.32.exe#/dl.7z"
+                "url": "https://d1.music.126.net/dmusic/NeteaseCloudMusic_Music_official_$version.32.exe#/dl.7z"
             }
         }
     }
