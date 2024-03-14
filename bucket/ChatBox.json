@@ -1,47 +1,47 @@
 {
     "version": "1.3.0",
-    "description": "A desktop app for ChatGPT API (OpenAI API) that supports Windows, Mac & Linux. 开源的ChatGPT桌面应用，prompt 开发神器，全平台支持",
-    "homepage": "https://github.com/Bin-Huang/chatbox",
+    "description": "一个可使用 ChatGPT、Claude 和其他 LLM 的桌面客户端。A desktop client for ChatGPT, Claude and other LLMs.",
+    "homepage": "https://chatboxai.app/",
     "license": {
-        "identifier": "GPL-3.0 license",
+        "identifier": "GNU General Public License v3.0",
         "url": "https://github.com/Bin-Huang/chatbox/blob/main/LICENSE"
     },
-    "url": "https://github.com/Bin-Huang/chatbox/releases/download/v1.3.0/Chatbox-1.3.0-Setup.exe#/dl.7z",
-    "hash": "e4385acd885d2b60b355172164751059fa4bb124635dc8760359058cb7710fa3",
-    "architecture": {
-        "64bit": {
-            "pre_install": [
-                "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\"",
-                "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\`$R0\" -Force -Recurse"
-            ]
-        },
-        "arm64": {
-            "pre_install": [
-                "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-arm64.7z\" \"$dir\"",
-                "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\`$R0\" -Force -Recurse"
-            ]
-        }
-    },
-    "installer": {
-        "script": [
-            "ensure \"$persist_dir\" | Out-Null",
-            "New-Item \"$env:APPDATA\\xyz.chatboxapp.app\" -ItemType Junction -Target \"$persist_dir\" | Out-Null"
-        ]
-    },
-    "uninstaller": {
-        "script": "Remove-Item \"$env:APPDATA\\xyz.chatboxapp.app\" -Recurse -Force -ErrorAction 'SilentlyContinue'"
-    },
+    "url": "https://github.com/Bin-Huang/chatbox/releases/download/v1.3.0/Chatbox-1.3.0-Setup.exe#/_installer_.exe",
+    "hash": "sha512:2810449b67cf8dd9cdc3cb3ab786747316ab09d490406a22487ac11c766c44bcbbeb514548ba2c88c766f5496c315576f1ed442449b5a0e0bcd54da42e531f04",
     "shortcuts": [
         [
             "Chatbox.exe",
             "Chatbox"
         ]
     ],
+    "pre_install": [
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "$path_exe=\"$dir\\_installer_.exe\"",
+        "& $path_exe /S /D=$dir",
+        "$core_exe=\"$dir\\Chatbox.exe\"",
+        "sleep_install $core_exe",
+        "persist -dir @(\"$user_AppData\\xyz.chatboxapp.app\") @(\"$persist_dir\\xyz.chatboxapp.app\")",
+        "clean_redundant_files @($path_exe,\"$apps_lnk\\Chatbox.lnk\")",
+        "remove_app_lnk @(\"Chatbox.lnk\")"
+    ],
+    "pre_uninstall": [
+        "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "stop_process $false",
+        "remove_files @(\"$user_AppData\\xyz.chatboxapp.app\")",
+        "$ui_exe=\"$dir\\Uninstall Chatbox.exe\"",
+        "try{ & $ui_exe /S }catch{}",
+        "sleep_uninstall $ui_exe",
+        "remove_files @(\"$user_LocalAppData\\xyz.chatboxapp.app-updater\")"
+    ],
     "checkver": {
-        "url": "https://api.github.com/repos/Bin-Huang/chatbox/releases",
-        "regex": "/releases/tag/v([\\d.]+)"
+        "github": "https://github.com/Bin-Huang/chatbox"
     },
     "autoupdate": {
-        "url": "https://github.com/Bin-Huang/chatbox/releases/download/v$version/Chatbox-$version-Setup.exe#/dl.7z"
+        "url": "https://github.com/Bin-Huang/chatbox/releases/download/v$version/Chatbox-$version-Setup.exe#/_installer_.exe",
+        "hash": {
+            "url": "$baseurl/latest.yml",
+            "regex": "sha512: $base64"
+        }
     }
 }

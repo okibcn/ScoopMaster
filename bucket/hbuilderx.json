@@ -1,40 +1,22 @@
 {
-    "version": "3.99.2023122611",
-    "description": "DCloud 旗下的代码编辑器。A code editor by DCloud.",
     "homepage": "https://www.dcloud.io/hbuilderx.html",
-    "license": "Unknown",
-    "url": "https://qiniu-ecdn.dcloud.net.cn/download/HBuilderX.3.99.2023122611.zip",
-    "hash": "55850b74833b27996105c6e2929661ce160fc8d05b87d5a5177a07222b2a1832",
+    "version": "3.99.2023122611",
+    "license": "Freeware",
     "extract_dir": "HBuilderX",
+    "url": "https://download1.dcloud.net.cn/download/HBuilderX.3.99.2023122611.zip",
+    "hash": "55850b74833b27996105c6e2929661ce160fc8d05b87d5a5177a07222b2a1832",
     "bin": "HBuilderX.exe",
     "shortcuts": [
         [
             "HBuilderX.exe",
-            "HBuilder X"
+            "HBuilderX"
         ]
     ],
-    "pre_install": [
-        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-        "persist -dir @(\"$user_AppData\\HBuilder X\") @(\"$persist_dir\\HBuilder X\")",
-        "create_app_lnk \"$dir\\HBuilderX.exe\" \"$desktop\\HBuilder X.lnk\""
-    ],
-    "pre_uninstall": [
-        "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
-        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-        "stop_process",
-        "remove_files @(\"$desktop\\HBuilder X.lnk\",\"$user_AppData\\HBuilder X\")"
-    ],
     "checkver": {
-        "script": [
-            "$url=\"https://hx.dcloud.net.cn/Tutorial/changelog/ReleaseNote_release\"",
-            "$regex=\"<span>([\\d\\.]+)\"",
-            "$page=python $pwd\\bin\\get_page.py $url",
-            "$matches=[regex]::Matches($page, $regex)",
-            "$matches[0]"
-        ],
-        "regex": "([\\d\\.]+)"
+        "url": "https://download1.dcloud.net.cn/hbuilderx/release.json",
+        "jsonpath": "$.win[1].version"
     },
     "autoupdate": {
-        "url": "https://qiniu-ecdn.dcloud.net.cn/download/HBuilderX.$version.zip"
+        "url": "https://download1.dcloud.net.cn/download/HBuilderX.$version.zip"
     }
 }
