@@ -22,32 +22,9 @@
             "Firefox"
         ]
     ],
-    "post_install": [
-        "if (Test-Path \"$persist_dir\\.use_persist_profile\") {",
-        "   $shortcutPath = Join-Path -Path (Convert-Path([System.IO.Path]::Combine([Environment]::GetFolderPath($global ? 'CommonStartMenu':'StartMenu'), 'Programs', 'Scoop Apps'))) -ChildPath 'Firefox.lnk'",
-        "   $defaultShortcutPath = Join-Path -Path (Convert-Path([System.IO.Path]::Combine([Environment]::GetFolderPath($global ? 'CommonStartMenu':'StartMenu'), 'Programs', 'Scoop Apps'))) -ChildPath 'Firefox (Default).lnk'",
-        "   if (-not (Test-Path \"$persist_dir\\.no_default_shortcut\")) {",
-        "       Copy-Item -Path $shortcutPath -Destination $defaultShortcutPath -Force -ErrorAction SilentlyContinue",
-        "   }",
-        "   $shortcut = (New-Object -ComObject WScript.Shell).CreateShortcut($shortcutPath)",
-        "   if ((Get-Content \"$persist_dir\\.use_persist_profile\").Length -eq 0) {",
-        "       $shortcut.Arguments = '-P \"default-release\"'",
-        "   } else {",
-        "       $persistProfile = (Get-Content \"$persist_dir\\.use_persist_profile\" -First 1) -replace \"`n\", \"\" -replace \"`r\", \"\"",
-        "       $shortcut.Arguments = \"-P `\"$persistProfile`\"\"",
-        "   }",
-        "   $shortcut.Save()",
-        "}"
-    ],
-    "post_uninstall": [
-        "$defaultShortcutPath = Join-Path -Path (Convert-Path([System.IO.Path]::Combine([Environment]::GetFolderPath($global ? 'CommonStartMenu':'StartMenu'), 'Programs', 'Scoop Apps'))) -ChildPath 'Firefox (Default).lnk'",
-        "if (Test-Path $defaultShortcutPath) {",
-        "   Remove-Item -Path $defaultShortcutPath -Force -ErrorAction SilentlyContinue",
-        "}"
-    ],
     "checkver": {
         "url": "https://www.mozilla.org/en-US/firefox/notes/",
-        "regex": "<span class=\"c-release-version\">([\\d.]+)</span>"
+        "regex": "\" data-latest-firefox=\"([\\d.]+)"
     },
     "autoupdate": {
         "architecture": {
@@ -67,13 +44,5 @@
             }
         },
         "changelog": "https://www.mozilla.org/en-US/firefox/$version/releasenotes/"
-    },
-    "notes": [
-        "User profiles are located in %USERPROFILE%\\AppData\\Local\\Mozilla\\Firefox\\Profiles",
-        "They will not be automatically removed during uninstallation even with -p flag. Delete them manually if need to.",
-        "A new default profile is always created when a new version is installed. Old profiles can be found and managed in about:profiles.",
-        "To make the start menu shortcut always use a profile that persists across updates, create a file named '.use_persist_profile' in the persist directory.",
-        "Then the shortcut will use the profile defined in the first line of it, and another shortcut named 'Firefox (Default)' will be created to use the default profile set in about:profiles.",
-        "You can further create a file named '.no_default_shortcut' in the persist directory to prevent the creation of the 'Firefox (Default)' shortcut."
-    ]
+    }
 }
