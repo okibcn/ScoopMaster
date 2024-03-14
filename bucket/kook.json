@@ -1,35 +1,25 @@
 {
-    "autoupdate": {
-        "url": "$matchUrl#/dl.7z"
-    },
-    "checkver": {
-        "script": [
-            "$script:ver = json_path $page '$.number'",
-            "$script:matchesHashtable = @{'url' = json_path $page '$.url'}",
-            "$script:regexp = $null"
-        ],
-        "url": "https://www.kookapp.cn/api/v2/updates/latest-version?platform=windows"
-    },
-    "description": "A useful voice communication tool.",
-    "extract_to": "tmp",
-    "hash": "63bad9ad964595b6e12bc2545f255b9cc99263be7da6017d6f9e31d384bca709",
+    "version": "0.81.1",
+    "description": "KOOK(Kaiheila), a useful voice communication tool. KOOK is a free and ad-free voice communication tool, which currently covers PC, Android, iOS and web devices. No matter where you are, you can communicate smoothly. There are servers with various themes in KOOK, and you can also create servers with games, music, reading, foreign languages and other topics according to your preferences, and invite friends to join your server to chat.",
     "homepage": "https://www.kookapp.cn",
     "license": {
-        "identifier": "Freeware",
+        "identifier": "Proprietary",
         "url": "https://www.kookapp.cn/protocol.html"
     },
-    "persist": "User Data",
+    "url": "https://img.kookapp.cn/assets/release/html_pc/kook_772/Kook_PC_Setup_v0.81.1.0_b2ZmaWNpYWwuc2l0ZS4uLi5wYw==.exe#/dl.7z",
+    "hash": "63bad9ad964595b6e12bc2545f255b9cc99263be7da6017d6f9e31d384bca709",
+    "extract_to": "tmp",
+    "pre_install": [
+        "Expand-7zipArchive \"$dir\\tmp\\`$1\\SquirrelTemp\\app.7z\" \"$dir\"",
+        "Expand-Archive \"$dir\\KOOK-$version-full.nupkg\" \"$dir\""
+    ],
     "post_install": [
         "Remove-Item \"$dir\\tmp\" -ErrorAction SilentlyContinue -Recurse -Force",
-        "if (-not (Test-Path \"$dir\\User Data\\*\") -and (Test-Path \"$env:AppData\\kook\")) {",
+        "if (!(Test-Path \"$dir\\User Data\\*\") -and (Test-Path \"$env:AppData\\kook\")) {",
         "    info '[Portable Mode]: Copying user data...'",
         "    ensure \"$dir\\User Data\" | Out-Null",
         "    Copy-Item \"$env:AppData\\kook\\*\" \"$dir\\User Data\" -Recurse -Force -ErrorAction SilentlyContinue",
         "}"
-    ],
-    "pre_install": [
-        "Expand-7zipArchive \"$dir\\tmp\\`$1\\SquirrelTemp\\app.7z\" \"$dir\"",
-        "Expand-Archive \"$dir\\KOOK-$version-full.nupkg\" \"$dir\""
     ],
     "shortcuts": [
         [
@@ -38,6 +28,13 @@
             "--user-data-dir=\"$dir\\User Data\""
         ]
     ],
-    "url": "https://dl.kookapp.cn/assets/release/html_pc/kook_772/Kook_PC_Setup_v0.81.1.0_b2ZmaWNpYWwuc2l0ZS4uLi5wYw==.exe#/dl.7z",
-    "version": "0.81.1"
+    "persist": "User Data",
+    "checkver": {
+        "url": "https://www.kookapp.cn/api/v2/updates/latest-version?platform=windows",
+        "jsonpath": "$.url",
+        "regex": "(?<path>assets/release/.*?v([\\d.]+)\\.\\d.*?\\.exe)"
+    },
+    "autoupdate": {
+        "url": "https://img.kookapp.cn/$matchPath#/dl.7z"
+    }
 }
