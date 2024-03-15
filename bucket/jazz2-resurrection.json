@@ -2,59 +2,60 @@
     "version": "2.6.0",
     "description": "Open source reimplementation of the game Jazz Jackrabbit 2",
     "homepage": "http://deat.tk/jazz2/",
-    "license": "GPL-3.0-only",
+    "license": {
+        "identifier": "GPL-3.0-or-later",
+        "url": "https://github.com/deathkiller/jazz2-native/blob/master/LICENSE"
+    },
     "notes": [
         "",
-        "First, you need to provide some form of game data.",
+        "Copy the original \"Jazz Jackrabbit 2\" directory to $persist_dir\\Source\\",
         "",
-        "The original shareware version works (i.e., NOT the shareware version of The Secret Files release), though it's recommended to buy the full version on GOG here: https://www.gog.com/game/jazz_jackrabbit_2_collection",
+        "A tip regarding the full version:",
         "",
-        "Copy the corresponding game data to the \"$persist_dir\\Source\" dir.",
+        "1. First install \"The Secret Files\" release.",
+        "2. Install \"The Christmas Chronicles\" release in a separate directory.",
+        "3. Copy the files from \"The Christmas Chronicles\" directory to the directory of \"The Secret Files\" release - and do NOT overwrite any files.",
         "",
-        "Once that's done, use the shortcut (i.e., version of the app) that runs the best on your particular system; standard, AVX2 or SDL2.",
-        "",
-        "Tip regarding the full version of the game:",
-        "",
-        "1. First, install The Secret Files release.",
-        "2. Install The Christmas Chronicles release in a separate dir.",
-        "3. Copy the files from The Christmas Chronicles dir to the dir of The Secret Files release and overwrite all the files.",
-        "",
-        "Now you've a complete edition to copy to the Source dir of Jazz² Resurrection!",
+        "Now you have a complete edition to import into Jazz² Resurrection.",
         ""
     ],
     "url": "https://github.com/deathkiller/jazz2/releases/download/2.6.0/Jazz2_2.6.0_Windows.zip",
     "hash": "705e81347443cc715e0c98655c1fa8ac0e90026e3e9816e5f7cd5cf3e24564fd",
     "architecture": {
         "64bit": {
-            "extract_dir": "x64"
+            "extract_dir": "x64",
+            "bin": [
+                "Jazz2.exe",
+                "Jazz2_avx2.exe",
+                "Jazz2_sdl2.exe"
+            ],
+            "shortcuts": [
+                [
+                    "Jazz2.exe",
+                    "Jazz² Resurrection"
+                ],
+                [
+                    "Jazz2_avx2.exe",
+                    "Jazz² Resurrection (AVX2)"
+                ],
+                [
+                    "Jazz2_sdl2.exe",
+                    "Jazz² Resurrection (SDL2)"
+                ]
+            ]
         },
         "32bit": {
-            "extract_dir": "x86"
+            "extract_dir": "x86",
+            "bin": "Jazz2.exe",
+            "shortcuts": [
+                [
+                    "Jazz2.exe",
+                    "Jazz² Resurrection"
+                ]
+            ]
         }
     },
-    "pre_install": [
-        "if (!(Test-Path \"$persist_dir\\Jazz2.config\")) {",
-        "   New-Item \"$dir\\Jazz2.config\" -Type File | Out-Null",
-        "}"
-    ],
-    "shortcuts": [
-        [
-            "Jazz2.exe",
-            "Jazz² Resurrection"
-        ],
-        [
-            "Jazz2_avx2.exe",
-            "Jazz² Resurrection (AVX2)"
-        ],
-        [
-            "Jazz2_sdl2.exe",
-            "Jazz² Resurrection (SDL2)"
-        ]
-    ],
-    "persist": [
-        "Source",
-        "Jazz2.config"
-    ],
+    "persist": "Source",
     "checkver": {
         "github": "https://github.com/deathkiller/jazz2"
     },
