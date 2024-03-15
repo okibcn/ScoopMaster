@@ -1,21 +1,19 @@
 {
-    "version": "10.80.2",
-    "homepage": "https://evernote.com/",
-    "description": "Remember everything and tackle any project with your notes, tasks, and schedule all in one place.",
-    "license": {
-        "identifier": "Freeware",
-        "url": "https://evernote.com/legal"
-    },
+    "version": "10.80.3",
+    "description": "[Evernote] Use it for note taking, project planning and organize everything",
+    "homepage": "https://evernote.com",
+    "license": "Freeware",
     "url": "https://win.desktop.evernote.com/builds/Evernote-latest.exe#/dl.zip",
-    "hash": "ec4233baa1194af2eda11389d1e0f0bccdb1da26ce09bb7440ae019318ff0e4e",
-    "pre_install": [
-        "if ($architecture -eq '32bit') {",
-        "    Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-32.7z\" $dir; Remove-Item \"$dir\\*\" -Recurse",
-        "}",
-        "else {",
-        "    Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" $dir; Remove-Item \"$dir\\*\" -Recurse",
-        "}"
-    ],
+    "hash": "0417bde7a5ffe09dc8087a5e9e5ea2b4890b3348d54e2f5790632992838dc940",
+    "architecture": {
+        "64bit": {
+            "pre_install": "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\""
+        },
+        "32bit": {
+            "pre_install": "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-32.7z\" \"$dir\""
+        }
+    },
+    "post_install": "Remove-Item \"$dir\\`$*\" -Force -Recurse",
     "shortcuts": [
         [
             "Evernote.exe",

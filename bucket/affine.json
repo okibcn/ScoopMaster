@@ -1,22 +1,39 @@
 {
-    "version": "0.12.3",
-    "description": "A privacy-focussed, local-first, open-source, and ready-to-use alternative for Notion & Miro.",
-    "homepage": "https://github.com/toeverything/AFFiNE",
-    "license": "MPL-2.0",
-    "url": "https://github.com/toeverything/AFFiNE/releases/download/v0.12.3/affine-stable-windows-x64.exe#/dl.7z",
-    "hash": "600542ff9d5bcbe2717287683a250ef33921c6f9fa5c29a92b19ea0bb6fb7343",
-    "pre_install": [
-        "Get-ChildItem \"$dir\\*\" -Exclude 'AFFiNE-*nupkg' | Remove-Item",
-        "Expand-7zipArchive \"$dir\\AFFiNE-*-full.nupkg\" -ExtractDir 'lib\\net45' -Removal"
-    ],
+    "version": "0.13.0",
+    "description": "AFFiNE is a workspace with fully merged docs, whiteboards and databases.",
+    "homepage": "https://affine.pro/",
+    "license": "MIT",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/toeverything/AFFiNE/releases/download/v0.13.0/affine-stable-windows-x64.exe#/dl.7z",
+            "hash": "sha512:cc6c3724ab08481e86f99cb1d58c0e707f772cddedb92fcf50d372c18b4e6591f71595561a73b0e978f8c0f4b22ebde7abc92377bcc35bccc93156db135d324f",
+            "pre_install": [
+                "Remove-Item \"$dir\\*\" -Exclude 'AFFiNE-*-full.nupkg'",
+                "Expand-7zipArchive \"$dir\\AFFiNE-*-full.nupkg\" -ExtractDir 'lib\\net45' -Removal"
+            ]
+        }
+    },
+    "bin": "AFFiNE.exe",
     "shortcuts": [
         [
             "AFFiNE.exe",
-            "AFFiNE"
+            "AFFiNE",
+            "--user-data-dir=\"$dir\\User Data\""
         ]
     ],
-    "checkver": "github",
+    "persist": "User Data",
+    "checkver": {
+        "github": "https://github.com/toeverything/AFFiNE"
+    },
     "autoupdate": {
-        "url": "https://github.com/toeverything/AFFiNE/releases/download/v$version/affine-stable-windows-x64.exe#/dl.7z"
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/toeverything/AFFiNE/releases/download/v$version/affine-stable-windows-x64.exe#/dl.7z",
+                "hash": {
+                    "url": "$baseurl/latest.yml",
+                    "regex": "sha512:\\s+$base64"
+                }
+            }
+        }
     }
 }
