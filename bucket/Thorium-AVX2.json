@@ -1,37 +1,38 @@
 {
-    "version": "121.0.6167.204",
-    "description": "Chromium fork for linux named after radioactive element No. 90.",
-    "license": "GNU General Public License v3.0",
-    "homepage": "https://alex313031.blogspot.com/",
-    "architecture": {
-        "64bit": {
-            "url": "https://github.com/Alex313031/Thorium-Win/releases/download/M121.0.6167.204/Thorium_AVX2_121.0.6167.204.zip",
-            "hash": "8112219ebaa9134378d5eaf8b43b15e5e6d19ddae1037e3a2f4f9294806b868a"
-        }
-    },
+    "version": "122.0.6261.132",
+    "description": "Chromium fork for Windows named after radioactive element No. 90 built for AVX2 CPUs",
+    "homepage": "https://thorium.rocks/",
+    "license": "BSD-3-Clause",
+    "url": "https://github.com/Alex313031/Thorium-Win/releases/download/M122.0.6261.132/Thorium_AVX2_122.0.6261.132.zip",
+    "hash": "35c4b64a9a67861ee4da8db459c0ce27473bcdd51b5b15c2603c4f97a0e5c472",
     "bin": [
         [
-            "THORIUM.BAT",
-            "Thorium-AVX2"
+            "bin\\thorium.exe",
+            "thorium",
+            "--user-data-dir=\"$dir\\USER_DATA\""
         ]
     ],
     "shortcuts": [
         [
-            "THORIUM.BAT",
-            "Thorium-AVX2"
+            "bin\\thorium.exe",
+            "Thorium",
+            "--user-data-dir=\"$dir\\USER_DATA\""
         ]
     ],
-    "persist": "USER_DATA",
+    "post_install": [
+        "if (!(Test-Path \"$dir\\USER_DATA\\*\") -and (Test-Path \"$env:LocalAppData\\Thorium\\User Data\")) {",
+        "    info '[Portable Mode]: Copying user data...'",
+        "    Copy-Item \"$env:LocalAppData\\Thorium\\User Data\\*\" \"$dir\\USER_DATA\" -Recurse",
+        "}"
+    ],
+    "env_set": {
+        "CHROME_EXECUTABLE": "$dir\\thorium.exe"
+    },
     "checkver": {
-        "url": "https://api.github.com/repos/Alex313031/Thorium-Win/releases/latest",
-        "jsonpath": "$.tag_name",
-        "regex": "M(?<version>[\\d]+\\.[\\d]+\\.[\\d]+\\.[\\d]+)"
+        "github": "https://github.com/Alex313031/Thorium-Win",
+        "regex": "M([\\d]+\\.[\\d]+\\.[\\d]+\\.[\\d]+)"
     },
     "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://github.com/Alex313031/Thorium-Win/releases/download/M$version/Thorium_AVX2_$version.zip"
-            }
-        }
+        "url": "https://github.com/Alex313031/Thorium-Win/releases/download/M$version/Thorium_AVX2_$version.zip"
     }
 }
