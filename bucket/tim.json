@@ -1,22 +1,40 @@
 {
-    "homepage": "https://office.qq.com、",
-    "description": "TIM，QQ办公简洁版，是一款专注于团队办公协作的跨平台沟通工具。登录后，你的QQ好友都在，提供云文件、在线文档、邮件、日程、收藏等好用的办公功能，界面简洁清晰，QQ好友和消息无缝同步。",
-    "license": "http://play.mobile.qq.com/yy/eim/help/serverinfo.html",
     "version": "3.4.8.22138",
-    "url": "https://dldir1.qq.com/qqfile/qq/TIM3.4.8/TIM3.4.8.22138.exe#/dl.7z",
+    "description": "Tencent TIM, lightweight alternative to QQ",
+    "homepage": "https://office.qq.com/",
+    "license": {
+        "identifier": "Unknown",
+        "url": "http://play.mobile.qq.com/yy/eim/help/serverinfo.html"
+    },
+    "url": "http://dldir1.qq.com/qqfile/qq/TIM3.4.8/TIM3.4.8.22138.exe#/dl.7z",
     "hash": "9ffc41ce503fd214e94bc02144313a63f002859148df8393d5eb44dafa572d05",
-    "pre_install": "Move-Item \"$dir\\Files\\*\" \"$dir\\\"",
+    "pre_install": [
+        "if (Test-Path \"$env:AppData\\Tencent\\Tim\") {",
+        "    info '[Persistent data]: Copying user data...'",
+        "    ensure \"$dir\\User Data\" | Out-Null",
+        "    Copy-Item \"$env:AppData\\Tencent\\Tim\\*\" \"$dir\\User Data\\\" -Recurse -Force -ErrorAction 'SilentlyContinue'",
+        "    Remove-Item \"$env:AppData\\Tencent\\Tim\" -Recurse -Force -ErrorAction 'SilentlyContinue'",
+        "}",
+        "Move-Item \"$dir\\Files\\*\" \"$dir\\\""
+    ],
+    "post_install": "Remove-Item \"$dir\\Application Data\", \"$dir\\Common\" -Recurse -Force -ErrorAction 'SilentlyContinue'",
     "shortcuts": [
         [
             "Bin\\QQScLauncher.exe",
-            "Tim"
+            "Tim",
+            "--user-data-dir=\"$dir\\User Data\""
         ]
     ],
+    "persist": "User Data",
     "checkver": {
         "url": "https://im.qq.com/rainbow/TIMDownload/",
-        "regex": "pcLink\":\\s*\"https://dldir1.qq.com/qqfile/qq/TIM(?<path>[0-9.]+)/TIM(?<version>[0-9.]+).exe"
+        "regex": "\"pcLink\":\"https?://dldir1\\.qq\\.com/qqfile/qq(?<extra>.*)/TIM(?<main>\\d+\\.\\d+\\.\\d+)/TIM.*\\.(?<patch>\\d+)\\.exe",
+        "replace": "${main}.${patch}"
     },
     "autoupdate": {
-        "url": "https://dldir1.qq.com/qqfile/qq/TIM$matchPath/TIM$matchVersion.exe#/dl.7z"
+        "url": "http://dldir1.qq.com/qqfile/qq$matchExtra/TIM$matchMain/TIM$version.exe#/dl.7z",
+        "hash": {
+            "mode": "download"
+        }
     }
 }
