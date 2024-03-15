@@ -1,54 +1,36 @@
 {
-    "version": "0.3.0",
-    "description": "Ehanced Aria2.",
     "homepage": "https://github.com/Jvcon/EhAria2",
-    "license": "GPL-2.0 license",
+    "description": "A aira2 GUI made by Autohotkey.",
+    "version": "0.3.0",
+    "license": "GPL-2.0",
+    "notes": "Run $dir\\EhAria2Manager.exe to register Protocol",
     "architecture": {
         "64bit": {
             "url": [
                 "https://github.com/Jvcon/EhAria2/releases/download/v0.3.0/EhAria2.exe",
                 "https://github.com/Jvcon/EhAria2/releases/download/v0.3.0/EhAria2Extension.exe",
                 "https://github.com/Jvcon/EhAria2/releases/download/v0.3.0/EhAria2Manager.exe",
-                "https://github.com/Jvcon/EhAria2/releases/download/v0.3.0/EhAria2Torrent.exe",
-                "https://github.com/P3TERX/aria2.conf/raw/master/dht.dat",
-                "https://github.com/P3TERX/aria2.conf/raw/master/dht6.dat"
+                "https://github.com/Jvcon/EhAria2/releases/download/v0.3.0/EhAria2Torrent.exe"
             ],
             "hash": [
                 "2a3f85043d1ac5051b5a197cf323dab9b91f179b46e329bfd4f2131223ca4966",
                 "837c09e65f4a6481acabaa4b0dcaabf38b5c5c4b4f9446e33de2436b8d109471",
                 "1021643f91dc54f1d03d0cdd5485c31e4ea13e0b63387134db53a03305d567ca",
-                "412162f5d0466c06707cf2fa88879b6cd8865dc8209572bf3c5ee34ac950e79a",
-                "c80023968ec6df359be576c82c772793910e6768b8169e2d90c8faa3d6ad7d08",
-                "2dd69993cdafd891bce2d7f933f43f55110a8294a9ddf1c38f1b5d7b8a9c6182"
+                "412162f5d0466c06707cf2fa88879b6cd8865dc8209572bf3c5ee34ac950e79a"
             ]
         }
     },
-    "installer": {
-        "script": [
-            "if (!(Test-Path \"$persist_dir\\aria2.conf\")) {",
-            "   New-Item -Force -Path \"$persist_dir\\aria2.conf\" -ItemType file -Value $null ",
-            "}",
-            "if (!(Test-Path \"$persist_dir\\aria2.session\")) {",
-            "   New-Item -Force -Path \"$persist_dir\\aria2.session\" -ItemType file -Value $null ",
-            "}",
-            "if (!(Test-Path \"$persist_dir\\EhAria2.ini\")) {",
-            "   New-Item -Force -Path \"$persist_dir\\EhAria2.ini\" -ItemType file -Value $null ",
-            "}"
-        ]
-    },
-    "bin": [
-        "EhAria2Torrent.exe",
-        "EhAria2Extension.exe",
-        "EhAria2Manager.exe"
+    "pre_install": [
+        "'EhAria2.ini', 'aria2.conf' | ForEach-Object { if (!(Test-Path \"$persist_dir\\$_\")) { New-Item \"$dir\\$_\" -ItemType File -Force | Out-Null } }",
+        "if(Test-Path \"$persist_dir\\aria2.session\") { Copy-Item \"$persist_dir\\aria2.session\" \"$dir\\aria2.session\"  | Out-Null }"
     ],
+    "uninstaller": {
+        "script": "if(Test-Path \"$dir\\aria2.session\") { Copy-Item \"$dir\\aria2.session\" \"$persist_dir\\aria2.session\" | Out-Null }"
+    },
     "shortcuts": [
         [
             "EhAria2.exe",
             "EhAria2"
-        ],
-        [
-            "EhAria2Manager.exe",
-            "EhAria2Manager"
         ],
         [
             "EhAria2Torrent.exe",
@@ -56,16 +38,10 @@
         ]
     ],
     "persist": [
-        "EhAria2.ini",
         "aria2.conf",
-        "aria2.session",
-        "dht.dat",
-        "dht6.dat"
+        "EhAria2.ini"
     ],
-    "checkver": {
-        "url": "https://api.github.com/repos/Jvcon/EhAria2/releases",
-        "regex": "/releases/tag/(?:v|V)?([\\w.-]+)"
-    },
+    "checkver": "github",
     "autoupdate": {
         "architecture": {
             "64bit": {

@@ -1,27 +1,22 @@
 {
     "version": "2.2",
-    "description": "一个用于在 Windows 中快速、轻便、准确地卸载软件的应用程序。A fast, lightweight and accurate way to uninstall software in Windows.",
+    "description": "An easy to use and accurate software uninstaller for Windows.",
     "homepage": "https://uninstalr.com/",
-    "license": "Unknown",
+    "license": "Freeware",
     "url": "https://uninstalr.com/Uninstalr_Portable.exe#/Uninstalr.exe",
     "hash": "e019658c5fd3ef8644f269e0916fdc23f8294140f0112edf30fdf147799a4d91",
+    "bin": "Uninstalr.exe",
     "shortcuts": [
         [
             "Uninstalr.exe",
             "Uninstalr"
         ]
     ],
-    "pre_install": [
-        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-        "create_app_lnk \"$dir\\Uninstalr.exe\" \"$desktop\\Uninstalr.lnk\""
-    ],
-    "pre_uninstall": [
-        "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
-        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-        "stop_exe \"Uninstalr\" -tip",
-        "remove_files @(\"$desktop\\Uninstalr.lnk\")"
-    ],
-    "checkver": "New version: ([\\d\\.]+)",
+    "pre_install": "if (!(Test-Path \"$persist_dir\\Uninstalr.dat\")) { Set-Content -Encoding ASCII -Path \"$dir\\Uninstalr.dat\" -Value $null }",
+    "persist": "Uninstalr.dat",
+    "checkver": {
+        "regex": "Latest version:\\s*([\\d.]+?)\\.?[ |<]"
+    },
     "autoupdate": {
         "url": "https://uninstalr.com/Uninstalr_Portable.exe#/Uninstalr.exe"
     }

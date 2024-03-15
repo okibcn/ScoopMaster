@@ -1,9 +1,8 @@
 {
     "version": "123.0.1",
-    "description": "Firefox. Popular open source web browser.",
+    "description": "Popular open source web browser.",
     "homepage": "https://www.mozilla.org/firefox/",
     "license": "MPL-2.0",
-    "changelog": "https://www.mozilla.org/en-US/firefox/123.0.1/releasenotes/",
     "architecture": {
         "64bit": {
             "url": "https://archive.mozilla.org/pub/firefox/releases/123.0.1/win64/en-US/Firefox%20Setup%20123.0.1.exe#/dl.7z",
@@ -15,16 +14,24 @@
         }
     },
     "extract_dir": "core",
-    "bin": "firefox.exe",
+    "bin": [
+        [
+            "firefox.exe",
+            "firefox",
+            "-profile \"$dir\\profile\""
+        ]
+    ],
     "shortcuts": [
         [
             "firefox.exe",
-            "Firefox"
+            "Firefox",
+            "-profile \"$dir\\profile\""
         ]
     ],
+    "persist": "Profile",
     "checkver": {
-        "url": "https://www.mozilla.org/en-US/firefox/notes/",
-        "regex": "\" data-latest-firefox=\"([\\d.]+)"
+        "url": "https://product-details.mozilla.org/1.0/firefox_versions.json",
+        "jsonpath": "$.LATEST_FIREFOX_VERSION"
     },
     "autoupdate": {
         "architecture": {
@@ -42,7 +49,6 @@
                     "regex": "$sha512\\s+win32/en-US/$basename"
                 }
             }
-        },
-        "changelog": "https://www.mozilla.org/en-US/firefox/$version/releasenotes/"
+        }
     }
 }
