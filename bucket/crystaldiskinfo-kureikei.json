@@ -1,56 +1,39 @@
 {
-    "$schema": "https://raw.githubusercontent.com/ScoopInstaller/Scoop/master/schema.json",
-    "version": "9.2.3",
-    "description": "A HDD/SSD utility software which supports a part of USB, RAID and NVMe",
-    "homepage": "https://crystalmark.info/en/software/crystaldiskinfo/",
+    "homepage": "https://crystalmark.info/ja/software/crystaldiskinfo/",
+    "description": "CrystalDiskInfo is a HDD/SSD utility software which supports S.M.A.R.T and a part of USB-HDD.",
     "license": "MIT",
-    "url": "https://sourceforge.net/projects/crystaldiskinfo/files/9.2.3/CrystalDiskInfo9_2_3KureiKei.zip",
+    "version": "9.2.3",
+    "url": "https://downloads.sourceforge.net/project/crystaldiskinfo/9.2.3/CrystalDiskInfo9_2_3KureiKei.zip",
     "hash": "sha1:9e6102f19a6f6b51e56b716b671738eeb88e4cb3",
-    "pre_install": [
-        "if (!(Test-Path \"$persist_dir\\DiskInfo.ini\")) { New-Item \"$dir\\DiskInfo.ini\" | Out-Null }",
-        "# Manually persist AMD RAID plugins (AMD_RC2t7x64.dll, AMD_RC2t7x86.dll)",
-        "if (Test-Path \"$persist_dir\\AMD_RC2t7*.dll\") { Copy-Item \"$persist_dir\\AMD_RC2t7*.dll\" \"$dir\\\" }"
-    ],
     "architecture": {
         "64bit": {
-            "bin": [
-                [
-                    "DiskInfo64K.exe",
-                    "DiskInfo-KureiKei"
-                ]
-            ],
             "shortcuts": [
                 [
                     "DiskInfo64K.exe",
-                    "CrystalDiskInfo (Kurei Kei Edition)"
+                    "CrystalDiskInfo KureiKei Edition"
                 ]
             ]
         },
         "32bit": {
-            "bin": [
-                [
-                    "DiskInfo32K.exe",
-                    "DiskInfo-KureiKei"
-                ]
-            ],
             "shortcuts": [
                 [
-                    "DiskInfo32K",
-                    "CrystalDiskInfo (Kurei Kei Edition)"
+                    "DiskInfo32K.exe",
+                    "CrystalDiskInfo KureiKei Edition"
                 ]
             ]
         }
     },
-    "persist": [
-        "Smart",
-        "DiskInfo.ini"
-    ],
-    "pre_uninstall": "if (Test-Path \"$dir\\AMD_RC2t7*.dll\") { Copy-Item \"$dir\\AMD_RC2t7*.dll\" \"$persist_dir\\\" }",
+    "persist": "DiskInfo.ini",
+    "pre_install": "if(!(Test-Path \"$dir/DiskInfo.ini\")) { Add-Content \"$dir/DiskInfo.ini\" $null }",
     "checkver": {
-        "sourceforge": "crystaldiskinfo",
-        "regex": "([\\d.a-zA-Z]+)/CrystalDiskInfo.*.zip"
+        "url": "https://crystalmark.info/en/download/",
+        "regex": "CrystalDiskInfo\\s+([\\w.]+)\\s"
     },
     "autoupdate": {
-        "url": "https://sourceforge.net/projects/crystaldiskinfo/files/$version/CrystalDiskInfo$underscoreVersionKureiKei.zip"
+        "url": "https://downloads.sourceforge.net/project/crystaldiskinfo/$version/CrystalDiskInfo$underscoreVersionKureiKei.zip",
+        "hash": {
+            "url": "https://sourceforge.net/projects/crystaldiskinfo/files/$version/",
+            "regex": "CrystalDiskInfo$underscoreVersionKureiKei.zip.+?sha1\":\"$sha1"
+        }
     }
 }
