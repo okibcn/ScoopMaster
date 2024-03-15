@@ -1,25 +1,34 @@
 {
     "version": "3.2.6",
-    "description": "A completion manager for better and simpler use and Manage completions.(一个补全管理模块，更好、更简单、更方便的使用和管理补全)",
+    "description": "一个补全管理模块，更简单、更方便的使用 PowerShell 命令补全。A completion manager for better and simpler use PowerShell completions.",
     "homepage": "https://github.com/abgox/PSCompletions",
     "license": {
-        "identifier": "MIT license",
+        "identifier": "MIT",
         "url": "https://github.com/abgox/PSCompletions/blob/main/LICENSE"
     },
     "notes": [
-        "Use the module by running: 'Import-Module PSCompletions'",
-        "Add it to your $PROFILE to make it permanent"
+        "如果需要使用此模块，请运行导入命令：Import-Module PSCompletions",
+        "如果希望终端启动自动导入，请运行命令: echo \"Import-Module PSCompletions\" >> $PROFILE",
+        "Use the module by running: Import-Module PSCompletions",
+        "Make it permanent by running: echo \"Import-Module PSCompletions\" >> $PROFILE"
     ],
     "url": "https://psg-prod-eastus.azureedge.net/packages/pscompletions.3.2.6.nupkg",
     "hash": "ce7fb444ebd129e1a7f48c04011117d102a0f1ab0c53aa5a94f67b2d21947093",
-    "pre_install": "Remove-Item \"$dir\\_rels\", \"$dir\\package\", \"$dir\\*Content*.xml\" -Recurse",
+    "pre_install": [
+        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
+        "Remove-Item \"$dir\\_rels\", \"$dir\\package\", \"$dir\\*Content*.xml\" -Recurse",
+        "persist -dir @(\"$dir\\completions\") @(\"$persist_dir\\completions\")"
+    ],
     "psmodule": {
         "name": "PSCompletions"
     },
-    "persist": "completions",
     "checkver": {
-        "url": "https://www.powershellgallery.com/packages/PSCompletions",
-        "regex": "<h2>([\\d.]+)</h2>"
+        "script": [
+            "Install-Module PSCompletions",
+            "Import-Module PSCompletions",
+            "(Get-Module | Where-Object { $_.Name -eq 'PSCompletions' }).Version"
+        ],
+        "regex": "(.+)"
     },
     "autoupdate": {
         "url": "https://psg-prod-eastus.azureedge.net/packages/pscompletions.$version.nupkg"

@@ -1,30 +1,27 @@
 {
     "version": "12.1.36",
-    "description": "Reverse proxy tool to access Steam Community in mainland China.",
+    "description": "Reverse proxy tool.",
     "homepage": "https://www.dogfight360.com/blog/686/",
     "license": "Freeware",
     "url": "https://www.dogfight360.com/blog/wp-content/uploads/2024/03/steamcommunity_302_V12.1.36_%E8%A7%A3%E5%8E%8B%E5%AF%86%E7%A0%81dogfight360.zip#/dl",
     "hash": "5fa34b00e61f850b51ad601c72d4f6950aa2da068e07c28a17947db2ac07a50e",
+    "pre_install": ["ni \"$dir\\S302.ini\" -ItemType File"],
     "installer": {
         "script": [
             "7z x \"$dir/dl\" -o\"$dir\" -pdogfight360",
-            "Get-ChildItem \"$dir\\steamcommunity_302*\" -Directory | ?{$_.psiscontainer -eq $true} | Get-ChildItem | Move-Item -Destination \"$dir\"",
+            "gci \"$dir\\steamcommunity_302*\" -Directory | ?{$_.psiscontainer -eq $true} | gci | mi -Destination \"$dir\"",
             "if (Test-Path \"$dir\\steamcommunity_302\") {",
-            "  Get-ChildItem \"$dir\\steamcommunity_302\" | Move-Item -Destination \"$dir\"",
+            "  gci \"$dir\\steamcommunity_302\" | mi -Destination \"$dir\"",
             "}",
-            "Get-ChildItem \"$dir\\steamcommunity_302_V*.exe\" | Rename-Item -NewName \"steamcommunity_302.exe\"",
-            "Get-ChildItem \"$dir\\steamcommunity_302*\" -Directory | ?{$_.psiscontainer -eq $true} | Remove-Item",
-            "Remove-Item \"$dir/dl\""
+            "gci \"$dir\\steamcommunity_302*\" -Directory | ?{$_.psiscontainer -eq $true} | ri",
+            "ri \"$dir/dl\""
         ]
     },
-    "shortcuts": [
-        [
-            "steamcommunity_302.exe",
-            "SteamCommunity 302"
-        ]
-    ],
-    "depends": "main/7zip",
+    "bin": "steamcommunity_302.exe",
+    "shortcuts": [["steamcommunity_302.exe", "steamcommunity 302"]],
+    "persist": ["S302.ini"],
     "checkver": {
+        "url": "https://www.dogfight360.com/blog/686/",
         "regex": "uploads/(?<date>[\\d/]+)/steamcommunity_302_V([\\d.]+)"
     },
     "autoupdate": {
