@@ -1,27 +1,29 @@
 {
-    "$schema": "https://ghproxy.com/https://raw.githubusercontent.com/lukesampson/scoop/master/schema.json",
-    "version": "0.33",
-    "description": "Curl-like access to AWS resources with AWS Signature Version 4 request signing.",
-    "homepage": "https://github.com/okigan/awscurl",
-    "license": {
-        "identifier": "MIT",
-        "url": "https://github.com/okigan/awscurl/blob/master/LICENSE"
-    },
-    "depends": "main/python",
-    "url": "https://ghproxy.com/https://github.com/okigan/awscurl/archive/v0.33.zip#dl.zip",
-    "hash": "5c0881cc866106934d3c7be72a31273edb06ad9730c63d75b4e2d16cec9d645a",
-    "installer": {
-        "script": [
-            "Move-Item -Path \"$dir\\awscurl-$version\\awscurl\" -Destination \"$dir\" -Force",
-            "Remove-Item -Path \"$dir\\awscurl-$version\" -Recurse -Force",
-            "Set-Content -Value 'python3 -m awscurl $args' -Path \"$dir\\awscurl.ps1\""
-        ]
-    },
-    "bin": "awscurl.ps1",
-    "checkver": {
-        "github": "https://github.com/okigan/awscurl"
-    },
-    "autoupdate": {
-        "url": "https://ghproxy.com/https://github.com/okigan/awscurl/archive/v$version.zip#dl.zip"
-    }
+   "$schema": "https://raw.githubusercontent.com/lukesampson/scoop/master/schema.json",
+   "version": "0.33",
+   "description": "Curl-like access to AWS resources with AWS Signature Version 4 request signing.",
+   "homepage": "https://github.com/okigan/awscurl",
+   "license": {
+      "identifier": "MIT",
+      "url": "https://github.com/okigan/awscurl/blob/master/LICENSE"
+   },
+   "depends": "main/python",
+   "url": "https://github.com/okigan/awscurl/archive/v0.33.zip",
+   "hash": "5c0881cc866106934d3c7be72a31273edb06ad9730c63d75b4e2d16cec9d645a",
+   "installer": {
+      "script": [
+         "python -m venv \"$dir\"",
+         ".\"$dir\\Scripts\\pip.exe\" install --requirement \"$dir\\awscurl-$version\\requirements.txt\"",
+         "Move-Item -Path \"$dir\\awscurl-$version\\awscurl\" -Destination \"$dir\" -Force",
+         "Remove-Item -Path \"$dir\\awscurl-$version\" -Recurse -Force",
+         "Set-Content -Value \".'$dir\\Scripts\\python.exe' -m awscurl `$args\" -Path \"$dir\\awscurl.ps1\""
+      ]
+   },
+   "bin": "awscurl.ps1",
+   "checkver": {
+      "github": "https://github.com/okigan/awscurl"
+   },
+   "autoupdate": {
+      "url": "https://github.com/okigan/awscurl/archive/v$version.zip"
+   }
 }
