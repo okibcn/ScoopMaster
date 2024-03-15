@@ -1,37 +1,52 @@
 {
-    "version": "3.24.3.406",
-    "description": "Video conferencing app by Tencent.",
-    "homepage": "https://meeting.tencent.com/",
-    "license": {
-        "identifier": "Proprietary"
+    "autoupdate": {
+        "hash": {
+            "jsonpath": "$.info-list[0].md5",
+            "mode": "json",
+            "url": "https://meeting.tencent.com/web-service/query-download-info?q=%5B%7B%22package-type%22:%22app%22,%22channel%22:%220300000000%22,%22platform%22:%22windows%22%7D%5D&nonce=AAAAAAAAAAAAAAAA"
+        },
+        "url": "$matchUrl#/dl.7z"
     },
+    "checkver": {
+        "script": [
+            "$script:ver = json_path $page '$.info-list[0].version'",
+            "$script:matchesHashtable = @{'url' = json_path $page '$.info-list[0].url'}",
+            "$script:regexp = $null"
+        ],
+        "url": "https://meeting.tencent.com/web-service/query-download-info?q=%5B%7B%22package-type%22:%22app%22,%22channel%22:%220300000000%22,%22platform%22:%22windows%22%7D%5D&nonce=AAAAAAAAAAAAAAAA"
+    },
+    "description": "腾讯会议，会开会。",
+    "hash": "md5:dc4d3ae9e357a0b348759a6aca324bc2",
+    "homepage": "https://meeting.tencent.com",
     "installer": {
         "script": [
-            "Remove-Item \"$dir\\wemeetapp_new.exe\" -Force",
-            "Rename-Item \"$dir\\`$_10_\" \"$dir\\$version\"",
-            "Remove-Item \"$dir\\`$TEMP\",\"$dir\\`$WINDIR\",\"$dir\\`$PLUGINSDIR\" -Force -Recurse"
+            "Import-Module $(Join-Path $(Find-BucketDirectory -Root -Name ox) scripts/DoradoUtils.psm1)",
+            "Mount-ExternalRuntimeData -Source \"$persist_dir\" -Target \"$env:APPDATA\\Tencent\\WeMeet\"",
+            "Remove-Module -Name DoradoUtils",
+            "Rename-Item -Path \"$dir\\`$_*\" -NewName \"$version\" -Force",
+            "Remove-Item \"$dir\\`$*\" -Recurse -Force -ErrorAction SilentlyContinue",
+            "Remove-Item \"$dir\\wemeetapp_new.exe\" -Force -ErrorAction SilentlyContinue",
+            "create_startmenu_shortcuts $manifest $original_dir $global $architecture",
+            "$manifest.shortcuts = @()"
         ]
     },
-    "url": "https://webcdn.m.qq.com/spcmgr/download/TencentMeeting_0300000000_3.24.3.406.publish.officialwebsite.exe#/dl.7z",
-    "hash": "feb70b5a7b0e5f8e048237668b3b59ee7029f317672858027dd14e82be2f668a",
-    "bin": "wemeetapp.exe",
+    "license": {
+        "identifier": "Freeware",
+        "url": "https://meeting.tencent.com/declare.html"
+    },
     "shortcuts": [
         [
             "wemeetapp.exe",
-            "腾讯会议"
+            "Tencent Meeting"
         ]
     ],
-    "checkver": {
-        "url": "https://pc.qq.com/detail/18/detail_26218.html",
-        "regex": "(\\d+\\.\\d+\\.\\d+\\.\\d+)"
+    "uninstaller": {
+        "script": [
+            "Import-Module $(Join-Path $(Find-BucketDirectory -Root -Name ox) scripts/DoradoUtils.psm1)",
+            "Dismount-ExternalRuntimeData -Target \"$env:APPDATA\\Tencent\\WeMeet\"",
+            "Remove-Module -Name DoradoUtils"
+        ]
     },
-    "autoupdate": {
-        "url": "https://webcdn.m.qq.com/spcmgr/download/TencentMeeting_0300000000_$version.publish.officialwebsite.exe#/dl.7z"
-    },
-    "notes": [
-        "We don't persist your Tencent Meeting data, they are still storaged in \"$env:APPDATA\\Tencent\\WeMeet\".",
-        "It's hard to get major version when it is preceding unicode characters. So manually set it.",
-        "The program should be run from its version directory but not current.",
-        "You'd better create a shortcut pointing to it."
-    ]
+    "url": "https://updatecdn.meeting.qq.com/cos/dc4d3ae9e357a0b348759a6aca324bc2/TencentMeeting_0300000000_3.24.3.406.publish.officialwebsite.exe#/dl.7z",
+    "version": "3.24.3.406"
 }

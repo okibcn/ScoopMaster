@@ -1,21 +1,24 @@
 {
-    "homepage": "https://file-converter.org/",
     "version": "2.0.2",
-    "description": "Various file converter and compressor",
+    "description": "File Converter is a very simple tool which allows you to convert and compress files using the context menu in windows explorer.",
+    "homepage": "https://file-converter.io/",
     "license": "GPL-3.0-only",
     "architecture": {
         "64bit": {
-            "url": "https://github.com/Tichau/FileConverter/releases/download/v2.0.2/FileConverter-2.0.2-x64-setup.msi",
+            "url": "https://github.com/Tichau/FileConverter/releases/download/v2.0.2/FileConverter-2.0.2-x64-setup.msi#/setup.msi_",
             "hash": "9927db55e71cafbebe558d9711c8ca28739fdfd2b787afc6db58255dede927c6"
         }
     },
-    "extract_dir": "File Converter",
-    "bin": "FileConverter.exe",
-    "shortcuts": [
-        [
-            "FileConverter.exe",
-            "File Converter"
-        ]
+    "pre_install": [
+        "if (!(is_admin)) { error \"$app requires admin rights to $cmd\"; break }",
+        "Start-Process 'msiexec' -Wait -Verb 'RunAs' -WindowStyle 'Hidden' -ArgumentList @('/i', \"$dir\\setup.msi_\", '/qn')",
+        "Stop-Process -Name 'FileConverter' -Force -ErrorAction 'SilentlyContinue'; Start-Sleep -Seconds 2"
+    ],
+    "pre_uninstall": [
+        "if (!(is_admin)) { error \"$app requires admin rights to $cmd\"; break }",
+        "if (Get-Process -Name 'FileConverter' -ErrorAction 'SilentlyContinue') { Stop-Process -Name 'FileConverter' -ErrorAction 'SilentlyContinue' -Force }",
+        "Start-Process 'msiexec' -Wait -Verb 'RunAs' -ArgumentList @('/x', \"$dir\\setup.msi_\", '/qn')",
+        "Stop-Process -Name 'explorer' -Force; Start-Sleep -Seconds 2"
     ],
     "checkver": {
         "github": "https://github.com/Tichau/FileConverter"
@@ -23,7 +26,7 @@
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://github.com/Tichau/FileConverter/releases/download/v$version/FileConverter-$version-x64-setup.msi"
+                "url": "https://github.com/Tichau/FileConverter/releases/download/v$version/FileConverter-$version-x64-setup.msi#/setup.msi_"
             }
         }
     }
