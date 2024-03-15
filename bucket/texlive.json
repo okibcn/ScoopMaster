@@ -7,7 +7,7 @@
     "installer": {
         "script": [
             "Write-Host 'Invoking TeX Live installer...' -ForegroundColor DarkCyan",
-            "Write-Host 'This can take a few minutes to to a long time...' -ForegroundColor DarkYellow",
+            "Write-Host 'This can take a few minutes to a long time...' -ForegroundColor DarkYellow",
             "Get-ChildItem \"$dir\\install-tl-*\" | Rename-Item -NewName \"$dir\\installer\"",
             "$env:TEXLIVE_INSTALL_PAPER='a4'",
             "$env:TEXLIVE_INSTALL_PREFIX=\"$dir\"",
@@ -15,7 +15,7 @@
             "$env:TEXLIVE_INSTALL_NO_RESUME=1",
             "$env:TEXLIVE_INSTALL_ENV_NOCHECK=1",
             "$installProfile = \"$dir\\installer\\default.profile\"",
-            "Write-Output \"selected_scheme scheme-small\" | Out-File $installProfile -Encoding ASCII",
+            "Write-Output \"selected_scheme scheme-full\" | Out-File $installProfile -Encoding ASCII",
             "$installArgs = \"-no-gui -portable -non-admin -profile=$installProfile\"",
             "Write-Output 'Downloading and installing TeX Live packages...'",
             "Invoke-ExternalCommand -Path \"$dir\\installer\\install-tl-windows.bat\" -ArgumentList $installArgs",
@@ -33,7 +33,8 @@
     },
     "env_add_path": [
         "bin\\win64",
-        "bin\\win32"
+        "bin\\win32",
+        "bin\\windows"
     ],
     "shortcuts": [
         [

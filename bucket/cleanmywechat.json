@@ -1,19 +1,39 @@
 {
     "version": "2.1",
-    "description": "An utility to clean out dated wechat large files.",
+    "description": "A cleaning tool for Wechat files.",
     "homepage": "https://github.com/blackboxo/CleanMyWechat",
     "license": "MIT",
-    "url": "https://github.com/blackboxo/CleanMyWechat/releases/download/v2.1/CleanMyWechat.zip",
-    "hash": "3af7b5c1a33997785c7c452a9e75872582f5a523a4edc3c089c92d88f4ce33e0",
-    "bin": "dist/main.exe",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/blackboxo/CleanMyWechat/releases/download/v2.1/CleanMyWechat.zip",
+            "hash": "3af7b5c1a33997785c7c452a9e75872582f5a523a4edc3c089c92d88f4ce33e0"
+        }
+    },
+    "extract_dir": "dist",
+    "installer": {
+        "script": [
+            "ensure $persist_dir",
+            "Get-ChildItem -Path \"$persist_dir\" -Filter \"config.json\" -File | Move-Item -Destination \"$dir\" -Force"
+        ]
+    },
     "shortcuts": [
         [
-            "dist/main.exe",
-            "Clean My Wechat"
+            "main.exe",
+            "CleanMyWechat"
         ]
     ],
+    "uninstaller": {
+        "script": [
+            "Get-ChildItem -Path \"$persist_dir\" -Filter \"config.json\" | Remove-Item -Force",
+            "Get-ChildItem -Path \"$dir\" -Filter \"config.json\" -File | Move-Item -Destination \"$persist_dir\" -Force"
+        ]
+    },
     "checkver": "github",
     "autoupdate": {
-        "url": "https://github.com/blackboxo/CleanMyWechat/releases/download/v2.1/CleanMyWechat.zip"
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/blackboxo/CleanMyWechat/releases/download/v$version/CleanMyWechat.zip"
+            }
+        }
     }
 }
