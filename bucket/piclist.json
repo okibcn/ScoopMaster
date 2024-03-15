@@ -1,14 +1,22 @@
 {
     "version": "2.8.0",
-    "description": "Picture upload and management",
-    "homepage": "https://piclist.cn/en",
+    "description": "An image upload and manage tool, base on PicGo.",
+    "homepage": "https://github.com/Kuingsmile/PicList",
     "license": "MIT",
     "architecture": {
         "64bit": {
             "url": "https://github.com/Kuingsmile/PicList/releases/download/v2.8.0/PicList-Setup-2.8.0-x64.exe#/dl.7z",
-            "hash": "43f24755fa6ba9793044cf58ec6974f874474a07321b246ca4dd00d72a072b6b",
+            "hash": "sha512:444038187250ff9929a9cba9bcb4007cc71d7f0e9878658067107a7fa94aacfec95b0a3497e783fce79f97fe238c700102798b916d5718fd46c767eacf82e2c5",
             "pre_install": [
                 "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\"",
+                "Remove-Item \"$dir\\`$*\", \"$dir\\Uninstall*\" -Recurse"
+            ]
+        },
+        "32bit": {
+            "url": "https://github.com/Kuingsmile/PicList/releases/download/v2.8.0/PicList-Setup-2.8.0-ia32.exe#/dl.7z",
+            "hash": "sha512:f400dbb2735b4a3b1b600e016f6a9a4022d6ba0824b6bbeb851a661e7055919b9f6c9177a5d3ee5fb51a561fed118442481e7cc1c0e4ea07b40f0eb32ce746f4",
+            "pre_install": [
+                "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-32.7z\" \"$dir\"",
                 "Remove-Item \"$dir\\`$*\", \"$dir\\Uninstall*\" -Recurse"
             ]
         }
@@ -20,16 +28,19 @@
             "PicList"
         ]
     ],
-    "checkver": {
-        "url": "https://api.github.com/repos/Kuingsmile/PicList/releases",
-        "jsonpath": "$[0].tag_name",
-        "regex": "(?<tag>v([\\w.-]+))"
-    },
+    "checkver": "github",
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://github.com/Kuingsmile/PicList/releases/download/$matchTag/PicList-Setup-$version-x64.exe#/dl.7z"
+                "url": "https://github.com/Kuingsmile/PicList/releases/download/v$version/PicList-Setup-$version-x64.exe#/dl.7z"
+            },
+            "32bit": {
+                "url": "https://github.com/Kuingsmile/PicList/releases/download/v$version/PicList-Setup-$version-ia32.exe#/dl.7z"
             }
+        },
+        "hash": {
+            "url": "$baseurl/latest.yml",
+            "regex": "(?s)$basename.*?$base64"
         }
     }
 }

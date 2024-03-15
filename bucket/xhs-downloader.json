@@ -1,19 +1,33 @@
 {
     "version": "1.8",
-    "description": "A vedio downloader for XHS.",
+    "description": "免费、轻量、开源，基于 Requests 模块实现：小红书图文/视频作品数据采集工具",
     "homepage": "https://github.com/JoeanAmier/XHS-Downloader",
-    "license": "Apache-2.0",
-    "url": "https://github.com/JoeanAmier/XHS-Downloader/releases/download/1.8/XHS-Downloader_V1.8_WIIN.zip",
-    "hash": "2c89baf4d26dbadf54f739f5e032cea87f0908f48cec8624ffc43159c2ee8176",
-    "bin": "main.exe",
+    "license": {
+        "identifier": "GPL-3.0 license",
+        "url": "https://github.com/JoeanAmier/XHS-Downloader/blob/master/LICENSE"
+    },
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/JoeanAmier/XHS-Downloader/releases/download/1.8/XHS-Downloader_V1.8_WIIN.zip",
+            "hash": "2c89baf4d26dbadf54f739f5e032cea87f0908f48cec8624ffc43159c2ee8176"
+        }
+    },
     "shortcuts": [
         [
-            "main.exe",
-            "XHS-Downloader"
+            "XHS_Downloader.exe",
+            "XHS_Downloader"
         ]
     ],
-    "checkver": "github",
+    "checkver": {
+        "url": "https://api.github.com/repos/JoeanAmier/XHS-Downloader/releases",
+        "jsonpath": "$[0].assets[*].browser_download_url",
+        "regex": "(?<file>XHS(?:-|_)Downloader_V([\\d.]+)_(?:WIN|WIIN)\\.zip)"
+    },
     "autoupdate": {
-        "url": "https://github.com/JoeanAmier/XHS-Downloader/releases/download/$version/XHS-Downloader_V$version_WIIN.zip"
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/JoeanAmier/XHS-Downloader/releases/download/$version/$matchFile"
+            }
+        }
     }
 }

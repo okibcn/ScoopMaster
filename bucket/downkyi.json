@@ -1,11 +1,8 @@
 {
     "version": "1.6.1",
-    "description": "一个B站(bilibili)视频下载工具。A bilibili video download tool.",
+    "description": "BiliBili Vedio Downloader",
     "homepage": "https://github.com/leiurayer/downkyi",
-    "license": {
-        "identifier": "GNU General Public License v3.0",
-        "url": "https://github.com/leiurayer/downkyi/blob/main/LICENSE"
-    },
+    "license": "GPL-3.0-or-later",
     "url": "https://github.com/leiurayer/downkyi/releases/download/v1.6.1/DownKyi-1.6.1.zip",
     "hash": "d809c230c9dd9ab18a7cbafc413db2d93eca25e45c4df5fa6aaad3f253015986",
     "shortcuts": [
@@ -14,18 +11,11 @@
             "DownKyi"
         ]
     ],
-    "pre_install": [
-        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-        "persist -dir @(\"$dir\\config\") @(\"$persist_dir\\config\")",
-        "create_app_lnk \"$dir\\DownKyi.exe\" \"$desktop\\DownKyi.lnk\""
-    ],
-    "pre_uninstall": [
-        "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
-        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-        "stop_process",
-        "remove_files @(\"$desktop\\DownKyi.lnk\")"
-    ],
-    "checkver": "github",
+    "persist": "Config",
+    "checkver": {
+        "url": "https://github.com/leiurayer/downkyi/tags",
+        "regex": "tag/v(.+?)\""
+    },
     "autoupdate": {
         "url": "https://github.com/leiurayer/downkyi/releases/download/v$version/DownKyi-$version.zip"
     }
