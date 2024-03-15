@@ -1,23 +1,21 @@
 {
     "version": "2.5",
-    "description": "A Windows and Office activator using HWID / KMS38 / Online KMS activation methods, with a focus on open-source code and fewer antivirus detections.",
+    "description": "A Windows and Office activator using HWID / Ohook / KMS38 / Online KMS activation methods, with a focus on open-source code and fewer antivirus detections.",
     "homepage": "https://massgrave.dev/",
-    "license": {
-        "identifier": "GPL-3.0 license",
-        "url": "https://github.com/massgravel/Microsoft-Activation-Scripts/blob/master/LICENSE"
-    },
+    "license": "GPL-3.0-only",
     "url": "https://github.com/massgravel/Microsoft-Activation-Scripts/archive/master.zip",
-    "hash": "e0f531ed89e525cd25a7d836a1c580ba98efdf260ab1d5e1884792ce1a3fb427",
+    "hash": "7863586f017d773b133e4cce9814b0c8249cc629fb7265ba7c8408fa7d70a61a",
     "extract_dir": "Microsoft-Activation-Scripts-master",
-    "shortcuts": [
-        [
-            "MAS\\All-In-One-Version\\MAS_AIO.cmd",
-            "MAS_AIO"
+    "installer": {
+        "script": [
+            "$file = gci \"$dir\\MAS\\All-In-One-Version\\MAS_AIO-*.cmd\" | select -First 1",
+            "rni $file.FullName \"$dir\\MAS\\All-In-One-Version\\MAS_AIO.cmd\""
         ]
-    ],
+    },
+    "bin": "MAS\\All-In-One-Version\\MAS_AIO.cmd",
+    "shortcuts": [["MAS\\All-In-One-Version\\MAS_AIO.cmd", "MAS_AIO"]],
     "checkver": {
-        "url": "https://github.com/massgravel/Microsoft-Activation-Scripts/releases.atom",
-        "regex": "/releases/tag/([\\d.]+)"
+        "github": "https://github.com/massgravel/Microsoft-Activation-Scripts"
     },
     "autoupdate": {
         "url": "https://github.com/massgravel/Microsoft-Activation-Scripts/archive/master.zip"

@@ -1,40 +1,44 @@
 {
     "version": "0.9.7",
-    "description": "一款简洁、高效、高颜值的输入、截图、划词翻译软件。A concise, efficient, and high-quality input, screenshot, and word translation software.",
-    "homepage": "https://github.com/InkTimeRecord/TTime",
+    "description": "🚀 A concise, efficient, good-looking input, screenshot, and word translation software",
+    "homepage": "https://ttime.timerecord.cn/",
     "license": {
-        "identifier": "Apache License 2.0(with the additional conditions)",
+        "identifier": "AGPL-3.0 license",
         "url": "https://github.com/InkTimeRecord/TTime/blob/main/LICENSE.txt"
     },
-    "url": "https://github.com/InkTimeRecord/TTime/releases/download/v0.9.7/TTime-0.9.7-setup.exe",
-    "hash": "ad9fd18cfe196b440849d1ec4e162feeb4099af107de7d06d2d81ab7fcea38ce",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/InkTimeRecord/TTime/releases/download/v0.9.7/TTime-0.9.7-setup.exe#/dl.7z",
+            "hash": "ad9fd18cfe196b440849d1ec4e162feeb4099af107de7d06d2d81ab7fcea38ce",
+            "pre_install": [
+                "if (Test-Path \"$env:AppData\\time-translate\") {",
+                "    info '[Persistent data]: Copying user data...'",
+                "    ensure \"$dir\\User Data\" | Out-Null",
+                "    Copy-Item \"$env:AppData\\time-translate\\*\" \"$dir\\User Data\\\" -Recurse -Force -ErrorAction 'SilentlyContinue'",
+                "    Remove-Item \"$env:AppData\\time-translate\" -Recurse -Force -ErrorAction 'SilentlyContinue'",
+                "}",
+                "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\" -Removal"
+            ],
+            "post_install": "Remove-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\$R0\" -Recurse -Force -ErrorAction 'SilentlyContinue'"
+        }
+    },
     "shortcuts": [
         [
             "TTime.exe",
-            "TTime"
+            "TTime",
+            "--user-data-dir=\"$dir\\User Data\""
         ]
     ],
-    "pre_install": [
-        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-        "$path_exe=\"$dir\\TTime-$($version)-setup.exe\"",
-        "& $path_exe /S /D=$dir",
-        "$core_exe=\"$dir\\TTime.exe\"",
-        "sleep_install $core_exe",
-        "persist -dir @(\"$user_AppData\\time-translate\") @(\"$persist_dir\\time-translate\")",
-        "clean_redundant_files @($path_exe,\"$admin_apps_lnk\\TTime.lnk\")",
-        "remove_app_lnk @(\"TTime.lnk\")"
-    ],
-    "pre_uninstall": [
-        "$bucket=(scoop bucket list | where-Object { $_.Source -match '(gitee|github).com/abgox/abgo_bucket'})[0].Name",
-        ". \"$bucketsdir\\$bucket\\bin\\utils.ps1\"",
-        "stop_process $false",
-        "remove_files @(\"$user_AppData\\time-translate\")",
-        "$ui_exe=\"$dir\\Uninstall TTime.exe\"",
-        "try{ & $ui_exe /S }catch{}",
-        "sleep_uninstall $ui_exe"
-    ],
-    "checkver": "github",
+    "persist": "User Data",
+    "checkver": {
+        "url": "https://api.github.com/repos/InkTimeRecord/TTime/releases",
+        "regex": "(?sm)browser_download_url.*?releases/download/v([\\d.]+)/TTime-([\\d.]+)-setup\\.exe"
+    },
     "autoupdate": {
-        "url": "https://github.com/InkTimeRecord/TTime/releases/download/v$version/TTime-$version-setup.exe"
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/InkTimeRecord/TTime/releases/download/v$version/TTime-$version-setup.exe#/dl.7z"
+            }
+        }
     }
 }

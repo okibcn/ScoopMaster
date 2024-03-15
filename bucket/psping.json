@@ -1,27 +1,33 @@
 {
-    "version": "2.12",
+    "homepage": "https://docs.microsoft.com/en-us/sysinternals/",
     "description": "Measure network performance.",
-    "homepage": "https://learn.microsoft.com/sysinternals/downloads/psping",
     "license": {
         "identifier": "Freeware",
-        "url": "https://learn.microsoft.com/sysinternals/license-terms"
+        "url": "https://docs.microsoft.com/en-us/sysinternals/license-terms"
     },
-    "architecture": {
-        "64bit": {
-            "url": "https://download.sysinternals.com/files/psping.zip",
-            "hash": "c68f60f5381a042a255b4aafe7e5fb7d7aa7349d38f5ff2d81957ef0fd6f8e67"
-        }
-    },
+    "version": "2.12",
+    "url": "https://download.sysinternals.com/files/PSTools.zip",
+    "hash": "e77aca05e8a6a4d2d92c99e77ca04b883edc32a1726b3eb6c73d0d56f66935d6",
+    "pre_install": "Get-ChildItem \"$dir\" | Where-Object {($_.Name -notlike 'psping*') -and ($_.Name -notlike 'Eula.txt') -and $_.Name -notlike '*.chm'} | Remove-Item",
     "checkver": {
-        "url": "https://raw.githubusercontent.com/MicrosoftDocs/sysinternals/main/sysinternals/downloads/psping.md",
-        "regex": "#.*?v([\\d.]+)"
+        "url": "https://docs.microsoft.com/en-us/sysinternals/downloads/psping",
+        "re": "PsPing\\s(?:v|V)?([\\d.]+)"
     },
     "autoupdate": {
-        "architecture": {
-            "64bit": {
-                "url": "https://download.sysinternals.com/files/psping.zip"
-            }
-        }
+        "url": "https://download.sysinternals.com/files/PSTools.zip"
     },
-    "bin": "psping.exe"
+    "architecture": {
+        "32bit": {
+            "bin": "psping.exe"
+        },
+        "64bit": {
+            "bin": [
+                [
+                    "psping64.exe",
+                    "psping"
+                ],
+                "psping64.exe"
+            ]
+        }
+    }
 }
