@@ -15,7 +15,7 @@ on:
         description: 'Debug session enabled'
         required: false
         default: false
-        type: boolean  
+        type: boolean
       release:
         description: 'Delivery Channel'
         required: false
@@ -23,7 +23,7 @@ on:
         type: choice
         options:
           - "Artifact"
-          - "Release"        
+          - "Release"
 
 jobs:
   build:
@@ -207,7 +207,7 @@ jobs:
               $oldpercent=$percent
             }
             $date = $file.LastWriteTimeUtc.ToString("yyyy-MM-ddTHH:mm:ssZ")
-            $filecontent = gc $file 
+            $filecontent = gc $file
             try{
                 $json = $filecontent | ConvertFrom-Json
                 $version = $json.version
@@ -261,6 +261,7 @@ jobs:
                 $nApps++
                 continue
             }
+            if (!$name) { continue }
 
             $app=[ref]$hash.Rows[-1]
             $current = if ($hash.Rows[-1].Bucket -match '^okibcn/' ) {'O'} else {'_'}
@@ -295,7 +296,7 @@ jobs:
                 }
             }
         }
-        $hash = $hash | select   | Sort-Object Name 
+        $hash = $hash | select   | Sort-Object Name
         $scoopDBfile = "./LastAppsDB.csv"
         $hash | ConvertTo-csv > $scoopDBfile
 
@@ -384,7 +385,7 @@ jobs:
         if ( "${{github.event.inputs.release}}" -eq 'Artifact') {7z a '-x!*.7z' ScoopMaster.7z *}
 
         $downloads=((( gh api repos/okibcn/ScoopMaster/releases | jq . ) -match  "download_count" | sls '\d+' ).matches | Measure-Object Value -Sum ).Sum
-        
+
         $stats=@{}
         $stats.Add('date',"$($env:UPDATE)")
         $stats.Add('prevDate',"$((gc stats.json | ConvertFrom-Json).date.ToString("yyyy-MM-ddTHH:mm:ssZ"))")
