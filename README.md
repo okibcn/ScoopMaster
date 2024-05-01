@@ -56,11 +56,11 @@ ____
 
 </br>
 
-To add this bucket, paste this in a PowerShell session: 
+To add this bucket, paste this in a PowerShell session:
 ```pwsh
 scoop bucket add .SM https://github.com/okibcn/ScoopMaster
 ```
-install any app in the bucket just type 
+install any app in the bucket just type
 ```
 scoop install <app_name>
 ```
@@ -71,12 +71,21 @@ scoop bucket rm .SM
 
 If you want all your local apps to be updated to the latest version provided by ScoopMaster, just change the update source for that app. You can do it for all of them by copy-n-paste this in PowerShell:
 ```pwsh
-gci ~/scoop/apps/*/current/install.json | % { 
+gci ~/scoop/apps/*/current/install.json | % {
     (gc $_) -Replace '(?<=bucket":\s+")[^"]+',".SM" |Set-Content $_ }
 scoop update
 scoop update *
 ```
 
+If you want to revert to the default buckets after you have removed the ScoopMaster bucket you can use this bit of Powershell.
+```pwsh
+$apps = $(scoop status)
+foreach ($app in $apps) {
+    $bucket = $(scoop info $($app.Name)).Bucket
+    $install = "~/scoop/apps/$($app.Name)/current/install.json"
+    (Get-Content $install) -Replace '(?<=bucket":\s+")[^"]+', "$bucket" | Set-Content $install
+}
+```
 </br>
 
 ## - Database installation
@@ -117,11 +126,11 @@ ss scoop search fast
 ```
 - Search for an app in which the app name contains both 'nvidia' AND 'driver'
 ```pwsh
-ss -n nvidia driver 
+ss -n nvidia driver
 ```
 - Simple search for the **ss** app
 ```pwsh
-ss -s ss 
+ss -s ss
 ```
 - Returns apps containing 'tool' and, 'nvidia' or 'radeon'
 ```pwsh
@@ -133,15 +142,15 @@ ss -l search scoop
 ```
 - Full extended regex support. Latests versions of apps ending in 'ss' starting with 's'
 ```pwsh
-ss -n -l -e ss$ ^s 
+ss -n -l -e ss$ ^s
 ```
 - UTF-8 search of all the apps containing the word 音乐 (music) in the description.
 ```pwsh
-ss -l 音乐 
+ss -l 音乐
 ```
 - stores in the `$apps` variable a PSObject with all the Scoop manifests — more than 52,000.
 ```pwsh
-$apps = ss -r .* 
+$apps = ss -r .*
 ```
 
 </br>
